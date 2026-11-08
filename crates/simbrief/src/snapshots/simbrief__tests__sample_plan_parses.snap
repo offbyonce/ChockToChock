@@ -1,0 +1,38 @@
+---
+source: crates/simbrief/src/lib.rs
+expression: "parse_ofp_json(&fixture(\"ofp-sample.json\")).unwrap()"
+---
+{
+  "airline": "TSTX",
+  "flightNumber": "4567",
+  "origin": "EGLL",
+  "originRunway": "09R",
+  "originElevationFt": 83,
+  "transitionAltitudeFt": 6000,
+  "destination": "LFPG",
+  "destinationElevationFt": 392,
+  "transitionLevelFt": 7000,
+  "cruiseAltitudeFt": 37000,
+  "route": "SUMMA2 SUMMA J1 BTG",
+  "costIndex": 35,
+  "units": "kg",
+  "rampFuel": 6400,
+  "reserveFuel": 1200,
+  "zeroFuelWeight": 52300,
+  "airac": "2406",
+  "registration": null,
+  "fixes": [
+    {
+      "ident": "SUMMA",
+      "via": "SUMMA2",
+      "sid_star": true,
+      "stage": "CLB"
+    },
+    {
+      "ident": "BTG",
+      "via": "J1",
+      "sid_star": false,
+      "stage": "CRZ"
+    }
+  ]
+}

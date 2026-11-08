@@ -1,0 +1,6 @@
+# SPDX-FileCopyrightText: 2026 offbyonce
+# SPDX-License-Identifier: MIT
+
+[env]
+# ts-rs writes generated TypeScript types here when `cargo test` runs.
+TS_RS_EXPORT_DIR = { value = "packages/bindings/src/generated", relative = true }

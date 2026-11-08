@@ -1,0 +1,83 @@
+# SPDX-FileCopyrightText: 2026 offbyonce
+# SPDX-License-Identifier: MIT
+
+[workspace]
+resolver = "3"
+members = [
+    "crates/checklist-core",
+    "crates/pack",
+    "crates/pack-cli",
+    "crates/simbrief",
+    "crates/store",
+    "apps/desktop/src-tauri",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.90"
+license = "MIT"
+authors = ["offbyonce"]
+repository = "https://github.com/offbyonce/ChockToChock"
+publish = false
+
+# Every dependency version lives here, once. Member crates write `name.workspace = true`.
+[workspace.dependencies]
+# Our own crates
+checklist-core = { path = "crates/checklist-core" }
+pack = { path = "crates/pack" }
+simbrief = { path = "crates/simbrief" }
+store = { path = "crates/store" }
+
+# Data and schema
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = "1.0.154"
+serde-saphyr = "2.1.1"
+schemars = "1.2"
+semver = { version = "1.0.28", features = ["serde"] }
+ts-rs = { version = "12.0", features = ["no-serde-warnings"] }
+
+# Errors and logging
+thiserror = "2.0.21"
+anyhow = "1.0.104"
+tracing = "0.1.44"
+tracing-subscriber = { version = "0.3.23", features = ["env-filter"] }
+
+# Storage
+rusqlite = { version = "0.41", features = ["bundled"] }
+
+# App shell (pinned together, upgraded together)
+tauri = { version = "=2.12.5", features = [] }
+tauri-build = { version = "=2.7.4", features = [] }
+
+# Testing
+insta = { version = "1.49", features = ["json"] }
+proptest = "1.12"
+rstest = "0.28"
+
+[workspace.lints.rust]
+unsafe_code = "forbid"
+missing_debug_implementations = "warn"
+unused_must_use = "deny"
+
+[workspace.lints.clippy]
+pedantic = { level = "warn", priority = -1 }
+module_name_repetitions = "allow"
+must_use_candidate = "allow"
+missing_errors_doc = "allow"
+missing_panics_doc = "allow"
+# Product names like SimBrief and SimConnect are not code; backticking them adds noise.
+doc_markdown = "allow"
+unwrap_used = "warn"
+expect_used = "warn"
+dbg_macro = "warn"
+todo = "warn"
+print_stdout = "warn"
+print_stderr = "warn"
+
+[profile.release]
+codegen-units = 1
+lto = true
+opt-level = "s"
+strip = true
+panic = "abort"

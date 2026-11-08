@@ -1,0 +1,22 @@
+{
+  "fetch": { "status": "Success" },
+  "params": { "units": "kgs", "airac": "2406" },
+  "general": {
+    "icao_airline": "TSTX",
+    "flight_number": "4567",
+    "initial_altitude": "37000",
+    "route": "SUMMA2 SUMMA J1 BTG",
+    "costindex": "35"
+  },
+  "origin": { "icao_code": "EGLL", "plan_rwy": "09R", "elevation": "83", "trans_alt": "6000" },
+  "destination": { "icao_code": "LFPG", "plan_rwy": {}, "elevation": "392", "trans_level": "7000" },
+  "fuel": { "plan_ramp": "6400", "reserve": "1200" },
+  "weights": { "est_zfw": "52300" },
+  "aircraft": { "reg": {} },
+  "navlog": {
+    "fix": [
+      { "ident": "SUMMA", "via_airway": "SUMMA2", "is_sid_star": "1", "stage": "CLB" },
+      { "ident": "BTG", "via_airway": "J1", "is_sid_star": "0", "stage": "CRZ" }
+    ]
+  }
+}

@@ -1,0 +1,19 @@
+/* SPDX-FileCopyrightText: 2026 offbyonce */
+/* SPDX-License-Identifier: MIT */
+
+:root {
+  --bg: #121c2c;
+  --panel: #1b2738;
+  --text: #e8ecf2;
+  --muted: #9aa7b8;
+  --accent: #ffb020;
+  --done: #4cc38a;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+}

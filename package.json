@@ -1,0 +1,21 @@
+{
+  "name": "chocktochock",
+  "private": true,
+  "description": "Chock to Chock: interactive cockpit checklists for flight simulators.",
+  "license": "MIT",
+  "packageManager": "pnpm@12.18.0",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "check": "biome check . && pnpm -r --if-present run check",
+    "test": "pnpm -r --if-present run test",
+    "tauri": "tauri"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "catalog:",
+    "@tauri-apps/cli": "catalog:",
+    "lefthook": "catalog:",
+    "typescript": "catalog:"
+  }
+}

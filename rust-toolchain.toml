@@ -1,0 +1,8 @@
+# SPDX-FileCopyrightText: 2026 offbyonce
+# SPDX-License-Identifier: MIT
+#
+# Pinned on purpose. Bump about monthly, then run `just ci`.
+[toolchain]
+channel = "1.99"
+components = ["rustfmt", "clippy", "llvm-tools-preview"]
+profile = "minimal"

@@ -1,0 +1,7 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "main",
+  "description": "The main window may call only our own commands. No file, network or shell access is granted to the interface.",
+  "windows": ["main"],
+  "permissions": ["allow-app-info", "allow-example-checklist"]
+}

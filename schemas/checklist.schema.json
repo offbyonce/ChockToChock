@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Checklist",
+  "description": "An ordered list of steps for one phase of flight.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "steps": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Step"
+      }
+    },
+    "title": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "title",
+    "steps"
+  ],
+  "$defs": {
+    "SourceRef": {
+      "description": "Where a step's wording or value came from. Every step needs at least one.",
+      "type": "object",
+      "properties": {
+        "title": {
+          "description": "Human-readable name, e.g. \"iFly 737 MAX 8 tutorial, p. 12\".",
+          "type": "string"
+        },
+        "url": {
+          "description": "Optional link. Checked against the blocked-source list by `pack check`.",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "title"
+      ]
+    },
+    "Step": {
+      "description": "One challenge and response line.",
+      "type": "object",
+      "properties": {
+        "expect": {
+          "description": "The expected response or position, e.g. \"NAV\". Always text, never a boolean.",
+          "type": "string"
+        },
+        "id": {
+          "$ref": "#/$defs/StepId"
+        },
+        "note": {
+          "description": "Optional note shown under the step.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "sources": {
+          "type": "array",
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/SourceRef"
+          }
+        },
+        "text": {
+          "description": "The challenge, e.g. \"IRS mode selectors\".",
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "text",
+        "expect"
+      ]
+    },
+    "StepId": {
+      "description": "A stable, namespaced step id such as `ifly-max8.preflight.irs-align`.",
+      "type": "string"
+    }
+  }
+}

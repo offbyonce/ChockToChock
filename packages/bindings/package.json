@@ -1,0 +1,13 @@
+{
+  "name": "@chocktochock/bindings",
+  "private": true,
+  "description": "Typed wrappers for every app command, plus TypeScript types generated from Rust.",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@tauri-apps/api": "catalog:"
+  }
+}

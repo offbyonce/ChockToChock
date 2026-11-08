@@ -1,0 +1,26 @@
+# SPDX-FileCopyrightText: 2026 offbyonce
+# SPDX-License-Identifier: CC-BY-NC-SA-4.0
+#
+# yaml-language-server: $schema=../../schemas/checklist.schema.json
+# Invented content that shows the pack format. Not a real aircraft procedure.
+id: before-start
+title: Before start
+steps:
+  - id: example-trainer.before-start.battery
+    text: Battery switch
+    expect: 'ON'
+    sources:
+      - title: Chock to Chock format example (invented)
+
+  - id: example-trainer.before-start.beacon
+    text: Beacon light
+    expect: 'ON'
+    note: Turn on before engine start.
+    sources:
+      - title: Chock to Chock format example (invented)
+
+  - id: example-trainer.before-start.doors
+    text: Doors
+    expect: CLOSED
+    sources:
+      - title: Chock to Chock format example (invented)

@@ -1,0 +1,30 @@
+# SPDX-FileCopyrightText: 2026 offbyonce
+# SPDX-License-Identifier: MIT
+#
+# Git hooks, installed automatically by `pnpm install`. Fast checks before each
+# commit; the full test run before each push. Skip once with `git commit --no-verify`.
+
+pre-commit:
+  parallel: true
+  commands:
+    fmt:
+      run: just fmt-check
+    clippy:
+      glob: "*.rs"
+      run: cargo clippy --workspace --all-targets -- -D warnings
+    biome:
+      glob: "*.{ts,js,json}"
+      run: pnpm exec biome check {staged_files}
+
+commit-msg:
+  commands:
+    sign-off:
+      # Every commit needs a DCO sign-off line (`git commit -s`). See CONTRIBUTING.md.
+      run: grep -q "^Signed-off-by: " {1} || (echo "Missing Signed-off-by line. Commit with: git commit -s" && exit 1)
+
+pre-push:
+  commands:
+    tests:
+      run: just test
+    packs:
+      run: just packs

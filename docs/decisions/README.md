@@ -1,0 +1,19 @@
+<!--
+SPDX-FileCopyrightText: 2026 offbyonce
+SPDX-License-Identifier: MIT
+-->
+# Decision records
+
+One short file per architecture decision: what we chose, why, and what we gave up.
+Never rewrite an accepted record; add a new one that supersedes it.
+
+| # | Decision | Status |
+| --- | --- | --- |
+| [0001](0001-app-stack.md) | Tauri 2, a Rust core and a Svelte 5 interface | Accepted |
+| [0002](0002-pack-format.md) | Packs authored in YAML, read strictly, shipped as JSON | Accepted |
+| [0003](0003-licensing-and-contributions.md) | MIT code, CC BY-NC-SA 4.0 content, DCO sign-off | Accepted |
+| [0004](0004-sim-link.md) | Sim link behind a trait; pure-Rust SimConnect client first | Superseded by 0006 |
+| [0005](0005-updates-and-signing.md) | Notify-only updates via GitHub Releases; unsigned beta | Accepted |
+| [0006](0006-instruction-not-sim-control.md) | Teach procedures and systems; no connection to the simulator | Accepted |
+
+Template: Context, Decision, Consequences. Keep it under a page.

@@ -1,0 +1,35 @@
+# SPDX-FileCopyrightText: 2026 offbyonce
+# SPDX-License-Identifier: MIT
+
+[package]
+name = "chocktochock"
+description = "Chock to Chock desktop app: the thin Tauri shell around the checklist crates."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+publish.workspace = true
+
+[lib]
+# The `_lib` suffix avoids a name clash with the binary on Windows.
+name = "chocktochock_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build.workspace = true
+
+[dependencies]
+checklist-core = { workspace = true, features = ["ts"] }
+pack.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+tauri.workspace = true
+thiserror.workspace = true
+tracing.workspace = true
+tracing-subscriber.workspace = true
+ts-rs.workspace = true
+
+[lints]
+workspace = true

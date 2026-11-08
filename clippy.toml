@@ -1,0 +1,6 @@
+# SPDX-FileCopyrightText: 2026 offbyonce
+# SPDX-License-Identifier: MIT
+msrv = "1.90"
+allow-unwrap-in-tests = true
+allow-expect-in-tests = true
+allow-print-in-tests = true

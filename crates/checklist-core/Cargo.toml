@@ -1,0 +1,33 @@
+# SPDX-FileCopyrightText: 2026 offbyonce
+# SPDX-License-Identifier: MIT
+
+[package]
+name = "checklist-core"
+description = "Pure checklist domain: checklists, steps, sessions and sim conditions. No I/O."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+publish.workspace = true
+
+[features]
+# Adds JSON Schema derives; the pack crate turns this on to generate schemas.
+schema = ["dep:schemars"]
+# Adds TypeScript type export; the desktop app turns this on for its bindings.
+ts = ["dep:ts-rs"]
+
+[dependencies]
+serde.workspace = true
+schemars = { workspace = true, optional = true }
+thiserror.workspace = true
+ts-rs = { workspace = true, optional = true }
+
+[dev-dependencies]
+proptest.workspace = true
+rstest.workspace = true
+serde_json.workspace = true
+
+[lints]
+workspace = true
