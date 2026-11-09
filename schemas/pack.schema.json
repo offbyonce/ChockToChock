@@ -89,7 +89,7 @@
       "$ref": "#/$defs/PackKind"
     },
     "license": {
-      "description": "SPDX licence id for the pack content, e.g. `CC-BY-NC-SA-4.0`.",
+      "description": "SPDX license id for the pack content, e.g. `CC-BY-NC-SA-4.0`.",
       "type": "string"
     },
     "lights": {

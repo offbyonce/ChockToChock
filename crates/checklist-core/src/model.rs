@@ -32,6 +32,9 @@ impl std::fmt::Display for StepId {
     }
 }
 
+/// The highest route row a CDU field can refer to.
+pub const MAX_ROUTE_LEG: u32 = 30;
+
 data_types! {
     /// What kind of list this is.
     #[serde(rename_all = "snake_case")]
@@ -104,7 +107,7 @@ data_types! {
         V2,
         Vref,
         Cg,
-        StabTrim,
+        TakeoffTrim,
         Autobrake,
         Minimums,
         LandingAltitude,
@@ -118,6 +121,9 @@ data_types! {
         CostIndex,
         CruiseLevel,
         CruiseWind,
+        AssumedTemperature,
+        ThrustReductionAltitude,
+        AccelerationAltitude,
         IsaDeviation,
         TransitionAltitude,
         TransitionLevel,
@@ -136,20 +142,8 @@ data_types! {
         NavActiveDates,
         UtcTime,
         UtcDate,
-        /// How many pages the route legs need (calculated).
-        LegsPageCount,
-        /// How many route entries do not fit on the first page (calculated).
-        RouteLegsOverflow,
-        RouteLeg1Via,
-        RouteLeg1To,
-        RouteLeg2Via,
-        RouteLeg2To,
-        RouteLeg3Via,
-        RouteLeg3To,
-        RouteLeg4Via,
-        RouteLeg4To,
-        RouteLeg5Via,
-        RouteLeg5To,
+        /// One row of the route. Only valid in CDU text, with an `index` and a `part`.
+        RouteLeg,
     }
 
     /// One piece of a hint shown beside a step, e.g. `GND` and the ground frequency.

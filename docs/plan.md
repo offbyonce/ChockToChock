@@ -25,7 +25,7 @@ Interactive Checklist" (3.0), published free on flightsim.to.
 | Topic | Decision |
 | --- | --- |
 | Name and identifier | Chock to Chock, `com.offbyonce.chocktochock` |
-| Licences | Code MIT; pack content CC BY-NC-SA 4.0; REUSE per file (0003) |
+| Licenses | Code MIT; pack content CC BY-NC-SA 4.0; REUSE per file (0003) |
 | Contributions | Public repo `offbyonce/ChockToChock`; DCO sign-off, no CLA |
 | Stack | Tauri 2.12, Rust 1.99 (pinned), Svelte 5 + Vite + TypeScript 6 (0001) |
 | Pack format | Authored in YAML, read strictly with `serde-saphyr`, shipped as JSON (0002) |
@@ -57,7 +57,7 @@ Svelte interface  ──typed commands──▶  Tauri shell (thin)
 ## Packs
 
 - `pack.json` manifest: id, semver version, schema version, engine range, dependencies,
-  kind (aircraft or library), licence, attribution, list of content files.
+  kind (aircraft or library), license, attribution, list of content files.
 - Content in YAML, one file per checklist, flow or topic, with stable namespaced ids
   (`ifly-737-max8.preflight.irs-mode`).
 - Shared content via **library packs** (e.g. `lib.boeing-737-controls`, `lib.boeing-cdu`).
@@ -76,7 +76,7 @@ Svelte interface  ──typed commands──▶  Tauri shell (thin)
   all tests (nextest, doctests, Vitest), generated-file drift check, `pack check`,
   `cargo deny`, `pnpm audit`.
 - GitHub Actions runs `just ci` on Windows, macOS and Ubuntu 22.04 for every push and pull
-  request, plus a REUSE licence check. `main` is protected: pull requests with all four checks
+  request, plus a REUSE license check. `main` is protected: pull requests with all four checks
   passing; no force-push or deletion.
 - Git hooks (lefthook): formatting and lint before commit; DCO sign-off required; tests before
   push.
@@ -85,7 +85,7 @@ Svelte interface  ──typed commands──▶  Tauri shell (thin)
 
 | Phase | Work | Gate |
 | --- | --- | --- |
-| 0. Foundation (done) | Workspace, crates, shell, interface skeleton, CI, licences, docs | `just ci` green on Linux, Windows, macOS |
+| 0. Foundation (done) | Workspace, crates, shell, interface skeleton, CI, licenses, docs | `just ci` green on Linux, Windows, macOS |
 | 1. Engine and iFly pack | Extend the pack format; move all 3.0 content into `packs/ifly-737-max8` with no sources or links carried over | Every 3.0 step accounted for; `pack check` passes |
 | 2. Desktop app parity | Interface matching 3.0: phases, flows, panel states, SimBrief import, CDU walkthrough, timers, saved progress, 3.0 import, notify-only updates | A Windows beta that does everything 3.0 does |
 | 3. Training features | Memory items trainer, flow practice, systems explorer and step-to-system links, scenario drills, progress tracking | Each feature reviewed with beta pilots |

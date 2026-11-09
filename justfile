@@ -65,7 +65,7 @@ generated-check: schemas bindings
 packs:
     cargo run -q -p pack-cli -- check packs
 
-# Licences, advisories, banned crates and sources (Rust), then JS advisories.
+# Licenses, advisories, banned crates and sources (Rust), then JS advisories.
 deny:
     cargo deny check
     pnpm audit --prod

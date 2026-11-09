@@ -113,22 +113,36 @@ data_types! {
     #[derive(Copy, Eq)]
     #[serde(rename_all = "snake_case")]
     pub enum PanelItemKind {
-        GuardedSwitch,
         ToggleSwitch,
         Selector,
         PushButton,
         Light,
-        GreenLight,
-        BlueLight,
         Gauge,
         Readout,
         DisplayUnit,
+    }
+
+    /// The color of a panel light.
+    #[derive(Copy, Eq)]
+    #[serde(rename_all = "snake_case")]
+    pub enum LightColor {
+        Amber,
+        Red,
+        Green,
+        Blue,
+        White,
     }
 
     /// One item on a panel drawing. Positions are our own layout.
     pub struct PanelItem {
         pub kind: PanelItemKind,
         pub label: String,
+        /// Required on a light, and only valid on a light.
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        pub color: Option<LightColor>,
+        /// Has a protective cover. Only valid on a toggle switch or push button.
+        #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+        pub guarded: bool,
         pub x: f64,
         pub y: f64,
         #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -143,7 +157,7 @@ data_types! {
         pub height: Option<f64>,
     }
 
-    /// A labelled section of a panel.
+    /// A labeled section of a panel.
     pub struct PanelSection {
         pub id: String,
         pub title: String,
@@ -265,9 +279,23 @@ data_types! {
         pub style: CduStyle,
     }
 
+    /// Which half of a route row a field shows.
+    #[derive(Copy, Eq)]
+    #[serde(rename_all = "snake_case")]
+    pub enum RouteLegPart {
+        Via,
+        To,
+    }
+
     /// A live flight value. Calculations happen in the app, never in the pack.
     pub struct CduField {
         pub field: FillField,
+        /// For `route_leg`: the row, from 1 to `MAX_ROUTE_LEG`.
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        pub index: Option<u32>,
+        /// For `route_leg`: which half of the row.
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        pub part: Option<RouteLegPart>,
         #[serde(default, skip_serializing_if = "Option::is_none")]
         pub style: Option<CduStyle>,
         /// Literal text before the value, e.g. `RW`.
@@ -283,12 +311,41 @@ data_types! {
         pub empty_style: Option<CduStyle>,
     }
 
+    /// A count the app works out from the route.
+    #[derive(Copy, Eq)]
+    #[serde(rename_all = "snake_case")]
+    pub enum RouteLegCount {
+        /// How many pages the route legs and departure need, at least 1.
+        Pages,
+        /// How many route rows do not fit on the first page.
+        Overflow,
+    }
+
+    /// A number calculated from the route. The rows per page are the aircraft's, so they
+    /// come from the pack.
+    pub struct CduRouteCount {
+        pub route_legs: RouteLegCount,
+        pub per_page: u32,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        pub style: Option<CduStyle>,
+        /// Literal text before the number.
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        pub before: Option<String>,
+        /// Literal text after the number.
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        pub after: Option<String>,
+        /// Shown instead when the count is zero.
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        pub empty: Option<String>,
+    }
+
     /// Text or a live value, in any style. Mix several in a row to style them differently.
     #[serde(untagged)]
     pub enum CduInline {
         Text(String),
         Styled(CduStyled),
         Field(CduField),
+        RouteCount(CduRouteCount),
     }
 
     /// Shows one group of parts when flight values are known and another when they are not,
@@ -307,6 +364,7 @@ data_types! {
         Text(String),
         Styled(CduStyled),
         Field(CduField),
+        RouteCount(CduRouteCount),
         When(CduWhen),
     }
 }

@@ -53,7 +53,7 @@ mod tests {
     }
 
     #[test]
-    fn errors_serialise_as_kind_and_message() {
+    fn errors_serialize_as_kind_and_message() {
         let json = serde_json::to_string(&AppError::PackInvalid("bad".into())).unwrap();
         assert_eq!(json, r#"{"kind":"PackInvalid","message":"bad"}"#);
     }

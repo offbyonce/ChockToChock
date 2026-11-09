@@ -15,8 +15,9 @@ sections:
     width: 180.5
     height: 90
     items:
-      - kind: guarded_switch
+      - kind: toggle_switch
         label: BATTERY
+        guarded: true
         x: 20
         y: 30
         control: battery
@@ -24,6 +25,7 @@ sections:
         description: Connects the battery.
       - kind: light
         label: BATT LOW
+        color: amber
         x: 66.25
         y: 30
         control: battery

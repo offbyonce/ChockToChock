@@ -2,6 +2,6 @@
 import type { PanelItem } from "./PanelItem";
 
 /**
- * A labelled section of a panel.
+ * A labeled section of a panel.
  */
 export type PanelSection = { id: string, title: string, x: number, y: number, width: number, height: number, items: Array<PanelItem>, };

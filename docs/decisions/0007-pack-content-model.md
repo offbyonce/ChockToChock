@@ -70,7 +70,7 @@ Content stays in YAML, one file per list or topic, listed by kind in `pack.json`
 | `SOURCES` | Not carried over |
 | Position-based 3.0 ids | New stable ids plus `aliases.yaml` from old to new |
 
-Practice-question text waits for Phase 3. Systems content is also Phase 3 and must be labelled
+Practice-question text waits for Phase 3. Systems content is also Phase 3 and must be labeled
 real aircraft, simulator model, or both.
 
 **`show_if` is deliberately small.** A test is "option equals value" or "option is one of
@@ -140,7 +140,7 @@ phase part records where it was first published. A removed step's id is retired 
 - 3.0 wording was written alongside its old references. Dropping the list does not clear that
   wording, so imported text goes through the overlap check and starts as `draft`.
 - Removing `sources` breaks the old format; only the example pack is affected.
-- The model is larger, so the app can show 3.0's behaviour from data alone.
+- The model is larger, so the app can show 3.0's behavior from data alone.
 
 ## Changes needed (not yet made)
 **`CONTRIBUTING.md`:** replace "Every step needs a source" with `basis`, `status` and

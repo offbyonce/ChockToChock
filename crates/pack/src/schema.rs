@@ -32,7 +32,7 @@ pub fn all() -> Vec<(&'static str, String)> {
 
 fn render<T: schemars::JsonSchema>() -> String {
     let schema = schemars::schema_for!(T);
-    // Serialising a schema built by schemars cannot fail.
+    // Serializing a schema built by schemars cannot fail.
     let mut json = serde_json::to_string_pretty(&schema).unwrap_or_default();
     json.push('\n');
     json

@@ -50,15 +50,15 @@ Contributions are welcome, especially checklist fixes and new aircraft. Please r
 content has strict rules about sources. This is a hobby project, so responses are
 best-effort.
 
-## Licences
+## Licenses
 
 - **Code** is MIT ([LICENSE](LICENSE)).
 - **Checklist content** in `packs/` is
   [CC BY-NC-SA 4.0](LICENSES/CC-BY-NC-SA-4.0.txt): share and adapt it with credit, but
-  not commercially, and keep the same licence on anything you make from it.
+  not commercially, and keep the same license on anything you make from it.
   Want to use the checklists commercially? Contact the maintainer.
 
-Each file's licence is recorded with [REUSE](https://reuse.software).
+Each file's license is recorded with [REUSE](https://reuse.software).
 
 Aircraft and product names belong to their owners. Chock to Chock is not affiliated with
 Microsoft, iFly, PMDG, Navigraph/SimBrief or any aircraft developer, and ships none of

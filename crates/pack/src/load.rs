@@ -251,6 +251,17 @@ steps:
         let part = &file.walkthroughs[0].pages[0].action[0];
         assert!(matches!(part, CduPart::When(w) if w.show.len() == 2));
 
+        let route = doc(
+            "[{field: route_leg, index: 30, part: via}, {route_legs: overflow, per_page: 5, empty: none}]",
+        );
+        let file: CduFile = parse_yaml(&route, Path::new("c.yaml")).unwrap();
+        assert!(matches!(
+            file.walkthroughs[0].pages[0].action[1],
+            CduPart::RouteCount(_)
+        ));
+        let retired = doc("[{field: route_leg1_via}]");
+        assert!(parse_yaml::<CduFile>(&retired, Path::new("c.yaml")).is_err());
+
         let nested = doc("[{when_known: [runway], show: [{when_known: [sid], show: [x]}]}]");
         assert!(parse_yaml::<CduFile>(&nested, Path::new("c.yaml")).is_err());
     }

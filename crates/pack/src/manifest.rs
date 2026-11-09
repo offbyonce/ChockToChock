@@ -39,7 +39,7 @@ pub struct PackManifest {
     #[serde(default)]
     #[schemars(with = "BTreeMap<String, String>")]
     pub dependencies: BTreeMap<String, VersionReq>,
-    /// SPDX licence id for the pack content, e.g. `CC-BY-NC-SA-4.0`.
+    /// SPDX license id for the pack content, e.g. `CC-BY-NC-SA-4.0`.
     pub license: String,
     /// Credit and terms notes.
     #[serde(default)]

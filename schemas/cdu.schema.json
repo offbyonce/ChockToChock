@@ -54,6 +54,26 @@
         "field": {
           "$ref": "#/$defs/FillField"
         },
+        "index": {
+          "description": "For `route_leg`: the row, from 1 to `MAX_ROUTE_LEG`.",
+          "type": [
+            "integer",
+            "null"
+          ],
+          "format": "uint32",
+          "minimum": 0
+        },
+        "part": {
+          "description": "For `route_leg`: which half of the row.",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/RouteLegPart"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
         "style": {
           "anyOf": [
             {
@@ -81,6 +101,9 @@
         },
         {
           "$ref": "#/$defs/CduField"
+        },
+        {
+          "$ref": "#/$defs/CduRouteCount"
         }
       ]
     },
@@ -146,8 +169,61 @@
           "$ref": "#/$defs/CduField"
         },
         {
+          "$ref": "#/$defs/CduRouteCount"
+        },
+        {
           "$ref": "#/$defs/CduWhen"
         }
+      ]
+    },
+    "CduRouteCount": {
+      "description": "A number calculated from the route. The rows per page are the aircraft's, so they\ncome from the pack.",
+      "type": "object",
+      "properties": {
+        "after": {
+          "description": "Literal text after the number.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "before": {
+          "description": "Literal text before the number.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "empty": {
+          "description": "Shown instead when the count is zero.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "per_page": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0
+        },
+        "route_legs": {
+          "$ref": "#/$defs/RouteLegCount"
+        },
+        "style": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/CduStyle"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "route_legs",
+        "per_page"
       ]
     },
     "CduRow": {
@@ -348,7 +424,7 @@
             "v2",
             "vref",
             "cg",
-            "stab_trim",
+            "takeoff_trim",
             "autobrake",
             "minimums",
             "landing_altitude",
@@ -362,22 +438,15 @@
             "cost_index",
             "cruise_level",
             "cruise_wind",
+            "assumed_temperature",
+            "thrust_reduction_altitude",
+            "acceleration_altitude",
             "isa_deviation",
             "transition_altitude",
             "transition_level",
             "weight_unit",
             "utc_time",
-            "utc_date",
-            "route_leg1_via",
-            "route_leg1_to",
-            "route_leg2_via",
-            "route_leg2_to",
-            "route_leg3_via",
-            "route_leg3_to",
-            "route_leg4_via",
-            "route_leg4_to",
-            "route_leg5_via",
-            "route_leg5_to"
+            "utc_date"
           ]
         },
         {
@@ -416,15 +485,33 @@
           "const": "nav_active_dates"
         },
         {
-          "description": "How many pages the route legs need (calculated).",
+          "description": "One row of the route. Only valid in CDU text, with an `index` and a `part`.",
           "type": "string",
-          "const": "legs_page_count"
+          "const": "route_leg"
+        }
+      ]
+    },
+    "RouteLegCount": {
+      "description": "A count the app works out from the route.",
+      "oneOf": [
+        {
+          "description": "How many pages the route legs and departure need, at least 1.",
+          "type": "string",
+          "const": "pages"
         },
         {
-          "description": "How many route entries do not fit on the first page (calculated).",
+          "description": "How many route rows do not fit on the first page.",
           "type": "string",
-          "const": "route_legs_overflow"
+          "const": "overflow"
         }
+      ]
+    },
+    "RouteLegPart": {
+      "description": "Which half of a route row a field shows.",
+      "type": "string",
+      "enum": [
+        "via",
+        "to"
       ]
     }
   }

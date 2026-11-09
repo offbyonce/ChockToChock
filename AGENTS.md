@@ -48,7 +48,7 @@ aircraft. **The app never connects to the simulator** (decision 0006).
 - Sign off every commit: `git commit -s`. Conventional Commit messages (`feat:`, `fix:`,
   `docs:`, `test:`, `chore:`, `ci:`, `pack(<id>):`).
 - Run `just ci` before every push. If it fails, fix it; never skip hooks or disable checks.
-- Do not edit `.github/workflows/`, `deny.toml`, `lefthook.yml`, licences or the decision records
+- Do not edit `.github/workflows/`, `deny.toml`, `lefthook.yml`, licenses or the decision records
   without the maintainer's explicit go-ahead.
 - Never commit secrets, keys, tokens, personal names or email addresses, machine names or IP
   addresses. Test fixtures are invented and use generic names ("Pilot").
@@ -59,10 +59,12 @@ aircraft. **The app never connects to the simulator** (decision 0006).
   and wait for the maintainer to confirm before starting the next one. Do not queue up extra
   tasks before the current one works.
 - **Ask before deciding** anything that changes the data model, the pack format, a public
-  interface, licences or the plan. Write a short decision record for choices that matter.
+  interface, licenses or the plan. Write a short decision record for choices that matter.
 - **Say plainly when unsure,** and verify instead of guessing: run the command, read the file,
   check the docs.
 - Keep explanations short and in plain language; say which machine a command runs on.
+- American English everywhere: code identifiers, pack field names, error messages, docs and pack content (color, behavior, license as a noun, optimize, pressurization).
+  Exceptions keep their exact spelling: SPDX license IDs, file names such as `LICENSE` and `LICENSES/`, and anything quoted from outside sources.
 
 ## Repository map
 

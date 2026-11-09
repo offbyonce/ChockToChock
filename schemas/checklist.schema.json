@@ -108,7 +108,7 @@
             "v2",
             "vref",
             "cg",
-            "stab_trim",
+            "takeoff_trim",
             "autobrake",
             "minimums",
             "landing_altitude",
@@ -122,22 +122,15 @@
             "cost_index",
             "cruise_level",
             "cruise_wind",
+            "assumed_temperature",
+            "thrust_reduction_altitude",
+            "acceleration_altitude",
             "isa_deviation",
             "transition_altitude",
             "transition_level",
             "weight_unit",
             "utc_time",
-            "utc_date",
-            "route_leg1_via",
-            "route_leg1_to",
-            "route_leg2_via",
-            "route_leg2_to",
-            "route_leg3_via",
-            "route_leg3_to",
-            "route_leg4_via",
-            "route_leg4_to",
-            "route_leg5_via",
-            "route_leg5_to"
+            "utc_date"
           ]
         },
         {
@@ -176,14 +169,9 @@
           "const": "nav_active_dates"
         },
         {
-          "description": "How many pages the route legs need (calculated).",
+          "description": "One row of the route. Only valid in CDU text, with an `index` and a `part`.",
           "type": "string",
-          "const": "legs_page_count"
-        },
-        {
-          "description": "How many route entries do not fit on the first page (calculated).",
-          "type": "string",
-          "const": "route_legs_overflow"
+          "const": "route_leg"
         }
       ]
     },

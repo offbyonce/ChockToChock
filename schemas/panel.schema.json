@@ -34,10 +34,32 @@
     "sections"
   ],
   "$defs": {
+    "LightColor": {
+      "description": "The color of a panel light.",
+      "type": "string",
+      "enum": [
+        "amber",
+        "red",
+        "green",
+        "blue",
+        "white"
+      ]
+    },
     "PanelItem": {
       "description": "One item on a panel drawing. Positions are our own layout.",
       "type": "object",
       "properties": {
+        "color": {
+          "description": "Required on a light, and only valid on a light.",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/LightColor"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
         "control": {
           "type": [
             "string",
@@ -46,6 +68,10 @@
         },
         "description": {
           "type": "string"
+        },
+        "guarded": {
+          "description": "Has a protective cover. Only valid on a toggle switch or push button.",
+          "type": "boolean"
         },
         "height": {
           "type": [
@@ -96,20 +122,17 @@
       "description": "What a panel item is, which decides how it is drawn.",
       "type": "string",
       "enum": [
-        "guarded_switch",
         "toggle_switch",
         "selector",
         "push_button",
         "light",
-        "green_light",
-        "blue_light",
         "gauge",
         "readout",
         "display_unit"
       ]
     },
     "PanelSection": {
-      "description": "A labelled section of a panel.",
+      "description": "A labeled section of a panel.",
       "type": "object",
       "properties": {
         "height": {

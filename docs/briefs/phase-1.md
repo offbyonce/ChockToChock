@@ -51,7 +51,7 @@ not `data.js` on its own.
    the resolved 3.0 data, and the CDU walkthrough from `template.html`, from a path given on the
    command line and writes YAML into `packs/ifly-737-max8/`. It carries over no sources or links.
    Every list gets basis `prior-release`, every step `draft`, and the 10 "confirm" light notes
-   `draft`.
+   `draft`. It normalizes imported 3.0 text to American spelling.
 5. **Build the text-overlap check.** `pack overlap` and `just overlap` as designed in decision
    0007, with tests. Add the `overlap` pre-commit hook to `lefthook.yml` in this step, once
    `just overlap` exists.
@@ -60,7 +60,8 @@ not `data.js` on its own.
    rewritten, which the report must list). Run the text-overlap check (0007) over the imported
    text before it is first committed.
 7. **Parity report.** A table of every 3.0 step: new id, status (moved, merged, dropped), and
-   reason for anything not moved one-for-one. Snapshot tests on the flattened pack.
+   reason for anything not moved one-for-one, plus a list of the words the converter changed
+   to American spelling. Snapshot tests on the flattened pack.
 8. **Hand back.** Branch ready for review, with the parity report and the lists still at basis
    `prior-release`.
 

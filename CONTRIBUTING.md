@@ -11,7 +11,7 @@ a sign-off, passing checks, and (for checklist content) following the content ru
 
 By signing off, you certify the
 [Developer Certificate of Origin](https://developercertificate.org/): you wrote the change
-or have the right to submit it, under this project's licences. Add the line with:
+or have the right to submit it, under this project's licenses. Add the line with:
 
 ```sh
 git commit -s
@@ -31,6 +31,8 @@ checks dependencies. The git hooks (installed by `pnpm install`) run the quick p
 - Every bug fix comes with a test that would have caught it.
 - Keep logic in `crates/`. The Tauri shell and the interface stay thin.
 - Never put an aircraft name in engine code. Aircraft differences belong in pack data.
+- American English everywhere: code identifiers, pack field names, error messages, docs and pack content (color, behavior, license as a noun, optimize, pressurization).
+  Exceptions keep their exact spelling: SPDX license IDs, file names such as `LICENSE` and `LICENSES/`, and anything quoted from outside sources.
 
 ## 3. Checklist content rules
 
