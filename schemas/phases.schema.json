@@ -29,6 +29,26 @@
     "phases"
   ],
   "$defs": {
+    "IntroParagraph": {
+      "description": "One paragraph of a phase's introduction.",
+      "type": "object",
+      "properties": {
+        "heading": {
+          "description": "A short lead-in shown before the text, e.g. \"When to use them\".",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "text": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "text"
+      ]
+    },
     "OptionTest": {
       "description": "One test against a pilot-chosen option. The options are declared by the pack.",
       "anyOf": [
@@ -75,6 +95,13 @@
       "properties": {
         "id": {
           "type": "string"
+        },
+        "intro": {
+          "description": "Shown at the top of the phase.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/IntroParagraph"
+          }
         },
         "lists": {
           "description": "Ids of the lists in this phase.",

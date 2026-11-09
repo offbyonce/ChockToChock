@@ -31,6 +31,14 @@ data_types! {
         pub phases: Vec<StagePhase>,
     }
 
+    /// One paragraph of a phase's introduction.
+    pub struct IntroParagraph {
+        /// A short lead-in shown before the text, e.g. "When to use them".
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        pub heading: Option<String>,
+        pub text: String,
+    }
+
     /// One part of the flight, holding its lists in order.
     pub struct Phase {
         pub id: String,
@@ -38,6 +46,9 @@ data_types! {
         /// Reference material, outside the normal flow of a flight.
         #[serde(default, skip_serializing_if = "std::ops::Not::not")]
         pub reference: bool,
+        /// Shown at the top of the phase.
+        #[serde(default, skip_serializing_if = "Vec::is_empty")]
+        pub intro: Vec<IntroParagraph>,
         /// Ids of the lists in this phase.
         pub lists: Vec<String>,
     }
@@ -69,10 +80,40 @@ data_types! {
         pub function: String,
     }
 
+    /// A caption on the cockpit overview map.
+    pub struct OverviewCaption {
+        pub text: String,
+        pub x: f64,
+        pub y: f64,
+    }
+
+    /// A rectangle on the cockpit overview map. A zone can have several.
+    pub struct OverviewArea {
+        pub zone: String,
+        pub x: f64,
+        pub y: f64,
+        pub width: f64,
+        pub height: f64,
+        /// Overrides the zone's short title on the map.
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        pub label: Option<String>,
+    }
+
+    /// A schematic of the whole cockpit, in our own layout.
+    pub struct Overview {
+        pub width: f64,
+        pub height: f64,
+        #[serde(default, skip_serializing_if = "Vec::is_empty")]
+        pub captions: Vec<OverviewCaption>,
+        pub areas: Vec<OverviewArea>,
+    }
+
     /// `controls.yaml`.
     pub struct ControlsFile {
         pub zones: Vec<Zone>,
         pub controls: Vec<Control>,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        pub overview: Option<Overview>,
     }
 
     /// Shared "how to do it" instructions.
@@ -145,8 +186,9 @@ data_types! {
         pub guarded: bool,
         pub x: f64,
         pub y: f64,
-        #[serde(default, skip_serializing_if = "Option::is_none")]
-        pub control: Option<String>,
+        /// Ids of the controls this item belongs to.
+        #[serde(default, skip_serializing_if = "Vec::is_empty")]
+        pub controls: Vec<String>,
         /// The positions it can be set to, as text.
         #[serde(default, skip_serializing_if = "Option::is_none")]
         pub positions: Option<String>,
@@ -224,6 +266,9 @@ data_types! {
         pub id: String,
         pub lead: String,
         pub rest: String,
+        /// What to cover under this line.
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        pub detail: Option<String>,
     }
 
     /// A crew briefing, shown in one phase.

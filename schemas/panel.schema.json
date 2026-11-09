@@ -60,11 +60,12 @@
             }
           ]
         },
-        "control": {
-          "type": [
-            "string",
-            "null"
-          ]
+        "controls": {
+          "description": "Ids of the controls this item belongs to.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         },
         "description": {
           "type": "string"

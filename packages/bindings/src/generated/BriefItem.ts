@@ -7,4 +7,8 @@ export type BriefItem = {
 /**
  * Unique in the pack. Saved progress uses it, so it never changes once published.
  */
-id: string, lead: string, rest: string, };
+id: string, lead: string, rest: string, 
+/**
+ * What to cover under this line.
+ */
+detail?: string | null, };

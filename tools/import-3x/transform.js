@@ -188,7 +188,13 @@ function buildLists(ctx) {
         }),
       );
     });
-    return clean({ id: phase.id, title: phase.t, reference: phase.ref ? true : undefined, lists: listIds });
+    return clean({
+      id: phase.id,
+      title: phase.t,
+      reference: phase.ref ? true : undefined,
+      intro: ctx.input.intros[phase.id],
+      lists: listIds,
+    });
   });
   return { lists, phases };
 }
@@ -217,7 +223,16 @@ function buildPhasesFile(ctx, phases) {
   };
 }
 
-function buildControls(data) {
+function buildOverview({ width, height, captions, rows }) {
+  return {
+    width,
+    height,
+    captions: captions.map(([text, x, y]) => ({ text, x, y })),
+    areas: rows.map(([zone, x, y, w, h, label]) => clean({ zone, x, y, width: w, height: h, label })),
+  };
+}
+
+function buildControls(data, overview) {
   return {
     zones: Object.entries(data.ZONES).map(([id, [area, title, short]]) => ({
       id,
@@ -228,6 +243,7 @@ function buildControls(data) {
     controls: Object.entries(data.C).map(([id, [name, zone, location, fn]]) =>
       clean({ id, name, zone: data.ZONES[zone] ? zone : undefined, location, function: fn }),
     ),
+    overview: buildOverview(overview),
   };
 }
 
@@ -266,8 +282,7 @@ function buildPanels(ctx) {
       height,
       items: items.map((item, i) => {
         const [code, label, ix, iy, controlField, positions, description, w, h] = item;
-        const [control, ...others] = controlField ? String(controlField).split("|") : [];
-        if (others.length > 0) ctx.extraControls.push(`${key}/${id}/${label}: also ${others.join(", ")}`);
+        const controls = controlField ? String(controlField).split("|") : [];
         return clean({
           kind: PANEL_KINDS[code],
           label,
@@ -275,7 +290,7 @@ function buildPanels(ctx) {
           guarded: code === "g" ? true : undefined,
           x: ix,
           y: iy,
-          control: control || undefined,
+          controls,
           positions: positions || undefined,
           description: description || label,
           width: w,
@@ -326,22 +341,16 @@ function buildBriefings(ctx) {
     for (const index of indexes) phaseOf.set(index, phase);
   }
   const taken = new Set();
-  let details = 0;
   const briefings = data.BRIEFS.map((brief, b) => {
     const id = uniqueIn(taken, slug(normalizeSpelling(brief.t)));
     const inBrief = new Set();
     const items = brief.b.map(([lead, rest, detail], i) => {
-      if (detail) details++;
       const itemId = `${id}.${uniqueIn(inBrief, slug(normalizeSpelling(`${lead}${rest}`), 30))}`;
       ctx.aliases.push({ kind: "briefing_item", from: `b-${b}-${i}`, to: itemId });
-      return { id: itemId, lead, rest };
+      return clean({ id: itemId, lead, rest, detail });
     });
     return { id, title: brief.t, mnemonic: brief.m, phase: phaseOf.get(b), items };
   });
-  if (details > 0)
-    ctx.notConverted.push(
-      `${details} briefing items have a third "detail" text; the format has no field for it`,
-    );
   return { briefings };
 }
 
@@ -410,6 +419,11 @@ function counts(input, files) {
   const packPanelItems = files.panels
     .flatMap(([, panel]) => panel.sections)
     .reduce((a, section) => a + section.items.length, 0);
+  const sourcePanelItems = Object.values(data.PANELS).flatMap((panel) => panel.subs.flatMap((sub) => sub[6]));
+  const packPanelItemList = files.panels
+    .flatMap(([, panel]) => panel.sections)
+    .flatMap((section) => section.items);
+  const packBriefItems = files.briefings.briefings.flatMap((b) => b.items);
   const kindCount = (kind) => packLists.filter((list) => list.kind === kind).length;
   const row = (source, pack) => ({ source, pack });
   return {
@@ -435,6 +449,22 @@ function counts(input, files) {
     panel_items: row(panelItems, packPanelItems),
     light_notes: row(Object.keys(data.LIGHTS21).length, files.lights.lights.length),
     fault_causes: row(Object.keys(data.CAUSE21).length, files.faults.faults.length),
+    overview_rows: row(input.overview.rows.length, files.controls.overview.areas.length),
+    overview_captions: row(input.overview.captions.length, files.controls.overview.captions.length),
+    phase_intros: row(Object.keys(input.intros).length, files.phases.phases.filter((p) => p.intro).length),
+    briefing_items: row(data.BRIEFS.flatMap((b) => b.b).length, packBriefItems.length),
+    briefing_details: row(
+      data.BRIEFS.flatMap((b) => b.b).filter((item) => item[2]).length,
+      packBriefItems.filter((item) => item.detail).length,
+    ),
+    panel_items_with_several_controls: row(
+      sourcePanelItems.filter((item) => String(item[4] ?? "").includes("|")).length,
+      packPanelItemList.filter((item) => (item.controls ?? []).length > 1).length,
+    ),
+    panel_control_links: row(
+      sourcePanelItems.reduce((n, item) => n + (item[4] ? String(item[4]).split("|").length : 0), 0),
+      packPanelItemList.reduce((n, item) => n + (item.controls ?? []).length, 0),
+    ),
     glossary_terms: row(Object.keys(data.GLOSS).length, files.glossary.terms.length),
     briefings: row(data.BRIEFS.length, files.briefings.briefings.length),
     start_states: row(data.PSTATES.length, files.startStates.states.length),
@@ -484,7 +514,6 @@ export function transform(input) {
     listIds: new Map(),
     memoryLists: new Map(),
     idMap: buildIds(data),
-    extraControls: [],
   };
   const { lists, phases } = buildLists(ctx);
   const cduGaps = [];
@@ -501,7 +530,7 @@ export function transform(input) {
   const files = {
     lists: lists.map((list) => [`lists/${list.id}.yaml`, list]),
     phases: buildPhasesFile(ctx, phases),
-    controls: buildControls(data),
+    controls: buildControls(data, input.overview),
     notes: buildNotes(data),
     panels: buildPanels(ctx).map((panel) => [`panels/${panel.id}.yaml`, panel]),
     lights: buildLights(data),
@@ -532,7 +561,6 @@ export function transform(input) {
       counts: counts(input, normalized),
       spelling: log.summary(),
       problems: [...ctx.gaps, ...cduGaps, ...cduDifferences, ...leaks.map((m) => `CDU marker leaked: ${m}`)],
-      extraControls: ctx.extraControls,
       dropped: ctx.dropped,
       notConverted: ctx.notConverted,
     },

@@ -13,7 +13,11 @@ color?: LightColor | null,
 /**
  * Has a protective cover. Only valid on a toggle switch or push button.
  */
-guarded?: boolean, x: number, y: number, control?: string | null, 
+guarded?: boolean, x: number, y: number, 
+/**
+ * Ids of the controls this item belongs to.
+ */
+controls?: Array<string>, 
 /**
  * The positions it can be set to, as text.
  */

@@ -556,6 +556,16 @@ fn check_panels_and_lights(pack: &Pack, idx: &Index, issues: &mut Vec<Issue>) {
             }
         }
     }
+    if let Some(overview) = c.controls.as_ref().and_then(|f| f.overview.as_ref()) {
+        for area in &overview.areas {
+            if !idx.zones.contains(area.zone.as_str()) {
+                issues.push(error(
+                    "overview",
+                    format!("refers to unknown zone `{}`", area.zone),
+                ));
+            }
+        }
+    }
     unique("panel", c.panels.iter().map(|p| p.id.as_str()), issues);
     let mut labels: BTreeMap<(&str, &str, &str), usize> = BTreeMap::new();
     for panel in &c.panels {
@@ -569,7 +579,7 @@ fn check_panels_and_lights(pack: &Pack, idx: &Index, issues: &mut Vec<Issue>) {
                 *labels
                     .entry((&panel.id, &section.id, &item.label))
                     .or_default() += 1;
-                if let Some(control) = &item.control {
+                for control in &item.controls {
                     idx.require_control(&section.id, control, issues);
                 }
                 check_panel_item(&section.id, item, issues);
@@ -892,9 +902,9 @@ mod tests {
     use checklist_core::{
         Alias, AliasKind, AliasesFile, BriefItem, Briefing, BriefingsFile, CduField, CduFile,
         CduPage, CduScreen, CduWalkthrough, CduWhen, Control, ControlsFile, HintPart, LightColor,
-        LightNote, LightsFile, ListKind, Panel, PanelItem, PanelItemKind, PanelSection, Phase,
-        PhasesFile, RouteLegCount, RouteLegPart, Stage, StagePhase, StartState, StartStatesFile,
-        Status, UserOption, Zone,
+        LightNote, LightsFile, ListKind, Overview, OverviewArea, Panel, PanelItem, PanelItemKind,
+        PanelSection, Phase, PhasesFile, RouteLegCount, RouteLegPart, Stage, StagePhase,
+        StartState, StartStatesFile, Status, UserOption, Zone,
     };
     use proptest::prelude::*;
 
@@ -955,6 +965,7 @@ mod tests {
                 id: "preflight".into(),
                 title: "Preflight".into(),
                 reference: false,
+                intro: vec![],
                 lists: vec!["preflight".into()],
             }],
         }
@@ -1305,6 +1316,7 @@ mod tests {
                 location: "Overhead".into(),
                 function: "Connects the battery".into(),
             }],
+            overview: None,
         });
         p.content.panels = vec![Panel {
             id: "oh".into(),
@@ -1325,7 +1337,7 @@ mod tests {
                     guarded: false,
                     x: 1.5,
                     y: 2.0,
-                    control: Some("bat".into()),
+                    controls: vec!["bat".into()],
                     positions: None,
                     description: "Low".into(),
                     width: None,
@@ -1367,9 +1379,35 @@ mod tests {
     }
 
     #[test]
+    fn overview_areas_must_name_known_zones() {
+        let mut p = alias_pack(vec![]);
+        let area = |zone: &str| OverviewArea {
+            zone: zone.into(),
+            x: 0.0,
+            y: 0.0,
+            width: 10.0,
+            height: 10.0,
+            label: None,
+        };
+        if let Some(file) = &mut p.content.controls {
+            file.overview = Some(Overview {
+                width: 100.0,
+                height: 100.0,
+                captions: vec![],
+                areas: vec![area("overhead"), area("overhead"), area("ghost")],
+            });
+        }
+        let joined = messages(&p);
+        assert!(joined.contains("unknown zone `ghost`"), "{joined}");
+        assert!(!joined.contains("`overhead`"), "{joined}");
+    }
+
+    #[test]
     fn panel_items_must_name_known_controls() {
         let mut p = panel_pack();
-        p.content.panels[0].sections[0].items[0].control = Some("nope".into());
+        p.content.panels[0].sections[0].items[0]
+            .controls
+            .push("nope".into());
         assert_flags(&p, "unknown control");
     }
 
@@ -1564,6 +1602,7 @@ mod tests {
                 short_title: "OH".into(),
             }],
             controls: vec![],
+            overview: None,
         });
         p.content.briefings = Some(BriefingsFile {
             briefings: vec![Briefing {
@@ -1575,6 +1614,7 @@ mod tests {
                     id: "departure.runway".into(),
                     lead: "R".into(),
                     rest: "UNWAY".into(),
+                    detail: None,
                 }],
             }],
         });

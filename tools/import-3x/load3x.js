@@ -278,6 +278,43 @@ function loadBriefingMap(template) {
   return JSON.parse(vm.runInContext(`${text}\nJSON.stringify(BMAP)`, context));
 }
 
+function loadOverview(template) {
+  const from = template.indexOf("const R=[");
+  const to = template.indexOf("];", from);
+  if (from < 0 || to < 0) throw new Error("3.0 template: cannot find the overview map");
+  const context = {};
+  vm.createContext(context);
+  const rows = JSON.parse(vm.runInContext(`${template.slice(from, to + 2)}\nJSON.stringify(R)`, context));
+  const map = template.indexOf("function mapSVG(");
+  const captionCode = between(template.slice(map), "const caps=", ";");
+  const captions = JSON.parse(
+    vm.runInContext(`${captionCode.replace("const ", "var ")}\nJSON.stringify(caps)`, context),
+  );
+  const size = /viewBox="0 0 (\d+) (\d+)"/.exec(template.slice(map));
+  if (!size) throw new Error("3.0 template: cannot find the overview map size");
+  return { rows, captions, width: Number(size[1]), height: Number(size[2]) };
+}
+
+/** Plain paragraphs from 3.0's small amount of intro HTML. */
+export function parseIntro(html, problems, name) {
+  const paragraphs = [...html.matchAll(/<p(?: class="lead")?>(.*?)<\/p>/g)].map((match) => {
+    const lead = /^<b>(.*?):<\/b>\s*(.*)$/.exec(match[1]);
+    const paragraph = lead ? { heading: lead[1], text: lead[2] } : { text: match[1] };
+    if (/[<>]/.test(paragraph.text)) problems.push(`intro for ${name}: unexpected markup kept out`);
+    return paragraph;
+  });
+  if (paragraphs.length === 0) problems.push(`intro for ${name}: no paragraphs found`);
+  return paragraphs;
+}
+
+function loadIntros(template, problems) {
+  const code = between(template, "refView(PH[cur],{", "}[cur])").slice("refView(PH[cur],".length);
+  const context = {};
+  vm.createContext(context);
+  const raw = JSON.parse(vm.runInContext(`JSON.stringify(${code}})`, context));
+  return Object.fromEntries(Object.entries(raw).map(([id, html]) => [id, parseIntro(html, problems, id)]));
+}
+
 /** Everything the converter needs from a 3.0 `src` folder. */
 export function load3x(src) {
   const data = loadData(src);
@@ -286,6 +323,8 @@ export function load3x(src) {
   const behavior = loadStepBehavior(template, data, set);
   return {
     data,
+    overview: loadOverview(template),
+    intros: loadIntros(template, behavior.problems),
     defaults: loadDefaults(template),
     briefingPhases: loadBriefingMap(template),
     colors: loadColors(template, data),

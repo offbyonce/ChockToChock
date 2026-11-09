@@ -71,3 +71,18 @@ not `data.js` on its own.
 - Systems models content (designed for in step 2, written in Phase 3).
 - Library packs (`lib.boeing-*`) unless the inventory shows a clear split; note candidates
   instead.
+
+## Notes for later phases
+
+**Phase 2:**
+
+- The LEGS page of the CDU walkthrough must render correctly with no departure set, with a test.
+  The converted page assumes one is set, so without it the rows would sit one line off.
+- Add CDU comparison tests for partly filled flight data. The converter's comparison covers only
+  no flight data and full flight data.
+- The guided tour is app text and belongs here.
+
+**Phase 3:**
+
+- Aliases for practice scores saved per cockpit area, along with the practice text. One area
+  covers several zones, so they need their own mapping.

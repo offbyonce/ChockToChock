@@ -10,6 +10,16 @@
         "$ref": "#/$defs/Control"
       }
     },
+    "overview": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Overview"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
     "zones": {
       "type": "array",
       "items": {
@@ -53,6 +63,101 @@
         "name",
         "location",
         "function"
+      ]
+    },
+    "Overview": {
+      "description": "A schematic of the whole cockpit, in our own layout.",
+      "type": "object",
+      "properties": {
+        "areas": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/OverviewArea"
+          }
+        },
+        "captions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/OverviewCaption"
+          }
+        },
+        "height": {
+          "type": "number",
+          "format": "double"
+        },
+        "width": {
+          "type": "number",
+          "format": "double"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "width",
+        "height",
+        "areas"
+      ]
+    },
+    "OverviewArea": {
+      "description": "A rectangle on the cockpit overview map. A zone can have several.",
+      "type": "object",
+      "properties": {
+        "height": {
+          "type": "number",
+          "format": "double"
+        },
+        "label": {
+          "description": "Overrides the zone's short title on the map.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "width": {
+          "type": "number",
+          "format": "double"
+        },
+        "x": {
+          "type": "number",
+          "format": "double"
+        },
+        "y": {
+          "type": "number",
+          "format": "double"
+        },
+        "zone": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "zone",
+        "x",
+        "y",
+        "width",
+        "height"
+      ]
+    },
+    "OverviewCaption": {
+      "description": "A caption on the cockpit overview map.",
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string"
+        },
+        "x": {
+          "type": "number",
+          "format": "double"
+        },
+        "y": {
+          "type": "number",
+          "format": "double"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "text",
+        "x",
+        "y"
       ]
     },
     "Zone": {

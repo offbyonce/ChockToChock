@@ -20,7 +20,7 @@ sections:
         guarded: true
         x: 20
         y: 30
-        control: battery
+        controls: [battery]
         positions: 'OFF, ON'
         description: Connects the battery.
       - kind: light
@@ -28,7 +28,7 @@ sections:
         color: amber
         x: 66.25
         y: 30
-        control: battery
+        controls: [battery]
         description: The battery is running low.
       - kind: display_unit
         label: VOLTS

@@ -28,4 +28,8 @@ phases:
   - id: memory
     title: Memory items
     reference: true
+    intro:
+      - text: Steps to know by heart.
+      - heading: When to use them
+        text: As soon as you recognize the event.
     lists: [smoke]

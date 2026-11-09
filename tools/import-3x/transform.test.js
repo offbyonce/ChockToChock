@@ -8,7 +8,7 @@ import path from "node:path";
 import { test } from "node:test";
 
 import { writePack } from "./convert.js";
-import { load3x } from "./load3x.js";
+import { load3x, parseIntro } from "./load3x.js";
 import { slug, transform } from "./transform.js";
 
 // Invented data with the shape of the 3.0 structures. Not real procedures.
@@ -174,6 +174,16 @@ function page(rows) {
 function input() {
   return {
     data: data(),
+    overview: {
+      width: 200,
+      height: 100,
+      captions: [["TOP", 1, 2]],
+      rows: [
+        ["z1", 1, 2, 3, 4, "Label"],
+        ["z1", 5, 6, 7, 8],
+      ],
+    },
+    intros: { memory: [{ heading: "When", text: "Soon." }, { text: "Then more." }] },
     defaults: { power: "gpu", start: "cold", appr: "ils" },
     briefingPhases: { "cold-dark": [0] },
     colors: { "oh.0.1": "amber", "oh.0.2": "green" },
@@ -283,14 +293,15 @@ test("controls, panels and lights map across", () => {
   assert.equal(guard.kind, "toggle_switch");
   assert.equal(guard.guarded, true);
   assert.equal(amber.color, "amber");
-  assert.equal(amber.control, "c1");
+  assert.deepEqual(amber.controls, ["c1", "c2"]);
   assert.equal(green.kind, "light");
   assert.equal(green.color, "green");
   assert.equal(screen.kind, "display_unit");
   assert.equal(screen.width, 20);
   assert.equal(r.files.lights.lights[0].status, "draft");
   assert.equal(r.files.lights.lights[1].status, undefined);
-  assert.deepEqual(r.report.extraControls, ["oh/sec/AMBER: also c2"]);
+  assert.equal(guard.controls.length, 1);
+  assert.equal(green.controls, undefined);
 });
 
 test("fault causes match by title, and ones with no step are reported", () => {
@@ -300,11 +311,38 @@ test("fault causes match by title, and ones with no step are reported", () => {
   assert.equal(r.report.dropped.length, 1);
 });
 
-test("a briefing's extra detail is reported, not silently lost", () => {
+test("a briefing item's detail carries over", () => {
   const r = result();
-  assert.equal(r.files.briefings.briefings[0].phase, "cold-dark");
-  assert.deepEqual(Object.keys(r.files.briefings.briefings[0].items[1]), ["id", "lead", "rest"]);
-  assert.ok(r.report.notConverted.some((text) => text.includes("1 briefing items")));
+  const { items, phase } = r.files.briefings.briefings[0];
+  assert.equal(phase, "cold-dark");
+  assert.equal(items[0].detail, undefined);
+  assert.equal(items[1].detail, "A detail");
+  assert.equal(r.report.counts.briefing_details.pack, 1);
+});
+
+test("the cockpit overview map carries over, keeping every rectangle", () => {
+  const { overview } = result().files.controls;
+  assert.equal(overview.width, 200);
+  assert.deepEqual(overview.captions, [{ text: "TOP", x: 1, y: 2 }]);
+  assert.deepEqual(overview.areas, [
+    { zone: "z1", x: 1, y: 2, width: 3, height: 4, label: "Label" },
+    { zone: "z1", x: 5, y: 6, width: 7, height: 8 },
+  ]);
+});
+
+test("phase intros carry over only where they exist", () => {
+  const { phases } = result().files.phases;
+  assert.equal(phases[0].intro, undefined);
+  assert.deepEqual(phases[3].intro, [{ heading: "When", text: "Soon." }, { text: "Then more." }]);
+});
+
+test("intro HTML becomes plain paragraphs", () => {
+  const problems = [];
+  const html = '<div class="intro"><p><b>When:</b> Soon.</p><p class="lead">Plain.</p></div>';
+  assert.deepEqual(parseIntro(html, problems, "x"), [{ heading: "When", text: "Soon." }, { text: "Plain." }]);
+  assert.deepEqual(problems, []);
+  parseIntro("<p>A <i>tag</i></p>", problems, "x");
+  assert.equal(problems.length, 1);
 });
 
 test("aliases cover every kind of saved id", () => {
@@ -361,6 +399,9 @@ function fakeSource() {
   fs.writeFileSync(
     path.join(dir, "template.html"),
     [
+      "const R=[\n['z1',1,2,3,4,'Label'],['z1',5,6,7,8]\n];",
+      "function mapSVG(on){const caps=[['TOP',1,2]];return `<svg viewBox=\"0 0 200 100\">`}",
+      "m.innerHTML=refView(PH[cur],{memory:'<p class=\"lead\">Intro.</p>'}[cur]);",
       "const blank=()=>({power:'gpu',appr:'ils',start:'cold'});",
       "const BMAP={'cold-dark':[0]};",
       "function autoVal(it,lab){return lab==='V'?S.set.v2:''}",
@@ -389,6 +430,8 @@ test("a source folder loads in build order and writes a pack", () => {
     assert.deepEqual(result3x.opens, ["cold-dark-0-0"]);
     const converted = transform(result3x);
     assert.deepEqual(converted.report.problems, []);
+    assert.equal(converted.files.controls.overview.areas.length, 2);
+    assert.deepEqual(converted.files.phases.phases[3].intro, [{ text: "Intro." }]);
     assert.deepEqual(converted.files.cdu.walkthroughs[0].pages[0].screen.rows[0].left, [
       { field: "runway", style: "user", empty: "---" },
     ]);
