@@ -237,6 +237,25 @@ steps:
     }
 
     #[test]
+    fn cdu_text_mixes_styles_and_groups_do_not_nest() {
+        use checklist_core::{CduFile, CduPart};
+        let doc = |action: &str| {
+            format!(
+                "walkthroughs:\n  - id: w\n    title: W\n    pages:\n      - page: P\n        title: T\n        action: {action}\n        check: []\n        screen: {{title: [], page: [], rows: []}}\n"
+            )
+        };
+        let good = doc(
+            "[{when_known: [runway], show: ['<SEL> ', {field: runway, style: user}], otherwise: [{text: '(none)', style: data}]}]",
+        );
+        let file: CduFile = parse_yaml(&good, Path::new("c.yaml")).unwrap();
+        let part = &file.walkthroughs[0].pages[0].action[0];
+        assert!(matches!(part, CduPart::When(w) if w.show.len() == 2));
+
+        let nested = doc("[{when_known: [runway], show: [{when_known: [sid], show: [x]}]}]");
+        assert!(parse_yaml::<CduFile>(&nested, Path::new("c.yaml")).is_err());
+    }
+
+    #[test]
     fn example_pack_uses_every_content_file_and_passes() {
         let dir = Path::new(env!("CARGO_MANIFEST_DIR")).join("../../packs/example-trainer");
         let pack = load_pack_dir(&dir).unwrap();

@@ -54,13 +54,6 @@
         "field": {
           "$ref": "#/$defs/FillField"
         },
-        "if_set": {
-          "description": "Shown instead of the value when it is known.",
-          "type": [
-            "string",
-            "null"
-          ]
-        },
         "style": {
           "anyOf": [
             {
@@ -75,6 +68,20 @@
       "additionalProperties": false,
       "required": [
         "field"
+      ]
+    },
+    "CduInline": {
+      "description": "Text or a live value, in any style. Mix several in a row to style them differently.",
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "$ref": "#/$defs/CduStyled"
+        },
+        {
+          "$ref": "#/$defs/CduField"
+        }
       ]
     },
     "CduPage": {
@@ -137,6 +144,9 @@
         },
         {
           "$ref": "#/$defs/CduField"
+        },
+        {
+          "$ref": "#/$defs/CduWhen"
         }
       ]
     },
@@ -280,6 +290,36 @@
         "id",
         "title",
         "pages"
+      ]
+    },
+    "CduWhen": {
+      "description": "Shows one group of parts when flight values are known and another when they are not,\ne.g. `<SEL>` beside a runway, or a placeholder until there is a runway. Does not nest.",
+      "type": "object",
+      "properties": {
+        "otherwise": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/CduInline"
+          }
+        },
+        "show": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/CduInline"
+          }
+        },
+        "when_known": {
+          "description": "Every one of these must be known for `show` to appear.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/FillField"
+          }
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "when_known",
+        "show"
       ]
     },
     "FillField": {

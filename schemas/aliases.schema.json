@@ -17,25 +17,75 @@
   ],
   "$defs": {
     "Alias": {
-      "description": "An old step id and the step that replaced it.",
+      "description": "An old saved id and what replaced it. Lets saved progress carry over.",
       "type": "object",
       "properties": {
         "from": {
           "type": "string"
         },
+        "kind": {
+          "$ref": "#/$defs/AliasKind"
+        },
         "to": {
-          "$ref": "#/$defs/StepId"
+          "type": "string"
         }
       },
       "additionalProperties": false,
       "required": [
+        "kind",
         "from",
         "to"
       ]
     },
-    "StepId": {
-      "description": "A stable step id: `<pack-id>.<phase>.<short-name>`, e.g. `demo-aircraft.preflight.irs-mode`.\nAn id never changes once published, even if the step is reworded or moved to another phase.",
-      "type": "string"
+    "AliasKind": {
+      "description": "What an alias renames. Covers everything the previous release saved.",
+      "oneOf": [
+        {
+          "description": "`to` is a step id.",
+          "type": "string",
+          "const": "step"
+        },
+        {
+          "description": "`to` is a briefing item id.",
+          "type": "string",
+          "const": "briefing_item"
+        },
+        {
+          "description": "A value typed into a blank. `to` is `<step-id>#<n>`, counting blanks from 0.",
+          "type": "string",
+          "const": "blank"
+        },
+        {
+          "description": "`to` is a start state id.",
+          "type": "string",
+          "const": "start_state"
+        },
+        {
+          "description": "A chosen option. `from` and `to` are `<option>:<value>`.",
+          "type": "string",
+          "const": "option_value"
+        },
+        {
+          "description": "A saved flight value. `to` is a name from the app's fill list.",
+          "type": "string",
+          "const": "fill_field"
+        },
+        {
+          "description": "`to` is a list id.",
+          "type": "string",
+          "const": "list"
+        },
+        {
+          "description": "`to` is a phase id.",
+          "type": "string",
+          "const": "phase"
+        },
+        {
+          "description": "`to` is a zone id.",
+          "type": "string",
+          "const": "zone"
+        }
+      ]
     }
   }
 }

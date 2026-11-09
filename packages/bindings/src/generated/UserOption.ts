@@ -3,4 +3,8 @@
 /**
  * A choice the pilot makes that decides what is shown, e.g. the power source.
  */
-export type UserOption = { id: string, title: string, values: Array<string>, };
+export type UserOption = { id: string, title: string, values: Array<string>, 
+/**
+ * The value used until the pilot chooses. Must be one of `values`.
+ */
+default: string, };

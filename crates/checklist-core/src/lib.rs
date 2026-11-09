@@ -25,11 +25,11 @@ pub mod model;
 pub mod session;
 
 pub use content::{
-    Alias, AliasesFile, BriefItem, Briefing, BriefingsFile, CduField, CduFile, CduPage, CduPart,
-    CduRow, CduScreen, CduStyle, CduStyled, CduText, CduWalkthrough, Control, ControlsFile,
-    ExplainNote, Fault, FaultsFile, GlossaryEntry, GlossaryFile, HowNote, LightNote, LightsFile,
-    NotesFile, Panel, PanelItem, PanelItemKind, PanelSection, Phase, PhasesFile, Stage, StagePhase,
-    StartState, StartStatesFile, UserOption, Zone,
+    Alias, AliasKind, AliasesFile, BriefItem, Briefing, BriefingsFile, CduField, CduFile,
+    CduInline, CduPage, CduPart, CduRow, CduScreen, CduStyle, CduStyled, CduText, CduWalkthrough,
+    CduWhen, Control, ControlsFile, ExplainNote, Fault, FaultsFile, GlossaryEntry, GlossaryFile,
+    HowNote, LightNote, LightsFile, NotesFile, Panel, PanelItem, PanelItemKind, PanelSection,
+    Phase, PhasesFile, Stage, StagePhase, StartState, StartStatesFile, UserOption, Zone,
 };
 pub use model::{
     AutoStart, AutoStartPick, Checklist, FillField, HintPart, ListKind, OptionTest, Quick, ShowIf,

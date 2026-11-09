@@ -8,7 +8,10 @@
 use std::collections::{BTreeMap, BTreeSet};
 use std::fmt;
 
-use checklist_core::{CduPart, CduText, Checklist, FillField, OptionTest, ShowIf, Step, StepId};
+use checklist_core::{
+    Alias, AliasKind, CduInline, CduPart, CduText, Checklist, FillField, OptionTest, ShowIf, Step,
+    StepId,
+};
 use serde::Serialize;
 use serde_json::Value;
 
@@ -182,6 +185,9 @@ struct Index<'a> {
     tags: BTreeSet<&'a str>,
     lists: BTreeSet<&'a str>,
     steps: BTreeSet<&'a str>,
+    blanks: BTreeMap<&'a str, usize>,
+    briefing_items: BTreeSet<&'a str>,
+    start_states: BTreeSet<&'a str>,
     phases: BTreeSet<&'a str>,
     options: BTreeMap<&'a str, BTreeSet<&'a str>>,
     zones: BTreeSet<&'a str>,
@@ -258,6 +264,29 @@ impl<'a> Index<'a> {
             explain: unique(
                 "explanation",
                 notes.iter().flat_map(|n| &n.explain).map(|n| n.id.as_str()),
+                issues,
+            ),
+            blanks: pack
+                .checklists
+                .iter()
+                .flat_map(|l| &l.steps)
+                .map(|s| (s.id.as_str(), s.expect.matches(BLANK).count()))
+                .collect(),
+            briefing_items: unique(
+                "briefing item",
+                c.briefings
+                    .iter()
+                    .flat_map(|f| &f.briefings)
+                    .flat_map(|b| &b.items)
+                    .map(|i| i.id.as_str()),
+                issues,
+            ),
+            start_states: unique(
+                "start state",
+                c.start_states
+                    .iter()
+                    .flat_map(|f| &f.states)
+                    .map(|s| s.id.as_str()),
                 issues,
             ),
             walkthroughs: unique(
@@ -472,6 +501,9 @@ fn check_phases(pack: &Pack, idx: &Index, issues: &mut Vec<Issue>) {
     let Some(file) = &pack.content.phases else {
         return;
     };
+    for option in &file.options {
+        idx.check_option_value(&option.id, &option.id, &option.default, issues);
+    }
     let mut placed = BTreeSet::new();
     for phase in &file.phases {
         for list in &phase.lists {
@@ -565,6 +597,42 @@ fn locator_resolves(locator: &str, labels: &BTreeMap<(&str, &str, &str), usize>)
             .is_some_and(|c| n <= *c)
 }
 
+fn check_alias(alias: &Alias, idx: &Index, issues: &mut Vec<Issue>) {
+    let at = alias.from.as_str();
+    let to = alias.to.as_str();
+    let found = |set: &BTreeSet<&str>| set.contains(to);
+    let unknown = |what: &str| error(at, format!("refers to unknown {what} `{to}`"));
+    match alias.kind {
+        AliasKind::Step if !found(&idx.steps) => issues.push(unknown("step")),
+        AliasKind::BriefingItem if !found(&idx.briefing_items) => {
+            issues.push(unknown("briefing item"));
+        }
+        AliasKind::StartState if !found(&idx.start_states) => issues.push(unknown("start state")),
+        AliasKind::List if !found(&idx.lists) => issues.push(unknown("list")),
+        AliasKind::Phase if !found(&idx.phases) => issues.push(unknown("phase")),
+        AliasKind::Zone if !found(&idx.zones) => issues.push(unknown("zone")),
+        AliasKind::Blank => {
+            let blank = to.rsplit_once('#').and_then(|(step, n)| {
+                let n = n.parse::<usize>().ok()?;
+                (n < *idx.blanks.get(step)?).then_some(())
+            });
+            if blank.is_none() {
+                issues.push(unknown("blank"));
+            }
+        }
+        AliasKind::OptionValue => match to.split_once(':') {
+            Some((option, value)) => idx.check_option_value(at, option, value, issues),
+            None => issues.push(error(at, "option alias must be `<option>:<value>`")),
+        },
+        AliasKind::FillField
+            if serde_json::from_value::<FillField>(Value::String(to.to_owned())).is_err() =>
+        {
+            issues.push(unknown("fill field"));
+        }
+        _ => {}
+    }
+}
+
 fn check_other_references(pack: &Pack, idx: &Index, issues: &mut Vec<Issue>) {
     let c = &pack.content;
     if let Some(file) = &c.faults {
@@ -592,11 +660,6 @@ fn check_other_references(pack: &Pack, idx: &Index, issues: &mut Vec<Issue>) {
         }
     }
     if let Some(file) = &c.start_states {
-        unique(
-            "start state",
-            file.states.iter().map(|s| s.id.as_str()),
-            issues,
-        );
         for state in &file.states {
             idx.require_phase(&state.id, &state.phase, issues);
             for (option, value) in &state.set {
@@ -608,20 +671,34 @@ fn check_other_references(pack: &Pack, idx: &Index, issues: &mut Vec<Issue>) {
         }
     }
     if let Some(file) = &c.aliases {
-        unique(
-            "alias",
-            file.aliases.iter().map(|a| a.from.as_str()),
-            issues,
-        );
+        let mut seen = BTreeSet::new();
         for alias in &file.aliases {
-            idx.require_step(&alias.from, &alias.to, issues);
+            if !seen.insert((alias.kind, alias.from.as_str())) {
+                issues.push(error(&alias.from, "alias id is used twice in this pack"));
+            }
+            check_alias(alias, idx, issues);
         }
     }
 }
 
+fn inline_has_manual(part: &CduInline) -> bool {
+    matches!(part, CduInline::Field(f) if f.field == FillField::Manual)
+}
+
 fn has_manual(text: &CduText) -> bool {
+    text.iter().any(|part| match part {
+        CduPart::Field(f) => f.field == FillField::Manual,
+        CduPart::When(w) => {
+            w.when_known.contains(&FillField::Manual)
+                || w.show.iter().chain(&w.otherwise).any(inline_has_manual)
+        }
+        CduPart::Text(_) | CduPart::Styled(_) => false,
+    })
+}
+
+fn has_empty_condition(text: &CduText) -> bool {
     text.iter()
-        .any(|part| matches!(part, CduPart::Field(f) if f.field == FillField::Manual))
+        .any(|part| matches!(part, CduPart::When(w) if w.when_known.is_empty()))
 }
 
 fn check_cdu(pack: &Pack, issues: &mut Vec<Issue>) {
@@ -635,21 +712,30 @@ fn check_cdu(pack: &Pack, issues: &mut Vec<Issue>) {
                 .rows
                 .iter()
                 .flat_map(|r| [&r.left_label, &r.left, &r.right_label, &r.right]);
-            let texts = [
+            let texts: Vec<&CduText> = [
                 &page.action,
                 &page.check,
                 &page.note,
                 &screen.title,
                 &screen.page,
                 &screen.scratchpad,
-            ];
-            if texts.into_iter().chain(cells).any(has_manual) {
+            ]
+            .into_iter()
+            .chain(cells)
+            .collect();
+            if texts.iter().any(|t| has_manual(t)) {
                 issues.push(error(
                     &walkthrough.id,
                     format!(
                         "page `{}`: `manual` is only valid in a step's `fill`",
                         page.title
                     ),
+                ));
+            }
+            if texts.iter().any(|t| has_empty_condition(t)) {
+                issues.push(error(
+                    &walkthrough.id,
+                    format!("page `{}`: `when_known` must name a field", page.title),
                 ));
             }
         }
@@ -735,9 +821,10 @@ mod tests {
     use std::path::PathBuf;
 
     use checklist_core::{
-        Alias, AliasesFile, CduField, CduFile, CduPage, CduScreen, CduWalkthrough, Control,
-        ControlsFile, HintPart, LightNote, LightsFile, ListKind, Panel, PanelItem, PanelItemKind,
-        PanelSection, Phase, PhasesFile, Stage, StagePhase, Status, UserOption,
+        Alias, AliasKind, AliasesFile, BriefItem, Briefing, BriefingsFile, CduField, CduFile,
+        CduPage, CduScreen, CduWalkthrough, CduWhen, Control, ControlsFile, HintPart, LightNote,
+        LightsFile, ListKind, Panel, PanelItem, PanelItemKind, PanelSection, Phase, PhasesFile,
+        Stage, StagePhase, StartState, StartStatesFile, Status, UserOption, Zone,
     };
     use proptest::prelude::*;
 
@@ -785,6 +872,7 @@ mod tests {
                 id: "power".into(),
                 title: "Power".into(),
                 values: vec!["gpu".into(), "apu".into()],
+                default: "gpu".into(),
             }],
             stages: vec![Stage {
                 title: "Preflight".into(),
@@ -1074,7 +1162,6 @@ mod tests {
                         style: None,
                         before: None,
                         after: None,
-                        if_set: None,
                         empty: None,
                         empty_style: None,
                     })],
@@ -1213,16 +1300,197 @@ mod tests {
     }
 
     #[test]
-    fn aliases_point_at_real_steps_and_are_unique() {
-        let alias = |to: &str| Alias {
-            from: "preflight-0-1".into(),
-            to: StepId::new(to),
-        };
+    fn an_option_default_must_be_one_of_its_values() {
         let mut p = pack(vec![step("a")], vec![]);
-        p.content.aliases = Some(AliasesFile {
-            aliases: vec![alias(&format!("{PACK}.preflight.a")), alias("ghost")],
+        if let Some(file) = &mut p.content.phases {
+            file.options[0].default = "solar".into();
+        }
+        assert_flags(&p, "has no value `solar`");
+    }
+
+    fn cdu_pack(action: CduText) -> Pack {
+        let mut p = pack(vec![step("a")], vec![]);
+        p.content.cdu = Some(CduFile {
+            walkthroughs: vec![CduWalkthrough {
+                id: "setup".into(),
+                title: "Setup".into(),
+                pages: vec![CduPage {
+                    page: "RTE".into(),
+                    key: None,
+                    title: "Route".into(),
+                    action,
+                    check: vec![],
+                    note: vec![],
+                    screen: CduScreen {
+                        title: vec![],
+                        page: vec![],
+                        rows: vec![],
+                        highlight: vec![],
+                        scratchpad: vec![],
+                    },
+                }],
+            }],
         });
-        assert_flags(&p, "unknown step `ghost`");
+        p
+    }
+
+    fn field(field: FillField) -> CduField {
+        CduField {
+            field,
+            style: None,
+            before: None,
+            after: None,
+            empty: None,
+            empty_style: None,
+        }
+    }
+
+    #[test]
+    fn cdu_groups_are_checked() {
+        let good = CduWhen {
+            when_known: vec![FillField::Runway],
+            show: vec![
+                CduInline::Text("<SEL> ".into()),
+                CduInline::Field(field(FillField::Runway)),
+            ],
+            otherwise: vec![],
+        };
+        assert_eq!(messages(&cdu_pack(vec![CduPart::When(good.clone())])), "");
+
+        let mut empty = good.clone();
+        empty.when_known.clear();
+        assert_flags(
+            &cdu_pack(vec![CduPart::When(empty)]),
+            "`when_known` must name",
+        );
+
+        let mut manual_shown = good.clone();
+        manual_shown
+            .show
+            .push(CduInline::Field(field(FillField::Manual)));
+        assert_flags(&cdu_pack(vec![CduPart::When(manual_shown)]), "`manual`");
+
+        let mut manual_tested = good;
+        manual_tested.when_known = vec![FillField::Manual];
+        assert_flags(&cdu_pack(vec![CduPart::When(manual_tested)]), "`manual`");
+    }
+
+    fn alias(kind: AliasKind, from: &str, to: &str) -> Alias {
+        Alias {
+            kind,
+            from: from.into(),
+            to: to.into(),
+        }
+    }
+
+    fn alias_pack(aliases: Vec<Alias>) -> Pack {
+        let mut s = step("a");
+        s.expect = "V1 ___ VR ___".into();
+        let mut p = pack(vec![s], vec![]);
+        p.content.controls = Some(ControlsFile {
+            zones: vec![Zone {
+                id: "overhead".into(),
+                area: "Overhead".into(),
+                title: "Overhead".into(),
+                short_title: "OH".into(),
+            }],
+            controls: vec![],
+        });
+        p.content.briefings = Some(BriefingsFile {
+            briefings: vec![Briefing {
+                id: "departure".into(),
+                title: "Departure".into(),
+                mnemonic: "R".into(),
+                phase: "preflight".into(),
+                items: vec![BriefItem {
+                    id: "departure.runway".into(),
+                    lead: "R".into(),
+                    rest: "UNWAY".into(),
+                }],
+            }],
+        });
+        p.content.start_states = Some(StartStatesFile {
+            states: vec![StartState {
+                id: "ready".into(),
+                title: "Ready".into(),
+                description: "Ready".into(),
+                set: std::collections::BTreeMap::default(),
+                phase: "preflight".into(),
+                done: vec![],
+                skip: vec![],
+            }],
+        });
+        p.content.aliases = Some(AliasesFile { aliases });
+        p
+    }
+
+    #[test]
+    fn aliases_of_every_kind_resolve() {
+        let step_id = format!("{PACK}.preflight.a");
+        let blank = format!("{step_id}#1");
+        let p = alias_pack(vec![
+            alias(AliasKind::Step, "preflight-0-0", &step_id),
+            alias(AliasKind::BriefingItem, "b-0-0", "departure.runway"),
+            alias(AliasKind::Blank, "preflight-0-0-v1", &blank),
+            alias(AliasKind::StartState, "bes", "ready"),
+            alias(AliasKind::OptionValue, "power:ground", "power:gpu"),
+            alias(AliasKind::FillField, "toflaps", "takeoff_flaps"),
+            alias(AliasKind::List, "m:Smoke", "preflight"),
+            alias(AliasKind::Phase, "f:preflight", "preflight"),
+            alias(AliasKind::Zone, "c:Overhead", "overhead"),
+        ]);
+        assert_eq!(messages(&p), "");
+    }
+
+    #[test]
+    fn aliases_with_unknown_targets_are_errors() {
+        let step_id = format!("{PACK}.preflight.a");
+        let past_end = format!("{step_id}#2");
+        for (a, expected) in [
+            (alias(AliasKind::Step, "x", "ghost"), "unknown step"),
+            (
+                alias(AliasKind::BriefingItem, "x", "ghost"),
+                "unknown briefing item",
+            ),
+            (alias(AliasKind::Blank, "x", &past_end), "unknown blank"),
+            (alias(AliasKind::Blank, "x", "ghost#0"), "unknown blank"),
+            (
+                alias(AliasKind::StartState, "x", "ghost"),
+                "unknown start state",
+            ),
+            (
+                alias(AliasKind::OptionValue, "x", "power:solar"),
+                "has no value",
+            ),
+            (
+                alias(AliasKind::OptionValue, "x", "power"),
+                "must be `<option>:<value>`",
+            ),
+            (
+                alias(AliasKind::FillField, "x", "ghost"),
+                "unknown fill field",
+            ),
+            (alias(AliasKind::List, "x", "ghost"), "unknown list"),
+            (alias(AliasKind::Phase, "x", "ghost"), "unknown phase"),
+            (alias(AliasKind::Zone, "x", "ghost"), "unknown zone"),
+        ] {
+            assert_flags(&alias_pack(vec![a]), expected);
+        }
+    }
+
+    #[test]
+    fn the_same_old_id_may_appear_once_per_kind() {
+        let step_id = format!("{PACK}.preflight.a");
+        let p = alias_pack(vec![
+            alias(AliasKind::Step, "preflight", &step_id),
+            alias(AliasKind::Phase, "preflight", "preflight"),
+        ]);
+        assert_eq!(messages(&p), "");
+
+        let p = alias_pack(vec![
+            alias(AliasKind::Step, "preflight", &step_id),
+            alias(AliasKind::Step, "preflight", &step_id),
+        ]);
         assert_flags(&p, "alias id is used twice");
     }
 

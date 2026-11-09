@@ -15,10 +15,6 @@ before?: string | null,
  */
 after?: string | null, 
 /**
- * Shown instead of the value when it is known.
- */
-if_set?: string | null, 
-/**
  * Shown when the value is not known.
  */
 empty?: string | null, empty_style?: CduStyle | null, };

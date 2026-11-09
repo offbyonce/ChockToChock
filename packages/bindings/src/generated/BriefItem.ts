@@ -3,4 +3,8 @@
 /**
  * One line of a briefing: the letter of its mnemonic and the rest of the word.
  */
-export type BriefItem = { lead: string, rest: string, };
+export type BriefItem = { 
+/**
+ * Unique in the pack. Saved progress uses it, so it never changes once published.
+ */
+id: string, lead: string, rest: string, };

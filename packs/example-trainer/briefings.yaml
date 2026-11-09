@@ -9,5 +9,5 @@ briefings:
     mnemonic: RW
     phase: before-start
     items:
-      - {lead: R, rest: UNWAY}
-      - {lead: W, rest: EATHER}
+      - {id: departure.runway, lead: R, rest: UNWAY}
+      - {id: departure.weather, lead: W, rest: EATHER}

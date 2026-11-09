@@ -183,6 +183,10 @@
       "description": "A choice the pilot makes that decides what is shown, e.g. the power source.",
       "type": "object",
       "properties": {
+        "default": {
+          "description": "The value used until the pilot chooses. Must be one of `values`.",
+          "type": "string"
+        },
         "id": {
           "type": "string"
         },
@@ -200,7 +204,8 @@
       "required": [
         "id",
         "title",
-        "values"
+        "values",
+        "default"
       ]
     }
   }

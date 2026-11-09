@@ -14,6 +14,8 @@ data_types! {
         pub id: String,
         pub title: String,
         pub values: Vec<String>,
+        /// The value used until the pilot chooses. Must be one of `values`.
+        pub default: String,
     }
 
     /// A phase's place in a stage.
@@ -204,6 +206,8 @@ data_types! {
 
     /// One line of a briefing: the letter of its mnemonic and the rest of the word.
     pub struct BriefItem {
+        /// Unique in the pack. Saved progress uses it, so it never changes once published.
+        pub id: String,
         pub lead: String,
         pub rest: String,
     }
@@ -272,14 +276,29 @@ data_types! {
         /// Literal text after the value, e.g. a degree sign.
         #[serde(default, skip_serializing_if = "Option::is_none")]
         pub after: Option<String>,
-        /// Shown instead of the value when it is known.
-        #[serde(default, skip_serializing_if = "Option::is_none")]
-        pub if_set: Option<String>,
         /// Shown when the value is not known.
         #[serde(default, skip_serializing_if = "Option::is_none")]
         pub empty: Option<String>,
         #[serde(default, skip_serializing_if = "Option::is_none")]
         pub empty_style: Option<CduStyle>,
+    }
+
+    /// Text or a live value, in any style. Mix several in a row to style them differently.
+    #[serde(untagged)]
+    pub enum CduInline {
+        Text(String),
+        Styled(CduStyled),
+        Field(CduField),
+    }
+
+    /// Shows one group of parts when flight values are known and another when they are not,
+    /// e.g. `<SEL>` beside a runway, or a placeholder until there is a runway. Does not nest.
+    pub struct CduWhen {
+        /// Every one of these must be known for `show` to appear.
+        pub when_known: Vec<FillField>,
+        pub show: Vec<CduInline>,
+        #[serde(default, skip_serializing_if = "Vec::is_empty")]
+        pub otherwise: Vec<CduInline>,
     }
 
     /// One piece of CDU text.
@@ -288,6 +307,7 @@ data_types! {
         Text(String),
         Styled(CduStyled),
         Field(CduField),
+        When(CduWhen),
     }
 }
 
@@ -349,10 +369,35 @@ data_types! {
         pub walkthroughs: Vec<CduWalkthrough>,
     }
 
-    /// An old step id and the step that replaced it.
+    /// What an alias renames. Covers everything the previous release saved.
+    #[derive(Copy, Eq, PartialOrd, Ord)]
+    #[serde(rename_all = "snake_case")]
+    pub enum AliasKind {
+        /// `to` is a step id.
+        Step,
+        /// `to` is a briefing item id.
+        BriefingItem,
+        /// A value typed into a blank. `to` is `<step-id>#<n>`, counting blanks from 0.
+        Blank,
+        /// `to` is a start state id.
+        StartState,
+        /// A chosen option. `from` and `to` are `<option>:<value>`.
+        OptionValue,
+        /// A saved flight value. `to` is a name from the app's fill list.
+        FillField,
+        /// `to` is a list id.
+        List,
+        /// `to` is a phase id.
+        Phase,
+        /// `to` is a zone id.
+        Zone,
+    }
+
+    /// An old saved id and what replaced it. Lets saved progress carry over.
     pub struct Alias {
+        pub kind: AliasKind,
         pub from: String,
-        pub to: StepId,
+        pub to: String,
     }
 
     /// `aliases.yaml`.

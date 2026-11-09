@@ -15,7 +15,9 @@ walkthroughs:
           - {field: fuel_thousands, empty: the planned fuel}
           - ' and press 1L.'
         check:
-          - {field: zfw, if_set: Your weight is shown., empty: Enter your weight.}
+          - when_known: [zfw]
+            show: [Your weight is shown.]
+            otherwise: [Enter your weight.]
         note:
           - Weights are in thousands of
           - {field: weight_unit, before: ' ', after: ., empty: ' pounds.'}
@@ -31,7 +33,12 @@ walkthroughs:
                 - {field: fuel_thousands, style: user, empty: '□□□.□', empty_style: data}
               right_label: [RUNWAY]
               right:
-                - {field: runway, before: RW, style: user, empty: '-----'}
+                - when_known: [runway]
+                  show:
+                    - '<SEL> '
+                    - {field: runway, before: RW, style: user}
+                  otherwise:
+                    - {text: (list of runways), style: data}
             - {}
             - separator: ''
               left: ['<INDEX']
