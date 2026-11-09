@@ -59,16 +59,18 @@ not `data.js` on its own.
    converter or the model, not by hand-editing generated YAML (unless a step is deliberately
    rewritten, which the report must list). Run the text-overlap check (0007) over the imported
    text before it is first committed.
-7. **Procedure validation.** Following the rules in decision 0007, work list by list, starting
-   with power-up. Check each list against the legitimate sources in the private reference folder,
-   then give the maintainer a short question sheet covering only what those sources leave open or
-   disagree on. The maintainer answers from the FCOM in their own words. Show the differences found
-   for each list and wait for approval before changing the pack.
+7. **Procedure validation.** Following decision 0007, validate every list against vendor
+   documentation, with no FCOM reading. Work by procedure section, starting with power-up: fix
+   order and setting differences against the iFly tutorial, write "why" notes in our own words, and
+   mark a step `checked` when it clearly matches the vendor documentation. Where sources conflict
+   and the tutorial does not settle it, leave the step `draft` and add it to an open list for an
+   optional pilot review later. Report each section as a batch, a short summary of changes plus the
+   open list, and wait for the maintainer to approve it.
 8. **Parity report.** A table of every 3.0 step: new id, status (moved, merged, dropped), and
    reason for anything not moved one-for-one, plus a list of the words the converter changed
    to American spelling. Snapshot tests on the flattened pack.
-9. **Hand back.** Branch ready for review, with the parity report and the lists still at basis
-   `prior-release`.
+9. **Hand back.** Branch ready for review, with the parity report, the lists still at basis
+   `prior-release`, and the open list.
 
 ## Out of scope for Phase 1
 

@@ -22,8 +22,8 @@ aircraft. **The app never connects to the simulator** (decision 0006).
 - No per-step citations and no URLs to third-party material (decision 0007). Each list has a
   `basis` tag naming only the kind of material it was checked against. Never link the banned
   sites or second-hand study material; `pack check` enforces this.
-- The maintainer checks facts against the manufacturer's manuals. No manual text, link or
-  citation enters the repo. Facts only: never copy text, tables, diagrams or layout, never closely
+- Facts are checked against vendor documentation. No manual text, link or citation enters the
+  repo. Facts only: never copy text, tables, diagrams or layout, never closely
   paraphrase, and write from our own flow structure. Never store, upload, link or cite them.
 - Second-hand study material (Brainscape, SlideShare, AviationHunt, memory-item compilations) and
   airline SOPs are never used as a basis.

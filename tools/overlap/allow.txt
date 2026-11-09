@@ -25,6 +25,6 @@ pressurization land alt recall checked autobrake landing data vref minimums appr
 wing light landing light and turnoff lights off | Light, switch and position names are facts
 cab util and ife pass seat switches off | Light, switch and position names are facts
 irs off window heat off emergency exit lights off | Control names and positions in procedure order are facts
-control column hold firmly autopilot if engaged disengage autothrottle if engaged disengage | Recall action names; reviewed against the FCOM in step 7
-pitch attitude and airspeed main electric stabilizer trim | Recall action names; reviewed against the FCOM in step 7
-autopilot if engaged disengage autothrottle if engaged disengage | Recall action names; reviewed against the FCOM in step 7
+control column hold firmly autopilot if engaged disengage autothrottle if engaged disengage | Recall action names in procedure order are facts
+pitch attitude and airspeed main electric stabilizer trim | Recall action names in procedure order are facts
+autopilot if engaged disengage autothrottle if engaged disengage | Recall action names in procedure order are facts
