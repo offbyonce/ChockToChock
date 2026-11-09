@@ -43,11 +43,13 @@ jobs:
         with:
           tool: just,cargo-nextest,cargo-deny
 
+      # pnpm first (version from package.json "packageManager"), so setup-node can find it.
+      - uses: pnpm/action-setup@v4
+
       - uses: actions/setup-node@v5
         with:
           node-version: 22
-
-      - run: corepack enable
+          cache: pnpm
 
       - run: pnpm install --frozen-lockfile
 
