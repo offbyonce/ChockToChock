@@ -16,5 +16,6 @@ Never rewrite an accepted record; add a new one that supersedes it.
 | [0005](0005-updates-and-signing.md) | Notify-only updates via GitHub Releases; unsigned beta | Accepted |
 | [0006](0006-instruction-not-sim-control.md) | Teach procedures and systems; no connection to the simulator | Accepted |
 | [0007](0007-pack-content-model.md) | Pack content model; list-level basis tags instead of per-step sources | Accepted |
+| [0008](0008-platform-scope.md) | Learn to operate the airplane like a trained crew; what we do not build | Accepted |
 
 Template: Context, Decision, Consequences. Keep it under a page.

@@ -12,7 +12,8 @@ behind each choice is in `docs/decisions/`.
 A free, open-source training app for flight simulator pilots. It teaches procedures:
 checklists, flows, memory items, CDU (flight computer) set-up and how aircraft systems work,
 and it imports a SimBrief flight plan. It grows out of the single-file HTML "iFly 737 MAX 8
-Interactive Checklist" (3.0), published free on flightsim.to.
+Interactive Checklist" (3.0), published free on flightsim.to. The goal is to learn to operate the
+airplane like a trained crew, not just to run checklists (decision 0008).
 
 - **One engine, many aircraft.** Aircraft are data packs. The iFly 737 MAX 8 is the first;
   PMDG 737-800 and 777 and Airbus types come later, reusing shared library packs.
@@ -33,6 +34,7 @@ Interactive Checklist" (3.0), published free on flightsim.to.
 | Updates | Notify-only via GitHub Releases first; in-app updater later (0005) |
 | Signing | Unsigned beta; revisit (SignPath Foundation, if eligible) before wider release |
 | Sim link | None (0006 supersedes 0004) |
+| Scope | Learn to operate the airplane like a trained crew; what we do not build is listed below (0008) |
 | References | List-level `basis` tags, no per-step citations or third-party links (0007); rules in `CONTRIBUTING.md`, enforced in part by `pack check` |
 
 ## Architecture
@@ -88,8 +90,15 @@ Svelte interface  ──typed commands──▶  Tauri shell (thin)
 | 0. Foundation (done) | Workspace, crates, shell, interface skeleton, CI, licenses, docs | `just ci` green on Linux, Windows, macOS |
 | 1. Engine and iFly pack | Extend the pack format; move all 3.0 content into `packs/ifly-737-max8` with no sources or links carried over | Every 3.0 step accounted for; `pack check` passes |
 | 2. Desktop app parity | Interface matching 3.0: phases, flows, panel states, SimBrief import, CDU walkthrough, timers, saved progress, 3.0 import, notify-only updates | A Windows beta that does everything 3.0 does |
-| 3. Training features | Memory items trainer, flow practice, systems explorer and step-to-system links, scenario drills, progress tracking | Each feature reviewed with beta pilots |
+| 3. Training features | Memory items trainer, flow practice, systems explorer and step-to-system links, scenario drills, progress tracking. Also: briefings built from the SimBrief plan (threats, runway, departure, what-ifs); crew roles (pilot flying and pilot monitoring duties, standard callouts, challenge-and-response) taught within flow practice and briefings; non-normal scenarios built on the memory items; a technique layer (descent planning, energy management, stabilized-approach criteria, autopilot mode use); a structured course with spaced repetition | Each feature reviewed with beta pilots |
 | 4. More aircraft | Library packs; PMDG 737 and 777; Airbus family; macOS and Linux releases; in-app updates; mobile later | Each aircraft passes `pack check` and review |
+
+Phase 2 parity ships before any Phase 3 work.
+
+## Out of scope
+
+Performance calculations, charts and navigation data, ATC, virtual first officer or copilot voice
+features, and anything needing a sim connection. The reason for each is in decision 0008.
 
 ## Open items
 
