@@ -135,6 +135,25 @@ phase part records where it was first published. A removed step's id is retired 
 - **Limits:** it finds exact runs only. Close paraphrase, copied structure and layout still need
   human review.
 
+## Procedure validation
+Added 2026-11-09.
+
+- **We read the FCOM and QRH, including copies online, to check that our steps are complete and in
+  the right order.** Read only. Never download, store, link or cite them, except text copies of
+  documents the maintainer obtained legitimately (public records such as NTSB dockets, accident
+  reports and FAA/EASA documents; vendor documentation the maintainer owns; files downloaded under
+  a site's normal terms), placed in the private overlap folder. FCOM and QRH copies of unknown
+  origin are never placed there.
+- **Findings are recorded as facts in our own words,** for example: "AC power is not applied until
+  the electric hydraulic pumps are OFF". Never copy wording, tables or layout.
+- **Community checklists on flightsim.to may be used as a cross-check only.** Where one differs
+  from our pack, confirm against the FCOM before changing anything. Never copy from them, and never
+  use them as the basis for a step.
+- **Fixes are written from our own flow structure,** explain why the step matters where useful (for
+  example, ground-crew safety), and mark the step `checked`.
+- **The findings log lives in `~/private`, never in the repo.** The maintainer approves each fix
+  before it goes in.
+
 ## Consequences
 - Pilots see what kind of material a list was checked against, but cannot trace an individual step.
 - 3.0 wording was written alongside its old references. Dropping the list does not clear that
