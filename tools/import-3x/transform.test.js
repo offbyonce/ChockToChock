@@ -370,6 +370,28 @@ test("text and ids are American, and the changes are reported", () => {
   assert.equal(r.report.spelling.changes["centre -> center"], 1);
 });
 
+test("rewrites replace text by id, keep the id, and are reported", () => {
+  const id = "ifly-737-max8.cold-dark.the-switch";
+  const r = transform(input(), {
+    steps: { [id]: { text: "OUR WORDING" } },
+    lists: { "memory-smoke": { when: "Our condition." } },
+    controls: { c1: { function: "Our function." } },
+    briefingItems: { "depart.bravo": { detail: "Our detail." } },
+  });
+  assert.equal(flow(r).steps[0].id, id);
+  assert.equal(flow(r).steps[0].text, "OUR WORDING");
+  assert.equal(r.files.lists[4][1].when, "Our condition.");
+  assert.equal(r.files.controls.controls[0].function, "Our function.");
+  assert.equal(r.files.briefings.briefings[0].items[1].detail, "Our detail.");
+  assert.equal(r.report.rewrites.length, 4);
+  assert.deepEqual(r.report.problems, []);
+});
+
+test("a rewrite aimed at something that does not exist is reported", () => {
+  const r = transform(input(), { steps: { ghost: { text: "X" } } });
+  assert.deepEqual(r.report.problems, ["rewrite target not found: step ghost"]);
+});
+
 test("3.0's sources and links do not carry over", () => {
   const text = JSON.stringify(result().files);
   assert.ok(!text.includes("example.com"));

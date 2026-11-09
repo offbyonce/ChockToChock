@@ -501,8 +501,42 @@ function manifest(files) {
   };
 }
 
+/** Replaces flagged text with our own wording. Returns what changed and any unknown target. */
+function applyRewrites(files, rewrites) {
+  const applied = [];
+  const missing = [];
+  const apply = (group, label, targets) => {
+    const byId = new Map(targets.map((target) => [target.id, target]));
+    for (const [id, fields] of Object.entries(rewrites[group] ?? {})) {
+      const target = byId.get(id);
+      if (!target) {
+        missing.push(`rewrite target not found: ${label} ${id}`);
+        continue;
+      }
+      for (const [field, text] of Object.entries(fields)) {
+        target[field] = text;
+        applied.push(`${label} ${id}: ${field}`);
+      }
+    }
+  };
+  const lists = files.lists.map(([, list]) => list);
+  apply(
+    "steps",
+    "step",
+    lists.flatMap((list) => list.steps),
+  );
+  apply("lists", "list", lists);
+  apply("controls", "control", files.controls.controls);
+  apply(
+    "briefingItems",
+    "briefing item",
+    files.briefings.briefings.flatMap((briefing) => briefing.items),
+  );
+  return { applied, missing };
+}
+
 /** The pack's files as data, and a report of what happened. */
-export function transform(input) {
+export function transform(input, rewrites = {}) {
   const { data } = input;
   const log = new SpellingLog();
   const ctx = {
@@ -549,6 +583,7 @@ export function transform(input) {
     },
   };
   files.aliases = buildAliases(ctx, phases);
+  const rewritten = applyRewrites(files, rewrites);
   const normalized = {
     ...normalizeDeep(files, log),
     lists: files.lists.map(([name, list]) => [name, normalizeDeep(list, log)]),
@@ -560,7 +595,14 @@ export function transform(input) {
     report: {
       counts: counts(input, normalized),
       spelling: log.summary(),
-      problems: [...ctx.gaps, ...cduGaps, ...cduDifferences, ...leaks.map((m) => `CDU marker leaked: ${m}`)],
+      problems: [
+        ...ctx.gaps,
+        ...cduGaps,
+        ...cduDifferences,
+        ...leaks.map((m) => `CDU marker leaked: ${m}`),
+        ...rewritten.missing,
+      ],
+      rewrites: rewritten.applied,
       dropped: ctx.dropped,
       notConverted: ctx.notConverted,
     },

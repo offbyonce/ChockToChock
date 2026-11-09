@@ -325,6 +325,14 @@ fn walk(value: &Value, at: &str, visit: &mut impl FnMut(&str, &str)) {
     }
 }
 
+/// A step id looks like words once its dashes are removed, but it is never prose.
+fn is_step_id(text: &str, pack_id: &str) -> bool {
+    !text.contains(char::is_whitespace)
+        && text
+            .strip_prefix(pack_id)
+            .is_some_and(|rest| rest.starts_with('.'))
+}
+
 /// Compares the whole pack with the references: each prose field alone, then each list's step
 /// text and expected responses joined in order, because checklist rows are short enough that a
 /// copied list would pass a field-only check.
@@ -332,6 +340,9 @@ pub fn find_overlaps(pack: &Pack, references: &References) -> Vec<Overlap> {
     let mut found = Vec::new();
     for (file, doc) in documents(pack) {
         walk(&doc, "", &mut |at, text| {
+            if is_step_id(text, &pack.manifest.id) {
+                return;
+            }
             let words = normalize(text);
             for (start, end, reference) in references.runs(&words) {
                 found.push(Overlap {
@@ -372,7 +383,10 @@ pub fn find_overlaps(pack: &Pack, references: &References) -> Vec<Overlap> {
 
 #[cfg(test)]
 mod tests {
-    use checklist_core::{Checklist, ListKind, NotesFile, Step};
+    use checklist_core::{
+        Checklist, Fault, FaultsFile, ListKind, NotesFile, StartState, StartStatesFile, Step,
+        StepId,
+    };
     use proptest::prelude::*;
 
     use super::*;
@@ -519,6 +533,40 @@ mod tests {
         assert_eq!(found.len(), 1, "{found:?}");
         assert_eq!(found[0].file, "notes.yaml");
         assert!(found[0].at.ends_with("/steps/0"), "{}", found[0].at);
+    }
+
+    #[test]
+    fn step_ids_used_as_references_are_not_compared() {
+        let id = "demo.p.alpha-bravo-charlie-delta-echo-foxtrot-golf-hotel";
+        let mut p = pack(vec![Step::new(id, "T", "E")]);
+        p.manifest.start_states = Some("start-states.yaml".into());
+        p.manifest.faults = Some("faults.yaml".into());
+        p.content.start_states = Some(StartStatesFile {
+            states: vec![StartState {
+                id: "ready".into(),
+                title: "Ready".into(),
+                description: "Ready".into(),
+                set: std::collections::BTreeMap::default(),
+                phase: "p".into(),
+                done: vec![StepId::new(id)],
+                skip: vec![StepId::new(id)],
+            }],
+        });
+        p.content.faults = Some(FaultsFile {
+            faults: vec![Fault {
+                steps: vec![StepId::new(id)],
+                causes: vec!["A cause".into()],
+                action: "An action".into(),
+            }],
+        });
+        assert_eq!(find_overlaps(&p, &references(PHRASE)), vec![]);
+
+        // Prose that merely starts with the pack's name is still compared.
+        let prose = format!("demo. {PHRASE}");
+        assert_eq!(
+            find_overlaps(&with_note(&prose), &references(PHRASE)).len(),
+            1
+        );
     }
 
     #[test]

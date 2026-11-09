@@ -9,6 +9,7 @@ import { fileURLToPath } from "node:url";
 import { parseArgs } from "node:util";
 
 import { load3x } from "./load3x.js";
+import { REWRITES } from "./rewrites.js";
 import { transform } from "./transform.js";
 import { toYaml } from "./yaml.js";
 
@@ -63,7 +64,7 @@ function main() {
   if (!values.src || !values.out) {
     throw new Error("usage: convert.js --src <3.0 src folder> --out <output folder> [--report <file.json>]");
   }
-  const result = transform(load3x(values.src));
+  const result = transform(load3x(values.src), REWRITES);
   writePack(values.out, result);
   if (values.report) fs.writeFileSync(values.report, `${JSON.stringify(result.report, null, 2)}\n`);
   process.stdout.write(`wrote ${values.out}\n`);

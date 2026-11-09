@@ -3,3 +3,28 @@
 #
 # Runs the text-overlap check may accept, such as standard phrases and switch names.
 # One per line: run of words | reason
+low quantity low pressure and stby rud on | Light, switch and position names are facts
+feel diff press speed trim fail mach trim fail auto slat fail and spoilers | Light, switch and position names are facts
+anti collision light wing light and wheel well light | Light, switch and position names are facts
+1 2 5 10 15 25 30 40 | Light, switch and position names are facts
+low quantity low pressure and stby rud on lights | Light, switch and position names are facts
+feel diff press speed trim fail mach trim fail auto slat fail and | Light, switch and position names are facts
+n1 n2 egt fuel flow and oil pressure | Light, switch and position names are facts
+auto fail off sched descent altn and manual are | Light, switch and position names are facts
+source off transfer bus off and standby pwr off | Light, switch and position names are facts
+landing lights runway turnoff and taxi lights off | Light, switch and position names are facts
+anti collision light wing light and wheel well light off | Light, switch and position names are facts
+engine start levers cutoff stabilizer trim cutout switches normal | Control names and positions in procedure order are facts
+oxygen tested 100 navigation transfer and display switches normal | Control names and positions in procedure order are facts
+auto window heat on pressurization mode selector auto flight instruments heading altimeter parking brake set engine start levers cutoff | Control names and positions in procedure order are facts
+on flight deck windows closed and locked mcp v2 heading altitude takeoff speeds v1 vr | Control names and positions in procedure order are facts
+auto engine start switches cont recall checked autobrake rto engine start levers idle detent flight controls checked ground equipment | Control names and positions in procedure order are facts
+flight controls checked ground equipment bypass pin shown equipment clear | Control names and positions in procedure order are facts
+auto landing gear up flaps up no lights | Control names and positions in procedure order are facts
+pressurization land alt recall checked autobrake landing data vref minimums approach briefing complete | Control names and positions in procedure order are facts
+wing light landing light and turnoff lights off | Light, switch and position names are facts
+cab util and ife pass seat switches off | Light, switch and position names are facts
+irs off window heat off emergency exit lights off | Control names and positions in procedure order are facts
+control column hold firmly autopilot if engaged disengage autothrottle if engaged disengage | Recall action names; reviewed against the FCOM in step 7
+pitch attitude and airspeed main electric stabilizer trim | Recall action names; reviewed against the FCOM in step 7
+autopilot if engaged disengage autothrottle if engaged disengage | Recall action names; reviewed against the FCOM in step 7
