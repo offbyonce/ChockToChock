@@ -30,7 +30,7 @@ steps:
     walkaround:
       x: 160
       "y": 16
-    look_for: "Gear pin removed. Nose wheel free of cracks or damage. Gear strut, gear door and steering undamaged. Lights intact."
+    look_for: "Gear pin installed; the ground crew removes it before pushback. Nose wheel free of cracks or damage. Gear strut, gear door and steering undamaged. Lights intact."
     location: "Front of the airplane, around the nose gear."
     status: draft
   - id: ifly-737-max8.exterior.right-forward-fuselage
@@ -114,7 +114,7 @@ steps:
     walkaround:
       x: 190
       "y": 212
-    look_for: "Gear pin removed. Tires, wheels, gear strut, hydraulic lines and brakes undamaged, with no leaks. Check brake wear indicators with the parking brake set."
+    look_for: "Gear pin installed; the ground crew removes it before pushback. Tires, wheels, gear strut, hydraulic lines and brakes undamaged, with no leaks. Check brake wear indicators with the parking brake set."
     location: Under the right wing root.
     status: draft
   - id: ifly-737-max8.exterior.right-aft-fuselage
@@ -162,7 +162,7 @@ steps:
     walkaround:
       x: 130
       "y": 212
-    look_for: "Gear pin removed. Tires, wheels, gear strut, hydraulic lines and brakes undamaged, with no leaks. Check brake wear indicators with the parking brake set."
+    look_for: "Gear pin installed; the ground crew removes it before pushback. Tires, wheels, gear strut, hydraulic lines and brakes undamaged, with no leaks. Check brake wear indicators with the parking brake set."
     location: Under the left wing root.
     status: draft
   - id: ifly-737-max8.exterior.left-trailing-edge

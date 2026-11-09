@@ -123,7 +123,7 @@ steps:
     check_detail: For each switch
     how: mach
     explain: mach
-    status: draft
+    status: checked
   - id: ifly-737-max8.preflight.stall-warning-test
     text: STALL WARNING TEST
     expect: "TEST EACH, COLUMN SHAKES"

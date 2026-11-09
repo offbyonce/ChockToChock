@@ -9,6 +9,11 @@ kind: flow
 basis:
   - prior-release
 steps:
+  - id: ifly-737-max8.before-start.landing-gear-pins
+    text: LANDING GEAR PINS
+    expect: REMOVED AND STOWED ON BOARD
+    why: "The pins lock the gear down on the ground, so they must be out before flight and carried on board."
+    status: draft
   - id: ifly-737-max8.before-start.n1-bugs
     number: 1
     text: N1 BUGS
