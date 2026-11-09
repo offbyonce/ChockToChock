@@ -4,7 +4,7 @@ SPDX-License-Identifier: MIT
 -->
 # 0007: Pack content model and reference policy
 
-Date: 2026-11-08. Status: proposed. Supersedes the "every step sourced" rule and the per-step
+Date: 2026-11-08. Status: accepted. Supersedes the "every step sourced" rule and the per-step
 sources in [0002](0002-pack-format.md); the rest of 0002 stands.
 
 ## Context
@@ -113,7 +113,7 @@ phase part records where it was first published. A removed step's id is retired 
   note and alias references all resolve; `show_if` stays within its grammar; `fill` names are on
   the app's list; step ids start with the pack id and follow the format above.
 
-## Decision: text-overlap check (proposed, not built)
+## Decision: text-overlap check (not built yet)
 `pack overlap <pack-dir> --refs <folder>`, with `just overlap` as the shortcut. Logic in
 `crates/pack`.
 

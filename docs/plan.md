@@ -33,7 +33,7 @@ Interactive Checklist" (3.0), published free on flightsim.to.
 | Updates | Notify-only via GitHub Releases first; in-app updater later (0005) |
 | Signing | Unsigned beta; revisit (SignPath Foundation, if eligible) before wider release |
 | Sim link | None (0006 supersedes 0004) |
-| Sources | Rules in `CONTRIBUTING.md`, enforced in part by `pack check` |
+| References | List-level `basis` tags, no per-step citations or third-party links (0007); rules in `CONTRIBUTING.md`, enforced in part by `pack check` |
 
 ## Architecture
 
@@ -64,10 +64,11 @@ Svelte interface  ──typed commands──▶  Tauri shell (thin)
   A pack may extend at most one parent and override items **by id** (change, remove, insert
   before/after), never by list position. Conflicts are build errors. Packs are flattened to
   one JSON per aircraft before the app uses them.
-- `pack check` enforces: valid schema, unique ids, every step sourced, no blocked source
-  domains, no images or PDFs. Golden snapshot tests catch unintended content changes.
+- `pack check` enforces: valid schema, unique ids, a `basis` on every list, no banned or
+  unapproved links, no images or PDFs (0007; being updated in Phase 1). Golden snapshot tests
+  catch unintended content changes.
 - Planned additions (Phase 1 and later): phases and flows, panel maps, CDU page models,
-  timers, references, memory items, systems models, aliases from 3.0 ids.
+  timers, memory items, systems models, aliases from 3.0 ids.
 
 ## Quality
 
@@ -85,7 +86,7 @@ Svelte interface  ──typed commands──▶  Tauri shell (thin)
 | Phase | Work | Gate |
 | --- | --- | --- |
 | 0. Foundation (done) | Workspace, crates, shell, interface skeleton, CI, licences, docs | `just ci` green on Linux, Windows, macOS |
-| 1. Engine and iFly pack | Extend the pack format; move all 3.0 content into `packs/ifly-737-max8` with sources cleaned | Every 3.0 step accounted for; `pack check` passes |
+| 1. Engine and iFly pack | Extend the pack format; move all 3.0 content into `packs/ifly-737-max8` with no sources or links carried over | Every 3.0 step accounted for; `pack check` passes |
 | 2. Desktop app parity | Interface matching 3.0: phases, flows, panel states, SimBrief import, CDU walkthrough, timers, saved progress, 3.0 import, notify-only updates | A Windows beta that does everything 3.0 does |
 | 3. Training features | Memory items trainer, flow practice, systems explorer and step-to-system links, scenario drills, progress tracking | Each feature reviewed with beta pilots |
 | 4. More aircraft | Library packs; PMDG 737 and 777; Airbus family; macOS and Linux releases; in-app updates; mobile later | Each aircraft passes `pack check` and review |

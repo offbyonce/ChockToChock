@@ -19,10 +19,14 @@ aircraft. **The app never connects to the simulator** (decision 0006).
 
 **Content and sources** (full rules in `CONTRIBUTING.md`):
 
-- Every step has a source. Never use, link or cite: pirated FCOM/FCTM/QRH copies, Scribd,
-  Studylib, Brainscape, SlideShare, Manualshive, or archive.org copies of manuals.
-- A legitimately held manufacturer manual may be used to *check facts*; all wording, tables and
-  diagrams are our own. Never copy text, tables, diagrams or page layout from any manual.
+- No per-step citations and no URLs to third-party material (decision 0007). Each list has a
+  `basis` tag naming only the kind of material it was checked against. Never link the banned
+  sites or second-hand study material; `pack check` enforces this.
+- Manufacturer manuals (FCOM, FCTM, QRH) may be read as references for accuracy, wherever the
+  copy is hosted. Facts only: never copy text, tables, diagrams or layout, never closely
+  paraphrase, and write from our own flow structure. Never store, upload, link or cite them.
+- Second-hand study material (Brainscape, SlideShare, AviationHunt, memory-item compilations) and
+  airline SOPs are never used as a basis.
 - Never add images, screenshots, PDFs or any files from an aircraft developer, manufacturer or
   simulator. Switch names, positions and values are facts and are fine.
 - Label systems content as real aircraft, simulator model, or both.
@@ -84,6 +88,7 @@ just dev       # run the app (needs a desktop session)
 just test      # Rust and interface tests
 just packs     # validate every pack
 just ci        # everything; must pass before a push
+# just overlap # planned text-overlap check (decision 0007); not built yet
 ```
 
 Rust is pinned in `rust-toolchain.toml` (1.99). Newer clippy versions add lints, so always run

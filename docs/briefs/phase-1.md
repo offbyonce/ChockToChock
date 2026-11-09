@@ -5,7 +5,8 @@ SPDX-License-Identifier: MIT
 # Phase 1 brief: the engine and the iFly 737 MAX 8 pack
 
 **Goal:** every piece of content in the 3.0 HTML checklist exists as validated pack data in
-`packs/ifly-737-max8`, with sources cleaned, so Phase 2 can build the interface on it.
+`packs/ifly-737-max8`, with no sources or links carried over (decision 0007), so Phase 2 can
+build the interface on it.
 
 **Gate:** every 3.0 step is accounted for (moved, merged or deliberately dropped, with a
 reason), `pack check` passes, and `just ci` is green.
@@ -40,25 +41,27 @@ not `data.js` on its own.
    kinds of fields steps carry. Propose how each maps onto packs.
 2. **Pack format design (decision record).** From the inventory, propose the additions to the
    Rust model in `checklist-core` and `pack`: phases, flows versus checklists, step kinds,
-   panel zones and states, timers, CDU walkthrough, references, memory items, glossary,
-   per-step "why" and "when", and an alias table from 3.0 ids to new ids. Write it as
+   panel zones and states, timers, CDU walkthrough, list-level `basis`, step `status`, memory
+   items, glossary, per-step "why" and "when", and an alias table from 3.0 ids to new ids. Write it as
    `docs/decisions/0007-pack-content-model.md` and wait for approval before coding.
 3. **Implement the model.** Rust types, YAML loading, validation rules, regenerated schemas and
    bindings, tests (including property tests where cheap). Update the example pack to use
    the new features. `just ci` green.
 4. **Converter.** A small, re-runnable script (Node is fine, under `tools/import-3x/`) that reads
-   the resolved 3.0 data from a path given on the command line and writes YAML into
-   `packs/ifly-737-max8/`. It must not copy any blocked-source links into the output.
-5. **Sources clean-up.** List every step whose only sources are blocked (Brainscape,
-   SlideShare, the NTSB docket "Boeing FCOM excerpt", and anything else on the blocked list).
-   For each: find an allowed source, or flag it for the maintainer. Never invent a source.
+   the resolved 3.0 data, and the CDU walkthrough from `template.html`, from a path given on the
+   command line and writes YAML into `packs/ifly-737-max8/`. It carries over no sources or links.
+   Every list gets basis `prior-release`, every step `draft`, and the 10 "confirm" light notes
+   `draft`.
+5. *Removed by decision 0007: there are no per-step sources to clean up. The number is kept so
+   the other steps stay the same.*
 6. **Generate and check the pack.** Run the converter, then `pack check`. Fix errors in the
    converter or the model, not by hand-editing generated YAML (unless a step is deliberately
-   rewritten, which the report must list).
+   rewritten, which the report must list). Run the text-overlap check (0007) over the imported
+   text before it is first committed.
 7. **Parity report.** A table of every 3.0 step: new id, status (moved, merged, dropped), and
    reason for anything not moved one-for-one. Snapshot tests on the flattened pack.
-8. **Hand back.** Branch ready for review, with the parity report and the list of steps that
-   still need an allowed source.
+8. **Hand back.** Branch ready for review, with the parity report and the lists still at basis
+   `prior-release`.
 
 ## Out of scope for Phase 1
 
