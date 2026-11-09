@@ -8,7 +8,6 @@ title: Establishing APU power
 kind: flow
 basis:
   - ifly-docs
-  - cross-check
 steps:
   - id: ifly-737-max8.apu-power.fire-switch-and-overheat-detector
     text: APU FIRE SWITCH AND OVERHEAT DETECTOR SWITCH

@@ -38,7 +38,7 @@ steps:
     expect: "OFF, GUARD CLOSED"
     controls:
       - altflap
-    note: The position switch beside it springs back to OFF when released, so it needs no separate check.
+    note: The position switch beside it is checked in the preliminary preflight.
     why: "The backup flap drive is electric, so it must be off before normal power comes on."
     status: checked
   - id: ifly-737-max8.cold-dark.wiper-selectors
