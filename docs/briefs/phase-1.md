@@ -1,0 +1,68 @@
+<!--
+SPDX-FileCopyrightText: 2026 offbyonce
+SPDX-License-Identifier: MIT
+-->
+# Phase 1 brief: the engine and the iFly 737 MAX 8 pack
+
+**Goal:** every piece of content in the 3.0 HTML checklist exists as validated pack data in
+`packs/ifly-737-max8`, with sources cleaned, so Phase 2 can build the interface on it.
+
+**Gate:** every 3.0 step is accounted for (moved, merged or deliberately dropped, with a
+reason), `pack check` passes, and `just ci` is green.
+
+Work one step at a time (see `AGENTS.md`): finish a step, show the result, wait for the
+maintainer's go-ahead.
+
+## Where the 3.0 content is
+
+The 3.0 source is **not** in this repo and must not be committed to it wholesale (it contains
+links to sources we no longer allow). The maintainer provides a local copy; its path is given to
+you separately. The parts that matter:
+
+| 3.0 file | Holds |
+| --- | --- |
+| `src/data.js` | Base content: `ZONES` (panel areas), `PHASES` (checklists and flows by phase), `BRIEFS`, `SOURCES`, memory items, glossary (`GLOSS`), "why" and "when" notes, reference lists |
+| `src/v20.js` to `src/v25.js` | Patches applied in order on top of `data.js` (fixes, renames, inserts) |
+| `src/data21.js`, `src/data22.js` | 2.1 and 3.0 additions, including timers and the CDU walkthrough data |
+| `src/words22.js`, `src/pstate22.js` | Wording updates and panel states |
+| `src/build.py` | The order the files are combined in |
+| `tests/` | 3.0's own tests; useful to see what the data should look like |
+
+3.0 has about 510 steps once all layers are applied. Because later files patch earlier ones,
+read the **resolved** data (run the files in their build order in Node and dump the result),
+not `data.js` on its own.
+
+## Steps
+
+1. **Inventory (no code changes).** Run the 3.0 data layers in Node, in `build.py` order, and
+   dump the resolved data to a scratch JSON file outside the repo. Report: the top-level
+   structures, the counts (phases, checklists, flows, steps, memory items, sources), and the
+   kinds of fields steps carry. Propose how each maps onto packs.
+2. **Pack format design (decision record).** From the inventory, propose the additions to the
+   Rust model in `checklist-core` and `pack`: phases, flows versus checklists, step kinds,
+   panel zones and states, timers, CDU walkthrough, references, memory items, glossary,
+   per-step "why" and "when", and an alias table from 3.0 ids to new ids. Write it as
+   `docs/decisions/0007-pack-content-model.md` and wait for approval before coding.
+3. **Implement the model.** Rust types, YAML loading, validation rules, regenerated schemas and
+   bindings, tests (including property tests where cheap). Update the example pack to use
+   the new features. `just ci` green.
+4. **Converter.** A small, re-runnable script (Node is fine, under `tools/import-3x/`) that reads
+   the resolved 3.0 data from a path given on the command line and writes YAML into
+   `packs/ifly-737-max8/`. It must not copy any blocked-source links into the output.
+5. **Sources clean-up.** List every step whose only sources are blocked (Brainscape,
+   SlideShare, the NTSB docket "Boeing FCOM excerpt", and anything else on the blocked list).
+   For each: find an allowed source, or flag it for the maintainer. Never invent a source.
+6. **Generate and check the pack.** Run the converter, then `pack check`. Fix errors in the
+   converter or the model, not by hand-editing generated YAML (unless a step is deliberately
+   rewritten, which the report must list).
+7. **Parity report.** A table of every 3.0 step: new id, status (moved, merged, dropped), and
+   reason for anything not moved one-for-one. Snapshot tests on the flattened pack.
+8. **Hand back.** Branch ready for review, with the parity report and the list of steps that
+   still need an allowed source.
+
+## Out of scope for Phase 1
+
+- Interface work beyond showing that the new pack loads (that is Phase 2).
+- Systems models content (designed for in step 2, written in Phase 3).
+- Library packs (`lib.boeing-*`) unless the inventory shows a clear split; note candidates
+  instead.

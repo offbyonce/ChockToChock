@@ -1,0 +1,90 @@
+<!--
+SPDX-FileCopyrightText: 2026 offbyonce
+SPDX-License-Identifier: MIT
+-->
+# Working on Chock to Chock (for AI agents and contributors)
+
+Read this first, then `docs/plan.md` (what we are building and why) and the brief for the
+current phase in `docs/briefs/`. Decision records in `docs/decisions/` explain past choices;
+do not reverse one without the maintainer's agreement.
+
+## What this project is
+
+A free training app for flight simulator pilots: checklists, flows, memory items, CDU
+walkthroughs and aircraft systems. Desktop first (Tauri 2, Rust core, Svelte 5), Windows as the
+main target, macOS and Linux too. Aircraft are data packs in `packs/`; the engine never names an
+aircraft. **The app never connects to the simulator** (decision 0006).
+
+## Non-negotiable rules
+
+**Content and sources** (full rules in `CONTRIBUTING.md`):
+
+- Every step has a source. Never use, link or cite: pirated FCOM/FCTM/QRH copies, Scribd,
+  Studylib, Brainscape, SlideShare, Manualshive, or archive.org copies of manuals.
+- A legitimately held manufacturer manual may be used to *check facts*; all wording, tables and
+  diagrams are our own. Never copy text, tables, diagrams or page layout from any manual.
+- Never add images, screenshots, PDFs or any files from an aircraft developer, manufacturer or
+  simulator. Switch names, positions and values are facts and are fine.
+- Label systems content as real aircraft, simulator model, or both.
+
+**Code:**
+
+- Logic lives in `crates/`. The Tauri shell (`apps/desktop/src-tauri`) and the interface stay
+  thin. No aircraft names in engine code; differences come from pack data.
+- Rust types are the single source of truth. Regenerate derived files, never edit them by hand:
+  `just schemas` (JSON Schemas) and `just bindings` (TypeScript types).
+- Every bug fix comes with a test that would have caught it.
+- No `unsafe`. No new dependency without saying why; versions live once, in the root
+  `Cargo.toml` and `pnpm-workspace.yaml`.
+
+**Git:**
+
+- Work on a branch, never directly on `main`. Never force-push, rewrite history or delete branches
+  you did not create.
+- Sign off every commit: `git commit -s`. Conventional Commit messages (`feat:`, `fix:`,
+  `docs:`, `test:`, `chore:`, `ci:`, `pack(<id>):`).
+- Run `just ci` before every push. If it fails, fix it; never skip hooks or disable checks.
+- Do not edit `.github/workflows/`, `deny.toml`, `lefthook.yml`, licences or the decision records
+  without the maintainer's explicit go-ahead.
+- Never commit secrets, keys, tokens, personal names or email addresses, machine names or IP
+  addresses. Test fixtures are invented and use generic names ("Pilot").
+
+## How to work
+
+- **One step at a time.** Propose a step, do it, show the result (command output, test results),
+  and wait for the maintainer to confirm before starting the next one. Do not queue up extra
+  tasks before the current one works.
+- **Ask before deciding** anything that changes the data model, the pack format, a public
+  interface, licences or the plan. Write a short decision record for choices that matter.
+- **Say plainly when unsure,** and verify instead of guessing: run the command, read the file,
+  check the docs.
+- Keep explanations short and in plain language; say which machine a command runs on.
+
+## Repository map
+
+| Path | What it is |
+| --- | --- |
+| `crates/checklist-core` | Domain: checklists, steps, sessions. No I/O. |
+| `crates/pack` | Pack manifest, strict YAML loading (`serde-saphyr`), validation, schemas |
+| `crates/pack-cli` | `pack check <dir>`, `pack schema <dir>` |
+| `crates/simbrief` | SimBrief OFP parsing |
+| `crates/store` | SQLite saved data and migrations |
+| `apps/desktop/src-tauri` | Tauri shell: commands, capabilities, config |
+| `apps/desktop/ui` | Svelte 5 interface |
+| `packages/bindings` | Typed command wrappers; `src/generated` comes from Rust |
+| `packs/` | Content packs (CC BY-NC-SA 4.0) |
+| `schemas/` | Generated JSON Schemas |
+| `docs/` | Plan, briefs, setup guide, decision records |
+
+## Commands
+
+```sh
+just setup     # pnpm install + cargo fetch (once after cloning)
+just dev       # run the app (needs a desktop session)
+just test      # Rust and interface tests
+just packs     # validate every pack
+just ci        # everything; must pass before a push
+```
+
+Rust is pinned in `rust-toolchain.toml` (1.99). Newer clippy versions add lints, so always run
+`just ci` with the pinned toolchain, not an older one.
