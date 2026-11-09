@@ -15,6 +15,9 @@ pre-commit:
     biome:
       glob: "*.{ts,js,json}"
       run: pnpm exec biome check {staged_files}
+    overlap:
+      glob: "packs/**"
+      run: just overlap
 
 commit-msg:
   commands:

@@ -1,0 +1,5 @@
+# SPDX-FileCopyrightText: 2026 offbyonce
+# SPDX-License-Identifier: MIT
+#
+# Runs the text-overlap check may accept, such as standard phrases and switch names.
+# One per line: run of words | reason

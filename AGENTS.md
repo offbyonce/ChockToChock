@@ -72,7 +72,7 @@ aircraft. **The app never connects to the simulator** (decision 0006).
 | --- | --- |
 | `crates/checklist-core` | Domain: checklists, steps, sessions. No I/O. |
 | `crates/pack` | Pack manifest, strict YAML loading (`serde-saphyr`), validation, schemas |
-| `crates/pack-cli` | `pack check <dir>`, `pack schema <dir>` |
+| `crates/pack-cli` | `pack check <dir>`, `pack schema <dir>`, `pack overlap <dir>` |
 | `crates/simbrief` | SimBrief OFP parsing |
 | `crates/store` | SQLite saved data and migrations |
 | `apps/desktop/src-tauri` | Tauri shell: commands, capabilities, config |
@@ -91,7 +91,7 @@ just dev       # run the app (needs a desktop session)
 just test      # Rust and interface tests
 just packs     # validate every pack
 just ci        # everything; must pass before a push
-# just overlap # planned text-overlap check (decision 0007); not built yet
+just overlap   # compare packs with private references (CHOCKTOCHOCK_OVERLAP_REFS)
 ```
 
 Rust is pinned in `rust-toolchain.toml` (1.99). Newer clippy versions add lints, so always run

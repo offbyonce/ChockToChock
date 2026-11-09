@@ -8,6 +8,7 @@
 
 pub mod load;
 pub mod manifest;
+pub mod overlap;
 pub mod schema;
 pub mod validate;
 

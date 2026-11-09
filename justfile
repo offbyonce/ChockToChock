@@ -66,6 +66,10 @@ generated-check: schemas bindings
 packs:
     cargo run -q -p pack-cli -- check packs
 
+# Compare pack text with private reference files named by CHOCKTOCHOCK_OVERLAP_REFS.
+overlap:
+    cargo run -q -p pack-cli -- overlap packs --allow tools/overlap/allow.txt
+
 # Licenses, advisories, banned crates and sources (Rust), then JS advisories.
 deny:
     cargo deny check
