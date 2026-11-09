@@ -42,18 +42,29 @@ value came from. Good sources are ones anyone may read: the aircraft developer's
 public tutorials and documentation, the simulator's own documentation, public regulator
 material, or your own observation in the simulator (say so).
 
-**Never use or cite:**
+**Manufacturer manuals (FCOM, FCTM, QRH) you have legitimate access to** may be used as a
+reference to check facts, for example one supplied under licence with an aircraft you
+bought, as long as that licence allows it. Facts and procedures (switch positions, the order
+of steps, how a system works) are not protected by copyright, but the manual's wording,
+tables, diagrams and layout are. So:
 
-- Airline manuals (FCOM, FCTM, QRH, SOPs) posted online without the owner's permission
+- write every step and explanation in your own words, and draw your own diagrams;
+- do not mirror a manual's structure or phrasing closely;
+- cite it by name only (e.g. "Boeing 737 FCOM, as supplied with <aircraft>"), never a link
+  to a copy.
+
+**Never use, link or cite:**
+
+- Copies of FCOMs, FCTMs, QRHs or airline SOPs posted online without the owner's permission
 - Document-sharing and flashcard sites: Scribd, Studylib, Brainscape, SlideShare,
   Manualshive, and archive.org copies of manuals
 - Paid or members-only content you would need to copy to reproduce
 
 **Never include:**
 
-- Images, screenshots, PDFs or any files from an aircraft developer or simulator
-- Text copied from a manual or tutorial. Write steps in your own words; switch names,
-  positions and variable names are facts and are fine.
+- Images, screenshots, PDFs or any files from an aircraft developer, manufacturer or simulator
+- Text, tables or diagrams copied from a manual or tutorial. Switch names, positions and
+  values are facts and are fine.
 
 If you are unsure about a source, ask in your pull request before writing the content.
 

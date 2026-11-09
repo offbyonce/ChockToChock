@@ -227,13 +227,11 @@ mod tests {
 
     #[test]
     fn clean_pack_has_no_issues() {
-        assert!(
-            validate_pack(&pack(
-                vec![step("demo.a", Some("https://example.com/doc"))],
-                vec![]
-            ))
-            .is_empty()
-        );
+        let issues = validate_pack(&pack(
+            vec![step("demo.a", Some("https://example.com/doc"))],
+            vec![],
+        ));
+        assert_eq!(issues, Vec::<Issue>::new());
     }
 
     #[test]
