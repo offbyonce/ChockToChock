@@ -31,6 +31,7 @@ links no step to a source, so per-step citations could not be carried over hones
   alongside a manual.
 - **Second-hand study material is not used as a basis at all, for quality reasons.** That covers
   Brainscape, SlideShare, AviationHunt and memory-item compilations.
+- **Airline SOPs stay out as a basis.** Manufacturer procedures are the baseline.
 - **Manuals are never stored in the repo, uploaded, linked or cited.** Linking the banned sites
   or second-hand study material stays banned.
 
@@ -40,11 +41,11 @@ Content stays in YAML, one file per list or topic, listed by kind in `pack.json`
 
 | 3.0 | Pack |
 | --- | --- |
-| `STAGES`, `PHASES` | `phases.yaml`: stages holding ordered phases; `reference: true` for the three reference phases; `show_if` replaces rules hard-coded in the app |
+| `STAGES`, `PHASES` | `phases.yaml`: stages holding ordered phases; `reference: true` for the three reference phases; `show_if` on a phase's place in a stage replaces rules hard-coded in the app (one phase can sit in either of two stages) |
 | Lists | `kind: checklist`, `flow` or `non-normal`; `memory: true`; `when`, `why`, `basis` |
 | `{h}` header rows | `section` on the step that follows |
 | Row number, title, value, control(s) | `number` (absent for 3.0's `0`), `text`, `expect`, `controls` |
-| `___` in values | Kept in `expect`; optional `fill` names the flight-strip field |
+| `___` in values | Kept in `expect`; optional `fill` gives one field per blank, in order, from the app's fixed list (see below) |
 | Per-id hints and CDU button in app code | `hint` and `opens` on the step |
 | `(NON-RECALL)` in values | `non_recall: true`, marker removed from `expect` |
 | `q`, `qt` | `quick: always` or `turnaround` |
@@ -58,6 +59,7 @@ Content stays in YAML, one file per list or topic, listed by kind in `pack.json`
 | `pcl` | `panel_lights` |
 | `ns` | `not_simulated: true`, left out of progress as in 3.0 (separate from `sim_simplified`) |
 | `add`, `a` | Dropped: build-time marker and id-numbering aid |
+| `alt` | Not carried over: 3.0's app reads it, but no step sets it. Bringing back alternative steps would need a new decision |
 | `C`, `ZONES` | `controls.yaml`, zones; a control's zone is optional (replaces `__briefing`) |
 | `PANELS` | `panels/*.yaml` with named item kinds, not single letters. Coordinates are kept as our own layout; no images or screenshots in the repo, and our drawings stay in our own outline style |
 | `LIGHTS21` | Light notes keyed by stable locator, not list position; carry `status` |
@@ -71,6 +73,32 @@ Content stays in YAML, one file per list or topic, listed by kind in `pack.json`
 Practice-question text waits for Phase 3. Systems content is also Phase 3 and must be labelled
 real aircraft, simulator model, or both.
 
+**`show_if` is deliberately small.** A test is "option equals value" or "option is one of
+[values]". Tests can be combined with `all_of` or `any_of`, one level deep. Nothing else: no
+negation, comparisons, step state or expressions. Options and values must be declared by the pack.
+This covers every visibility rule in 3.0, including those that hide a step on a turnaround,
+because each option's values are listed.
+
+```yaml
+show_if: {option: power, equals: gpu}
+show_if: {option: approach, one_of: [ils, rnav]}
+show_if:
+  any_of:
+    - {option: power, equals: gpu}
+    - {option: start, equals: turnaround}
+```
+
+**`fill` names come from a fixed list the app defines** (for example `zfw`, `v1`, `cost_index`),
+held as a Rust enum so the schema and bindings carry it. Packs cannot add names, and `pack check`
+rejects unknown ones. `manual` marks a blank with no linked field. `hint` and the CDU fill fields
+use the same list. A new name needs an app release.
+
+**Step ids are `<pack-id>.<phase>.<short-name>`**, for example
+`ifly-737-max8.preflight.irs-mode`. The short name uses lower-case letters, digits and dashes, and
+ids are unique within a pack. **An id never changes once published**, because saved progress and
+overrides depend on it. If a step is reworded or moved to another phase, its id stays, so the
+phase part records where it was first published. A removed step's id is retired and never reused.
+
 ## Decision: `pack check`
 - Drop "every step has a source".
 - Keep blocking banned domains, and images and PDFs.
@@ -82,14 +110,16 @@ real aircraft, simulator model, or both.
   and holds only first-party links the maintainer approves. A banned link can never be
   allow-listed.
 - New: every list has a `basis` from the declared tags; `status`, `show_if`, `opens`, `controls`,
-  note and alias references all resolve.
+  note and alias references all resolve; `show_if` stays within its grammar; `fill` names are on
+  the app's list; step ids start with the pack id and follow the format above.
 
 ## Decision: text-overlap check (proposed, not built)
 `pack overlap <pack-dir> --refs <folder>`, with `just overlap` as the shortcut. Logic in
 `crates/pack`.
 
 - **References** are plain `.txt` files in a folder outside the repo. The tool refuses a folder
-  inside the repo. PDF extraction is done separately, so no new dependency is needed.
+  inside the repo. The folder must be private on the machine that runs the check and never synced
+  anywhere public. PDF extraction is done separately, so no new dependency is needed.
 - **Method:** lower-case, strip punctuation, collapse spaces, then flag any run of 8 or more words
   found in both. Reference text is held in memory only; no index is written.
 - **Two comparisons:** each prose field alone, and each list's step text and expected responses
@@ -118,7 +148,8 @@ real aircraft, simulator model, or both.
 and "cite it by name". Split "Never use, link or cite" in three: manufacturer manuals may be read
 wherever hosted; second-hand study material is never a basis; linking any banned site or
 second-hand material is banned. Airline SOPs stay banned. Add the overlap check and the
-`prior-release` and `draft` starting point.
+`prior-release` and `draft` starting point. State the step id format and that published ids never
+change.
 
 **`AGENTS.md`:** rewrite the first three content rules to match. Keep "never add images, PDFs or
 files". Add `just overlap` to the commands.
