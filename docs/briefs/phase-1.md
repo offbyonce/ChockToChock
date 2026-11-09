@@ -59,10 +59,11 @@ not `data.js` on its own.
    converter or the model, not by hand-editing generated YAML (unless a step is deliberately
    rewritten, which the report must list). Run the text-overlap check (0007) over the imported
    text before it is first committed.
-7. **Procedure validation.** Following the rules in decision 0007, check the pack list by list,
-   starting with power-up. Show the maintainer the differences found for each list and wait for
-   approval before changing the pack. Some sites may block automated reading. If so, say which
-   page, and the maintainer will read it and report back.
+7. **Procedure validation.** Following the rules in decision 0007, work list by list, starting
+   with power-up. Check each list against the legitimate sources in the private reference folder,
+   then give the maintainer a short question sheet covering only what those sources leave open or
+   disagree on. The maintainer answers from the FCOM in their own words. Show the differences found
+   for each list and wait for approval before changing the pack.
 8. **Parity report.** A table of every 3.0 step: new id, status (moved, merged, dropped), and
    reason for anything not moved one-for-one, plus a list of the words the converter changed
    to American spelling. Snapshot tests on the flattened pack.

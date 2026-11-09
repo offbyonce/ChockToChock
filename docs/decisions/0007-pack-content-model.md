@@ -25,8 +25,7 @@ links no step to a source, so per-step citations could not be carried over hones
   marks "confirm" start as `draft`.
 - **Imported 3.0 lists get basis `prior-release` and every step starts as `draft`.** Each list
   moves to a real basis and `checked` as the maintainer reviews it.
-- **Manufacturer manuals (FCOM, QRH, FCTM) may be read as references for accuracy, wherever the
-  copy is hosted, including the banned sites.** Facts only. Never copy text, tables, diagrams or
+- **The maintainer checks facts against the manufacturer's manuals. No manual text, link or citation enters the repo.** Facts only. Never copy text, tables, diagrams or
   layout, and never closely paraphrase. Write from our own flow structure, not line by line
   alongside a manual.
 - **Second-hand study material is not used as a basis at all, for quality reasons.** That covers
@@ -138,17 +137,29 @@ phase part records where it was first published. A removed step's id is retired 
 ## Procedure validation
 Added 2026-11-09.
 
-- **We read the FCOM and QRH, including copies online, to check that our steps are complete and in
-  the right order.** Read only. Never download, store, link or cite them, except text copies of
-  documents the maintainer obtained legitimately (public records such as NTSB dockets, accident
-  reports and FAA/EASA documents; vendor documentation the maintainer owns; files downloaded under
-  a site's normal terms), placed in the private overlap folder. FCOM and QRH copies of unknown
-  origin are never placed there.
+- **The private overlap folder holds only text copies of documents the maintainer obtained
+  legitimately** (public records such as NTSB dockets, accident reports and FAA/EASA documents;
+  vendor documentation the maintainer owns; files downloaded under a site's normal terms) and public
+  web pages that 3.0 cited, saved privately for the overlap check only. Those web pages are not
+  cross-checks and never a basis for a step. FCOM and QRH copies of unknown origin are never placed
+  there.
+- **Each list is first checked against the legitimate sources in that folder.** The iFly tutorial
+  is the main one, alongside the FAA, EASA and accident documents and the cross-check checklists.
+  The work goes list by list, starting with power-up.
+- **The maintainer reads the FCOM and QRH.** Each list then gets a short question sheet covering
+  only what those sources leave open or disagree on, and the maintainer answers from the FCOM in
+  their own words.
+- **Manuals (FCOM, QRH, FCTM) are never downloaded, stored, linked or cited, in the repo or the
+  private folders.**
 - **Findings are recorded as facts in our own words,** for example: "AC power is not applied until
   the electric hydraulic pumps are OFF". Never copy wording, tables or layout.
-- **Community checklists on flightsim.to may be used as a cross-check only.** Where one differs
-  from our pack, confirm against the FCOM before changing anything. Never copy from them, and never
-  use them as the basis for a step.
+- **Public-record airline checklists and community checklists may be used as cross-checks,** as
+  well as in the overlap check. Never use them as the basis for a step, never copy them, and never
+  name the airline, the community authors or the specific checklists in the repo. Specifics go only
+  in the private findings log. A difference from our pack goes on the question sheet before
+  anything changes.
+- **FAA AC 120-71B and the NASA normal checklist report inform how we explain flows and checklists,
+  and our "why" notes.** Draw ideas only, never their wording.
 - **Fixes are written from our own flow structure,** explain why the step matters where useful (for
   example, ground-crew safety), and mark the step `checked`.
 - **The findings log lives in `~/private`, never in the repo.** The maintainer approves each fix
@@ -164,8 +175,8 @@ Added 2026-11-09.
 ## Changes needed (not yet made)
 **`CONTRIBUTING.md`:** replace "Every step needs a source" with `basis`, `status` and
 `sim_simplified`. Rewrite the manuals paragraph to the rules above, removing "legitimate access"
-and "cite it by name". Split "Never use, link or cite" in three: manufacturer manuals may be read
-wherever hosted; second-hand study material is never a basis; linking any banned site or
+and "cite it by name". Split "Never use, link or cite" in three: the maintainer checks facts against
+the manufacturer's manuals, and no manual text, link or citation enters the repo; second-hand study material is never a basis; linking any banned site or
 second-hand material is banned. Airline SOPs stay banned. Add the overlap check and the
 `prior-release` and `draft` starting point. State the step id format and that published ids never
 change.

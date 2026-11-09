@@ -53,8 +53,7 @@ simplifies the real aircraft. Content imported from the 3.0 checklist starts wit
 `prior-release` and every step as `draft`; each list moves to a real basis and `checked` when the
 maintainer reviews it.
 
-**Manufacturer manuals (FCOM, FCTM, QRH)** may be read as references for accuracy, wherever the
-copy is hosted. Facts and procedures (switch positions, the order of steps, how a system works)
+**Manufacturer manuals (FCOM, FCTM, QRH).** The maintainer checks facts against the manufacturer's manuals. No manual text, link or citation enters the repo. Facts and procedures (switch positions, the order of steps, how a system works)
 are not protected by copyright, but a manual's wording, tables, diagrams and layout are. So:
 
 - use facts only, and write every step and explanation in your own words;
