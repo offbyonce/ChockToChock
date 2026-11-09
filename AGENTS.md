@@ -78,6 +78,7 @@ aircraft. **The app never connects to the simulator** (decision 0006).
 | `apps/desktop/src-tauri` | Tauri shell: commands, capabilities, config |
 | `apps/desktop/ui` | Svelte 5 interface |
 | `packages/bindings` | Typed command wrappers; `src/generated` comes from Rust |
+| `tools/import-3x` | One-way converter from the 3.0 checklist to pack YAML |
 | `packs/` | Content packs (CC BY-NC-SA 4.0) |
 | `schemas/` | Generated JSON Schemas |
 | `docs/` | Plan, briefs, setup guide, decision records |

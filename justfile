@@ -43,11 +43,12 @@ lint:
 ui-build:
     pnpm --filter @chocktochock/ui build
 
-# All tests: Rust (nextest + doctests) and the interface (Vitest).
+# All tests: Rust (nextest + doctests), the interface (Vitest) and the 3.0 converter.
 test: ui-build
     cargo nextest run --workspace
     cargo test --doc --workspace
     pnpm --filter @chocktochock/ui test
+    node --test "tools/import-3x/*.test.js"
 
 # Regenerate the pack JSON Schemas from the Rust types.
 schemas:
