@@ -8,7 +8,8 @@ Converts the 3.0 checklist into pack YAML (Phase 1, step 4). It holds no 3.0 con
 is read from a local copy of the 3.0 source at run time, and its tests use invented data.
 
 ```sh
-node tools/import-3x/convert.js --src <3.0 src folder> --out <output folder> [--report <file.json>]
+node tools/import-3x/convert.js --src <3.0 src folder> [--out <output folder>] [--report <file.json>]
 ```
 
-The generated pack is not committed until the text-overlap check has run over it.
+The output defaults to a folder outside the repo. The converter refuses to write into `packs/`,
+because the validated pack there is edited by hand and regenerating it would overwrite that work.

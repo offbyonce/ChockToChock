@@ -49,7 +49,8 @@ not `data.js` on its own.
    the new features. `just ci` green.
 4. **Converter.** A small, re-runnable script (Node is fine, under `tools/import-3x/`) that reads
    the resolved 3.0 data, and the CDU walkthrough from `template.html`, from a path given on the
-   command line and writes YAML into `packs/ifly-737-max8/`. It carries over no sources or links.
+   command line and writes YAML to a folder outside the repo; it refuses to write into `packs/`. It
+   carries over no sources or links.
    Every list gets basis `prior-release`, every step `draft`, and the 10 "confirm" light notes
    `draft`. It normalizes imported 3.0 text to American spelling.
 5. **Build the text-overlap check.** `pack overlap` and `just overlap` as designed in decision

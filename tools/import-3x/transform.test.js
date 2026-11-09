@@ -7,7 +7,7 @@ import os from "node:os";
 import path from "node:path";
 import { test } from "node:test";
 
-import { writePack } from "./convert.js";
+import { assertOutsidePacks, DEFAULT_OUT, writePack } from "./convert.js";
 import { load3x, parseIntro } from "./load3x.js";
 import { slug, transform } from "./transform.js";
 
@@ -441,6 +441,29 @@ function fakeSource() {
   );
   return dir;
 }
+
+test("the converter refuses to write into packs/, and leaves it untouched", () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), "import-3x-repo-"));
+  const existing = path.join(root, "packs", "demo", "keep.yaml");
+  fs.mkdirSync(path.dirname(existing), { recursive: true });
+  fs.writeFileSync(existing, "keep");
+  try {
+    for (const out of [path.join(root, "packs", "demo"), path.join(root, "packs"), root]) {
+      assert.throws(() => writePack(out, result(), root), /refusing to write/);
+    }
+    assert.equal(fs.readFileSync(existing, "utf8"), "keep");
+    assert.doesNotThrow(() => assertOutsidePacks(path.join(root, "elsewhere"), root));
+  } finally {
+    fs.rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("the real packs folder is refused and the default output is outside it", () => {
+  const repo = path.resolve(import.meta.dirname, "../..");
+  assert.throws(() => assertOutsidePacks(path.join(repo, "packs", "ifly-737-max8")), /refusing to write/);
+  assert.doesNotThrow(() => assertOutsidePacks(DEFAULT_OUT));
+  assert.ok(!path.resolve(DEFAULT_OUT).startsWith(`${repo}${path.sep}`));
+});
 
 test("a source folder loads in build order and writes a pack", () => {
   const src = fakeSource();

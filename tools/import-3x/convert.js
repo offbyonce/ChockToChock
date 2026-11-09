@@ -4,6 +4,7 @@
 // Command line: converts a 3.0 source folder into a pack folder. See README.md.
 
 import fs from "node:fs";
+import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { parseArgs } from "node:util";
@@ -28,6 +29,32 @@ function header(schema, depth) {
   ];
 }
 
+const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
+
+/** Where a converted pack goes unless `--out` says otherwise. Outside the repo. */
+export const DEFAULT_OUT = path.join(os.tmpdir(), "import-3x", "ifly-737-max8");
+
+function resolveReal(target) {
+  const absolute = path.resolve(target);
+  const missing = [];
+  let existing = absolute;
+  while (!fs.existsSync(existing) && path.dirname(existing) !== existing) {
+    missing.unshift(path.basename(existing));
+    existing = path.dirname(existing);
+  }
+  return path.join(fs.realpathSync(existing), ...missing);
+}
+
+/** Throws if `out` is the repo's packs folder, inside it, or a folder that contains it. */
+export function assertOutsidePacks(out, root = REPO_ROOT) {
+  const target = resolveReal(out);
+  const packs = resolveReal(path.join(root, "packs"));
+  const within = (a, b) => a === b || a.startsWith(`${b}${path.sep}`);
+  if (within(target, packs) || within(packs, target)) {
+    throw new Error(`refusing to write to ${out}: validated packs are edited by hand, not regenerated`);
+  }
+}
+
 function writeFile(out, relative, text) {
   const target = path.join(out, relative);
   fs.mkdirSync(path.dirname(target), { recursive: true });
@@ -35,7 +62,8 @@ function writeFile(out, relative, text) {
 }
 
 /** Writes a converted pack into `out`, replacing anything there. */
-export function writePack(out, { manifest, files }) {
+export function writePack(out, { manifest, files }, root = REPO_ROOT) {
+  assertOutsidePacks(out, root);
   fs.rmSync(out, { recursive: true, force: true });
   writeFile(out, "pack.json", `${JSON.stringify(manifest, null, 2)}\n`);
   for (const [name, list] of files.lists) writeFile(out, name, toYaml(list, header("checklist", 1)));
@@ -61,13 +89,16 @@ function main() {
   const { values } = parseArgs({
     options: { src: { type: "string" }, out: { type: "string" }, report: { type: "string" } },
   });
-  if (!values.src || !values.out) {
-    throw new Error("usage: convert.js --src <3.0 src folder> --out <output folder> [--report <file.json>]");
+  if (!values.src) {
+    throw new Error(
+      "usage: convert.js --src <3.0 src folder> [--out <output folder>] [--report <file.json>]",
+    );
   }
   const result = transform(load3x(values.src), REWRITES);
-  writePack(values.out, result);
+  const out = values.out ?? DEFAULT_OUT;
+  writePack(out, result);
   if (values.report) fs.writeFileSync(values.report, `${JSON.stringify(result.report, null, 2)}\n`);
-  process.stdout.write(`wrote ${values.out}\n`);
+  process.stdout.write(`wrote ${out}\n`);
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
