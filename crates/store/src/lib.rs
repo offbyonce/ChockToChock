@@ -132,7 +132,7 @@ fn migrate(conn: &mut Connection) -> Result<(), StoreError> {
 
 #[cfg(test)]
 mod tests {
-    use checklist_core::{Checklist, Step, StepId};
+    use checklist_core::{Checklist, ListKind, Step, StepId};
 
     use super::*;
 
@@ -140,13 +140,12 @@ mod tests {
         Checklist {
             id: "p".into(),
             title: "P".into(),
-            steps: vec![Step {
-                id: StepId::new("a"),
-                text: "Battery".into(),
-                expect: "ON".into(),
-                note: None,
-                sources: vec![],
-            }],
+            kind: ListKind::Checklist,
+            basis: vec!["sim-observed".into()],
+            memory: false,
+            when: None,
+            why: None,
+            steps: vec![Step::new("a", "Battery", "ON")],
         }
     }
 

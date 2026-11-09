@@ -4,15 +4,29 @@
 //! JSON Schemas generated from the Rust types. The committed copies in `schemas/`
 //! give pack authors editor autocomplete; a test fails if they drift from the code.
 
-use checklist_core::Checklist;
+use checklist_core::{
+    AliasesFile, BriefingsFile, CduFile, Checklist, ControlsFile, FaultsFile, GlossaryFile,
+    LightsFile, NotesFile, Panel, PhasesFile, StartStatesFile,
+};
 
 use crate::manifest::PackManifest;
 
 /// `(file name, pretty JSON)` for every schema we publish.
 pub fn all() -> Vec<(&'static str, String)> {
     vec![
+        ("aliases.schema.json", render::<AliasesFile>()),
+        ("briefings.schema.json", render::<BriefingsFile>()),
+        ("cdu.schema.json", render::<CduFile>()),
         ("checklist.schema.json", render::<Checklist>()),
+        ("controls.schema.json", render::<ControlsFile>()),
+        ("faults.schema.json", render::<FaultsFile>()),
+        ("glossary.schema.json", render::<GlossaryFile>()),
+        ("lights.schema.json", render::<LightsFile>()),
+        ("notes.schema.json", render::<NotesFile>()),
         ("pack.schema.json", render::<PackManifest>()),
+        ("panel.schema.json", render::<Panel>()),
+        ("phases.schema.json", render::<PhasesFile>()),
+        ("start-states.schema.json", render::<StartStatesFile>()),
     ]
 }
 

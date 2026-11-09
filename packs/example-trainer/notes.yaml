@@ -1,0 +1,19 @@
+# SPDX-FileCopyrightText: 2026 offbyonce
+# SPDX-License-Identifier: CC-BY-NC-SA-4.0
+#
+# yaml-language-server: $schema=../../schemas/notes.schema.json
+# Invented content that shows the pack format. Not a real aircraft procedure.
+how:
+  - id: computer
+    steps:
+      - Open the first page.
+      - Enter each value.
+explain:
+  - id: computer-test
+    what: A self test of the flight computer.
+    why: A failed computer cannot be trusted.
+    success: The word PASS appears.
+    failure: A fault in the computer.
+    check: PASS shown
+    if_not: FAIL shown
+    if_not_detail: Restart the computer

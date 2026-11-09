@@ -1,0 +1,39 @@
+# SPDX-FileCopyrightText: 2026 offbyonce
+# SPDX-License-Identifier: CC-BY-NC-SA-4.0
+#
+# yaml-language-server: $schema=../../schemas/cdu.schema.json
+# Invented content that shows the pack format. Not a real aircraft procedure.
+walkthroughs:
+  - id: example-setup
+    title: Example set-up
+    pages:
+      - page: PERF
+        key: INIT
+        title: Enter the fuel
+        action:
+          - 'Type '
+          - {field: fuel_thousands, empty: the planned fuel}
+          - ' and press 1L.'
+        check:
+          - {field: zfw, if_set: Your weight is shown., empty: Enter your weight.}
+        note:
+          - Weights are in thousands of
+          - {field: weight_unit, before: ' ', after: ., empty: ' pounds.'}
+        screen:
+          title: [PERF]
+          page: ['1/1']
+          highlight: [1L]
+          scratchpad:
+            - {field: fuel_thousands}
+          rows:
+            - left_label: [FUEL]
+              left:
+                - {field: fuel_thousands, style: user, empty: '□□□.□', empty_style: data}
+              right_label: [RUNWAY]
+              right:
+                - {field: runway, before: RW, style: user, empty: '-----'}
+            - {}
+            - separator: ''
+              left: ['<INDEX']
+              right:
+                - {text: 'DONE>', style: accent}

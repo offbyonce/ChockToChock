@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AliasesFile",
+  "description": "`aliases.yaml`.",
+  "type": "object",
+  "properties": {
+    "aliases": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Alias"
+      }
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "aliases"
+  ],
+  "$defs": {
+    "Alias": {
+      "description": "An old step id and the step that replaced it.",
+      "type": "object",
+      "properties": {
+        "from": {
+          "type": "string"
+        },
+        "to": {
+          "$ref": "#/$defs/StepId"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "from",
+        "to"
+      ]
+    },
+    "StepId": {
+      "description": "A stable step id: `<pack-id>.<phase>.<short-name>`, e.g. `demo-aircraft.preflight.irs-mode`.\nAn id never changes once published, even if the step is reworded or moved to another phase.",
+      "type": "string"
+    }
+  }
+}

@@ -5,22 +5,39 @@
 # Invented content that shows the pack format. Not a real aircraft procedure.
 id: before-start
 title: Before start
+kind: checklist
+basis: [invented-example]
 steps:
   - id: example-trainer.before-start.battery
+    number: 1
     text: Battery switch
     expect: 'ON'
-    sources:
-      - title: Chock to Chock format example (invented)
+    controls: [battery]
+    quick: always
+    why: Gives the aircraft its first electrical power.
+    check: Voltage shown on the gauge
+    if_not: No voltage
+    if_not_detail: Check the battery is connected
+    status: checked
 
   - id: example-trainer.before-start.beacon
+    number: 2
     text: Beacon light
     expect: 'ON'
     note: Turn on before engine start.
-    sources:
-      - title: Chock to Chock format example (invented)
+    callout: Beacon on.
+    show_if: {option: power, equals: external}
+    status: draft
 
   - id: example-trainer.before-start.doors
+    number: 3
+    section: Cabin
     text: Doors
     expect: CLOSED
-    sources:
-      - title: Chock to Chock format example (invented)
+    show_if:
+      any_of:
+        - {option: power, one_of: [external, internal]}
+        - {option: start, equals: turnaround}
+    panel_lights:
+      battery: [BATT LOW]
+    sim_simplified: true

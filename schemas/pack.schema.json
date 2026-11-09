@@ -10,13 +10,39 @@
         "null"
       ]
     },
+    "aliases": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
     "attribution": {
-      "description": "Credit and terms notes, e.g. which aircraft vendor's variables are read.",
+      "description": "Credit and terms notes.",
       "type": "array",
       "default": [],
       "items": {
         "type": "string"
       }
+    },
+    "basisTags": {
+      "description": "The `basis` tags this pack's lists may use: kinds of material, never document names.",
+      "type": "array",
+      "default": [],
+      "items": {
+        "type": "string"
+      }
+    },
+    "briefings": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "cdu": {
+      "type": [
+        "string",
+        "null"
+      ]
     },
     "checklists": {
       "description": "Checklist files, in display order, relative to the pack folder.",
@@ -24,6 +50,12 @@
       "items": {
         "type": "string"
       }
+    },
+    "controls": {
+      "type": [
+        "string",
+        "null"
+      ]
     },
     "dependencies": {
       "description": "Other packs this one includes, with the versions it accepts.",
@@ -37,6 +69,18 @@
       "description": "App versions this pack works with, e.g. `>=0.1, <1`.",
       "type": "string"
     },
+    "faults": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "glossary": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
     "id": {
       "description": "Lower-case id with dots and dashes, e.g. `ifly-737-max8` or `lib.boeing-cdu`.",
       "type": "string"
@@ -48,14 +92,46 @@
       "description": "SPDX licence id for the pack content, e.g. `CC-BY-NC-SA-4.0`.",
       "type": "string"
     },
+    "lights": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
     "name": {
       "type": "string"
+    },
+    "notes": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "panels": {
+      "description": "Panel files, in display order.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "phases": {
+      "description": "Phases, stages and options. Required for an aircraft pack.",
+      "type": [
+        "string",
+        "null"
+      ]
     },
     "schemaVersion": {
       "description": "Pack format version; the app rejects packs newer than it understands.",
       "type": "integer",
       "format": "uint32",
       "minimum": 0
+    },
+    "startStates": {
+      "type": [
+        "string",
+        "null"
+      ]
     },
     "version": {
       "type": "string"

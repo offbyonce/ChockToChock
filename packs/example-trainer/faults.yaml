@@ -1,0 +1,10 @@
+# SPDX-FileCopyrightText: 2026 offbyonce
+# SPDX-License-Identifier: CC-BY-NC-SA-4.0
+#
+# yaml-language-server: $schema=../../schemas/faults.schema.json
+# Invented content that shows the pack format. Not a real aircraft procedure.
+faults:
+  - steps: [example-trainer.before-start.battery]
+    causes:
+      - The battery is flat
+    action: Connect external power and try again

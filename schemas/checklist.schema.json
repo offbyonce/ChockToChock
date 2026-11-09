@@ -1,11 +1,25 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Checklist",
-  "description": "An ordered list of steps for one phase of flight.",
+  "description": "An ordered list of steps: a checklist, a flow or a non-normal procedure.",
   "type": "object",
   "properties": {
+    "basis": {
+      "description": "Kinds of material this list was checked against, from the tags the pack declares.\nNever a document name or a link.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
     "id": {
       "type": "string"
+    },
+    "kind": {
+      "$ref": "#/$defs/ListKind"
+    },
+    "memory": {
+      "description": "Part of the memory items.",
+      "type": "boolean"
     },
     "steps": {
       "type": "array",
@@ -15,46 +29,393 @@
     },
     "title": {
       "type": "string"
+    },
+    "when": {
+      "description": "When to use this list.",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "why": {
+      "description": "Why this list matters.",
+      "type": [
+        "string",
+        "null"
+      ]
     }
   },
   "additionalProperties": false,
   "required": [
     "id",
     "title",
+    "kind",
+    "basis",
     "steps"
   ],
   "$defs": {
-    "SourceRef": {
-      "description": "Where a step's wording or value came from. Every step needs at least one.",
+    "AutoStart": {
+      "description": "Starts a timer from the time earlier steps were ticked.",
       "type": "object",
       "properties": {
-        "title": {
-          "description": "Human-readable name, e.g. \"iFly 737 MAX 8 tutorial, p. 12\".",
-          "type": "string"
+        "from": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/StepId"
+          }
         },
-        "url": {
-          "description": "Optional link. Checked against the blocked-source list by `pack check`.",
-          "type": [
-            "string",
-            "null"
-          ]
+        "pick": {
+          "$ref": "#/$defs/AutoStartPick"
         }
       },
       "additionalProperties": false,
       "required": [
-        "title"
+        "from",
+        "pick"
+      ]
+    },
+    "AutoStartPick": {
+      "description": "Which of several ticked steps starts a timer.",
+      "type": "string",
+      "enum": [
+        "earliest",
+        "latest"
+      ]
+    },
+    "FillField": {
+      "description": "The fixed list of flight values the app can fill in. Packs cannot add names; a new one\nneeds an app release.",
+      "oneOf": [
+        {
+          "type": "string",
+          "enum": [
+            "origin",
+            "destination",
+            "flight_number",
+            "route",
+            "runway",
+            "sid",
+            "transition",
+            "initial_altitude",
+            "squawk",
+            "ground_frequency",
+            "departure_frequency",
+            "qnh",
+            "heading",
+            "takeoff_flaps",
+            "landing_flaps",
+            "v1",
+            "vr",
+            "v2",
+            "vref",
+            "cg",
+            "stab_trim",
+            "autobrake",
+            "minimums",
+            "landing_altitude",
+            "minimum_takeoff_fuel",
+            "fuel",
+            "zfw",
+            "takeoff_weight",
+            "passengers",
+            "cargo",
+            "reserves",
+            "cost_index",
+            "cruise_level",
+            "cruise_wind",
+            "isa_deviation",
+            "transition_altitude",
+            "transition_level",
+            "weight_unit",
+            "utc_time",
+            "utc_date",
+            "route_leg1_via",
+            "route_leg1_to",
+            "route_leg2_via",
+            "route_leg2_to",
+            "route_leg3_via",
+            "route_leg3_to",
+            "route_leg4_via",
+            "route_leg4_to",
+            "route_leg5_via",
+            "route_leg5_to"
+          ]
+        },
+        {
+          "description": "A blank the pilot types in, with no linked value. Only valid in a step's `fill`.",
+          "type": "string",
+          "const": "manual"
+        },
+        {
+          "description": "Fuel in thousands, rounded up to the next tenth (calculated).",
+          "type": "string",
+          "const": "fuel_thousands"
+        },
+        {
+          "description": "Fuel plus zero fuel weight, in thousands (calculated).",
+          "type": "string",
+          "const": "gross_weight"
+        },
+        {
+          "description": "Outside air temperature at top of climb (calculated).",
+          "type": "string",
+          "const": "top_of_climb_oat"
+        },
+        {
+          "description": "Latitude and longitude of the departure airport.",
+          "type": "string",
+          "const": "origin_position"
+        },
+        {
+          "description": "The navigation database cycle (calculated).",
+          "type": "string",
+          "const": "nav_database"
+        },
+        {
+          "description": "The dates that cycle is active (calculated).",
+          "type": "string",
+          "const": "nav_active_dates"
+        },
+        {
+          "description": "How many pages the route legs need (calculated).",
+          "type": "string",
+          "const": "legs_page_count"
+        },
+        {
+          "description": "How many route entries do not fit on the first page (calculated).",
+          "type": "string",
+          "const": "route_legs_overflow"
+        }
+      ]
+    },
+    "HintPart": {
+      "description": "One piece of a hint shown beside a step, e.g. `GND` and the ground frequency.",
+      "type": "object",
+      "properties": {
+        "field": {
+          "$ref": "#/$defs/FillField"
+        },
+        "prefix": {
+          "description": "Literal text before the value, including any space, e.g. `SQUAWK `.",
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "prefix",
+        "field"
+      ]
+    },
+    "ListKind": {
+      "description": "What kind of list this is.",
+      "oneOf": [
+        {
+          "description": "Read and confirm after the work is done.",
+          "type": "string",
+          "const": "checklist"
+        },
+        {
+          "description": "A sequence of actions done from memory or by following along.",
+          "type": "string",
+          "const": "flow"
+        },
+        {
+          "description": "For abnormal situations.",
+          "type": "string",
+          "const": "non-normal"
+        }
+      ]
+    },
+    "OptionTest": {
+      "description": "One test against a pilot-chosen option. The options are declared by the pack.",
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "equals": {
+              "type": "string"
+            },
+            "option": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "option",
+            "equals"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "one_of": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "option": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "option",
+            "one_of"
+          ]
+        }
+      ]
+    },
+    "Quick": {
+      "description": "When a step still shows in quick mode.",
+      "type": "string",
+      "enum": [
+        "always",
+        "turnaround"
+      ]
+    },
+    "ShowIf": {
+      "description": "When something is shown. Deliberately small: tests combine one level deep, with no\nnegation, comparisons, step state or expressions.",
+      "anyOf": [
+        {
+          "$ref": "#/$defs/OptionTest"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "all_of": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/OptionTest"
+              }
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "all_of"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "any_of": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/OptionTest"
+              }
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "any_of"
+          ]
+        }
+      ]
+    },
+    "Status": {
+      "description": "How far a step has been reviewed.",
+      "type": "string",
+      "enum": [
+        "draft",
+        "checked"
       ]
     },
     "Step": {
       "description": "One challenge and response line.",
       "type": "object",
       "properties": {
+        "callout": {
+          "description": "What the crew says.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "check": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "check_detail": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "controls": {
+          "description": "Ids from the pack's controls file.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
         "expect": {
-          "description": "The expected response or position, e.g. \"NAV\". Always text, never a boolean.",
+          "description": "The expected response or position, e.g. \"NAV\". Always text, never a boolean.\n`___` marks a blank the pilot fills in.",
           "type": "string"
+        },
+        "explain": {
+          "description": "Id of a shared explanation.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "fill": {
+          "description": "One field per `___` in `expect`, in order.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/FillField"
+          }
+        },
+        "hint": {
+          "description": "Flight values shown beside the expected response.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/HintPart"
+          }
+        },
+        "how": {
+          "description": "Id of a shared \"how to do it\" note.",
+          "type": [
+            "string",
+            "null"
+          ]
         },
         "id": {
           "$ref": "#/$defs/StepId"
+        },
+        "if_not": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "if_not_detail": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "location": {
+          "description": "Overrides the location text of the step's first control.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "look_for": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "non_recall": {
+          "description": "In a memory list: read this step rather than recalling it.",
+          "type": "boolean"
+        },
+        "not_simulated": {
+          "description": "The simulator does not model this step, so it is left out of progress.",
+          "type": "boolean"
         },
         "note": {
           "description": "Optional note shown under the step.",
@@ -63,16 +424,102 @@
             "null"
           ]
         },
-        "sources": {
-          "type": "array",
-          "default": [],
-          "items": {
-            "$ref": "#/$defs/SourceRef"
+        "number": {
+          "description": "Printed number; absent for steps that are not numbered.",
+          "type": [
+            "integer",
+            "null"
+          ],
+          "format": "uint32",
+          "minimum": 0
+        },
+        "opens": {
+          "description": "Id of a CDU walkthrough this step can open.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "panel_lights": {
+          "description": "Panel lights this step refers to: control id, then light labels.",
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
+        },
+        "quick": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Quick"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "section": {
+          "description": "Starts a new titled section at this step.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "show_if": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ShowIf"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "sim_simplified": {
+          "description": "The simulator simplifies the real aircraft here.",
+          "type": "boolean"
+        },
+        "status": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Status"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "text": {
           "description": "The challenge, e.g. \"IRS mode selectors\".",
           "type": "string"
+        },
+        "timer": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Timer"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "walkaround": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/WalkaroundPoint"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "why": {
+          "type": [
+            "string",
+            "null"
+          ]
         }
       },
       "additionalProperties": false,
@@ -83,8 +530,64 @@
       ]
     },
     "StepId": {
-      "description": "A stable, namespaced step id such as `ifly-max8.preflight.irs-align`.",
+      "description": "A stable step id: `<pack-id>.<phase>.<short-name>`, e.g. `demo-aircraft.preflight.irs-mode`.\nAn id never changes once published, even if the step is reworded or moved to another phase.",
       "type": "string"
+    },
+    "Timer": {
+      "description": "A wait attached to a step.",
+      "type": "object",
+      "properties": {
+        "auto_start": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/AutoStart"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "label": {
+          "type": "string"
+        },
+        "note": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "seconds": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "seconds",
+        "label"
+      ]
+    },
+    "WalkaroundPoint": {
+      "description": "A stop on the walkaround drawing.",
+      "type": "object",
+      "properties": {
+        "x": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0
+        },
+        "y": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "x",
+        "y"
+      ]
     }
   }
 }

@@ -9,9 +9,11 @@ import App from "./App.svelte";
 const checklist = {
   id: "before-start",
   title: "Before start",
+  kind: "checklist",
+  basis: ["sim-observed"],
   steps: [
-    { id: "t.battery", text: "Battery switch", expect: "ON", sources: [] },
-    { id: "t.doors", text: "Doors", expect: "CLOSED", note: "Check all doors.", sources: [] },
+    { id: "t.battery", text: "Battery switch", expect: "ON" },
+    { id: "t.doors", text: "Doors", expect: "CLOSED", note: "Check all doors." },
   ],
 };
 

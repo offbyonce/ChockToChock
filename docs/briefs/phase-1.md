@@ -52,8 +52,9 @@ not `data.js` on its own.
    command line and writes YAML into `packs/ifly-737-max8/`. It carries over no sources or links.
    Every list gets basis `prior-release`, every step `draft`, and the 10 "confirm" light notes
    `draft`.
-5. *Removed by decision 0007: there are no per-step sources to clean up. The number is kept so
-   the other steps stay the same.*
+5. **Build the text-overlap check.** `pack overlap` and `just overlap` as designed in decision
+   0007, with tests. Add the `overlap` pre-commit hook to `lefthook.yml` in this step, once
+   `just overlap` exists.
 6. **Generate and check the pack.** Run the converter, then `pack check`. Fix errors in the
    converter or the model, not by hand-editing generated YAML (unless a step is deliberately
    rewritten, which the report must list). Run the text-overlap check (0007) over the imported

@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ControlsFile",
+  "description": "`controls.yaml`.",
+  "type": "object",
+  "properties": {
+    "controls": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Control"
+      }
+    },
+    "zones": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Zone"
+      }
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "zones",
+    "controls"
+  ],
+  "$defs": {
+    "Control": {
+      "description": "A switch, lever or other control a step refers to.",
+      "type": "object",
+      "properties": {
+        "function": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "location": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "zone": {
+          "description": "Absent for controls with no place in the cockpit, such as a briefing.",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "location",
+        "function"
+      ]
+    },
+    "Zone": {
+      "description": "An area of the cockpit.",
+      "type": "object",
+      "properties": {
+        "area": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "short_title": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "area",
+        "title",
+        "short_title"
+      ]
+    }
+  }
+}
