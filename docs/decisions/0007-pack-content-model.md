@@ -164,6 +164,9 @@ Added 2026-11-09.
   well as in the overlap check. Never use them as the basis for a step, never copy them, and never
   name the airline, the community authors or the specific checklists in the repo. Specifics go only
   in the private findings log.
+- **Public pilot forum discussions may be used as a cross-check for open-list items only.** Never
+  use them as a basis, and never name, link or copy them in the repo. Specifics go in the private
+  log.
 - **FAA AC 120-71B and the NASA normal checklist report inform how we explain flows and checklists,
   and our "why" notes.** Draw ideas only, never their wording.
 - **Fixes are written from our own flow structure** and explain why the step matters where useful
