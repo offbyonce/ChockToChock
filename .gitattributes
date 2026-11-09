@@ -1,0 +1,10 @@
+# SPDX-FileCopyrightText: 2026 offbyonce
+# SPDX-License-Identifier: MIT
+#
+# Every text file uses LF line endings on every OS. Without this, Windows checkouts
+# convert files to CRLF and the formatters (Biome, rustfmt) report every file as changed.
+* text=auto eol=lf
+
+*.png  binary
+*.ico  binary
+*.icns binary
