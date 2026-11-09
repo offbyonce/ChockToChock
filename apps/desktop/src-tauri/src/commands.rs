@@ -49,7 +49,7 @@ mod tests {
     fn example_checklist_loads() {
         let list = example_checklist().unwrap();
         assert_eq!(list.id, "before-start");
-        assert!(!list.steps.is_empty());
+        assert_eq!(list.steps.len(), 3, "the example pack has three steps");
     }
 
     #[test]
