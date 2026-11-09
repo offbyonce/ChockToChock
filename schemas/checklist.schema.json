@@ -469,6 +469,10 @@
           "description": "The simulator simplifies the real aircraft here.",
           "type": "boolean"
         },
+        "simulator_model": {
+          "description": "The step's note describes how the simulator behaves, not the real aircraft.",
+          "type": "boolean"
+        },
         "status": {
           "anyOf": [
             {

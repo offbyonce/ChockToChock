@@ -153,7 +153,9 @@ Added 2026-11-09.
 - **Every list is validated, by procedure section, starting with power-up.** Order and setting
   differences are fixed against the tutorial, and "why" notes are written in our own words.
 - **A step is marked `checked` when it clearly matches the vendor documentation.** `checked` does
-  not mean a pilot has reviewed it. Simulator-only behavior is labeled "simulator model".
+  not mean a pilot has reviewed it. Simulator-only behavior is labeled with `simulator_model: true`
+  on the step whose note describes it; `sim_simplified` keeps its narrower meaning, that the
+  simulator simplifies the real aircraft.
 - **Where sources conflict and the tutorial does not settle it, the step stays `draft`** and goes
   on an open list for an optional pilot review later.
 - **Findings are recorded as facts in our own words,** for example: "AC power is not applied until

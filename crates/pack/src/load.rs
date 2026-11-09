@@ -190,6 +190,13 @@ steps:
     }
 
     #[test]
+    fn simulator_model_is_read_separately_from_sim_simplified() {
+        let list = parse(&with_step_field("simulator_model: true")).unwrap();
+        assert!(list.steps[0].simulator_model);
+        assert!(!list.steps[0].sim_simplified);
+    }
+
+    #[test]
     fn list_needs_a_kind_and_a_basis() {
         let err = parse("id: p\ntitle: P\nbasis: [a]\nsteps: []\n").unwrap_err();
         assert!(err.contains("kind"), "{err}");

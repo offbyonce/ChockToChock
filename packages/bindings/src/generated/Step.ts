@@ -80,4 +80,8 @@ not_simulated?: boolean, status?: Status | null,
 /**
  * The simulator simplifies the real aircraft here.
  */
-sim_simplified?: boolean, };
+sim_simplified?: boolean, 
+/**
+ * The step's note describes how the simulator behaves, not the real aircraft.
+ */
+simulator_model?: boolean, };

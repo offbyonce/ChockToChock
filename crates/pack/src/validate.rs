@@ -442,6 +442,9 @@ fn check_step(step: &Step, idx: &Index, issues: &mut Vec<Issue>) {
     for control in step.controls.iter().chain(step.panel_lights.keys()) {
         idx.require_control(at, control, issues);
     }
+    if step.simulator_model && step.note.is_none() {
+        issues.push(error(at, "`simulator_model` needs a `note` to apply to"));
+    }
     let blanks = step.expect.matches(BLANK).count();
     if !step.fill.is_empty() && step.fill.len() != blanks {
         issues.push(error(
@@ -1217,6 +1220,15 @@ mod tests {
             "1 entries but `expect` has 2 blanks",
         );
         s.fill = vec![FillField::V1, FillField::Manual];
+        assert_eq!(messages(&pack(vec![s], vec![])), "");
+    }
+
+    #[test]
+    fn simulator_model_applies_to_a_note() {
+        let mut s = step("a");
+        s.simulator_model = true;
+        assert_flags(&pack(vec![s.clone()], vec![]), "needs a `note`");
+        s.note = Some("The guard closes by itself.".into());
         assert_eq!(messages(&pack(vec![s], vec![])), "");
     }
 

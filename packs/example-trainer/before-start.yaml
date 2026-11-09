@@ -25,6 +25,7 @@ steps:
     text: Beacon light
     expect: 'ON'
     note: Turn on before engine start.
+    simulator_model: true
     callout: Beacon on.
     show_if: {option: power, equals: external}
     status: draft

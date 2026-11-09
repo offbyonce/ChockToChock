@@ -184,6 +184,8 @@ data_types! {
     }
 
     /// One challenge and response line.
+    // These flags are independent facts from pack data; a step can have any mix of them.
+    #[allow(clippy::struct_excessive_bools)]
     pub struct Step {
         pub id: StepId,
         /// Printed number; absent for steps that are not numbered.
@@ -258,6 +260,9 @@ data_types! {
         /// The simulator simplifies the real aircraft here.
         #[serde(default, skip_serializing_if = "std::ops::Not::not")]
         pub sim_simplified: bool,
+        /// The step's note describes how the simulator behaves, not the real aircraft.
+        #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+        pub simulator_model: bool,
     }
 
     /// An ordered list of steps: a checklist, a flow or a non-normal procedure.
@@ -314,6 +319,7 @@ impl Step {
             not_simulated: false,
             status: None,
             sim_simplified: false,
+            simulator_model: false,
         }
     }
 }
