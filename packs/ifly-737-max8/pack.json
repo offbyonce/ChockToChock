@@ -8,7 +8,7 @@
   "engine": ">=0.1.0, <1.0.0",
   "license": "CC-BY-NC-SA-4.0",
   "attribution": ["A study aid for flight simulation. Not for real-world use."],
-  "basisTags": ["prior-release", "manufacturer-docs", "ifly-docs", "sim-observed"],
+  "basisTags": ["prior-release", "manufacturer-docs", "ifly-docs", "sim-observed", "cross-check"],
   "checklists": [
     "lists/cold-dark-if-cold-and-dark.yaml",
     "lists/gpu-power-establishing-gpu-power.yaml",
