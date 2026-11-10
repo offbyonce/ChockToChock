@@ -96,7 +96,7 @@ source: crates/pack-cli/tests/snapshot.rs
     "panels/aft.yaml",
     "panels/gl.yaml",
     "panels/mn.yaml",
-    "panels/con.yaml"
+    "panels/center-console.yaml"
   ],
   "lights": "lights.yaml",
   "faults": "faults.yaml",

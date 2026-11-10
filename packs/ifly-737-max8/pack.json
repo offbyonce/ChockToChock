@@ -79,7 +79,13 @@
   "phases": "phases.yaml",
   "controls": "controls.yaml",
   "notes": "notes.yaml",
-  "panels": ["panels/oh.yaml", "panels/aft.yaml", "panels/gl.yaml", "panels/mn.yaml", "panels/con.yaml"],
+  "panels": [
+    "panels/oh.yaml",
+    "panels/aft.yaml",
+    "panels/gl.yaml",
+    "panels/mn.yaml",
+    "panels/center-console.yaml"
+  ],
   "lights": "lights.yaml",
   "faults": "faults.yaml",
   "glossary": "glossary.yaml",
