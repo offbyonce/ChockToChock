@@ -59,6 +59,24 @@ function uniqueIn(taken, base) {
   return name;
 }
 
+const WINDOWS_RESERVED = /^(con|prn|aux|nul|com[1-9]|lpt[1-9])(\.|$)/i;
+
+/** File names for `{ id, title }` entries: the id, or a name from the title if Windows reserves it. */
+export function fileStems(entries) {
+  const taken = new Set(entries.map((entry) => entry.id));
+  return entries.map(({ id, title }) => {
+    if (!WINDOWS_RESERVED.test(id)) return id;
+    const named = slug(normalizeSpelling(title ?? ""));
+    return uniqueIn(taken, named && !WINDOWS_RESERVED.test(named) ? named : `${id}-file`);
+  });
+}
+
+/** Pairs each `{ id, title }` entry with its path in `folder`. */
+function filesIn(folder, entries) {
+  const stems = fileStems(entries);
+  return entries.map((entry, i) => [`${folder}/${stems[i]}.yaml`, entry]);
+}
+
 const POWER_GPU = { option: "power", equals: "gpu" };
 const POWER_APU = { option: "power", equals: "apu" };
 const START_COLD = { option: "start", equals: "cold" };
@@ -562,11 +580,11 @@ export function transform(input, rewrites = {}) {
   });
   const leaks = leakedMarkers(cduPages, input.cdu.table);
   const files = {
-    lists: lists.map((list) => [`lists/${list.id}.yaml`, list]),
+    lists: filesIn("lists", lists),
     phases: buildPhasesFile(ctx, phases),
     controls: buildControls(data, input.overview),
     notes: buildNotes(data),
-    panels: buildPanels(ctx).map((panel) => [`panels/${panel.id}.yaml`, panel]),
+    panels: filesIn("panels", buildPanels(ctx)),
     lights: buildLights(data),
     faults: buildFaults(ctx),
     glossary: { terms: Object.entries(data.GLOSS).map(([term, meaning]) => ({ term, meaning })) },

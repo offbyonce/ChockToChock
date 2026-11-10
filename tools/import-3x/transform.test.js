@@ -9,7 +9,7 @@ import { test } from "node:test";
 
 import { assertOutsidePacks, DEFAULT_OUT, writePack } from "./convert.js";
 import { load3x, parseIntro } from "./load3x.js";
-import { slug, transform } from "./transform.js";
+import { fileStems, slug, transform } from "./transform.js";
 
 // Invented data with the shape of the 3.0 structures. Not real procedures.
 function data() {
@@ -206,6 +206,26 @@ function input() {
 
 const result = () => transform(input());
 const flow = (r) => r.files.lists[0][1];
+
+test("file names avoid names Windows reserves", () => {
+  assert.deepEqual(fileStems([{ id: "oh", title: "Overhead" }]), ["oh"]);
+  assert.deepEqual(fileStems([{ id: "con", title: "Center console" }]), ["center-console"]);
+  assert.deepEqual(fileStems([{ id: "LPT1", title: "First" }]), ["first"]);
+  assert.deepEqual(fileStems([{ id: "com9.x", title: "Ninth" }]), ["ninth"]);
+  // The title is reserved too, or is missing.
+  assert.deepEqual(fileStems([{ id: "nul", title: "Aux" }]), ["nul-file"]);
+  assert.deepEqual(fileStems([{ id: "prn" }]), ["prn-file"]);
+  // The name from the title is already taken.
+  assert.deepEqual(
+    fileStems([
+      { id: "aux", title: "Center" },
+      { id: "center", title: "Other" },
+    ]),
+    ["center-2", "center"],
+  );
+  // COM0 and longer names are not reserved.
+  assert.deepEqual(fileStems([{ id: "com0" }, { id: "console" }]), ["com0", "console"]);
+});
 
 test("slugs are lower-case and cut at a word boundary", () => {
   assert.equal(slug("A/P & A/T Switch"), "a-p-a-t-switch");
