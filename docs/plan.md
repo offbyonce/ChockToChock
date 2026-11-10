@@ -105,3 +105,6 @@ features, and anything needing a sim connection. The reason for each is in decis
 - Low-severity Dependabot alert on the default branch (check and fix or document).
 - `pnpm/action-setup@v4` warns about running on an old Node version; move to a newer release.
 - Updater signing key: generate and back up before the first release (0005).
+- Add `reuse lint` to `just ci`, with a clear message when the tool is missing.
+- Download EASA AD 2021-0039R2 when EASA's site is back.
+- Pilot review of the procedure open list.
