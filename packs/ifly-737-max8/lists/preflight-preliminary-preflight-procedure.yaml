@@ -655,7 +655,7 @@ steps:
     expect: OUT
     controls:
       - stabout
-    why: "Shows the autopilot could not set the trim it needed."
+    why: "On the ground it points to a partial flight control computer failure. In flight, the autopilot could not set the trim it needed."
     check: Light OUT
     status: checked
   - id: ifly-737-max8.preflight.flight-instruments-pfd-and-nd

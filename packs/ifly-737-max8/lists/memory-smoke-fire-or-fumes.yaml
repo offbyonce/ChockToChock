@@ -10,7 +10,7 @@ basis:
   - prior-release
 memory: true
 when: "Smoke, fire or fumes in the passenger cabin or flight deck."
-why: "Protect yourself first, then communicate and remove the source. A diversion may be needed."
+why: "Simulator training only. Not for real-world use. Protect yourself first, then communicate and remove the source. A diversion may be needed."
 steps:
   - id: ifly-737-max8.memory.oxygen-masks-and-regulators-if-required
     number: 1

@@ -190,6 +190,7 @@ phases:
     title: Memory items
     reference: true
     intro:
+      - text: Simulator training only. Not for real-world use.
       - heading: What these are
         text: Steps for events so urgent there is no time to read a checklist. You learn them by heart and do them in order.
       - heading: When to use them

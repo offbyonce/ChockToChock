@@ -12,7 +12,7 @@ steps:
   - id: ifly-737-max8.landing.flap-lever
     number: 1
     text: FLAP LEVER
-    expect: "EXTEND PER SPEED SCHEDULE"
+    expect: "EXTEND PER SPEED SCHEDULE. BE STABILIZED BY 1,000 FT IMC OR 500 FT VMC"
     controls:
       - flaplever
       - speedt

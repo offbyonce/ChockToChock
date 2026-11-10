@@ -9,7 +9,7 @@ kind: non-normal
 basis:
   - prior-release
 when: "Cabin altitude cannot be controlled above 14,000 ft, or a rapid descent is needed."
-why: Get down to breathable air as quickly as is safe.
+why: "Simulator training only. Not for real-world use. Get down to breathable air as quickly as is safe."
 steps:
   - id: ifly-737-max8.quick-reference.emergency-descent
     number: 1

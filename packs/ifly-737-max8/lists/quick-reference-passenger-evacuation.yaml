@@ -9,7 +9,7 @@ kind: non-normal
 basis:
   - prior-release
 when: "On the captain's command. The FO reads and the captain does each step."
-why: "Stop the airplane, shut down, depressurize the cabin and start the evacuation."
+why: "Simulator training only. Not for real-world use. Stop the airplane, shut down, depressurize the cabin and start the evacuation."
 steps:
   - id: ifly-737-max8.quick-reference.parking-brake
     number: 1

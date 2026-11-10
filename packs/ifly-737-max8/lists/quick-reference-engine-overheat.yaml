@@ -9,7 +9,7 @@ kind: non-normal
 basis:
   - prior-release
 when: ENG OVERHEAT light.
-why: "Reducing thrust may clear the overheat. If not, treat it as an engine fire."
+why: "Simulator training only. Not for real-world use. Reducing thrust may clear the overheat. If not, treat it as an engine fire."
 steps:
   - id: ifly-737-max8.quick-reference.autothrottle-if-engaged-engine-overheat
     number: 1

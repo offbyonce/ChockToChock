@@ -17,7 +17,7 @@ links no step to a source, so per-step citations could not be carried over hones
 - **No per-step citations and no URLs to third-party material in the repo.** The 3.0 reference
   list does not carry over. `SourceRef` and `sources:` are removed.
 - **Each list has a `basis`** naming only the kind of material it was checked against, for
-  example `manufacturer-docs`, `ifly-docs`, `sim-observed`. No document names or links. A pack
+  example `manufacturer-docs`, `ifly-docs`, `regulator-docs`, `sim-observed`. No document names or links. A pack
   declares its allowed tags in `pack.json`, so the engine names no aircraft. A list has one or
   more tags.
 - **Optional `status` of `draft` or `checked`** on steps and panel light notes, and a
@@ -170,6 +170,9 @@ Added 2026-11-09.
   copy them in the repo. Specifics go in the private log.
 - **FAA AC 120-71B and the NASA normal checklist report inform how we explain flows and checklists,
   and our "why" notes.** Draw ideas only, never their wording.
+- **Memory items and non-normal procedures may follow the wording of public regulatory documents
+  (such as FAA airworthiness directives) where exact wording matters for recall.** Wording from any
+  other source is still never copied.
 - **Fixes are written from our own flow structure** and explain why the step matters where useful
   (for example, ground-crew safety).
 - **The findings log and the open list live in `~/private`, never in the repo.** Each procedure

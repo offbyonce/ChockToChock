@@ -9,7 +9,7 @@ kind: non-normal
 basis:
   - prior-release
 when: The clacker sounds above VMO or MMO.
-why: Reduce speed to protect the structure.
+why: "Simulator training only. Not for real-world use. Reduce speed to protect the structure."
 steps:
   - id: ifly-737-max8.quick-reference.airspeed-overspeed
     number: 1

@@ -89,6 +89,8 @@ not `data.js` on its own.
 - Add CDU comparison tests for partly filled flight data. The converter's comparison covers only
   no flight data and full flight data.
 - The guided tour is app text and belongs here.
+- Show the notice "Simulator training only. Not for real-world use." once at first launch, covering
+  the whole app.
 
 **Phase 3:**
 

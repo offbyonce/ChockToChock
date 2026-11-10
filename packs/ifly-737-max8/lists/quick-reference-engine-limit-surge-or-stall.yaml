@@ -9,7 +9,7 @@ kind: non-normal
 basis:
   - prior-release
 when: "Engine indications exceed limits, or the engine surges or stalls."
-why: Less thrust often brings the engine back within limits.
+why: "Simulator training only. Not for real-world use. Less thrust often brings the engine back within limits."
 steps:
   - id: ifly-737-max8.quick-reference.autothrottle-if-engaged-engine-limit-surge
     number: 1

@@ -9,7 +9,7 @@ kind: non-normal
 basis:
   - prior-release
 when: APU fire warning.
-why: The fire switch shuts down the APU and the bottle puts out the fire.
+why: "Simulator training only. Not for real-world use. The fire switch shuts down the APU and the bottle puts out the fire."
 steps:
   - id: ifly-737-max8.quick-reference.apu-fire-switch
     number: 1
