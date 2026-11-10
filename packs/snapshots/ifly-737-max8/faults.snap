@@ -1,0 +1,227 @@
+---
+source: crates/pack-cli/tests/snapshot.rs
+---
+{
+  "faults": [
+    {
+      "steps": [
+        "ifly-737-max8.gpu-power.ground-power-switch"
+      ],
+      "causes": [
+        "The ground power cart is not connected yet",
+        "Ground power is connected but its voltage or frequency is out of limits"
+      ],
+      "action": "Request ground power on the EFB and wait for the blue GRD POWER AVAILABLE light"
+    },
+    {
+      "steps": [
+        "ifly-737-max8.preflight.irs"
+      ],
+      "causes": [
+        "The IRS has not finished aligning yet",
+        "The airplane moved while the IRS was aligning"
+      ],
+      "action": "Keep the airplane still and wait for the ALIGN lights to go out"
+    },
+    {
+      "steps": [
+        "ifly-737-max8.preflight.yaw-damper-switch"
+      ],
+      "causes": [
+        "The FLT CONTROL B switch is not ON",
+        "Hydraulic system B has no pressure yet"
+      ],
+      "action": "Check FLT CONTROL B and system B pressure, then switch the yaw damper off and on"
+    },
+    {
+      "steps": [
+        "ifly-737-max8.preflight.window-heat-switches"
+      ],
+      "causes": [
+        "That window got too hot and its heater cut out",
+        "Power to that window heater was interrupted"
+      ],
+      "action": "Switch that window heat OFF, wait a few minutes, then ON again"
+    },
+    {
+      "steps": [
+        "ifly-737-max8.preflight.oxygen"
+      ],
+      "causes": [
+        "The crew oxygen cylinder valve is not fully open",
+        "A leak in your mask or its supply hose"
+      ],
+      "action": "Do not take off until the crew oxygen is fixed"
+    },
+    {
+      "steps": [
+        "ifly-737-max8.before-start.door-lights"
+      ],
+      "causes": [
+        "That door is not fully closed and latched",
+        "Ground crew are still using that door, for example a hold or service door"
+      ],
+      "action": "Have the door closed, and check the light is out before pushback"
+    },
+    {
+      "steps": [
+        "ifly-737-max8.before-start.fuel-pump-switches"
+      ],
+      "causes": [
+        "The center tank is empty, or holds too little fuel for the pumps"
+      ],
+      "action": "Switch both center pumps OFF and use the wing tanks"
+    },
+    {
+      "steps": [
+        "ifly-737-max8.before-start.electric-hydraulic-pump-switches"
+      ],
+      "causes": [
+        "That electric pump has failed or overheated",
+        "The fluid in that hydraulic system is low"
+      ],
+      "action": "Check the hydraulic quantity and the OVERHEAT light, and do not push back without pressure in both systems"
+    },
+    {
+      "steps": [
+        "ifly-737-max8.engine-start.engine-1-start-switch",
+        "ifly-737-max8.engine-start.engine-1-start-switch-engine-start"
+      ],
+      "causes": [
+        "The start valve did not open",
+        "No air is reaching the starter, for example the APU bleed is off"
+      ],
+      "action": "Run the aborted engine start checklist: start switch OFF"
+    },
+    {
+      "steps": [
+        "ifly-737-max8.engine-start.engine-2-start-switch",
+        "ifly-737-max8.engine-start.engine-2-start-switch-engine-start"
+      ],
+      "causes": [
+        "The start valve did not open",
+        "No air is reaching the starter, for example the APU bleed is off"
+      ],
+      "action": "Run the aborted engine start checklist: start switch OFF"
+    },
+    {
+      "steps": [
+        "ifly-737-max8.engine-start.engine-1-start-lever"
+      ],
+      "causes": [
+        "The igniters did not fire, so the fuel did not light",
+        "Too much fuel for the airflow, which leads to a hot start"
+      ],
+      "action": "Run the aborted engine start checklist: start lever to CUTOFF"
+    },
+    {
+      "steps": [
+        "ifly-737-max8.engine-start.engine-2-start-lever"
+      ],
+      "causes": [
+        "The igniters did not fire, so the fuel did not light",
+        "Too much fuel for the airflow, which leads to a hot start"
+      ],
+      "action": "Run the aborted engine start checklist: start lever to CUTOFF"
+    },
+    {
+      "steps": [
+        "ifly-737-max8.engine-start.motoring-indication",
+        "ifly-737-max8.engine-start.motoring-indication-engine-start"
+      ],
+      "causes": [
+        "The engine is still hot from its last run, so motoring takes longer"
+      ],
+      "action": "Keep the engine motoring and do not lift the start lever until it clears"
+    },
+    {
+      "steps": [
+        "ifly-737-max8.engine-start.fuel-flow-and-egt",
+        "ifly-737-max8.engine-start.fuel-flow-and-egt-engine-start"
+      ],
+      "causes": [
+        "The igniters did not fire, so the fuel did not light",
+        "Fuel is not reaching the engine, for example a fuel valve is still closed"
+      ],
+      "action": "Let the EEC stop the start. If it does not, run the aborted engine start checklist"
+    },
+    {
+      "steps": [
+        "ifly-737-max8.before-taxi.engine-generator-switches"
+      ],
+      "causes": [
+        "That generator's power is not yet within limits",
+        "That generator drive has failed or was disconnected"
+      ],
+      "action": "Switch the generator on again. If the light stays on, keep the APU powering that bus and check the DRIVE light"
+    },
+    {
+      "steps": [
+        "ifly-737-max8.before-taxi.generators"
+      ],
+      "causes": [
+        "That generator's power is not yet within limits",
+        "That generator drive has failed or was disconnected"
+      ],
+      "action": "Switch the generator on again. If the light stays on, keep the APU powering that bus and check the DRIVE light"
+    },
+    {
+      "steps": [
+        "ifly-737-max8.before-taxi.flap-lever"
+      ],
+      "causes": [
+        "The flaps are still moving to the new setting",
+        "A fault in the flap drive, such as an asymmetry"
+      ],
+      "action": "Wait for the flaps to stop. If they still disagree, do not take off until it is sorted out"
+    },
+    {
+      "steps": [
+        "ifly-737-max8.cruise.center-fuel-pumps"
+      ],
+      "causes": [
+        "The center tank is nearly empty and only one pump has run dry so far"
+      ],
+      "action": "Keep both center pumps on until both lights are on, then switch both OFF"
+    },
+    {
+      "steps": [
+        "ifly-737-max8.approach.app-mcp"
+      ],
+      "causes": [
+        "The wrong ILS frequency or course is set",
+        "You are outside the capture area, for example too far off the course or above the glideslope"
+      ],
+      "action": "Check the frequency, course and identifier, and fly a proper intercept"
+    },
+    {
+      "steps": [
+        "ifly-737-max8.landing.landing-gear-lever",
+        "ifly-737-max8.landing.landing-gear-lever-before-landing",
+        "ifly-737-max8.landing.landing-gear-lever-before-landing-2"
+      ],
+      "causes": [
+        "The gear is still moving",
+        "A gear leg is not down and locked"
+      ],
+      "action": "Go around, then run the gear checklist"
+    },
+    {
+      "steps": [
+        "ifly-737-max8.landing-roll.speedbrake"
+      ],
+      "causes": [
+        "The speedbrake was not armed",
+        "The thrust levers are not fully at idle"
+      ],
+      "action": "Raise the speedbrake lever by hand"
+    },
+    {
+      "steps": [
+        "ifly-737-max8.landing.autopilot-and-autothrottle"
+      ],
+      "causes": [],
+      "action": "Go around"
+    }
+  ]
+}

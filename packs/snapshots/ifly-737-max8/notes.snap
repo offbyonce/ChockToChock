@@ -1,0 +1,477 @@
+---
+source: crates/pack-cli/tests/snapshot.rs
+---
+{
+  "how": [
+    {
+      "id": "crew",
+      "steps": [
+        "Keep the mask stowed with the doors closed. Note the crew oxygen pressure.",
+        "Push and hold RESET/TEST. A yellow cross shows briefly in the flow indicator.",
+        "Still holding, push and hold EMERGENCY/TEST for 5 seconds. The yellow cross stays on.",
+        "Pressure should not drop more than 100 psi. Release both, and the cross goes out.",
+        "Set the NORMAL/100% lever to 100% and confirm pressure is enough for the flight."
+      ]
+    },
+    {
+      "id": "fire",
+      "steps": [
+        "Hold the OVHT/DET test switch to FAULT/INOP. MASTER CAUTION, OVHT/DET, FAULT and APU DET INOP light.",
+        "Hold it to OVHT/FIRE. The bell sounds, and the APU horn sounds in the wheel well.",
+        "Master FIRE WARN, MASTER CAUTION, OVHT/DET, the engine and APU fire switches, ENG OVERHEAT and WHEEL WELL lights come on.",
+        "Press master FIRE WARN to silence the bell.",
+        "Move EXTINGUISHER TEST to 1, then 2. Three green lights show each time."
+      ]
+    },
+    {
+      "id": "cargo",
+      "steps": [
+        "Push the CARGO FIRE TEST switch.",
+        "The fire bell sounds, and master FIRE WARN and the FWD and AFT cargo fire lights come on.",
+        "The bottle DISCH light and the green extinguisher test lights also show."
+      ]
+    },
+    {
+      "id": "mach",
+      "steps": [
+        "Push each MACH AIRSPEED WARNING TEST switch, one at a time.",
+        "The clacker sounds for each one."
+      ]
+    },
+    {
+      "id": "stall",
+      "steps": [
+        "Push and hold each STALL WARNING TEST switch, one at a time.",
+        "The matching control column vibrates.",
+        "The AC transfer buses must have been powered for up to 4 minutes.",
+        "With hydraulics off, drooping leading edge flaps can fail the test. Get clearance, turn the system B electric pump ON, retract the flaps, repeat, then turn the pump OFF."
+      ]
+    },
+    {
+      "id": "ltest",
+      "steps": [
+        "Set the LIGHTS switch to TEST. Check that the lights come on, then return it to BRT.",
+        "Hold the disengage light test to 1. A/P, A/T and FMC show steady amber.",
+        "Hold it to 2. A/P and A/T show steady red, FMC steady amber."
+      ]
+    },
+    {
+      "id": "gpws",
+      "steps": [
+        "Press the SYS TEST switch briefly. The test only runs on the ground.",
+        "BELOW G/S and GPWS INOP light. PULL UP and WINDSHEAR show.",
+        "TERR FAIL, TERR TEST and a test pattern appear on the ND.",
+        "GLIDE SLOPE, PULL UP, WINDSHEAR and CAUTION TERRAIN aurals sound."
+      ]
+    },
+    {
+      "id": "irs",
+      "steps": [
+        "Turn both selectors to OFF, then NAV.",
+        "ON DC flashes briefly, then ALIGN comes on.",
+        "Enter your position on the CDU POS INIT page.",
+        "Alignment takes about 5 to 17 minutes depending on latitude. The iFly settings can shorten it."
+      ]
+    },
+    {
+      "id": "cdu",
+      "steps": [
+        "IDENT: check airplane, engines and database.",
+        "POS INIT: enter position, airport and time.",
+        "RTE: enter origin, destination, runway and flight number. Load the route, ACTIVATE and EXEC.",
+        "DEP/ARR: select the departure.",
+        "LEGS: clear any discontinuities, then EXEC.",
+        "PERF INIT: enter weights, reserves, cost index and cruise altitude.",
+        "N1 LIMIT: set temperature and takeoff thrust. The MAX also offers bump thrust and derates.",
+        "TAKEOFF REF: enter CG for the trim value, then set flaps and V-speeds until PRE-FLT COMPLETE shows."
+      ]
+    },
+    {
+      "id": "n1",
+      "steps": [
+        "Compare the N1 bugs with the green reference N1 readouts on the engine display.",
+        "Check that they agree with the CDU value."
+      ]
+    },
+    {
+      "id": "mcp",
+      "steps": [
+        "Set A/T ARM to ARM.",
+        "Set V2 in the IAS/MACH window, from the CDU TAKEOFF REF page.",
+        "Set the runway heading and the cleared initial altitude.",
+        "RNAV departure: press LNAV and VNAV. Otherwise press HDG SEL."
+      ]
+    },
+    {
+      "id": "press",
+      "steps": [
+        "Set the mode selector to AUTO.",
+        "Set FLT ALT to the cruise level and LAND ALT to the destination field elevation.",
+        "Check that AUTO FAIL, OFF SCHED DESCENT, ALTN and MANUAL are out."
+      ]
+    },
+    {
+      "id": "efis",
+      "steps": [
+        "Turn the inner BARO knob to the current QNH.",
+        "Choose RADIO or BARO on the outer MINS ring, then set the value with the inner knob.",
+        "Select the map mode, range and display options."
+      ]
+    },
+    {
+      "id": "baro",
+      "steps": [
+        "At transition altitude, press STD on each EFIS panel.",
+        "Check that the altimeters agree.",
+        "On descent, preselect the local QNH, then press STD to change to it."
+      ]
+    },
+    {
+      "id": "mins",
+      "steps": [
+        "Choose RADIO or BARO on the outer MINS selector.",
+        "Turn the inner knob to the chart value on each EFIS panel."
+      ]
+    },
+    {
+      "id": "pb",
+      "steps": [
+        "Press both toe brakes and pull the red parking brake handle, or click it in the sim.",
+        "Check that the PARK BRAKE LIGHT is on."
+      ]
+    },
+    {
+      "id": "gpu",
+      "steps": [
+        "Check that the airplane is stopped with the parking brake set.",
+        "Wait for the GRD POWER AVAILABLE light.",
+        "Move the GRD PWR switch down to ON. It springs back to center."
+      ]
+    },
+    {
+      "id": "efb",
+      "steps": [
+        "Open the iFly ground support menu or the EFB.",
+        "Select Ground Power, then Connect.",
+        "If the option is greyed out, the airplane is not stopped or the parking brake is off."
+      ]
+    },
+    {
+      "id": "apu",
+      "steps": [
+        "Check that the APU fire switch is in and fire tests are complete.",
+        "Hold the APU switch to START, then release. It returns to ON.",
+        "LOW OIL PRESSURE lights during the start.",
+        "When it stabilizes, APU GEN OFF BUS shows blue."
+      ]
+    },
+    {
+      "id": "apugen",
+      "steps": [
+        "Move each APU GEN switch to ON.",
+        "SOURCE OFF, TRANSFER BUS OFF and STANDBY PWR OFF should go out."
+      ]
+    },
+    {
+      "id": "disc",
+      "steps": [
+        "With the APU generators on the buses, use the same ground support menu to disconnect ground power."
+      ]
+    },
+    {
+      "id": "fuelflow",
+      "steps": [
+        "Move the FUEL FLOW switch to RESET. It returns to RATE."
+      ]
+    },
+    {
+      "id": "stab",
+      "steps": [
+        "Find the TRIM value on the CDU TAKEOFF REF page.",
+        "Trim until the indicator shows that value.",
+        "Confirm it is inside the green takeoff band."
+      ]
+    },
+    {
+      "id": "fltctl",
+      "steps": [
+        "Press SYS on the engine display control panel.",
+        "Move the wheel, column and rudder fully in each direction.",
+        "Each should move freely and return to center."
+      ]
+    },
+    {
+      "id": "recall",
+      "steps": [
+        "Press a system annunciator panel on the glareshield.",
+        "Review any alerts that show.",
+        "Press MASTER CAUTION to reset."
+      ]
+    },
+    {
+      "id": "apuland",
+      "steps": [
+        "Hold the APU switch to START, then release. It returns to ON.",
+        "LOW OIL PRESSURE lights during the start.",
+        "Let it stabilize before you shut down the engines."
+      ]
+    },
+    {
+      "id": "flapup",
+      "steps": [
+        "Retract one step at a time, using the green flap marks on the speed tape.",
+        "Do not start below acceleration height.",
+        "Move to flaps 1 at the flaps 5 speed, then UP at the flaps 1 speed.",
+        "Check that the indication agrees and no lights remain."
+      ]
+    },
+    {
+      "id": "flapdn",
+      "steps": [
+        "Extend one step at a time as speed reaches each mark on the speed tape.",
+        "Approaching the glideslope or final approach fix, call gear down and flaps 15, then arm the speedbrake.",
+        "Set landing flaps (at glideslope capture on an ILS), then run the Landing checklist."
+      ]
+    },
+    {
+      "id": "sbk",
+      "steps": [
+        "Lift the speedbrake lever into the ARMED detent.",
+        "Check that the green SPEED BRAKE ARMED light is on."
+      ]
+    },
+    {
+      "id": "ils",
+      "steps": [
+        "Tune the ILS frequency and set the course.",
+        "Press APP on the MCP. VOR/LOC and G/S show white on the FMA.",
+        "Glideslope captures after the localizer."
+      ]
+    },
+    {
+      "id": "rev",
+      "steps": [
+        "Check that the thrust levers are closed.",
+        "Raise the reverse levers to the interlock, hold light pressure until it releases, then apply reverse as needed.",
+        "Check the REV indications.",
+        "By 60 knots, start moving to reverse idle, and reach it before taxi speed.",
+        "Once the engines are at reverse idle, move the levers fully down."
+      ]
+    },
+    {
+      "id": "trim",
+      "steps": [
+        "Use the trim wheel handle on the control stand.",
+        "One unit of trim takes about 15 turns of the wheel.",
+        "Move toward the in-trim speed while trimming, because high loads make the wheel hard to turn.",
+        "Both pilots can work together if needed."
+      ]
+    },
+    {
+      "id": "gens",
+      "steps": [
+        "With both engines running, move each engine generator switch to ON.",
+        "Check that the engine GEN OFF BUS lights go out. APU GEN OFF BUS comes on blue.",
+        "The old power source drops off automatically."
+      ]
+    },
+    {
+      "id": "gens2",
+      "steps": [
+        "With the APU running, move each APU generator switch to ON before cutting off the engines.",
+        "Each switch takes that engine generator off its bus."
+      ]
+    }
+  ],
+  "explain": [
+    {
+      "id": "fire",
+      "what": "A test of the engine, APU and wheel well fire detection and warning systems.",
+      "why": "Fire detection has to be known good before you start the APU or engines.",
+      "success": "Bell, fire warning lights and fire switch lights, then green extinguisher lights.",
+      "failure": "A missing indication can mean a detection or test circuit fault.",
+      "check": "Bell and fire warning lights",
+      "check_detail": "Fire switch lights, then green extinguisher lights",
+      "if_not": "Indication missing",
+      "if_not_detail": "Possible detection or test circuit fault"
+    },
+    {
+      "id": "crew",
+      "what": "A check of the mask, regulator and crew oxygen supply.",
+      "why": "You need working oxygen immediately in a decompression or in smoke.",
+      "success": "Yellow cross in the flow indicator, and pressure sufficient for the flight.",
+      "failure": "A large pressure drop can mean the cylinder valve is not fully open.",
+      "check": "Yellow cross in the flow indicator",
+      "check_detail": "Pressure sufficient for the flight",
+      "if_not": "Large pressure drop",
+      "if_not_detail": "Cylinder valve may not be fully open"
+    },
+    {
+      "id": "mach",
+      "what": "A test of the overspeed warning.",
+      "why": "The clacker warns you when you exceed VMO or MMO.",
+      "success": "The clacker sounds for each switch.",
+      "check": "Clacker sounds",
+      "check_detail": "For each switch"
+    },
+    {
+      "id": "stall",
+      "what": "A test of the stick shaker on each side.",
+      "why": "The stick shaker is the primary warning of an approaching stall.",
+      "success": "The control column vibrates for each switch.",
+      "check": "Control column vibrates",
+      "check_detail": "For each switch"
+    },
+    {
+      "id": "gpws",
+      "what": "A self-test of the ground proximity warning system.",
+      "why": "GPWS warns of terrain and windshear when you may not see the danger.",
+      "success": "BELOW G/S, PULL UP and WINDSHEAR indications, a test pattern and aural alerts.",
+      "check": "BELOW G/S, PULL UP and WINDSHEAR",
+      "check_detail": "Test pattern and aural alerts"
+    },
+    {
+      "id": "cargo",
+      "what": "A test of the cargo fire detection and extinguishing system.",
+      "why": "Cargo holds cannot be reached in flight, so detection and suppression must work.",
+      "success": "Bell, fire warning lights and green extinguisher lights.",
+      "check": "Bell and fire warning lights",
+      "check_detail": "Green extinguisher lights"
+    },
+    {
+      "id": "irs",
+      "what": "Sets the inertial systems to navigate.",
+      "why": "The IRS supplies position, heading and attitude. It must align while the airplane is still.",
+      "success": "ALIGN light on, then off when alignment is complete.",
+      "failure": "Do not move the airplane during alignment.",
+      "check": "ALIGN light on, then off",
+      "check_detail": "Off when alignment is complete",
+      "if_not": "Still aligning",
+      "if_not_detail": "Do not move the airplane"
+    },
+    {
+      "id": "beacon",
+      "what": "The red rotating beacon.",
+      "why": "It warns people on the ground that engines are running or about to start.",
+      "success": "The switch is ON before engine start or any movement."
+    },
+    {
+      "id": "gen",
+      "what": "Moves the electrical load from the APU or ground power to the engines.",
+      "why": "Each generator switch connects that generator and automatically takes the old source off that bus, so the airplane stays powered. You do not turn the APU generator switches off yourself.",
+      "success": "Engine GEN OFF BUS lights go out. APU GEN OFF BUS comes on blue.",
+      "failure": "If an engine GEN OFF BUS light stays on, that generator is not supplying its bus.",
+      "check": "GEN OFF BUS lights OUT",
+      "check_detail": "APU GEN OFF BUS comes on blue",
+      "if_not": "GEN OFF BUS stays on",
+      "if_not_detail": "That generator is not supplying its bus"
+    },
+    {
+      "id": "apuoff",
+      "what": "Shuts down the APU once engines are supplying power and air.",
+      "why": "It saves fuel. Do this only after the engine generators are on and APU bleed air is off.",
+      "success": "APU GEN OFF BUS light out, and the airplane stays powered.",
+      "check": "APU GEN OFF BUS light OUT",
+      "check_detail": "Airplane stays powered"
+    },
+    {
+      "id": "packoff",
+      "what": "Turns off the air conditioning packs.",
+      "why": "Engine start needs bleed air, and packs would take air away from the starter.",
+      "success": "Both pack switches at OFF."
+    },
+    {
+      "id": "grd",
+      "what": "Opens the start valve so bleed air turns the engine.",
+      "why": "The engine must spin up before fuel is added.",
+      "success": "START VALVE OPEN alert, N2 rising and oil pressure rising.",
+      "failure": "If N2 does not rise, follow the Aborted Engine Start checklist.",
+      "check": "START VALVE OPEN alert",
+      "check_detail": "N2 and oil pressure rising",
+      "if_not": "N2 does not rise",
+      "if_not_detail": "Aborted Engine Start checklist"
+    },
+    {
+      "id": "lever",
+      "what": "Sends fuel and ignition to the engine.",
+      "why": "Fuel is added only when the engine is turning fast enough to light off safely.",
+      "success": "Fuel flow, then EGT rising.",
+      "failure": "If EGT does not rise or nears the limit, follow the Aborted Engine Start checklist.",
+      "check": "Fuel flow, then EGT rising",
+      "if_not": "EGT does not rise or nears the limit",
+      "if_not_detail": "Aborted Engine Start checklist"
+    },
+    {
+      "id": "pheat",
+      "what": "Heats the pitot and other air data probes.",
+      "why": "A frozen probe can give false airspeed and Mach. AUTO heats the probes whenever an engine runs.",
+      "success": "Probe heat lights out.",
+      "check": "Probe heat lights OUT"
+    },
+    {
+      "id": "aut",
+      "what": "Arms the rejected takeoff function of the autobrake.",
+      "why": "If you reject the takeoff, closing the thrust levers at high speed applies maximum braking automatically.",
+      "success": "Selector at RTO, and no AUTO BRAKE DISARM light.",
+      "check": "Selector at RTO",
+      "check_detail": "No AUTO BRAKE DISARM light after a few seconds"
+    },
+    {
+      "id": "fltc",
+      "what": "A check of pitch, roll and yaw controls.",
+      "why": "A jammed or reversed control is only safe to discover on the ground.",
+      "success": "Full, free movement that returns to center.",
+      "check": "Full, free movement",
+      "check_detail": "Returns to center"
+    },
+    {
+      "id": "stabt",
+      "what": "Sets the stabilizer for takeoff.",
+      "why": "Takeoff trim sets the pitch forces at rotation. Outside the green band triggers the warning. A wrong setting inside it does not, and can make rotation early or heavy.",
+      "success": "Indicator in the green band, matching the CDU value.",
+      "check": "Indicator in the green band",
+      "check_detail": "Matches the CDU value"
+    },
+    {
+      "id": "flp",
+      "what": "Sets the flaps for takeoff.",
+      "why": "Takeoff performance depends on the planned flap setting.",
+      "success": "Flap indication matches, with a green light.",
+      "failure": "Flaps outside the takeoff range trigger the warning when thrust is advanced. A wrong takeoff flap setting may not.",
+      "check": "Flap indication matches",
+      "check_detail": "Green light",
+      "if_not": "Indication disagrees with the lever",
+      "if_not_detail": "Recheck before takeoff, the warning may not catch it"
+    },
+    {
+      "id": "arm",
+      "what": "Arms the speedbrake to deploy on landing.",
+      "why": "Spoilers put the weight on the wheels, which makes the brakes far more effective.",
+      "success": "Green SPEED BRAKE ARMED light.",
+      "failure": "If it fails to deploy, raise the lever by hand after touchdown.",
+      "check": "Green SPEED BRAKE ARMED light",
+      "if_not": "ARMED light stays out",
+      "if_not_detail": "Raise the lever by hand on touchdown"
+    },
+    {
+      "id": "gearw",
+      "what": "Lowers the landing gear.",
+      "why": "The gear must be down and checked before landing, and it adds drag to slow down on approach.",
+      "success": "Three green lights.",
+      "failure": "The gear warning horn sounds if you are configured to land with gear up.",
+      "check": "Three green lights",
+      "if_not": "Fewer than three green",
+      "if_not_detail": "Gear not down and locked, go around"
+    },
+    {
+      "id": "fuelq",
+      "what": "Turns on the fuel boost pumps.",
+      "why": "Pumps feed fuel to the engines under pressure.",
+      "success": "Low pressure lights go out.",
+      "failure": "Turn center pumps off when the center tank is empty and the low pressure lights come on.",
+      "check": "LOW PRESSURE lights OUT",
+      "if_not": "Both center lights on",
+      "if_not_detail": "Center tank empty, center pumps OFF"
+    }
+  ]
+}
