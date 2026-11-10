@@ -47,6 +47,8 @@ aircraft. **The app never connects to the simulator** (decision 0006).
   you did not create.
 - Sign off every commit: `git commit -s`. Conventional Commit messages (`feat:`, `fix:`,
   `docs:`, `test:`, `chore:`, `ci:`, `pack(<id>):`).
+- Commit messages carry no session links or session ids (no Claude-Session or similar trailers) and
+  no machine names. Co-Authored-By lines are fine.
 - Run `just ci` before every push. If it fails, fix it; never skip hooks or disable checks.
 - Do not edit `.github/workflows/`, `deny.toml`, `lefthook.yml`, licenses or the decision records
   without the maintainer's explicit go-ahead.
