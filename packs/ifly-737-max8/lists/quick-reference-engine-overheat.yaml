@@ -27,7 +27,7 @@ steps:
     status: draft
   - id: ifly-737-max8.quick-reference.if-eng-overheat-light-stays-illuminated
     number: 3
-    text: IF ENG OVERHEAT LIGHT STAYS ILLUMINATED
+    text: "OVERHEAT LIGHT STILL ON"
     expect: "GO TO ENGINE FIRE, SEVERE DAMAGE OR SEPARATION"
     controls:
       - firesw

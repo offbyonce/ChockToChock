@@ -13,8 +13,8 @@ why: "Simulator training only. Not for real-world use. Discharge the bottle into
 steps:
   - id: ifly-737-max8.quick-reference.cargo-fire-armed-switch-affected-compartment
     number: 1
-    text: CARGO FIRE ARMED SWITCH (AFFECTED COMPARTMENT)
-    expect: "PUSH, VERIFY ARMED"
+    text: "ARM SWITCH FOR THE AFFECTED HOLD"
+    expect: "PUSH, CONFIRM ARMED"
     controls:
       - cargofire
     panel_lights:

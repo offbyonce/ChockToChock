@@ -63,8 +63,8 @@ steps:
     status: draft
   - id: ifly-737-max8.memory.if-cabin-altitude-is-controllable
     number: 7
-    text: IF CABIN ALTITUDE IS CONTROLLABLE
-    expect: "KEEP CONTROLLING IT MANUALLY. MASKS MAY COME OFF WITH CABIN ALTITUDE AT OR BELOW 10,000 FT"
+    text: "IF THE CABIN ALTITUDE RESPONDS"
+    expect: "STAY IN MANUAL. MASKS CAN COME OFF ONCE THE CABIN IS 10,000 FT OR LOWER"
     controls:
       - press
     non_recall: true

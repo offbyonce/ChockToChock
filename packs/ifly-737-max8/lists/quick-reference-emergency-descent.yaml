@@ -14,7 +14,7 @@ steps:
   - id: ifly-737-max8.quick-reference.emergency-descent
     number: 1
     text: EMERGENCY DESCENT
-    expect: "ANNOUNCE, ADVISE THE CABIN ON THE PA"
+    expect: "TELL THE CREW, THEN WARN THE CABIN ON THE PA"
     controls:
       - pa
     status: draft

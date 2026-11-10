@@ -27,7 +27,7 @@ steps:
   - id: ifly-737-max8.procedures.attitude
     number: 3
     text: ATTITUDE
-    expect: ROLL WINGS LEVEL AND ROTATE TOWARD 15 DEGREES
+    expect: "LEVEL THE WINGS AND PITCH TOWARD 15 DEGREES"
     controls:
       - column
     status: draft
@@ -48,7 +48,7 @@ steps:
   - id: ifly-737-max8.procedures.flaps-and-gear
     number: 6
     text: FLAPS AND GEAR
-    expect: DO NOT CHANGE UNTIL WINDSHEAR IS NO LONGER A FACTOR
+    expect: "LEAVE THEM UNTIL THE WINDSHEAR HAS PASSED"
     controls:
       - flaplever
     status: draft

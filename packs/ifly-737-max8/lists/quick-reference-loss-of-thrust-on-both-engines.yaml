@@ -38,22 +38,22 @@ steps:
     status: draft
   - id: ifly-737-max8.quick-reference.when-egt-decreases
     number: 4
-    text: WHEN EGT DECREASES
-    expect: START LEVERS (BOTH) TO IDLE DETENT
+    text: "ONCE EGT STARTS FALLING"
+    expect: "BOTH START LEVERS TO IDLE"
     controls:
       - slever
     status: draft
   - id: ifly-737-max8.quick-reference.if-egt-reaches-a-redline-or-does-not-rise-in-30
     number: 5
-    text: IF EGT REACHES A REDLINE OR DOES NOT RISE IN 30 SECONDS
-    expect: "AFFECTED START LEVER: CONFIRM, CUTOFF, THEN IDLE DETENT. REPEAT AS NEEDED"
+    text: "EGT AT REDLINE, OR FLAT FOR 30 SECONDS"
+    expect: "THAT START LEVER TO CUTOFF, THEN BACK TO IDLE. REPEAT IF NEEDED"
     controls:
       - engmon
     status: draft
   - id: ifly-737-max8.quick-reference.engine-acceleration
     number: 6
     text: ENGINE ACCELERATION
-    expect: "CAN BE VERY SLOW. IF N2 IS RISING AND EGT IS WITHIN LIMITS, DO NOT INTERRUPT THE START"
+    expect: "MAY BE VERY SLOW. LEAVE THE START ALONE WHILE N2 CLIMBS AND EGT STAYS IN LIMITS"
     controls:
       - engmon
     status: draft
