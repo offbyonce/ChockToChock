@@ -1,0 +1,102 @@
+# SPDX-FileCopyrightText: 2026 offbyonce and Chock to Chock contributors
+# SPDX-License-Identifier: CC-BY-NC-SA-4.0
+#
+# yaml-language-server: $schema=../../../schemas/checklist.schema.json
+# Imported from 3.0, then validated against vendor documentation. Edit by hand; do not regenerate.
+id: takeoff-line-up
+title: Line up
+kind: flow
+basis:
+  - ifly-docs
+steps:
+  - id: ifly-737-max8.takeoff.engine-warm-up
+    number: 1
+    text: ENGINE WARM-UP
+    expect: "MINIMUM 3 MINUTES AT IDLE, OIL AT LEAST 31C BEFORE TAKEOFF THRUST"
+    controls:
+      - engmon
+    note: Cold engines need time at idle before takeoff thrust.
+    why: Cold engines need time at idle
+    check: "3 minutes at idle"
+    check_detail: Oil at least 31C
+    timer:
+      seconds: 180
+      label: Engine warm-up
+      note: Starts by itself from your last start lever tick in Engine start.
+      auto_start:
+        from:
+          - ifly-737-max8.engine-start.engine-2-start-lever
+          - ifly-737-max8.engine-start.engine-1-start-lever
+        pick: latest
+    status: draft
+  - id: ifly-737-max8.takeoff.engine-start-switches
+    number: 2
+    text: ENGINE START SWITCHES
+    expect: CONT
+    controls:
+      - starts
+    why: Igniters ready against a flameout on takeoff
+    panel_lights:
+      starts:
+        - ENGINE START 1
+        - ENGINE START 2
+    status: draft
+  - id: ifly-737-max8.takeoff.position-light
+    number: 3
+    text: POSITION LIGHT
+    expect: "STROBE & STEADY"
+    controls:
+      - poslt
+    quick: always
+    why: Strobes on for takeoff and flight
+    status: checked
+  - id: ifly-737-max8.takeoff.takeoff-clearance
+    number: 4
+    text: TAKEOFF CLEARANCE
+    expect: OBTAIN
+    controls:
+      - atcclr
+    why: Request it and read it back
+    status: checked
+  - id: ifly-737-max8.takeoff.landing-lights
+    number: 5
+    text: LANDING LIGHTS
+    expect: "ON"
+    controls:
+      - landlt
+    quick: always
+    note: Turning on the landing lights shows others you are about to roll.
+    why: Shows others you are about to roll
+    status: checked
+  - id: ifly-737-max8.takeoff.transponder
+    number: 6
+    text: TRANSPONDER
+    expect: MODE SELECTOR TA/RA
+    controls:
+      - xpndr
+    quick: always
+    note: TA/RA gives you full TCAS alerts in the air.
+    why: Full TCAS alerts in the air
+    status: checked
+  - id: ifly-737-max8.takeoff.heading
+    number: 7
+    text: HEADING
+    expect: AGREES WITH THE RUNWAY
+    controls:
+      - pfdhdg
+    why: Last check of the runway
+    check: Heading matches the runway
+    status: checked
+  - id: ifly-737-max8.takeoff.runway-and-entry-point
+    number: 8
+    text: RUNWAY AND ENTRY POINT
+    expect: CORRECT RUNWAY AND ENTRY
+    controls:
+      - pfdhdg
+    hint:
+      - prefix: "RWY "
+        field: runway
+    note: "Check the runway signs and your position on the ND, to be sure you are lining up on the right runway."
+    why: Be sure it is the right runway
+    check: Runway signs and ND agree
+    status: checked

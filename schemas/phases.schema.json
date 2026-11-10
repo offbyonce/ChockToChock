@@ -1,0 +1,239 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PhasesFile",
+  "description": "`phases.yaml`.",
+  "type": "object",
+  "properties": {
+    "options": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/UserOption"
+      }
+    },
+    "phases": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Phase"
+      }
+    },
+    "stages": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Stage"
+      }
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "stages",
+    "phases"
+  ],
+  "$defs": {
+    "IntroParagraph": {
+      "description": "One paragraph of a phase's introduction.",
+      "type": "object",
+      "properties": {
+        "heading": {
+          "description": "A short lead-in shown before the text, e.g. \"When to use them\".",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "text": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "text"
+      ]
+    },
+    "OptionTest": {
+      "description": "One test against a pilot-chosen option. The options are declared by the pack.",
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "equals": {
+              "type": "string"
+            },
+            "option": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "option",
+            "equals"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "one_of": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "option": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "option",
+            "one_of"
+          ]
+        }
+      ]
+    },
+    "Phase": {
+      "description": "One part of the flight, holding its lists in order.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "intro": {
+          "description": "Shown at the top of the phase.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/IntroParagraph"
+          }
+        },
+        "lists": {
+          "description": "Ids of the lists in this phase.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "reference": {
+          "description": "Reference material, outside the normal flow of a flight.",
+          "type": "boolean"
+        },
+        "title": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "title",
+        "lists"
+      ]
+    },
+    "ShowIf": {
+      "description": "When something is shown. Deliberately small: tests combine one level deep, with no\nnegation, comparisons, step state or expressions.",
+      "anyOf": [
+        {
+          "$ref": "#/$defs/OptionTest"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "all_of": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/OptionTest"
+              }
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "all_of"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "any_of": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/OptionTest"
+              }
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "any_of"
+          ]
+        }
+      ]
+    },
+    "Stage": {
+      "description": "A group of phases, e.g. \"Preflight\".",
+      "type": "object",
+      "properties": {
+        "phases": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/StagePhase"
+          }
+        },
+        "title": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "title",
+        "phases"
+      ]
+    },
+    "StagePhase": {
+      "description": "A phase's place in a stage.",
+      "type": "object",
+      "properties": {
+        "phase": {
+          "type": "string"
+        },
+        "show_if": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ShowIf"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "phase"
+      ]
+    },
+    "UserOption": {
+      "description": "A choice the pilot makes that decides what is shown, e.g. the power source.",
+      "type": "object",
+      "properties": {
+        "default": {
+          "description": "The value used until the pilot chooses. Must be one of `values`.",
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "values": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "title",
+        "values",
+        "default"
+      ]
+    }
+  }
+}

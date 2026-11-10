@@ -1,0 +1,81 @@
+# SPDX-FileCopyrightText: 2026 offbyonce and Chock to Chock contributors
+# SPDX-License-Identifier: CC-BY-NC-SA-4.0
+#
+# yaml-language-server: $schema=../../../schemas/checklist.schema.json
+# Imported from 3.0, then validated against vendor documentation. Edit by hand; do not regenerate.
+id: after-takeoff-after-takeoff-climb-out
+title: After takeoff climb out
+kind: flow
+basis:
+  - ifly-docs
+steps:
+  - id: ifly-737-max8.after-takeoff.roll-mode
+    number: 1
+    text: ROLL MODE
+    expect: LNAV OR HDG SEL ABOVE 400 FT
+    controls:
+      - rollmode
+    quick: always
+    note: Select the lateral mode above 400 ft.
+    why: LNAV follows the FMC route. HDG SEL flies a heading you set
+    check: FMA shows the mode
+    panel_lights:
+      rollmode:
+        - HDG SEL
+        - LNAV
+    status: checked
+  - id: ifly-737-max8.after-takeoff.pressurization
+    number: 1
+    text: PRESSURIZATION
+    expect: CABIN ALTITUDE CLIMBING NORMALLY
+    controls:
+      - press
+    why: Pressurization working
+    check: Cabin altitude climbing normally
+    panel_lights:
+      press:
+        - CABIN ALT
+        - CABIN CLIMB
+    status: draft
+  - id: ifly-737-max8.after-takeoff.climb-thrust
+    number: 2
+    text: CLIMB THRUST
+    expect: "VERIFY AT ABOUT 1,500 FT"
+    controls:
+      - engmon
+    note: Thrust reduces automatically to climb thrust. Check N1 agrees.
+    why: Thrust reduces to climb automatically
+    check: N1 matches the CLB N1 limit
+    status: checked
+  - id: ifly-737-max8.after-takeoff.autopilot
+    number: 3
+    text: AUTOPILOT
+    expect: "CMD A OR B"
+    controls:
+      - ap
+    why: The autopilot then flies the modes shown on the FMA
+    check: "CMD shown on the PFD"
+    note: "The autopilot refuses to engage unless the airplane is trimmed and you are not pushing on the controls. There is a minimum height after takeoff below which the autopilot should not be engaged."
+    status: checked
+  - id: ifly-737-max8.after-takeoff.autobrake
+    number: 4
+    text: AUTOBRAKE
+    expect: OFF AFTER FLAP RETRACTION
+    controls:
+      - abrake
+    quick: always
+    note: "RTO is for the takeoff roll only. Turn it OFF after takeoff. Left at RTO, autobrake will not work on landing."
+    why: "Left at RTO, autobrake will not work on landing"
+    status: draft
+  - id: ifly-737-max8.after-takeoff.engine-start-switches
+    number: 5
+    text: ENGINE START SWITCHES
+    expect: OFF OR CONT AS CONDITIONS REQUIRE
+    controls:
+      - starts
+    why: "CONT in heavy rain, icing or severe turbulence. Otherwise OFF"
+    panel_lights:
+      starts:
+        - ENGINE START 1
+        - ENGINE START 2
+    status: draft

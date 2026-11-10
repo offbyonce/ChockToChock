@@ -1,0 +1,13 @@
+# SPDX-FileCopyrightText: 2026 offbyonce
+# SPDX-License-Identifier: CC-BY-NC-SA-4.0
+#
+# yaml-language-server: $schema=../../schemas/briefings.schema.json
+# Invented content that shows the pack format. Not a real aircraft procedure.
+briefings:
+  - id: departure
+    title: Departure briefing
+    mnemonic: RW
+    phase: before-start
+    items:
+      - {id: departure.runway, lead: R, rest: UNWAY, detail: Which runway and which intersection.}
+      - {id: departure.weather, lead: W, rest: EATHER}

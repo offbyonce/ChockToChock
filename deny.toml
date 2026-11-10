@@ -1,7 +1,7 @@
 # SPDX-FileCopyrightText: 2026 offbyonce
 # SPDX-License-Identifier: MIT
 #
-# cargo-deny: licences, security advisories, banned crates and allowed sources.
+# cargo-deny: licenses, security advisories, banned crates and allowed sources.
 # Run with `just deny` (part of `just ci`).
 
 [graph]
@@ -15,7 +15,7 @@ unmaintained = "workspace"
 ignore = []
 
 [licenses]
-# Permissive licences only. GPL-family licences are not allowed in the app.
+# Permissive licenses only. GPL-family licenses are not allowed in the app.
 allow = [
     "MIT",
     "Apache-2.0",

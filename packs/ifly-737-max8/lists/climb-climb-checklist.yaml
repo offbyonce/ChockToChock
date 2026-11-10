@@ -1,0 +1,41 @@
+# SPDX-FileCopyrightText: 2026 offbyonce and Chock to Chock contributors
+# SPDX-License-Identifier: CC-BY-NC-SA-4.0
+#
+# yaml-language-server: $schema=../../../schemas/checklist.schema.json
+# Imported from 3.0, then validated against vendor documentation. Edit by hand; do not regenerate.
+id: climb-climb-checklist
+title: Climb checklist
+kind: checklist
+basis:
+  - ifly-docs
+steps:
+  - id: ifly-737-max8.climb.exterior-lights
+    text: EXTERIOR LIGHTS
+    expect: "LANDING, TURNOFF, WING AND LOGO OFF"
+    controls:
+      - landlt
+      - turnoff
+      - winglt
+      - logo
+    why: Not needed in the climb
+    status: draft
+  - id: ifly-737-max8.climb.fasten-belts-selector-check
+    text: FASTEN BELTS SELECTOR
+    expect: AS DESIRED
+    controls:
+      - sblts
+    why: Belts off in smooth air if you choose
+    status: checked
+  - id: ifly-737-max8.climb.altimeters
+    text: ALTIMETERS
+    expect: STD AT TRANSITION ALTITUDE
+    controls:
+      - baro
+    hint:
+      - prefix: "TRANS ALT "
+        field: transition_altitude
+    quick: always
+    note: Pressing STD gives every airplane the same altitude reference above the transition altitude.
+    why: Same altitude reference above transition
+    how: baro
+    status: checked

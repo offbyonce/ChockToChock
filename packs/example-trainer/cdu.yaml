@@ -1,0 +1,55 @@
+# SPDX-FileCopyrightText: 2026 offbyonce
+# SPDX-License-Identifier: CC-BY-NC-SA-4.0
+#
+# yaml-language-server: $schema=../../schemas/cdu.schema.json
+# Invented content that shows the pack format. Not a real aircraft procedure.
+walkthroughs:
+  - id: example-setup
+    title: Example set-up
+    pages:
+      - page: PERF
+        key: INIT
+        title: Enter the fuel
+        action:
+          - 'Type '
+          - {field: fuel_thousands, empty: the planned fuel}
+          - ' and press 1L.'
+        check:
+          - when_known: [zfw]
+            show: [Your weight is shown.]
+            otherwise: [Enter your weight.]
+        note:
+          - Weights are in thousands of
+          - {field: weight_unit, before: ' ', after: ., empty: ' pounds.'}
+          - {route_legs: overflow, per_page: 5, before: ' ', after: ' more route rows follow.'}
+        screen:
+          title: [PERF]
+          page:
+            - '1/'
+            - {route_legs: pages, per_page: 5}
+          highlight: [1L]
+          scratchpad:
+            - {field: fuel_thousands}
+          rows:
+            - left_label: [FUEL]
+              left:
+                - {field: fuel_thousands, style: user, empty: '□□□.□', empty_style: data}
+              right_label: [RUNWAY]
+              right:
+                - when_known: [runway]
+                  show:
+                    - '<SEL> '
+                    - {field: runway, before: RW, style: user}
+                  otherwise:
+                    - {text: (list of runways), style: data}
+            - left_label: [VIA]
+              left:
+                - {field: route_leg, index: 1, part: via, style: user, empty: '------'}
+              right_label: [TO]
+              right:
+                - {field: route_leg, index: 1, part: to, style: user, empty: '------'}
+            - {}
+            - separator: ''
+              left: ['<INDEX']
+              right:
+                - {text: 'DONE>', style: accent}

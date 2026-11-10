@@ -19,10 +19,14 @@ aircraft. **The app never connects to the simulator** (decision 0006).
 
 **Content and sources** (full rules in `CONTRIBUTING.md`):
 
-- Every step has a source. Never use, link or cite: pirated FCOM/FCTM/QRH copies, Scribd,
-  Studylib, Brainscape, SlideShare, Manualshive, or archive.org copies of manuals.
-- A legitimately held manufacturer manual may be used to *check facts*; all wording, tables and
-  diagrams are our own. Never copy text, tables, diagrams or page layout from any manual.
+- No per-step citations and no URLs to third-party material (decision 0007). Each list has a
+  `basis` tag naming only the kind of material it was checked against. Never link the banned
+  sites or second-hand study material; `pack check` enforces this.
+- Facts are checked against vendor documentation. No manual text, link or citation enters the
+  repo. Facts only: never copy text, tables, diagrams or layout, never closely
+  paraphrase, and write from our own flow structure. Never store, upload, link or cite them.
+- Second-hand study material (Brainscape, SlideShare, AviationHunt, memory-item compilations) and
+  airline SOPs are never used as a basis.
 - Never add images, screenshots, PDFs or any files from an aircraft developer, manufacturer or
   simulator. Switch names, positions and values are facts and are fine.
 - Label systems content as real aircraft, simulator model, or both.
@@ -43,8 +47,10 @@ aircraft. **The app never connects to the simulator** (decision 0006).
   you did not create.
 - Sign off every commit: `git commit -s`. Conventional Commit messages (`feat:`, `fix:`,
   `docs:`, `test:`, `chore:`, `ci:`, `pack(<id>):`).
+- Commit messages carry no session links or session ids (no Claude-Session or similar trailers) and
+  no machine names. Co-Authored-By lines are fine.
 - Run `just ci` before every push. If it fails, fix it; never skip hooks or disable checks.
-- Do not edit `.github/workflows/`, `deny.toml`, `lefthook.yml`, licences or the decision records
+- Do not edit `.github/workflows/`, `deny.toml`, `lefthook.yml`, licenses or the decision records
   without the maintainer's explicit go-ahead.
 - Never commit secrets, keys, tokens, personal names or email addresses, machine names or IP
   addresses. Test fixtures are invented and use generic names ("Pilot").
@@ -55,10 +61,12 @@ aircraft. **The app never connects to the simulator** (decision 0006).
   and wait for the maintainer to confirm before starting the next one. Do not queue up extra
   tasks before the current one works.
 - **Ask before deciding** anything that changes the data model, the pack format, a public
-  interface, licences or the plan. Write a short decision record for choices that matter.
+  interface, licenses or the plan. Write a short decision record for choices that matter.
 - **Say plainly when unsure,** and verify instead of guessing: run the command, read the file,
   check the docs.
 - Keep explanations short and in plain language; say which machine a command runs on.
+- American English everywhere: code identifiers, pack field names, error messages, docs and pack content (color, behavior, license as a noun, optimize, pressurization).
+  Exceptions keep their exact spelling: SPDX license IDs, file names such as `LICENSE` and `LICENSES/`, and anything quoted from outside sources.
 
 ## Repository map
 
@@ -66,12 +74,13 @@ aircraft. **The app never connects to the simulator** (decision 0006).
 | --- | --- |
 | `crates/checklist-core` | Domain: checklists, steps, sessions. No I/O. |
 | `crates/pack` | Pack manifest, strict YAML loading (`serde-saphyr`), validation, schemas |
-| `crates/pack-cli` | `pack check <dir>`, `pack schema <dir>` |
+| `crates/pack-cli` | `pack check <dir>`, `pack schema <dir>`, `pack overlap <dir>` |
 | `crates/simbrief` | SimBrief OFP parsing |
 | `crates/store` | SQLite saved data and migrations |
 | `apps/desktop/src-tauri` | Tauri shell: commands, capabilities, config |
 | `apps/desktop/ui` | Svelte 5 interface |
 | `packages/bindings` | Typed command wrappers; `src/generated` comes from Rust |
+| `tools/import-3x` | One-way converter from the 3.0 checklist to pack YAML |
 | `packs/` | Content packs (CC BY-NC-SA 4.0) |
 | `schemas/` | Generated JSON Schemas |
 | `docs/` | Plan, briefs, setup guide, decision records |
@@ -84,6 +93,7 @@ just dev       # run the app (needs a desktop session)
 just test      # Rust and interface tests
 just packs     # validate every pack
 just ci        # everything; must pass before a push
+just overlap   # compare packs with private references (CHOCKTOCHOCK_OVERLAP_REFS)
 ```
 
 Rust is pinned in `rust-toolchain.toml` (1.99). Newer clippy versions add lints, so always run

@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "FaultsFile",
+  "description": "`faults.yaml`.",
+  "type": "object",
+  "properties": {
+    "faults": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Fault"
+      }
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "faults"
+  ],
+  "$defs": {
+    "Fault": {
+      "description": "The likely causes when a step does not give the expected result.",
+      "type": "object",
+      "properties": {
+        "action": {
+          "type": "string"
+        },
+        "causes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "steps": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/StepId"
+          }
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "steps",
+        "causes",
+        "action"
+      ]
+    },
+    "StepId": {
+      "description": "A stable step id: `<pack-id>.<phase>.<short-name>`, e.g. `demo-aircraft.preflight.irs-mode`.\nAn id never changes once published, even if the step is reworded or moved to another phase.",
+      "type": "string"
+    }
+  }
+}

@@ -1,0 +1,5584 @@
+---
+source: crates/pack-cli/tests/snapshot.rs
+---
+[
+  {
+    "id": "oh",
+    "title": "Forward overhead",
+    "width": 1000.0,
+    "height": 1010.0,
+    "sections": [
+      {
+        "id": "fctl",
+        "title": "Flight control",
+        "x": 10.0,
+        "y": 6.0,
+        "width": 235.0,
+        "height": 322.0,
+        "items": [
+          {
+            "kind": "toggle_switch",
+            "label": "FLT CONTROL A",
+            "guarded": true,
+            "x": 46.0,
+            "y": 62.0,
+            "controls": [
+              "fltctrl"
+            ],
+            "positions": "STBY RUD, OFF, ON",
+            "description": "Gives hydraulic system A to the ailerons, elevator and rudder."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "FLT CONTROL B",
+            "guarded": true,
+            "x": 112.0,
+            "y": 62.0,
+            "controls": [
+              "fltctrl"
+            ],
+            "positions": "STBY RUD, OFF, ON",
+            "description": "Gives hydraulic system B to the ailerons, elevator and rudder."
+          },
+          {
+            "kind": "light",
+            "label": "LOW QUANTITY",
+            "color": "amber",
+            "x": 195.0,
+            "y": 34.0,
+            "controls": [
+              "stbyhyd"
+            ],
+            "description": "The standby hydraulic reservoir is running low on fluid."
+          },
+          {
+            "kind": "light",
+            "label": "LOW PRESSURE",
+            "color": "amber",
+            "x": 195.0,
+            "y": 60.0,
+            "controls": [
+              "stbyhyd"
+            ],
+            "description": "The standby hydraulic pump is selected to run but is not giving pressure."
+          },
+          {
+            "kind": "light",
+            "label": "STBY RUD ON",
+            "color": "amber",
+            "x": 195.0,
+            "y": 86.0,
+            "controls": [
+              "stbyhyd"
+            ],
+            "description": "The standby hydraulic system is powering the rudder, because a flight control switch is at STBY RUD or it switched on by itself."
+          },
+          {
+            "kind": "light",
+            "label": "LOW PRESSURE",
+            "color": "amber",
+            "x": 44.0,
+            "y": 124.0,
+            "controls": [
+              "fctllts"
+            ],
+            "description": "System A flight control pressure is low."
+          },
+          {
+            "kind": "light",
+            "label": "LOW PRESSURE",
+            "color": "amber",
+            "x": 104.0,
+            "y": 124.0,
+            "controls": [
+              "fctllts"
+            ],
+            "description": "System B flight control pressure is low."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "ALT FLAPS MASTER",
+            "guarded": true,
+            "x": 150.0,
+            "y": 132.0,
+            "controls": [
+              "altflap"
+            ],
+            "positions": "OFF, ARM",
+            "description": "Arms alternate flap operation. Red guard."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "ALT FLAPS",
+            "x": 205.0,
+            "y": 134.0,
+            "controls": [
+              "altflap"
+            ],
+            "positions": "UP, OFF, DOWN",
+            "description": "Moves the flaps electrically when armed."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "SPOILER A",
+            "guarded": true,
+            "x": 46.0,
+            "y": 190.0,
+            "controls": [
+              "spoilsw"
+            ],
+            "positions": "OFF, ON",
+            "description": "Hydraulic system A to the flight spoilers."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "SPOILER B",
+            "guarded": true,
+            "x": 112.0,
+            "y": 190.0,
+            "controls": [
+              "spoilsw"
+            ],
+            "positions": "OFF, ON",
+            "description": "Hydraulic system B to the flight spoilers."
+          },
+          {
+            "kind": "light",
+            "label": "FEEL DIFF PRESS",
+            "color": "amber",
+            "x": 195.0,
+            "y": 184.0,
+            "controls": [
+              "fctllts"
+            ],
+            "description": "The elevator feel computer senses too big a pressure difference between its two hydraulic inputs, so the column feel may be wrong."
+          },
+          {
+            "kind": "light",
+            "label": "SPEED TRIM FAIL",
+            "color": "amber",
+            "x": 195.0,
+            "y": 208.0,
+            "controls": [
+              "fctllts"
+            ],
+            "description": "The speed trim system has failed. On the MAX this covers both speed trim and MCAS: if one fails, the other is switched off too."
+          },
+          {
+            "kind": "light",
+            "label": "MACH TRIM FAIL",
+            "color": "amber",
+            "x": 195.0,
+            "y": 232.0,
+            "controls": [
+              "fctllts"
+            ],
+            "description": "Mach trim, which stops the nose tucking down at high Mach, is not working."
+          },
+          {
+            "kind": "light",
+            "label": "AUTO SLAT FAIL",
+            "color": "amber",
+            "x": 195.0,
+            "y": 256.0,
+            "controls": [
+              "fctllts"
+            ],
+            "description": "The system that moves the slats to full extend near the stall is not working."
+          },
+          {
+            "kind": "light",
+            "label": "SPOILERS",
+            "color": "amber",
+            "x": 195.0,
+            "y": 280.0,
+            "controls": [
+              "fctllts"
+            ],
+            "description": "A fault in spoiler control, so some spoilers may not move."
+          },
+          {
+            "kind": "light",
+            "label": "YAW DAMPER",
+            "color": "amber",
+            "x": 74.0,
+            "y": 262.0,
+            "controls": [
+              "yawd"
+            ],
+            "description": "Nothing is damping Dutch roll, because the yaw damper is not engaged."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "YAW DAMPER",
+            "x": 74.0,
+            "y": 298.0,
+            "controls": [
+              "yawd"
+            ],
+            "positions": "OFF, ON",
+            "description": "Damps Dutch roll."
+          }
+        ]
+      },
+      {
+        "id": "nav",
+        "title": "Navigation",
+        "x": 10.0,
+        "y": 332.0,
+        "width": 235.0,
+        "height": 136.0,
+        "items": [
+          {
+            "kind": "toggle_switch",
+            "label": "VHF NAV",
+            "x": 60.0,
+            "y": 48.0,
+            "controls": [
+              "navsw"
+            ],
+            "positions": "BOTH ON 1, NORMAL, BOTH ON 2",
+            "description": "Normally each side uses its own VHF NAV receiver."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "IRS",
+            "x": 170.0,
+            "y": 48.0,
+            "controls": [
+              "navsw"
+            ],
+            "positions": "BOTH ON L, NORMAL, BOTH ON R",
+            "description": "Normally each side uses its own IRS."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "FMC",
+            "x": 170.0,
+            "y": 104.0,
+            "controls": [
+              "navsw"
+            ],
+            "positions": "BOTH ON L, NORMAL, BOTH ON R",
+            "description": "Normally each side uses its own FMC."
+          }
+        ]
+      },
+      {
+        "id": "disp",
+        "title": "Displays",
+        "x": 10.0,
+        "y": 472.0,
+        "width": 235.0,
+        "height": 118.0,
+        "items": [
+          {
+            "kind": "selector",
+            "label": "SOURCE",
+            "x": 70.0,
+            "y": 62.0,
+            "controls": [
+              "dispsw"
+            ],
+            "positions": "ALL ON 1, AUTO, ALL ON 2",
+            "description": "Chooses which computer drives the displays."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "CONTROL PANEL",
+            "x": 172.0,
+            "y": 62.0,
+            "controls": [
+              "dispsw"
+            ],
+            "positions": "BOTH ON 1, NORMAL, BOTH ON 2",
+            "description": "Chooses which EFIS panel controls both sides."
+          }
+        ]
+      },
+      {
+        "id": "fuel",
+        "title": "Fuel",
+        "x": 10.0,
+        "y": 596.0,
+        "width": 235.0,
+        "height": 312.0,
+        "items": [
+          {
+            "kind": "light",
+            "label": "ENG VALVE CLOSED",
+            "color": "blue",
+            "x": 38.0,
+            "y": 20.0,
+            "controls": [
+              "fuelpumps"
+            ],
+            "description": "Engine 1 fuel valve. Out: open. Dim: closed. Bright: moving or disagrees with the start lever."
+          },
+          {
+            "kind": "light",
+            "label": "SPAR VALVE CLOSED",
+            "color": "blue",
+            "x": 38.0,
+            "y": 48.0,
+            "controls": [
+              "fuelpumps"
+            ],
+            "description": "Engine 1 spar valve. Out: open. Dim: closed. Bright: moving or disagrees with the start lever."
+          },
+          {
+            "kind": "gauge",
+            "label": "FUEL TEMP",
+            "x": 118.0,
+            "y": 44.0,
+            "description": "Fuel temperature gauge."
+          },
+          {
+            "kind": "light",
+            "label": "ENG VALVE CLOSED",
+            "color": "blue",
+            "x": 198.0,
+            "y": 20.0,
+            "controls": [
+              "fuelpumps"
+            ],
+            "description": "Engine 2 fuel valve. Out: open. Dim: closed. Bright: moving or disagrees with the start lever."
+          },
+          {
+            "kind": "light",
+            "label": "SPAR VALVE CLOSED",
+            "color": "blue",
+            "x": 198.0,
+            "y": 48.0,
+            "controls": [
+              "fuelpumps"
+            ],
+            "description": "Engine 2 spar valve. Out: open. Dim: closed. Bright: moving or disagrees with the start lever."
+          },
+          {
+            "kind": "light",
+            "label": "FILTER BYPASS",
+            "color": "amber",
+            "x": 42.0,
+            "y": 94.0,
+            "controls": [
+              "fuelpumps"
+            ],
+            "description": "Fuel filter clogged, about to bypass or bypassing."
+          },
+          {
+            "kind": "light",
+            "label": "VALVE OPEN",
+            "color": "blue",
+            "x": 118.0,
+            "y": 94.0,
+            "controls": [
+              "xfeed"
+            ],
+            "description": "Dim: crossfeed open. Bright: moving or disagrees with the selector."
+          },
+          {
+            "kind": "light",
+            "label": "FILTER BYPASS",
+            "color": "amber",
+            "x": 194.0,
+            "y": 94.0,
+            "controls": [
+              "fuelpumps"
+            ],
+            "description": "Fuel filter clogged, about to bypass or bypassing."
+          },
+          {
+            "kind": "selector",
+            "label": "CROSSFEED",
+            "x": 118.0,
+            "y": 134.0,
+            "controls": [
+              "xfeed"
+            ],
+            "positions": "Closed, open",
+            "description": "Joins the left and right fuel manifolds."
+          },
+          {
+            "kind": "light",
+            "label": "LOW PRESSURE",
+            "color": "amber",
+            "x": 88.0,
+            "y": 172.0,
+            "controls": [
+              "fuelpumps"
+            ],
+            "description": "Center pump pressure low with the switch ON. Both on means the center tank is empty."
+          },
+          {
+            "kind": "light",
+            "label": "LOW PRESSURE",
+            "color": "amber",
+            "x": 148.0,
+            "y": 172.0,
+            "controls": [
+              "fuelpumps"
+            ],
+            "description": "Center pump pressure low with the switch ON. Both on means the center tank is empty."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "CTR L",
+            "x": 88.0,
+            "y": 204.0,
+            "controls": [
+              "fuelpumps"
+            ],
+            "positions": "OFF, ON",
+            "description": "Center tank left pump."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "CTR R",
+            "x": 148.0,
+            "y": 204.0,
+            "controls": [
+              "fuelpumps"
+            ],
+            "positions": "OFF, ON",
+            "description": "Center tank right pump."
+          },
+          {
+            "kind": "light",
+            "label": "LOW PRESSURE",
+            "color": "amber",
+            "x": 32.0,
+            "y": 238.0,
+            "controls": [
+              "fuelpumps"
+            ],
+            "description": "Low pressure from this pump, or the pump is OFF."
+          },
+          {
+            "kind": "light",
+            "label": "LOW PRESSURE",
+            "color": "amber",
+            "x": 86.0,
+            "y": 238.0,
+            "controls": [
+              "fuelpumps"
+            ],
+            "description": "Low pressure from this pump, or the pump is OFF."
+          },
+          {
+            "kind": "light",
+            "label": "LOW PRESSURE",
+            "color": "amber",
+            "x": 150.0,
+            "y": 238.0,
+            "controls": [
+              "fuelpumps"
+            ],
+            "description": "Low pressure from this pump, or the pump is OFF."
+          },
+          {
+            "kind": "light",
+            "label": "LOW PRESSURE",
+            "color": "amber",
+            "x": 204.0,
+            "y": 238.0,
+            "controls": [
+              "fuelpumps"
+            ],
+            "description": "Low pressure from this pump, or the pump is OFF."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "AFT 1",
+            "x": 32.0,
+            "y": 274.0,
+            "controls": [
+              "fuelpumps"
+            ],
+            "positions": "OFF, ON",
+            "description": "Aft pump, tank 1."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "FWD 1",
+            "x": 86.0,
+            "y": 274.0,
+            "controls": [
+              "fuelpumps"
+            ],
+            "positions": "OFF, ON",
+            "description": "Forward pump, tank 1."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "FWD 2",
+            "x": 150.0,
+            "y": 274.0,
+            "controls": [
+              "fuelpumps"
+            ],
+            "positions": "OFF, ON",
+            "description": "Forward pump, tank 2."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "AFT 2",
+            "x": 204.0,
+            "y": 274.0,
+            "controls": [
+              "fuelpumps"
+            ],
+            "positions": "OFF, ON",
+            "description": "Aft pump, tank 2."
+          }
+        ]
+      },
+      {
+        "id": "elecu",
+        "title": "Electrical meters",
+        "x": 252.0,
+        "y": 120.0,
+        "width": 225.0,
+        "height": 318.0,
+        "items": [
+          {
+            "kind": "readout",
+            "label": "METER DISPLAY",
+            "x": 112.0,
+            "y": 70.0,
+            "controls": [
+              "eleclts"
+            ],
+            "description": "Shows DC amps, CPS frequency, DC volts, AC amps and AC volts for the source chosen below.",
+            "width": 150.0,
+            "height": 62.0
+          },
+          {
+            "kind": "light",
+            "label": "BAT DISCHARGE",
+            "color": "amber",
+            "x": 42.0,
+            "y": 148.0,
+            "controls": [
+              "eleclts"
+            ],
+            "description": "Current is flowing out of the battery faster than normal, so it is running down."
+          },
+          {
+            "kind": "light",
+            "label": "TR UNIT",
+            "color": "amber",
+            "x": 98.0,
+            "y": 148.0,
+            "controls": [
+              "eleclts"
+            ],
+            "description": "A transformer rectifier has failed."
+          },
+          {
+            "kind": "light",
+            "label": "ELEC",
+            "color": "amber",
+            "x": 152.0,
+            "y": 148.0,
+            "controls": [
+              "eleclts"
+            ],
+            "description": "A DC or standby power fault, on the ground only."
+          },
+          {
+            "kind": "push_button",
+            "label": "MAINT",
+            "x": 198.0,
+            "y": 148.0,
+            "controls": [
+              "eleclts"
+            ],
+            "description": "Maintenance test button."
+          },
+          {
+            "kind": "selector",
+            "label": "DC METERS",
+            "x": 60.0,
+            "y": 206.0,
+            "controls": [
+              "eleclts"
+            ],
+            "positions": "STBY PWR, BAT BUS, BAT, AUX BAT, TR1, TR2, TR3, TEST",
+            "description": "Chooses what the DC meters show."
+          },
+          {
+            "kind": "selector",
+            "label": "AC METERS",
+            "x": 168.0,
+            "y": 206.0,
+            "controls": [
+              "eleclts"
+            ],
+            "positions": "STBY PWR, GRD PWR, GEN 1, APU GEN, GEN 2, INV, TEST",
+            "description": "Chooses what the AC meters show."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "BATTERY",
+            "guarded": true,
+            "x": 60.0,
+            "y": 276.0,
+            "controls": [
+              "bat"
+            ],
+            "positions": "OFF, ON",
+            "description": "Connects the battery. Guarded."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "CAB/UTIL",
+            "x": 140.0,
+            "y": 276.0,
+            "controls": [
+              "cabutil"
+            ],
+            "positions": "OFF, ON",
+            "description": "Power to the galleys and cabin utilities."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "IFE/PASS SEAT",
+            "x": 196.0,
+            "y": 276.0,
+            "controls": [
+              "cabutil"
+            ],
+            "positions": "OFF, ON",
+            "description": "Power to seat equipment."
+          }
+        ]
+      },
+      {
+        "id": "elecm",
+        "title": "Generator drive and standby",
+        "x": 252.0,
+        "y": 442.0,
+        "width": 225.0,
+        "height": 150.0,
+        "items": [
+          {
+            "kind": "light",
+            "label": "DRIVE 1",
+            "color": "amber",
+            "x": 42.0,
+            "y": 22.0,
+            "controls": [
+              "gendrive"
+            ],
+            "description": "Low oil pressure in generator drive 1. Normal with the engine stopped."
+          },
+          {
+            "kind": "light",
+            "label": "STANDBY PWR OFF",
+            "color": "amber",
+            "x": 112.0,
+            "y": 22.0,
+            "controls": [
+              "stby"
+            ],
+            "description": "The standby buses have no power."
+          },
+          {
+            "kind": "light",
+            "label": "DRIVE 2",
+            "color": "amber",
+            "x": 182.0,
+            "y": 22.0,
+            "controls": [
+              "gendrive"
+            ],
+            "description": "Low oil pressure in generator drive 2. Normal with the engine stopped."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "DISCONNECT 1",
+            "guarded": true,
+            "x": 42.0,
+            "y": 92.0,
+            "controls": [
+              "gendrive"
+            ],
+            "positions": "Guarded",
+            "description": "Disconnects generator drive 1. Not reset in flight."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "STANDBY POWER",
+            "guarded": true,
+            "x": 112.0,
+            "y": 76.0,
+            "controls": [
+              "stby"
+            ],
+            "positions": "BAT, OFF, AUTO",
+            "description": "Normally AUTO. Guarded."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "DISCONNECT 2",
+            "guarded": true,
+            "x": 182.0,
+            "y": 92.0,
+            "controls": [
+              "gendrive"
+            ],
+            "positions": "Guarded",
+            "description": "Disconnects generator drive 2. Not reset in flight."
+          }
+        ]
+      },
+      {
+        "id": "elecl",
+        "title": "Ground power and generators",
+        "x": 252.0,
+        "y": 596.0,
+        "width": 225.0,
+        "height": 226.0,
+        "items": [
+          {
+            "kind": "light",
+            "label": "GRD POWER AVAILABLE",
+            "color": "blue",
+            "x": 112.0,
+            "y": 18.0,
+            "controls": [
+              "grdpwr"
+            ],
+            "description": "Ground power is connected and good."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "GRD PWR",
+            "x": 112.0,
+            "y": 50.0,
+            "controls": [
+              "grdpwr",
+              "grddisc"
+            ],
+            "positions": "OFF, ON",
+            "description": "Spring-loaded. Puts ground power on the buses."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "BUS TRANS",
+            "guarded": true,
+            "x": 112.0,
+            "y": 92.0,
+            "controls": [
+              "bustrans"
+            ],
+            "positions": "OFF, AUTO",
+            "description": "Normally AUTO. Guarded."
+          },
+          {
+            "kind": "light",
+            "label": "TRANSFER BUS OFF",
+            "color": "amber",
+            "x": 40.0,
+            "y": 92.0,
+            "controls": [
+              "genbus"
+            ],
+            "description": "Transfer bus 1 has no power, so the systems on it are off."
+          },
+          {
+            "kind": "light",
+            "label": "SOURCE OFF",
+            "color": "amber",
+            "x": 40.0,
+            "y": 118.0,
+            "controls": [
+              "genbus"
+            ],
+            "description": "No source selected for transfer bus 1."
+          },
+          {
+            "kind": "light",
+            "label": "GEN OFF BUS",
+            "color": "blue",
+            "x": 40.0,
+            "y": 144.0,
+            "controls": [
+              "genbus"
+            ],
+            "description": "The engine 1 generator is not powering its transfer bus."
+          },
+          {
+            "kind": "light",
+            "label": "APU GEN OFF BUS",
+            "color": "blue",
+            "x": 112.0,
+            "y": 144.0,
+            "controls": [
+              "genbus"
+            ],
+            "description": "APU running and ready, but not powering a bus."
+          },
+          {
+            "kind": "light",
+            "label": "TRANSFER BUS OFF",
+            "color": "amber",
+            "x": 184.0,
+            "y": 92.0,
+            "controls": [
+              "genbus"
+            ],
+            "description": "Transfer bus 2 has no power, so the systems on it are off."
+          },
+          {
+            "kind": "light",
+            "label": "SOURCE OFF",
+            "color": "amber",
+            "x": 184.0,
+            "y": 118.0,
+            "controls": [
+              "genbus"
+            ],
+            "description": "No source selected for transfer bus 2."
+          },
+          {
+            "kind": "light",
+            "label": "GEN OFF BUS",
+            "color": "blue",
+            "x": 184.0,
+            "y": 144.0,
+            "controls": [
+              "genbus"
+            ],
+            "description": "The engine 2 generator is not powering its transfer bus."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "GEN 1",
+            "x": 30.0,
+            "y": 192.0,
+            "controls": [
+              "engen",
+              "apub"
+            ],
+            "positions": "OFF, ON",
+            "description": "Spring-loaded. Puts generator 1 on the bus."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "APU GEN",
+            "x": 84.0,
+            "y": 192.0,
+            "controls": [
+              "apugen",
+              "apub"
+            ],
+            "positions": "OFF, ON",
+            "description": "Spring-loaded. Puts the APU on the left bus."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "APU GEN",
+            "x": 140.0,
+            "y": 192.0,
+            "controls": [
+              "apugen",
+              "apub"
+            ],
+            "positions": "OFF, ON",
+            "description": "Spring-loaded. Puts the APU on the right bus."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "GEN 2",
+            "x": 194.0,
+            "y": 192.0,
+            "controls": [
+              "engen",
+              "apub"
+            ],
+            "positions": "OFF, ON",
+            "description": "Spring-loaded. Puts generator 2 on the bus."
+          }
+        ]
+      },
+      {
+        "id": "wipe",
+        "title": "L wiper",
+        "x": 380.0,
+        "y": 826.0,
+        "width": 97.0,
+        "height": 84.0,
+        "items": [
+          {
+            "kind": "selector",
+            "label": "L WIPER",
+            "x": 48.0,
+            "y": 50.0,
+            "controls": [
+              "wiper"
+            ],
+            "positions": "PARK, INT, LOW, HIGH",
+            "description": "Left windshield wiper."
+          }
+        ]
+      },
+      {
+        "id": "col",
+        "title": "Lights and service",
+        "x": 482.0,
+        "y": 186.0,
+        "width": 110.0,
+        "height": 640.0,
+        "items": [
+          {
+            "kind": "selector",
+            "label": "CIRCUIT BREAKER",
+            "x": 54.0,
+            "y": 48.0,
+            "positions": "OFF to BRIGHT",
+            "description": "Circuit breaker panel lights."
+          },
+          {
+            "kind": "selector",
+            "label": "PANEL",
+            "x": 54.0,
+            "y": 116.0,
+            "positions": "OFF to BRIGHT",
+            "description": "Overhead panel lights."
+          },
+          {
+            "kind": "light",
+            "label": "LAVATORY SMOKE",
+            "color": "amber",
+            "x": 54.0,
+            "y": 172.0,
+            "controls": [
+              "lavsmoke"
+            ],
+            "description": "A smoke detector in a lavatory has gone off."
+          },
+          {
+            "kind": "light",
+            "label": "EQUIP OFF",
+            "color": "amber",
+            "x": 32.0,
+            "y": 226.0,
+            "controls": [
+              "equip"
+            ],
+            "description": "Supply cooling fan has failed."
+          },
+          {
+            "kind": "light",
+            "label": "EQUIP OFF",
+            "color": "amber",
+            "x": 78.0,
+            "y": 226.0,
+            "controls": [
+              "equip"
+            ],
+            "description": "Exhaust cooling fan has failed."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "SUPPLY",
+            "x": 32.0,
+            "y": 262.0,
+            "controls": [
+              "equip"
+            ],
+            "positions": "NORM, ALTN",
+            "description": "Equipment cooling supply fan."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "EXHAUST",
+            "x": 78.0,
+            "y": 262.0,
+            "controls": [
+              "equip"
+            ],
+            "positions": "NORM, ALTN",
+            "description": "Equipment cooling exhaust fan."
+          },
+          {
+            "kind": "light",
+            "label": "EQUIP SMOKE",
+            "color": "amber",
+            "x": 54.0,
+            "y": 300.0,
+            "controls": [
+              "equip"
+            ],
+            "description": "Smoke has been detected in the electronics bay."
+          },
+          {
+            "kind": "light",
+            "label": "NOT ARMED",
+            "color": "amber",
+            "x": 54.0,
+            "y": 370.0,
+            "controls": [
+              "emerext"
+            ],
+            "description": "Emergency lights are not armed."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "EMER EXIT LIGHTS",
+            "guarded": true,
+            "x": 54.0,
+            "y": 412.0,
+            "controls": [
+              "emerext"
+            ],
+            "positions": "OFF, ARMED, ON",
+            "description": "Normally ARMED. Guarded."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "NO SMOKING",
+            "x": 32.0,
+            "y": 482.0,
+            "controls": [
+              "signs"
+            ],
+            "positions": "OFF, AUTO, ON",
+            "description": "Cabin no smoking sign."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "FASTEN BELTS",
+            "x": 78.0,
+            "y": 482.0,
+            "controls": [
+              "sblts",
+              "signs"
+            ],
+            "positions": "OFF, AUTO, ON",
+            "description": "Cabin seat belt sign."
+          },
+          {
+            "kind": "push_button",
+            "label": "ATTEND",
+            "x": 30.0,
+            "y": 568.0,
+            "description": "Calls the cabin crew."
+          },
+          {
+            "kind": "push_button",
+            "label": "GRD CALL",
+            "x": 80.0,
+            "y": 568.0,
+            "description": "Calls the ground crew."
+          }
+        ]
+      },
+      {
+        "id": "rwip",
+        "title": "R wiper",
+        "x": 482.0,
+        "y": 826.0,
+        "width": 110.0,
+        "height": 84.0,
+        "items": [
+          {
+            "kind": "selector",
+            "label": "R WIPER",
+            "x": 55.0,
+            "y": 50.0,
+            "controls": [
+              "wiper"
+            ],
+            "positions": "PARK, INT, LOW, HIGH",
+            "description": "Right windshield wiper."
+          }
+        ]
+      },
+      {
+        "id": "heat",
+        "title": "Window and probe heat",
+        "x": 596.0,
+        "y": 6.0,
+        "width": 210.0,
+        "height": 306.0,
+        "items": [
+          {
+            "kind": "light",
+            "label": "OVERHEAT",
+            "color": "amber",
+            "x": 34.0,
+            "y": 20.0,
+            "controls": [
+              "wheat"
+            ],
+            "description": "The left side window heater has overheated and cut out, or its power was interrupted."
+          },
+          {
+            "kind": "light",
+            "label": "OVERHEAT",
+            "color": "amber",
+            "x": 80.0,
+            "y": 20.0,
+            "controls": [
+              "wheat"
+            ],
+            "description": "The left forward window heater has overheated and cut out, or its power was interrupted."
+          },
+          {
+            "kind": "light",
+            "label": "OVERHEAT",
+            "color": "amber",
+            "x": 130.0,
+            "y": 20.0,
+            "controls": [
+              "wheat"
+            ],
+            "description": "Right forward window overheat."
+          },
+          {
+            "kind": "light",
+            "label": "OVERHEAT",
+            "color": "amber",
+            "x": 176.0,
+            "y": 20.0,
+            "controls": [
+              "wheat"
+            ],
+            "description": "The right side window heater has overheated and cut out, or its power was interrupted."
+          },
+          {
+            "kind": "light",
+            "label": "ON",
+            "color": "green",
+            "x": 34.0,
+            "y": 46.0,
+            "controls": [
+              "wheat"
+            ],
+            "description": "Heat being applied. Goes out when the window is warm."
+          },
+          {
+            "kind": "light",
+            "label": "ON",
+            "color": "green",
+            "x": 80.0,
+            "y": 46.0,
+            "controls": [
+              "wheat"
+            ],
+            "description": "Heat being applied. Goes out when the window is warm."
+          },
+          {
+            "kind": "light",
+            "label": "ON",
+            "color": "green",
+            "x": 130.0,
+            "y": 46.0,
+            "controls": [
+              "wheat"
+            ],
+            "description": "Heat being applied. Goes out when the window is warm."
+          },
+          {
+            "kind": "light",
+            "label": "ON",
+            "color": "green",
+            "x": 176.0,
+            "y": 46.0,
+            "controls": [
+              "wheat"
+            ],
+            "description": "Heat being applied. Goes out when the window is warm."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "L SIDE",
+            "x": 34.0,
+            "y": 102.0,
+            "controls": [
+              "wheat"
+            ],
+            "positions": "OFF, ON",
+            "description": "Left side window heat."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "L FWD",
+            "x": 80.0,
+            "y": 102.0,
+            "controls": [
+              "wheat"
+            ],
+            "positions": "OFF, ON",
+            "description": "Left forward window heat."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "OVHT TEST",
+            "x": 105.0,
+            "y": 150.0,
+            "positions": "OVHT, PWR TEST",
+            "description": "OVHT simulates an overheat. PWR TEST checks the heat circuits."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "R FWD",
+            "x": 130.0,
+            "y": 102.0,
+            "controls": [
+              "wheat"
+            ],
+            "positions": "OFF, ON",
+            "description": "Right forward window heat."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "R SIDE",
+            "x": 176.0,
+            "y": 102.0,
+            "controls": [
+              "wheat"
+            ],
+            "positions": "OFF, ON",
+            "description": "Right side window heat."
+          },
+          {
+            "kind": "light",
+            "label": "CAPT PITOT",
+            "color": "amber",
+            "x": 34.0,
+            "y": 160.0,
+            "controls": [
+              "pheat"
+            ],
+            "description": "The captain's pitot probe is not heated, so its airspeed could go wrong in icing."
+          },
+          {
+            "kind": "light",
+            "label": "L ELEV PITOT",
+            "color": "amber",
+            "x": 34.0,
+            "y": 190.0,
+            "controls": [
+              "pheat"
+            ],
+            "description": "The left elevator feel pitot probe is not heated, so ice could upset the column feel."
+          },
+          {
+            "kind": "light",
+            "label": "L ALPHA VANE",
+            "color": "amber",
+            "x": 34.0,
+            "y": 220.0,
+            "controls": [
+              "pheat"
+            ],
+            "description": "The left angle of attack vane is not heated, so ice could make its readings wrong."
+          },
+          {
+            "kind": "light",
+            "label": "TEMP PROBE",
+            "color": "amber",
+            "x": 34.0,
+            "y": 250.0,
+            "controls": [
+              "pheat"
+            ],
+            "description": "The outside air temperature probe is not heated."
+          },
+          {
+            "kind": "light",
+            "label": "F/O PITOT",
+            "color": "amber",
+            "x": 176.0,
+            "y": 160.0,
+            "controls": [
+              "pheat"
+            ],
+            "description": "The first officer's pitot probe is not heated, so its airspeed could go wrong in icing."
+          },
+          {
+            "kind": "light",
+            "label": "R ELEV PITOT",
+            "color": "amber",
+            "x": 176.0,
+            "y": 190.0,
+            "controls": [
+              "pheat"
+            ],
+            "description": "The right elevator feel pitot probe is not heated, so ice could upset the column feel."
+          },
+          {
+            "kind": "light",
+            "label": "R ALPHA VANE",
+            "color": "amber",
+            "x": 176.0,
+            "y": 220.0,
+            "controls": [
+              "pheat"
+            ],
+            "description": "The right angle of attack vane is not heated, so ice could make its readings wrong."
+          },
+          {
+            "kind": "light",
+            "label": "AUX PITOT",
+            "color": "amber",
+            "x": 176.0,
+            "y": 250.0,
+            "controls": [
+              "pheat"
+            ],
+            "description": "The auxiliary pitot probe, used by the standby instruments, is not heated."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "PROBE A",
+            "x": 80.0,
+            "y": 202.0,
+            "controls": [
+              "pheat"
+            ],
+            "positions": "AUTO, ON",
+            "description": "Probe heat system A."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "PROBE B",
+            "x": 130.0,
+            "y": 202.0,
+            "controls": [
+              "pheat"
+            ],
+            "positions": "AUTO, ON",
+            "description": "Probe heat system B."
+          }
+        ]
+      },
+      {
+        "id": "aice",
+        "title": "Anti-ice",
+        "x": 596.0,
+        "y": 316.0,
+        "width": 210.0,
+        "height": 134.0,
+        "items": [
+          {
+            "kind": "light",
+            "label": "ICE DETECTOR",
+            "color": "amber",
+            "x": 64.0,
+            "y": 24.0,
+            "controls": [
+              "aice"
+            ],
+            "description": "The ice detector has failed, so it cannot warn you about icing."
+          },
+          {
+            "kind": "light",
+            "label": "L VALVE",
+            "color": "amber",
+            "x": 32.0,
+            "y": 56.0,
+            "controls": [
+              "aice"
+            ],
+            "description": "Valve in transit, or disagrees with the switch."
+          },
+          {
+            "kind": "light",
+            "label": "R VALVE",
+            "color": "amber",
+            "x": 94.0,
+            "y": 56.0,
+            "controls": [
+              "aice"
+            ],
+            "description": "Valve in transit, or disagrees with the switch."
+          },
+          {
+            "kind": "light",
+            "label": "ENG 1 ANTI-ICE",
+            "color": "amber",
+            "x": 136.0,
+            "y": 16.0,
+            "controls": [
+              "aice"
+            ],
+            "description": "Cowl anti-ice inhibited, or a core anti-ice valve failed closed."
+          },
+          {
+            "kind": "light",
+            "label": "ENG 2 ANTI-ICE",
+            "color": "amber",
+            "x": 184.0,
+            "y": 16.0,
+            "controls": [
+              "aice"
+            ],
+            "description": "Cowl anti-ice inhibited, or a core anti-ice valve failed closed."
+          },
+          {
+            "kind": "light",
+            "label": "COWL ANTI-ICE",
+            "color": "amber",
+            "x": 136.0,
+            "y": 42.0,
+            "controls": [
+              "aice"
+            ],
+            "description": "Too much pressure in the engine 1 cowl anti-ice duct, downstream of the valve."
+          },
+          {
+            "kind": "light",
+            "label": "COWL ANTI-ICE",
+            "color": "amber",
+            "x": 184.0,
+            "y": 42.0,
+            "controls": [
+              "aice"
+            ],
+            "description": "Too much pressure in the engine 2 cowl anti-ice duct, downstream of the valve."
+          },
+          {
+            "kind": "light",
+            "label": "COWL VALVE",
+            "color": "amber",
+            "x": 136.0,
+            "y": 68.0,
+            "controls": [
+              "aice"
+            ],
+            "description": "Valve in transit, or disagrees with the switch."
+          },
+          {
+            "kind": "light",
+            "label": "COWL VALVE",
+            "color": "amber",
+            "x": 184.0,
+            "y": 68.0,
+            "controls": [
+              "aice"
+            ],
+            "description": "Valve in transit, or disagrees with the switch."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "WING ANTI-ICE",
+            "x": 60.0,
+            "y": 104.0,
+            "controls": [
+              "aice"
+            ],
+            "positions": "OFF, ON",
+            "description": "Bleed air to the wing leading edge."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "ENG 1",
+            "x": 136.0,
+            "y": 104.0,
+            "controls": [
+              "aice"
+            ],
+            "positions": "OFF, ON",
+            "description": "Bleed air to the engine 1 inlet."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "ENG 2",
+            "x": 184.0,
+            "y": 104.0,
+            "controls": [
+              "aice"
+            ],
+            "positions": "OFF, ON",
+            "description": "Bleed air to the engine 2 inlet."
+          }
+        ]
+      },
+      {
+        "id": "hyd",
+        "title": "Hydraulic pumps",
+        "x": 596.0,
+        "y": 454.0,
+        "width": 210.0,
+        "height": 122.0,
+        "items": [
+          {
+            "kind": "light",
+            "label": "OVERHEAT",
+            "color": "amber",
+            "x": 80.0,
+            "y": 18.0,
+            "controls": [
+              "hydpumps"
+            ],
+            "description": "Electric hydraulic pump 2 (system A) has got too hot."
+          },
+          {
+            "kind": "light",
+            "label": "OVERHEAT",
+            "color": "amber",
+            "x": 130.0,
+            "y": 18.0,
+            "controls": [
+              "hydpumps"
+            ],
+            "description": "Electric hydraulic pump 1 (system B) has got too hot."
+          },
+          {
+            "kind": "light",
+            "label": "LOW PRESSURE",
+            "color": "amber",
+            "x": 32.0,
+            "y": 44.0,
+            "controls": [
+              "hydpumps"
+            ],
+            "description": "The engine 1 hydraulic pump (system A) is not giving pressure."
+          },
+          {
+            "kind": "light",
+            "label": "LOW PRESSURE",
+            "color": "amber",
+            "x": 80.0,
+            "y": 44.0,
+            "controls": [
+              "hydpumps"
+            ],
+            "description": "Electric hydraulic pump 2 (system A) is not giving pressure."
+          },
+          {
+            "kind": "light",
+            "label": "LOW PRESSURE",
+            "color": "amber",
+            "x": 130.0,
+            "y": 44.0,
+            "controls": [
+              "hydpumps"
+            ],
+            "description": "Electric hydraulic pump 1 (system B) is not giving pressure."
+          },
+          {
+            "kind": "light",
+            "label": "LOW PRESSURE",
+            "color": "amber",
+            "x": 178.0,
+            "y": 44.0,
+            "controls": [
+              "hydpumps"
+            ],
+            "description": "The engine 2 hydraulic pump (system B) is not giving pressure."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "ENG 1",
+            "x": 32.0,
+            "y": 92.0,
+            "controls": [
+              "hydpumps"
+            ],
+            "positions": "OFF, ON",
+            "description": "Engine 1 pump, system A."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "ELEC 2",
+            "x": 80.0,
+            "y": 92.0,
+            "controls": [
+              "elechyd"
+            ],
+            "positions": "OFF, ON",
+            "description": "Electric pump, system A."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "ELEC 1",
+            "x": 130.0,
+            "y": 92.0,
+            "controls": [
+              "elechyd"
+            ],
+            "positions": "OFF, ON",
+            "description": "Electric pump, system B."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "ENG 2",
+            "x": 178.0,
+            "y": 92.0,
+            "controls": [
+              "hydpumps"
+            ],
+            "positions": "OFF, ON",
+            "description": "Engine 2 pump, system B."
+          }
+        ]
+      },
+      {
+        "id": "door",
+        "title": "Doors",
+        "x": 596.0,
+        "y": 580.0,
+        "width": 210.0,
+        "height": 102.0,
+        "items": [
+          {
+            "kind": "light",
+            "label": "EQUIP",
+            "color": "amber",
+            "x": 26.0,
+            "y": 44.0,
+            "controls": [
+              "doorsp"
+            ],
+            "description": "The electronics bay access hatch is open or not fully latched."
+          },
+          {
+            "kind": "light",
+            "label": "FWD ENTRY",
+            "color": "amber",
+            "x": 74.0,
+            "y": 16.0,
+            "controls": [
+              "doorsp"
+            ],
+            "description": "The forward passenger door is open or not fully latched.",
+            "width": 48.0
+          },
+          {
+            "kind": "light",
+            "label": "LEFT FWD OVERWING",
+            "color": "amber",
+            "x": 74.0,
+            "y": 40.0,
+            "controls": [
+              "doorsp"
+            ],
+            "description": "The left front overwing exit is open or not fully latched.",
+            "width": 48.0
+          },
+          {
+            "kind": "light",
+            "label": "LEFT AFT OVERWING",
+            "color": "amber",
+            "x": 74.0,
+            "y": 64.0,
+            "controls": [
+              "doorsp"
+            ],
+            "description": "The left rear overwing exit is open or not fully latched.",
+            "width": 48.0
+          },
+          {
+            "kind": "light",
+            "label": "AFT ENTRY",
+            "color": "amber",
+            "x": 74.0,
+            "y": 88.0,
+            "controls": [
+              "doorsp"
+            ],
+            "description": "The rear passenger door is open or not fully latched.",
+            "width": 48.0
+          },
+          {
+            "kind": "light",
+            "label": "FWD SERVICE",
+            "color": "amber",
+            "x": 122.0,
+            "y": 16.0,
+            "controls": [
+              "doorsp"
+            ],
+            "description": "The forward galley service door is open or not fully latched.",
+            "width": 48.0
+          },
+          {
+            "kind": "light",
+            "label": "RIGHT FWD OVERWING",
+            "color": "amber",
+            "x": 122.0,
+            "y": 40.0,
+            "controls": [
+              "doorsp"
+            ],
+            "description": "The right front overwing exit is open or not fully latched.",
+            "width": 48.0
+          },
+          {
+            "kind": "light",
+            "label": "RIGHT AFT OVERWING",
+            "color": "amber",
+            "x": 122.0,
+            "y": 64.0,
+            "controls": [
+              "doorsp"
+            ],
+            "description": "The right rear overwing exit is open or not fully latched.",
+            "width": 48.0
+          },
+          {
+            "kind": "light",
+            "label": "AFT SERVICE",
+            "color": "amber",
+            "x": 122.0,
+            "y": 88.0,
+            "controls": [
+              "doorsp"
+            ],
+            "description": "The rear galley service door is open or not fully latched.",
+            "width": 48.0
+          },
+          {
+            "kind": "light",
+            "label": "FWD CARGO",
+            "color": "amber",
+            "x": 176.0,
+            "y": 38.0,
+            "controls": [
+              "doorsp"
+            ],
+            "description": "The forward hold door is open or not fully latched.",
+            "width": 48.0,
+            "height": 17.0
+          },
+          {
+            "kind": "light",
+            "label": "AFT CARGO",
+            "color": "amber",
+            "x": 176.0,
+            "y": 60.0,
+            "controls": [
+              "doorsp"
+            ],
+            "description": "The rear hold door is open or not fully latched.",
+            "width": 48.0,
+            "height": 17.0
+          }
+        ]
+      },
+      {
+        "id": "cvr",
+        "title": "Cockpit voice recorder microphone monitor",
+        "x": 596.0,
+        "y": 686.0,
+        "width": 210.0,
+        "height": 56.0,
+        "items": [
+          {
+            "kind": "push_button",
+            "label": "ERASE",
+            "x": 82.0,
+            "y": 24.0,
+            "controls": [
+              "cvrpanel"
+            ],
+            "description": "Erases the voice recording, on the ground only."
+          },
+          {
+            "kind": "light",
+            "label": "STATUS",
+            "color": "green",
+            "x": 34.0,
+            "y": 30.0,
+            "controls": [
+              "cvrpanel"
+            ],
+            "description": "Recorder status.",
+            "width": 40.0
+          },
+          {
+            "kind": "push_button",
+            "label": "TEST",
+            "x": 124.0,
+            "y": 24.0,
+            "controls": [
+              "cvrpanel"
+            ],
+            "description": "Tests the recorder.",
+            "width": 40.0
+          },
+          {
+            "kind": "push_button",
+            "label": "HEADPHONE",
+            "x": 176.0,
+            "y": 24.0,
+            "controls": [
+              "cvrpanel"
+            ],
+            "description": "Headphone jack.",
+            "width": 40.0
+          }
+        ]
+      },
+      {
+        "id": "cab",
+        "title": "Cabin altitude",
+        "x": 596.0,
+        "y": 746.0,
+        "width": 210.0,
+        "height": 164.0,
+        "items": [
+          {
+            "kind": "gauge",
+            "label": "CABIN ALT",
+            "x": 82.0,
+            "y": 62.0,
+            "controls": [
+              "press"
+            ],
+            "description": "Cabin altitude and differential pressure."
+          },
+          {
+            "kind": "gauge",
+            "label": "CABIN CLIMB",
+            "x": 82.0,
+            "y": 142.0,
+            "controls": [
+              "press"
+            ],
+            "description": "Cabin rate of climb."
+          },
+          {
+            "kind": "push_button",
+            "label": "ALT HORN CUTOUT",
+            "x": 176.0,
+            "y": 44.0,
+            "description": "Silences the cabin altitude horn."
+          }
+        ]
+      },
+      {
+        "id": "vrec",
+        "title": "Voice recorder",
+        "x": 812.0,
+        "y": 6.0,
+        "width": 178.0,
+        "height": 62.0,
+        "items": [
+          {
+            "kind": "toggle_switch",
+            "label": "VOICE RECORDER",
+            "x": 120.0,
+            "y": 30.0,
+            "controls": [
+              "vrec"
+            ],
+            "positions": "AUTO, ON",
+            "description": "AUTO runs the recorder automatically."
+          }
+        ]
+      },
+      {
+        "id": "air",
+        "title": "Air temperature",
+        "x": 812.0,
+        "y": 72.0,
+        "width": 178.0,
+        "height": 240.0,
+        "items": [
+          {
+            "kind": "gauge",
+            "label": "TEMP",
+            "x": 48.0,
+            "y": 50.0,
+            "controls": [
+              "tempsw"
+            ],
+            "description": "Shows the temperature at the point chosen on SOURCE."
+          },
+          {
+            "kind": "selector",
+            "label": "SOURCE",
+            "x": 130.0,
+            "y": 56.0,
+            "controls": [
+              "tempsw"
+            ],
+            "positions": "Supply duct, passenger cabin, pack",
+            "description": "Chooses what the gauge reads."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "TRIM AIR",
+            "x": 89.0,
+            "y": 122.0,
+            "controls": [
+              "trimair"
+            ],
+            "positions": "OFF, ON",
+            "description": "Adds hot air to fine-tune each zone."
+          },
+          {
+            "kind": "light",
+            "label": "ZONE TEMP",
+            "color": "amber",
+            "x": 36.0,
+            "y": 162.0,
+            "controls": [
+              "tempsw"
+            ],
+            "description": "The duct air going to the flight deck has overheated, or that zone's temperature control has failed."
+          },
+          {
+            "kind": "light",
+            "label": "ZONE TEMP",
+            "color": "amber",
+            "x": 89.0,
+            "y": 162.0,
+            "controls": [
+              "tempsw"
+            ],
+            "description": "The duct air going to the forward cabin has overheated, or that zone's temperature control has failed."
+          },
+          {
+            "kind": "light",
+            "label": "ZONE TEMP",
+            "color": "amber",
+            "x": 142.0,
+            "y": 162.0,
+            "controls": [
+              "tempsw"
+            ],
+            "description": "The duct air going to the rear cabin has overheated, or that zone's temperature control has failed."
+          },
+          {
+            "kind": "selector",
+            "label": "CONT CAB",
+            "x": 36.0,
+            "y": 206.0,
+            "controls": [
+              "tempsw"
+            ],
+            "positions": "OFF, C, AUTO, W",
+            "description": "Control cabin temperature."
+          },
+          {
+            "kind": "selector",
+            "label": "FWD CAB",
+            "x": 89.0,
+            "y": 206.0,
+            "controls": [
+              "tempsw"
+            ],
+            "positions": "OFF, C, AUTO, W",
+            "description": "Forward cabin temperature."
+          },
+          {
+            "kind": "selector",
+            "label": "AFT CAB",
+            "x": 142.0,
+            "y": 206.0,
+            "controls": [
+              "tempsw"
+            ],
+            "positions": "OFF, C, AUTO, W",
+            "description": "Aft cabin temperature."
+          }
+        ]
+      },
+      {
+        "id": "bleed",
+        "title": "Bleed air",
+        "x": 812.0,
+        "y": 316.0,
+        "width": 178.0,
+        "height": 366.0,
+        "items": [
+          {
+            "kind": "light",
+            "label": "DUAL BLEED",
+            "color": "amber",
+            "x": 60.0,
+            "y": 16.0,
+            "controls": [
+              "packlts"
+            ],
+            "description": "APU bleed valve open with an engine bleed on. Normal during start, keep thrust low."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "L RECIRC FAN",
+            "x": 32.0,
+            "y": 56.0,
+            "controls": [
+              "recirc"
+            ],
+            "positions": "OFF, AUTO",
+            "description": "Left recirculation fan."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "R RECIRC FAN",
+            "x": 146.0,
+            "y": 56.0,
+            "controls": [
+              "recirc"
+            ],
+            "positions": "OFF, AUTO",
+            "description": "Right recirculation fan."
+          },
+          {
+            "kind": "gauge",
+            "label": "DUCT PRESS",
+            "x": 89.0,
+            "y": 84.0,
+            "description": "Left and right bleed duct pressure."
+          },
+          {
+            "kind": "push_button",
+            "label": "OVHT TEST",
+            "x": 150.0,
+            "y": 106.0,
+            "description": "Tests duct and wing overheat."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "L PACK",
+            "x": 32.0,
+            "y": 160.0,
+            "controls": [
+              "packs"
+            ],
+            "positions": "OFF, AUTO, HIGH",
+            "description": "Left air conditioning pack."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "ISOLATION VALVE",
+            "x": 89.0,
+            "y": 178.0,
+            "controls": [
+              "iso"
+            ],
+            "positions": "CLOSE, AUTO, OPEN",
+            "description": "Joins or separates the bleed ducts."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "R PACK",
+            "x": 146.0,
+            "y": 160.0,
+            "controls": [
+              "packs"
+            ],
+            "positions": "OFF, AUTO, HIGH",
+            "description": "Right air conditioning pack."
+          },
+          {
+            "kind": "light",
+            "label": "PACK",
+            "color": "amber",
+            "x": 40.0,
+            "y": 220.0,
+            "controls": [
+              "packlts"
+            ],
+            "description": "Pack has tripped off or failed."
+          },
+          {
+            "kind": "light",
+            "label": "WING-BODY OVERHEAT",
+            "color": "amber",
+            "x": 40.0,
+            "y": 246.0,
+            "controls": [
+              "packlts"
+            ],
+            "description": "Hot bleed air is leaking from a duct in the wing, body or APU area."
+          },
+          {
+            "kind": "light",
+            "label": "BLEED",
+            "color": "amber",
+            "x": 40.0,
+            "y": 272.0,
+            "controls": [
+              "packlts"
+            ],
+            "description": "Engine bleed shut off for temperature or pressure. May reset with TRIP RESET."
+          },
+          {
+            "kind": "push_button",
+            "label": "TRIP RESET",
+            "x": 89.0,
+            "y": 248.0,
+            "description": "Resets BLEED, PACK and ZONE TEMP trips once the fault clears."
+          },
+          {
+            "kind": "light",
+            "label": "PACK",
+            "color": "amber",
+            "x": 138.0,
+            "y": 220.0,
+            "controls": [
+              "packlts"
+            ],
+            "description": "Pack has tripped off or failed."
+          },
+          {
+            "kind": "light",
+            "label": "WING-BODY OVERHEAT",
+            "color": "amber",
+            "x": 138.0,
+            "y": 246.0,
+            "controls": [
+              "packlts"
+            ],
+            "description": "Hot bleed air is leaking from a duct in the wing, body or APU area."
+          },
+          {
+            "kind": "light",
+            "label": "BLEED",
+            "color": "amber",
+            "x": 138.0,
+            "y": 272.0,
+            "controls": [
+              "packlts"
+            ],
+            "description": "Engine bleed shut off for temperature or pressure. May reset with TRIP RESET."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "ENG BLEED 1",
+            "x": 32.0,
+            "y": 330.0,
+            "controls": [
+              "engbleed"
+            ],
+            "positions": "OFF, ON",
+            "description": "Engine 1 bleed air."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "APU BLEED",
+            "x": 89.0,
+            "y": 330.0,
+            "controls": [
+              "apubleed"
+            ],
+            "positions": "OFF, ON",
+            "description": "APU bleed air."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "ENG BLEED 2",
+            "x": 146.0,
+            "y": 330.0,
+            "controls": [
+              "engbleed"
+            ],
+            "positions": "OFF, ON",
+            "description": "Engine 2 bleed air."
+          }
+        ]
+      },
+      {
+        "id": "press",
+        "title": "Cabin pressure",
+        "x": 812.0,
+        "y": 686.0,
+        "width": 178.0,
+        "height": 224.0,
+        "items": [
+          {
+            "kind": "light",
+            "label": "AUTO FAIL",
+            "color": "amber",
+            "x": 36.0,
+            "y": 14.0,
+            "controls": [
+              "press"
+            ],
+            "description": "An automatic pressure controller has failed. With ALTN also lit, one controller failed and the other took over. Lit alone, both have failed."
+          },
+          {
+            "kind": "light",
+            "label": "OFF SCHED DESCENT",
+            "color": "amber",
+            "x": 84.0,
+            "y": 14.0,
+            "controls": [
+              "press"
+            ],
+            "description": "Descending before reaching cruise altitude."
+          },
+          {
+            "kind": "light",
+            "label": "ALTN",
+            "color": "green",
+            "x": 36.0,
+            "y": 38.0,
+            "controls": [
+              "press"
+            ],
+            "description": "The standby pressure controller is in use, after a fault or because you selected it.",
+            "width": 40.0
+          },
+          {
+            "kind": "light",
+            "label": "MANUAL",
+            "color": "green",
+            "x": 84.0,
+            "y": 38.0,
+            "controls": [
+              "press"
+            ],
+            "description": "Pressurization is in manual mode, so you move the outflow valve yourself.",
+            "width": 40.0
+          },
+          {
+            "kind": "readout",
+            "label": "FLT ALT",
+            "x": 54.0,
+            "y": 58.0,
+            "controls": [
+              "press"
+            ],
+            "description": "Cruise altitude."
+          },
+          {
+            "kind": "selector",
+            "label": "FLT ALT KNOB",
+            "x": 54.0,
+            "y": 92.0,
+            "controls": [
+              "press"
+            ],
+            "description": "Sets the cruise altitude."
+          },
+          {
+            "kind": "readout",
+            "label": "LAND ALT",
+            "x": 54.0,
+            "y": 134.0,
+            "controls": [
+              "ldgalt"
+            ],
+            "description": "Landing altitude."
+          },
+          {
+            "kind": "selector",
+            "label": "LAND ALT KNOB",
+            "x": 54.0,
+            "y": 172.0,
+            "controls": [
+              "ldgalt"
+            ],
+            "description": "Sets the destination elevation."
+          },
+          {
+            "kind": "gauge",
+            "label": "VALVE",
+            "x": 132.0,
+            "y": 62.0,
+            "controls": [
+              "outflow"
+            ],
+            "description": "Outflow valve position."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "OUTFLOW",
+            "x": 132.0,
+            "y": 110.0,
+            "controls": [
+              "outflow"
+            ],
+            "positions": "CLOSE, OPEN",
+            "description": "Spring-loaded. Used in MAN."
+          },
+          {
+            "kind": "selector",
+            "label": "MODE",
+            "x": 132.0,
+            "y": 172.0,
+            "controls": [
+              "press"
+            ],
+            "positions": "AUTO, ALTN, MAN",
+            "description": "Pressurization mode."
+          }
+        ]
+      },
+      {
+        "id": "ltl",
+        "title": "Landing and taxi lights",
+        "x": 10.0,
+        "y": 914.0,
+        "width": 300.0,
+        "height": 90.0,
+        "items": [
+          {
+            "kind": "toggle_switch",
+            "label": "LANDING L",
+            "x": 40.0,
+            "y": 46.0,
+            "controls": [
+              "landlt"
+            ],
+            "positions": "OFF, FLASH, ON",
+            "description": "Left landing light."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "LANDING R",
+            "x": 96.0,
+            "y": 46.0,
+            "controls": [
+              "landlt"
+            ],
+            "positions": "OFF, FLASH, ON",
+            "description": "Right landing light."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "TURNOFF L",
+            "x": 164.0,
+            "y": 46.0,
+            "controls": [
+              "turnoff"
+            ],
+            "positions": "OFF, ON",
+            "description": "Left runway turnoff light."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "TURNOFF R",
+            "x": 216.0,
+            "y": 46.0,
+            "controls": [
+              "turnoff"
+            ],
+            "positions": "OFF, ON",
+            "description": "Right runway turnoff light."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "TAXI",
+            "x": 272.0,
+            "y": 46.0,
+            "controls": [
+              "lldg"
+            ],
+            "positions": "OFF, ON",
+            "description": "Taxi light."
+          }
+        ]
+      },
+      {
+        "id": "apu",
+        "title": "APU",
+        "x": 314.0,
+        "y": 914.0,
+        "width": 84.0,
+        "height": 90.0,
+        "items": [
+          {
+            "kind": "toggle_switch",
+            "label": "APU",
+            "x": 42.0,
+            "y": 46.0,
+            "controls": [
+              "apusw"
+            ],
+            "positions": "OFF, ON, START",
+            "description": "START is spring-loaded back to ON."
+          }
+        ]
+      },
+      {
+        "id": "start",
+        "title": "Engine start",
+        "x": 402.0,
+        "y": 914.0,
+        "width": 290.0,
+        "height": 90.0,
+        "items": [
+          {
+            "kind": "selector",
+            "label": "ENGINE START 1",
+            "x": 60.0,
+            "y": 48.0,
+            "controls": [
+              "starts"
+            ],
+            "positions": "GRD, OFF, CONT, FLT",
+            "description": "Engine 1 start and ignition."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "IGNITION",
+            "x": 145.0,
+            "y": 46.0,
+            "controls": [
+              "starts"
+            ],
+            "positions": "IGN L, BOTH, IGN R",
+            "description": "Chooses the igniters."
+          },
+          {
+            "kind": "selector",
+            "label": "ENGINE START 2",
+            "x": 230.0,
+            "y": 48.0,
+            "controls": [
+              "starts"
+            ],
+            "positions": "GRD, OFF, CONT, FLT",
+            "description": "Engine 2 start and ignition."
+          }
+        ]
+      },
+      {
+        "id": "lte",
+        "title": "Exterior lights",
+        "x": 696.0,
+        "y": 914.0,
+        "width": 294.0,
+        "height": 90.0,
+        "items": [
+          {
+            "kind": "toggle_switch",
+            "label": "LOGO",
+            "x": 24.0,
+            "y": 46.0,
+            "controls": [
+              "logo"
+            ],
+            "positions": "OFF, ON",
+            "description": "Tail logo lights."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "POSITION",
+            "x": 70.0,
+            "y": 46.0,
+            "controls": [
+              "poslt"
+            ],
+            "positions": "STROBE & STEADY, OFF, STEADY",
+            "description": "Position and strobe lights."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "ANTI COLLISION",
+            "x": 162.0,
+            "y": 46.0,
+            "controls": [
+              "beacon"
+            ],
+            "positions": "OFF, ON",
+            "description": "Red beacon lights."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "WING",
+            "x": 214.0,
+            "y": 46.0,
+            "controls": [
+              "winglt",
+              "wingww"
+            ],
+            "positions": "OFF, ON",
+            "description": "Wing lights."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "WHEEL WELL",
+            "x": 262.0,
+            "y": 46.0,
+            "controls": [
+              "wingww"
+            ],
+            "positions": "OFF, ON",
+            "description": "Wheel well lights."
+          }
+        ]
+      },
+      {
+        "id": "apul",
+        "title": "APU lights",
+        "x": 252.0,
+        "y": 826.0,
+        "width": 124.0,
+        "height": 84.0,
+        "items": [
+          {
+            "kind": "light",
+            "label": "MAINT",
+            "color": "amber",
+            "x": 32.0,
+            "y": 28.0,
+            "description": "APU maintenance is needed."
+          },
+          {
+            "kind": "light",
+            "label": "LOW OIL PRESSURE",
+            "color": "amber",
+            "x": 90.0,
+            "y": 28.0,
+            "description": "APU oil pressure is low."
+          },
+          {
+            "kind": "light",
+            "label": "FAULT",
+            "color": "amber",
+            "x": 32.0,
+            "y": 62.0,
+            "description": "APU fault. The APU has shut down automatically."
+          },
+          {
+            "kind": "light",
+            "label": "OVER SPEED",
+            "color": "amber",
+            "x": 90.0,
+            "y": 62.0,
+            "description": "APU overspeed shutdown."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "aft",
+    "title": "Aft overhead",
+    "width": 1000.0,
+    "height": 488.0,
+    "sections": [
+      {
+        "id": "elt",
+        "title": "ELT",
+        "x": 8.0,
+        "y": 206.0,
+        "width": 228.0,
+        "height": 86.0,
+        "items": [
+          {
+            "kind": "light",
+            "label": "ELT",
+            "color": "amber",
+            "x": 50.0,
+            "y": 46.0,
+            "controls": [
+              "elt"
+            ],
+            "description": "The emergency locator transmitter is sending a distress signal."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "ELT SWITCH",
+            "guarded": true,
+            "x": 150.0,
+            "y": 44.0,
+            "controls": [
+              "elt"
+            ],
+            "positions": "ARM, ON",
+            "description": "Emergency locator transmitter. Stays guarded."
+          }
+        ]
+      },
+      {
+        "id": "le",
+        "title": "LE devices",
+        "x": 8.0,
+        "y": 296.0,
+        "width": 228.0,
+        "height": 98.0,
+        "items": [
+          {
+            "kind": "display_unit",
+            "label": "LE FLAPS AND SLATS",
+            "x": 114.0,
+            "y": 38.0,
+            "description": "Shows leading edge device position: transit, extended or full extended.",
+            "width": 190.0,
+            "height": 46.0
+          },
+          {
+            "kind": "push_button",
+            "label": "TEST",
+            "x": 114.0,
+            "y": 82.0,
+            "description": "Tests the leading edge device lights."
+          }
+        ]
+      },
+      {
+        "id": "irs",
+        "title": "IRS",
+        "x": 238.0,
+        "y": 70.0,
+        "width": 230.0,
+        "height": 326.0,
+        "items": [
+          {
+            "kind": "display_unit",
+            "label": "IRS DISPLAY",
+            "x": 115.0,
+            "y": 24.0,
+            "description": "Shows the data chosen on DSPL SEL.",
+            "width": 210.0,
+            "height": 22.0
+          },
+          {
+            "kind": "selector",
+            "label": "DSPL SEL",
+            "x": 58.0,
+            "y": 82.0,
+            "positions": "TEST, TK/GS, PPOS, WIND, HDG/STS",
+            "description": "Chooses what the IRS display shows."
+          },
+          {
+            "kind": "selector",
+            "label": "SYS DSPL",
+            "x": 58.0,
+            "y": 140.0,
+            "positions": "L, R",
+            "description": "Chooses the left or right IRS."
+          },
+          {
+            "kind": "display_unit",
+            "label": "KEYPAD",
+            "x": 165.0,
+            "y": 110.0,
+            "description": "Enters position and heading.",
+            "width": 80.0,
+            "height": 80.0
+          },
+          {
+            "kind": "light",
+            "label": "GPS",
+            "color": "amber",
+            "x": 50.0,
+            "y": 190.0,
+            "controls": [
+              "gpslts"
+            ],
+            "description": "Both GPS receivers have failed. A failure of only one shows only on MASTER CAUTION recall."
+          },
+          {
+            "kind": "light",
+            "label": "ILS",
+            "color": "amber",
+            "x": 115.0,
+            "y": 190.0,
+            "controls": [
+              "gpslts"
+            ],
+            "description": "Both ILS receivers have failed, so the localizer and glideslope are not usable. A failure of only one shows only on MASTER CAUTION recall."
+          },
+          {
+            "kind": "light",
+            "label": "GLS",
+            "color": "amber",
+            "x": 180.0,
+            "y": 190.0,
+            "controls": [
+              "gpslts"
+            ],
+            "description": "Both GLS receivers have failed, so satellite based landing guidance is not available. A single failure shows only on recall."
+          },
+          {
+            "kind": "light",
+            "label": "ALIGN",
+            "color": "amber",
+            "x": 36.0,
+            "y": 220.0,
+            "controls": [
+              "irs"
+            ],
+            "description": "The left IRS is still finding its position and heading, so the airplane must stay still."
+          },
+          {
+            "kind": "light",
+            "label": "ON DC",
+            "color": "amber",
+            "x": 82.0,
+            "y": 220.0,
+            "controls": [
+              "irs"
+            ],
+            "description": "Left IRS is on DC power. Running on the battery, it drains if left on."
+          },
+          {
+            "kind": "light",
+            "label": "FAULT",
+            "color": "amber",
+            "x": 36.0,
+            "y": 244.0,
+            "controls": [
+              "irs"
+            ],
+            "description": "The left IRS has a fault and its attitude or navigation data may be lost."
+          },
+          {
+            "kind": "light",
+            "label": "DC FAIL",
+            "color": "amber",
+            "x": 82.0,
+            "y": 244.0,
+            "controls": [
+              "irs"
+            ],
+            "description": "The left IRS has lost its battery backup."
+          },
+          {
+            "kind": "light",
+            "label": "ALIGN",
+            "color": "amber",
+            "x": 148.0,
+            "y": 220.0,
+            "controls": [
+              "irs"
+            ],
+            "description": "The right IRS is still finding its position and heading, so the airplane must stay still."
+          },
+          {
+            "kind": "light",
+            "label": "ON DC",
+            "color": "amber",
+            "x": 194.0,
+            "y": 220.0,
+            "controls": [
+              "irs"
+            ],
+            "description": "Right IRS is on DC power. Running on the battery, it drains if left on."
+          },
+          {
+            "kind": "light",
+            "label": "FAULT",
+            "color": "amber",
+            "x": 148.0,
+            "y": 244.0,
+            "controls": [
+              "irs"
+            ],
+            "description": "The right IRS has a fault and its attitude or navigation data may be lost."
+          },
+          {
+            "kind": "light",
+            "label": "DC FAIL",
+            "color": "amber",
+            "x": 194.0,
+            "y": 244.0,
+            "controls": [
+              "irs"
+            ],
+            "description": "The right IRS has lost its battery backup."
+          },
+          {
+            "kind": "selector",
+            "label": "IRS L",
+            "x": 60.0,
+            "y": 294.0,
+            "controls": [
+              "irs"
+            ],
+            "positions": "OFF, ALIGN, NAV, ATT",
+            "description": "Left IRS mode."
+          },
+          {
+            "kind": "selector",
+            "label": "IRS R",
+            "x": 170.0,
+            "y": 294.0,
+            "controls": [
+              "irs"
+            ],
+            "positions": "OFF, ALIGN, NAV, ATT",
+            "description": "Right IRS mode."
+          }
+        ]
+      },
+      {
+        "id": "svc",
+        "title": "Service interphone",
+        "x": 470.0,
+        "y": 220.0,
+        "width": 96.0,
+        "height": 90.0,
+        "items": [
+          {
+            "kind": "toggle_switch",
+            "label": "SERVICE INTERPHONE",
+            "x": 48.0,
+            "y": 46.0,
+            "positions": "OFF, ON",
+            "description": "Connects the service interphone."
+          }
+        ]
+      },
+      {
+        "id": "aud3",
+        "title": "Observer audio panel",
+        "x": 570.0,
+        "y": 6.0,
+        "width": 226.0,
+        "height": 172.0,
+        "items": [
+          {
+            "kind": "display_unit",
+            "label": "AUDIO CONTROL PANEL 3",
+            "x": 113.0,
+            "y": 90.0,
+            "description": "Observer audio panel.",
+            "width": 190.0,
+            "height": 120.0
+          }
+        ]
+      },
+      {
+        "id": "eng",
+        "title": "Engine",
+        "x": 570.0,
+        "y": 182.0,
+        "width": 226.0,
+        "height": 94.0,
+        "items": [
+          {
+            "kind": "light",
+            "label": "REVERSER COMMAND",
+            "color": "amber",
+            "x": 90.0,
+            "y": 20.0,
+            "description": "In flight, a reverse thrust lever is not fully down."
+          },
+          {
+            "kind": "light",
+            "label": "REVERSER AIR/GRD",
+            "color": "amber",
+            "x": 140.0,
+            "y": 20.0,
+            "description": "The air/ground logic used by the thrust reversers has failed."
+          },
+          {
+            "kind": "light",
+            "label": "REVERSER LIMITED",
+            "color": "amber",
+            "x": 28.0,
+            "y": 48.0,
+            "controls": [
+              "eec"
+            ],
+            "description": "A thrust reverser fault. In flight it means that reverser may not deploy, or reverse is limited to idle."
+          },
+          {
+            "kind": "light",
+            "label": "ENGINE CONTROL",
+            "color": "amber",
+            "x": 28.0,
+            "y": 76.0,
+            "controls": [
+              "eec"
+            ],
+            "description": "Engine control fault, not dispatchable. Only shows with the engine running on the ground."
+          },
+          {
+            "kind": "light",
+            "label": "REVERSER LIMITED",
+            "color": "amber",
+            "x": 198.0,
+            "y": 48.0,
+            "controls": [
+              "eec"
+            ],
+            "description": "A thrust reverser fault. In flight it means that reverser may not deploy, or reverse is limited to idle."
+          },
+          {
+            "kind": "light",
+            "label": "ENGINE CONTROL",
+            "color": "amber",
+            "x": 198.0,
+            "y": 76.0,
+            "controls": [
+              "eec"
+            ],
+            "description": "Engine control fault, not dispatchable. Only shows with the engine running on the ground."
+          },
+          {
+            "kind": "push_button",
+            "label": "EEC 1",
+            "x": 90.0,
+            "y": 62.0,
+            "controls": [
+              "eec"
+            ],
+            "positions": "ON, ALTN",
+            "description": "Engine 1 control. ON is normal. ALTN shows alternate mode.",
+            "width": 40.0
+          },
+          {
+            "kind": "push_button",
+            "label": "EEC 2",
+            "x": 140.0,
+            "y": 62.0,
+            "controls": [
+              "eec"
+            ],
+            "positions": "ON, ALTN",
+            "description": "Engine 2 control. ON is normal. ALTN shows alternate mode.",
+            "width": 40.0
+          }
+        ]
+      },
+      {
+        "id": "oxy",
+        "title": "Oxygen",
+        "x": 570.0,
+        "y": 280.0,
+        "width": 226.0,
+        "height": 114.0,
+        "items": [
+          {
+            "kind": "gauge",
+            "label": "CREW OXYGEN",
+            "x": 56.0,
+            "y": 60.0,
+            "controls": [
+              "crewoxy"
+            ],
+            "description": "Crew oxygen pressure."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "PASS OXYGEN",
+            "guarded": true,
+            "x": 186.0,
+            "y": 46.0,
+            "controls": [
+              "paxoxy"
+            ],
+            "positions": "NORMAL, ON",
+            "description": "Drops the cabin masks. Guarded."
+          },
+          {
+            "kind": "light",
+            "label": "PASS OXY ON",
+            "color": "amber",
+            "x": 136.0,
+            "y": 94.0,
+            "controls": [
+              "paxoxy"
+            ],
+            "description": "The passenger masks have dropped and oxygen is flowing in the cabin."
+          }
+        ]
+      },
+      {
+        "id": "bb",
+        "title": "Broadband system",
+        "x": 800.0,
+        "y": 112.0,
+        "width": 192.0,
+        "height": 66.0,
+        "items": [
+          {
+            "kind": "toggle_switch",
+            "label": "BROADBAND",
+            "x": 70.0,
+            "y": 34.0,
+            "positions": "OFF, ON, CREW ONLY",
+            "description": "Cabin broadband power."
+          }
+        ]
+      },
+      {
+        "id": "rec",
+        "title": "Flight recorder and Mach test",
+        "x": 800.0,
+        "y": 182.0,
+        "width": 192.0,
+        "height": 94.0,
+        "items": [
+          {
+            "kind": "toggle_switch",
+            "label": "FLIGHT RECORDER",
+            "guarded": true,
+            "x": 44.0,
+            "y": 42.0,
+            "controls": [
+              "fltrec"
+            ],
+            "positions": "TEST, NORMAL",
+            "description": "Guarded. Runs automatically."
+          },
+          {
+            "kind": "light",
+            "label": "OFF",
+            "color": "amber",
+            "x": 104.0,
+            "y": 66.0,
+            "controls": [
+              "fltrec"
+            ],
+            "description": "The flight data recorder is not recording."
+          },
+          {
+            "kind": "push_button",
+            "label": "MACH TEST 1",
+            "x": 146.0,
+            "y": 52.0,
+            "controls": [
+              "mach"
+            ],
+            "description": "Tests the overspeed clacker.",
+            "height": 24.0
+          },
+          {
+            "kind": "push_button",
+            "label": "MACH TEST 2",
+            "x": 176.0,
+            "y": 52.0,
+            "controls": [
+              "mach"
+            ],
+            "description": "Tests the overspeed clacker.",
+            "height": 24.0
+          }
+        ]
+      },
+      {
+        "id": "stall",
+        "title": "Stall warning test",
+        "x": 800.0,
+        "y": 280.0,
+        "width": 192.0,
+        "height": 56.0,
+        "items": [
+          {
+            "kind": "push_button",
+            "label": "STALL TEST 1",
+            "x": 64.0,
+            "y": 26.0,
+            "controls": [
+              "stalltest"
+            ],
+            "description": "Tests the left stick shaker."
+          },
+          {
+            "kind": "push_button",
+            "label": "STALL TEST 2",
+            "x": 128.0,
+            "y": 26.0,
+            "controls": [
+              "stalltest"
+            ],
+            "description": "Tests the right stick shaker."
+          }
+        ]
+      },
+      {
+        "id": "jam",
+        "title": "Elevator jam",
+        "x": 60.0,
+        "y": 400.0,
+        "width": 156.0,
+        "height": 82.0,
+        "items": [
+          {
+            "kind": "light",
+            "label": "ASSIST ON",
+            "color": "amber",
+            "x": 44.0,
+            "y": 46.0,
+            "controls": [
+              "elevjam"
+            ],
+            "description": "Not simulated."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "ELEV JAM LANDING ASSIST",
+            "guarded": true,
+            "x": 116.0,
+            "y": 42.0,
+            "controls": [
+              "elevjam"
+            ],
+            "positions": "OFF, ON",
+            "description": "Not simulated."
+          }
+        ]
+      },
+      {
+        "id": "mnt",
+        "title": "Maintenance",
+        "x": 218.0,
+        "y": 400.0,
+        "width": 250.0,
+        "height": 82.0,
+        "items": [
+          {
+            "kind": "light",
+            "label": "MAINT",
+            "color": "amber",
+            "x": 44.0,
+            "y": 46.0,
+            "controls": [
+              "gpslts"
+            ],
+            "description": "Not simulated."
+          }
+        ]
+      },
+      {
+        "id": "dome",
+        "title": "Dome light",
+        "x": 472.0,
+        "y": 400.0,
+        "width": 96.0,
+        "height": 82.0,
+        "items": [
+          {
+            "kind": "toggle_switch",
+            "label": "DOME WHITE",
+            "x": 44.0,
+            "y": 40.0,
+            "positions": "DIM, OFF, BRIGHT",
+            "description": "Flight deck dome light."
+          }
+        ]
+      },
+      {
+        "id": "gear",
+        "title": "Gear lights",
+        "x": 572.0,
+        "y": 400.0,
+        "width": 220.0,
+        "height": 82.0,
+        "items": [
+          {
+            "kind": "light",
+            "label": "LEFT GEAR",
+            "color": "green",
+            "x": 50.0,
+            "y": 26.0,
+            "controls": [
+              "gearovhd"
+            ],
+            "description": "The left main gear is down and locked. This is the second set of gear lights."
+          },
+          {
+            "kind": "light",
+            "label": "RIGHT GEAR",
+            "color": "green",
+            "x": 102.0,
+            "y": 26.0,
+            "controls": [
+              "gearovhd"
+            ],
+            "description": "The right main gear is down and locked. This is the second set of gear lights."
+          },
+          {
+            "kind": "light",
+            "label": "NOSE GEAR",
+            "color": "green",
+            "x": 76.0,
+            "y": 58.0,
+            "controls": [
+              "gearovhd"
+            ],
+            "description": "The nose gear is down and locked. This is the second set of gear lights."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "gl",
+    "title": "Glareshield",
+    "width": 1292.0,
+    "height": 240.0,
+    "sections": [
+      {
+        "id": "efisl",
+        "title": "Captain EFIS",
+        "x": 10.0,
+        "y": 6.0,
+        "width": 220.0,
+        "height": 228.0,
+        "items": [
+          {
+            "kind": "selector",
+            "label": "MINS",
+            "x": 50.0,
+            "y": 50.0,
+            "controls": [
+              "mins",
+              "efispanel"
+            ],
+            "positions": "RADIO, BARO",
+            "description": "Outer ring selects RADIO or BARO. Inner knob sets minimums. Center button is RST."
+          },
+          {
+            "kind": "selector",
+            "label": "BARO",
+            "x": 170.0,
+            "y": 50.0,
+            "controls": [
+              "baro",
+              "efispanel"
+            ],
+            "positions": "IN, HPA, STD",
+            "description": "Inner knob sets the altimeter. Outer ring selects IN or HPA. Center button is STD."
+          },
+          {
+            "kind": "push_button",
+            "label": "FPV",
+            "x": 110.0,
+            "y": 28.0,
+            "description": "Shows the flight path symbol on the PFD."
+          },
+          {
+            "kind": "push_button",
+            "label": "MTRS",
+            "x": 110.0,
+            "y": 62.0,
+            "description": "Shows altitude in meters."
+          },
+          {
+            "kind": "selector",
+            "label": "MODE",
+            "x": 50.0,
+            "y": 120.0,
+            "controls": [
+              "efispanel"
+            ],
+            "positions": "APP, VOR, MAP, PLN",
+            "description": "ND mode. CTR centers it."
+          },
+          {
+            "kind": "selector",
+            "label": "RANGE",
+            "x": 170.0,
+            "y": 120.0,
+            "controls": [
+              "efispanel"
+            ],
+            "positions": "ND range",
+            "description": "ND range. TFC shows traffic."
+          },
+          {
+            "kind": "push_button",
+            "label": "VSD",
+            "x": 110.0,
+            "y": 120.0,
+            "description": "Shows the vertical profile below the ND."
+          },
+          {
+            "kind": "push_button",
+            "label": "WXR",
+            "x": 40.0,
+            "y": 170.0,
+            "controls": [
+              "efispanel"
+            ],
+            "description": "Shows weather on the ND."
+          },
+          {
+            "kind": "push_button",
+            "label": "TERR",
+            "x": 110.0,
+            "y": 170.0,
+            "controls": [
+              "efispanel"
+            ],
+            "description": "Shows terrain on the ND."
+          },
+          {
+            "kind": "push_button",
+            "label": "POS",
+            "x": 180.0,
+            "y": 170.0,
+            "controls": [
+              "efispanel"
+            ],
+            "description": "Shows position data."
+          },
+          {
+            "kind": "push_button",
+            "label": "STA",
+            "x": 40.0,
+            "y": 206.0,
+            "controls": [
+              "efispanel"
+            ],
+            "description": "Shows navaids on the map."
+          },
+          {
+            "kind": "push_button",
+            "label": "WPT",
+            "x": 110.0,
+            "y": 206.0,
+            "controls": [
+              "efispanel"
+            ],
+            "description": "Shows waypoints."
+          },
+          {
+            "kind": "push_button",
+            "label": "ARPT",
+            "x": 180.0,
+            "y": 206.0,
+            "controls": [
+              "efispanel"
+            ],
+            "description": "Shows airports."
+          }
+        ]
+      },
+      {
+        "id": "annl",
+        "title": "Left annunciators",
+        "x": 236.0,
+        "y": 6.0,
+        "width": 150.0,
+        "height": 228.0,
+        "items": [
+          {
+            "kind": "push_button",
+            "label": "FLT CONT",
+            "x": 30.0,
+            "y": 140.0,
+            "controls": [
+              "recall"
+            ],
+            "description": "Lights with MASTER CAUTION for a FLT CONT caution. Press to recall stored cautions.",
+            "width": 42.0,
+            "height": 24.0
+          },
+          {
+            "kind": "push_button",
+            "label": "IRS",
+            "x": 75.0,
+            "y": 140.0,
+            "controls": [
+              "recall"
+            ],
+            "description": "Lights with MASTER CAUTION for a IRS caution. Press to recall stored cautions.",
+            "width": 42.0,
+            "height": 24.0
+          },
+          {
+            "kind": "push_button",
+            "label": "FUEL",
+            "x": 120.0,
+            "y": 140.0,
+            "controls": [
+              "recall"
+            ],
+            "description": "Lights with MASTER CAUTION for a FUEL caution. Press to recall stored cautions.",
+            "width": 42.0,
+            "height": 24.0
+          },
+          {
+            "kind": "push_button",
+            "label": "ELEC",
+            "x": 30.0,
+            "y": 184.0,
+            "controls": [
+              "recall"
+            ],
+            "description": "Lights with MASTER CAUTION for a ELEC caution. Press to recall stored cautions.",
+            "width": 42.0,
+            "height": 24.0
+          },
+          {
+            "kind": "push_button",
+            "label": "APU",
+            "x": 75.0,
+            "y": 184.0,
+            "controls": [
+              "recall"
+            ],
+            "description": "Lights with MASTER CAUTION for a APU caution. Press to recall stored cautions.",
+            "width": 42.0,
+            "height": 24.0
+          },
+          {
+            "kind": "push_button",
+            "label": "OVHT/DET",
+            "x": 120.0,
+            "y": 184.0,
+            "controls": [
+              "recall"
+            ],
+            "description": "Lights with MASTER CAUTION for a OVHT/DET caution. Press to recall stored cautions.",
+            "width": 42.0,
+            "height": 24.0
+          },
+          {
+            "kind": "push_button",
+            "label": "FIRE WARN",
+            "x": 42.0,
+            "y": 64.0,
+            "description": "Fire warning. Push to silence the bell and reset.",
+            "width": 54.0,
+            "height": 34.0
+          },
+          {
+            "kind": "push_button",
+            "label": "MASTER CAUTION",
+            "x": 108.0,
+            "y": 64.0,
+            "description": "Master caution. Push to reset; the six-pack shows which system.",
+            "width": 54.0,
+            "height": 34.0
+          }
+        ]
+      },
+      {
+        "id": "mcp",
+        "title": "Mode control panel",
+        "x": 336.0,
+        "y": 6.0,
+        "width": 620.0,
+        "height": 228.0,
+        "items": [
+          {
+            "kind": "selector",
+            "label": "COURSE",
+            "x": 30.0,
+            "y": 60.0,
+            "controls": [
+              "crs"
+            ],
+            "description": "Sets the left course."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "F/D L",
+            "x": 30.0,
+            "y": 130.0,
+            "controls": [
+              "fd"
+            ],
+            "positions": "OFF, ON",
+            "description": "Left flight director."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "A/T ARM",
+            "x": 86.0,
+            "y": 60.0,
+            "controls": [
+              "mcpset"
+            ],
+            "positions": "OFF, ARM",
+            "description": "Arms the autothrottle."
+          },
+          {
+            "kind": "push_button",
+            "label": "N1",
+            "x": 86.0,
+            "y": 130.0,
+            "description": "Autothrottle N1 mode."
+          },
+          {
+            "kind": "selector",
+            "label": "IAS/MACH",
+            "x": 142.0,
+            "y": 60.0,
+            "controls": [
+              "mcpset"
+            ],
+            "description": "Sets speed."
+          },
+          {
+            "kind": "push_button",
+            "label": "SPEED",
+            "x": 142.0,
+            "y": 130.0,
+            "description": "Autothrottle speed mode."
+          },
+          {
+            "kind": "push_button",
+            "label": "VNAV",
+            "x": 198.0,
+            "y": 60.0,
+            "controls": [
+              "pitchmode"
+            ],
+            "description": "Vertical navigation."
+          },
+          {
+            "kind": "push_button",
+            "label": "LVL CHG",
+            "x": 198.0,
+            "y": 130.0,
+            "controls": [
+              "pitchmode"
+            ],
+            "description": "Climbs or descends to the MCP altitude at the MCP speed."
+          },
+          {
+            "kind": "selector",
+            "label": "HEADING",
+            "x": 258.0,
+            "y": 60.0,
+            "controls": [
+              "hdgsel",
+              "mcpset"
+            ],
+            "positions": "Bank 10 to 30",
+            "description": "Sets heading. The outer ring limits bank."
+          },
+          {
+            "kind": "push_button",
+            "label": "HDG SEL",
+            "x": 258.0,
+            "y": 130.0,
+            "controls": [
+              "rollmode"
+            ],
+            "description": "Heading select."
+          },
+          {
+            "kind": "push_button",
+            "label": "LNAV",
+            "x": 318.0,
+            "y": 50.0,
+            "controls": [
+              "rollmode"
+            ],
+            "description": "Lateral navigation."
+          },
+          {
+            "kind": "push_button",
+            "label": "VOR LOC",
+            "x": 318.0,
+            "y": 92.0,
+            "controls": [
+              "rollmode"
+            ],
+            "description": "Tracks a VOR or localizer."
+          },
+          {
+            "kind": "push_button",
+            "label": "APP",
+            "x": 318.0,
+            "y": 134.0,
+            "controls": [
+              "appmode",
+              "rollmode"
+            ],
+            "description": "Approach mode."
+          },
+          {
+            "kind": "selector",
+            "label": "ALTITUDE",
+            "x": 378.0,
+            "y": 60.0,
+            "controls": [
+              "mcpalt",
+              "mcpset"
+            ],
+            "description": "Sets the cleared altitude."
+          },
+          {
+            "kind": "push_button",
+            "label": "ALT HLD",
+            "x": 378.0,
+            "y": 130.0,
+            "controls": [
+              "mcpalt"
+            ],
+            "description": "Holds altitude."
+          },
+          {
+            "kind": "push_button",
+            "label": "V/S",
+            "x": 430.0,
+            "y": 130.0,
+            "description": "Holds the vertical speed set in the V/S window."
+          },
+          {
+            "kind": "push_button",
+            "label": "CMD A",
+            "x": 470.0,
+            "y": 50.0,
+            "controls": [
+              "ap"
+            ],
+            "description": "Engages autopilot A."
+          },
+          {
+            "kind": "push_button",
+            "label": "CMD B",
+            "x": 522.0,
+            "y": 50.0,
+            "controls": [
+              "ap"
+            ],
+            "description": "Engages autopilot B."
+          },
+          {
+            "kind": "push_button",
+            "label": "CWS A",
+            "x": 470.0,
+            "y": 92.0,
+            "description": "Autopilot holds the attitude you set with the control wheel."
+          },
+          {
+            "kind": "push_button",
+            "label": "CWS B",
+            "x": 522.0,
+            "y": 92.0,
+            "description": "Autopilot holds the attitude you set with the control wheel."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "F/D R",
+            "x": 580.0,
+            "y": 130.0,
+            "controls": [
+              "fd"
+            ],
+            "positions": "OFF, ON",
+            "description": "Right flight director."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "DISENGAGE",
+            "guarded": true,
+            "x": 496.0,
+            "y": 134.0,
+            "controls": [
+              "apdis"
+            ],
+            "positions": "UP, DOWN",
+            "description": "Autopilot disengage bar."
+          },
+          {
+            "kind": "selector",
+            "label": "COURSE",
+            "x": 580.0,
+            "y": 60.0,
+            "controls": [
+              "crs"
+            ],
+            "description": "Sets the right course."
+          }
+        ]
+      },
+      {
+        "id": "annr",
+        "title": "Right annunciators",
+        "x": 960.0,
+        "y": 6.0,
+        "width": 150.0,
+        "height": 228.0,
+        "items": [
+          {
+            "kind": "push_button",
+            "label": "ANTI-ICE",
+            "x": 30.0,
+            "y": 140.0,
+            "controls": [
+              "recall"
+            ],
+            "description": "Lights with MASTER CAUTION for a ANTI-ICE caution. Press to recall stored cautions.",
+            "width": 42.0,
+            "height": 24.0
+          },
+          {
+            "kind": "push_button",
+            "label": "HYD",
+            "x": 75.0,
+            "y": 140.0,
+            "controls": [
+              "recall"
+            ],
+            "description": "Lights with MASTER CAUTION for a HYD caution. Press to recall stored cautions.",
+            "width": 42.0,
+            "height": 24.0
+          },
+          {
+            "kind": "push_button",
+            "label": "DOORS",
+            "x": 120.0,
+            "y": 140.0,
+            "controls": [
+              "recall"
+            ],
+            "description": "Lights with MASTER CAUTION for a DOORS caution. Press to recall stored cautions.",
+            "width": 42.0,
+            "height": 24.0
+          },
+          {
+            "kind": "push_button",
+            "label": "ENG",
+            "x": 30.0,
+            "y": 184.0,
+            "controls": [
+              "recall"
+            ],
+            "description": "Lights with MASTER CAUTION for a ENG caution. Press to recall stored cautions.",
+            "width": 42.0,
+            "height": 24.0
+          },
+          {
+            "kind": "push_button",
+            "label": "OVERHEAD",
+            "x": 75.0,
+            "y": 184.0,
+            "controls": [
+              "recall"
+            ],
+            "description": "Lights with MASTER CAUTION for a OVERHEAD caution. Press to recall stored cautions.",
+            "width": 42.0,
+            "height": 24.0
+          },
+          {
+            "kind": "push_button",
+            "label": "AIR COND",
+            "x": 120.0,
+            "y": 184.0,
+            "controls": [
+              "recall"
+            ],
+            "description": "Lights with MASTER CAUTION for a AIR COND caution. Press to recall stored cautions.",
+            "width": 42.0,
+            "height": 24.0
+          },
+          {
+            "kind": "push_button",
+            "label": "FIRE WARN",
+            "x": 108.0,
+            "y": 64.0,
+            "description": "Fire warning. Push to silence the bell and reset.",
+            "width": 54.0,
+            "height": 34.0
+          },
+          {
+            "kind": "push_button",
+            "label": "MASTER CAUTION",
+            "x": 42.0,
+            "y": 64.0,
+            "description": "Master caution. Push to reset; the six-pack shows which system.",
+            "width": 54.0,
+            "height": 34.0
+          }
+        ]
+      },
+      {
+        "id": "efisr",
+        "title": "First officer EFIS",
+        "x": 1062.0,
+        "y": 6.0,
+        "width": 220.0,
+        "height": 228.0,
+        "items": [
+          {
+            "kind": "selector",
+            "label": "MINS",
+            "x": 50.0,
+            "y": 50.0,
+            "controls": [
+              "mins",
+              "efispanel"
+            ],
+            "positions": "RADIO, BARO",
+            "description": "Outer ring selects RADIO or BARO. Inner knob sets minimums. Center button is RST."
+          },
+          {
+            "kind": "selector",
+            "label": "BARO",
+            "x": 170.0,
+            "y": 50.0,
+            "controls": [
+              "baro",
+              "efispanel"
+            ],
+            "positions": "IN, HPA, STD",
+            "description": "Inner knob sets the altimeter. Outer ring selects IN or HPA. Center button is STD."
+          },
+          {
+            "kind": "push_button",
+            "label": "FPV",
+            "x": 110.0,
+            "y": 28.0,
+            "description": "Shows the flight path symbol on the PFD."
+          },
+          {
+            "kind": "push_button",
+            "label": "MTRS",
+            "x": 110.0,
+            "y": 62.0,
+            "description": "Shows altitude in meters."
+          },
+          {
+            "kind": "selector",
+            "label": "MODE",
+            "x": 50.0,
+            "y": 120.0,
+            "controls": [
+              "efispanel"
+            ],
+            "positions": "APP, VOR, MAP, PLN",
+            "description": "ND mode. CTR centers it."
+          },
+          {
+            "kind": "selector",
+            "label": "RANGE",
+            "x": 170.0,
+            "y": 120.0,
+            "controls": [
+              "efispanel"
+            ],
+            "positions": "ND range",
+            "description": "ND range. TFC shows traffic."
+          },
+          {
+            "kind": "push_button",
+            "label": "VSD",
+            "x": 110.0,
+            "y": 120.0,
+            "description": "Shows the vertical profile below the ND."
+          },
+          {
+            "kind": "push_button",
+            "label": "WXR",
+            "x": 40.0,
+            "y": 170.0,
+            "controls": [
+              "efispanel"
+            ],
+            "description": "Shows weather on the ND."
+          },
+          {
+            "kind": "push_button",
+            "label": "TERR",
+            "x": 110.0,
+            "y": 170.0,
+            "controls": [
+              "efispanel"
+            ],
+            "description": "Shows terrain on the ND."
+          },
+          {
+            "kind": "push_button",
+            "label": "POS",
+            "x": 180.0,
+            "y": 170.0,
+            "controls": [
+              "efispanel"
+            ],
+            "description": "Shows position data."
+          },
+          {
+            "kind": "push_button",
+            "label": "STA",
+            "x": 40.0,
+            "y": 206.0,
+            "controls": [
+              "efispanel"
+            ],
+            "description": "Shows navaids on the map."
+          },
+          {
+            "kind": "push_button",
+            "label": "WPT",
+            "x": 110.0,
+            "y": 206.0,
+            "controls": [
+              "efispanel"
+            ],
+            "description": "Shows waypoints."
+          },
+          {
+            "kind": "push_button",
+            "label": "ARPT",
+            "x": 180.0,
+            "y": 206.0,
+            "controls": [
+              "efispanel"
+            ],
+            "description": "Shows airports."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "mn",
+    "title": "Main panel",
+    "width": 1000.0,
+    "height": 430.0,
+    "sections": [
+      {
+        "id": "cl",
+        "title": "Captain lights",
+        "x": 10.0,
+        "y": 6.0,
+        "width": 434.0,
+        "height": 96.0,
+        "items": [
+          {
+            "kind": "light",
+            "label": "BELOW G/S",
+            "color": "amber",
+            "x": 28.0,
+            "y": 40.0,
+            "description": "The airplane has gone well below the glideslope on the approach."
+          },
+          {
+            "kind": "light",
+            "label": "TAKEOFF CONFIG",
+            "color": "red",
+            "x": 76.0,
+            "y": 40.0,
+            "description": "When thrust went up for takeoff, an item such as the flaps, speedbrake, stabilizer trim or parking brake was not set for takeoff."
+          },
+          {
+            "kind": "light",
+            "label": "CABIN ALTITUDE",
+            "color": "red",
+            "x": 124.0,
+            "y": 40.0,
+            "description": "The cabin altitude has climbed above about 10,000 ft."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "A/P A/T TEST",
+            "x": 222.0,
+            "y": 22.0,
+            "controls": [
+              "ltest"
+            ],
+            "positions": "1, 2",
+            "description": "Tests the disengage lights."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "LIGHTS",
+            "x": 356.0,
+            "y": 26.0,
+            "controls": [
+              "ltest"
+            ],
+            "positions": "TEST, BRT, DIM",
+            "description": "Tests the lights and sets brightness."
+          },
+          {
+            "kind": "light",
+            "label": "SPEED BRAKE DO NOT ARM",
+            "color": "amber",
+            "x": 310.0,
+            "y": 64.0,
+            "description": "Automatic speedbrake fault. Arm only by hand after landing."
+          },
+          {
+            "kind": "light",
+            "label": "STAB OUT OF TRIM",
+            "color": "amber",
+            "x": 356.0,
+            "y": 64.0,
+            "controls": [
+              "stabout"
+            ],
+            "description": "The autopilot is not trimming correctly."
+          },
+          {
+            "kind": "light",
+            "label": "SPEED BRAKE ARMED",
+            "color": "green",
+            "x": 402.0,
+            "y": 64.0,
+            "controls": [
+              "speedbrake"
+            ],
+            "description": "The speedbrake is armed and will deploy by itself on touchdown."
+          },
+          {
+            "kind": "light",
+            "label": "A/P",
+            "color": "amber",
+            "x": 196.0,
+            "y": 78.0,
+            "description": "Autopilot, autothrottle and FMC alert light."
+          },
+          {
+            "kind": "light",
+            "label": "A/T",
+            "color": "amber",
+            "x": 222.0,
+            "y": 78.0,
+            "description": "Autopilot, autothrottle and FMC alert light."
+          },
+          {
+            "kind": "light",
+            "label": "FMC",
+            "color": "amber",
+            "x": 248.0,
+            "y": 78.0,
+            "description": "Autopilot, autothrottle and FMC alert light."
+          }
+        ]
+      },
+      {
+        "id": "cd",
+        "title": "Captain displays",
+        "x": 10.0,
+        "y": 94.0,
+        "width": 434.0,
+        "height": 226.0,
+        "items": [
+          {
+            "kind": "display_unit",
+            "label": "OUTBOARD DU: PFD",
+            "x": 110.0,
+            "y": 118.0,
+            "controls": [
+              "fltinst",
+              "speedt",
+              "fma",
+              "pfdhdg"
+            ],
+            "description": "Primary flight display.",
+            "width": 190.0,
+            "height": 170.0
+          },
+          {
+            "kind": "display_unit",
+            "label": "INBOARD DU: ND AND ENGINES",
+            "x": 320.0,
+            "y": 118.0,
+            "controls": [
+              "fltinst",
+              "n1",
+              "engmon",
+              "motor",
+              "oil",
+              "fuelq"
+            ],
+            "description": "Navigation display and engine indications.",
+            "width": 190.0,
+            "height": 170.0
+          }
+        ]
+      },
+      {
+        "id": "ctr",
+        "title": "Standby and gear",
+        "x": 450.0,
+        "y": 6.0,
+        "width": 104.0,
+        "height": 404.0,
+        "items": [
+          {
+            "kind": "display_unit",
+            "label": "STANDBY DISPLAY",
+            "x": 52.0,
+            "y": 54.0,
+            "controls": [
+              "isfdc"
+            ],
+            "description": "Standby attitude, speed and altitude.",
+            "width": 84.0,
+            "height": 76.0
+          },
+          {
+            "kind": "light",
+            "label": "LEFT GEAR",
+            "color": "red",
+            "x": 13.0,
+            "y": 134.0,
+            "description": "The left main gear is moving or not where the gear lever says, or it is not down and locked with a thrust lever at idle below 800 ft.",
+            "width": 42.0,
+            "height": 0.0
+          },
+          {
+            "kind": "light",
+            "label": "NOSE GEAR",
+            "color": "red",
+            "x": 52.0,
+            "y": 108.0,
+            "description": "The nose gear is moving or not where the gear lever says, or it is not down and locked with a thrust lever at idle below 800 ft.",
+            "width": 42.0,
+            "height": 0.0
+          },
+          {
+            "kind": "light",
+            "label": "RIGHT GEAR",
+            "color": "red",
+            "x": 91.0,
+            "y": 134.0,
+            "description": "The right main gear is moving or not where the gear lever says, or it is not down and locked with a thrust lever at idle below 800 ft.",
+            "width": 42.0,
+            "height": 0.0
+          },
+          {
+            "kind": "light",
+            "label": "LEFT GEAR",
+            "color": "green",
+            "x": 13.0,
+            "y": 160.0,
+            "controls": [
+              "gearlever"
+            ],
+            "description": "The left main gear is down and locked.",
+            "width": 42.0,
+            "height": 0.0
+          },
+          {
+            "kind": "light",
+            "label": "NOSE GEAR",
+            "color": "green",
+            "x": 52.0,
+            "y": 134.0,
+            "controls": [
+              "gearlever"
+            ],
+            "description": "The nose gear is down and locked.",
+            "width": 42.0,
+            "height": 0.0
+          },
+          {
+            "kind": "light",
+            "label": "RIGHT GEAR",
+            "color": "green",
+            "x": 91.0,
+            "y": 160.0,
+            "controls": [
+              "gearlever"
+            ],
+            "description": "The right main gear is down and locked.",
+            "width": 42.0,
+            "height": 0.0
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "LANDING GEAR LEVER",
+            "guarded": true,
+            "x": 24.0,
+            "y": 266.0,
+            "controls": [
+              "gearlever",
+              "gearup"
+            ],
+            "positions": "UP, DN",
+            "description": "Raises and lowers the gear."
+          },
+          {
+            "kind": "push_button",
+            "label": "LOCK OVRD",
+            "x": 56.0,
+            "y": 236.0,
+            "description": "Lets the gear lever go UP when the ground lock holds it."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "NOSE WHEEL STEER ALT",
+            "guarded": true,
+            "x": 88.0,
+            "y": 268.0,
+            "controls": [
+              "nws"
+            ],
+            "positions": "NORM",
+            "description": "Guarded at NORM, which steers with system A. ALT uses system B."
+          }
+        ]
+      },
+      {
+        "id": "fl",
+        "title": "First officer lights",
+        "x": 560.0,
+        "y": 6.0,
+        "width": 430.0,
+        "height": 96.0,
+        "items": [
+          {
+            "kind": "light",
+            "label": "SPEEDBRAKES EXTENDED",
+            "color": "amber",
+            "x": 30.0,
+            "y": 40.0,
+            "description": "Speedbrakes are out at the wrong time."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "A/P A/T TEST",
+            "x": 156.0,
+            "y": 22.0,
+            "controls": [
+              "ltest"
+            ],
+            "positions": "1, 2",
+            "description": "Tests the disengage lights."
+          },
+          {
+            "kind": "light",
+            "label": "CABIN ALTITUDE",
+            "color": "red",
+            "x": 306.0,
+            "y": 40.0,
+            "description": "The cabin altitude has climbed above about 10,000 ft."
+          },
+          {
+            "kind": "light",
+            "label": "TAKEOFF CONFIG",
+            "color": "red",
+            "x": 354.0,
+            "y": 40.0,
+            "description": "When thrust went up for takeoff, an item such as the flaps, speedbrake, stabilizer trim or parking brake was not set for takeoff."
+          },
+          {
+            "kind": "light",
+            "label": "BELOW G/S",
+            "color": "amber",
+            "x": 402.0,
+            "y": 40.0,
+            "description": "The airplane has gone well below the glideslope on the approach."
+          },
+          {
+            "kind": "light",
+            "label": "A/P",
+            "color": "amber",
+            "x": 130.0,
+            "y": 78.0,
+            "description": "Autopilot, autothrottle and FMC alert light."
+          },
+          {
+            "kind": "light",
+            "label": "A/T",
+            "color": "amber",
+            "x": 156.0,
+            "y": 78.0,
+            "description": "Autopilot, autothrottle and FMC alert light."
+          },
+          {
+            "kind": "light",
+            "label": "FMC",
+            "color": "amber",
+            "x": 182.0,
+            "y": 78.0,
+            "description": "Autopilot, autothrottle and FMC alert light."
+          }
+        ]
+      },
+      {
+        "id": "fd",
+        "title": "First officer displays",
+        "x": 560.0,
+        "y": 94.0,
+        "width": 430.0,
+        "height": 226.0,
+        "items": [
+          {
+            "kind": "display_unit",
+            "label": "INBOARD DU: ND",
+            "x": 110.0,
+            "y": 118.0,
+            "controls": [
+              "fltinst"
+            ],
+            "description": "Navigation display.",
+            "width": 190.0,
+            "height": 170.0
+          },
+          {
+            "kind": "display_unit",
+            "label": "OUTBOARD DU: PFD",
+            "x": 320.0,
+            "y": 118.0,
+            "controls": [
+              "fltinst"
+            ],
+            "description": "Primary flight display.",
+            "width": 190.0,
+            "height": 170.0
+          }
+        ]
+      },
+      {
+        "id": "clt",
+        "title": "Captain display select and lighting",
+        "x": 10.0,
+        "y": 326.0,
+        "width": 434.0,
+        "height": 110.0,
+        "items": [
+          {
+            "kind": "selector",
+            "label": "MAIN PANEL",
+            "x": 118.0,
+            "y": 34.0,
+            "controls": [
+              "panellts"
+            ],
+            "positions": "OFF to BRIGHT",
+            "description": "Panel brightness."
+          },
+          {
+            "kind": "selector",
+            "label": "PFD/MFD",
+            "x": 188.0,
+            "y": 34.0,
+            "controls": [
+              "dsel"
+            ],
+            "positions": "OUTBD, NORM, INBD",
+            "description": "Moves the displays."
+          },
+          {
+            "kind": "selector",
+            "label": "BACKGROUND",
+            "x": 262.0,
+            "y": 58.0,
+            "controls": [
+              "panellts"
+            ],
+            "positions": "OFF to BRIGHT",
+            "description": "Background brightness."
+          },
+          {
+            "kind": "selector",
+            "label": "AFDS FLOOD",
+            "x": 346.0,
+            "y": 58.0,
+            "controls": [
+              "panellts"
+            ],
+            "positions": "OFF to BRIGHT",
+            "description": "Glareshield flood light."
+          },
+          {
+            "kind": "push_button",
+            "label": "FOOT AIR",
+            "x": 18.0,
+            "y": 58.0,
+            "description": "Pull for foot air."
+          },
+          {
+            "kind": "push_button",
+            "label": "WINDSHIELD AIR",
+            "x": 60.0,
+            "y": 58.0,
+            "description": "Pull for windshield air."
+          },
+          {
+            "kind": "selector",
+            "label": "OUTBD DU",
+            "x": 118.0,
+            "y": 84.0,
+            "description": "Outboard display brightness."
+          },
+          {
+            "kind": "selector",
+            "label": "INBD DU",
+            "x": 188.0,
+            "y": 84.0,
+            "description": "Inboard display brightness."
+          }
+        ]
+      },
+      {
+        "id": "gp",
+        "title": "Ground proximity, display select and air",
+        "x": 560.0,
+        "y": 326.0,
+        "width": 430.0,
+        "height": 110.0,
+        "items": [
+          {
+            "kind": "light",
+            "label": "GND PROX INOP",
+            "color": "amber",
+            "x": 26.0,
+            "y": 26.0,
+            "controls": [
+              "gpwssw"
+            ],
+            "description": "The ground proximity warning system has a fault, so terrain warnings may not work."
+          },
+          {
+            "kind": "push_button",
+            "label": "SYS TEST",
+            "x": 26.0,
+            "y": 56.0,
+            "controls": [
+              "gpwssw"
+            ],
+            "description": "Runs the GPWS test."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "FLAP INHIBIT",
+            "guarded": true,
+            "x": 68.0,
+            "y": 52.0,
+            "positions": "NORM",
+            "description": "Guarded at NORM. INHIBIT silences the flap, gear, terrain or runway alerts."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "GEAR INHIBIT",
+            "guarded": true,
+            "x": 112.0,
+            "y": 52.0,
+            "positions": "NORM",
+            "description": "Guarded at NORM. INHIBIT silences the flap, gear, terrain or runway alerts."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "TERR INHIBIT",
+            "guarded": true,
+            "x": 156.0,
+            "y": 52.0,
+            "positions": "NORM",
+            "description": "Guarded at NORM. INHIBIT silences the flap, gear, terrain or runway alerts."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "RUNWAY INHIBIT",
+            "guarded": true,
+            "x": 200.0,
+            "y": 52.0,
+            "positions": "NORM",
+            "description": "Guarded at NORM. INHIBIT silences the flap, gear, terrain or runway alerts."
+          },
+          {
+            "kind": "selector",
+            "label": "PFD/MFD",
+            "x": 254.0,
+            "y": 34.0,
+            "controls": [
+              "dsel"
+            ],
+            "positions": "INBD, NORM, OUTBD",
+            "description": "Moves the displays."
+          },
+          {
+            "kind": "selector",
+            "label": "MAIN PANEL",
+            "x": 322.0,
+            "y": 34.0,
+            "controls": [
+              "panellts"
+            ],
+            "positions": "OFF to BRIGHT",
+            "description": "Panel brightness."
+          },
+          {
+            "kind": "light",
+            "label": "RUNWAY INOP",
+            "color": "amber",
+            "x": 26.0,
+            "y": 88.0,
+            "description": "Runway awareness is inoperative."
+          },
+          {
+            "kind": "selector",
+            "label": "INBD DU",
+            "x": 254.0,
+            "y": 84.0,
+            "description": "Inboard display brightness and contrast."
+          },
+          {
+            "kind": "selector",
+            "label": "OUTBD DU",
+            "x": 322.0,
+            "y": 84.0,
+            "description": "Outboard display brightness and contrast."
+          },
+          {
+            "kind": "push_button",
+            "label": "WINDSHIELD AIR",
+            "x": 376.0,
+            "y": 58.0,
+            "description": "Pull for windshield air."
+          },
+          {
+            "kind": "push_button",
+            "label": "FOOT AIR",
+            "x": 416.0,
+            "y": 58.0,
+            "description": "Pull for foot air."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "con",
+    "title": "Center console",
+    "width": 700.0,
+    "height": 1124.0,
+    "sections": [
+      {
+        "id": "cdul",
+        "title": "Left CDU",
+        "x": 10.0,
+        "y": 6.0,
+        "width": 210.0,
+        "height": 120.0,
+        "items": [
+          {
+            "kind": "display_unit",
+            "label": "CDU",
+            "x": 105.0,
+            "y": 64.0,
+            "controls": [
+              "cdu",
+              "vref",
+              "fmc"
+            ],
+            "description": "Flight management entry.",
+            "width": 170.0,
+            "height": 84.0
+          }
+        ]
+      },
+      {
+        "id": "ed",
+        "title": "Engine display and autobrake",
+        "x": 226.0,
+        "y": 6.0,
+        "width": 288.0,
+        "height": 120.0,
+        "items": [
+          {
+            "kind": "toggle_switch",
+            "label": "FUEL FLOW",
+            "x": 34.0,
+            "y": 40.0,
+            "controls": [
+              "fuelflow"
+            ],
+            "positions": "RESET, RATE, USED",
+            "description": "RATE shows flow, USED shows fuel used, RESET zeroes the count."
+          },
+          {
+            "kind": "selector",
+            "label": "SELECTOR L",
+            "x": 34.0,
+            "y": 100.0,
+            "controls": [
+              "sel"
+            ],
+            "positions": "L, C, R",
+            "description": "Left display selector."
+          },
+          {
+            "kind": "light",
+            "label": "AUTO BRAKE DISARM",
+            "color": "amber",
+            "x": 104.0,
+            "y": 22.0,
+            "controls": [
+              "abrake"
+            ],
+            "description": "Autobrake disarmed or faulty. Lights 1 to 2 seconds when RTO is selected."
+          },
+          {
+            "kind": "selector",
+            "label": "AUTO BRAKE",
+            "x": 104.0,
+            "y": 62.0,
+            "controls": [
+              "abrake"
+            ],
+            "positions": "RTO, OFF, 1, 2, 3, MAX",
+            "description": "Sets the autobrake."
+          },
+          {
+            "kind": "push_button",
+            "label": "ENG",
+            "x": 214.0,
+            "y": 22.0,
+            "controls": [
+              "engmon",
+              "oil"
+            ],
+            "description": "Shows secondary engine data."
+          },
+          {
+            "kind": "push_button",
+            "label": "SYS",
+            "x": 260.0,
+            "y": 22.0,
+            "controls": [
+              "sysp"
+            ],
+            "description": "Shows system data."
+          },
+          {
+            "kind": "push_button",
+            "label": "INFO",
+            "x": 214.0,
+            "y": 60.0,
+            "description": "Information display."
+          },
+          {
+            "kind": "push_button",
+            "label": "C/R",
+            "x": 260.0,
+            "y": 60.0,
+            "controls": [
+              "cr"
+            ],
+            "description": "Cancel and recall alerts.",
+            "height": 26.0
+          },
+          {
+            "kind": "selector",
+            "label": "SELECTOR R",
+            "x": 256.0,
+            "y": 104.0,
+            "controls": [
+              "sel"
+            ],
+            "positions": "L, C, R",
+            "description": "Right display selector.",
+            "height": 26.0
+          },
+          {
+            "kind": "light",
+            "label": "ANTISKID INOP",
+            "color": "amber",
+            "x": 104.0,
+            "y": 108.0,
+            "description": "Antiskid fault. Antiskid is off for one or more wheels."
+          },
+          {
+            "kind": "light",
+            "label": "BRAKE TEMP",
+            "color": "amber",
+            "x": 160.0,
+            "y": 22.0,
+            "description": "A brake is hot."
+          },
+          {
+            "kind": "light",
+            "label": "TIRE PRESS",
+            "color": "amber",
+            "x": 160.0,
+            "y": 50.0,
+            "description": "Tire pressure is low."
+          },
+          {
+            "kind": "push_button",
+            "label": "ENG TFR",
+            "x": 160.0,
+            "y": 90.0,
+            "description": "Moves the engine display to the other screen."
+          }
+        ]
+      },
+      {
+        "id": "cdur",
+        "title": "Right CDU",
+        "x": 480.0,
+        "y": 6.0,
+        "width": 210.0,
+        "height": 120.0,
+        "items": [
+          {
+            "kind": "display_unit",
+            "label": "CDU",
+            "x": 105.0,
+            "y": 64.0,
+            "controls": [
+              "cdu",
+              "vref",
+              "fmc"
+            ],
+            "description": "Flight management entry.",
+            "width": 170.0,
+            "height": 84.0
+          }
+        ]
+      },
+      {
+        "id": "st",
+        "title": "Control stand",
+        "x": 10.0,
+        "y": 130.0,
+        "width": 680.0,
+        "height": 250.0,
+        "items": [
+          {
+            "kind": "display_unit",
+            "label": "STAB TRIM WHEEL",
+            "x": 40.0,
+            "y": 120.0,
+            "controls": [
+              "stabind",
+              "stabwheel"
+            ],
+            "description": "Shows and sets stabilizer trim.",
+            "width": 48.0,
+            "height": 190.0
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "SPEEDBRAKE LEVER",
+            "guarded": true,
+            "x": 150.0,
+            "y": 120.0,
+            "controls": [
+              "speedbrake"
+            ],
+            "positions": "DOWN, ARMED, FLIGHT, UP",
+            "description": "Raises the spoilers."
+          },
+          {
+            "kind": "display_unit",
+            "label": "THRUST LEVERS 1 AND 2",
+            "x": 330.0,
+            "y": 70.0,
+            "controls": [
+              "thrust"
+            ],
+            "description": "Set thrust. Reverse levers sit on top.",
+            "width": 220.0,
+            "height": 92.0
+          },
+          {
+            "kind": "push_button",
+            "label": "TO/GA",
+            "x": 262.0,
+            "y": 154.0,
+            "controls": [
+              "toga"
+            ],
+            "description": "Takeoff and go-around."
+          },
+          {
+            "kind": "push_button",
+            "label": "A/T DISENGAGE",
+            "x": 398.0,
+            "y": 154.0,
+            "controls": [
+              "apdisc"
+            ],
+            "description": "Disconnects the autothrottle."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "FLAP LEVER",
+            "guarded": true,
+            "x": 532.0,
+            "y": 120.0,
+            "controls": [
+              "flaplever"
+            ],
+            "positions": "UP, 1, 2, 5, 10, 15, 25, 30, 40",
+            "description": "Sets the flaps."
+          },
+          {
+            "kind": "display_unit",
+            "label": "STAB TRIM WHEEL",
+            "x": 640.0,
+            "y": 120.0,
+            "controls": [
+              "stabind",
+              "stabwheel"
+            ],
+            "description": "Shows and sets stabilizer trim.",
+            "width": 48.0,
+            "height": 190.0
+          }
+        ]
+      },
+      {
+        "id": "lo",
+        "title": "Parking brake and start levers",
+        "x": 10.0,
+        "y": 384.0,
+        "width": 680.0,
+        "height": 110.0,
+        "items": [
+          {
+            "kind": "toggle_switch",
+            "label": "PARKING BRAKE",
+            "guarded": true,
+            "x": 80.0,
+            "y": 50.0,
+            "controls": [
+              "pbrake"
+            ],
+            "positions": "PULL",
+            "description": "Red handle."
+          },
+          {
+            "kind": "light",
+            "label": "PARK BRAKE LIGHT",
+            "color": "amber",
+            "x": 170.0,
+            "y": 52.0,
+            "controls": [
+              "pbrake"
+            ],
+            "description": "The parking brake is holding the airplane."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "START LEVER 1",
+            "guarded": true,
+            "x": 270.0,
+            "y": 50.0,
+            "controls": [
+              "slever"
+            ],
+            "positions": "IDLE, CUTOFF",
+            "description": "Fuel to engine 1."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "START LEVER 2",
+            "guarded": true,
+            "x": 350.0,
+            "y": 50.0,
+            "controls": [
+              "slever"
+            ],
+            "positions": "IDLE, CUTOFF",
+            "description": "Fuel to engine 2."
+          },
+          {
+            "kind": "push_button",
+            "label": "HORN CUTOUT",
+            "x": 310.0,
+            "y": 96.0,
+            "description": "Silences the gear horn."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "STAB TRIM PRI",
+            "x": 540.0,
+            "y": 50.0,
+            "controls": [
+              "stabcut"
+            ],
+            "positions": "NORMAL, CUT OUT",
+            "description": "Either switch cuts all electric stabilizer trim."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "STAB TRIM B/U",
+            "x": 610.0,
+            "y": 50.0,
+            "controls": [
+              "stabcut"
+            ],
+            "positions": "NORMAL, CUT OUT",
+            "description": "Either switch cuts all electric stabilizer trim."
+          }
+        ]
+      },
+      {
+        "id": "fi",
+        "title": "Fire protection",
+        "x": 10.0,
+        "y": 498.0,
+        "width": 680.0,
+        "height": 150.0,
+        "items": [
+          {
+            "kind": "toggle_switch",
+            "label": "OVHT DET 1",
+            "x": 44.0,
+            "y": 46.0,
+            "positions": "A, NORMAL, B",
+            "description": "Selects loop A, B, or both (NORMAL) for engine 1."
+          },
+          {
+            "kind": "light",
+            "label": "ENG 1 OVERHEAT",
+            "color": "amber",
+            "x": 44.0,
+            "y": 86.0,
+            "description": "The detectors around engine 1 sense more heat than normal, but not a fire."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "FIRE TEST",
+            "x": 44.0,
+            "y": 128.0,
+            "controls": [
+              "firetest"
+            ],
+            "positions": "FAULT/INOP, OVHT/FIRE",
+            "description": "Tests the fire warnings."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "FIRE 1",
+            "guarded": true,
+            "x": 130.0,
+            "y": 76.0,
+            "controls": [
+              "firesw"
+            ],
+            "positions": "PULL, ROTATE L, R",
+            "description": "Engine 1 fire switch."
+          },
+          {
+            "kind": "light",
+            "label": "FAULT",
+            "color": "amber",
+            "x": 222.0,
+            "y": 40.0,
+            "description": "Both detector loops of an engine have failed."
+          },
+          {
+            "kind": "light",
+            "label": "APU DET INOP",
+            "color": "amber",
+            "x": 222.0,
+            "y": 76.0,
+            "description": "The APU fire detector loop has failed, so an APU fire may not be detected."
+          },
+          {
+            "kind": "light",
+            "label": "APU BOTTLE DISCHARGE",
+            "color": "amber",
+            "x": 222.0,
+            "y": 112.0,
+            "description": "The APU fire bottle is empty or has lost pressure."
+          },
+          {
+            "kind": "push_button",
+            "label": "BELL CUTOUT",
+            "x": 310.0,
+            "y": 34.0,
+            "description": "Silences the fire warning bell."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "FIRE APU",
+            "guarded": true,
+            "x": 310.0,
+            "y": 92.0,
+            "controls": [
+              "apufire"
+            ],
+            "positions": "PULL, ROTATE",
+            "description": "APU fire switch."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "OVHT DET 2",
+            "x": 394.0,
+            "y": 46.0,
+            "positions": "A, NORMAL, B",
+            "description": "Selects loop A, B, or both (NORMAL) for engine 2."
+          },
+          {
+            "kind": "light",
+            "label": "ENG 2 OVERHEAT",
+            "color": "amber",
+            "x": 394.0,
+            "y": 86.0,
+            "description": "The detectors around engine 2 sense more heat than normal, but not a fire."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "FIRE 2",
+            "guarded": true,
+            "x": 480.0,
+            "y": 76.0,
+            "controls": [
+              "firesw"
+            ],
+            "positions": "PULL, ROTATE L, R",
+            "description": "Engine 2 fire switch."
+          },
+          {
+            "kind": "light",
+            "label": "L BOTTLE DISCHARGE",
+            "color": "amber",
+            "x": 560.0,
+            "y": 34.0,
+            "description": "The left engine fire bottle has been fired or has lost pressure."
+          },
+          {
+            "kind": "light",
+            "label": "R BOTTLE DISCHARGE",
+            "color": "amber",
+            "x": 628.0,
+            "y": 34.0,
+            "description": "The right engine fire bottle has been fired or has lost pressure."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "EXT TEST",
+            "x": 594.0,
+            "y": 78.0,
+            "controls": [
+              "exttest"
+            ],
+            "positions": "1, 2",
+            "description": "Tests the extinguisher bottle circuits."
+          },
+          {
+            "kind": "light",
+            "label": "L",
+            "color": "amber",
+            "x": 548.0,
+            "y": 122.0,
+            "description": "Green during the extinguisher test."
+          },
+          {
+            "kind": "light",
+            "label": "R",
+            "color": "amber",
+            "x": 594.0,
+            "y": 122.0,
+            "description": "Green during the extinguisher test."
+          },
+          {
+            "kind": "light",
+            "label": "APU",
+            "color": "amber",
+            "x": 640.0,
+            "y": 122.0,
+            "description": "Green during the extinguisher test."
+          }
+        ]
+      },
+      {
+        "id": "r1",
+        "title": "Radio 1",
+        "x": 10.0,
+        "y": 652.0,
+        "width": 222.0,
+        "height": 112.0,
+        "items": [
+          {
+            "kind": "display_unit",
+            "label": "VHF RADIO 1",
+            "x": 111.0,
+            "y": 48.0,
+            "controls": [
+              "radios",
+              "atcclr",
+              "clear"
+            ],
+            "description": "Active and standby frequencies.",
+            "width": 170.0,
+            "height": 44.0
+          }
+        ]
+      },
+      {
+        "id": "cf",
+        "title": "Cargo fire",
+        "x": 238.0,
+        "y": 652.0,
+        "width": 224.0,
+        "height": 112.0,
+        "items": [
+          {
+            "kind": "light",
+            "label": "EXT FWD",
+            "color": "amber",
+            "x": 22.0,
+            "y": 42.0,
+            "description": "Green during the cargo fire test.",
+            "width": 38.0,
+            "height": 26.0
+          },
+          {
+            "kind": "light",
+            "label": "EXT AFT",
+            "color": "amber",
+            "x": 68.0,
+            "y": 42.0,
+            "description": "Green during the cargo fire test.",
+            "width": 38.0,
+            "height": 26.0
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "DET FWD",
+            "x": 114.0,
+            "y": 42.0,
+            "positions": "A, NORM, B",
+            "description": "Forward detector select.",
+            "width": 38.0,
+            "height": 26.0
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "DET AFT",
+            "x": 152.0,
+            "y": 42.0,
+            "positions": "A, NORM, B",
+            "description": "Aft detector select.",
+            "width": 38.0,
+            "height": 26.0
+          },
+          {
+            "kind": "light",
+            "label": "DETECTOR FAULT",
+            "color": "amber",
+            "x": 198.0,
+            "y": 42.0,
+            "description": "One or more selected detection loops in a hold has failed, so detection there may be reduced.",
+            "width": 42.0,
+            "height": 26.0
+          },
+          {
+            "kind": "push_button",
+            "label": "TEST",
+            "x": 25.0,
+            "y": 82.0,
+            "controls": [
+              "cargofire"
+            ],
+            "description": "Tests the cargo fire system.",
+            "width": 40.0,
+            "height": 28.0
+          },
+          {
+            "kind": "push_button",
+            "label": "ARM FWD",
+            "x": 85.0,
+            "y": 82.0,
+            "controls": [
+              "cargofire"
+            ],
+            "description": "Arms the forward compartment.",
+            "width": 46.0,
+            "height": 28.0
+          },
+          {
+            "kind": "push_button",
+            "label": "ARM AFT",
+            "x": 137.0,
+            "y": 82.0,
+            "controls": [
+              "cargofire"
+            ],
+            "description": "Arms the aft compartment.",
+            "width": 46.0,
+            "height": 28.0
+          },
+          {
+            "kind": "push_button",
+            "label": "DISCH",
+            "x": 195.0,
+            "y": 82.0,
+            "controls": [
+              "cargofire"
+            ],
+            "description": "Discharges the bottle into the armed compartment.",
+            "width": 46.0,
+            "height": 28.0
+          }
+        ]
+      },
+      {
+        "id": "r2",
+        "title": "Radio 2",
+        "x": 468.0,
+        "y": 652.0,
+        "width": 222.0,
+        "height": 112.0,
+        "items": [
+          {
+            "kind": "display_unit",
+            "label": "VHF RADIO 2",
+            "x": 111.0,
+            "y": 48.0,
+            "controls": [
+              "radios"
+            ],
+            "description": "Active and standby frequencies.",
+            "width": 170.0,
+            "height": 44.0
+          }
+        ]
+      },
+      {
+        "id": "n1",
+        "title": "NAV 1",
+        "x": 10.0,
+        "y": 768.0,
+        "width": 222.0,
+        "height": 84.0,
+        "items": [
+          {
+            "kind": "display_unit",
+            "label": "NAV 1",
+            "x": 111.0,
+            "y": 48.0,
+            "controls": [
+              "mmr"
+            ],
+            "description": "Multi-mode receiver.",
+            "width": 170.0,
+            "height": 44.0
+          }
+        ]
+      },
+      {
+        "id": "wx",
+        "title": "Weather radar",
+        "x": 238.0,
+        "y": 768.0,
+        "width": 224.0,
+        "height": 84.0,
+        "items": [
+          {
+            "kind": "display_unit",
+            "label": "WXR PANEL",
+            "x": 112.0,
+            "y": 48.0,
+            "controls": [
+              "wxrp"
+            ],
+            "description": "Not simulated.",
+            "width": 170.0,
+            "height": 44.0
+          }
+        ]
+      },
+      {
+        "id": "n2",
+        "title": "NAV 2",
+        "x": 468.0,
+        "y": 768.0,
+        "width": 222.0,
+        "height": 84.0,
+        "items": [
+          {
+            "kind": "display_unit",
+            "label": "NAV 2",
+            "x": 111.0,
+            "y": 48.0,
+            "controls": [
+              "mmr"
+            ],
+            "description": "Multi-mode receiver.",
+            "width": 170.0,
+            "height": 44.0
+          }
+        ]
+      },
+      {
+        "id": "a1",
+        "title": "Audio 1",
+        "x": 10.0,
+        "y": 856.0,
+        "width": 222.0,
+        "height": 84.0,
+        "items": [
+          {
+            "kind": "display_unit",
+            "label": "AUDIO PANEL 1",
+            "x": 111.0,
+            "y": 48.0,
+            "controls": [
+              "audio"
+            ],
+            "description": "Radio and intercom audio.",
+            "width": 170.0,
+            "height": 44.0
+          }
+        ]
+      },
+      {
+        "id": "atc",
+        "title": "ATC/TCAS",
+        "x": 238.0,
+        "y": 856.0,
+        "width": 224.0,
+        "height": 84.0,
+        "items": [
+          {
+            "kind": "selector",
+            "label": "ALT SOURCE 1",
+            "x": 30.0,
+            "y": 22.0,
+            "controls": [
+              "xpndr"
+            ],
+            "positions": "1, 2",
+            "description": "Chooses which air data source sends altitude to the transponder."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "XPNDR",
+            "x": 82.0,
+            "y": 48.0,
+            "controls": [
+              "xpndr"
+            ],
+            "positions": "STBY, AUTO",
+            "description": "Transponder."
+          },
+          {
+            "kind": "display_unit",
+            "label": "CODE",
+            "x": 134.0,
+            "y": 48.0,
+            "controls": [
+              "xpndr"
+            ],
+            "description": "Squawk code.",
+            "width": 48.0,
+            "height": 30.0
+          },
+          {
+            "kind": "selector",
+            "label": "MODE",
+            "x": 194.0,
+            "y": 48.0,
+            "controls": [
+              "xpndr"
+            ],
+            "positions": "ALT OFF, XPNDR, TA ONLY, TA/RA",
+            "description": "TCAS and transponder mode."
+          },
+          {
+            "kind": "selector",
+            "label": "ALT SOURCE 2",
+            "x": 30.0,
+            "y": 78.0,
+            "controls": [
+              "xpndr"
+            ],
+            "positions": "1, 2",
+            "description": "Second altitude source selector."
+          }
+        ]
+      },
+      {
+        "id": "a2",
+        "title": "Audio 2",
+        "x": 468.0,
+        "y": 856.0,
+        "width": 222.0,
+        "height": 84.0,
+        "items": [
+          {
+            "kind": "display_unit",
+            "label": "AUDIO PANEL 2",
+            "x": 111.0,
+            "y": 48.0,
+            "controls": [
+              "audio"
+            ],
+            "description": "Radio and intercom audio.",
+            "width": 170.0,
+            "height": 44.0
+          }
+        ]
+      },
+      {
+        "id": "r3",
+        "title": "Radio 3",
+        "x": 10.0,
+        "y": 944.0,
+        "width": 222.0,
+        "height": 60.0,
+        "items": [
+          {
+            "kind": "display_unit",
+            "label": "VHF RADIO 3",
+            "x": 111.0,
+            "y": 36.0,
+            "description": "Third radio.",
+            "width": 170.0,
+            "height": 28.0
+          }
+        ]
+      },
+      {
+        "id": "adf",
+        "title": "ADF",
+        "x": 238.0,
+        "y": 944.0,
+        "width": 454.0,
+        "height": 96.0,
+        "items": [
+          {
+            "kind": "readout",
+            "label": "ADF 1",
+            "x": 130.0,
+            "y": 30.0,
+            "controls": [
+              "adf"
+            ],
+            "description": "ADF receivers."
+          },
+          {
+            "kind": "readout",
+            "label": "ADF 2",
+            "x": 324.0,
+            "y": 30.0,
+            "controls": [
+              "adf"
+            ],
+            "description": "ADF 2 frequency."
+          },
+          {
+            "kind": "selector",
+            "label": "ADF 1 TUNE",
+            "x": 50.0,
+            "y": 40.0,
+            "controls": [
+              "adf"
+            ],
+            "description": "Tunes ADF 1."
+          },
+          {
+            "kind": "selector",
+            "label": "ADF 2 TUNE",
+            "x": 404.0,
+            "y": 40.0,
+            "controls": [
+              "adf"
+            ],
+            "description": "Tunes ADF 2."
+          },
+          {
+            "kind": "selector",
+            "label": "TONE",
+            "x": 227.0,
+            "y": 40.0,
+            "controls": [
+              "adf"
+            ],
+            "positions": "1, OFF, 2",
+            "description": "ADF select knob: chooses which receiver you hear (OFF, 1 or 2)."
+          },
+          {
+            "kind": "selector",
+            "label": "ADF 1 MODE",
+            "x": 170.0,
+            "y": 74.0,
+            "controls": [
+              "adf"
+            ],
+            "positions": "ADF, ANT, OFF",
+            "description": "ADF 1 mode. TEST button in the center."
+          },
+          {
+            "kind": "selector",
+            "label": "ADF 2 MODE",
+            "x": 284.0,
+            "y": 74.0,
+            "controls": [
+              "adf"
+            ],
+            "positions": "ADF, ANT, OFF",
+            "description": "ADF 2 mode. TEST button in the center."
+          }
+        ]
+      },
+      {
+        "id": "lp",
+        "title": "Lighting",
+        "x": 10.0,
+        "y": 1008.0,
+        "width": 222.0,
+        "height": 130.0,
+        "items": [
+          {
+            "kind": "selector",
+            "label": "FLOOD",
+            "x": 60.0,
+            "y": 66.18181818181819,
+            "positions": "OFF to BRIGHT",
+            "description": "Flood lights."
+          },
+          {
+            "kind": "selector",
+            "label": "PANEL",
+            "x": 160.0,
+            "y": 66.18181818181819,
+            "positions": "OFF to BRIGHT",
+            "description": "Panel lights."
+          }
+        ]
+      },
+      {
+        "id": "tr",
+        "title": "Trim",
+        "x": 238.0,
+        "y": 1008.0,
+        "width": 224.0,
+        "height": 130.0,
+        "items": [
+          {
+            "kind": "readout",
+            "label": "RUDDER TRIM",
+            "x": 112.0,
+            "y": 22.0,
+            "description": "Rudder trim position indicator, in units nose left or right.",
+            "width": 110.0,
+            "height": 18.0
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "AILERON",
+            "x": 58.0,
+            "y": 92.0,
+            "controls": [
+              "trimp"
+            ],
+            "positions": "LEFT, RIGHT WING DOWN",
+            "description": "Aileron trim."
+          },
+          {
+            "kind": "selector",
+            "label": "RUDDER",
+            "x": 166.0,
+            "y": 92.0,
+            "controls": [
+              "trimp"
+            ],
+            "positions": "NOSE LEFT, NOSE RIGHT",
+            "description": "Rudder trim."
+          }
+        ]
+      },
+      {
+        "id": "dr",
+        "title": "Stab override and door",
+        "x": 468.0,
+        "y": 1008.0,
+        "width": 222.0,
+        "height": 130.0,
+        "items": [
+          {
+            "kind": "toggle_switch",
+            "label": "STAB TRIM OVRD",
+            "guarded": true,
+            "x": 60.0,
+            "y": 68.54545454545455,
+            "controls": [
+              "staboverride"
+            ],
+            "positions": "NORM, OVRD",
+            "description": "OVRD restores electric trim when the column cutout has stopped it. Guarded at NORM."
+          },
+          {
+            "kind": "selector",
+            "label": "FLT DK DOOR",
+            "x": 160.0,
+            "y": 68.54545454545455,
+            "controls": [
+              "fdd"
+            ],
+            "positions": "UNLKD, AUTO, DENY",
+            "description": "Flight deck door."
+          }
+        ]
+      }
+    ]
+  }
+]

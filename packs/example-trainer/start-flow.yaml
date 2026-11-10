@@ -1,0 +1,46 @@
+# SPDX-FileCopyrightText: 2026 offbyonce
+# SPDX-License-Identifier: CC-BY-NC-SA-4.0
+#
+# yaml-language-server: $schema=../../schemas/checklist.schema.json
+# Invented content that shows the pack format. Not a real aircraft procedure.
+id: start-flow
+title: Start flow
+kind: flow
+basis: [prior-release]
+steps:
+  - id: example-trainer.start.walkaround
+    text: Nose area
+    expect: CLEAR
+    walkaround: {x: 160, y: 40}
+    look_for: Nothing blocking the intake.
+    location: At the nose, left side.
+
+  - id: example-trainer.start.computer
+    text: Flight computer
+    expect: SET
+    opens: example-setup
+    hint:
+      - {prefix: 'SQUAWK ', field: squawk}
+    how: computer
+    explain: computer-test
+
+  - id: example-trainer.start.speeds
+    text: Takeoff speeds
+    expect: V1 ___, VR ___, NOTE ___
+    fill: [v1, vr, manual]
+
+  - id: example-trainer.start.warm-up
+    text: Engine warm-up
+    expect: COMPLETE
+    timer:
+      seconds: 120
+      label: Warm-up
+      note: A typical time.
+      auto_start:
+        from: [example-trainer.start.computer]
+        pick: latest
+
+  - id: example-trainer.start.radar
+    text: Weather radar
+    expect: 'OFF'
+    not_simulated: true

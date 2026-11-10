@@ -1,7 +1,7 @@
 # SPDX-FileCopyrightText: 2026 offbyonce
 # SPDX-License-Identifier: MIT
 #
-# Licences for files that cannot carry a comment header. Code is MIT; checklist
+# Licenses for files that cannot carry a comment header. Code is MIT; checklist
 # content in packs/ is CC BY-NC-SA 4.0. Check with `reuse lint` (https://reuse.software).
 version = 1
 

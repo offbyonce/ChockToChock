@@ -1,0 +1,38 @@
+# SPDX-FileCopyrightText: 2026 offbyonce and Chock to Chock contributors
+# SPDX-License-Identifier: CC-BY-NC-SA-4.0
+#
+# yaml-language-server: $schema=../../../schemas/checklist.schema.json
+# Imported from 3.0, then validated against vendor documentation. Edit by hand; do not regenerate.
+id: approach-approach-checklist
+title: Approach checklist
+kind: checklist
+basis:
+  - ifly-docs
+steps:
+  - id: ifly-737-max8.approach.altimeters-check
+    text: ALTIMETERS
+    expect: "___ SET"
+    controls:
+      - baro
+    fill:
+      - qnh
+    note: "Below the transition level, altimeters must read local QNH so you see your true altitude above sea level."
+    why: True altitude below transition
+    status: checked
+  - id: ifly-737-max8.approach.fasten-belts-selector-check
+    text: FASTEN BELTS SELECTOR
+    expect: "AUTO OR ON"
+    controls:
+      - sblts
+    note: Tells the cabin to sit down for landing.
+    why: Cabin seated for landing
+    status: checked
+  - id: ifly-737-max8.approach.exterior-lights
+    text: EXTERIOR LIGHTS
+    expect: "LANDING, WING AND LOGO ON"
+    controls:
+      - landlt
+      - winglt
+      - logo
+    why: "See and be seen below 10,000 ft"
+    status: draft

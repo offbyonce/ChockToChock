@@ -1,0 +1,518 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CduFile",
+  "description": "`cdu.yaml`.",
+  "type": "object",
+  "properties": {
+    "walkthroughs": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/CduWalkthrough"
+      }
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "walkthroughs"
+  ],
+  "$defs": {
+    "CduField": {
+      "description": "A live flight value. Calculations happen in the app, never in the pack.",
+      "type": "object",
+      "properties": {
+        "after": {
+          "description": "Literal text after the value, e.g. a degree sign.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "before": {
+          "description": "Literal text before the value, e.g. `RW`.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "empty": {
+          "description": "Shown when the value is not known.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "empty_style": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/CduStyle"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "field": {
+          "$ref": "#/$defs/FillField"
+        },
+        "index": {
+          "description": "For `route_leg`: the row, from 1 to `MAX_ROUTE_LEG`.",
+          "type": [
+            "integer",
+            "null"
+          ],
+          "format": "uint32",
+          "minimum": 0
+        },
+        "part": {
+          "description": "For `route_leg`: which half of the row.",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/RouteLegPart"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "style": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/CduStyle"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "field"
+      ]
+    },
+    "CduInline": {
+      "description": "Text or a live value, in any style. Mix several in a row to style them differently.",
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "$ref": "#/$defs/CduStyled"
+        },
+        {
+          "$ref": "#/$defs/CduField"
+        },
+        {
+          "$ref": "#/$defs/CduRouteCount"
+        }
+      ]
+    },
+    "CduPage": {
+      "description": "One step of a CDU walkthrough.",
+      "type": "object",
+      "properties": {
+        "action": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/CduPart"
+          }
+        },
+        "check": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/CduPart"
+          }
+        },
+        "key": {
+          "description": "The function key to highlight.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "note": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/CduPart"
+          }
+        },
+        "page": {
+          "description": "The CDU page name, e.g. `PERF INIT`.",
+          "type": "string"
+        },
+        "screen": {
+          "$ref": "#/$defs/CduScreen"
+        },
+        "title": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "page",
+        "title",
+        "action",
+        "check",
+        "screen"
+      ]
+    },
+    "CduPart": {
+      "description": "One piece of CDU text.",
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "$ref": "#/$defs/CduStyled"
+        },
+        {
+          "$ref": "#/$defs/CduField"
+        },
+        {
+          "$ref": "#/$defs/CduRouteCount"
+        },
+        {
+          "$ref": "#/$defs/CduWhen"
+        }
+      ]
+    },
+    "CduRouteCount": {
+      "description": "A number calculated from the route. The rows per page are the aircraft's, so they\ncome from the pack.",
+      "type": "object",
+      "properties": {
+        "after": {
+          "description": "Literal text after the number.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "before": {
+          "description": "Literal text before the number.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "empty": {
+          "description": "Shown instead when the count is zero.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "per_page": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0
+        },
+        "route_legs": {
+          "$ref": "#/$defs/RouteLegCount"
+        },
+        "style": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/CduStyle"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "route_legs",
+        "per_page"
+      ]
+    },
+    "CduRow": {
+      "description": "One line select row: a small label line above a value line.",
+      "type": "object",
+      "properties": {
+        "left": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/CduPart"
+          }
+        },
+        "left_label": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/CduPart"
+          }
+        },
+        "right": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/CduPart"
+          }
+        },
+        "right_label": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/CduPart"
+          }
+        },
+        "separator": {
+          "description": "Draws a divider instead of the labels; empty text means a plain line.",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "CduScreen": {
+      "description": "What the CDU shows on one walkthrough page.",
+      "type": "object",
+      "properties": {
+        "highlight": {
+          "description": "Line select keys to highlight, e.g. `2L`.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "page": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/CduPart"
+          }
+        },
+        "rows": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/CduRow"
+          }
+        },
+        "scratchpad": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/CduPart"
+          }
+        },
+        "title": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/CduPart"
+          }
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "title",
+        "page",
+        "rows"
+      ]
+    },
+    "CduStyle": {
+      "description": "How text appears on the CDU screen.",
+      "oneOf": [
+        {
+          "description": "System data the pilot does not enter.",
+          "type": "string",
+          "const": "data"
+        },
+        {
+          "description": "Values the system has calculated or accepted.",
+          "type": "string",
+          "const": "accent"
+        },
+        {
+          "description": "Values the pilot enters.",
+          "type": "string",
+          "const": "user"
+        }
+      ]
+    },
+    "CduStyled": {
+      "description": "Fixed text in a style.",
+      "type": "object",
+      "properties": {
+        "style": {
+          "$ref": "#/$defs/CduStyle"
+        },
+        "text": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "text",
+        "style"
+      ]
+    },
+    "CduWalkthrough": {
+      "description": "A page-by-page guide a step can open.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "pages": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/CduPage"
+          }
+        },
+        "title": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "title",
+        "pages"
+      ]
+    },
+    "CduWhen": {
+      "description": "Shows one group of parts when flight values are known and another when they are not,\ne.g. `<SEL>` beside a runway, or a placeholder until there is a runway. Does not nest.",
+      "type": "object",
+      "properties": {
+        "otherwise": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/CduInline"
+          }
+        },
+        "show": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/CduInline"
+          }
+        },
+        "when_known": {
+          "description": "Every one of these must be known for `show` to appear.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/FillField"
+          }
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "when_known",
+        "show"
+      ]
+    },
+    "FillField": {
+      "description": "The fixed list of flight values the app can fill in. Packs cannot add names; a new one\nneeds an app release.",
+      "oneOf": [
+        {
+          "type": "string",
+          "enum": [
+            "origin",
+            "destination",
+            "flight_number",
+            "route",
+            "runway",
+            "sid",
+            "transition",
+            "initial_altitude",
+            "squawk",
+            "ground_frequency",
+            "departure_frequency",
+            "qnh",
+            "heading",
+            "takeoff_flaps",
+            "landing_flaps",
+            "v1",
+            "vr",
+            "v2",
+            "vref",
+            "cg",
+            "takeoff_trim",
+            "autobrake",
+            "minimums",
+            "landing_altitude",
+            "minimum_takeoff_fuel",
+            "fuel",
+            "zfw",
+            "takeoff_weight",
+            "passengers",
+            "cargo",
+            "reserves",
+            "cost_index",
+            "cruise_level",
+            "cruise_wind",
+            "assumed_temperature",
+            "thrust_reduction_altitude",
+            "acceleration_altitude",
+            "isa_deviation",
+            "transition_altitude",
+            "transition_level",
+            "weight_unit",
+            "utc_time",
+            "utc_date"
+          ]
+        },
+        {
+          "description": "A blank the pilot types in, with no linked value. Only valid in a step's `fill`.",
+          "type": "string",
+          "const": "manual"
+        },
+        {
+          "description": "Fuel in thousands, rounded up to the next tenth (calculated).",
+          "type": "string",
+          "const": "fuel_thousands"
+        },
+        {
+          "description": "Fuel plus zero fuel weight, in thousands (calculated).",
+          "type": "string",
+          "const": "gross_weight"
+        },
+        {
+          "description": "Outside air temperature at top of climb (calculated).",
+          "type": "string",
+          "const": "top_of_climb_oat"
+        },
+        {
+          "description": "Latitude and longitude of the departure airport.",
+          "type": "string",
+          "const": "origin_position"
+        },
+        {
+          "description": "The navigation database cycle (calculated).",
+          "type": "string",
+          "const": "nav_database"
+        },
+        {
+          "description": "The dates that cycle is active (calculated).",
+          "type": "string",
+          "const": "nav_active_dates"
+        },
+        {
+          "description": "One row of the route. Only valid in CDU text, with an `index` and a `part`.",
+          "type": "string",
+          "const": "route_leg"
+        }
+      ]
+    },
+    "RouteLegCount": {
+      "description": "A count the app works out from the route.",
+      "oneOf": [
+        {
+          "description": "How many pages the route legs and departure need, at least 1.",
+          "type": "string",
+          "const": "pages"
+        },
+        {
+          "description": "How many route rows do not fit on the first page.",
+          "type": "string",
+          "const": "overflow"
+        }
+      ]
+    },
+    "RouteLegPart": {
+      "description": "Which half of a route row a field shows.",
+      "type": "string",
+      "enum": [
+        "via",
+        "to"
+      ]
+    }
+  }
+}

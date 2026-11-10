@@ -1,0 +1,66 @@
+# SPDX-FileCopyrightText: 2026 offbyonce and Chock to Chock contributors
+# SPDX-License-Identifier: CC-BY-NC-SA-4.0
+#
+# yaml-language-server: $schema=../../../schemas/checklist.schema.json
+# Imported from 3.0, then validated against vendor documentation. Edit by hand; do not regenerate.
+id: secure-secure-checklist
+title: Secure checklist
+kind: checklist
+basis:
+  - ifly-docs
+steps:
+  - id: ifly-737-max8.secure.electric-hydraulic-pump-switches
+    text: ELECTRIC HYDRAULIC PUMP SWITCHES
+    expect: "OFF"
+    controls:
+      - elechyd
+    why: Not needed when secured
+    status: checked
+  - id: ifly-737-max8.secure.irs-check
+    text: IRS
+    expect: "OFF"
+    controls:
+      - irs
+    note: Stops the navigation system. It must realign before the next flight.
+    why: Must realign before the next flight
+    status: checked
+  - id: ifly-737-max8.secure.window-heat
+    text: WINDOW HEAT
+    expect: "OFF"
+    controls:
+      - wheat
+    why: Not needed when secured
+    status: checked
+  - id: ifly-737-max8.secure.emergency-exit-lights-check
+    text: EMERGENCY EXIT LIGHTS
+    expect: "OFF"
+    controls:
+      - emerext
+    why: ARMED would light the exit lights when power goes off
+    status: checked
+  - id: ifly-737-max8.secure.pack-switches-check
+    text: PACK SWITCHES
+    expect: "OFF"
+    controls:
+      - packs
+    why: Stops the packs before the air source goes off
+    status: checked
+  - id: ifly-737-max8.secure.apu-or-ground-power-check
+    text: APU OR GROUND POWER
+    expect: "OFF"
+    controls:
+      - apub
+    note: Do this just before the battery goes off.
+    why: Removes AC power from the airplane
+    panel_lights:
+      apub:
+        - APU GEN
+    status: checked
+  - id: ifly-737-max8.secure.battery-check
+    text: BATTERY
+    expect: "OFF"
+    controls:
+      - bat
+    note: The last switch.
+    why: Stops battery drain
+    status: checked

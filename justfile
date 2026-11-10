@@ -43,11 +43,12 @@ lint:
 ui-build:
     pnpm --filter @chocktochock/ui build
 
-# All tests: Rust (nextest + doctests) and the interface (Vitest).
+# All tests: Rust (nextest + doctests), the interface (Vitest) and the 3.0 converter.
 test: ui-build
     cargo nextest run --workspace
     cargo test --doc --workspace
     pnpm --filter @chocktochock/ui test
+    node --test "tools/import-3x/*.test.js"
 
 # Regenerate the pack JSON Schemas from the Rust types.
 schemas:
@@ -65,7 +66,11 @@ generated-check: schemas bindings
 packs:
     cargo run -q -p pack-cli -- check packs
 
-# Licences, advisories, banned crates and sources (Rust), then JS advisories.
+# Compare pack text with private reference files named by CHOCKTOCHOCK_OVERLAP_REFS.
+overlap:
+    cargo run -q -p pack-cli -- overlap packs --allow tools/overlap/allow.txt
+
+# Licenses, advisories, banned crates and sources (Rust), then JS advisories.
 deny:
     cargo deny check
     pnpm audit --prod

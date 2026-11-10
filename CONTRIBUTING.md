@@ -5,13 +5,13 @@ SPDX-License-Identifier: MIT
 # Contributing to Chock to Chock
 
 Thanks for helping. This page covers the three things every contribution needs:
-a sign-off, passing checks, and (for checklist content) acceptable sources.
+a sign-off, passing checks, and (for checklist content) following the content rules.
 
 ## 1. Sign off every commit (DCO)
 
 By signing off, you certify the
 [Developer Certificate of Origin](https://developercertificate.org/): you wrote the change
-or have the right to submit it, under this project's licences. Add the line with:
+or have the right to submit it, under this project's licenses. Add the line with:
 
 ```sh
 git commit -s
@@ -31,34 +31,45 @@ checks dependencies. The git hooks (installed by `pnpm install`) run the quick p
 - Every bug fix comes with a test that would have caught it.
 - Keep logic in `crates/`. The Tauri shell and the interface stay thin.
 - Never put an aircraft name in engine code. Aircraft differences belong in pack data.
+- American English everywhere: code identifiers, pack field names, error messages, docs and pack content (color, behavior, license as a noun, optimize, pressurization).
+  Exceptions keep their exact spelling: SPDX license IDs, file names such as `LICENSE` and `LICENSES/`, and anything quoted from outside sources.
 
 ## 3. Checklist content rules
 
 These protect the project and other people's work. `pack check` enforces most of them
-automatically, and the maintainer reviews every content change.
+automatically, and the maintainer reviews every content change. The reasoning is in
+[decision 0007](docs/decisions/0007-pack-content-model.md); `pack check` is being updated to
+match, and until that lands it still expects per-step sources.
 
-**Every step needs a source** (`sources:` in the YAML) that says where its wording or
-value came from. Good sources are ones anyone may read: the aircraft developer's own
-public tutorials and documentation, the simulator's own documentation, public regulator
-material, or your own observation in the simulator (say so).
+**No citations and no third-party links.** Steps do not cite sources, and packs contain no URLs
+to third-party material. A first-party link needs the maintainer's approval.
 
-**Manufacturer manuals (FCOM, FCTM, QRH) you have legitimate access to** may be used as a
-reference to check facts, for example one supplied under licence with an aircraft you
-bought, as long as that licence allows it. Facts and procedures (switch positions, the order
-of steps, how a system works) are not protected by copyright, but the manual's wording,
-tables, diagrams and layout are. So:
+**Every list has a `basis`** naming only the kind of material it was checked against, such as
+`manufacturer-docs` or `sim-observed`, from the tags the pack declares. Never a document name or
+link.
 
-- write every step and explanation in your own words, and draw your own diagrams;
-- do not mirror a manual's structure or phrasing closely;
-- cite it by name only (e.g. "Boeing 737 FCOM, as supplied with <aircraft>"), never a link
-  to a copy.
+**Steps may carry a `status`** of `draft` or `checked`, and `sim_simplified` where the simulator
+simplifies the real aircraft. Content imported from the 3.0 checklist starts with basis
+`prior-release` and every step as `draft`; each list moves to a real basis and `checked` when the
+maintainer reviews it.
 
-**Never use, link or cite:**
+**Manufacturer manuals (FCOM, FCTM, QRH).** Facts are checked against vendor documentation. No manual text, link or citation enters the repo. Facts and procedures (switch positions, the order of steps, how a system works)
+are not protected by copyright, but a manual's wording, tables, diagrams and layout are. So:
 
-- Copies of FCOMs, FCTMs, QRHs or airline SOPs posted online without the owner's permission
-- Document-sharing and flashcard sites: Scribd, Studylib, Brainscape, SlideShare,
-  Manualshive, and archive.org copies of manuals
+- use facts only, and write every step and explanation in your own words;
+- never copy text, tables, diagrams or layout, and never closely paraphrase;
+- write from our own flow structure, not line by line alongside a manual;
+- draw your own diagrams;
+- never store, upload, link or cite a manual.
+
+**Never used as a basis:**
+
+- Second-hand study material: Brainscape, SlideShare, AviationHunt and memory-item compilations
+- Airline SOPs
 - Paid or members-only content you would need to copy to reproduce
+
+**Never link,** anywhere in the project: Scribd, Studylib, Brainscape, SlideShare, Manualshive,
+archive.org, AviationHunt, NTSB docket documents, or any other second-hand study material.
 
 **Never include:**
 
@@ -66,7 +77,19 @@ tables, diagrams and layout are. So:
 - Text, tables or diagrams copied from a manual or tutorial. Switch names, positions and
   values are facts and are fine.
 
-If you are unsure about a source, ask in your pull request before writing the content.
+**Step ids** are `<pack-id>.<phase>.<short-name>`, for example
+`ifly-737-max8.preflight.irs-mode`. An id never changes once published, even if the step is
+reworded or moved. A removed step's id is retired and never reused.
+
+**Overlap check.** `just overlap` flags any run of 8 or more words matching plain-text reference
+files in a private folder outside the repo, named by the `CHOCKTOCHOCK_OVERLAP_REFS` environment
+variable. It also compares each list's steps joined in order. That folder is never committed,
+uploaded or synced anywhere public. Standard phrases can be accepted in `tools/overlap/allow.txt`
+with a reason. Without the folder the check prints "not run", and the maintainer runs it before
+merging.
+
+If you are unsure whether something is acceptable, ask in your pull request before writing the
+content.
 
 ## Reporting problems
 

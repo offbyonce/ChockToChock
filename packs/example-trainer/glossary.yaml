@@ -1,0 +1,8 @@
+# SPDX-FileCopyrightText: 2026 offbyonce
+# SPDX-License-Identifier: CC-BY-NC-SA-4.0
+#
+# yaml-language-server: $schema=../../schemas/glossary.schema.json
+# Invented content that shows the pack format. Not a real aircraft procedure.
+terms:
+  - term: CDU
+    meaning: Control display unit. The keypad and screen for the flight computer.

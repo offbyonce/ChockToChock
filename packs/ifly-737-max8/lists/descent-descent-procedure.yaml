@@ -1,0 +1,69 @@
+# SPDX-FileCopyrightText: 2026 offbyonce and Chock to Chock contributors
+# SPDX-License-Identifier: CC-BY-NC-SA-4.0
+#
+# yaml-language-server: $schema=../../../schemas/checklist.schema.json
+# Imported from 3.0, then validated against vendor documentation. Edit by hand; do not regenerate.
+id: descent-descent-procedure
+title: Descent procedure
+kind: flow
+basis:
+  - ifly-docs
+steps:
+  - id: ifly-737-max8.descent.fmc-route
+    text: FMC ROUTE
+    expect: VERIFIED
+    controls:
+      - cdu
+    note: Check the arrival and approach in the CDU match your clearance.
+    why: Confirms the route ahead
+    check: Arrival and approach match the clearance
+    status: checked
+  - id: ifly-737-max8.descent.land-alt
+    number: 1
+    text: LAND ALT
+    expect: DESTINATION ELEVATION SET
+    controls:
+      - ldgalt
+    note: The pressurization system uses this to bring the cabin down to the airport elevation.
+    why: Brings the cabin down to airport elevation
+    status: checked
+  - id: ifly-737-max8.descent.cdu
+    number: 2
+    text: CDU
+    expect: SET LANDING FLAPS AND VREF
+    controls:
+      - vref
+    quick: always
+    why: Target speed for flaps and weight
+    check: VREF on the speed tape
+    status: checked
+  - id: ifly-737-max8.descent.recall
+    number: 3
+    text: RECALL
+    expect: "PRESS, NO UNEXPECTED ALERTS"
+    controls:
+      - recall
+    why: Shows any stored system alerts
+    check: No unexpected alerts
+    how: recall
+    status: checked
+  - id: ifly-737-max8.descent.minimums
+    number: 4
+    text: MINIMUMS
+    expect: BARO OR RADIO SET PER CHART
+    controls:
+      - mins
+    quick: always
+    note: Set the altitude at which you must see the runway or go around.
+    why: "At minimums you must see the runway, or go around"
+    how: mins
+    status: checked
+  - id: ifly-737-max8.descent.autobrake
+    number: 5
+    text: AUTOBRAKE
+    expect: "1, 2, 3 OR MAX AS NEEDED"
+    controls:
+      - abrake
+    quick: always
+    why: "Pick by runway length and surface: lower settings on long dry runways, higher on short or wet ones"
+    status: checked

@@ -1,0 +1,41 @@
+# SPDX-FileCopyrightText: 2026 offbyonce and Chock to Chock contributors
+# SPDX-License-Identifier: CC-BY-NC-SA-4.0
+#
+# yaml-language-server: $schema=../../../schemas/checklist.schema.json
+# Imported from 3.0, then validated against vendor documentation. Edit by hand; do not regenerate.
+id: before-takeoff-before-takeoff-procedure
+title: Before takeoff procedure
+kind: flow
+basis:
+  - ifly-docs
+steps:
+  - id: ifly-737-max8.before-takeoff.oil-temperature
+    number: 1
+    text: OIL TEMPERATURE
+    expect: AT LEAST 31C
+    controls:
+      - oil
+    why: Needed before takeoff thrust
+    check: Oil at least 31C
+    status: checked
+  - id: ifly-737-max8.before-takeoff.efis-control-panels
+    number: 2
+    text: EFIS CONTROL PANELS
+    expect: "TERRAIN DISPLAY AS DESIRED"
+    controls:
+      - efispanel
+    why: "Weather or terrain on the ND for the departure. Weather radar is not simulated in the iFly, so use TERR"
+    panel_lights:
+      efispanel:
+        - WXR
+        - TERR
+    status: checked
+  - id: ifly-737-max8.before-takeoff.pack-switches
+    text: PACK SWITCHES
+    expect: AUTO OR OFF PER PERFORMANCE DATA
+    controls:
+      - packs
+    why: The pack setting must match the one used in your preflight performance calculations
+    check: Both PACK switches set for takeoff
+    check_detail: "AUTO is normal. OFF when conditions warrant, to align with preflight performance calculations"
+    status: draft

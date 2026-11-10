@@ -24,4 +24,4 @@ This is a hobby project; reports are answered on a best-effort basis.
 - Signing and update keys never live in this repository. They are passed to release
   builds only, never to builds of pull requests.
 - GitHub secret scanning and push protection are enabled.
-- `just deny` checks dependency licences and known advisories.
+- `just deny` checks dependency licenses and known advisories.

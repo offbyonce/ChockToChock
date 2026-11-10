@@ -1,0 +1,56 @@
+# SPDX-FileCopyrightText: 2026 offbyonce and Chock to Chock contributors
+# SPDX-License-Identifier: CC-BY-NC-SA-4.0
+#
+# yaml-language-server: $schema=../../../schemas/checklist.schema.json
+# Imported from 3.0, then validated against vendor documentation. Edit by hand; do not regenerate.
+id: taxi-taxi
+title: Taxi
+kind: flow
+basis:
+  - ifly-docs
+steps:
+  - id: ifly-737-max8.taxi.taxi-clearance
+    number: 1
+    text: TAXI CLEARANCE
+    expect: OBTAIN
+    controls:
+      - atcclr
+    hint:
+      - prefix: "GND "
+        field: ground_frequency
+    why: Request it and read it back
+    status: checked
+  - id: ifly-737-max8.taxi.taxi-and-runway-turnoff-lights
+    number: 2
+    text: TAXI AND RUNWAY TURNOFF LIGHTS
+    expect: "ON"
+    controls:
+      - lldg
+      - turnoff
+    quick: always
+    note: Lets you and others see the taxiway at night or in low visibility.
+    why: See and be seen on the taxiway
+    status: draft
+  - id: ifly-737-max8.taxi.wing-light
+    text: WING LIGHT
+    expect: "ON"
+    controls:
+      - winglt
+    why: Makes the airplane visible and lights the wing for ice checks
+    check: Wing leading edges lit
+    status: draft
+  - id: ifly-737-max8.taxi.parking-brake
+    number: 3
+    text: PARKING BRAKE
+    expect: RELEASE
+    controls:
+      - pbrake
+    quick: always
+    why: Brakes off to taxi
+    check: Parking brake light OUT
+    status: draft
+  - id: ifly-737-max8.taxi.taxi-thrust
+    text: "TAXI THRUST"
+    expect: "ABOUT 30% N1 TO START MOVING, THEN 22 TO 25% N1, 15 KNOTS OR LESS"
+    why: "More thrust is needed to break away than to keep rolling."
+    status: checked

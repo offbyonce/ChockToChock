@@ -1,0 +1,1179 @@
+---
+source: crates/pack-cli/tests/snapshot.rs
+---
+{
+  "lights": [
+    {
+      "locator": "oh/fctl/LOW QUANTITY/1",
+      "meaning": "The standby hydraulic reservoir is running low on fluid.",
+      "when": "Abnormal at any time.",
+      "action": "Check the hydraulic quantities and run the standby hydraulic checklist.",
+      "normal": false
+    },
+    {
+      "locator": "oh/fctl/LOW PRESSURE/1",
+      "meaning": "The standby hydraulic pump is selected to run but is not giving pressure.",
+      "when": "Abnormal. Normally out, because the standby pump only runs when needed.",
+      "action": "If you need the standby system, run the standby hydraulic checklist.",
+      "normal": false
+    },
+    {
+      "locator": "oh/fctl/STBY RUD ON/1",
+      "meaning": "The standby hydraulic system is powering the rudder, because a flight control switch is at STBY RUD or it switched on by itself.",
+      "when": "Normal when you select STBY RUD during the flight control check. If you did not select it, it came on by itself, usually because system A or B lost pressure, or because of a rudder fault.",
+      "action": "If you did not select it, check hydraulic systems A and B and run the related checklist.",
+      "normal": true
+    },
+    {
+      "locator": "oh/fctl/LOW PRESSURE/2",
+      "meaning": "Hydraulic system A is not giving pressure to the ailerons, elevator and rudder.",
+      "when": "Normal before the hydraulic pumps are on, or with FLT CONTROL A switched OFF. It goes out with the switch at STBY RUD, once the standby rudder valve opens. Abnormal in flight.",
+      "action": "On the ground, switch the hydraulic pumps on. In flight, check system A pressure and quantity and run the checklist.",
+      "normal": true
+    },
+    {
+      "locator": "oh/fctl/LOW PRESSURE/3",
+      "meaning": "Hydraulic system B is not giving pressure to the ailerons, elevator and rudder.",
+      "when": "Normal before the hydraulic pumps are on, or with FLT CONTROL B switched OFF. It goes out with the switch at STBY RUD, once the standby rudder valve opens. Abnormal in flight.",
+      "action": "On the ground, switch the hydraulic pumps on. In flight, check system B pressure and quantity and run the checklist.",
+      "normal": true
+    },
+    {
+      "locator": "oh/fctl/FEEL DIFF PRESS/1",
+      "meaning": "The elevator feel computer senses too big a pressure difference between its two hydraulic inputs, so the column feel may be wrong.",
+      "when": "Abnormal.",
+      "action": "Run the feel differential pressure checklist.",
+      "normal": false
+    },
+    {
+      "locator": "oh/fctl/SPEED TRIM FAIL/1",
+      "meaning": "Speed trim and MCAS are both off. On the MAX this happens if either one fails, or if the two angle of attack vanes disagree by more than about 5.5 degrees. It then stays on for the rest of the flight.",
+      "when": "Abnormal. A fault in only one channel shows only when you press MASTER CAUTION to recall.",
+      "action": "Run the speed trim fail checklist and expect to trim more by hand.",
+      "normal": false
+    },
+    {
+      "locator": "oh/fctl/MACH TRIM FAIL/1",
+      "meaning": "Mach trim, which stops the nose tucking down at high Mach, is not working.",
+      "when": "Abnormal. A fault in only one channel shows only on MASTER CAUTION recall.",
+      "action": "Run the checklist and keep your speed within the limit it gives.",
+      "normal": false
+    },
+    {
+      "locator": "oh/fctl/AUTO SLAT FAIL/1",
+      "meaning": "The system that moves the slats to full extend near the stall is not working.",
+      "when": "Abnormal. A fault in only one stall management computer shows only on MASTER CAUTION recall.",
+      "action": "Run the checklist and keep good speed margins, especially with flaps out.",
+      "normal": false
+    },
+    {
+      "locator": "oh/fctl/SPOILERS/1",
+      "meaning": "A fault in spoiler control, so some spoilers may not move.",
+      "when": "Abnormal. Normally out.",
+      "action": "Run the checklist and expect less roll help and less speedbrake effect.",
+      "normal": false
+    },
+    {
+      "locator": "oh/fctl/YAW DAMPER/1",
+      "meaning": "Nothing is damping Dutch roll, because the yaw damper is not engaged.",
+      "when": "Normal before hydraulic system B has pressure and the switch is ON. Abnormal in flight.",
+      "action": "Check FLT CONTROL B and system B pressure, then switch the yaw damper off and on. In flight, fly smoothly and run the checklist.",
+      "normal": true
+    },
+    {
+      "locator": "oh/fuel/FILTER BYPASS/1",
+      "meaning": "The engine 1 fuel filter is clogging, often from contamination or ice, and fuel may soon go around it.",
+      "when": "Abnormal.",
+      "action": "Run the filter bypass checklist and watch engine 1 closely.",
+      "normal": false
+    },
+    {
+      "locator": "oh/fuel/FILTER BYPASS/2",
+      "meaning": "The engine 2 fuel filter is clogging, often from contamination or ice, and fuel may soon go around it.",
+      "when": "Abnormal.",
+      "action": "Run the filter bypass checklist and watch engine 2 closely.",
+      "normal": false
+    },
+    {
+      "locator": "oh/fuel/LOW PRESSURE/1",
+      "meaning": "This center tank pump is switched on but not delivering fuel. With both center lights on, the center tank is empty.",
+      "when": "Expected near the end of the center tank fuel.",
+      "action": "When both center lights are on, switch both center pumps OFF.",
+      "normal": true
+    },
+    {
+      "locator": "oh/fuel/LOW PRESSURE/2",
+      "meaning": "This center tank pump is switched on but not delivering fuel. With both center lights on, the center tank is empty.",
+      "when": "Expected near the end of the center tank fuel.",
+      "action": "When both center lights are on, switch both center pumps OFF.",
+      "normal": true
+    },
+    {
+      "locator": "oh/fuel/LOW PRESSURE/3",
+      "meaning": "This wing tank pump is not delivering fuel, or it is switched off.",
+      "when": "Normal before start with the pumps off. Abnormal with the pump on. One light alone does not set MASTER CAUTION; both lights in the same tank do.",
+      "action": "Before start, switch the pumps on and check the light goes out. In flight, switch that pump OFF and run the fuel pump low pressure checklist.",
+      "normal": true
+    },
+    {
+      "locator": "oh/fuel/LOW PRESSURE/4",
+      "meaning": "This wing tank pump is not delivering fuel, or it is switched off.",
+      "when": "Normal before start with the pumps off. Abnormal with the pump on. One light alone does not set MASTER CAUTION; both lights in the same tank do.",
+      "action": "Before start, switch the pumps on and check the light goes out. In flight, switch that pump OFF and run the fuel pump low pressure checklist.",
+      "normal": true
+    },
+    {
+      "locator": "oh/fuel/LOW PRESSURE/5",
+      "meaning": "This wing tank pump is not delivering fuel, or it is switched off.",
+      "when": "Normal before start with the pumps off. Abnormal with the pump on. One light alone does not set MASTER CAUTION; both lights in the same tank do.",
+      "action": "Before start, switch the pumps on and check the light goes out. In flight, switch that pump OFF and run the fuel pump low pressure checklist.",
+      "normal": true
+    },
+    {
+      "locator": "oh/fuel/LOW PRESSURE/6",
+      "meaning": "This wing tank pump is not delivering fuel, or it is switched off.",
+      "when": "Normal before start with the pumps off. Abnormal with the pump on. One light alone does not set MASTER CAUTION; both lights in the same tank do.",
+      "action": "Before start, switch the pumps on and check the light goes out. In flight, switch that pump OFF and run the fuel pump low pressure checklist.",
+      "normal": true
+    },
+    {
+      "locator": "oh/fuel/ENG VALVE CLOSED/1",
+      "meaning": "Shows the engine 1 fuel valve: dim when closed, out when open, bright while moving or if it disagrees with the start lever.",
+      "when": "Dim with the start lever at CUTOFF, out with it at IDLE.",
+      "action": "If it stays bright, run the fuel valve checklist.",
+      "normal": true
+    },
+    {
+      "locator": "oh/fuel/SPAR VALVE CLOSED/1",
+      "meaning": "Shows the engine 1 spar valve: dim when closed, out when open, bright while moving or if it disagrees with the start lever.",
+      "when": "Dim with the start lever at CUTOFF, out with it at IDLE.",
+      "action": "If it stays bright, run the fuel valve checklist.",
+      "normal": true
+    },
+    {
+      "locator": "oh/fuel/ENG VALVE CLOSED/2",
+      "meaning": "Shows the engine 2 fuel valve: dim when closed, out when open, bright while moving or if it disagrees with the start lever.",
+      "when": "Dim with the start lever at CUTOFF, out with it at IDLE.",
+      "action": "If it stays bright, run the fuel valve checklist.",
+      "normal": true
+    },
+    {
+      "locator": "oh/fuel/SPAR VALVE CLOSED/2",
+      "meaning": "Shows the engine 2 spar valve: dim when closed, out when open, bright while moving or if it disagrees with the start lever.",
+      "when": "Dim with the start lever at CUTOFF, out with it at IDLE.",
+      "action": "If it stays bright, run the fuel valve checklist.",
+      "normal": true
+    },
+    {
+      "locator": "oh/fuel/VALVE OPEN/1",
+      "meaning": "The fuel crossfeed valve is open (dim), or moving or not matching the selector (bright).",
+      "when": "Dim only while you are balancing fuel.",
+      "action": "Keep crossfeed closed unless you are balancing fuel. If it stays bright, run the checklist.",
+      "normal": true
+    },
+    {
+      "locator": "oh/elecu/BAT DISCHARGE/1",
+      "meaning": "Current is flowing out of the battery faster than normal, so it is running down.",
+      "when": "Can show on battery power alone during a cold start. Abnormal once other power is on.",
+      "action": "Get ground power or the APU generator on the buses quickly. In flight, run the checklist.",
+      "normal": true,
+      "status": "draft"
+    },
+    {
+      "locator": "oh/elecu/TR UNIT/1",
+      "meaning": "A unit that turns AC into DC power has failed. On the ground any one of the three lights it. In flight it lights only if TR 1 fails, or if TR 2 and TR 3 both fail.",
+      "when": "Abnormal.",
+      "action": "Run the TR unit checklist and expect less DC power redundancy.",
+      "normal": false
+    },
+    {
+      "locator": "oh/elecu/ELEC/1",
+      "meaning": "A DC or standby power fault that must be fixed before flight. It only shows on the ground.",
+      "when": "Abnormal, ground only.",
+      "action": "Do not take off. Check the electrical panel and, in the sim, any failures you have set.",
+      "normal": false
+    },
+    {
+      "locator": "oh/elecm/DRIVE 1/1",
+      "meaning": "Generator drive 1 has low oil pressure or low speed: engine 1 is stopped, or the drive has failed or been disconnected.",
+      "when": "Normal before start with engine 1 stopped. Abnormal with the engine running.",
+      "action": "Before start, ignore it. With the engine running, run the drive checklist. If it tells you to disconnect, use the guarded drive disconnect switch. The drive cannot be reconnected in flight.",
+      "normal": true
+    },
+    {
+      "locator": "oh/elecm/DRIVE 2/1",
+      "meaning": "Generator drive 2 has low oil pressure or low speed: engine 2 is stopped, or the drive has failed or been disconnected.",
+      "when": "Normal before start with engine 2 stopped. Abnormal with the engine running.",
+      "action": "Before start, ignore it. With the engine running, run the drive checklist. If it tells you to disconnect, use the guarded drive disconnect switch. The drive cannot be reconnected in flight.",
+      "normal": true
+    },
+    {
+      "locator": "oh/elecm/STANDBY PWR OFF/1",
+      "meaning": "The AC standby bus, DC standby bus or battery bus has no power, or the STANDBY POWER switch is OFF. Some essential instruments may be dark.",
+      "when": "Abnormal. Normally out with the battery on and the standby power switch at AUTO.",
+      "action": "Check the standby power switch is at AUTO and the battery is on, then run the checklist.",
+      "normal": false,
+      "status": "draft"
+    },
+    {
+      "locator": "oh/elecl/TRANSFER BUS OFF/1",
+      "meaning": "Transfer bus 1 has no power, so the systems on it are off.",
+      "when": "Normal before any AC power is selected. Abnormal once a generator or ground power is on.",
+      "action": "Select a power source for that bus: ground power, the APU generator or an engine generator.",
+      "normal": true
+    },
+    {
+      "locator": "oh/elecl/TRANSFER BUS OFF/2",
+      "meaning": "Transfer bus 2 has no power, so the systems on it are off.",
+      "when": "Normal before any AC power is selected. Abnormal once a generator or ground power is on.",
+      "action": "Select a power source for that bus: ground power, the APU generator or an engine generator.",
+      "normal": true
+    },
+    {
+      "locator": "oh/elecl/SOURCE OFF/1",
+      "meaning": "No source has been selected for transfer bus 1, or the source you selected has been disconnected.",
+      "when": "Normal on battery power before you select ground power or the APU generator.",
+      "action": "Switch ground power, the APU generator or the engine 1 generator onto the bus.",
+      "normal": true
+    },
+    {
+      "locator": "oh/elecl/SOURCE OFF/2",
+      "meaning": "No source has been selected for transfer bus 2, or the source you selected has been disconnected.",
+      "when": "Normal on battery power before you select ground power or the APU generator.",
+      "action": "Switch ground power, the APU generator or the engine 2 generator onto the bus.",
+      "normal": true
+    },
+    {
+      "locator": "oh/elecl/GRD POWER AVAILABLE/1",
+      "meaning": "Ground power is plugged in and its voltage and frequency are good.",
+      "when": "Normal at the gate with a ground power cart connected.",
+      "action": "You can now switch ground power on.",
+      "normal": true
+    },
+    {
+      "locator": "oh/elecl/GEN OFF BUS/1",
+      "meaning": "The engine 1 generator is not powering its transfer bus.",
+      "when": "Normal before engine start and after shutdown. Abnormal with the engine running and the switch on.",
+      "action": "After start, switch the generator on. If it stays on, check the DRIVE light and run the checklist.",
+      "normal": true
+    },
+    {
+      "locator": "oh/elecl/GEN OFF BUS/2",
+      "meaning": "The engine 2 generator is not powering its transfer bus.",
+      "when": "Normal before engine start and after shutdown. Abnormal with the engine running and the switch on.",
+      "action": "After start, switch the generator on. If it stays on, check the DRIVE light and run the checklist.",
+      "normal": true
+    },
+    {
+      "locator": "oh/elecl/APU GEN OFF BUS/1",
+      "meaning": "The APU is running and ready, but its generator is not powering any bus.",
+      "when": "Normal after APU start until you switch it on, and after the engine generators take over.",
+      "action": "Switch the APU generator on if you need its power. Otherwise no action.",
+      "normal": true
+    },
+    {
+      "locator": "oh/col/LAVATORY SMOKE/1",
+      "meaning": "A smoke detector in a lavatory has gone off.",
+      "when": "Abnormal.",
+      "action": "Ask the cabin crew to check the lavatory, and be ready for the smoke, fire or fumes procedure.",
+      "normal": false
+    },
+    {
+      "locator": "oh/col/EQUIP OFF/1",
+      "meaning": "The fan that supplies cooling air to the avionics has failed.",
+      "when": "Abnormal.",
+      "action": "Move the cooling SUPPLY switch to ALTN. The light should go out.",
+      "normal": false
+    },
+    {
+      "locator": "oh/col/EQUIP OFF/2",
+      "meaning": "The fan that pulls warm air out of the avionics has failed.",
+      "when": "Abnormal.",
+      "action": "Move the cooling EXHAUST switch to ALTN. The light should go out.",
+      "normal": false
+    },
+    {
+      "locator": "oh/col/EQUIP SMOKE/1",
+      "meaning": "Smoke has been detected in the electronics bay.",
+      "when": "Abnormal.",
+      "action": "Run the equipment smoke checklist and think about diverting.",
+      "normal": false
+    },
+    {
+      "locator": "oh/col/NOT ARMED/1",
+      "meaning": "The emergency exit lights will not come on by themselves if power fails, because the switch is not at ARMED.",
+      "when": "Normal on the ground before preflight. Abnormal for flight.",
+      "action": "Set the emergency exit lights switch to ARMED and close the guard.",
+      "normal": true
+    },
+    {
+      "locator": "oh/heat/OVERHEAT/1",
+      "meaning": "The left side window heater has overheated and cut out, or its power was interrupted.",
+      "when": "Abnormal.",
+      "action": "Switch that window heat OFF, wait a few minutes, then ON again. If it comes back, leave it OFF and follow the checklist.",
+      "normal": false
+    },
+    {
+      "locator": "oh/heat/OVERHEAT/2",
+      "meaning": "The left forward window heater has overheated and cut out, or its power was interrupted.",
+      "when": "Abnormal.",
+      "action": "Switch that window heat OFF, wait a few minutes, then ON again. If it comes back, leave it OFF and follow the checklist.",
+      "normal": false
+    },
+    {
+      "locator": "oh/heat/OVERHEAT/3",
+      "meaning": "The right forward window heater has overheated and cut out, or its power was interrupted.",
+      "when": "Abnormal.",
+      "action": "Switch that window heat OFF, wait a few minutes, then ON again. If it comes back, leave it OFF and follow the checklist.",
+      "normal": false
+    },
+    {
+      "locator": "oh/heat/OVERHEAT/4",
+      "meaning": "The right side window heater has overheated and cut out, or its power was interrupted.",
+      "when": "Abnormal.",
+      "action": "Switch that window heat OFF, wait a few minutes, then ON again. If it comes back, leave it OFF and follow the checklist.",
+      "normal": false
+    },
+    {
+      "locator": "oh/heat/ON/1",
+      "meaning": "Heat is going to that window.",
+      "when": "Normal with window heat on. It can cycle off when the window is warm enough.",
+      "action": "No action needed.",
+      "normal": true
+    },
+    {
+      "locator": "oh/heat/ON/2",
+      "meaning": "Heat is going to that window.",
+      "when": "Normal with window heat on. It can cycle off when the window is warm enough.",
+      "action": "No action needed.",
+      "normal": true
+    },
+    {
+      "locator": "oh/heat/ON/3",
+      "meaning": "Heat is going to that window.",
+      "when": "Normal with window heat on. It can cycle off when the window is warm enough.",
+      "action": "No action needed.",
+      "normal": true
+    },
+    {
+      "locator": "oh/heat/ON/4",
+      "meaning": "Heat is going to that window.",
+      "when": "Normal with window heat on. It can cycle off when the window is warm enough.",
+      "action": "No action needed.",
+      "normal": true
+    },
+    {
+      "locator": "oh/heat/CAPT PITOT/1",
+      "meaning": "The captain's pitot probe is not heated, so its airspeed could go wrong in icing.",
+      "when": "Normal on the ground with the engines off and probe heat in AUTO. Abnormal with an engine running.",
+      "action": "On the ground, wait for engine start. With an engine running, check the PROBE HEAT switches and run the probe heat checklist.",
+      "normal": true,
+      "status": "draft"
+    },
+    {
+      "locator": "oh/heat/L ELEV PITOT/1",
+      "meaning": "The left elevator feel pitot probe is not heated, so ice could upset the column feel.",
+      "when": "Normal on the ground with the engines off and probe heat in AUTO. Abnormal with an engine running.",
+      "action": "On the ground, wait for engine start. With an engine running, check the PROBE HEAT switches and run the probe heat checklist.",
+      "normal": true,
+      "status": "draft"
+    },
+    {
+      "locator": "oh/heat/L ALPHA VANE/1",
+      "meaning": "The left angle of attack vane is not heated, so ice could make its readings wrong.",
+      "when": "Normal on the ground with the engines off and probe heat in AUTO. Abnormal with an engine running.",
+      "action": "On the ground, wait for engine start. With an engine running, check the PROBE HEAT switches and run the probe heat checklist.",
+      "normal": true,
+      "status": "draft"
+    },
+    {
+      "locator": "oh/heat/TEMP PROBE/1",
+      "meaning": "The outside air temperature probe is not heated.",
+      "when": "Normal on the ground with the engines off and probe heat in AUTO. Abnormal with an engine running.",
+      "action": "On the ground, wait for engine start. With an engine running, check the PROBE HEAT switches and run the probe heat checklist.",
+      "normal": true,
+      "status": "draft"
+    },
+    {
+      "locator": "oh/heat/F/O PITOT/1",
+      "meaning": "The first officer's pitot probe is not heated, so its airspeed could go wrong in icing.",
+      "when": "Normal on the ground with the engines off and probe heat in AUTO. Abnormal with an engine running.",
+      "action": "On the ground, wait for engine start. With an engine running, check the PROBE HEAT switches and run the probe heat checklist.",
+      "normal": true,
+      "status": "draft"
+    },
+    {
+      "locator": "oh/heat/R ELEV PITOT/1",
+      "meaning": "The right elevator feel pitot probe is not heated, so ice could upset the column feel.",
+      "when": "Normal on the ground with the engines off and probe heat in AUTO. Abnormal with an engine running.",
+      "action": "On the ground, wait for engine start. With an engine running, check the PROBE HEAT switches and run the probe heat checklist.",
+      "normal": true,
+      "status": "draft"
+    },
+    {
+      "locator": "oh/heat/R ALPHA VANE/1",
+      "meaning": "The right angle of attack vane is not heated, so ice could make its readings wrong.",
+      "when": "Normal on the ground with the engines off and probe heat in AUTO. Abnormal with an engine running.",
+      "action": "On the ground, wait for engine start. With an engine running, check the PROBE HEAT switches and run the probe heat checklist.",
+      "normal": true,
+      "status": "draft"
+    },
+    {
+      "locator": "oh/heat/AUX PITOT/1",
+      "meaning": "The auxiliary pitot probe, used by the standby instruments, is not heated.",
+      "when": "Normal on the ground with the engines off and probe heat in AUTO. Abnormal with an engine running.",
+      "action": "On the ground, wait for engine start. With an engine running, check the PROBE HEAT switches and run the probe heat checklist.",
+      "normal": true,
+      "status": "draft"
+    },
+    {
+      "locator": "oh/aice/ICE DETECTOR/1",
+      "meaning": "The ice detector has failed, so it cannot warn you about icing.",
+      "when": "Abnormal.",
+      "action": "Watch for icing yourself and switch anti-ice on by hand when conditions need it.",
+      "normal": false
+    },
+    {
+      "locator": "oh/aice/L VALVE/1",
+      "meaning": "The left wing anti-ice valve is moving, or its position does not match the switch.",
+      "when": "Normal for a moment when you switch wing anti-ice. Abnormal if it stays on.",
+      "action": "If it stays on, switch wing anti-ice off and on, then run the checklist and avoid icing.",
+      "normal": true
+    },
+    {
+      "locator": "oh/aice/R VALVE/1",
+      "meaning": "The right wing anti-ice valve is moving, or its position does not match the switch.",
+      "when": "Normal for a moment when you switch wing anti-ice. Abnormal if it stays on.",
+      "action": "If it stays on, switch wing anti-ice off and on, then run the checklist and avoid icing.",
+      "normal": true
+    },
+    {
+      "locator": "oh/aice/ENG 1 ANTI-ICE/1",
+      "meaning": "Engine 1 cowl anti-ice has been inhibited by a system failure, or an engine core anti-ice valve has failed closed.",
+      "when": "Abnormal.",
+      "action": "Run the engine anti-ice checklist and avoid icing conditions if you can.",
+      "normal": false
+    },
+    {
+      "locator": "oh/aice/ENG 2 ANTI-ICE/1",
+      "meaning": "Engine 2 cowl anti-ice has been inhibited by a system failure, or an engine core anti-ice valve has failed closed.",
+      "when": "Abnormal.",
+      "action": "Run the engine anti-ice checklist and avoid icing conditions if you can.",
+      "normal": false
+    },
+    {
+      "locator": "oh/aice/COWL ANTI-ICE/1",
+      "meaning": "Too much pressure in the engine 1 cowl anti-ice duct, downstream of the valve.",
+      "when": "Abnormal.",
+      "action": "Reduce engine 1 thrust until the light goes out, and run the checklist.",
+      "normal": false
+    },
+    {
+      "locator": "oh/aice/COWL ANTI-ICE/2",
+      "meaning": "Too much pressure in the engine 2 cowl anti-ice duct, downstream of the valve.",
+      "when": "Abnormal.",
+      "action": "Reduce engine 2 thrust until the light goes out, and run the checklist.",
+      "normal": false
+    },
+    {
+      "locator": "oh/aice/COWL VALVE/1",
+      "meaning": "The engine 1 cowl anti-ice valve is moving, or does not match the switch.",
+      "when": "Normal briefly when you switch engine anti-ice. Abnormal if it stays on.",
+      "action": "If it stays on, run the cowl valve checklist.",
+      "normal": true
+    },
+    {
+      "locator": "oh/aice/COWL VALVE/2",
+      "meaning": "The engine 2 cowl anti-ice valve is moving, or does not match the switch.",
+      "when": "Normal briefly when you switch engine anti-ice. Abnormal if it stays on.",
+      "action": "If it stays on, run the cowl valve checklist.",
+      "normal": true
+    },
+    {
+      "locator": "oh/hyd/OVERHEAT/1",
+      "meaning": "Electric hydraulic pump 2 (system A) has got too hot.",
+      "when": "Abnormal.",
+      "action": "Switch electric pump 2 OFF and run the checklist.",
+      "normal": false
+    },
+    {
+      "locator": "oh/hyd/OVERHEAT/2",
+      "meaning": "Electric hydraulic pump 1 (system B) has got too hot.",
+      "when": "Abnormal.",
+      "action": "Switch electric pump 1 OFF and run the checklist.",
+      "normal": false
+    },
+    {
+      "locator": "oh/hyd/LOW PRESSURE/1",
+      "meaning": "The engine 1 hydraulic pump (system A) is not giving pressure.",
+      "when": "Normal before engine start. Abnormal with the engine running and the pump on.",
+      "action": "Before start, ignore it. With the engine running, run the hydraulic pump checklist.",
+      "normal": true
+    },
+    {
+      "locator": "oh/hyd/LOW PRESSURE/2",
+      "meaning": "Electric hydraulic pump 2 (system A) is not giving pressure.",
+      "when": "Normal with the pump switched OFF. Abnormal once it is ON.",
+      "action": "Switch it ON before pushback. If it stays on, run the hydraulic pump checklist.",
+      "normal": true
+    },
+    {
+      "locator": "oh/hyd/LOW PRESSURE/3",
+      "meaning": "Electric hydraulic pump 1 (system B) is not giving pressure.",
+      "when": "Normal with the pump switched OFF. Abnormal once it is ON.",
+      "action": "Switch it ON before pushback. If it stays on, run the hydraulic pump checklist.",
+      "normal": true
+    },
+    {
+      "locator": "oh/hyd/LOW PRESSURE/4",
+      "meaning": "The engine 2 hydraulic pump (system B) is not giving pressure.",
+      "when": "Normal before engine start. Abnormal with the engine running and the pump on.",
+      "action": "Before start, ignore it. With the engine running, run the hydraulic pump checklist.",
+      "normal": true
+    },
+    {
+      "locator": "oh/door/EQUIP/1",
+      "meaning": "The electronics bay access hatch is open or not fully latched.",
+      "when": "Normal at the gate while it is open. Abnormal before pushback or in flight.",
+      "action": "Have it closed before pushback. In flight, run the door checklist.",
+      "normal": true
+    },
+    {
+      "locator": "oh/door/FWD ENTRY/1",
+      "meaning": "The forward passenger door is open or not fully latched.",
+      "when": "Normal at the gate while it is open. Abnormal before pushback or in flight.",
+      "action": "Have it closed before pushback. In flight, run the door checklist.",
+      "normal": true
+    },
+    {
+      "locator": "oh/door/LEFT FWD OVERWING/1",
+      "meaning": "The left front overwing exit is open or not fully latched.",
+      "when": "Normal at the gate while it is open. Abnormal before pushback or in flight.",
+      "action": "Have it closed before pushback. In flight, run the door checklist.",
+      "normal": true
+    },
+    {
+      "locator": "oh/door/LEFT AFT OVERWING/1",
+      "meaning": "The left rear overwing exit is open or not fully latched.",
+      "when": "Normal at the gate while it is open. Abnormal before pushback or in flight.",
+      "action": "Have it closed before pushback. In flight, run the door checklist.",
+      "normal": true
+    },
+    {
+      "locator": "oh/door/AFT ENTRY/1",
+      "meaning": "The rear passenger door is open or not fully latched.",
+      "when": "Normal at the gate while it is open. Abnormal before pushback or in flight.",
+      "action": "Have it closed before pushback. In flight, run the door checklist.",
+      "normal": true
+    },
+    {
+      "locator": "oh/door/FWD SERVICE/1",
+      "meaning": "The forward galley service door is open or not fully latched.",
+      "when": "Normal at the gate while it is open. Abnormal before pushback or in flight.",
+      "action": "Have it closed before pushback. In flight, run the door checklist.",
+      "normal": true
+    },
+    {
+      "locator": "oh/door/RIGHT FWD OVERWING/1",
+      "meaning": "The right front overwing exit is open or not fully latched.",
+      "when": "Normal at the gate while it is open. Abnormal before pushback or in flight.",
+      "action": "Have it closed before pushback. In flight, run the door checklist.",
+      "normal": true
+    },
+    {
+      "locator": "oh/door/RIGHT AFT OVERWING/1",
+      "meaning": "The right rear overwing exit is open or not fully latched.",
+      "when": "Normal at the gate while it is open. Abnormal before pushback or in flight.",
+      "action": "Have it closed before pushback. In flight, run the door checklist.",
+      "normal": true
+    },
+    {
+      "locator": "oh/door/AFT SERVICE/1",
+      "meaning": "The rear galley service door is open or not fully latched.",
+      "when": "Normal at the gate while it is open. Abnormal before pushback or in flight.",
+      "action": "Have it closed before pushback. In flight, run the door checklist.",
+      "normal": true
+    },
+    {
+      "locator": "oh/door/FWD CARGO/1",
+      "meaning": "The forward hold door is open or not fully latched.",
+      "when": "Normal at the gate while it is open. Abnormal before pushback or in flight.",
+      "action": "Have it closed before pushback. In flight, run the door checklist.",
+      "normal": true
+    },
+    {
+      "locator": "oh/door/AFT CARGO/1",
+      "meaning": "The rear hold door is open or not fully latched.",
+      "when": "Normal at the gate while it is open. Abnormal before pushback or in flight.",
+      "action": "Have it closed before pushback. In flight, run the door checklist.",
+      "normal": true
+    },
+    {
+      "locator": "oh/air/ZONE TEMP/1",
+      "meaning": "The duct air going to the flight deck has overheated, or that zone's temperature control has failed.",
+      "when": "Abnormal.",
+      "action": "Run the zone temperature checklist. After a duct overheat, select a cooler temperature and press TRIP RESET once it has cooled.",
+      "normal": false
+    },
+    {
+      "locator": "oh/air/ZONE TEMP/2",
+      "meaning": "The duct air going to the forward cabin has overheated, or that zone's temperature control has failed.",
+      "when": "Abnormal.",
+      "action": "Run the zone temperature checklist. After a duct overheat, select a cooler temperature and press TRIP RESET once it has cooled.",
+      "normal": false
+    },
+    {
+      "locator": "oh/air/ZONE TEMP/3",
+      "meaning": "The duct air going to the rear cabin has overheated, or that zone's temperature control has failed.",
+      "when": "Abnormal.",
+      "action": "Run the zone temperature checklist. After a duct overheat, select a cooler temperature and press TRIP RESET once it has cooled.",
+      "normal": false
+    },
+    {
+      "locator": "oh/bleed/DUAL BLEED/1",
+      "meaning": "The APU bleed valve is open while engine 1 bleed is ON, or engine 2 bleed is ON with the isolation valve open, so engine air could push back into the APU.",
+      "when": "Normal at the gate and during engine start whenever the APU bleed is on with the engine bleed switches ON. It goes out when the APU bleed goes off.",
+      "action": "Keep the thrust near idle while it is on, and switch the APU bleed off after start.",
+      "normal": true
+    },
+    {
+      "locator": "oh/bleed/PACK/1",
+      "meaning": "That air conditioning pack has shut down from overheating, or has failed.",
+      "when": "Abnormal.",
+      "action": "Run the pack checklist. Once it has cooled, select a warmer temperature and press TRIP RESET. A control failure may not reset.",
+      "normal": false
+    },
+    {
+      "locator": "oh/bleed/PACK/2",
+      "meaning": "That air conditioning pack has shut down from overheating, or has failed.",
+      "when": "Abnormal.",
+      "action": "Run the pack checklist. Once it has cooled, select a warmer temperature and press TRIP RESET. A control failure may not reset.",
+      "normal": false
+    },
+    {
+      "locator": "oh/bleed/WING-BODY OVERHEAT/1",
+      "meaning": "Hot bleed air is leaking from a duct on the left side: the left engine strut, left wing, left air conditioning bay, the area under the cabin floor, or the APU bleed duct.",
+      "when": "Abnormal.",
+      "action": "Run the wing-body overheat checklist. It usually means shutting off that side's bleed air.",
+      "normal": false
+    },
+    {
+      "locator": "oh/bleed/WING-BODY OVERHEAT/2",
+      "meaning": "Hot bleed air is leaking from a duct on the right side: the right engine strut, right wing or right air conditioning bay.",
+      "when": "Abnormal.",
+      "action": "Run the wing-body overheat checklist. It usually means shutting off that side's bleed air.",
+      "normal": false
+    },
+    {
+      "locator": "oh/bleed/BLEED/1",
+      "meaning": "That engine bleed valve has shut because the bleed air was too hot, or its pressure too high or too low, or the bleed system has failed. It can also mean the bleeds are set wrong after takeoff or a go-around.",
+      "when": "Abnormal.",
+      "action": "Check both engine BLEED switches are ON. Then run the bleed checklist, and press TRIP RESET once it has cooled. A system failure may not reset.",
+      "normal": false
+    },
+    {
+      "locator": "oh/bleed/BLEED/2",
+      "meaning": "That engine bleed valve has shut because the bleed air was too hot, or its pressure too high or too low, or the bleed system has failed. It can also mean the bleeds are set wrong after takeoff or a go-around.",
+      "when": "Abnormal.",
+      "action": "Check both engine BLEED switches are ON. Then run the bleed checklist, and press TRIP RESET once it has cooled. A system failure may not reset.",
+      "normal": false
+    },
+    {
+      "locator": "oh/press/AUTO FAIL/1",
+      "meaning": "An automatic pressure controller has failed. With ALTN also lit, one controller failed and the other took over. Lit alone, both have failed.",
+      "when": "Abnormal.",
+      "action": "If ALTN is also lit, the standby controller has taken over: set the mode selector to ALTN. If AUTO FAIL is lit alone, control the cabin in MAN and run the checklist.",
+      "normal": false
+    },
+    {
+      "locator": "oh/press/OFF SCHED DESCENT/1",
+      "meaning": "You started down before reaching the cruise altitude set on the panel. The controller assumes you are going back, and takes the cabin toward the departure airport's elevation.",
+      "when": "Happens after an early descent, for example a return to the departure airport.",
+      "action": "If you are returning to the departure airport, no action is needed. If you will land somewhere else or climb again, reset FLT ALT and LAND ALT and watch the cabin.",
+      "normal": true
+    },
+    {
+      "locator": "oh/press/ALTN/1",
+      "meaning": "The standby pressure controller is in use, after a fault or because you selected it.",
+      "when": "Can show after a controller fault.",
+      "action": "No action while the cabin is under control. Monitor it.",
+      "normal": true
+    },
+    {
+      "locator": "oh/press/MANUAL/1",
+      "meaning": "Pressurization is in manual mode, so you move the outflow valve yourself.",
+      "when": "Normal only when you have selected MAN.",
+      "action": "Control the outflow valve with its switch, or go back to AUTO if you did not mean to select MAN.",
+      "normal": true
+    },
+    {
+      "locator": "aft/elt/ELT/1",
+      "meaning": "The emergency locator transmitter is sending a distress signal.",
+      "when": "Abnormal, unless during a short test.",
+      "action": "Set the ELT switch back to ARMED and tell ATC if it went off by accident.",
+      "normal": false
+    },
+    {
+      "locator": "aft/irs/GPS/1",
+      "meaning": "Both GPS receivers have failed. A failure of only one shows only on MASTER CAUTION recall.",
+      "when": "Abnormal.",
+      "action": "Check the FMC position. RNAV approaches may not be available.",
+      "normal": false
+    },
+    {
+      "locator": "aft/irs/ILS/1",
+      "meaning": "Both ILS receivers have failed, so the localizer and glideslope are not usable. A failure of only one shows only on MASTER CAUTION recall.",
+      "when": "Abnormal.",
+      "action": "Plan a different approach. After a single failure on recall, use the side that still works.",
+      "normal": false
+    },
+    {
+      "locator": "aft/irs/GLS/1",
+      "meaning": "Both GLS receivers have failed, so satellite based landing guidance is not available. A single failure shows only on recall.",
+      "when": "Abnormal.",
+      "action": "Plan an ILS or another approach.",
+      "normal": false
+    },
+    {
+      "locator": "aft/irs/ALIGN/1",
+      "meaning": "The left IRS is still finding its position and heading, so the airplane must stay still.",
+      "when": "Normal for several minutes after you select NAV. Flashing means alignment cannot finish, for example no position was entered or it differs a lot from the last one.",
+      "action": "Wait without moving the airplane. If it flashes, check the position entered in the FMC.",
+      "normal": true
+    },
+    {
+      "locator": "aft/irs/ALIGN/2",
+      "meaning": "The right IRS is still finding its position and heading, so the airplane must stay still.",
+      "when": "Normal for several minutes after you select NAV. Flashing means alignment cannot finish, for example no position was entered or it differs a lot from the last one.",
+      "action": "Wait without moving the airplane. If it flashes, check the position entered in the FMC.",
+      "normal": true
+    },
+    {
+      "locator": "aft/irs/ON DC/1",
+      "meaning": "The left IRS is running on battery power because its normal AC power is lost.",
+      "when": "Normal for a few seconds at switch on during the self test. Abnormal later.",
+      "action": "If it stays on, get AC power on the buses, because the battery will run down. On the ground a horn in the nose wheel well warns of this.",
+      "normal": true
+    },
+    {
+      "locator": "aft/irs/ON DC/2",
+      "meaning": "The right IRS is running on battery power because its normal AC power is lost.",
+      "when": "Normal for a few seconds at switch on during the self test. Abnormal later.",
+      "action": "If it stays on, get AC power on the buses, because the battery will run down. On the ground a horn in the nose wheel well warns of this.",
+      "normal": true
+    },
+    {
+      "locator": "aft/irs/FAULT/1",
+      "meaning": "The left IRS has a fault and its attitude or navigation data may be lost.",
+      "when": "Abnormal.",
+      "action": "Run the IRS fault checklist. You may need to realign it or use the other IRS.",
+      "normal": false
+    },
+    {
+      "locator": "aft/irs/FAULT/2",
+      "meaning": "The right IRS has a fault and its attitude or navigation data may be lost.",
+      "when": "Abnormal.",
+      "action": "Run the IRS fault checklist. You may need to realign it or use the other IRS.",
+      "normal": false
+    },
+    {
+      "locator": "aft/irs/DC FAIL/1",
+      "meaning": "The left IRS has lost its battery backup.",
+      "when": "Abnormal.",
+      "action": "It keeps running on AC. Note it, and watch for an ON DC light.",
+      "normal": false
+    },
+    {
+      "locator": "aft/irs/DC FAIL/2",
+      "meaning": "The right IRS has lost its battery backup.",
+      "when": "Abnormal.",
+      "action": "It keeps running on AC. Note it, and watch for an ON DC light.",
+      "normal": false
+    },
+    {
+      "locator": "aft/eng/REVERSER COMMAND/1",
+      "meaning": "In flight, a reverse thrust lever is not fully down.",
+      "when": "Abnormal.",
+      "action": "Check both reverse thrust levers are fully down, and run the checklist if the light stays on.",
+      "normal": false
+    },
+    {
+      "locator": "aft/eng/REVERSER AIR/GRD/1",
+      "meaning": "The air/ground logic used by the thrust reversers has failed.",
+      "when": "Abnormal.",
+      "action": "Expect that reverse thrust may not be available, and plan the stopping distance.",
+      "normal": false
+    },
+    {
+      "locator": "aft/eng/REVERSER LIMITED/1",
+      "meaning": "A thrust reverser fault. In flight it means that reverser may not deploy, or reverse is limited to idle.",
+      "when": "Abnormal.",
+      "action": "Plan for a longer landing roll and use the brakes and autobrake as needed.",
+      "normal": false
+    },
+    {
+      "locator": "aft/eng/REVERSER LIMITED/2",
+      "meaning": "A thrust reverser fault. In flight it means that reverser may not deploy, or reverse is limited to idle.",
+      "when": "Abnormal.",
+      "action": "Plan for a longer landing roll and use the brakes and autobrake as needed.",
+      "normal": false
+    },
+    {
+      "locator": "aft/eng/ENGINE CONTROL/1",
+      "meaning": "The engine control system has a fault that stops the airplane being dispatched. It only shows on the ground with the engine running: below 80 knots before takeoff, or about 30 seconds after landing.",
+      "when": "Abnormal, ground only.",
+      "action": "Do not take off. Return to the gate.",
+      "normal": false
+    },
+    {
+      "locator": "aft/eng/ENGINE CONTROL/2",
+      "meaning": "The engine control system has a fault that stops the airplane being dispatched. It only shows on the ground with the engine running: below 80 knots before takeoff, or about 30 seconds after landing.",
+      "when": "Abnormal, ground only.",
+      "action": "Do not take off. Return to the gate.",
+      "normal": false
+    },
+    {
+      "locator": "aft/oxy/PASS OXY ON/1",
+      "meaning": "The passenger masks have dropped and oxygen is flowing in the cabin.",
+      "when": "Seen after the masks drop by themselves, when the cabin climbs above about 14,000 ft, or after the PASS OXY switch is moved to ON.",
+      "action": "Check you are descending if needed and tell the cabin crew.",
+      "normal": false
+    },
+    {
+      "locator": "aft/rec/OFF/1",
+      "meaning": "The flight data recorder is not recording.",
+      "when": "Normal on the ground before an engine is running.",
+      "action": "Check the FLIGHT RECORDER switch is in its normal position. No action before start.",
+      "normal": true
+    },
+    {
+      "locator": "aft/gear/LEFT GEAR/1",
+      "meaning": "The left main gear is down and locked. This is the second set of gear lights.",
+      "when": "Normal on the ground and with the gear down.",
+      "action": "No action needed.",
+      "normal": true
+    },
+    {
+      "locator": "aft/gear/RIGHT GEAR/1",
+      "meaning": "The right main gear is down and locked. This is the second set of gear lights.",
+      "when": "Normal on the ground and with the gear down.",
+      "action": "No action needed.",
+      "normal": true
+    },
+    {
+      "locator": "aft/gear/NOSE GEAR/1",
+      "meaning": "The nose gear is down and locked. This is the second set of gear lights.",
+      "when": "Normal on the ground and with the gear down.",
+      "action": "No action needed.",
+      "normal": true
+    },
+    {
+      "locator": "mn/cl/BELOW G/S/1",
+      "meaning": "The airplane has gone well below the glideslope on the approach.",
+      "when": "Abnormal on an approach.",
+      "action": "Correct back to the glideslope, or go around if you cannot. Below 1,000 ft you can press the light to cancel the alert if you mean to be low.",
+      "normal": false
+    },
+    {
+      "locator": "mn/fl/BELOW G/S/1",
+      "meaning": "The airplane has gone well below the glideslope on the approach.",
+      "when": "Abnormal on an approach.",
+      "action": "Correct back to the glideslope, or go around if you cannot. Below 1,000 ft you can press the light to cancel the alert if you mean to be low.",
+      "normal": false
+    },
+    {
+      "locator": "mn/cl/TAKEOFF CONFIG/1",
+      "meaning": "When thrust went up for takeoff, an item such as the flaps, speedbrake, stabilizer trim or parking brake was not set for takeoff.",
+      "when": "Abnormal.",
+      "action": "Stop the takeoff, then fix the item before you try again.",
+      "normal": false
+    },
+    {
+      "locator": "mn/fl/TAKEOFF CONFIG/1",
+      "meaning": "When thrust went up for takeoff, an item such as the flaps, speedbrake, stabilizer trim or parking brake was not set for takeoff.",
+      "when": "Abnormal.",
+      "action": "Stop the takeoff, then fix the item before you try again.",
+      "normal": false
+    },
+    {
+      "locator": "mn/cl/CABIN ALTITUDE/1",
+      "meaning": "The cabin altitude has climbed above about 10,000 ft.",
+      "when": "Abnormal.",
+      "action": "Put on your oxygen mask at once and do the cabin altitude memory items.",
+      "normal": false
+    },
+    {
+      "locator": "mn/fl/CABIN ALTITUDE/1",
+      "meaning": "The cabin altitude has climbed above about 10,000 ft.",
+      "when": "Abnormal.",
+      "action": "Put on your oxygen mask at once and do the cabin altitude memory items.",
+      "normal": false
+    },
+    {
+      "locator": "mn/cl/SPEED BRAKE DO NOT ARM/1",
+      "meaning": "The automatic speedbrake has a fault, so arming it may not work.",
+      "when": "Abnormal. Also lights in the lights test.",
+      "action": "Leave the lever DOWN and raise it by hand after touchdown.",
+      "normal": false
+    },
+    {
+      "locator": "mn/cl/STAB OUT OF TRIM/1",
+      "meaning": "With the autopilot on, the stabilizer is not trimming correctly, so the airplane may be out of trim when the autopilot comes off.",
+      "when": "Abnormal. Only works with the autopilot engaged, except after landing below 30 knots, when it shows a partial flight computer fault.",
+      "action": "Hold the column firmly before you disconnect the autopilot, and be ready to trim by hand. If it lights on the ground after landing, do not take off again until it is fixed.",
+      "normal": false
+    },
+    {
+      "locator": "mn/cl/SPEED BRAKE ARMED/1",
+      "meaning": "The speedbrake is armed and will deploy by itself on touchdown.",
+      "when": "Normal on the approach once you arm the lever.",
+      "action": "No action needed.",
+      "normal": true
+    },
+    {
+      "locator": "mn/ctr/LEFT GEAR/1",
+      "meaning": "The left main gear is moving or not where the gear lever says, or it is not down and locked with a thrust lever at idle below 800 ft.",
+      "when": "Normal while the gear is moving. Abnormal if it stays on.",
+      "action": "If it stays on, run the gear checklist. Do not land until you have three green lights.",
+      "normal": true
+    },
+    {
+      "locator": "mn/ctr/LEFT GEAR/2",
+      "meaning": "The left main gear is down and locked.",
+      "when": "Normal on the ground and with the gear down.",
+      "action": "No action needed.",
+      "normal": true
+    },
+    {
+      "locator": "mn/ctr/NOSE GEAR/1",
+      "meaning": "The nose gear is moving or not where the gear lever says, or it is not down and locked with a thrust lever at idle below 800 ft.",
+      "when": "Normal while the gear is moving. Abnormal if it stays on.",
+      "action": "If it stays on, run the gear checklist. Do not land until you have three green lights.",
+      "normal": true
+    },
+    {
+      "locator": "mn/ctr/NOSE GEAR/2",
+      "meaning": "The nose gear is down and locked.",
+      "when": "Normal on the ground and with the gear down.",
+      "action": "No action needed.",
+      "normal": true
+    },
+    {
+      "locator": "mn/ctr/RIGHT GEAR/1",
+      "meaning": "The right main gear is moving or not where the gear lever says, or it is not down and locked with a thrust lever at idle below 800 ft.",
+      "when": "Normal while the gear is moving. Abnormal if it stays on.",
+      "action": "If it stays on, run the gear checklist. Do not land until you have three green lights.",
+      "normal": true
+    },
+    {
+      "locator": "mn/ctr/RIGHT GEAR/2",
+      "meaning": "The right main gear is down and locked.",
+      "when": "Normal on the ground and with the gear down.",
+      "action": "No action needed.",
+      "normal": true
+    },
+    {
+      "locator": "mn/fl/SPEEDBRAKES EXTENDED/1",
+      "meaning": "In flight, the speedbrake lever is beyond ARMED while below 800 ft, with flaps beyond 10, or with thrust held above idle for more than a few seconds. On the ground, the lever is DOWN but the ground spoilers have not stowed.",
+      "when": "Abnormal.",
+      "action": "In flight, stow the speedbrake lever. On the ground, run the checklist.",
+      "normal": false
+    },
+    {
+      "locator": "mn/gp/GND PROX INOP/1",
+      "meaning": "The ground proximity warning system has a fault, so terrain warnings may not work.",
+      "when": "Abnormal. It may show briefly at power up.",
+      "action": "Fly with extra care near terrain and check the GPWS switches.",
+      "normal": false
+    },
+    {
+      "locator": "con/ed/AUTO BRAKE DISARM/1",
+      "meaning": "The autobrake has disarmed, for example after manual braking, thrust being advanced or the speedbrake lever going down, or it has a fault.",
+      "when": "Normal for 1 to 2 seconds when you select RTO, and when you brake by hand after landing.",
+      "action": "Turn the autobrake selector OFF to clear the light, then brake by hand. If it stays on with RTO selected before takeoff, the autobrake has a fault.",
+      "normal": true
+    },
+    {
+      "locator": "con/lo/PARK BRAKE LIGHT/1",
+      "meaning": "The parking brake is holding the airplane.",
+      "when": "Normal at the gate and during engine start. It must be out before taxi.",
+      "action": "Release the parking brake before you taxi.",
+      "normal": true
+    },
+    {
+      "locator": "con/fi/ENG 1 OVERHEAT/1",
+      "meaning": "The detectors around engine 1 sense more heat than normal, but not a fire.",
+      "when": "Abnormal. Also lights in the fire test.",
+      "action": "Disconnect the autothrottle and slowly close the engine 1 thrust lever. If the light stays on, run the rest of the engine overheat checklist, which may lead to shutting the engine down.",
+      "normal": false
+    },
+    {
+      "locator": "con/fi/ENG 2 OVERHEAT/1",
+      "meaning": "The detectors around engine 2 sense more heat than normal, but not a fire.",
+      "when": "Abnormal. Also lights in the fire test.",
+      "action": "Disconnect the autothrottle and slowly close the engine 2 thrust lever. If the light stays on, run the rest of the engine overheat checklist, which may lead to shutting the engine down.",
+      "normal": false
+    },
+    {
+      "locator": "con/fi/FAULT/1",
+      "meaning": "With the detection switch at NORMAL, both detector loops on one engine have failed. With A or B selected, that loop has failed. A fire there may not be detected. It does not light MASTER CAUTION.",
+      "when": "Abnormal. Also lights in the FAULT/INOP test.",
+      "action": "Run the checklist and watch that engine closely.",
+      "normal": false
+    },
+    {
+      "locator": "con/fi/APU DET INOP/1",
+      "meaning": "The APU fire detector loop has failed, so an APU fire may not be detected.",
+      "when": "Abnormal. Also lights in the FAULT/INOP test.",
+      "action": "Run the APU detection checklist.",
+      "normal": false
+    },
+    {
+      "locator": "con/fi/APU BOTTLE DISCHARGE/1",
+      "meaning": "The APU fire bottle is empty or has lost pressure.",
+      "when": "Normal only after you have fired it.",
+      "action": "There is no extinguisher left for the APU. If you fired it for a fire, leave the APU off. Otherwise it needs servicing before flight.",
+      "normal": false
+    },
+    {
+      "locator": "con/fi/L BOTTLE DISCHARGE/1",
+      "meaning": "The left engine fire bottle has been fired or has lost pressure.",
+      "when": "Normal only after you have fired it.",
+      "action": "That bottle cannot be used again. The right bottle may still be available.",
+      "normal": false
+    },
+    {
+      "locator": "con/fi/R BOTTLE DISCHARGE/1",
+      "meaning": "The right engine fire bottle has been fired or has lost pressure.",
+      "when": "Normal only after you have fired it.",
+      "action": "That bottle cannot be used again. The left bottle may still be available.",
+      "normal": false
+    },
+    {
+      "locator": "con/fi/L/1",
+      "meaning": "The firing circuit for the left engine bottle tested good.",
+      "when": "Normal only during the extinguisher test.",
+      "action": "No action. If it stays dark during the test, report the fault.",
+      "normal": true
+    },
+    {
+      "locator": "con/fi/R/1",
+      "meaning": "The firing circuit for the right engine bottle tested good.",
+      "when": "Normal only during the extinguisher test.",
+      "action": "No action. If it stays dark during the test, report the fault.",
+      "normal": true
+    },
+    {
+      "locator": "con/fi/APU/1",
+      "meaning": "The firing circuit for the APU bottle tested good.",
+      "when": "Normal only during the extinguisher test.",
+      "action": "No action. If it stays dark during the test, report the fault.",
+      "normal": true
+    },
+    {
+      "locator": "con/cf/EXT FWD/1",
+      "meaning": "The firing circuit for the forward hold fire bottle tested good.",
+      "when": "Normal only during the cargo fire test.",
+      "action": "No action needed.",
+      "normal": true
+    },
+    {
+      "locator": "con/cf/EXT AFT/1",
+      "meaning": "The firing circuit for the rear hold fire bottle tested good.",
+      "when": "Normal only during the cargo fire test.",
+      "action": "No action needed.",
+      "normal": true
+    },
+    {
+      "locator": "con/cf/DETECTOR FAULT/1",
+      "meaning": "One or more selected detection loops in a hold has failed, so detection there may be reduced.",
+      "when": "Abnormal.",
+      "action": "Run the checklist and report it.",
+      "normal": false
+    },
+    {
+      "locator": "gl/annl/FLT CONT/1",
+      "meaning": "There is a flight control caution. An amber light on the flight control panel on the forward overhead shows which one.",
+      "when": "Lights with MASTER CAUTION when a caution comes on, and when you press to recall.",
+      "action": "Find the amber light on the flight control panel on the forward overhead, deal with it, then push MASTER CAUTION to reset.",
+      "normal": false
+    },
+    {
+      "locator": "gl/annl/IRS/1",
+      "meaning": "There is an IRS caution. An amber light on the IRS panel on the aft overhead shows which one.",
+      "when": "Lights with MASTER CAUTION when a caution comes on, and when you press to recall.",
+      "action": "Find the amber light on the IRS panel on the aft overhead, deal with it, then push MASTER CAUTION to reset.",
+      "normal": false
+    },
+    {
+      "locator": "gl/annl/FUEL/1",
+      "meaning": "There is a fuel caution. An amber light on the fuel panel shows which one.",
+      "when": "Lights with MASTER CAUTION when a caution comes on, and when you press to recall.",
+      "action": "Find the amber light on the fuel panel, deal with it, then push MASTER CAUTION to reset.",
+      "normal": false
+    },
+    {
+      "locator": "gl/annl/ELEC/1",
+      "meaning": "There is an electrical caution. An amber light on the electrical panel shows which one.",
+      "when": "Lights with MASTER CAUTION when a caution comes on, and when you press to recall.",
+      "action": "Find the amber light on the electrical panel, deal with it, then push MASTER CAUTION to reset.",
+      "normal": false
+    },
+    {
+      "locator": "gl/annl/APU/1",
+      "meaning": "There is an APU caution. An amber light on the APU gauges and APU switch area shows which one.",
+      "when": "Lights with MASTER CAUTION when a caution comes on, and when you press to recall.",
+      "action": "Find the amber light on the APU gauges and APU switch area, deal with it, then push MASTER CAUTION to reset.",
+      "normal": false
+    },
+    {
+      "locator": "gl/annl/OVHT/DET/1",
+      "meaning": "There is a fire detection caution. An amber light on the fire protection panel on the pedestal shows which one.",
+      "when": "Lights with MASTER CAUTION when a caution comes on, and when you press to recall.",
+      "action": "Find the amber light on the fire protection panel on the pedestal, deal with it, then push MASTER CAUTION to reset.",
+      "normal": false
+    },
+    {
+      "locator": "gl/annr/ANTI-ICE/1",
+      "meaning": "There is an anti-ice caution. An amber light on the anti-ice and probe heat panels shows which one.",
+      "when": "Lights with MASTER CAUTION when a caution comes on, and when you press to recall.",
+      "action": "Find the amber light on the anti-ice and probe heat panels, deal with it, then push MASTER CAUTION to reset.",
+      "normal": false
+    },
+    {
+      "locator": "gl/annr/HYD/1",
+      "meaning": "There is a hydraulic caution. An amber light on the hydraulic panel shows which one.",
+      "when": "Lights with MASTER CAUTION when a caution comes on, and when you press to recall.",
+      "action": "Find the amber light on the hydraulic panel, deal with it, then push MASTER CAUTION to reset.",
+      "normal": false
+    },
+    {
+      "locator": "gl/annr/DOORS/1",
+      "meaning": "There is a door caution. An amber light on the door panel shows which one.",
+      "when": "Lights with MASTER CAUTION when a caution comes on, and when you press to recall.",
+      "action": "Find the amber light on the door panel, deal with it, then push MASTER CAUTION to reset.",
+      "normal": false
+    },
+    {
+      "locator": "gl/annr/ENG/1",
+      "meaning": "There is an engine caution. An amber light on the engine panel on the aft overhead shows which one.",
+      "when": "Lights with MASTER CAUTION when a caution comes on, and when you press to recall.",
+      "action": "Find the amber light on the engine panel on the aft overhead, deal with it, then push MASTER CAUTION to reset.",
+      "normal": false
+    },
+    {
+      "locator": "gl/annr/OVERHEAD/1",
+      "meaning": "There is an overhead caution. An amber light on the forward and aft overhead panels shows which one.",
+      "when": "Lights with MASTER CAUTION when a caution comes on, and when you press to recall.",
+      "action": "Find the amber light on the forward and aft overhead panels, deal with it, then push MASTER CAUTION to reset.",
+      "normal": false
+    },
+    {
+      "locator": "gl/annr/AIR COND/1",
+      "meaning": "There is an air conditioning or bleed caution. An amber light on the air conditioning and bleed panels shows which one.",
+      "when": "Lights with MASTER CAUTION when a caution comes on, and when you press to recall.",
+      "action": "Find the amber light on the air conditioning and bleed panels, deal with it, then push MASTER CAUTION to reset.",
+      "normal": false
+    }
+  ]
+}

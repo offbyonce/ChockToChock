@@ -55,4 +55,4 @@ just dev      # run the app with live reload
 just ci       # every check; run before pushing
 ```
 
-Optional: `pipx install reuse`, then `reuse lint` checks every file has a licence.
+Optional: `pipx install reuse`, then `reuse lint` checks every file has a license.

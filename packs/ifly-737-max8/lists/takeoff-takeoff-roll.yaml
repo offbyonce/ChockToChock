@@ -1,0 +1,87 @@
+# SPDX-FileCopyrightText: 2026 offbyonce and Chock to Chock contributors
+# SPDX-License-Identifier: CC-BY-NC-SA-4.0
+#
+# yaml-language-server: $schema=../../../schemas/checklist.schema.json
+# Imported from 3.0, then validated against vendor documentation. Edit by hand; do not regenerate.
+id: takeoff-takeoff-roll
+title: Takeoff roll
+kind: flow
+basis:
+  - ifly-docs
+steps:
+  - id: ifly-737-max8.takeoff.thrust-levers
+    number: 1
+    text: THRUST LEVERS
+    expect: "ADVANCE TO ABOUT 40% N1, LET ENGINES STABILIZE"
+    controls:
+      - thrust
+    quick: always
+    note: "Advance to about 40% N1 and let both engines settle before TO/GA."
+    why: Stable engines before TO/GA
+    check: Both engines steady
+    status: checked
+  - id: ifly-737-max8.takeoff.to-ga
+    number: 2
+    text: TO/GA
+    expect: PUSH
+    controls:
+      - toga
+    quick: always
+    note: Sets takeoff thrust and takeoff guidance. Check the FMA.
+    why: Sets takeoff thrust and guidance
+    check: FMA shows N1 and TO/GA
+    check_detail: Thrust levers move forward
+    status: checked
+  - id: ifly-737-max8.takeoff.takeoff-thrust
+    number: 3
+    text: TAKEOFF THRUST
+    expect: "TAKEOFF N1 SET, INDICATIONS NORMAL"
+    controls:
+      - engmon
+    note: "Check the thrust reaches takeoff N1 and all engine indications are normal."
+    why: "Takeoff thrust should be set by about 60 knots, before the autothrottle stops adjusting it."
+    check: "Thrust at takeoff N1"
+    check_detail: Engine indications normal
+    status: checked
+  - id: ifly-737-max8.takeoff.80-knots
+    number: 4
+    text: "80 KNOTS"
+    expect: AIRSPEEDS AGREE
+    controls:
+      - speedt
+    note: Both airspeed indicators should agree here. Below this speed you reject for more reasons than above it.
+    why: More reasons to reject below this speed
+    check: Both airspeeds agree
+    callout: "Pilot monitoring: \"80 knots.\""
+    status: draft
+  - id: ifly-737-max8.takeoff.v1
+    number: 5
+    text: V1
+    expect: HANDS OFF THRUST LEVERS
+    controls:
+      - speedt
+    note: "After V1, continue the takeoff. Hands come off the thrust levers so you do not reject by habit."
+    why: Hands off the levers so you do not reject out of habit after V1
+    status: draft
+  - id: ifly-737-max8.takeoff.vr
+    number: 6
+    text: VR
+    expect: ROTATE TOWARD 15 DEGREES PITCH
+    controls:
+      - speedt
+    quick: always
+    note: Rotate smoothly toward 15 degrees pitch.
+    why: A smooth rotation avoids a tail strike and lets the airplane reach V2 in the climb
+    callout: "Pilot monitoring: \"Rotate.\""
+    status: checked
+  - id: ifly-737-max8.takeoff.positive-rate
+    number: 7
+    text: POSITIVE RATE
+    expect: ALTIMETER AND VERTICAL SPEED INCREASING
+    controls:
+      - fltinst
+    note: Confirm the airplane is climbing on two instruments before raising the gear.
+    why: Climb confirmed on two instruments
+    check: Altimeter and vertical speed rising
+    callout: "Pilot monitoring: \"Positive rate.\" Pilot flying: \"Gear up.\""
+    status: checked

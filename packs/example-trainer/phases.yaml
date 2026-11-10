@@ -1,0 +1,35 @@
+# SPDX-FileCopyrightText: 2026 offbyonce
+# SPDX-License-Identifier: CC-BY-NC-SA-4.0
+#
+# yaml-language-server: $schema=../../schemas/phases.schema.json
+# Invented content that shows the pack format. Not a real aircraft procedure.
+options:
+  - id: power
+    title: Power source
+    values: [external, internal]
+    default: external
+  - id: start
+    title: Start type
+    values: [normal, turnaround]
+    default: normal
+stages:
+  - title: Departure
+    phases:
+      - phase: start
+        show_if: {option: start, equals: normal}
+      - phase: before-start
+phases:
+  - id: start
+    title: Start
+    lists: [start-flow]
+  - id: before-start
+    title: Before start
+    lists: [before-start]
+  - id: memory
+    title: Memory items
+    reference: true
+    intro:
+      - text: Steps to know by heart.
+      - heading: When to use them
+        text: As soon as you recognize the event.
+    lists: [smoke]

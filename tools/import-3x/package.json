@@ -1,0 +1,7 @@
+{
+  "name": "import-3x",
+  "private": true,
+  "description": "One-way converter from the 3.0 checklist data to pack YAML.",
+  "license": "MIT",
+  "type": "module"
+}

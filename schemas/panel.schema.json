@@ -1,0 +1,180 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Panel",
+  "description": "One `panels/*.yaml` file.",
+  "type": "object",
+  "properties": {
+    "height": {
+      "type": "number",
+      "format": "double"
+    },
+    "id": {
+      "type": "string"
+    },
+    "sections": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/PanelSection"
+      }
+    },
+    "title": {
+      "type": "string"
+    },
+    "width": {
+      "type": "number",
+      "format": "double"
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "title",
+    "width",
+    "height",
+    "sections"
+  ],
+  "$defs": {
+    "LightColor": {
+      "description": "The color of a panel light.",
+      "type": "string",
+      "enum": [
+        "amber",
+        "red",
+        "green",
+        "blue",
+        "white"
+      ]
+    },
+    "PanelItem": {
+      "description": "One item on a panel drawing. Positions are our own layout.",
+      "type": "object",
+      "properties": {
+        "color": {
+          "description": "Required on a light, and only valid on a light.",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/LightColor"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "controls": {
+          "description": "Ids of the controls this item belongs to.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "description": {
+          "type": "string"
+        },
+        "guarded": {
+          "description": "Has a protective cover. Only valid on a toggle switch or push button.",
+          "type": "boolean"
+        },
+        "height": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "format": "double"
+        },
+        "kind": {
+          "$ref": "#/$defs/PanelItemKind"
+        },
+        "label": {
+          "type": "string"
+        },
+        "positions": {
+          "description": "The positions it can be set to, as text.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "width": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "format": "double"
+        },
+        "x": {
+          "type": "number",
+          "format": "double"
+        },
+        "y": {
+          "type": "number",
+          "format": "double"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "label",
+        "x",
+        "y",
+        "description"
+      ]
+    },
+    "PanelItemKind": {
+      "description": "What a panel item is, which decides how it is drawn.",
+      "type": "string",
+      "enum": [
+        "toggle_switch",
+        "selector",
+        "push_button",
+        "light",
+        "gauge",
+        "readout",
+        "display_unit"
+      ]
+    },
+    "PanelSection": {
+      "description": "A labeled section of a panel.",
+      "type": "object",
+      "properties": {
+        "height": {
+          "type": "number",
+          "format": "double"
+        },
+        "id": {
+          "type": "string"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/PanelItem"
+          }
+        },
+        "title": {
+          "type": "string"
+        },
+        "width": {
+          "type": "number",
+          "format": "double"
+        },
+        "x": {
+          "type": "number",
+          "format": "double"
+        },
+        "y": {
+          "type": "number",
+          "format": "double"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "title",
+        "x",
+        "y",
+        "width",
+        "height",
+        "items"
+      ]
+    }
+  }
+}

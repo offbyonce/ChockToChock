@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "BriefingsFile",
+  "description": "`briefings.yaml`.",
+  "type": "object",
+  "properties": {
+    "briefings": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Briefing"
+      }
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "briefings"
+  ],
+  "$defs": {
+    "BriefItem": {
+      "description": "One line of a briefing: the letter of its mnemonic and the rest of the word.",
+      "type": "object",
+      "properties": {
+        "detail": {
+          "description": "What to cover under this line.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "id": {
+          "description": "Unique in the pack. Saved progress uses it, so it never changes once published.",
+          "type": "string"
+        },
+        "lead": {
+          "type": "string"
+        },
+        "rest": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "lead",
+        "rest"
+      ]
+    },
+    "Briefing": {
+      "description": "A crew briefing, shown in one phase.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/BriefItem"
+          }
+        },
+        "mnemonic": {
+          "type": "string"
+        },
+        "phase": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "title",
+        "mnemonic",
+        "phase",
+        "items"
+      ]
+    }
+  }
+}

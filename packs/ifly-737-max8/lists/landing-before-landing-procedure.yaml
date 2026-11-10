@@ -1,0 +1,202 @@
+# SPDX-FileCopyrightText: 2026 offbyonce and Chock to Chock contributors
+# SPDX-License-Identifier: CC-BY-NC-SA-4.0
+#
+# yaml-language-server: $schema=../../../schemas/checklist.schema.json
+# Imported from 3.0, then validated against vendor documentation. Edit by hand; do not regenerate.
+id: landing-before-landing-procedure
+title: Before landing procedure
+kind: flow
+basis:
+  - ifly-docs
+steps:
+  - id: ifly-737-max8.landing.flap-lever
+    number: 1
+    text: FLAP LEVER
+    expect: "EXTEND PER SPEED SCHEDULE. BE STABILIZED BY 1,000 FT IMC OR 500 FT VMC"
+    controls:
+      - flaplever
+      - speedt
+    quick: always
+    why: "Configure early so you are stable by 1,000 ft in cloud or 500 ft in visual conditions"
+    how: flapdn
+    status: checked
+  - id: ifly-737-max8.landing.landing-gear-lever
+    number: 2
+    text: LANDING GEAR LEVER
+    expect: "DOWN WHEN SPEED ALLOWS"
+    controls:
+      - gearlever
+    quick: always
+    show_if:
+      option: approach
+      equals: ils
+    why: "Gear down before landing. Lowering it here also adds drag to help you slow down and descend. The common Boeing ILS profile is gear down and flaps 15 when the glideslope comes alive, then landing flaps, VREF + 5 and the missed approach altitude at glideslope capture."
+    check: "3 green gear lights"
+    if_not: Fewer than 3 green
+    if_not_detail: "Gear not down and locked, go around"
+    explain: gearw
+    status: checked
+  - id: ifly-737-max8.landing.speedbrake-lever
+    number: 3
+    text: SPEEDBRAKE LEVER
+    expect: ARM
+    controls:
+      - speedbrake
+    quick: always
+    show_if:
+      option: approach
+      equals: ils
+    why: Spoilers deploy on landing
+    how: sbk
+    explain: arm
+    status: checked
+  - id: ifly-737-max8.landing.mcp-speed-and-altitude
+    text: "MCP SPEED AND ALTITUDE"
+    expect: "VREF + 5, MISSED APPROACH ALTITUDE SET AT GLIDESLOPE CAPTURE"
+    show_if:
+      option: approach
+      equals: ils
+    why: "Sets the final approach speed, and the next altitude is ready if you go around."
+    check: VREF confirmed first
+    status: checked
+  - id: ifly-737-max8.landing.landing-flaps
+    text: LANDING FLAPS
+    expect: "SET PER THE FLAP GUIDANCE AFTER GLIDESLOPE CAPTURE"
+    controls:
+      - flaplever
+    quick: always
+    show_if:
+      option: approach
+      equals: ils
+    why: "Final landing configuration. The common Boeing ILS profile is gear down and flaps 15 when the glideslope comes alive, then landing flaps, VREF + 5 and the missed approach altitude at glideslope capture."
+    check: Flaps match the lever
+    check_detail: Green light
+    status: checked
+  - id: ifly-737-max8.landing.landing-gear-lever-before-landing
+    text: LANDING GEAR LEVER
+    expect: DOWN WITH FLAPS 15 ON BASE OR EARLY FINAL
+    controls:
+      - gearlever
+    quick: always
+    show_if:
+      option: approach
+      equals: vis
+    why: Gear down before landing. Lowering it here also adds drag to help you slow down and descend
+    check: "3 green gear lights"
+    if_not: Fewer than 3 green
+    if_not_detail: "Gear not down and locked, go around"
+    explain: gearw
+    status: draft
+  - id: ifly-737-max8.landing.speedbrake-lever-before-landing
+    text: SPEEDBRAKE LEVER
+    expect: ARM
+    controls:
+      - speedbrake
+    quick: always
+    show_if:
+      option: approach
+      equals: vis
+    why: Spoilers deploy on landing
+    how: sbk
+    explain: arm
+    status: checked
+  - id: ifly-737-max8.landing.landing-flaps-before-landing
+    text: LANDING FLAPS
+    expect: "SET BEFORE 500 FT, STABILIZED"
+    controls:
+      - flaplever
+    quick: always
+    show_if:
+      option: approach
+      equals: vis
+    why: Final landing configuration
+    check: Flaps match the lever
+    check_detail: Green light
+    status: draft
+  - id: ifly-737-max8.landing.landing-gear-lever-before-landing-2
+    text: LANDING GEAR LEVER
+    expect: DOWN WITH FLAPS 15 APPROACHING THE FINAL FIX
+    controls:
+      - gearlever
+    quick: always
+    show_if:
+      option: approach
+      equals: rnav
+    why: Gear down before landing. Lowering it here also adds drag to help you slow down and descend
+    check: "3 green gear lights"
+    if_not: Fewer than 3 green
+    if_not_detail: "Gear not down and locked, go around"
+    explain: gearw
+    status: draft
+  - id: ifly-737-max8.landing.speedbrake-lever-before-landing-2
+    text: SPEEDBRAKE LEVER
+    expect: ARM
+    controls:
+      - speedbrake
+    quick: always
+    show_if:
+      option: approach
+      equals: rnav
+    why: Spoilers deploy on landing
+    how: sbk
+    explain: arm
+    status: checked
+  - id: ifly-737-max8.landing.landing-flaps-before-landing-2
+    text: LANDING FLAPS
+    expect: SET AT THE FINAL APPROACH FIX
+    controls:
+      - flaplever
+    quick: always
+    show_if:
+      option: approach
+      equals: rnav
+    why: Final landing configuration
+    check: Flaps match the lever
+    check_detail: Green light
+    status: draft
+  - id: ifly-737-max8.approach.engine-start-switches
+    text: ENGINE START SWITCHES
+    expect: CONT
+    controls:
+      - starts
+    quick: always
+    why: Ignition on for approach and landing
+    check: Both start switches at CONT
+    check_detail: Ignition on for both engines
+    if_not: Switch left at OFF
+    if_not_detail: No ignition if an engine flames out in heavy rain or turbulence
+    panel_lights:
+      starts:
+        - ENGINE START 1
+        - ENGINE START 2
+    status: checked
+  - id: ifly-737-max8.landing.landing-clearance
+    number: 4
+    text: LANDING CLEARANCE
+    expect: OBTAIN
+    controls:
+      - clear
+    note: Confirm you are cleared to land on this runway.
+    why: Cleared to land on this runway
+    status: draft
+  - id: ifly-737-max8.landing.taxi-light
+    number: 5
+    text: TAXI LIGHT
+    expect: "ON"
+    controls:
+      - lldg
+    note: Lights the runway ahead for rollout.
+    why: Lights the runway for rollout
+    status: draft
+  - id: ifly-737-max8.landing.autopilot-and-autothrottle
+    text: "AUTOPILOT"
+    expect: "DISENGAGE BEFORE 500 FT FOR A MANUAL LANDING"
+    controls:
+      - apdisc
+    quick: always
+    why: Hands on for a manual landing
+    check: "Autopilot disengage warning"
+    check_detail: Press each switch again to silence them
+    if_not: Not stabilized or no runway in sight at minimums
+    if_not_detail: Go around
+    status: checked

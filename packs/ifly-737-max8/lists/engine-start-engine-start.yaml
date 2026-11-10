@@ -1,0 +1,230 @@
+# SPDX-FileCopyrightText: 2026 offbyonce and Chock to Chock contributors
+# SPDX-License-Identifier: CC-BY-NC-SA-4.0
+#
+# yaml-language-server: $schema=../../../schemas/checklist.schema.json
+# Imported from 3.0, then validated against vendor documentation. Edit by hand; do not regenerate.
+id: engine-start-engine-start
+title: Engine start
+kind: flow
+basis:
+  - ifly-docs
+steps:
+  - id: ifly-737-max8.engine-start.start-clearance
+    number: 1
+    text: START CLEARANCE
+    expect: OBTAIN
+    controls:
+      - atcclr
+    why: Request it and read it back
+    status: draft
+  - id: ifly-737-max8.engine-start.secondary-engine-indications
+    text: "SECONDARY ENGINE INDICATIONS"
+    expect: "DISPLAYED"
+    why: "N2 and EGT are shown here, and both are watched during the start."
+    status: checked
+  - id: ifly-737-max8.engine-start.pack-switches
+    number: 2
+    text: PACK SWITCHES
+    expect: "OFF"
+    controls:
+      - packs
+    quick: always
+    why: "With the packs off, all the APU bleed air goes to the starters"
+    explain: packoff
+    status: checked
+  - id: ifly-737-max8.engine-start.apu-bleed-switch
+    number: 3
+    text: APU BLEED SWITCH
+    expect: "ON"
+    controls:
+      - apubleed
+    note: The APU supplies the air that turns the starters. The packs stay off so that air reaches the engines.
+    why: APU air turns the starters
+    status: checked
+  - id: ifly-737-max8.engine-start.ignition-selector
+    text: IGNITION SELECTOR
+    expect: "BOTH"
+    controls:
+      - starts
+    quick: always
+    note: "Set in the preflight. Leave it at BOTH."
+    why: "BOTH fires both igniters for the start."
+    panel_lights:
+      starts:
+        - IGNITION
+    status: checked
+  - id: ifly-737-max8.engine-start.engine-1-start-switch
+    number: 4
+    section: Engine 1
+    text: ENGINE 1 START SWITCH
+    expect: GRD
+    controls:
+      - starts
+    quick: always
+    why: "The engine must spin before fuel is added. Order varies by airline. Many start engine 2 first because it drives hydraulic system B, which supplies the normal brakes."
+    check: "N2 rising, START VALVE OPEN alert"
+    check_detail: N2 and oil pressure rising
+    if_not: N2 does not rise
+    if_not_detail: Run the Aborted engine start checklist (Quick reference)
+    explain: grd
+    panel_lights:
+      starts:
+        - ENGINE START 1
+    status: checked
+  - id: ifly-737-max8.engine-start.motoring-indication-engine-start
+    number: 5
+    text: MOTORING INDICATION
+    expect: WAIT UNTIL IT CLEARS
+    controls:
+      - motor
+    quick: always
+    note: The MAX motors the engine first to straighten shafts bowed by heat from the last shutdown. Do not lift the start lever until this clears.
+    why: Straightens shafts bowed by heat
+    check: Motoring indication cleared
+    if_not: Still showing
+    if_not_detail: Do not lift the start lever
+    status: checked
+  - id: ifly-737-max8.engine-start.engine-1-start-lever
+    number: 6
+    text: ENGINE 1 START LEVER
+    expect: "IDLE AT ABOUT 25% N2"
+    controls:
+      - slever
+    quick: always
+    why: Fuel only once turning fast enough to light off
+    check: "Fuel flow, then EGT rising"
+    if_not: EGT does not rise or nears the limit
+    if_not_detail: Run the Aborted engine start checklist (Quick reference)
+    explain: lever
+    note: "If 25% N2 is not reached, move to IDLE at maximum motoring, but not below 20% N2. This comes from older 737 practice and is not confirmed for the MAX."
+    status: draft
+  - id: ifly-737-max8.engine-start.fuel-flow-and-egt-engine-start
+    number: 7
+    text: FUEL FLOW AND EGT
+    expect: VERIFY EGT RISES WITHIN 10 SECONDS OF START LEVER TO IDLE
+    controls:
+      - engmon
+    note: "During a short test, fuel flow reads zero and the ENG VALVE CLOSED light shows bright. Then fuel flow rises. EGT should rise within 10 seconds. If it does not, the EEC may stop the start. Otherwise, stop it yourself."
+    why: Confirms light-off
+    check: EGT rises within 10 seconds
+    check_detail: "First a short valve test: fuel flow zero and ENG VALVE CLOSED bright. Then fuel flow rises"
+    if_not: No EGT rise
+    if_not_detail: "The EEC may stop the start by itself. If it does not, run the Aborted engine start checklist"
+    status: draft
+  - id: ifly-737-max8.engine-start.engine-1-start-switch-engine-start
+    number: 8
+    text: ENGINE 1 START SWITCH
+    expect: "VERIFY OFF AT ABOUT 63% N2"
+    controls:
+      - starts
+    quick: always
+    why: Confirms the starter has cut out
+    check: Switch back at OFF
+    check_detail: "It returns from GRD by itself at about 63% N2"
+    panel_lights:
+      starts:
+        - ENGINE START 1
+    status: checked
+  - id: ifly-737-max8.engine-start.engine-1
+    number: 9
+    text: ENGINE 1
+    expect: VERIFY STABLE AT IDLE
+    controls:
+      - engmon
+    quick: always
+    note: "N1, N2, EGT and oil pressure settle at idle with no alerts."
+    why: Engine settled at idle
+    check: "N1, N2, EGT and oil pressure stable, LOW OIL PRESSURE light OUT"
+    check_detail: No alerts
+    status: checked
+  - id: ifly-737-max8.engine-start.engine-2-start-switch
+    number: 10
+    section: Engine 2
+    text: ENGINE 2 START SWITCH
+    expect: GRD
+    controls:
+      - starts
+    quick: always
+    why: The engine must spin before fuel is added
+    check: "N2 rising, START VALVE OPEN alert"
+    check_detail: N2 and oil pressure rising
+    if_not: N2 does not rise
+    if_not_detail: Run the Aborted engine start checklist (Quick reference)
+    explain: grd
+    panel_lights:
+      starts:
+        - ENGINE START 2
+    status: checked
+  - id: ifly-737-max8.engine-start.motoring-indication
+    number: 11
+    text: MOTORING INDICATION
+    expect: WAIT UNTIL IT CLEARS
+    controls:
+      - motor
+    quick: always
+    note: The MAX motors the engine first to straighten shafts bowed by heat from the last shutdown. Do not lift the start lever until this clears.
+    why: Straightens shafts bowed by heat
+    check: Motoring indication cleared
+    if_not: Still showing
+    if_not_detail: Do not lift the start lever
+    status: checked
+  - id: ifly-737-max8.engine-start.engine-2-start-lever
+    number: 12
+    text: ENGINE 2 START LEVER
+    expect: "IDLE AT ABOUT 25% N2"
+    controls:
+      - slever
+    quick: always
+    why: Fuel only once turning fast enough to light off
+    check: "Fuel flow, then EGT rising"
+    if_not: EGT does not rise or nears the limit
+    if_not_detail: Run the Aborted engine start checklist (Quick reference)
+    explain: lever
+    note: "If 25% N2 is not reached, move to IDLE at maximum motoring, but not below 20% N2. This comes from older 737 practice and is not confirmed for the MAX."
+    status: draft
+  - id: ifly-737-max8.engine-start.fuel-flow-and-egt
+    number: 13
+    text: FUEL FLOW AND EGT
+    expect: VERIFY EGT RISES WITHIN 10 SECONDS OF START LEVER TO IDLE
+    controls:
+      - engmon
+    note: "During a short test, fuel flow reads zero and the ENG VALVE CLOSED light shows bright. Then fuel flow rises. EGT should rise within 10 seconds. If it does not, the EEC may stop the start. Otherwise, stop it yourself."
+    why: Confirms light-off
+    check: EGT rises within 10 seconds
+    check_detail: "First a short valve test: fuel flow zero and ENG VALVE CLOSED bright. Then fuel flow rises"
+    if_not: No EGT rise
+    if_not_detail: "The EEC may stop the start by itself. If it does not, run the Aborted engine start checklist"
+    status: draft
+  - id: ifly-737-max8.engine-start.engine-2-start-switch-engine-start
+    number: 14
+    text: ENGINE 2 START SWITCH
+    expect: "VERIFY OFF AT ABOUT 63% N2"
+    controls:
+      - starts
+    quick: always
+    why: Confirms the starter has cut out
+    check: Switch back at OFF
+    check_detail: "It returns from GRD by itself at about 63% N2"
+    panel_lights:
+      starts:
+        - ENGINE START 2
+    status: checked
+  - id: ifly-737-max8.engine-start.engine-2
+    number: 15
+    text: ENGINE 2
+    expect: VERIFY STABLE AT IDLE
+    controls:
+      - engmon
+    quick: always
+    note: "N1, N2, EGT and oil pressure settle at idle with no alerts."
+    why: Engine settled at idle
+    check: "N1, N2, EGT and oil pressure stable, LOW OIL PRESSURE light OUT"
+    check_detail: No alerts
+    status: checked
+  - id: ifly-737-max8.engine-start.ground-support-items
+    text: "GROUND SUPPORT ITEMS (EFB)"
+    expect: "ALL REMOVED"
+    note: "The iFly has no ground crew, so the EFB stands in for them."
+    why: "Nothing may be left attached before taxi."
+    simulator_model: true
+    status: checked

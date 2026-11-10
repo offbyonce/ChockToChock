@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "LightsFile",
+  "description": "`lights.yaml`.",
+  "type": "object",
+  "properties": {
+    "lights": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/LightNote"
+      }
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "lights"
+  ],
+  "$defs": {
+    "LightNote": {
+      "description": "What a panel light means.",
+      "type": "object",
+      "properties": {
+        "action": {
+          "type": "string"
+        },
+        "locator": {
+          "description": "`<panel>/<section>/<label>/<n>`, where n counts items with that label from 1.",
+          "type": "string"
+        },
+        "meaning": {
+          "type": "string"
+        },
+        "normal": {
+          "description": "True when seeing this light is normal.",
+          "type": "boolean"
+        },
+        "status": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Status"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "when": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "locator",
+        "meaning",
+        "when",
+        "action",
+        "normal"
+      ]
+    },
+    "Status": {
+      "description": "How far a step has been reviewed.",
+      "type": "string",
+      "enum": [
+        "draft",
+        "checked"
+      ]
+    }
+  }
+}

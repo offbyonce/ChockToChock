@@ -5,7 +5,8 @@ SPDX-License-Identifier: MIT
 # Phase 1 brief: the engine and the iFly 737 MAX 8 pack
 
 **Goal:** every piece of content in the 3.0 HTML checklist exists as validated pack data in
-`packs/ifly-737-max8`, with sources cleaned, so Phase 2 can build the interface on it.
+`packs/ifly-737-max8`, with no sources or links carried over (decision 0007), so Phase 2 can
+build the interface on it.
 
 **Gate:** every 3.0 step is accounted for (moved, merged or deliberately dropped, with a
 reason), `pack check` passes, and `just ci` is green.
@@ -40,25 +41,37 @@ not `data.js` on its own.
    kinds of fields steps carry. Propose how each maps onto packs.
 2. **Pack format design (decision record).** From the inventory, propose the additions to the
    Rust model in `checklist-core` and `pack`: phases, flows versus checklists, step kinds,
-   panel zones and states, timers, CDU walkthrough, references, memory items, glossary,
-   per-step "why" and "when", and an alias table from 3.0 ids to new ids. Write it as
+   panel zones and states, timers, CDU walkthrough, list-level `basis`, step `status`, memory
+   items, glossary, per-step "why" and "when", and an alias table from 3.0 ids to new ids. Write it as
    `docs/decisions/0007-pack-content-model.md` and wait for approval before coding.
 3. **Implement the model.** Rust types, YAML loading, validation rules, regenerated schemas and
    bindings, tests (including property tests where cheap). Update the example pack to use
    the new features. `just ci` green.
 4. **Converter.** A small, re-runnable script (Node is fine, under `tools/import-3x/`) that reads
-   the resolved 3.0 data from a path given on the command line and writes YAML into
-   `packs/ifly-737-max8/`. It must not copy any blocked-source links into the output.
-5. **Sources clean-up.** List every step whose only sources are blocked (Brainscape,
-   SlideShare, the NTSB docket "Boeing FCOM excerpt", and anything else on the blocked list).
-   For each: find an allowed source, or flag it for the maintainer. Never invent a source.
+   the resolved 3.0 data, and the CDU walkthrough from `template.html`, from a path given on the
+   command line and writes YAML to a folder outside the repo; it refuses to write into `packs/`. It
+   carries over no sources or links.
+   Every list gets basis `prior-release`, every step `draft`, and the 10 "confirm" light notes
+   `draft`. It normalizes imported 3.0 text to American spelling.
+5. **Build the text-overlap check.** `pack overlap` and `just overlap` as designed in decision
+   0007, with tests. Add the `overlap` pre-commit hook to `lefthook.yml` in this step, once
+   `just overlap` exists.
 6. **Generate and check the pack.** Run the converter, then `pack check`. Fix errors in the
    converter or the model, not by hand-editing generated YAML (unless a step is deliberately
-   rewritten, which the report must list).
-7. **Parity report.** A table of every 3.0 step: new id, status (moved, merged, dropped), and
-   reason for anything not moved one-for-one. Snapshot tests on the flattened pack.
-8. **Hand back.** Branch ready for review, with the parity report and the list of steps that
-   still need an allowed source.
+   rewritten, which the report must list). Run the text-overlap check (0007) over the imported
+   text before it is first committed.
+7. **Procedure validation.** Following decision 0007, validate every list against vendor
+   documentation, with no FCOM reading. Work by procedure section, starting with power-up: fix
+   order and setting differences against the iFly tutorial, write "why" notes in our own words, and
+   mark a step `checked` when it clearly matches the vendor documentation. Where sources conflict
+   and the tutorial does not settle it, leave the step `draft` and add it to an open list for an
+   optional pilot review later. Report each section as a batch, a short summary of changes plus the
+   open list, and wait for the maintainer to approve it.
+8. **Parity report.** A table of every 3.0 step: new id, status (moved, merged, dropped), and
+   reason for anything not moved one-for-one, plus a list of the words the converter changed
+   to American spelling. Snapshot tests on the flattened pack.
+9. **Hand back.** Branch ready for review, with the parity report, the lists still at basis
+   `prior-release`, and the open list.
 
 ## Out of scope for Phase 1
 
@@ -66,3 +79,22 @@ not `data.js` on its own.
 - Systems models content (designed for in step 2, written in Phase 3).
 - Library packs (`lib.boeing-*`) unless the inventory shows a clear split; note candidates
   instead.
+
+## Notes for later phases
+
+**Phase 2:**
+
+- The LEGS page of the CDU walkthrough must render correctly with no departure set, with a test.
+  The converted page assumes one is set, so without it the rows would sit one line off.
+- Add CDU comparison tests for partly filled flight data. The converter's comparison covers only
+  no flight data and full flight data.
+- The guided tour is app text and belongs here.
+- Give `draft` steps a subtle, visible "not yet verified" marker, so users can tell checked content
+  from draft.
+- Show the notice "Simulator training only. Not for real-world use." once at first launch, covering
+  the whole app.
+
+**Phase 3:**
+
+- Aliases for practice scores saved per cockpit area, along with the practice text. One area
+  covers several zones, so they need their own mapping.

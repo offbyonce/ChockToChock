@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "NotesFile",
+  "description": "`notes.yaml`.",
+  "type": "object",
+  "properties": {
+    "explain": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/ExplainNote"
+      }
+    },
+    "how": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/HowNote"
+      }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "ExplainNote": {
+      "description": "A shared explanation of a test or action.",
+      "type": "object",
+      "properties": {
+        "check": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "check_detail": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "failure": {
+          "description": "What a bad result can mean.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "id": {
+          "type": "string"
+        },
+        "if_not": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "if_not_detail": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "success": {
+          "description": "What a good result looks like.",
+          "type": "string"
+        },
+        "what": {
+          "type": "string"
+        },
+        "why": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "what",
+        "why",
+        "success"
+      ]
+    },
+    "HowNote": {
+      "description": "Shared \"how to do it\" instructions.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "steps": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "steps"
+      ]
+    }
+  }
+}

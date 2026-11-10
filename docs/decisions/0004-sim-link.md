@@ -7,7 +7,7 @@ SPDX-License-Identifier: MIT
 Date: 2026-11-08. Status: superseded by [0006](0006-instruction-not-sim-control.md).
 
 ## Context
-Microsoft's SDK licence does not clearly allow shipping `SimConnect.dll`. MSFS 2024
+Microsoft's SDK license does not clearly allow shipping `SimConnect.dll`. MSFS 2024
 scoped `L:1:` variables reportedly cannot be read over SimConnect.
 
 ## Decision

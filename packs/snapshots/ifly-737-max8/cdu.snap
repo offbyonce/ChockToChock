@@ -1,0 +1,1955 @@
+---
+source: crates/pack-cli/tests/snapshot.rs
+---
+{
+  "walkthroughs": [
+    {
+      "id": "preflight-setup",
+      "title": "CDU walkthrough",
+      "pages": [
+        {
+          "page": "IDENT",
+          "key": "INIT REF",
+          "title": "Check the airplane and database",
+          "action": [
+            "Press INIT REF. The IDENT page opens. If it does not, press INDEX at 6L, then IDENT at 1L."
+          ],
+          "check": [
+            "MODEL 737-8, the engine rating, and a nav database that is ACTIVE for the day of your flight. The cycle shown is the one your SimBrief plan used; the CDU shows the database installed in your sim."
+          ],
+          "note": [
+            "Press POS INIT at 6R for the next page."
+          ],
+          "screen": {
+            "title": [
+              "IDENT"
+            ],
+            "page": [
+              "1/2"
+            ],
+            "rows": [
+              {
+                "left_label": [
+                  "MODEL"
+                ],
+                "left": [
+                  {
+                    "text": "737-8",
+                    "style": "accent"
+                  }
+                ],
+                "right_label": [
+                  "ENG RATING"
+                ],
+                "right": [
+                  {
+                    "text": "28K",
+                    "style": "data"
+                  }
+                ]
+              },
+              {
+                "left_label": [
+                  "NAV DATA"
+                ],
+                "left": [
+                  {
+                    "field": "nav_database",
+                    "style": "data"
+                  }
+                ],
+                "right_label": [
+                  "ACTIVE"
+                ],
+                "right": [
+                  {
+                    "field": "nav_active_dates",
+                    "style": "data"
+                  }
+                ]
+              },
+              {},
+              {
+                "left_label": [
+                  "OP PROGRAM"
+                ],
+                "left": [
+                  {
+                    "text": "as installed",
+                    "style": "data"
+                  }
+                ]
+              },
+              {
+                "right_label": [
+                  "SUPP DATA"
+                ],
+                "right": [
+                  {
+                    "text": "as installed",
+                    "style": "data"
+                  }
+                ]
+              },
+              {
+                "separator": "",
+                "left": [
+                  "<INDEX"
+                ],
+                "right": [
+                  "POS INIT>"
+                ]
+              }
+            ],
+            "highlight": [
+              "6R"
+            ]
+          }
+        },
+        {
+          "page": "POS INIT",
+          "title": "Enter the departure airport",
+          "action": [
+            "Type ",
+            {
+              "field": "origin",
+              "empty": "the departure airport ICAO code"
+            },
+            " and press 2L (REF AIRPORT)."
+          ],
+          "check": [
+            "The airport position appears on the right at 2R."
+          ],
+          "note": [
+            "The gate at 3L is optional. It gives a more exact position."
+          ],
+          "screen": {
+            "title": [
+              "POS INIT"
+            ],
+            "page": [
+              "1/3"
+            ],
+            "rows": [
+              {
+                "right_label": [
+                  "LAST POS"
+                ],
+                "right": [
+                  {
+                    "field": "origin_position",
+                    "style": "data",
+                    "empty": "position",
+                    "empty_style": "data"
+                  }
+                ]
+              },
+              {
+                "left_label": [
+                  "REF AIRPORT"
+                ],
+                "left": [
+                  {
+                    "field": "origin",
+                    "style": "user",
+                    "empty": "----"
+                  }
+                ],
+                "right": [
+                  {
+                    "field": "origin_position",
+                    "style": "accent"
+                  }
+                ]
+              },
+              {
+                "left_label": [
+                  "GATE"
+                ],
+                "left": [
+                  "-----"
+                ]
+              },
+              {
+                "right_label": [
+                  "SET IRS POS"
+                ],
+                "right": [
+                  "□□□°□□.□ □□□□°□□.□"
+                ]
+              },
+              {
+                "left_label": [
+                  "UTC (GPS)"
+                ],
+                "left": [
+                  {
+                    "field": "utc_time",
+                    "style": "data"
+                  }
+                ],
+                "right_label": [
+                  "MMMDD/YY"
+                ],
+                "right": [
+                  {
+                    "field": "utc_date",
+                    "style": "data"
+                  }
+                ]
+              },
+              {
+                "separator": "",
+                "left": [
+                  "<INDEX"
+                ],
+                "right": [
+                  "ROUTE>"
+                ]
+              }
+            ],
+            "highlight": [
+              "2L"
+            ],
+            "scratchpad": [
+              {
+                "field": "origin"
+              }
+            ]
+          }
+        },
+        {
+          "page": "POS INIT",
+          "title": "Give the IRS its position",
+          "action": [
+            "While the IRS is aligning, press 1R to copy the last position (or 2R for the airport position) to the scratchpad, then press 4R (SET IRS POS)."
+          ],
+          "check": [
+            "The position shows at 4R, and the IRS finishes aligning. The UTC time and date at 5L and 5R are right."
+          ],
+          "note": [
+            "Then press ROUTE at 6R."
+          ],
+          "screen": {
+            "title": [
+              "POS INIT"
+            ],
+            "page": [
+              "1/3"
+            ],
+            "rows": [
+              {
+                "right_label": [
+                  "LAST POS"
+                ],
+                "right": [
+                  {
+                    "field": "origin_position",
+                    "style": "data",
+                    "empty": "position",
+                    "empty_style": "data"
+                  }
+                ]
+              },
+              {
+                "left_label": [
+                  "REF AIRPORT"
+                ],
+                "left": [
+                  {
+                    "field": "origin",
+                    "style": "user",
+                    "empty": "----"
+                  }
+                ],
+                "right": [
+                  {
+                    "field": "origin_position",
+                    "style": "accent"
+                  }
+                ]
+              },
+              {
+                "left_label": [
+                  "GATE"
+                ],
+                "left": [
+                  "-----"
+                ]
+              },
+              {
+                "right_label": [
+                  "SET IRS POS"
+                ],
+                "right": [
+                  {
+                    "field": "origin_position",
+                    "style": "user",
+                    "empty": "□□□°□□.□ □□□□°□□.□"
+                  }
+                ]
+              },
+              {
+                "left_label": [
+                  "UTC (GPS)"
+                ],
+                "left": [
+                  {
+                    "field": "utc_time",
+                    "style": "data"
+                  }
+                ],
+                "right_label": [
+                  "MMMDD/YY"
+                ],
+                "right": [
+                  {
+                    "field": "utc_date",
+                    "style": "data"
+                  }
+                ]
+              },
+              {
+                "separator": "",
+                "left": [
+                  "<INDEX"
+                ],
+                "right": [
+                  "ROUTE>"
+                ]
+              }
+            ],
+            "highlight": [
+              "2R",
+              "4R"
+            ],
+            "scratchpad": [
+              {
+                "field": "origin_position"
+              }
+            ]
+          }
+        },
+        {
+          "page": "RTE",
+          "key": "RTE",
+          "title": "Origin and destination",
+          "action": [
+            "Type ",
+            {
+              "field": "origin",
+              "empty": "the departure airport"
+            },
+            " and press 1L (ORIGIN). Type ",
+            {
+              "field": "destination",
+              "empty": "the destination"
+            },
+            " and press 1R (DEST)."
+          ],
+          "check": [
+            "Both airports show at the top of the page."
+          ],
+          "note": [
+            "Shortcut: the iFly EFB can import your SimBrief flight and send the route to the CDU. If you use it, check the RTE pages and go on to ACTIVATE."
+          ],
+          "screen": {
+            "title": [
+              "RTE 1"
+            ],
+            "page": [
+              "1/2"
+            ],
+            "rows": [
+              {
+                "left_label": [
+                  "ORIGIN"
+                ],
+                "left": [
+                  {
+                    "field": "origin",
+                    "style": "user",
+                    "empty": "□□□□"
+                  }
+                ],
+                "right_label": [
+                  "DEST"
+                ],
+                "right": [
+                  {
+                    "field": "destination",
+                    "style": "user",
+                    "empty": "□□□□"
+                  }
+                ]
+              },
+              {
+                "left_label": [
+                  "CO ROUTE"
+                ],
+                "left": [
+                  "----------"
+                ],
+                "right_label": [
+                  "FLT NO"
+                ],
+                "right": [
+                  {
+                    "field": "flight_number",
+                    "style": "user",
+                    "empty": "--------"
+                  }
+                ]
+              },
+              {
+                "left_label": [
+                  "RUNWAY"
+                ],
+                "left": [
+                  {
+                    "field": "runway",
+                    "style": "user",
+                    "before": "RW",
+                    "empty": "-----"
+                  }
+                ]
+              },
+              {},
+              {},
+              {
+                "separator": "",
+                "left": [
+                  "<RTE 2"
+                ],
+                "right": [
+                  "ACTIVATE>"
+                ]
+              }
+            ],
+            "highlight": [
+              "1L",
+              "1R"
+            ],
+            "scratchpad": [
+              {
+                "field": "destination"
+              }
+            ]
+          }
+        },
+        {
+          "page": "RTE",
+          "title": "Flight number and runway",
+          "action": [
+            {
+              "when_known": [
+                "flight_number",
+                "runway"
+              ],
+              "show": [
+                "Type ",
+                {
+                  "field": "flight_number"
+                },
+                " and press 2R (FLT NO). Type RW",
+                {
+                  "field": "runway"
+                },
+                " and press 3L (RUNWAY)."
+              ],
+              "otherwise": [
+                "Type your flight number and press 2R (FLT NO). Type the runway, like RW16L, and press 3L (RUNWAY)."
+              ]
+            }
+          ],
+          "check": [
+            "The flight number is optional, up to 8 characters. The runway can also be picked later in DEP/ARR."
+          ],
+          "screen": {
+            "title": [
+              "RTE 1"
+            ],
+            "page": [
+              "1/2"
+            ],
+            "rows": [
+              {
+                "left_label": [
+                  "ORIGIN"
+                ],
+                "left": [
+                  {
+                    "field": "origin",
+                    "style": "user",
+                    "empty": "□□□□"
+                  }
+                ],
+                "right_label": [
+                  "DEST"
+                ],
+                "right": [
+                  {
+                    "field": "destination",
+                    "style": "user",
+                    "empty": "□□□□"
+                  }
+                ]
+              },
+              {
+                "left_label": [
+                  "CO ROUTE"
+                ],
+                "left": [
+                  "----------"
+                ],
+                "right_label": [
+                  "FLT NO"
+                ],
+                "right": [
+                  {
+                    "field": "flight_number",
+                    "style": "user",
+                    "empty": "--------"
+                  }
+                ]
+              },
+              {
+                "left_label": [
+                  "RUNWAY"
+                ],
+                "left": [
+                  {
+                    "field": "runway",
+                    "style": "user",
+                    "before": "RW",
+                    "empty": "-----"
+                  }
+                ]
+              },
+              {},
+              {},
+              {
+                "separator": "",
+                "left": [
+                  "<RTE 2"
+                ],
+                "right": [
+                  "ACTIVATE>"
+                ]
+              }
+            ],
+            "highlight": [
+              "2R",
+              "3L"
+            ],
+            "scratchpad": [
+              {
+                "field": "runway",
+                "before": "RW"
+              }
+            ]
+          }
+        },
+        {
+          "page": "RTE",
+          "key": "NEXT PAGE",
+          "title": "Enter the route",
+          "action": [
+            "Press NEXT PAGE. Type each airway on the left (VIA) and each waypoint on the right (TO). A waypoint on its own gives DIRECT."
+          ],
+          "check": [
+            {
+              "when_known": [
+                "route"
+              ],
+              "show": [
+                "Your route from the flight plan is filled in. Check it against your OFP."
+              ],
+              "otherwise": [
+                "Enter your route from your flight plan."
+              ]
+            }
+          ],
+          "note": [
+            {
+              "route_legs": "overflow",
+              "per_page": 5,
+              "after": " more on the following RTE pages. The SID and STAR come from DEP/ARR, so leave them out here.",
+              "empty": "The SID and STAR come from DEP/ARR, so leave them out here."
+            }
+          ],
+          "screen": {
+            "title": [
+              "RTE 1"
+            ],
+            "page": [
+              "2/2"
+            ],
+            "rows": [
+              {
+                "left_label": [
+                  "VIA"
+                ],
+                "left": [
+                  {
+                    "field": "route_leg",
+                    "index": 1,
+                    "part": "via",
+                    "style": "user",
+                    "empty": "------"
+                  }
+                ],
+                "right_label": [
+                  "TO"
+                ],
+                "right": [
+                  {
+                    "field": "route_leg",
+                    "index": 1,
+                    "part": "to",
+                    "style": "user",
+                    "empty": "------"
+                  }
+                ]
+              },
+              {
+                "left": [
+                  {
+                    "field": "route_leg",
+                    "index": 2,
+                    "part": "via",
+                    "style": "user"
+                  }
+                ],
+                "right": [
+                  {
+                    "field": "route_leg",
+                    "index": 2,
+                    "part": "to",
+                    "style": "user"
+                  }
+                ]
+              },
+              {
+                "left": [
+                  {
+                    "field": "route_leg",
+                    "index": 3,
+                    "part": "via",
+                    "style": "user"
+                  }
+                ],
+                "right": [
+                  {
+                    "field": "route_leg",
+                    "index": 3,
+                    "part": "to",
+                    "style": "user"
+                  }
+                ]
+              },
+              {
+                "left": [
+                  {
+                    "field": "route_leg",
+                    "index": 4,
+                    "part": "via",
+                    "style": "user"
+                  }
+                ],
+                "right": [
+                  {
+                    "field": "route_leg",
+                    "index": 4,
+                    "part": "to",
+                    "style": "user"
+                  }
+                ]
+              },
+              {
+                "left": [
+                  {
+                    "field": "route_leg",
+                    "index": 5,
+                    "part": "via",
+                    "style": "user"
+                  }
+                ],
+                "right": [
+                  {
+                    "field": "route_leg",
+                    "index": 5,
+                    "part": "to",
+                    "style": "user"
+                  }
+                ]
+              },
+              {
+                "separator": "",
+                "left": [
+                  "<RTE 1"
+                ],
+                "right": [
+                  "ACTIVATE>"
+                ]
+              }
+            ],
+            "highlight": [
+              "1R"
+            ],
+            "scratchpad": [
+              {
+                "field": "route_leg",
+                "index": 1,
+                "part": "to"
+              }
+            ]
+          }
+        },
+        {
+          "page": "RTE",
+          "key": "EXEC",
+          "title": "Activate the route",
+          "action": [
+            "Press 6R (ACTIVATE). The EXEC light comes on. Press EXEC."
+          ],
+          "check": [
+            "The title changes to ACT RTE 1, and 6R changes to PERF INIT."
+          ],
+          "screen": {
+            "title": [
+              "RTE 1"
+            ],
+            "page": [
+              "1/2"
+            ],
+            "rows": [
+              {
+                "left_label": [
+                  "ORIGIN"
+                ],
+                "left": [
+                  {
+                    "field": "origin",
+                    "style": "user",
+                    "empty": "□□□□"
+                  }
+                ],
+                "right_label": [
+                  "DEST"
+                ],
+                "right": [
+                  {
+                    "field": "destination",
+                    "style": "user",
+                    "empty": "□□□□"
+                  }
+                ]
+              },
+              {
+                "left_label": [
+                  "CO ROUTE"
+                ],
+                "left": [
+                  "----------"
+                ],
+                "right_label": [
+                  "FLT NO"
+                ],
+                "right": [
+                  {
+                    "field": "flight_number",
+                    "style": "user",
+                    "empty": "--------"
+                  }
+                ]
+              },
+              {
+                "left_label": [
+                  "RUNWAY"
+                ],
+                "left": [
+                  {
+                    "field": "runway",
+                    "style": "user",
+                    "before": "RW",
+                    "empty": "-----"
+                  }
+                ]
+              },
+              {},
+              {},
+              {
+                "separator": "",
+                "left": [
+                  "<RTE 2"
+                ],
+                "right": [
+                  "ACTIVATE>"
+                ]
+              }
+            ],
+            "highlight": [
+              "6R"
+            ]
+          }
+        },
+        {
+          "page": "DEP/ARR",
+          "key": "DEP ARR",
+          "title": "Select the departure",
+          "action": [
+            {
+              "when_known": [
+                "runway",
+                "sid",
+                "transition"
+              ],
+              "show": [
+                "Press DEP ARR, then <DEP at 1L. Pick runway ",
+                {
+                  "field": "runway"
+                },
+                " on the right, the ",
+                {
+                  "field": "sid"
+                },
+                " departure on the left, then the ",
+                {
+                  "field": "transition"
+                },
+                " transition. Press EXEC."
+              ],
+              "otherwise": [
+                "Press DEP ARR, then <DEP at 1L. Pick your runway on the right, the departure on the left, then its transition. Press EXEC."
+              ]
+            }
+          ],
+          "check": [
+            "Each choice shows <SEL>, then <ACT> after EXEC."
+          ],
+          "note": [
+            "Arrival, STAR and approach are usually set in cruise, before descent."
+          ],
+          "screen": {
+            "title": [
+              {
+                "field": "origin",
+                "empty": "----"
+              },
+              " DEPARTURES"
+            ],
+            "page": [
+              "1/1"
+            ],
+            "rows": [
+              {
+                "left_label": [
+                  "SIDS   RTE 1"
+                ],
+                "left": [
+                  {
+                    "when_known": [
+                      "sid"
+                    ],
+                    "show": [
+                      {
+                        "field": "sid",
+                        "style": "user"
+                      },
+                      " <SEL>"
+                    ],
+                    "otherwise": [
+                      {
+                        "text": "(list of SIDs)",
+                        "style": "data"
+                      }
+                    ]
+                  }
+                ],
+                "right_label": [
+                  "RUNWAYS"
+                ],
+                "right": [
+                  {
+                    "when_known": [
+                      "runway"
+                    ],
+                    "show": [
+                      "<SEL> ",
+                      {
+                        "field": "runway",
+                        "style": "user"
+                      }
+                    ],
+                    "otherwise": [
+                      {
+                        "text": "(list of runways)",
+                        "style": "data"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "left_label": [
+                  "TRANS"
+                ],
+                "left": [
+                  {
+                    "when_known": [
+                      "transition"
+                    ],
+                    "show": [
+                      {
+                        "field": "transition",
+                        "style": "user"
+                      },
+                      "  <SEL>"
+                    ]
+                  }
+                ]
+              },
+              {},
+              {},
+              {},
+              {
+                "separator": "",
+                "left": [
+                  "<ERASE"
+                ],
+                "right": [
+                  "ROUTE>"
+                ]
+              }
+            ],
+            "highlight": [
+              "1L",
+              "1R",
+              "2L"
+            ]
+          }
+        },
+        {
+          "page": "LEGS",
+          "key": "LEGS",
+          "title": "Check the legs",
+          "action": [
+            "Press LEGS and page through with NEXT PAGE. If you see a ROUTE DISCONTINUITY, press the waypoint after it to copy it, then press the box line. Press EXEC."
+          ],
+          "check": [
+            "No discontinuities, and the waypoints match your flight plan."
+          ],
+          "note": [
+            "Airway waypoints between the ones you typed show up here too, with course, distance and any speed or altitude limits."
+          ],
+          "screen": {
+            "title": [
+              "ACT RTE 1 LEGS"
+            ],
+            "page": [
+              "1/",
+              {
+                "route_legs": "pages",
+                "per_page": 5
+              }
+            ],
+            "rows": [
+              {
+                "left_label": [
+                  {
+                    "when_known": [
+                      "sid"
+                    ],
+                    "show": [
+                      {
+                        "text": "---°   --NM",
+                        "style": "data"
+                      }
+                    ]
+                  }
+                ],
+                "left": [
+                  {
+                    "field": "sid",
+                    "style": "user"
+                  }
+                ],
+                "right": [
+                  {
+                    "when_known": [
+                      "sid"
+                    ],
+                    "show": [
+                      {
+                        "text": "(SID legs)",
+                        "style": "data"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "left_label": [
+                  {
+                    "when_known": [
+                      "route"
+                    ],
+                    "show": [
+                      {
+                        "text": "---°   --NM",
+                        "style": "data"
+                      }
+                    ]
+                  }
+                ],
+                "left": [
+                  {
+                    "field": "route_leg",
+                    "index": 1,
+                    "part": "to",
+                    "style": "user"
+                  }
+                ],
+                "right": [
+                  {
+                    "when_known": [
+                      "route"
+                    ],
+                    "show": [
+                      "---/-----"
+                    ]
+                  }
+                ]
+              },
+              {
+                "left_label": [
+                  {
+                    "when_known": [
+                      "route"
+                    ],
+                    "show": [
+                      {
+                        "text": "---°   --NM",
+                        "style": "data"
+                      }
+                    ]
+                  }
+                ],
+                "left": [
+                  {
+                    "field": "route_leg",
+                    "index": 2,
+                    "part": "to",
+                    "style": "user"
+                  }
+                ],
+                "right": [
+                  {
+                    "when_known": [
+                      "route"
+                    ],
+                    "show": [
+                      "---/-----"
+                    ]
+                  }
+                ]
+              },
+              {
+                "left_label": [
+                  {
+                    "when_known": [
+                      "route"
+                    ],
+                    "show": [
+                      {
+                        "text": "---°   --NM",
+                        "style": "data"
+                      }
+                    ]
+                  }
+                ],
+                "left": [
+                  {
+                    "field": "route_leg",
+                    "index": 3,
+                    "part": "to",
+                    "style": "user"
+                  }
+                ],
+                "right": [
+                  {
+                    "when_known": [
+                      "route"
+                    ],
+                    "show": [
+                      "---/-----"
+                    ]
+                  }
+                ]
+              },
+              {
+                "left_label": [
+                  {
+                    "when_known": [
+                      "route"
+                    ],
+                    "show": [
+                      {
+                        "text": "---°   --NM",
+                        "style": "data"
+                      }
+                    ]
+                  }
+                ],
+                "left": [
+                  {
+                    "field": "route_leg",
+                    "index": 4,
+                    "part": "to",
+                    "style": "user"
+                  }
+                ],
+                "right": [
+                  {
+                    "when_known": [
+                      "route"
+                    ],
+                    "show": [
+                      "---/-----"
+                    ]
+                  }
+                ]
+              },
+              {
+                "separator": "",
+                "left": [
+                  "<RTE 2 LEGS"
+                ],
+                "right": [
+                  "RTE DATA>"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "page": "PERF INIT",
+          "key": "INIT REF",
+          "title": "Fuel, weight, reserves and cost index",
+          "action": [
+            "Press INIT REF, then PERF INIT. Enter the plan fuel at 2L, ZFW at 3L, reserves at 4L and the cost index at 5L."
+          ],
+          "check": [
+            {
+              "field": "takeoff_weight",
+              "before": "GW at 1L fills in from fuel plus ZFW. It should be near the planned takeoff weight (",
+              "after": ").",
+              "empty": "GW at 1L fills in from fuel plus ZFW. It should be near the planned takeoff weight."
+            }
+          ],
+          "note": [
+            "Weights and fuel in thousands of ",
+            {
+              "field": "weight_unit",
+              "empty": "LB"
+            },
+            ", rounded up to the next tenth. The sensed fuel at 2L (SENS) is what the tanks hold."
+          ],
+          "screen": {
+            "title": [
+              "PERF INIT"
+            ],
+            "page": [
+              "1/2"
+            ],
+            "rows": [
+              {
+                "left_label": [
+                  "GW/CRZ CG"
+                ],
+                "left": [
+                  {
+                    "field": "gross_weight",
+                    "style": "accent",
+                    "empty": "□□□.□"
+                  },
+                  "/",
+                  {
+                    "text": "--.-%",
+                    "style": "data"
+                  }
+                ],
+                "right_label": [
+                  "CRZ ALT"
+                ],
+                "right": [
+                  {
+                    "field": "cruise_level",
+                    "style": "user",
+                    "before": "FL",
+                    "empty": "□□□□□"
+                  }
+                ]
+              },
+              {
+                "left_label": [
+                  "PLAN/FUEL"
+                ],
+                "left": [
+                  {
+                    "field": "fuel_thousands",
+                    "style": "user",
+                    "empty": "---.-"
+                  },
+                  "/",
+                  {
+                    "text": "--.-",
+                    "style": "data"
+                  },
+                  "SENS"
+                ],
+                "right_label": [
+                  "CRZ WIND"
+                ],
+                "right": [
+                  {
+                    "field": "cruise_wind",
+                    "style": "user",
+                    "empty": "---°/---"
+                  }
+                ]
+              },
+              {
+                "left_label": [
+                  "ZFW"
+                ],
+                "left": [
+                  {
+                    "field": "zfw",
+                    "style": "user",
+                    "empty": "□□□.□"
+                  }
+                ],
+                "right_label": [
+                  "ISA DEV"
+                ],
+                "right": [
+                  {
+                    "field": "isa_deviation",
+                    "style": "user",
+                    "empty": "---°F---°C"
+                  }
+                ]
+              },
+              {
+                "left_label": [
+                  "RESERVES"
+                ],
+                "left": [
+                  {
+                    "field": "reserves",
+                    "style": "user",
+                    "empty": "□□.□"
+                  }
+                ],
+                "right_label": [
+                  "T/C OAT"
+                ],
+                "right": [
+                  {
+                    "field": "top_of_climb_oat",
+                    "style": "accent",
+                    "empty": "---°F---°C"
+                  }
+                ]
+              },
+              {
+                "left_label": [
+                  "COST INDEX"
+                ],
+                "left": [
+                  {
+                    "field": "cost_index",
+                    "style": "user",
+                    "empty": "□□□"
+                  }
+                ],
+                "right_label": [
+                  "TRANS ALT"
+                ],
+                "right": [
+                  {
+                    "field": "transition_altitude",
+                    "style": "user",
+                    "empty": "18000",
+                    "empty_style": "accent"
+                  }
+                ]
+              },
+              {
+                "separator": "",
+                "left": [
+                  "<INDEX"
+                ],
+                "right": [
+                  "N1 LIMIT>"
+                ]
+              }
+            ],
+            "highlight": [
+              "2L",
+              "3L",
+              "4L",
+              "5L"
+            ],
+            "scratchpad": [
+              {
+                "field": "fuel_thousands"
+              }
+            ]
+          }
+        },
+        {
+          "page": "PERF INIT",
+          "key": "EXEC",
+          "title": "Cruise altitude, wind and temperature",
+          "action": [
+            "Enter the cruise altitude at 1R. Cruise wind at 2R and ISA deviation at 3R are optional: without them the FMC uses calm wind and standard temperature. Check the transition altitude at 5R. Press EXEC."
+          ],
+          "check": [
+            "No boxes left on the page. T/C OAT at 4R fills in from the ISA deviation."
+          ],
+          "note": [
+            "Wind is direction/speed with three digits for direction, like 090/50."
+          ],
+          "screen": {
+            "title": [
+              "PERF INIT"
+            ],
+            "page": [
+              "1/2"
+            ],
+            "rows": [
+              {
+                "left_label": [
+                  "GW/CRZ CG"
+                ],
+                "left": [
+                  {
+                    "field": "gross_weight",
+                    "style": "accent",
+                    "empty": "□□□.□"
+                  },
+                  "/",
+                  {
+                    "text": "--.-%",
+                    "style": "data"
+                  }
+                ],
+                "right_label": [
+                  "CRZ ALT"
+                ],
+                "right": [
+                  {
+                    "field": "cruise_level",
+                    "style": "user",
+                    "before": "FL",
+                    "empty": "□□□□□"
+                  }
+                ]
+              },
+              {
+                "left_label": [
+                  "PLAN/FUEL"
+                ],
+                "left": [
+                  {
+                    "field": "fuel_thousands",
+                    "style": "user",
+                    "empty": "---.-"
+                  },
+                  "/",
+                  {
+                    "text": "--.-",
+                    "style": "data"
+                  },
+                  "SENS"
+                ],
+                "right_label": [
+                  "CRZ WIND"
+                ],
+                "right": [
+                  {
+                    "field": "cruise_wind",
+                    "style": "user",
+                    "empty": "---°/---"
+                  }
+                ]
+              },
+              {
+                "left_label": [
+                  "ZFW"
+                ],
+                "left": [
+                  {
+                    "field": "zfw",
+                    "style": "user",
+                    "empty": "□□□.□"
+                  }
+                ],
+                "right_label": [
+                  "ISA DEV"
+                ],
+                "right": [
+                  {
+                    "field": "isa_deviation",
+                    "style": "user",
+                    "empty": "---°F---°C"
+                  }
+                ]
+              },
+              {
+                "left_label": [
+                  "RESERVES"
+                ],
+                "left": [
+                  {
+                    "field": "reserves",
+                    "style": "user",
+                    "empty": "□□.□"
+                  }
+                ],
+                "right_label": [
+                  "T/C OAT"
+                ],
+                "right": [
+                  {
+                    "field": "top_of_climb_oat",
+                    "style": "accent",
+                    "empty": "---°F---°C"
+                  }
+                ]
+              },
+              {
+                "left_label": [
+                  "COST INDEX"
+                ],
+                "left": [
+                  {
+                    "field": "cost_index",
+                    "style": "user",
+                    "empty": "□□□"
+                  }
+                ],
+                "right_label": [
+                  "TRANS ALT"
+                ],
+                "right": [
+                  {
+                    "field": "transition_altitude",
+                    "style": "user",
+                    "empty": "18000",
+                    "empty_style": "accent"
+                  }
+                ]
+              },
+              {
+                "separator": "",
+                "left": [
+                  "<INDEX"
+                ],
+                "right": [
+                  "N1 LIMIT>"
+                ]
+              }
+            ],
+            "highlight": [
+              "1R",
+              "2R",
+              "3R",
+              "5R"
+            ],
+            "scratchpad": [
+              {
+                "field": "cruise_level",
+                "before": "FL"
+              }
+            ]
+          }
+        },
+        {
+          "page": "N1 LIMIT",
+          "key": "N1 LIMIT",
+          "title": "Takeoff thrust",
+          "action": [
+            "Press N1 LIMIT. Select TO at 2L, or a derate and assumed temperature (SEL at 1L) from your takeoff performance."
+          ],
+          "check": [
+            "<ACT> next to your takeoff thrust, <SEL> next to the matching climb thrust, and the takeoff N1 at 1R."
+          ],
+          "note": [
+            "Leave SEL blank unless your performance data uses an assumed temperature."
+          ],
+          "screen": {
+            "title": [
+              "N1 LIMIT"
+            ],
+            "page": [
+              "1/1"
+            ],
+            "rows": [
+              {
+                "left_label": [
+                  "SEL/OAT"
+                ],
+                "left": [
+                  "----/",
+                  {
+                    "text": "+--°C",
+                    "style": "data"
+                  }
+                ],
+                "right_label": [
+                  "TO N1"
+                ],
+                "right": [
+                  {
+                    "text": "--.-/ --.-",
+                    "style": "data"
+                  }
+                ]
+              },
+              {
+                "left_label": [
+                  "28K"
+                ],
+                "left": [
+                  "<TO ",
+                  "<ACT>"
+                ],
+                "right": [
+                  "<SEL> ",
+                  "CLB>"
+                ]
+              },
+              {
+                "left_label": [
+                  "10% DERATE"
+                ],
+                "left": [
+                  "<TO-1"
+                ],
+                "right": [
+                  "CLB-1>"
+                ]
+              },
+              {
+                "left_label": [
+                  "20% DERATE"
+                ],
+                "left": [
+                  "<TO-2"
+                ],
+                "right": [
+                  "CLB-2>"
+                ]
+              },
+              {},
+              {
+                "separator": "",
+                "left": [
+                  "<PERF INIT"
+                ],
+                "right": [
+                  "TAKEOFF>"
+                ]
+              }
+            ],
+            "highlight": [
+              "2L"
+            ]
+          }
+        },
+        {
+          "page": "TAKEOFF REF",
+          "key": "NEXT PAGE",
+          "title": "Takeoff conditions",
+          "action": [
+            "Press TAKEOFF at 6R, then NEXT PAGE. Set the runway wind, slope and condition here if your takeoff performance needs them."
+          ],
+          "check": [
+            "Optional. The defaults suit most flights."
+          ],
+          "screen": {
+            "title": [
+              "TAKEOFF REF"
+            ],
+            "page": [
+              "2/2"
+            ],
+            "rows": [
+              {
+                "left_label": [
+                  "RW WIND"
+                ],
+                "left": [
+                  "---°/---"
+                ],
+                "right_label": [
+                  "RW COND"
+                ],
+                "right": [
+                  {
+                    "text": "DRY",
+                    "style": "accent"
+                  },
+                  "/WET/SK-R"
+                ]
+              },
+              {
+                "left_label": [
+                  "RW SLOPE/HDG"
+                ],
+                "left": [
+                  "--.-%/",
+                  {
+                    "field": "heading",
+                    "style": "user",
+                    "after": "°",
+                    "empty": "---°",
+                    "empty_style": "data"
+                  }
+                ],
+                "right_label": [
+                  "SEL/OAT"
+                ],
+                "right": [
+                  "---°/",
+                  {
+                    "text": "+--°C",
+                    "style": "data"
+                  }
+                ]
+              },
+              {},
+              {
+                "left_label": [
+                  "ACCEL HT"
+                ],
+                "left": [
+                  {
+                    "text": "1500AGL",
+                    "style": "accent"
+                  }
+                ],
+                "right_label": [
+                  "EO ACCEL HT"
+                ],
+                "right": [
+                  {
+                    "text": "1500AGL",
+                    "style": "accent"
+                  }
+                ]
+              },
+              {
+                "left_label": [
+                  "REDUCTION"
+                ],
+                "left": [
+                  {
+                    "text": "1500AGL",
+                    "style": "accent"
+                  }
+                ],
+                "right_label": [
+                  "THR"
+                ],
+                "right": [
+                  {
+                    "text": "CLB",
+                    "style": "accent"
+                  }
+                ]
+              },
+              {
+                "separator": "",
+                "left": [
+                  "<INDEX"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "page": "TAKEOFF REF",
+          "key": "PREV PAGE",
+          "title": "Flaps, CG and V-speeds",
+          "action": [
+            {
+              "when_known": [
+                "takeoff_flaps",
+                "cg"
+              ],
+              "show": [
+                "Press PREV PAGE. Enter takeoff flaps (",
+                {
+                  "field": "takeoff_flaps"
+                },
+                ") at 1L and the CG (",
+                {
+                  "field": "cg"
+                },
+                ") at 3L; the trim appears beside it. Then enter V1, VR and V2 at 1R, 2R and 3R (your values are shown), or press each key to accept the FMC speeds."
+              ],
+              "otherwise": [
+                "Press PREV PAGE. Enter takeoff flaps at 1L and the CG at 3L; the trim appears beside it. Then enter V1, VR and V2 at 1R, 2R and 3R, or press each key to accept the FMC speeds."
+              ]
+            }
+          ],
+          "check": [
+            "The speeds show in large letters. Small letters mean they are not set, and the PFD shows NO V SPD."
+          ],
+          "note": [
+            "Flaps, CG and V-speeds come from the iFly EFB takeoff performance, not SimBrief. Put them in the Flight strip or Flight setup and they show here."
+          ],
+          "screen": {
+            "title": [
+              "TAKEOFF REF"
+            ],
+            "page": [
+              "1/2"
+            ],
+            "rows": [
+              {
+                "left_label": [
+                  "FLAPS"
+                ],
+                "left": [
+                  {
+                    "field": "takeoff_flaps",
+                    "style": "user",
+                    "after": "°",
+                    "empty": "□□°"
+                  }
+                ],
+                "right_label": [
+                  "V1"
+                ],
+                "right": [
+                  {
+                    "field": "v1",
+                    "style": "user",
+                    "empty": "□□□"
+                  }
+                ]
+              },
+              {
+                "left_label": [
+                  "TO N1"
+                ],
+                "left": [
+                  {
+                    "text": "--.-/ --.-%",
+                    "style": "data"
+                  }
+                ],
+                "right_label": [
+                  "VR"
+                ],
+                "right": [
+                  {
+                    "field": "vr",
+                    "style": "user",
+                    "empty": "□□□"
+                  }
+                ]
+              },
+              {
+                "left_label": [
+                  "CG      TRIM"
+                ],
+                "left": [
+                  {
+                    "when_known": [
+                      "cg",
+                      "takeoff_trim"
+                    ],
+                    "show": [
+                      {
+                        "field": "cg",
+                        "style": "user",
+                        "after": "%"
+                      },
+                      "  ",
+                      {
+                        "field": "takeoff_trim",
+                        "style": "accent"
+                      }
+                    ],
+                    "otherwise": [
+                      "□□.□%",
+                      "  "
+                    ]
+                  }
+                ],
+                "right_label": [
+                  "V2"
+                ],
+                "right": [
+                  {
+                    "field": "v2",
+                    "style": "user",
+                    "empty": "□□□"
+                  }
+                ]
+              },
+              {},
+              {
+                "separator": "PRE-FLT STATUS"
+              },
+              {
+                "separator": "",
+                "left": [
+                  "<INDEX"
+                ],
+                "right": [
+                  "POS INIT>"
+                ]
+              }
+            ],
+            "highlight": [
+              "1L",
+              "3L",
+              "1R",
+              "2R",
+              "3R"
+            ],
+            "scratchpad": [
+              {
+                "field": "takeoff_flaps"
+              }
+            ]
+          }
+        },
+        {
+          "page": "TAKEOFF REF",
+          "title": "Preflight complete",
+          "action": [
+            "With nothing missing, PRE-FLT COMPLETE shows on the TAKEOFF REF page. If PRE-FLT STATUS shows instead, the missing page is listed under it: press it and finish that page."
+          ],
+          "check": [
+            "PRE-FLT COMPLETE."
+          ],
+          "screen": {
+            "title": [
+              "TAKEOFF REF"
+            ],
+            "page": [
+              "1/2"
+            ],
+            "rows": [
+              {
+                "left_label": [
+                  "FLAPS"
+                ],
+                "left": [
+                  {
+                    "field": "takeoff_flaps",
+                    "style": "user",
+                    "after": "°",
+                    "empty": "□□°"
+                  }
+                ],
+                "right_label": [
+                  "V1"
+                ],
+                "right": [
+                  {
+                    "field": "v1",
+                    "style": "user",
+                    "empty": "□□□"
+                  }
+                ]
+              },
+              {
+                "left_label": [
+                  "TO N1"
+                ],
+                "left": [
+                  {
+                    "text": "--.-/ --.-%",
+                    "style": "data"
+                  }
+                ],
+                "right_label": [
+                  "VR"
+                ],
+                "right": [
+                  {
+                    "field": "vr",
+                    "style": "user",
+                    "empty": "□□□"
+                  }
+                ]
+              },
+              {
+                "left_label": [
+                  "CG      TRIM"
+                ],
+                "left": [
+                  {
+                    "when_known": [
+                      "cg",
+                      "takeoff_trim"
+                    ],
+                    "show": [
+                      {
+                        "field": "cg",
+                        "style": "user",
+                        "after": "%"
+                      },
+                      "  ",
+                      {
+                        "field": "takeoff_trim",
+                        "style": "accent"
+                      }
+                    ],
+                    "otherwise": [
+                      "□□.□%",
+                      "  "
+                    ]
+                  }
+                ],
+                "right_label": [
+                  "V2"
+                ],
+                "right": [
+                  {
+                    "field": "v2",
+                    "style": "user",
+                    "empty": "□□□"
+                  }
+                ]
+              },
+              {},
+              {
+                "separator": "PRE-FLT COMPLETE"
+              },
+              {
+                "separator": "",
+                "left": [
+                  "<INDEX"
+                ],
+                "right": [
+                  "POS INIT>"
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

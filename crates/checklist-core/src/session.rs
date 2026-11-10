@@ -112,22 +112,21 @@ mod tests {
     use proptest::prelude::*;
 
     use super::*;
-    use crate::model::Step;
+    use crate::model::{ListKind, Step};
 
     fn step(id: &str) -> Step {
-        Step {
-            id: StepId::new(id),
-            text: format!("{id} text"),
-            expect: "SET".into(),
-            note: None,
-            sources: vec![],
-        }
+        Step::new(id, format!("{id} text"), "SET")
     }
 
     fn list() -> Checklist {
         Checklist {
             id: "demo".into(),
             title: "Demo".into(),
+            kind: ListKind::Checklist,
+            basis: vec!["sim-observed".into()],
+            memory: false,
+            when: None,
+            why: None,
             steps: vec![step("a"), step("b"), step("c")],
         }
     }

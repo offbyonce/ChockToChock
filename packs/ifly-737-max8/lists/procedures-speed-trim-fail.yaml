@@ -1,0 +1,32 @@
+# SPDX-FileCopyrightText: 2026 offbyonce and Chock to Chock contributors
+# SPDX-License-Identifier: CC-BY-NC-SA-4.0
+#
+# yaml-language-server: $schema=../../../schemas/checklist.schema.json
+# Imported from 3.0, then validated against official documents. Edit by hand; do not regenerate.
+id: procedures-speed-trim-fail
+title: Speed trim fail
+kind: non-normal
+basis:
+  - regulator-docs
+why: "Simulator training only. Not for real-world use."
+steps:
+  - id: ifly-737-max8.procedures.speed-trim-and-mcas
+    number: 1
+    text: SPEED TRIM AND MCAS
+    expect: INOPERATIVE FOR THE REMAINDER OF THE FLIGHT
+    controls:
+      - fctllts
+    panel_lights:
+      fctllts:
+        - SPEED TRIM FAIL
+    status: checked
+  - id: ifly-737-max8.procedures.operation
+    number: 2
+    text: OPERATION
+    expect: CONTINUE NORMAL OPERATION
+    controls:
+      - fctllts
+    panel_lights:
+      fctllts:
+        - SPEED TRIM FAIL
+    status: checked
