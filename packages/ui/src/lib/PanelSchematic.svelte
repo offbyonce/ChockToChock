@@ -10,6 +10,7 @@ the card; text keeps 3.0's sizes.
 -->
 <script lang="ts">
   import type { ItemTarget, Panel, PanelSection as Section } from "@chocktochock/bindings";
+  import { bottomOf, positionsOf } from "./panel-layout";
   import PanelSection from "./PanelSection.svelte";
 
   let {
@@ -53,18 +54,29 @@ the card; text keeps 3.0's sizes.
     return { y0: Math.max(0, Math.min(...ys) - 95), y1: Math.min(s.height, Math.max(...ys) + 72) };
   }
   let bands = $derived(new Map(drawn.map((s) => [s.id, bandOf(s)])));
-  let box = $derived.by(() => {
-    const top = (s: Section) => s.y + Math.max(0, (bands.get(s.id)?.y0 ?? 0) - ((bands.get(s.id)?.y0 ?? 0) > 0 ? 18 : 0));
-    const x = Math.min(...drawn.map((s) => s.x)) - 2;
-    const y = Math.min(...drawn.map(top)) - 2;
-    const w = Math.max(...drawn.map((s) => s.x + s.width)) + 2 - x;
-    const h = Math.max(...drawn.map((s) => s.y + (bands.get(s.id)?.y1 ?? s.height))) + 2 - y;
-    return { x, y, w, h };
-  });
+  const top = (s: Section) => s.y + Math.max(0, (bands.get(s.id)?.y0 ?? 0) - ((bands.get(s.id)?.y0 ?? 0) > 0 ? 18 : 0));
+  let x0 = $derived(Math.min(...drawn.map((s) => s.x)) - 2);
+  let w = $derived(Math.max(...drawn.map((s) => s.x + s.width)) + 2 - x0);
 
   let width = $state(0);
   // The drawing is as wide as its box, but never more than SCALE times the pack's size.
-  let k = $derived(width > 0 ? Math.min(width, box.w * SCALE) / box.w : 1.6);
+  let k = $derived(width > 0 ? Math.min(width, w * SCALE) / w : 1.6);
+
+  const hasTarget = (s: Section, i: number) =>
+    targets.some((t) => t.section === s.id && t.item === i && t.position != null && positionsOf(s.items[i]!)[t.position]);
+  /** A section's lowest point: its band, or past its lowest label (as PanelSection frames it). */
+  const bottom = (s: Section) => {
+    const band = bands.get(s.id) ?? { y0: 0, y1: s.height };
+    const items = s.items
+      .map((item, i) => ({ item, i }))
+      .filter(({ item }) => item.y >= band.y0 + 10 && item.y <= band.y1 - 10);
+    return s.y + Math.max(band.y1, ...items.map(({ item, i }) => bottomOf(item, hasTarget(s, i), k) + 4));
+  };
+  let box = $derived.by(() => {
+    const y = Math.min(...drawn.map(top)) - 2;
+    const h = Math.max(...drawn.map(bottom)) + 2 - y;
+    return { x: x0, y, w, h };
+  });
 
   let described = $derived(
     targets

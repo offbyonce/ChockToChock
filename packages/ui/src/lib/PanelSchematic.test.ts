@@ -53,6 +53,34 @@ const panel = {
   ],
 } as unknown as Panel;
 
+const wiperPanel = {
+  id: "oh",
+  title: "Overhead",
+  width: 300,
+  height: 120,
+  sections: [
+    {
+      id: "lwip",
+      title: "L wiper",
+      x: 0,
+      y: 0,
+      width: 97,
+      height: 84,
+      items: [
+        {
+          kind: "selector",
+          label: "L WIPER",
+          x: 48,
+          y: 50,
+          controls: ["wiper"],
+          positions: "PARK, INT, LOW, HIGH",
+          description: "",
+        },
+      ],
+    },
+  ],
+} as unknown as Panel;
+
 afterEach(cleanup);
 
 describe("PanelSchematic", () => {
@@ -100,5 +128,35 @@ describe("PanelSchematic", () => {
     expect(screen.getAllByText("L WIPER")).toHaveLength(2);
     expect(screen.getAllByText("R WIPER")).toHaveLength(2);
     expect(screen.getAllByText("SET TO ON")).toHaveLength(2);
+  });
+
+  it("labels every selector position at its own tick, so the pointer and its label agree", () => {
+    render(PanelSchematic, {
+      panel: wiperPanel,
+      focus: ["lwip"],
+      targets: [{ section: "lwip", item: 0, position: 0 }],
+    });
+
+    const svg = screen.getByRole("img");
+    for (const p of ["PARK", "INT", "LOW", "HIGH"]) expect(screen.getByText(p)).toBeTruthy();
+    // PARK is the first position: far left, where the pointer points.
+    expect(Number(screen.getByText("PARK").getAttribute("x"))).toBeLessThan(0);
+    expect(Number(screen.getByText("HIGH").getAttribute("x"))).toBeGreaterThan(0);
+    expect(svg.querySelector(".pointer")?.getAttribute("transform")).toBe("rotate(-90)");
+    expect(screen.getByText("PARK").classList.contains("target")).toBe(true);
+  });
+
+  it("grows a section's frame to hold the labels under its controls", () => {
+    render(PanelSchematic, {
+      panel: wiperPanel,
+      focus: ["lwip"],
+      targets: [{ section: "lwip", item: 0, position: 0 }],
+    });
+
+    const frame = screen.getByRole("img").querySelector(".frame");
+    const setTo = screen.getByText("SET TO PARK");
+    const frameBottom = Number(frame?.getAttribute("y")) + Number(frame?.getAttribute("height"));
+    // The label sits in the control's group, which is placed at the control's y (50).
+    expect(50 + Number(setTo.getAttribute("y"))).toBeLessThan(frameBottom);
   });
 });

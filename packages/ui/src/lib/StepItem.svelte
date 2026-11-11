@@ -43,6 +43,15 @@ with the words "Skipped, still open". The quick level shows the item and value o
   let mapOpen = $state(false);
   /** As 3.0: a value that is long or has blanks to fill goes on its own line, in the text face. */
   let long = $derived(step.expect.includes("___") || step.expect.length > 36);
+  /** A value with blanks: the parts with blanks first, the rest of the instruction after. */
+  let fill = $derived.by(() => {
+    if (!step.expect.includes("___")) return null;
+    const parts = step.expect.split(/,\s*/);
+    return {
+      blanks: parts.filter((p) => p.includes("___")).join(", "),
+      rest: parts.filter((p) => !p.includes("___")).join(", "),
+    };
+  });
   /** Other controls the step uses, shown as "+N" after where it is. */
   let more = $derived(Math.max(0, (step.controls?.length ?? 0) - 1));
   let place = $derived(index.place(step));
@@ -72,15 +81,20 @@ with the words "Skipped, still open". The quick level shows the item and value o
         {#if row.state === "done"}<span class="tag done" aria-hidden="true">Done {time}</span>{/if}
         {#if !row.counts}<span class="tag ns" aria-hidden="true">Not modeled in the simulator</span>{/if}
       </span>
-      {#if step.expect}
-        <span class="val" class:long>
-          {#each step.expect.split("___") as part, n (n)}{#if n > 0}<span class="blank" aria-label="blank"></span>{/if}{part}{/each}
+      {#if step.expect && fill}
+        <!-- As 3.0: the parts to fill in on one line in the monospaced face with long blanks, the
+             rest of the instruction on its own muted line. -->
+        <span class="val long fill">
+          {#each fill.blanks.split("___") as part, n (n)}{#if n > 0}<span class="blank" aria-label="blank"></span>{/if}{part}{/each}
+          {#if fill.rest}<span class="rest">{fill.rest}</span>{/if}
         </span>
+      {:else if step.expect}
+        <span class="val" class:long>{step.expect}</span>
       {/if}
     </button>
     {#if detail === "expanded"}
       {#if place}
-        <div class="loc">{place.zone.area} · {place.zone.title}{#if more > 0}<span class="more"> +{more}</span>{/if}</div>
+        <div class="loc">{place.zone.area} · {place.zone.title}{#if more > 0}{" "}<span class="more">+{more}</span>{/if}</div>
       {/if}
       {#if step.look_for}<div class="look"><b>Look for:</b> {step.look_for}</div>{/if}
       <button
@@ -175,6 +189,7 @@ with the words "Skipped, still open". The quick level shows the item and value o
   .row {
     display: flex;
     flex-wrap: wrap;
+    align-items: baseline;
     justify-content: space-between;
     gap: 0.125rem 1rem;
     width: 100%;
@@ -203,9 +218,17 @@ with the words "Skipped, still open". The quick level shows the item and value o
     font: 400 0.9rem/1.45 var(--sans);
     text-align: left;
   }
+  .val.fill {
+    font: 0.8438rem/1.6 var(--mono);
+  }
+  .rest {
+    display: block;
+    color: var(--muted);
+    font: 400 0.875rem/1.45 var(--sans);
+  }
   .blank {
     display: inline-block;
-    width: 3.2em;
+    width: 5em;
     height: 1em;
     margin: 0 0.25em;
     border-bottom: 1.5px solid var(--muted);
@@ -252,7 +275,8 @@ with the words "Skipped, still open". The quick level shows the item and value o
   .tag.done {
     padding: 0;
     color: var(--go);
-    font: 400 0.6875rem var(--mono);
+    font-size: 0.72rem;
+    font-weight: 600;
   }
   .tag.ns {
     background: var(--zone);

@@ -35,7 +35,7 @@ batch 2; until then it says no plan is loaded.
     font-weight: 500;
   }
   .edit:disabled {
-    opacity: 0.6;
+    cursor: default;
   }
   .edit::after {
     position: absolute;

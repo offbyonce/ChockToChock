@@ -83,6 +83,7 @@ saves them on the device, and batch 7 adds the rest.
     </div>
   {/each}
 </div>
+<div class="done"><a class="btn primary" href="#/">Done</a></div>
 
 <style>
   h1 {
@@ -134,6 +135,10 @@ saves them on the device, and batch 7 adds the rest.
     background: var(--surface);
     box-shadow: 0 1px 2px rgb(0 0 0 / 25%);
     color: var(--ink);
+  }
+  .done {
+    display: flex;
+    justify-content: flex-end;
   }
   @media (max-width: 640px) {
     .set {

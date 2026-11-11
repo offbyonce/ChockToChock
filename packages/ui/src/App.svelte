@@ -159,7 +159,7 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
     const step = id ? index.step(id) : undefined;
     if (!row || !step) return null;
     const upcoming = rows
-      .slice(at + 1, at + 5)
+      .slice(at + 1, at + 9)
       .map((r) => ({ step: index?.step(r.id), state: r.state }))
       .filter((u): u is { step: NonNullable<typeof u.step>; state: typeof u.state } => !!u.step);
     return { step, row, upcoming };

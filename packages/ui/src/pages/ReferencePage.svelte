@@ -96,7 +96,7 @@ type (step 7 requirement for non-normal lists).
     padding: 0.25rem;
     border: 1px solid var(--line);
     border-radius: 0.75rem;
-    background: var(--zone);
+    background: transparent;
   }
   .tabs a {
     display: grid;
@@ -111,6 +111,7 @@ type (step 7 requirement for non-normal lists).
   }
   .tabs a[aria-current="page"] {
     background: var(--surface);
+    box-shadow: 0 1px 2px rgb(0 0 0 / 20%);
     color: var(--accent);
   }
   .intro {
@@ -145,7 +146,11 @@ type (step 7 requirement for non-normal lists).
   }
   summary :global(.icon) {
     color: var(--muted);
+    font-size: 1.15rem;
     transition: transform 0.12s;
+  }
+  summary :global(.icon svg) {
+    stroke-width: 2.5;
   }
   details[open] summary :global(.icon) {
     transform: rotate(180deg);
