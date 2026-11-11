@@ -42,6 +42,7 @@ dependencies = [
  "pack",
  "serde",
  "serde_json",
+ "simbrief",
  "thiserror",
  "ts-rs",
 ]
@@ -393,6 +394,7 @@ dependencies = [
  "serde-saphyr",
  "serde_json",
  "thiserror",
+ "ts-rs",
 ]
 
 [[package]]
@@ -400,9 +402,11 @@ name = "pack-cli"
 version = "0.1.0"
 dependencies = [
  "anyhow",
+ "checklist-core",
  "insta",
  "pack",
  "pack-overlap",
+ "serde_json",
 ]
 
 [[package]]

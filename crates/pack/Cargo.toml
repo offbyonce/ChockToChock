@@ -20,6 +20,11 @@ serde.workspace = true
 serde_json.workspace = true
 serde-saphyr.workspace = true
 thiserror.workspace = true
+ts-rs = { workspace = true, optional = true }
+
+[features]
+# Adds TypeScript type export for the flattened pack; app-core turns this on for the bindings.
+ts = ["dep:ts-rs", "checklist-core/ts"]
 
 [dev-dependencies]
 proptest.workspace = true

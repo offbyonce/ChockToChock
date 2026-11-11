@@ -10,12 +10,19 @@
 mod tests {
     use std::path::Path;
 
-    #[test]
-    fn ifly_pack_matches_its_snapshots() {
-        let packs = Path::new(env!("CARGO_MANIFEST_DIR")).join("../../packs");
-        let pack = pack::load_pack_dir(&packs.join("ifly-737-max8")).unwrap();
-        let content = &pack.content;
+    use pack::{FlatPack, PackContent, PackManifest};
 
+    fn ifly() -> pack::Pack {
+        let packs = Path::new(env!("CARGO_MANIFEST_DIR")).join("../../packs");
+        pack::load_pack_dir(&packs.join("ifly-737-max8")).unwrap()
+    }
+
+    /// Checks each part against the snapshot of the same name.
+    fn assert_matches_snapshots(
+        manifest: &PackManifest,
+        lists: &[checklist_core::Checklist],
+        content: &PackContent,
+    ) {
         let mut settings = insta::Settings::clone_current();
         settings.set_snapshot_path(
             Path::new(env!("CARGO_MANIFEST_DIR")).join("tests/snapshots/ifly-737-max8"),
@@ -23,8 +30,8 @@ mod tests {
         settings.set_prepend_module_to_snapshot(false);
         settings.set_omit_expression(true);
         settings.bind(|| {
-            insta::assert_json_snapshot!("manifest", pack.manifest);
-            insta::assert_json_snapshot!("lists", pack.checklists);
+            insta::assert_json_snapshot!("manifest", manifest);
+            insta::assert_json_snapshot!("lists", lists);
             insta::assert_json_snapshot!("phases", content.phases);
             insta::assert_json_snapshot!("controls", content.controls);
             insta::assert_json_snapshot!("notes", content.notes);
@@ -37,5 +44,19 @@ mod tests {
             insta::assert_json_snapshot!("cdu", content.cdu);
             insta::assert_json_snapshot!("aliases", content.aliases);
         });
+    }
+
+    #[test]
+    fn ifly_pack_matches_its_snapshots() {
+        let pack = ifly();
+        assert_matches_snapshots(&pack.manifest, &pack.checklists, &pack.content);
+    }
+
+    /// What `pack build` writes, read back, is the same pack the snapshots hold.
+    #[test]
+    fn the_flattened_ifly_pack_matches_its_snapshots() {
+        let json = serde_json::to_string(&FlatPack::from(ifly())).unwrap();
+        let flat: FlatPack = serde_json::from_str(&json).unwrap();
+        assert_matches_snapshots(&flat.manifest, &flat.lists, &flat.content);
     }
 }
