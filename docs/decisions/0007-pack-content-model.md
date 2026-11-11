@@ -116,7 +116,9 @@ phase part records where it was first published. A removed step's id is retired 
 
 ## Decision: text-overlap check (not built yet)
 `pack overlap <pack-dir> --refs <folder>`, with `just overlap` as the shortcut. Logic in
-`crates/pack`.
+`crates/pack-overlap`.
+
+Note: paths in this section were updated in the structure clean-up (November 2026).
 
 - **References** are plain `.txt` files in a folder outside the repo. The tool refuses a folder
   inside the repo. The folder must be private on the machine that runs the check and never synced
@@ -127,8 +129,8 @@ phase part records where it was first published. A removed step's id is retired 
   joined in order. Checklist rows are short, so a copied list would pass a field-only check.
 - **Output:** pack file, step or list id, reference file name and the matching words. Non-zero
   exit if any match is not allowed.
-- **Allowed matches:** `tools/overlap/allow.txt` holds the run and a reason, for standard phrases
-  and switch names. The run is our own committed text, so this exposes nothing new.
+- **Allowed matches:** `crates/pack-overlap/allow.txt` holds the run and a reason, for standard
+  phrases and switch names. The run is our own committed text, so this exposes nothing new.
 - **When it runs:** a pre-commit hook when `packs/` is staged, and over all imported 3.0 text
   before that content is first committed. It cannot run in CI, because references are never
   uploaded. A contributor without references gets a "not run" notice, and the maintainer runs it

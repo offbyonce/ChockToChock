@@ -11,7 +11,7 @@ use std::path::{Path, PathBuf};
 use serde::Serialize;
 use serde_json::Value;
 
-use crate::Pack;
+use pack::Pack;
 
 /// The shortest run of matching words that counts as an overlap.
 pub const MIN_RUN: usize = 8;
@@ -390,8 +390,8 @@ mod tests {
     use proptest::prelude::*;
 
     use super::*;
-    use crate::manifest::{PackKind, PackManifest};
-    use crate::{PackContent, SCHEMA_VERSION};
+    use pack::manifest::{PackKind, PackManifest};
+    use pack::{PackContent, SCHEMA_VERSION};
 
     const PHRASE: &str = "alpha bravo charlie delta echo foxtrot golf hotel";
 

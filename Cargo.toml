@@ -7,6 +7,7 @@ members = [
     "crates/checklist-core",
     "crates/pack",
     "crates/pack-cli",
+    "crates/pack-overlap",
     "crates/simbrief",
     "crates/store",
     "apps/desktop/src-tauri",
@@ -26,6 +27,7 @@ publish = false
 # Our own crates
 checklist-core = { path = "crates/checklist-core" }
 pack = { path = "crates/pack" }
+pack-overlap = { path = "crates/pack-overlap" }
 simbrief = { path = "crates/simbrief" }
 store = { path = "crates/store" }
 
