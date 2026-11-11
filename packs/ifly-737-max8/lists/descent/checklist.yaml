@@ -18,7 +18,9 @@ steps:
       - landing_altitude
     why: Brings the cabin down to airport elevation
     check: LAND ALT matches the destination
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.descent.recall-check
     text: RECALL
     expect: CHECKED
@@ -26,7 +28,9 @@ steps:
       - recall
     why: Shows any stored system alerts
     check: No unexpected alerts
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.descent.autobrake-check
     text: AUTOBRAKE
     expect: "___"
@@ -35,7 +39,9 @@ steps:
     fill:
       - autobrake
     why: "Pick by runway length and surface: lower settings on long dry runways, higher on short or wet ones"
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.descent.landing-data
     text: LANDING DATA
     expect: "VREF ___, MINIMUMS ___"
@@ -47,11 +53,15 @@ steps:
       - minimums
     why: Confirms the landing data
     check: VREF and minimums set
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.descent.approach-briefing
     text: APPROACH BRIEFING
     expect: COMPLETE
     controls:
       - briefa
     why: "Chart, minimums, missed approach and the plan"
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09

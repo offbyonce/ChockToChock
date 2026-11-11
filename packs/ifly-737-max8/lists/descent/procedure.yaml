@@ -17,7 +17,9 @@ steps:
     note: Check the arrival and approach in the CDU match your clearance.
     why: Confirms the route ahead
     check: Arrival and approach match the clearance
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.descent.land-alt
     number: 1
     text: LAND ALT
@@ -26,7 +28,9 @@ steps:
       - ldgalt
     note: The pressurization system uses this to bring the cabin down to the airport elevation.
     why: Brings the cabin down to airport elevation
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.descent.cdu
     number: 2
     text: CDU
@@ -36,7 +40,9 @@ steps:
     quick: always
     why: Target speed for flaps and weight
     check: VREF on the speed tape
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.descent.recall
     number: 3
     text: RECALL
@@ -46,7 +52,9 @@ steps:
     why: Shows any stored system alerts
     check: No unexpected alerts
     how: recall
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.descent.minimums
     number: 4
     text: MINIMUMS
@@ -57,7 +65,9 @@ steps:
     note: Set the altitude at which you must see the runway or go around.
     why: "At minimums you must see the runway, or go around"
     how: mins
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.descent.autobrake
     number: 5
     text: AUTOBRAKE
@@ -66,4 +76,6 @@ steps:
       - abrake
     quick: always
     why: "Pick by runway length and surface: lower settings on long dry runways, higher on short or wet ones"
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09

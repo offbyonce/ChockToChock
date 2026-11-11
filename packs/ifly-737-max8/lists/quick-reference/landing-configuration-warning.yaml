@@ -17,4 +17,3 @@ steps:
     expect: "GEAR DOWN AND LOCKED, FLAPS AND SPEEDBRAKE SET FOR LANDING"
     controls:
       - gearlever
-    status: draft

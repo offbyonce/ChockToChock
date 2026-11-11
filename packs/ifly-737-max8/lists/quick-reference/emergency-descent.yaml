@@ -17,21 +17,18 @@ steps:
     expect: "TELL THE CREW, THEN WARN THE CABIN ON THE PA"
     controls:
       - pa
-    status: draft
   - id: ifly-737-max8.quick-reference.fasten-belts
     number: 2
     text: FASTEN BELTS
     expect: "ON"
     controls:
       - sblts
-    status: draft
   - id: ifly-737-max8.quick-reference.descent
     number: 3
     text: DESCENT
     expect: "NOW, TO THE GREATER OF 10,000 FT AND MINIMUM SAFE ALTITUDE"
     controls:
       - mcpalt
-    status: draft
   - id: ifly-737-max8.quick-reference.start-switches
     number: 4
     text: START SWITCHES
@@ -42,35 +39,30 @@ steps:
       starts:
         - ENGINE START 1
         - ENGINE START 2
-    status: draft
   - id: ifly-737-max8.quick-reference.thrust-levers
     number: 5
     text: THRUST LEVERS
     expect: "CLOSE, OR AS FAR AS ANTI-ICE ALLOWS"
     controls:
       - thrust
-    status: draft
   - id: ifly-737-max8.quick-reference.speed-brake
     number: 6
     text: SPEED BRAKE
     expect: FLIGHT DETENT
     controls:
       - speedbrake
-    status: draft
   - id: ifly-737-max8.quick-reference.target-speed
     number: 7
     text: TARGET SPEED
     expect: "MMO/VMO (MAXIMUM OPERATING SPEED). IF STRUCTURE IS IN DOUBT, LIMIT SPEED AND AVOID HIGH MANEUVERING LOADS"
     controls:
       - speedt
-    status: draft
   - id: ifly-737-max8.quick-reference.atc
     number: 8
     text: ATC
     expect: ADVISE. SQUAWK 7700 IF UNABLE TO COMMUNICATE AT ONCE
     controls:
       - xpndr
-    status: draft
   - id: ifly-737-max8.quick-reference.approaching-level-off
     number: 9
     text: APPROACHING LEVEL OFF
@@ -78,7 +70,6 @@ steps:
     controls:
       - speedbrake
     non_recall: true
-    status: draft
   - id: ifly-737-max8.quick-reference.crew-oxygen-regulators
     number: 10
     text: CREW OXYGEN REGULATORS
@@ -86,4 +77,3 @@ steps:
     controls:
       - mask
     non_recall: true
-    status: draft

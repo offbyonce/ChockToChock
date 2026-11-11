@@ -16,35 +16,30 @@ steps:
     expect: PUSH
     controls:
       - toga
-    status: draft
   - id: ifly-737-max8.procedures.flaps
     number: 2
     text: FLAPS
     expect: "15"
     controls:
       - flaplever
-    status: draft
   - id: ifly-737-max8.procedures.thrust-go-around
     number: 3
     text: THRUST
     expect: VERIFY GO-AROUND THRUST
     controls:
       - engmon
-    status: draft
   - id: ifly-737-max8.procedures.positive-rate
     number: 4
     text: POSITIVE RATE
     expect: GEAR UP
     controls:
       - gearup
-    status: draft
   - id: ifly-737-max8.procedures.missed-approach-altitude
     number: 5
     text: MISSED APPROACH ALTITUDE
     expect: VERIFY SET
     controls:
       - mcpalt
-    status: draft
   - id: ifly-737-max8.procedures.roll-mode
     number: 6
     text: ROLL MODE
@@ -55,7 +50,6 @@ steps:
       rollmode:
         - HDG SEL
         - LNAV
-    status: draft
   - id: ifly-737-max8.procedures.flaps-go-around
     number: 7
     text: FLAPS
@@ -63,25 +57,21 @@ steps:
     controls:
       - flaplever
       - speedt
-    status: draft
   - id: ifly-737-max8.procedures.pitch-mode
     number: 8
     text: PITCH MODE
     expect: "AT FLAP SPEED, SELECT LVL CHG OR VNAV, VERIFY CLIMB THRUST"
     controls:
       - pitchmode
-    status: draft
   - id: ifly-737-max8.procedures.missed-approach-altitude-go-around
     number: 9
     text: MISSED APPROACH ALTITUDE
     expect: VERIFY CAPTURED
     controls:
       - mcpalt
-    status: draft
   - id: ifly-737-max8.procedures.after-takeoff-checklist
     number: 10
     text: AFTER TAKEOFF CHECKLIST
     expect: COMPLETE
     controls:
       - fltinst
-    status: draft

@@ -48,12 +48,23 @@ data_types! {
         NonNormal,
     }
 
-    /// How far a step has been reviewed.
-    #[derive(Copy, Eq)]
-    #[serde(rename_all = "snake_case")]
-    pub enum Status {
-        Draft,
-        Checked,
+    /// What a step or light note was confirmed against (decision 0013, which defines each kind).
+    /// The list grows by adding a kind there and here.
+    #[derive(Copy, Eq, PartialOrd, Ord)]
+    #[serde(rename_all = "kebab-case")]
+    pub enum ConfirmationKind {
+        /// Matches the aircraft developer's documentation for the simulated aircraft.
+        VendorDocs,
+        /// Matches an official public document from an aviation authority.
+        RegulatorDocs,
+    }
+
+    /// An internal maintenance record (decision 0013): the kind of source and the day it was
+    /// recorded, never who or which document. The app never shows it.
+    pub struct Confirmation {
+        pub kind: ConfirmationKind,
+        /// `YYYY-MM-DD`.
+        pub date: String,
     }
 
     /// When a step still shows in quick mode.
@@ -255,8 +266,9 @@ data_types! {
         /// The simulator does not model this step, so it is left out of progress.
         #[serde(default, skip_serializing_if = "std::ops::Not::not")]
         pub not_simulated: bool,
-        #[serde(default, skip_serializing_if = "Option::is_none")]
-        pub status: Option<Status>,
+        /// Internal record of what this step was confirmed against (decision 0013).
+        #[serde(default, skip_serializing_if = "Vec::is_empty")]
+        pub confirmed_by: Vec<Confirmation>,
         /// The simulator simplifies the real aircraft here.
         #[serde(default, skip_serializing_if = "std::ops::Not::not")]
         pub sim_simplified: bool,
@@ -317,7 +329,7 @@ impl Step {
             timer: None,
             panel_lights: BTreeMap::new(),
             not_simulated: false,
-            status: None,
+            confirmed_by: Vec::new(),
             sim_simplified: false,
             simulator_model: false,
         }

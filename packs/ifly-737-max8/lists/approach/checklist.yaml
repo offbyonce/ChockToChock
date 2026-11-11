@@ -18,7 +18,9 @@ steps:
       - qnh
     note: "Below the transition level, altimeters must read local QNH so you see your true altitude above sea level."
     why: True altitude below transition
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.approach.fasten-belts-selector-check
     text: FASTEN BELTS SELECTOR
     expect: "AUTO OR ON"
@@ -26,7 +28,9 @@ steps:
       - sblts
     note: Tells the cabin to sit down for landing.
     why: Cabin seated for landing
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.approach.exterior-lights
     text: EXTERIOR LIGHTS
     expect: "LANDING, WING AND LOGO ON"
@@ -35,4 +39,3 @@ steps:
       - winglt
       - logo
     why: "See and be seen below 10,000 ft"
-    status: draft

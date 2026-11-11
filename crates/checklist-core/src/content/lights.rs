@@ -3,7 +3,7 @@
 
 //! `lights.yaml`: what panel lights mean.
 
-use crate::model::Status;
+use crate::model::Confirmation;
 
 data_types! {
     /// What a panel light means.
@@ -15,8 +15,9 @@ data_types! {
         pub action: String,
         /// True when seeing this light is normal.
         pub normal: bool,
-        #[serde(default, skip_serializing_if = "Option::is_none")]
-        pub status: Option<Status>,
+        /// Internal record of what this note was confirmed against (decision 0013).
+        #[serde(default, skip_serializing_if = "Vec::is_empty")]
+        pub confirmed_by: Vec<Confirmation>,
     }
 
     /// `lights.yaml`.

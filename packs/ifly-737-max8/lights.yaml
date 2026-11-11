@@ -129,7 +129,6 @@ lights:
     when: Can show on battery power alone during a cold start. Abnormal once other power is on.
     action: "Get ground power or the APU generator on the buses quickly. In flight, run the checklist."
     normal: true
-    status: draft
   - locator: oh/elecu/TR UNIT/1
     meaning: "A unit that turns AC into DC power has failed. On the ground any one of the three lights it. In flight it lights only if TR 1 fails, or if TR 2 and TR 3 both fail."
     when: Abnormal.
@@ -155,7 +154,6 @@ lights:
     when: Abnormal. Normally out with the battery on and the standby power switch at AUTO.
     action: "Check the standby power switch is at AUTO and the battery is on, then run the checklist."
     normal: false
-    status: draft
   - locator: oh/elecl/TRANSFER BUS OFF/1
     meaning: "Transfer bus 1 has no power, so the systems on it are off."
     when: Normal before any AC power is selected. Abnormal once a generator or ground power is on.
@@ -266,49 +264,41 @@ lights:
     when: Normal on the ground with the engines off and probe heat in AUTO. Abnormal with an engine running.
     action: "On the ground, wait for engine start. With an engine running, check the PROBE HEAT switches and run the probe heat checklist."
     normal: true
-    status: draft
   - locator: oh/heat/L ELEV PITOT/1
     meaning: "The left elevator feel pitot probe is not heated, so ice could upset the column feel."
     when: Normal on the ground with the engines off and probe heat in AUTO. Abnormal with an engine running.
     action: "On the ground, wait for engine start. With an engine running, check the PROBE HEAT switches and run the probe heat checklist."
     normal: true
-    status: draft
   - locator: oh/heat/L ALPHA VANE/1
     meaning: "The left angle of attack vane is not heated, so ice could make its readings wrong."
     when: Normal on the ground with the engines off and probe heat in AUTO. Abnormal with an engine running.
     action: "On the ground, wait for engine start. With an engine running, check the PROBE HEAT switches and run the probe heat checklist."
     normal: true
-    status: draft
   - locator: oh/heat/TEMP PROBE/1
     meaning: The outside air temperature probe is not heated.
     when: Normal on the ground with the engines off and probe heat in AUTO. Abnormal with an engine running.
     action: "On the ground, wait for engine start. With an engine running, check the PROBE HEAT switches and run the probe heat checklist."
     normal: true
-    status: draft
   - locator: oh/heat/F/O PITOT/1
     meaning: "The first officer's pitot probe is not heated, so its airspeed could go wrong in icing."
     when: Normal on the ground with the engines off and probe heat in AUTO. Abnormal with an engine running.
     action: "On the ground, wait for engine start. With an engine running, check the PROBE HEAT switches and run the probe heat checklist."
     normal: true
-    status: draft
   - locator: oh/heat/R ELEV PITOT/1
     meaning: "The right elevator feel pitot probe is not heated, so ice could upset the column feel."
     when: Normal on the ground with the engines off and probe heat in AUTO. Abnormal with an engine running.
     action: "On the ground, wait for engine start. With an engine running, check the PROBE HEAT switches and run the probe heat checklist."
     normal: true
-    status: draft
   - locator: oh/heat/R ALPHA VANE/1
     meaning: "The right angle of attack vane is not heated, so ice could make its readings wrong."
     when: Normal on the ground with the engines off and probe heat in AUTO. Abnormal with an engine running.
     action: "On the ground, wait for engine start. With an engine running, check the PROBE HEAT switches and run the probe heat checklist."
     normal: true
-    status: draft
   - locator: oh/heat/AUX PITOT/1
     meaning: "The auxiliary pitot probe, used by the standby instruments, is not heated."
     when: Normal on the ground with the engines off and probe heat in AUTO. Abnormal with an engine running.
     action: "On the ground, wait for engine start. With an engine running, check the PROBE HEAT switches and run the probe heat checklist."
     normal: true
-    status: draft
   - locator: oh/aice/ICE DETECTOR/1
     meaning: "The ice detector has failed, so it cannot warn you about icing."
     when: Abnormal.

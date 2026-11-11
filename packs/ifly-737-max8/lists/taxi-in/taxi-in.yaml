@@ -16,7 +16,6 @@ steps:
     controls:
       - atcclr
     why: Request it and read it back
-    status: draft
   - id: ifly-737-max8.taxi-in.engine-cool-down
     number: 2
     text: ENGINE COOL-DOWN
@@ -34,4 +33,6 @@ steps:
           - ifly-737-max8.after-landing.autobrake
           - ifly-737-max8.after-landing.weather-radar-and-terrain
         pick: earliest
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09

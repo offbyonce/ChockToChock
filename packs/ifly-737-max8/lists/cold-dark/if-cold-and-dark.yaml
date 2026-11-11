@@ -20,7 +20,9 @@ steps:
     note: "In the iFly the guard closes by itself about a second after the switch reaches ON, and it will not close with the switch OFF."
     why: "Brings the battery onto the electrical system for first power. The hot battery bus stays live regardless of this switch."
     simulator_model: true
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.cold-dark.standby-power-switch
     number: 2
     text: STANDBY POWER SWITCH
@@ -31,7 +33,9 @@ steps:
     note: "In the iFly the guard closes by itself about a second after the switch reaches AUTO, and it will not close in BAT or OFF."
     why: AUTO keeps backup power available from the battery and the transformer rectifier.
     simulator_model: true
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.cold-dark.alternate-flaps-switches
     number: 3
     text: ALTERNATE FLAPS MASTER SWITCH
@@ -40,7 +44,9 @@ steps:
       - altflap
     note: The position switch beside it is checked in the preliminary preflight.
     why: "The backup flap drive is electric, so it must be off before normal power comes on."
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.cold-dark.wiper-selectors
     number: 4
     text: WIPER SELECTORS
@@ -48,7 +54,9 @@ steps:
     controls:
       - wiper
     why: "Left on, the wipers start moving as soon as power arrives."
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.cold-dark.hydraulic-pump-switches
     number: 5
     text: ELECTRIC HYDRAULIC PUMP SWITCHES
@@ -58,7 +66,9 @@ steps:
     note: They are the two inner switches on the hydraulic panel.
     why: "These pumps run from the AC bus, so with the switches on they would start as soon as ground or APU power arrives, which pressurizes the hydraulic systems and can move flight controls with people near the airplane."
     check: ELEC 1 and ELEC 2 OFF
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.cold-dark.landing-gear-lever
     number: 6
     text: LANDING GEAR LEVER
@@ -68,4 +78,6 @@ steps:
     quick: always
     why: "Green means the gear is down and locked. Red means a gear is unlocked or disagrees with the lever."
     check: "3 green gear lights, no red"
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09

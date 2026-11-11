@@ -19,7 +19,9 @@ steps:
     note: "Advance to about 40% N1 and let both engines settle before TO/GA."
     why: Stable engines before TO/GA
     check: Both engines steady
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.takeoff.to-ga
     number: 2
     text: TO/GA
@@ -31,7 +33,9 @@ steps:
     why: Sets takeoff thrust and guidance
     check: FMA shows N1 and TO/GA
     check_detail: Thrust levers move forward
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.takeoff.takeoff-thrust
     number: 3
     text: TAKEOFF THRUST
@@ -42,7 +46,9 @@ steps:
     why: "Takeoff thrust should be set by about 60 knots, before the autothrottle stops adjusting it."
     check: "Thrust at takeoff N1"
     check_detail: Engine indications normal
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.takeoff.80-knots
     number: 4
     text: "80 KNOTS"
@@ -53,7 +59,6 @@ steps:
     why: More reasons to reject below this speed
     check: Both airspeeds agree
     callout: "Pilot monitoring: \"80 knots.\""
-    status: draft
   - id: ifly-737-max8.takeoff.v1
     number: 5
     text: V1
@@ -62,7 +67,6 @@ steps:
       - speedt
     note: "After V1, continue the takeoff. Hands come off the thrust levers so you do not reject by habit."
     why: Hands off the levers so you do not reject out of habit after V1
-    status: draft
   - id: ifly-737-max8.takeoff.vr
     number: 6
     text: VR
@@ -73,7 +77,9 @@ steps:
     note: Rotate smoothly toward 15 degrees pitch.
     why: A smooth rotation avoids a tail strike and lets the airplane reach V2 in the climb
     callout: "Pilot monitoring: \"Rotate.\""
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.takeoff.positive-rate
     number: 7
     text: POSITIVE RATE
@@ -84,4 +90,6 @@ steps:
     why: Climb confirmed on two instruments
     check: Altimeter and vertical speed rising
     callout: "Pilot monitoring: \"Positive rate.\" Pilot flying: \"Gear up.\""
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09

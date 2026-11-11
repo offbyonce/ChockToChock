@@ -7,6 +7,7 @@ use std::collections::BTreeMap;
 
 use checklist_core::{PanelItem, PanelItemKind};
 
+use super::confirmations::check_confirmations;
 use super::ids::unique;
 use super::index::Index;
 use super::{Issue, error};
@@ -68,6 +69,7 @@ pub(super) fn check_panels_and_lights(pack: &Pack, idx: &Index, issues: &mut Vec
         if !locator_resolves(&light.locator, &labels) {
             issues.push(error(&light.locator, "does not match any panel item"));
         }
+        check_confirmations(&light.locator, &light.confirmed_by, issues);
     }
 }
 
@@ -116,7 +118,7 @@ fn locator_resolves(locator: &str, labels: &BTreeMap<(&str, &str, &str), usize>)
 mod tests {
     use checklist_core::{
         Control, ControlsFile, LightColor, LightNote, LightsFile, Overview, OverviewArea, Panel,
-        PanelItem, PanelItemKind, PanelSection, Status,
+        PanelItem, PanelItemKind, PanelSection,
     };
 
     use super::super::test_support::{alias_pack, assert_flags, messages, pack, step};
@@ -173,7 +175,7 @@ mod tests {
                 when: "W".into(),
                 action: "A".into(),
                 normal: false,
-                status: Some(Status::Draft),
+                confirmed_by: vec![],
             }],
         }
     }

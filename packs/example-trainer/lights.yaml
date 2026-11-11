@@ -9,4 +9,3 @@ lights:
     when: Abnormal at any time.
     action: Connect external power.
     normal: false
-    status: draft

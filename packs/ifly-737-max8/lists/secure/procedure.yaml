@@ -18,7 +18,9 @@ steps:
     quick: always
     note: Stops the navigation system. It must realign before the next flight.
     why: Must realign before the next flight
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.secure.emergency-exit-lights
     number: 2
     text: EMERGENCY EXIT LIGHTS
@@ -27,7 +29,9 @@ steps:
       - emerext
     quick: always
     why: ARMED would light the exit lights when power goes off
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.secure.window-heat-switches
     text: WINDOW HEAT SWITCHES
     expect: "OFF"
@@ -39,7 +43,9 @@ steps:
     check_detail: Green ON lights out
     if_not: An ON light stays lit
     if_not_detail: That switch is still on
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.secure.pack-switches
     number: 3
     text: PACK SWITCHES
@@ -47,7 +53,9 @@ steps:
     controls:
       - packs
     why: Stops the packs before the air source goes off
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.secure.apu-or-ground-power
     number: 4
     text: APU OR GROUND POWER
@@ -60,7 +68,9 @@ steps:
     panel_lights:
       apub:
         - APU GEN
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.secure.before-battery-off
     text: BEFORE BATTERY OFF
     expect: "IF THE APU RAN, WAIT ABOUT 5 MINUTES AFTER THE APU GEN OFF BUS LIGHT GOES OUT"
@@ -80,7 +90,6 @@ steps:
     panel_lights:
       genbus:
         - APU GEN OFF BUS
-    status: draft
   - id: ifly-737-max8.secure.battery
     number: 5
     text: BATTERY
@@ -90,4 +99,6 @@ steps:
     quick: always
     note: The last switch.
     why: Stops battery drain
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09

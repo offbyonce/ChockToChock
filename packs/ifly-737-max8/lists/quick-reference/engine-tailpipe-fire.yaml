@@ -17,4 +17,3 @@ steps:
     expect: CUTOFF
     controls:
       - slever
-    status: draft

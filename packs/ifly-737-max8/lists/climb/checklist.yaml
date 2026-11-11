@@ -18,14 +18,15 @@ steps:
       - winglt
       - logo
     why: Not needed in the climb
-    status: draft
   - id: ifly-737-max8.climb.fasten-belts-selector-check
     text: FASTEN BELTS SELECTOR
     expect: AS DESIRED
     controls:
       - sblts
     why: Belts off in smooth air if you choose
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.climb.altimeters
     text: ALTIMETERS
     expect: STD AT TRANSITION ALTITUDE
@@ -38,4 +39,6 @@ steps:
     note: Pressing STD gives every airplane the same altitude reference above the transition altitude.
     why: Same altitude reference above transition
     how: baro
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09

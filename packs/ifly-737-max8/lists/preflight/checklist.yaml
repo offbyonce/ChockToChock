@@ -17,7 +17,6 @@ steps:
     why: Needed at once in a decompression or smoke
     how: crew
     explain: crew
-    status: draft
   - id: ifly-737-max8.preflight.navigation-transfer-and-display-switches
     text: NAVIGATION TRANSFER AND DISPLAY SWITCHES
     expect: "NORMAL, SOURCE AUTO"
@@ -27,14 +26,18 @@ steps:
     why: Each side uses its own source
     check: All NORMAL
     check_detail: SOURCE AUTO
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.preflight.window-heat
     text: WINDOW HEAT
     expect: "ON"
     controls:
       - wheat
     why: "Heated windows resist ice and fogging, and warm windshield panels are more resistant to bird strikes."
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.preflight.pressurization-mode-selector
     text: PRESSURIZATION MODE SELECTOR
     expect: AUTO
@@ -44,7 +47,9 @@ steps:
     panel_lights:
       press:
         - MODE
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.preflight.flight-instruments
     text: FLIGHT INSTRUMENTS
     expect: HEADING ___ ALTIMETER ___
@@ -55,7 +60,9 @@ steps:
       - qnh
     why: Confirms the instruments before flight
     check: Heading and altimeter agree
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.preflight.parking-brake-check
     text: PARKING BRAKE
     expect: SET
@@ -63,7 +70,9 @@ steps:
       - pbrake
     why: Holds the airplane while parked
     check: Parking brake light ON
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.preflight.engine-start-levers-check
     text: ENGINE START LEVERS
     expect: CUTOFF
@@ -71,4 +80,6 @@ steps:
       - slever
     note: Cutoff stops fuel to the engines until you are ready to start.
     why: No fuel until you are ready to start
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09

@@ -23,7 +23,9 @@ pub const REFS_VARIABLE: &str = "CHOCKTOCHOCK_OVERLAP_REFS";
 const NOT_PROSE: &[&str] = &[
     "basis",
     "color",
+    "confirmed_by",
     "controls",
+    "date",
     "equals",
     "explain",
     "field",
@@ -43,7 +45,6 @@ const NOT_PROSE: &[&str] = &[
     "pick",
     "quick",
     "route_legs",
-    "status",
     "style",
     "to",
     "when_known",

@@ -17,7 +17,9 @@ steps:
       - firetest
     quick: always
     why: Confirms the fire protection panel is in its normal state before it is tested.
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.apu-power.fire-test-switch
     number: 1
     text: FIRE TEST SWITCH
@@ -32,7 +34,9 @@ steps:
     if_not_detail: "A detection loop has a fault, so a fire in that area may not be detected"
     how: fire
     explain: fire
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.apu-power.fire-test-switch-establishing-apu
     text: FIRE TEST SWITCH
     expect: HOLD AT OVHT/FIRE
@@ -45,7 +49,9 @@ steps:
     if_not: The bell or a light is missing
     if_not_detail: That warning path has failed
     how: fire
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.apu-power.extinguisher-test-switch
     text: EXTINGUISHER TEST SWITCH
     expect: "TO 1, THEN TO 2"
@@ -57,7 +63,9 @@ steps:
     check_detail: The lights go out when you release the switch
     if_not: A green light stays out
     if_not_detail: That bottle circuit failed the test
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.apu-power.left-forward-fuel-pump
     text: ONE LEFT FUEL PUMP
     expect: "ON (OPTIONAL)"
@@ -73,7 +81,9 @@ steps:
     check: That pump's LOW PRESSURE light OUT
     if_not: LOW PRESSURE light stays on
     if_not_detail: "The pump is not running, or the left tank is low"
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.apu-power.apu-switch
     number: 2
     text: APU SWITCH
@@ -85,7 +95,9 @@ steps:
     check: "LOW OIL PRESSURE light during the start, then APU GEN OFF BUS light on"
     check_detail: Shows the APU is running and ready to take the buses
     how: apu
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.apu-power.apu-generator-switches
     number: 3
     text: APU GENERATOR SWITCHES
@@ -97,7 +109,9 @@ steps:
     check: "TRANSFER BUS OFF, STANDBY PWR OFF and SOURCE OFF lights OUT"
     how: apugen
     check_detail: APU GEN OFF BUS light goes out
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.apu-power.left-forward-fuel-pump-establishing-apu
     text: ONE LEFT FUEL PUMP
     expect: "ON (OPTIONAL)"
@@ -114,7 +128,9 @@ steps:
     check_detail: "The pump runs on AC, so it starts once the APU generators are on"
     if_not: LOW PRESSURE light stays on
     if_not_detail: "The pump is not running, or the left tank is low"
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.apu-power.ground-power-cart-efb
     number: 4
     text: GROUND POWER CART (EFB)
@@ -133,7 +149,9 @@ steps:
     check: GRD POWER AVAILABLE light OUT
     note: "The iFly has no ground crew, so the EFB stands in for them. On a real airplane the crew disconnects the cart."
     simulator_model: true
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.apu-power.apu-bleed-switch
     text: APU BLEED SWITCH
     expect: "ON"
@@ -147,7 +165,6 @@ steps:
         - option: start
           equals: turn
     why: APU air for the packs now and the engine start later
-    status: draft
   - id: ifly-737-max8.apu-power.pack-switches
     text: PACK SWITCHES
     expect: AUTO OR HIGH
@@ -162,7 +179,6 @@ steps:
           equals: turn
     why: "Supplies conditioned air. AUTO is normal. HIGH gives more airflow, for example with only one pack running"
     check: PACK lights OUT
-    status: draft
   - id: ifly-737-max8.apu-power.isolation-valve-switch
     text: ISOLATION VALVE SWITCH
     expect: OPEN
@@ -175,7 +191,6 @@ steps:
         - option: start
           equals: turn
     why: One APU feeds both packs
-    status: draft
   - id: ifly-737-max8.apu-power.pack-lights
     text: PACK LIGHTS
     expect: OUT
@@ -189,4 +204,3 @@ steps:
           equals: turn
     why: Out when the packs run correctly
     check: PACK lights OUT
-    status: draft

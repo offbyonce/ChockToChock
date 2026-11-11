@@ -17,4 +17,3 @@ steps:
     expect: "REDUCE BELOW VMO/MMO WITH THRUST, AND ATTITUDE IF REQUIRED"
     controls:
       - thrust
-    status: draft

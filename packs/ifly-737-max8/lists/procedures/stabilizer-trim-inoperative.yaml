@@ -16,14 +16,18 @@ steps:
     expect: CUTOUT
     controls:
       - stabcut
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-10
   - id: ifly-737-max8.procedures.autopilot
     number: 2
     text: AUTOPILOT
     expect: DO NOT USE (NOT AVAILABLE)
     controls:
       - apdis
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-10
   - id: ifly-737-max8.procedures.stabilizer
     number: 3
     text: STABILIZER
@@ -31,14 +35,18 @@ steps:
     controls:
       - stabwheel
     note: "If ice could be the cause, descend to warmer air and try again."
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-10
   - id: ifly-737-max8.procedures.airspeed
     number: 4
     text: AIRSPEED
     expect: LOWER SPEED EASES MANUAL TRIM
     controls:
       - speedt
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-10
   - id: ifly-737-max8.procedures.landing
     number: 5
     text: LANDING
@@ -46,11 +54,15 @@ steps:
     controls:
       - flaplever
     note: "Keep any wind additive to 5 knots or less, and check the landing distance in an approved source."
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-10
   - id: ifly-737-max8.procedures.go-around
     number: 6
     text: GO-AROUND
     expect: ADVANCE THRUST SLOWLY
     controls:
       - thrust
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-10

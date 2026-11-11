@@ -21,7 +21,9 @@ steps:
     how: pb
     note: "In the iFly, ground power cannot be connected until the parking brake is set."
     simulator_model: true
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.gpu-power.ground-power-cart-efb
     number: 2
     text: GROUND POWER CART (EFB)
@@ -34,7 +36,9 @@ steps:
     how: efb
     note: "The iFly has no ground crew, so the EFB stands in for them. On a real airplane the crew connects the cart."
     simulator_model: true
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.gpu-power.ground-power-switch
     number: 3
     text: GROUND POWER SWITCH
@@ -47,4 +51,6 @@ steps:
     if_not: GRD POWER AVAILABLE out
     if_not_detail: The ground power cart is not connected. Connect it on the EFB first
     how: gpu
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09

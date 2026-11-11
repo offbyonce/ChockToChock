@@ -5,11 +5,13 @@
 
 use checklist_core::{Checklist, FillField, Step};
 
+use super::confirmations::check_confirmations;
 use super::index::Index;
 use super::{BLANK, Issue, error, valid_step_id};
 
 const ROUTE_LEG_ONLY_IN_CDU: &str =
     "`route_leg` is only valid in CDU text, with `index` and `part`";
+
 fn check_step(step: &Step, idx: &Index, issues: &mut Vec<Issue>) {
     let at = step.id.as_str();
     if !valid_step_id(idx.pack_id, at) {
@@ -27,6 +29,7 @@ fn check_step(step: &Step, idx: &Index, issues: &mut Vec<Issue>) {
     for control in step.controls.iter().chain(step.panel_lights.keys()) {
         idx.require_control(at, control, issues);
     }
+    check_confirmations(at, &step.confirmed_by, issues);
     if step.simulator_model && step.note.is_none() {
         issues.push(error(at, "`simulator_model` needs a `note` to apply to"));
     }

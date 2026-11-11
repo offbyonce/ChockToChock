@@ -28,7 +28,6 @@ steps:
           - ifly-737-max8.engine-start.engine-2-start-lever
           - ifly-737-max8.engine-start.engine-1-start-lever
         pick: latest
-    status: draft
   - id: ifly-737-max8.takeoff.engine-start-switches
     number: 2
     text: ENGINE START SWITCHES
@@ -40,7 +39,6 @@ steps:
       starts:
         - ENGINE START 1
         - ENGINE START 2
-    status: draft
   - id: ifly-737-max8.takeoff.position-light
     number: 3
     text: POSITION LIGHT
@@ -49,7 +47,9 @@ steps:
       - poslt
     quick: always
     why: Strobes on for takeoff and flight
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.takeoff.takeoff-clearance
     number: 4
     text: TAKEOFF CLEARANCE
@@ -57,7 +57,9 @@ steps:
     controls:
       - atcclr
     why: Request it and read it back
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.takeoff.landing-lights
     number: 5
     text: LANDING LIGHTS
@@ -67,7 +69,9 @@ steps:
     quick: always
     note: Turning on the landing lights shows others you are about to roll.
     why: Shows others you are about to roll
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.takeoff.transponder
     number: 6
     text: TRANSPONDER
@@ -77,7 +81,9 @@ steps:
     quick: always
     note: TA/RA gives you full TCAS alerts in the air.
     why: Full TCAS alerts in the air
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.takeoff.heading
     number: 7
     text: HEADING
@@ -86,7 +92,9 @@ steps:
       - pfdhdg
     why: Last check of the runway
     check: Heading matches the runway
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.takeoff.runway-and-entry-point
     number: 8
     text: RUNWAY AND ENTRY POINT
@@ -99,4 +107,6 @@ steps:
     note: "Check the runway signs and your position on the ND, to be sure you are lining up on the right runway."
     why: Be sure it is the right runway
     check: Runway signs and ND agree
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09

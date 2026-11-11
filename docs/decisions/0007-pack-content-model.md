@@ -5,7 +5,8 @@ SPDX-License-Identifier: MIT
 # 0007: Pack content model and reference policy
 
 Date: 2026-11-08. Status: accepted. Supersedes the "every step sourced" rule and the per-step
-sources in [0002](0002-pack-format.md); the rest of 0002 stands.
+sources in [0002](0002-pack-format.md); the rest of 0002 stands. Amended by
+[0013](0013-step-presentation-and-provenance.md).
 
 ## Context
 Phase 1 moves all 3.0 content into a pack. The current model has only checklists of steps with

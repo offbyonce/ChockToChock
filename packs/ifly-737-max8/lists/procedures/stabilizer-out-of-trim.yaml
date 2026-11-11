@@ -16,39 +16,51 @@ steps:
     expect: DO NOT TAKE OFF
     controls:
       - stabout
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-10
   - id: ifly-737-max8.procedures.light-momentary-in-flight-stabilizer-trimming
     number: 2
     text: "LIGHT MOMENTARY IN FLIGHT, STABILIZER TRIMMING"
     expect: CONTINUE NORMAL OPERATION
     controls:
       - stabout
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-10
   - id: ifly-737-max8.procedures.in-flight-stabilizer-not-trimming
     number: 3
     text: "IN FLIGHT, STABILIZER NOT TRIMMING"
     expect: "HOLD COLUMN, DISENGAGE A/P AND A/T, USE MAIN ELECTRIC TRIM"
     controls:
       - column
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-10
   - id: ifly-737-max8.procedures.if-stabilizer-responds-to-electric-trim
     number: 4
     text: IF STABILIZER RESPONDS TO ELECTRIC TRIM
     expect: DO NOT RE-ENGAGE A/P OR A/T
     controls:
       - apdis
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-10
   - id: ifly-737-max8.procedures.if-the-stabilizer-does-not-respond
     number: 5
     text: IF THE STABILIZER DOES NOT RESPOND
     expect: GO TO STABILIZER TRIM INOPERATIVE
     controls:
       - stabwheel
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-10
   - id: ifly-737-max8.procedures.light-on-after-landing
     number: 6
     text: LIGHT ON AFTER LANDING
     expect: THE FLIGHT CONTROL COMPUTER (FCC) TRIM MONITOR TRIPPED IN FLIGHT
     controls:
       - stabout
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-10
