@@ -4,6 +4,9 @@ SPDX-License-Identifier: MIT
 -->
 # import-3x
 
+**Retired.** The iFly pack was imported once and is now edited by hand, so this converter is no
+longer run. It is kept for reference, to show how the 3.0 data was mapped.
+
 Converts the 3.0 checklist into pack YAML (Phase 1, step 4). It holds no 3.0 content: everything
 is read from a local copy of the 3.0 source at run time, and its tests use invented data.
 

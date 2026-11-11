@@ -1,0 +1,37 @@
+# SPDX-FileCopyrightText: 2026 offbyonce and Chock to Chock contributors
+# SPDX-License-Identifier: CC-BY-NC-SA-4.0
+#
+# yaml-language-server: $schema=../../../../schemas/checklist.schema.json
+# Imported from 3.0, then validated against vendor documentation. Edit by hand; do not regenerate.
+id: taxi-in-taxi-in
+title: Taxi in
+kind: flow
+basis:
+  - ifly-docs
+steps:
+  - id: ifly-737-max8.taxi-in.taxi-clearance
+    number: 1
+    text: TAXI CLEARANCE
+    expect: OBTAIN
+    controls:
+      - atcclr
+    why: Request it and read it back
+    status: draft
+  - id: ifly-737-max8.taxi-in.engine-cool-down
+    number: 2
+    text: ENGINE COOL-DOWN
+    expect: AT OR NEAR IDLE 3 MINUTES BEFORE SHUTDOWN
+    controls:
+      - engmon
+    note: "Run the engines at or near idle before cutting them off, so they cool evenly."
+    why: So the engines cool evenly
+    timer:
+      seconds: 180
+      label: Engine cool-down
+      note: Starts by itself from your first tick in After landing.
+      auto_start:
+        from:
+          - ifly-737-max8.after-landing.autobrake
+          - ifly-737-max8.after-landing.weather-radar-and-terrain
+        pick: earliest
+    status: checked

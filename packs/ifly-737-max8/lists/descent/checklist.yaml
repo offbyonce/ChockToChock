@@ -1,0 +1,57 @@
+# SPDX-FileCopyrightText: 2026 offbyonce and Chock to Chock contributors
+# SPDX-License-Identifier: CC-BY-NC-SA-4.0
+#
+# yaml-language-server: $schema=../../../../schemas/checklist.schema.json
+# Imported from 3.0, then validated against vendor documentation. Edit by hand; do not regenerate.
+id: descent-descent-checklist
+title: Descent checklist
+kind: checklist
+basis:
+  - ifly-docs
+steps:
+  - id: ifly-737-max8.descent.pressurization
+    text: PRESSURIZATION
+    expect: LAND ALT ___
+    controls:
+      - ldgalt
+    fill:
+      - landing_altitude
+    why: Brings the cabin down to airport elevation
+    check: LAND ALT matches the destination
+    status: checked
+  - id: ifly-737-max8.descent.recall-check
+    text: RECALL
+    expect: CHECKED
+    controls:
+      - recall
+    why: Shows any stored system alerts
+    check: No unexpected alerts
+    status: checked
+  - id: ifly-737-max8.descent.autobrake-check
+    text: AUTOBRAKE
+    expect: "___"
+    controls:
+      - abrake
+    fill:
+      - autobrake
+    why: "Pick by runway length and surface: lower settings on long dry runways, higher on short or wet ones"
+    status: checked
+  - id: ifly-737-max8.descent.landing-data
+    text: LANDING DATA
+    expect: "VREF ___, MINIMUMS ___"
+    controls:
+      - vref
+      - mins
+    fill:
+      - vref
+      - minimums
+    why: Confirms the landing data
+    check: VREF and minimums set
+    status: checked
+  - id: ifly-737-max8.descent.approach-briefing
+    text: APPROACH BRIEFING
+    expect: COMPLETE
+    controls:
+      - briefa
+    why: "Chart, minimums, missed approach and the plan"
+    status: checked

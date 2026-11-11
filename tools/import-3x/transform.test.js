@@ -9,7 +9,7 @@ import { test } from "node:test";
 
 import { assertOutsidePacks, DEFAULT_OUT, writePack } from "./convert.js";
 import { load3x, parseIntro } from "./load3x.js";
-import { fileStems, slug, transform } from "./transform.js";
+import { fileStems, listStem, slug, transform } from "./transform.js";
 
 // Invented data with the shape of the 3.0 structures. Not real procedures.
 function data() {
@@ -230,6 +230,18 @@ test("file names avoid names Windows reserves", () => {
 test("slugs are lower-case and cut at a word boundary", () => {
   assert.equal(slug("A/P & A/T Switch"), "a-p-a-t-switch");
   assert.equal(slug("word ".repeat(20), 22), "word-word-word-word");
+});
+
+test("list files sit in one folder per phase without repeating the phase", () => {
+  assert.equal(listStem("after-landing", "after-landing-after-landing-checklist"), "checklist");
+  assert.equal(listStem("takeoff", "takeoff-line-up"), "line-up");
+  assert.equal(listStem("landing", "landing-before-landing-procedure"), "before-landing-procedure");
+  assert.equal(listStem("cruise", "cruise-cruise"), "cruise");
+  const r = transform(input());
+  for (const [name, list] of r.files.lists) {
+    const phase = r.files.phases.phases.find((p) => p.lists.includes(list.id));
+    assert.equal(name, `lists/${phase.id}/${listStem(phase.id, list.id)}.yaml`);
+  }
 });
 
 test("lists get a kind and the prior-release basis, and steps start as draft", () => {

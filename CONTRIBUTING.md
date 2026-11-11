@@ -84,9 +84,9 @@ reworded or moved. A removed step's id is retired and never reused.
 **Overlap check.** `just overlap` flags any run of 8 or more words matching plain-text reference
 files in a private folder outside the repo, named by the `CHOCKTOCHOCK_OVERLAP_REFS` environment
 variable. It also compares each list's steps joined in order. That folder is never committed,
-uploaded or synced anywhere public. Standard phrases can be accepted in `tools/overlap/allow.txt`
-with a reason. Without the folder the check prints "not run", and the maintainer runs it before
-merging.
+uploaded or synced anywhere public. Standard phrases can be accepted in
+`crates/pack-overlap/allow.txt` with a reason. Without the folder the check prints "not run", and
+the maintainer runs it before merging.
 
 If you are unsure whether something is acceptable, ask in your pull request before writing the
 content.

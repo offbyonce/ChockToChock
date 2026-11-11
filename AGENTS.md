@@ -46,7 +46,7 @@ aircraft. **The app never connects to the simulator** (decision 0006).
 - Work on a branch, never directly on `main`. Never force-push, rewrite history or delete branches
   you did not create.
 - Sign off every commit: `git commit -s`. Conventional Commit messages (`feat:`, `fix:`,
-  `docs:`, `test:`, `chore:`, `ci:`, `pack(<id>):`).
+  `docs:`, `test:`, `refactor:`, `chore:`, `ci:`, `pack(<id>):`).
 - Commit messages carry no session links or session ids (no Claude-Session or similar trailers) and
   no machine names. Co-Authored-By lines are fine.
 - Run `just ci` before every push. If it fails, fix it; never skip hooks or disable checks.
@@ -75,12 +75,13 @@ aircraft. **The app never connects to the simulator** (decision 0006).
 | `crates/checklist-core` | Domain: checklists, steps, sessions. No I/O. |
 | `crates/pack` | Pack manifest, strict YAML loading (`serde-saphyr`), validation, schemas |
 | `crates/pack-cli` | `pack check <dir>`, `pack schema <dir>`, `pack overlap <dir>` |
+| `crates/pack-overlap` | Text-overlap check against private references, with its allow list (`allow.txt`) |
 | `crates/simbrief` | SimBrief OFP parsing |
 | `crates/store` | SQLite saved data and migrations |
 | `apps/desktop/src-tauri` | Tauri shell: commands, capabilities, config |
 | `apps/desktop/ui` | Svelte 5 interface |
 | `packages/bindings` | Typed command wrappers; `src/generated` comes from Rust |
-| `tools/import-3x` | One-way converter from the 3.0 checklist to pack YAML |
+| `tools/import-3x` | One-way converter from the 3.0 checklist to pack YAML (retired, kept for reference) |
 | `packs/` | Content packs (CC BY-NC-SA 4.0) |
 | `schemas/` | Generated JSON Schemas |
 | `docs/` | Plan, briefs, setup guide, decision records |

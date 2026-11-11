@@ -13,10 +13,10 @@ use std::path::{Path, PathBuf};
 use std::process::ExitCode;
 
 use anyhow::{Context, Result, bail};
-use pack::overlap::{
+use pack::{Severity, load_pack_dir, validate_pack};
+use pack_overlap::{
     AllowList, REFS_VARIABLE, check_refs_location, find_overlaps, load_references, repo_roots,
 };
-use pack::{Severity, load_pack_dir, validate_pack};
 
 const USAGE: &str = "usage:\n  pack check <pack-dir | packs-dir>...\n  pack schema <out-dir>\n  pack overlap <pack-dir | packs-dir> [--refs <folder>] [--allow <file>]";
 

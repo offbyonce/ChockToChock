@@ -2356,6 +2356,20 @@ dependencies = [
  "anyhow",
  "insta",
  "pack",
+ "pack-overlap",
+]
+
+[[package]]
+name = "pack-overlap"
+version = "0.1.0"
+dependencies = [
+ "checklist-core",
+ "pack",
+ "proptest",
+ "semver",
+ "serde",
+ "serde_json",
+ "thiserror 2.0.21",
 ]
 
 [[package]]

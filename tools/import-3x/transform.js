@@ -77,6 +77,24 @@ function filesIn(folder, entries) {
   return entries.map((entry, i) => [`${folder}/${stems[i]}.yaml`, entry]);
 }
 
+/** A list's file name in its phase folder: the id without the phase, and without the phase
+ * again if the title repeats it, so `after-landing-after-landing-checklist` is `checklist`. */
+export function listStem(phase, id) {
+  const rest = id.startsWith(`${phase}-`) ? id.slice(phase.length + 1) : id;
+  return rest.startsWith(`${phase}-`) ? rest.slice(phase.length + 1) : rest;
+}
+
+/** Pairs each list with its path: one folder per phase in `folder`. */
+function listFilesIn(folder, lists, phases) {
+  const phaseOf = new Map(phases.flatMap((phase) => phase.lists.map((id) => [id, phase.id])));
+  const taken = new Set();
+  return lists.map((list) => {
+    const phase = phaseOf.get(list.id);
+    const [stem] = fileStems([{ id: listStem(phase, list.id), title: list.title }]);
+    return [`${folder}/${uniqueIn(taken, `${phase}/${stem}`)}.yaml`, list];
+  });
+}
+
 const POWER_GPU = { option: "power", equals: "gpu" };
 const POWER_APU = { option: "power", equals: "apu" };
 const START_COLD = { option: "start", equals: "cold" };
@@ -580,7 +598,7 @@ export function transform(input, rewrites = {}) {
   });
   const leaks = leakedMarkers(cduPages, input.cdu.table);
   const files = {
-    lists: filesIn("lists", lists),
+    lists: listFilesIn("lists", lists, phases),
     phases: buildPhasesFile(ctx, phases),
     controls: buildControls(data, input.overview),
     notes: buildNotes(data),

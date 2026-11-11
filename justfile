@@ -68,7 +68,7 @@ packs:
 
 # Compare pack text with private reference files named by CHOCKTOCHOCK_OVERLAP_REFS.
 overlap:
-    cargo run -q -p pack-cli -- overlap packs --allow tools/overlap/allow.txt
+    cargo run -q -p pack-cli -- overlap packs --allow crates/pack-overlap/allow.txt
 
 # Licenses, advisories, banned crates and sources (Rust), then JS advisories.
 deny:
