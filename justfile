@@ -43,12 +43,12 @@ lint:
 ui-build:
     pnpm --filter @chocktochock/ui build
 
-# All tests: Rust (nextest + doctests), the interface (Vitest) and the 3.0 converter.
+# All tests: Rust (nextest + doctests), the interface (Vitest), the 3.0 converter and the web site.
 test: ui-build
     cargo nextest run --workspace
     cargo test --doc --workspace
     pnpm --filter @chocktochock/ui test
-    node --test "tools/import-3x/*.test.js"
+    node --test "tools/import-3x/*.test.js" "apps/web/*.test.js"
 
 # Build the deployable web site into apps/web/dist (published to GitHub Pages).
 site:

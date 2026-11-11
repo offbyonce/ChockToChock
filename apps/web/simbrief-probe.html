@@ -1,0 +1,49 @@
+<!doctype html>
+<!--
+SPDX-FileCopyrightText: 2026 offbyonce
+SPDX-License-Identifier: MIT
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Security-Policy"
+      content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src https://www.simbrief.com; base-uri 'none'; form-action 'none'">
+    <meta name="referrer" content="no-referrer">
+    <meta name="color-scheme" content="light dark">
+    <meta name="robots" content="noindex">
+    <title>SimBrief probe · Chock to Chock</title>
+    <link rel="stylesheet" href="site.css">
+    <script type="module" src="simbrief-probe.js"></script>
+  </head>
+  <body>
+    <main>
+      <h1>SimBrief probe</h1>
+      <p>A test page for the Chock to Chock web beta. It checks that this site can load your latest
+        SimBrief flight plan straight from your browser.</p>
+      <p>Your username goes directly from this browser to SimBrief. It is not stored, and nothing is
+        sent to us.</p>
+
+      <h2>Load from SimBrief</h2>
+      <form id="fetch-form">
+        <label for="user">SimBrief username or Pilot ID</label>
+        <div class="row">
+          <input id="user" name="user" autocomplete="off" autocapitalize="off" spellcheck="false" required>
+          <button id="fetch-button" type="submit">Load latest plan</button>
+        </div>
+      </form>
+      <div id="fetch-result" class="result" role="status" hidden></div>
+
+      <h2>Or load a saved plan file</h2>
+      <p>No connection, or the button above fails? Save your plan from SimBrief as an XML or JSON file
+        and choose it here. The file is read on this device only.</p>
+      <p>To save one: in your browser, open
+        <code>https://www.simbrief.com/api/xml.fetcher.php?username=</code> followed by your username,
+        then save the page as an .xml file.</p>
+      <input id="file" type="file" accept=".xml,.json,application/xml,text/xml,application/json">
+      <div id="file-result" class="result" role="status" hidden></div>
+
+      <p class="notice">Simulator training only. Not for real-world use.</p>
+    </main>
+  </body>
+</html>
