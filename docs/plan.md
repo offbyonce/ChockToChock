@@ -15,8 +15,8 @@ and it imports a SimBrief flight plan. It grows out of the single-file HTML "iFl
 Interactive Checklist" (3.0), published free on flightsim.to. The goal is to learn to operate the
 airplane like a trained crew, not just to run checklists (decision 0008).
 
-- **One engine, many aircraft.** Aircraft are data packs. The iFly 737 MAX 8 is the first;
-  PMDG 737-800 and 777 and Airbus types come later, reusing shared library packs.
+- **One engine, many aircraft.** Aircraft are data packs. The iFly 737 MAX 8 is the first; the
+  next ones follow the order under "Aircraft order", reusing shared library packs.
 - **A training app, not a sim add-on.** It never connects to the simulator, so it works beside
   MSFS on PC, Mac, Xbox or PlayStation (decision 0006).
 - **Web first.** A hosted web app that installs to a home screen and works offline after the
@@ -97,10 +97,30 @@ pack + pack-cli run at build time: YAML in, checked, flattened JSON out.
 | 0. Foundation (done) | Workspace, crates, shell, interface skeleton, CI, licenses, docs | `just ci` green on Linux, Windows, macOS |
 | 1. Engine and iFly pack | Extend the pack format; move all 3.0 content into `packs/ifly-737-max8` with no sources or links carried over | Every 3.0 step accounted for; `pack check` passes |
 | 2. Web beta with 3.0 parity | Hosted web app (0009) matching 3.0: phases, flows, panel states, SimBrief import, CDU walkthrough, timers, saved progress with export and import, 3.0 import. Also: installable and offline, first-launch "simulator training only" notice, "not yet verified" marker on draft steps, in-app privacy note | A public web beta that does everything 3.0 does and works offline after the first visit |
-| 3. Training features | Memory items trainer, flow practice, systems explorer and step-to-system links, scenario drills, progress tracking. Also: briefings built from the SimBrief plan (threats, runway, departure, what-ifs); crew roles (pilot flying and pilot monitoring duties, standard callouts, challenge-and-response) taught within flow practice and briefings; non-normal scenarios built on the memory items; a technique layer (descent planning, energy management, stabilized-approach criteria, autopilot mode use); a structured course with spaced repetition | Each feature reviewed with beta pilots |
-| 4. More aircraft | Library packs; PMDG 737 and 777; Airbus family; a desktop build if wanted (0009, later options) | Each aircraft passes `pack check` and review |
+| 3. Training features | Memory items trainer, flow practice, systems explorer and step-to-system links, scenario drills, progress tracking. Also: briefings built from the SimBrief plan (threats, runway, departure, what-ifs); crew roles (pilot flying and pilot monitoring duties, standard callouts, challenge-and-response) taught within flow practice and briefings; non-normal scenarios built on the memory items; a technique layer (descent planning, energy management, stabilized-approach criteria, autopilot mode use); a structured course with spaced repetition; a flight plan and fuel module (a walkthrough of the pilot's own SimBrief plan, fuel and weight drills, find-the-error exercises, and the difference between EASA and US fuel rules); a CDU and EFB trainer; a refresher mode on top of spaced repetition for pilots returning after time away. The non-normal trainer depends on the pilot review of the procedure open list, because most non-normal steps are still `draft` | Each feature reviewed with beta pilots |
+| 4. More aircraft | Library packs first in each family, then the aircraft in the order under "Aircraft order"; a desktop build if wanted (0009, later options) | Each aircraft passes `pack check` and review |
 
 Phase 2 parity ships before any Phase 3 work.
+
+## Aircraft order (Phase 4)
+
+Chosen by how popular each aircraft is with simulator pilots and how well its vendor documents it
+publicly, which is what steps are checked against (decision 0007). Each family starts with its
+library pack.
+
+1. **PMDG 737 NG** (Boeing 737 library): among the most flown airliners in community surveys,
+   available on consoles, with public vendor tutorials, and it shares most procedures with the MAX.
+2. **FlyByWire A32NX** (starts the Airbus A320 library): free and very widely used, with the best
+   public documentation of any of these aircraft, so the A320 library is built and checked on it.
+3. **Fenix A320 family** (A320 library): the most popular airliner in community surveys. Its
+   public documentation is thinner, so it builds on the library checked with the A32NX, with its
+   differences noted.
+4. **iniBuilds A320neo** (A320 library): included with the simulator and available on consoles,
+   so it reaches pilots who fly the default aircraft.
+5. **PMDG 777** (Boeing widebody library): a popular widebody, available on consoles.
+6. **iniBuilds A350, then Headwind A330-900** (Airbus widebody library): a popular recent release,
+   then a free and widely downloaded aircraft.
+7. **ATR 72** (turboprop library): included with the simulator.
 
 ## What Phase 2 changes for the store crate and the desktop app
 
@@ -114,8 +134,9 @@ Phase 2 parity ships before any Phase 3 work.
 
 ## Out of scope
 
-Performance calculations, charts and navigation data, ATC, virtual first officer or copilot voice
-features, and anything needing a sim connection. The reason for each is in decision 0008.
+Performance calculations, charts and navigation data, a full EFB, ATC, virtual first officer or
+copilot voice features, video courses, and anything needing a sim connection, including automatic
+checking of cockpit switches. The reasons are in decision 0011, which updates the list in 0008.
 
 ## Open items
 
@@ -128,3 +149,6 @@ features, and anything needing a sim connection. The reason for each is in decis
 - Add `reuse lint` to `just ci`, with a clear message when the tool is missing.
 - Download EASA AD 2021-0039R2 when EASA's site is back.
 - Pilot review of the procedure open list.
+- Pack pass: responses state the actual value or position, not `SET` (`CONTRIBUTING.md`,
+  content rules). As of 2026-11-11 the iFly pack has 5 responses that are only `SET`, and others
+  that say an item is set without naming its value.

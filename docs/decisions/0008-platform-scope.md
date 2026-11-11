@@ -4,7 +4,7 @@ SPDX-License-Identifier: MIT
 -->
 # 0008: Learn to operate the airplane like a trained crew
 
-Date: 2026-11-09. Status: accepted.
+Date: 2026-11-09. Status: accepted. Amended by [0011](0011-scope-boundaries.md).
 
 ## Context
 The app grew out of an interactive checklist. Checklists alone do not teach a pilot how a crew

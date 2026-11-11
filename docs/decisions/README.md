@@ -16,8 +16,9 @@ Never rewrite an accepted record; add a new one that supersedes it.
 | [0005](0005-updates-and-signing.md) | Notify-only updates via GitHub Releases; unsigned beta | Accepted; applies to a desktop build only (0009) |
 | [0006](0006-instruction-not-sim-control.md) | Teach procedures and systems; no connection to the simulator | Accepted |
 | [0007](0007-pack-content-model.md) | Pack content model; list-level basis tags instead of per-step sources | Accepted |
-| [0008](0008-platform-scope.md) | Learn to operate the airplane like a trained crew; what we do not build | Accepted |
+| [0008](0008-platform-scope.md) | Learn to operate the airplane like a trained crew; what we do not build | Accepted; amended by 0011 |
 | [0009](0009-web-first-delivery.md) | Web first: a hosted app that installs and works offline | Accepted |
 | [0010](0010-web-build-tooling.md) | Web build layout and tooling | Accepted |
+| [0011](0011-scope-boundaries.md) | Scope boundaries for fuel training and the out-of-scope list | Accepted |
 
 Template: Context, Decision, Consequences. Keep it under a page.
