@@ -79,7 +79,9 @@ the list on wide screens and inside the step on narrow ones.
       {#each sections as section (section.id)}
         <figure class="card">
           <figcaption>{panelName(section.title)}</figcaption>
+          {#if region?.top}<p class="edge">↑ {region.top}</p>{/if}
           <PanelSchematic {section} {targets} {guardClosed} />
+          {#if region?.bottom}<p class="edge">↓ {region.bottom}</p>{/if}
         </figure>
       {/each}
       <p class="tiny">
@@ -174,7 +176,22 @@ the list on wide screens and inside the step on narrow ones.
     font-weight: 600;
   }
   figure :global(.schematic) {
-    padding: 0.75rem;
+    padding: 0.5rem 0.75rem;
+  }
+  /* The region's orientation captions around the panel, as 3.0 shows them. */
+  .edge {
+    padding-top: 0.5rem;
+    color: var(--muted);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-align: center;
+  }
+  .edge + :global(.schematic) {
+    padding-top: 0.25rem;
+  }
+  figure > .edge:last-child {
+    padding: 0 0 0.5rem;
   }
   .tiny {
     margin: 0;
