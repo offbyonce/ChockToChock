@@ -4,7 +4,7 @@ SPDX-License-Identifier: MIT
 -->
 # 0001: Tauri 2, a Rust core and a Svelte 5 interface
 
-Date: 2026-11-08. Status: accepted.
+Date: 2026-11-08. Status: accepted. Amended by [0009](0009-web-first-delivery.md) (delivery).
 
 ## Context
 The 3.0 checklist is a single HTML file. We want a desktop app for Windows (where MSFS

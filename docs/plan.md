@@ -4,8 +4,8 @@ SPDX-License-Identifier: MIT
 -->
 # Chock to Chock: foundation plan
 
-Status as of 9 Nov 2026. Phase 0 (foundation) is complete; Phase 1 is next. The reasoning
-behind each choice is in `docs/decisions/`.
+Status as of 10 Nov 2026. Phase 0 (foundation) and Phase 1 (engine and iFly pack) are complete;
+Phase 2 (web beta) is next. The reasoning behind each choice is in `docs/decisions/`.
 
 ## What we are building
 
@@ -19,7 +19,8 @@ airplane like a trained crew, not just to run checklists (decision 0008).
   PMDG 737-800 and 777 and Airbus types come later, reusing shared library packs.
 - **A training app, not a sim add-on.** It never connects to the simulator, so it works beside
   MSFS on PC, Mac, Xbox or PlayStation (decision 0006).
-- **Windows first** for installers; macOS and Linux build from the same code. Mobile later.
+- **Web first.** A hosted web app that installs to a home screen and works offline after the
+  first visit, on desktop, tablet and phone (decision 0009). A desktop build may follow later.
 
 ## Decisions (all made by the maintainer)
 
@@ -28,11 +29,13 @@ airplane like a trained crew, not just to run checklists (decision 0008).
 | Name and identifier | Chock to Chock, `com.offbyonce.chocktochock` |
 | Licenses | Code MIT; pack content CC BY-NC-SA 4.0; REUSE per file (0003) |
 | Contributions | Public repo `offbyonce/ChockToChock`; DCO sign-off, no CLA |
-| Stack | Tauri 2.12, Rust 1.99 (pinned), Svelte 5 + Vite + TypeScript 6 (0001) |
+| Stack | Rust 1.99 (pinned), Svelte 5 + Vite + TypeScript 6 (0001); Rust runs in the browser as WebAssembly (0009); Tauri 2.12 for a later desktop build |
+| Delivery | Hosted web app on GitHub Pages, installable, offline after the first visit (0009) |
+| Privacy | No backend, accounts, analytics, cookies or third-party resources; SimBrief called from the user's browser (0009) |
 | Pack format | Authored in YAML, read strictly with `serde-saphyr`, shipped as JSON (0002) |
-| Saved data | SQLite owned by Rust (`crates/store`) |
-| Updates | Notify-only via GitHub Releases first; in-app updater later (0005) |
-| Signing | Unsigned beta; revisit (SignPath Foundation, if eligible) before wider release |
+| Saved data | Browser storage, with export and import in a versioned file format defined in Rust (0009); SQLite (`crates/store`) kept for a desktop build |
+| Updates | Web: each deploy is the update (0009). Desktop build: notify-only via GitHub Releases (0005) |
+| Signing | Not needed for the web app; revisit with a desktop build (0005) |
 | Sim link | None (0006 supersedes 0004) |
 | Scope | Learn to operate the airplane like a trained crew; what we do not build is listed below (0008) |
 | References | List-level `basis` tags, no per-step citations or third-party links (0007); rules in `CONTRIBUTING.md`, enforced in part by `pack check` |
@@ -40,21 +43,25 @@ airplane like a trained crew, not just to run checklists (decision 0008).
 ## Architecture
 
 ```
-Svelte interface  ──typed commands──▶  Tauri shell (thin)
-                                            │
-                     ┌──────────────┬───────┴──────┐
+Shared Svelte interface  ──typed calls──▶  host adapter (thin)
+                                              │
+              Phase 2: web host (WebAssembly) │ later: Tauri shell
+                     ┌──────────────┬─────────┴────┐
                      ▼              ▼              ▼
-                   pack          simbrief        store
-                     └──────────────┴──────────────┘
-                                    ▼
-                             checklist-core  (pure: no I/O, no Tauri)
+                checklist-core   simbrief    browser storage (web)
+                (pure: no I/O)   (parsing)   or store (desktop)
+
+pack + pack-cli run at build time: YAML in, checked, flattened JSON out.
 ```
 
 - Rust types are the source of truth; JSON Schemas (`schemars`) and TypeScript types (`ts-rs`)
   are generated, and `just ci` fails if the committed copies drift.
 - Errors cross into the interface as a tagged `AppError { kind, message }`.
-- The interface may call only the commands listed in `build.rs` and granted in
-  `capabilities/main.json`. No file or network access from the interface; strict CSP.
+- The interface reaches storage, files and the network only through a small host adapter, so the
+  same interface can run in the browser now and in a desktop shell later (0009).
+- Web: a strict content security policy in a `<meta>` tag; no third-party resources at runtime.
+  Desktop (later): the interface may call only the commands listed in `build.rs` and granted in
+  `capabilities/main.json`.
 
 ## Packs
 
@@ -89,11 +96,21 @@ Svelte interface  ──typed commands──▶  Tauri shell (thin)
 | --- | --- | --- |
 | 0. Foundation (done) | Workspace, crates, shell, interface skeleton, CI, licenses, docs | `just ci` green on Linux, Windows, macOS |
 | 1. Engine and iFly pack | Extend the pack format; move all 3.0 content into `packs/ifly-737-max8` with no sources or links carried over | Every 3.0 step accounted for; `pack check` passes |
-| 2. Desktop app parity | Interface matching 3.0: phases, flows, panel states, SimBrief import, CDU walkthrough, timers, saved progress, 3.0 import, notify-only updates | A Windows beta that does everything 3.0 does |
+| 2. Web beta with 3.0 parity | Hosted web app (0009) matching 3.0: phases, flows, panel states, SimBrief import, CDU walkthrough, timers, saved progress with export and import, 3.0 import. Also: installable and offline, first-launch "simulator training only" notice, "not yet verified" marker on draft steps, in-app privacy note | A public web beta that does everything 3.0 does and works offline after the first visit |
 | 3. Training features | Memory items trainer, flow practice, systems explorer and step-to-system links, scenario drills, progress tracking. Also: briefings built from the SimBrief plan (threats, runway, departure, what-ifs); crew roles (pilot flying and pilot monitoring duties, standard callouts, challenge-and-response) taught within flow practice and briefings; non-normal scenarios built on the memory items; a technique layer (descent planning, energy management, stabilized-approach criteria, autopilot mode use); a structured course with spaced repetition | Each feature reviewed with beta pilots |
-| 4. More aircraft | Library packs; PMDG 737 and 777; Airbus family; macOS and Linux releases; in-app updates; mobile later | Each aircraft passes `pack check` and review |
+| 4. More aircraft | Library packs; PMDG 737 and 777; Airbus family; a desktop build if wanted (0009, later options) | Each aircraft passes `pack check` and review |
 
 Phase 2 parity ships before any Phase 3 work.
+
+## What Phase 2 changes for the store crate and the desktop app
+
+- **`crates/store`:** not used by the web app, because its bundled SQLite (through `rusqlite`)
+  does not build for WebAssembly. It stays in the repo, unchanged, for a desktop build. The saved-progress export file becomes
+  the shared format: a versioned Rust type that the web app writes and reads now, and a desktop
+  build can import later.
+- **`apps/desktop`:** parked, not released in Phase 2. Its interface code moves into a shared
+  interface package used by `apps/web` now and by `apps/desktop` later. Whether its Tauri shell
+  keeps building in CI during Phase 2 is settled in the Phase 2 brief, step 1.
 
 ## Out of scope
 
@@ -102,6 +119,7 @@ features, and anything needing a sim connection. The reason for each is in decis
 
 ## Open items
 
+- GitHub Pages deploy workflow (maintainer; Phase 2 brief).
 - Low-severity Dependabot alert on the default branch (check and fix or document).
 - `pnpm/action-setup@v4` warns about running on an old Node version; move to a newer release.
 - Updater signing key: generate and back up before the first release (0005).
