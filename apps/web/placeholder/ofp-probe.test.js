@@ -9,7 +9,7 @@ import path from "node:path";
 import { test } from "node:test";
 import { fetchUrl, readPlan } from "./ofp-probe.js";
 
-const fixtures = path.join(import.meta.dirname, "../../crates/simbrief/tests/fixtures");
+const fixtures = path.join(import.meta.dirname, "../../../crates/simbrief/tests/fixtures");
 const fixture = (name) => fs.readFileSync(path.join(fixtures, name), "utf8");
 
 test("a Pilot ID and a username make the same addresses as the simbrief crate", () => {

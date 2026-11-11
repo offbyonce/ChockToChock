@@ -1,17 +1,19 @@
 {
   "name": "@chocktochock/ui",
   "private": true,
+  "description": "The shared Svelte interface, used by apps/web now and a desktop build later.",
   "license": "MIT",
   "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./app.css": "./src/app.css"
+  },
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
     "check": "svelte-check --tsconfig ./tsconfig.json --fail-on-warnings",
     "test": "vitest run"
   },
   "dependencies": {
-    "@chocktochock/bindings": "workspace:*",
-    "@tauri-apps/api": "catalog:"
+    "@chocktochock/bindings": "workspace:*"
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "catalog:",

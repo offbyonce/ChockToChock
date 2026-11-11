@@ -3,5 +3,20 @@
   "private": true,
   "description": "The Chock to Chock web app, built into apps/web/dist for GitHub Pages.",
   "license": "MIT",
-  "type": "module"
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "check": "svelte-check --tsconfig ./tsconfig.json --fail-on-warnings"
+  },
+  "dependencies": {
+    "@chocktochock/bindings": "workspace:*",
+    "@chocktochock/ui": "workspace:*"
+  },
+  "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "catalog:",
+    "svelte": "catalog:",
+    "svelte-check": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:"
+  }
 }

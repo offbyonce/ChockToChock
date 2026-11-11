@@ -40,6 +40,10 @@ SmartScreen warning, or be blocked where Smart App Control is on.
 - **SimBrief import must work from a hosted page.** The browser fetches the plan directly, which
   only works if SimBrief allows requests from our address. This is tested early in Phase 2; if it
   fails, the fallback must also need no server (for example, importing a downloaded plan file).
+  **Resolved 2026-11-11** by the Phase 2, step 3 probe: on the live Pages site, the maintainer
+  loaded their latest plan by username directly from their desktop browser. SimBrief's API also
+  answers with `access-control-allow-origin: *`. Loading a saved plan file, the no-server
+  fallback, also worked. Tablets were not tested then.
 - **The site is public.** Anyone can open it, unfinished work is visible, and copies can be
   hosted elsewhere. Beta labeling, the first-launch notice and the content rules in 0007 matter
   more. GitHub Pages cannot set custom response headers, so the content security policy goes in a

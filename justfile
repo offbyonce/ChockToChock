@@ -15,13 +15,9 @@ setup:
     pnpm install
     cargo fetch
 
-# Run the desktop app with live reload.
+# Run the web app's dev server (its host calls work from Phase 2, step 5).
 dev:
-    pnpm tauri dev
-
-# Build installers for this machine's platform.
-build:
-    pnpm tauri build
+    pnpm --filter @chocktochock/web dev
 
 # Format everything in place.
 fmt:
@@ -38,17 +34,14 @@ lint:
     cargo clippy --workspace --all-targets -- -D warnings
     pnpm exec biome check .
     pnpm --filter @chocktochock/ui check
-
-# Build the interface (the Rust app embeds it, so tests need it first).
-ui-build:
-    pnpm --filter @chocktochock/ui build
+    pnpm --filter @chocktochock/web check
 
 # All tests: Rust (nextest + doctests), the interface (Vitest), the 3.0 converter and the web site.
-test: ui-build
+test:
     cargo nextest run --workspace
     cargo test --doc --workspace
     pnpm --filter @chocktochock/ui test
-    node --test "tools/import-3x/*.test.js" "apps/web/*.test.js"
+    node --test "tools/import-3x/*.test.js" "apps/web/placeholder/*.test.js"
 
 # Build the deployable web site into apps/web/dist (published to GitHub Pages).
 site:

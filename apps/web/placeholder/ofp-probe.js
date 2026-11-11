@@ -1,9 +1,10 @@
 // SPDX-FileCopyrightText: 2026 offbyonce
 // SPDX-License-Identifier: MIT
 
-// Reads a SimBrief plan for the SimBrief probe page (Phase 2, step 3). Throwaway: the real app
-// parses plans with the `simbrief` crate as WebAssembly. The paths and rules here follow that
-// crate, so the probe shows what the app will see. No DOM access, so Node can test it.
+// Reads a SimBrief plan for the SimBrief probe page (Phase 2, step 3). Temporary: this file and
+// its test are removed once the `simbrief` crate runs as WebAssembly (Phase 2 brief, step 5).
+// The paths and rules here follow that crate, so the probe shows what the app will see. No DOM
+// access, so Node can test it.
 
 const FETCH_BASE = "https://www.simbrief.com/api/xml.fetcher.php";
 

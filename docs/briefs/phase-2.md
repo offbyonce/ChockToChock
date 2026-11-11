@@ -43,6 +43,11 @@ every change to `.github/workflows/`. For those, prepare what the step needs and
    parses it with the `simbrief` crate running as WebAssembly. Report whether it works from the
    Pages address. If it does not, propose a fallback that also needs no server (for example,
    importing a downloaded plan file) and wait for a decision.
+   **Done 2026-11-11:** loading the latest plan by username worked from the maintainer's desktop
+   browser on the live site (0009, risks), and so did loading a saved plan file, though the
+   probe's plan loading is clunky (step 7 sets the product requirements). Tablets were not
+   tested. The probe reads plans with a temporary JavaScript reader, so
+   no workflow change was needed; the crate as WebAssembly comes in step 5.
 4. **Restructure (paths only).** Move the interface from `apps/desktop/ui` into the shared package
    and create `apps/web` around it, as approved in step 1. No behavior change. Update the pnpm
    workspace, the `justfile`, the `AGENTS.md` repository map and any docs naming moved paths.
@@ -50,7 +55,8 @@ every change to `.github/workflows/`. For those, prepare what the step needs and
 5. **Packs as flattened JSON, and the web host.** Add a `pack-cli` command that writes one
    flattened JSON file per aircraft, checked by `pack check` first, with a test that it matches
    the pack snapshots. Build the web host crate that exposes the core to the interface. Types
-   still come from `ts-rs`.
+   still come from `ts-rs`. Once the `simbrief` crate runs as WebAssembly, remove the probe's
+   temporary JavaScript plan reader (`ofp-probe.js` and its test).
 6. **Installable and offline.** Web app manifest, service worker, bundled fonts and icons, and a
    strict content security policy in a `<meta>` tag. A new version never replaces content in the
    middle of a session; the app offers a reload instead. Show it working offline in a browser.
@@ -58,6 +64,15 @@ every change to `.github/workflows/`. For those, prepare what the step needs and
    SimBrief import and the guided tour, matching 3.0. Report one feature at a time. Include the
    carried-over checks from the Phase 1 brief: the LEGS page renders correctly with no departure
    set (with a test), and CDU comparison tests with partly filled flight data.
+   SimBrief import must be easier than the step 3 probe, which does not carry into the product:
+   - Remember the SimBrief username on the device, with an option to forget it.
+   - One-tap "Refresh plan", and optionally load the plan automatically when the app opens.
+   - Show which plan is loaded, its route and its age.
+   - Keep the last plan for offline use.
+   - Friendly errors, such as "Username not found", "No plan filed yet" and "Offline, using your
+     last plan".
+   - The saved-file option is a secondary route: drag and drop anywhere, with short instructions
+     shown only when the pilot chooses it.
 8. **Saved progress, export and import.** Keep progress in browser storage behind the host
    adapter, and ask the browser for persistent storage. Export writes a file in a versioned format
    defined in Rust. Import validates the file, applies aliases for old ids, and never silently
