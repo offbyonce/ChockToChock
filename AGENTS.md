@@ -78,10 +78,10 @@ aircraft. **The app never connects to the simulator** (decision 0006).
 | `crates/pack-cli` | `pack check <dir>`, `pack schema <dir>`, `pack overlap <dir>` |
 | `crates/pack-overlap` | Text-overlap check against private references, with its allow list (`allow.txt`) |
 | `crates/simbrief` | SimBrief OFP parsing |
-| `crates/store` | SQLite saved data and migrations |
+| `crates/store` | SQLite saved data and migrations. Parked: not in the workspace (0010) |
 | `crates/web-host` | Thin WebAssembly glue for the web app (exports arrive in Phase 2, step 5) |
 | `apps/web` | Web app for GitHub Pages; `just site` builds it into `apps/web/dist` (decisions 0009, 0010) |
-| `apps/desktop/src-tauri` | Tauri shell: commands, capabilities, config |
+| `apps/desktop/src-tauri` | Tauri shell: commands, capabilities, config. Parked: not in the workspace (0010) |
 | `apps/desktop/ui` | Svelte 5 interface |
 | `packages/bindings` | Typed command wrappers; `src/generated` comes from Rust |
 | `tools/import-3x` | One-way converter from the 3.0 checklist to pack YAML (retired, kept for reference) |

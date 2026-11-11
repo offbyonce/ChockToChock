@@ -25,8 +25,8 @@ aircraft can be added without changing the app.
 | `crates/pack` | Pack loading (YAML), validation and schemas |
 | `crates/pack-cli` | The `pack` command for checking packs |
 | `crates/simbrief` | SimBrief flight plan parsing |
-| `crates/store` | Saved data (SQLite) |
-| `apps/desktop/src-tauri` | The desktop app shell (Tauri 2) |
+| `crates/store` | Saved data (SQLite); parked during Phase 2 |
+| `apps/desktop/src-tauri` | The desktop app shell (Tauri 2); parked during Phase 2 |
 | `apps/desktop/ui` | The interface (Svelte 5) |
 | `packages/bindings` | Typed calls from the interface to Rust; types generated from Rust |
 | `packs/` | Aircraft and library packs (checklist content) |

@@ -10,10 +10,10 @@ members = [
     "crates/pack-cli",
     "crates/pack-overlap",
     "crates/simbrief",
-    "crates/store",
     "crates/web-host",
-    "apps/desktop/src-tauri",
 ]
+# Parked for Phase 2 (decision 0010): kept in the repo, not built. See PARKED.md in each.
+exclude = ["apps/desktop/src-tauri", "crates/store"]
 
 [workspace.package]
 version = "0.1.0"

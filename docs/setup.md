@@ -29,13 +29,10 @@ cargo install --locked cargo-nextest cargo-deny
    cargo install --locked cargo-nextest cargo-deny
    ```
 
-WebView2 is already part of Windows 10 and 11.
-
 ## Linux (Ubuntu 22.04 or newer)
 
 ```sh
-sudo apt install libwebkit2gtk-4.1-dev libglib2.0-dev pkg-config build-essential file \
-  libxdo-dev libssl-dev libayatana-appindicator3-dev librsvg2-dev
+sudo apt install build-essential
 ```
 
 Then Rust, Node 22+, pnpm and the tools:
@@ -56,3 +53,7 @@ just ci       # every check; run before pushing
 ```
 
 Optional: `pipx install reuse`, then `reuse lint` checks every file has a license.
+
+The desktop build is parked during Phase 2 (decision 0010), so the system libraries it needs
+(WebView2 on Windows, WebKitGTK on Linux) are not required. `apps/desktop/PARKED.md` lists what
+reviving it takes.

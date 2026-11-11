@@ -13,11 +13,7 @@ all-features = true
 yanked = "deny"
 unmaintained = "workspace"
 unsound = "all"
-ignore = [
-    # glib 0.18 is pulled in only on Linux, by Tauri's GTK 0.18 stack, and the fix needs glib 0.20.
-    # Neither our code nor those dependencies use VariantStrIter. Revisit on Tauri upgrades.
-    { id = "RUSTSEC-2024-0429", reason = "Linux-only via Tauri's GTK 0.18 stack; VariantStrIter is unused; revisit on Tauri upgrades" },
-]
+ignore = []
 
 [licenses]
 # Permissive licenses only. GPL-family licenses are not allowed in the app.
