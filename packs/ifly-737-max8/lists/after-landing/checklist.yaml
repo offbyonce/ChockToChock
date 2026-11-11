@@ -1,0 +1,79 @@
+# SPDX-FileCopyrightText: 2026 offbyonce and Chock to Chock contributors
+# SPDX-License-Identifier: CC-BY-NC-SA-4.0
+#
+# yaml-language-server: $schema=../../../../schemas/checklist.schema.json
+# Imported from 3.0, then validated against vendor documentation. Edit by hand; do not regenerate.
+id: after-landing-after-landing-checklist
+title: After landing checklist
+kind: checklist
+basis:
+  - ifly-docs
+steps:
+  - id: ifly-737-max8.after-landing.weather-radar-and-terrain
+    text: WEATHER RADAR AND TERRAIN
+    expect: "OFF"
+    controls:
+      - efispanel
+    why: A transmitting radar is a hazard to ground crew and during fueling
+    panel_lights:
+      efispanel:
+        - WXR
+        - TERR
+    status: checked
+  - id: ifly-737-max8.after-landing.autobrake-check
+    text: AUTOBRAKE
+    expect: "OFF"
+    controls:
+      - abrake
+    why: Taxi on the toe brakes
+    status: checked
+  - id: ifly-737-max8.after-landing.flaps-check
+    text: FLAPS
+    expect: UP
+    controls:
+      - flaplever
+    note: Retract once you are clear of the runway.
+    why: Flaps are not needed for taxi
+    check: Flaps UP
+    status: checked
+  - id: ifly-737-max8.after-landing.speedbrake-lever-check
+    text: SPEEDBRAKE LEVER
+    expect: DOWN DETENT
+    controls:
+      - speedbrake
+    why: Keeps the spoilers stowed on the ground
+    check: Lever in DOWN detent
+    status: checked
+  - id: ifly-737-max8.after-landing.window-heat
+    text: WINDOW HEAT
+    expect: ON UNTIL SECURE CHECKLIST
+    controls:
+      - wheat
+    why: Keeps the windows warm and clear until the airplane is secured
+    status: checked
+  - id: ifly-737-max8.after-landing.probe-heat-check
+    text: PROBE HEAT
+    expect: AUTO
+    controls:
+      - pheat
+    note: "AUTO keeps probe heat on while an engine runs, then off after shutdown."
+    why: Probe heat stops by itself after shutdown
+    status: checked
+  - id: ifly-737-max8.after-landing.engine-start-switches-check
+    text: ENGINE START SWITCHES
+    expect: "OFF"
+    controls:
+      - starts
+    why: Ignition not needed for taxi
+    panel_lights:
+      starts:
+        - ENGINE START 1
+        - ENGINE START 2
+    status: checked
+  - id: ifly-737-max8.after-landing.apu-switch-check
+    text: APU SWITCH
+    expect: "START, THEN RELEASE TO ON"
+    controls:
+      - apusw
+    why: Starts the APU for power and air
+    status: draft

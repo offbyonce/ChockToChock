@@ -1,0 +1,89 @@
+# SPDX-FileCopyrightText: 2026 offbyonce and Chock to Chock contributors
+# SPDX-License-Identifier: CC-BY-NC-SA-4.0
+#
+# yaml-language-server: $schema=../../../../schemas/checklist.schema.json
+# Imported from 3.0, then validated against vendor documentation. Edit by hand; do not regenerate.
+id: shutdown-shutdown-checklist
+title: Shutdown checklist
+kind: checklist
+basis:
+  - ifly-docs
+steps:
+  - id: ifly-737-max8.shutdown.fuel-pump-switches-check
+    text: FUEL PUMP SWITCHES
+    expect: "OFF"
+    controls:
+      - fuelpumps
+    why: "Engines stopped, nothing to feed"
+    status: checked
+  - id: ifly-737-max8.shutdown.probe-heat
+    text: PROBE HEAT
+    expect: "OFF"
+    controls:
+      - pheat
+    why: "Not needed once the engines are stopped."
+    status: checked
+  - id: ifly-737-max8.shutdown.hydraulic-pump-switches
+    text: HYDRAULIC PUMP SWITCHES
+    expect: ELEC 1 AND 2 OFF
+    controls:
+      - hydpumps
+    why: Not needed after shutdown
+    status: checked
+  - id: ifly-737-max8.shutdown.flaps
+    text: FLAPS
+    expect: UP
+    controls:
+      - flaplever
+    why: Flaps stowed at the gate
+    check: Flaps UP
+    status: checked
+  - id: ifly-737-max8.shutdown.parking-brake-check
+    text: PARKING BRAKE
+    expect: "SET, UNLESS CHOCKS ARE IN AND THE BRAKE IS RELEASED"
+    controls:
+      - pbrake
+    why: Holds the airplane while parked
+    check: "Set, or released with chocks in place"
+    status: checked
+  - id: ifly-737-max8.shutdown.engine-start-levers-check
+    text: ENGINE START LEVERS
+    expect: CUTOFF
+    controls:
+      - slever
+    note: Cuts fuel to the engines.
+    why: Stops fuel and shuts down the engines
+    status: checked
+  - id: ifly-737-max8.shutdown.irs-check
+    text: IRS
+    expect: "OFF, OR LEAVE IN NAV FOR A QUICK TURNAROUND"
+    controls:
+      - irs
+    why: Leaving NAV avoids a new alignment if you fly again soon
+    status: draft
+  - id: ifly-737-max8.shutdown.weather-radar
+    text: WEATHER RADAR
+    expect: "OFF"
+    controls:
+      - efispanel
+    why: A transmitting radar is a hazard to ground crew and during fueling
+    panel_lights:
+      efispanel:
+        - WXR
+    not_simulated: true
+    status: draft
+  - id: ifly-737-max8.shutdown.fuel-quantity
+    text: FUEL QUANTITY
+    expect: CHECKED AGAINST THE CDU
+    controls:
+      - fuelq
+    why: Confirms the fuel used
+    check: Fuel matches the CDU
+    status: draft
+  - id: ifly-737-max8.shutdown.outflow-valve-below-10c
+    text: OUTFLOW VALVE (BELOW -10C)
+    expect: "90% CLOSED"
+    controls:
+      - outflow
+    why: Keeps snow and ice out of the outflow valve
+    status: draft

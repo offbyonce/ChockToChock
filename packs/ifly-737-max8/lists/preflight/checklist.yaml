@@ -1,0 +1,74 @@
+# SPDX-FileCopyrightText: 2026 offbyonce and Chock to Chock contributors
+# SPDX-License-Identifier: CC-BY-NC-SA-4.0
+#
+# yaml-language-server: $schema=../../../../schemas/checklist.schema.json
+# Imported from 3.0, then validated against vendor documentation. Edit by hand; do not regenerate.
+id: preflight-preflight-checklist
+title: Preflight checklist
+kind: checklist
+basis:
+  - ifly-docs
+steps:
+  - id: ifly-737-max8.preflight.oxygen
+    text: OXYGEN
+    expect: "TESTED, 100%"
+    controls:
+      - oxym
+    why: Needed at once in a decompression or smoke
+    how: crew
+    explain: crew
+    status: draft
+  - id: ifly-737-max8.preflight.navigation-transfer-and-display-switches
+    text: NAVIGATION TRANSFER AND DISPLAY SWITCHES
+    expect: "NORMAL, SOURCE AUTO"
+    controls:
+      - navsw
+      - dispsw
+    why: Each side uses its own source
+    check: All NORMAL
+    check_detail: SOURCE AUTO
+    status: checked
+  - id: ifly-737-max8.preflight.window-heat
+    text: WINDOW HEAT
+    expect: "ON"
+    controls:
+      - wheat
+    why: "Heated windows resist ice and fogging, and warm windshield panels are more resistant to bird strikes."
+    status: checked
+  - id: ifly-737-max8.preflight.pressurization-mode-selector
+    text: PRESSURIZATION MODE SELECTOR
+    expect: AUTO
+    controls:
+      - press
+    why: Cabin pressure follows FLT ALT and LAND ALT
+    panel_lights:
+      press:
+        - MODE
+    status: checked
+  - id: ifly-737-max8.preflight.flight-instruments
+    text: FLIGHT INSTRUMENTS
+    expect: HEADING ___ ALTIMETER ___
+    controls:
+      - fltinst
+    fill:
+      - heading
+      - qnh
+    why: Confirms the instruments before flight
+    check: Heading and altimeter agree
+    status: checked
+  - id: ifly-737-max8.preflight.parking-brake-check
+    text: PARKING BRAKE
+    expect: SET
+    controls:
+      - pbrake
+    why: Holds the airplane while parked
+    check: Parking brake light ON
+    status: checked
+  - id: ifly-737-max8.preflight.engine-start-levers-check
+    text: ENGINE START LEVERS
+    expect: CUTOFF
+    controls:
+      - slever
+    note: Cutoff stops fuel to the engines until you are ready to start.
+    why: No fuel until you are ready to start
+    status: checked

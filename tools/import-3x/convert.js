@@ -68,7 +68,7 @@ export function writePack(out, { manifest, files }, root = REPO_ROOT) {
   assertOutsidePacks(out, root);
   fs.rmSync(out, { recursive: true, force: true });
   writeFile(out, "pack.json", `${JSON.stringify(manifest, null, 2)}\n`);
-  for (const [name, list] of files.lists) writeFile(out, name, toYaml(list, header("checklist", 1)));
+  for (const [name, list] of files.lists) writeFile(out, name, toYaml(list, header("checklist", 2)));
   for (const [name, panel] of files.panels) writeFile(out, name, toYaml(panel, header("panel", 1)));
   const single = {
     phases: ["phases", "phases"],

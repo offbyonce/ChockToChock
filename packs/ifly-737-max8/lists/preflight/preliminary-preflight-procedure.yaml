@@ -1,0 +1,911 @@
+# SPDX-FileCopyrightText: 2026 offbyonce and Chock to Chock contributors
+# SPDX-License-Identifier: CC-BY-NC-SA-4.0
+#
+# yaml-language-server: $schema=../../../../schemas/checklist.schema.json
+# Imported from 3.0, then validated against vendor documentation. Edit by hand; do not regenerate.
+id: preflight-preliminary-preflight-procedure
+title: Preliminary preflight procedure
+kind: flow
+basis:
+  - ifly-docs
+steps:
+  - id: ifly-737-max8.preflight.panel-and-flood-lights
+    text: PANEL AND FLOOD LIGHTS
+    expect: AS NEEDED
+    controls:
+      - panellts
+    why: "Comfortable lighting for the rest of the preflight, especially at night"
+    check: Panels readable and lights not glaring
+    status: draft
+  - id: ifly-737-max8.preflight.irs
+    number: 1
+    text: IRS
+    expect: BOTH NAV
+    controls:
+      - irs
+    quick: always
+    why: Must align while the airplane is still
+    how: irs
+    explain: irs
+    timer:
+      seconds: 600
+      label: IRS alignment
+      note: A typical time. The ALIGN light going out is what counts.
+    status: checked
+  - id: ifly-737-max8.preflight.elt-switch
+    number: 2
+    text: ELT SWITCH
+    expect: "GUARD CLOSED, LIGHT OUT"
+    controls:
+      - elt
+    note: "The iFly does not simulate the ELT. The switch and light only respond to clicks."
+    why: Stops an accidental distress signal
+    check: Guard closed
+    check_detail: Light OUT
+    simulator_model: true
+    status: checked
+  - id: ifly-737-max8.preflight.elevator-jam-landing-assist
+    number: 3
+    text: ELEVATOR JAM LANDING ASSIST
+    expect: "GUARD CLOSED, LIGHTS OUT"
+    controls:
+      - elevjam
+    why: Not simulated in the iFly. Just confirm the guard is closed and the lights are out
+    not_simulated: true
+    status: checked
+  - id: ifly-737-max8.preflight.gps-ils-gls-and-maint-lights
+    number: 4
+    text: "GPS, ILS, GLS AND MAINT LIGHTS"
+    expect: OUT
+    controls:
+      - gpslts
+    why: "A lit light means a GPS, ILS, GLS or maintenance fault"
+    check: "GPS, ILS, GLS and MAINT OUT"
+    status: checked
+  - id: ifly-737-max8.preflight.eec-switches
+    number: 5
+    text: EEC SWITCHES
+    expect: "ON, ENGINE CONTROL, REVERSER LIMITED, REVERSER COMMAND AND REVERSER AIR/GRD LIGHTS OUT"
+    controls:
+      - eec
+    note: "The electronic engine control protects the engine limits. Check that both show ON, with no ALTN light."
+    why: Protects the engine limits
+    check: Both EEC buttons show ON
+    check_detail: "No ALTN shown"
+    status: checked
+  - id: ifly-737-max8.preflight.passenger-oxygen-switch
+    number: 6
+    text: PASSENGER OXYGEN SWITCH
+    expect: "GUARD CLOSED, PASS OXY ON LIGHT OUT"
+    controls:
+      - paxoxy
+    note: Check that the guard is closed so the cabin masks cannot be dropped by accident.
+    why: Stops cabin masks dropping by accident
+    check: Guard closed
+    check_detail: PASS OXY ON light OUT
+    status: checked
+  - id: ifly-737-max8.preflight.crew-oxygen-pressure
+    number: 7
+    text: CREW OXYGEN PRESSURE
+    expect: SUFFICIENT FOR THE FLIGHT
+    controls:
+      - crewoxy
+    why: Needed at once in a decompression or smoke
+    check: Crew oxygen pressure read on the gauge
+    check_detail: Enough for the flight
+    status: checked
+  - id: ifly-737-max8.preflight.landing-gear-indicator-lights-ovhd
+    number: 8
+    text: LANDING GEAR INDICATOR LIGHTS (OVHD)
+    expect: "3 GREEN"
+    controls:
+      - gearovhd
+    why: "Second set of lights, green is down and locked"
+    check: "3 green lights"
+    status: checked
+  - id: ifly-737-max8.preflight.flight-recorder-switch
+    number: 9
+    text: FLIGHT RECORDER SWITCH
+    expect: GUARD CLOSED
+    controls:
+      - fltrec
+    why: Recorder runs automatically
+    check: Guard closed
+    status: checked
+  - id: ifly-737-max8.preflight.mach-airspeed-warning-test
+    number: 10
+    text: MACH AIRSPEED WARNING TEST
+    expect: "TEST EACH, CLACKER SOUNDS"
+    controls:
+      - mach
+    why: The clacker warns when you exceed the maximum operating speed (VMO/MMO)
+    check: Clacker sounds
+    check_detail: For each switch
+    how: mach
+    explain: mach
+    status: checked
+  - id: ifly-737-max8.preflight.stall-warning-test
+    text: STALL WARNING TEST
+    expect: "TEST EACH, COLUMN SHAKES"
+    controls:
+      - stalltest
+    why: Stick shaker warns of an approaching stall
+    how: stall
+    explain: stall
+    status: draft
+  - id: ifly-737-max8.preflight.manual-gear-extension-access-door
+    number: 11
+    text: MANUAL GEAR EXTENSION ACCESS DOOR
+    expect: CLOSED
+    controls:
+      - mangear
+    why: Covers the manual gear release handles
+    check: Door closed
+    status: checked
+  - id: ifly-737-max8.preflight.cdu
+    number: 12
+    text: CDU
+    expect: PROGRAM FOR FLIGHT
+    controls:
+      - cdu
+    opens: preflight-setup
+    quick: always
+    why: "Route, performance, N1 limit and takeoff reference"
+    check: "Route, performance, N1 limit and TAKEOFF REF pages complete"
+    how: cdu
+    status: checked
+  - id: ifly-737-max8.preflight.flight-control-switches
+    number: 13
+    section: Overhead panel
+    text: FLIGHT CONTROL SWITCHES
+    expect: "ON, GUARDS CLOSED"
+    controls:
+      - fltctrl
+    note: These give hydraulic power to the flight controls. Both must be on for flight.
+    why: Hydraulic power to the flight controls
+    check: LOW PRESSURE lights ON
+    check_detail: Normal until hydraulic pressure is up
+    status: checked
+  - id: ifly-737-max8.preflight.spoiler-switches
+    number: 14
+    text: SPOILER SWITCHES
+    expect: "ON, GUARDS CLOSED"
+    controls:
+      - spoilsw
+    why: Hydraulic power to the flight spoilers
+    status: checked
+  - id: ifly-737-max8.preflight.yaw-damper-switch
+    number: 15
+    text: YAW DAMPER SWITCH
+    expect: "ON, LIGHT OUT"
+    controls:
+      - yawd
+    quick: always
+    note: Check that the amber YAW DAMPER light goes out. The yaw damper engages only with the B FLT CONTROL switch ON.
+    why: Must be on for flight
+    check: YAW DAMPER light OUT
+    if_not: Light stays on
+    if_not_detail: Check the B FLT CONTROL switch is ON. The yaw damper engages only then
+    status: checked
+  - id: ifly-737-max8.preflight.standby-hydraulic-lights
+    number: 16
+    text: STANDBY HYDRAULIC LIGHTS
+    expect: OUT
+    controls:
+      - stbyhyd
+    why: A lit light means a standby hydraulic fault
+    check: "LOW QUANTITY, LOW PRESSURE and STBY RUD ON OUT"
+    status: checked
+  - id: ifly-737-max8.preflight.alternate-flaps-switches
+    number: 17
+    text: "ALTERNATE FLAPS MASTER AND POSITION SWITCHES"
+    expect: "MASTER OFF, GUARD CLOSED, POSITION OFF"
+    controls:
+      - altflap
+    why: "Electric flap backup, off in normal use"
+    status: checked
+  - id: ifly-737-max8.preflight.feel-diff-press-speed-trim-fail-mach-trim-fail
+    number: 18
+    text: "FEEL DIFF PRESS, SPEED TRIM FAIL, MACH TRIM FAIL, AUTO SLAT FAIL AND SPOILERS LIGHTS"
+    expect: OUT
+    controls:
+      - fctllts
+    why: A lit light is a flight control fault to sort out before flight
+    check: All five lights OUT
+    panel_lights:
+      fctllts:
+        - FEEL DIFF PRESS
+        - SPEED TRIM FAIL
+        - MACH TRIM FAIL
+        - AUTO SLAT FAIL
+        - SPOILERS
+    note: "The iFly does not model the FEEL DIFF PRESS light."
+    simulator_model: true
+    status: checked
+  - id: ifly-737-max8.preflight.navigation-transfer-switches
+    number: 19
+    text: NAVIGATION TRANSFER SWITCHES
+    expect: "VHF NAV, IRS AND FMC NORMAL"
+    controls:
+      - navsw
+    why: Each side uses its own navigation source
+    status: checked
+  - id: ifly-737-max8.preflight.display-source-switches
+    number: 20
+    text: DISPLAY SOURCE SWITCHES
+    expect: "SOURCE AUTO, CONTROL PANEL NORMAL"
+    controls:
+      - dispsw
+    why: "Each side's displays run from their own computer"
+    status: checked
+  - id: ifly-737-max8.preflight.fuel-valve-and-filter-lights
+    text: "ENG VALVE CLOSED, SPAR VALVE CLOSED AND FILTER BYPASS LIGHTS"
+    expect: "VALVE LIGHTS ON, FILTER BYPASS OUT"
+    controls:
+      - fuelpumps
+    why: "With the start levers in CUTOFF, both fuel valves should be shut."
+    status: checked
+  - id: ifly-737-max8.preflight.crossfeed-selector
+    number: 21
+    text: CROSSFEED SELECTOR
+    expect: "CLOSED, VALVE OPEN LIGHT OUT"
+    controls:
+      - xfeed
+    quick: turnaround
+    why: Keeps the fuel sides separate
+    check: VALVE OPEN light OUT
+    status: checked
+  - id: ifly-737-max8.preflight.fuel-pump-switches
+    number: 22
+    text: FUEL PUMP SWITCHES
+    expect: ALL OFF
+    controls:
+      - fuelpumps
+    show_if:
+      any_of:
+        - option: power
+          equals: gpu
+        - option: start
+          equals: turn
+    why: "Pumps stay off until Before start. If the APU is already running, the left forward pump stays on instead"
+    check: "Center tank LOW PRESSURE lights OUT, main tank LOW PRESSURE lights ON"
+    status: checked
+  - id: ifly-737-max8.preflight.fuel-pump-switches-preliminary-prefligh
+    text: "FUEL PUMP SWITCHES"
+    expect: "ONE LEFT PUMP MAY BE ON FOR THE APU (OPTIONAL), OTHERS OFF"
+    controls:
+      - fuelpumps
+    show_if:
+      all_of:
+        - option: power
+          equals: apu
+        - option: start
+          equals: cold
+    why: "Optional. A left pump gives the running APU positive fuel pressure. The APU can also draw from the left tank by suction."
+    check: "The running pump's LOW PRESSURE light OUT"
+    check_detail: The other pumps come on in Before start
+    status: checked
+  - id: ifly-737-max8.preflight.cab-util-and-ife-pass-seat-switches
+    number: 23
+    text: CAB/UTIL AND IFE/PASS SEAT SWITCHES
+    expect: "ON"
+    controls:
+      - cabutil
+    quick: always
+    why: Power to galleys and seat equipment
+    note: "In the iFly, only the cabin light function of CAB/UTIL is simulated."
+    simulator_model: true
+    status: checked
+  - id: ifly-737-max8.preflight.bat-discharge-tr-unit-and-elec-lights
+    number: 24
+    text: "BAT DISCHARGE, TR UNIT AND ELEC LIGHTS"
+    expect: OUT
+    controls:
+      - eleclts
+    why: A lit light is an electrical fault
+    check: "BAT DISCHARGE, TR UNIT and ELEC OUT"
+    panel_lights:
+      eleclts:
+        - BAT DISCHARGE
+        - TR UNIT
+        - ELEC
+    status: checked
+  - id: ifly-737-max8.preflight.generator-drive-disconnect-switches
+    number: 25
+    text: GENERATOR DRIVE DISCONNECT SWITCHES
+    expect: "GUARDS CLOSED, DRIVE LIGHTS ON BEFORE START"
+    controls:
+      - gendrive
+    note: Check that the guards are closed. The amber DRIVE lights are normal before start because the engines are not turning.
+    why: The DRIVE lights are normal before start because the engines are not turning
+    check: Guards closed
+    check_detail: DRIVE lights ON
+    status: checked
+  - id: ifly-737-max8.preflight.bus-transfer-switch
+    text: BUS TRANSFER SWITCH
+    expect: "AUTO, GUARD CLOSED"
+    controls:
+      - bustrans
+    why: Transfer buses can switch source automatically
+    status: draft
+  - id: ifly-737-max8.preflight.engine-gen-off-bus-lights
+    number: 26
+    text: ENGINE GEN OFF BUS LIGHTS
+    expect: "ON"
+    controls:
+      - genbus
+    note: "Confirm these blue lights are on. The engines are not running, so their generators cannot be powering the buses."
+    why: "Engines not running, so no generator power"
+    check: Blue lights ON
+    panel_lights:
+      genbus:
+        - GEN OFF BUS
+    status: checked
+  - id: ifly-737-max8.preflight.lavatory-smoke-light
+    number: 27
+    text: LAVATORY SMOKE LIGHT
+    expect: OUT
+    controls:
+      - lavsmoke
+    why: Lit means a smoke detector has gone off
+    check: Light OUT
+    note: "The iFly does not simulate this light."
+    simulator_model: true
+    status: checked
+  - id: ifly-737-max8.preflight.equipment-cooling-switches
+    number: 28
+    text: EQUIPMENT COOLING SWITCHES
+    expect: "NORM, OFF LIGHTS OUT"
+    controls:
+      - equip
+    why: Avionics overheat without the fans
+    check: OFF lights OUT
+    status: checked
+  - id: ifly-737-max8.preflight.emergency-exit-lights-switch
+    number: 29
+    text: EMERGENCY EXIT LIGHTS SWITCH
+    expect: "ARMED, GUARD CLOSED"
+    controls:
+      - emerext
+    quick: always
+    note: "The iFly does not simulate the exit lights themselves."
+    why: Cabin exit lights come on if power is lost
+    check: NOT ARMED light OUT
+    simulator_model: true
+    status: checked
+  - id: ifly-737-max8.preflight.passenger-signs
+    number: 30
+    text: PASSENGER SIGNS
+    expect: "NO SMOKING AND FASTEN BELTS AUTO OR ON"
+    controls:
+      - signs
+    quick: always
+    why: "Keeps the cabin signs working for the flight."
+    status: checked
+  - id: ifly-737-max8.preflight.window-heat-switches
+    number: 31
+    text: WINDOW HEAT SWITCHES
+    expect: "ON"
+    controls:
+      - wheat
+    quick: always
+    why: "Heats the windshields. A green ON light shows the heating is working."
+    check: Green ON lights
+    check_detail: OVERHEAT lights OUT
+    if_not: OVERHEAT light on
+    if_not_detail: "That window has overheated, or its heat power was interrupted"
+    status: checked
+  - id: ifly-737-max8.preflight.probe-heat
+    number: 32
+    text: PROBE HEAT
+    expect: AUTO
+    controls:
+      - pheat
+    quick: always
+    why: AUTO heats the probes when the engines run
+    check: Amber probe lights stay on
+    check_detail: Normal until an engine runs
+    status: checked
+  - id: ifly-737-max8.preflight.engine-and-wing-anti-ice-switches
+    number: 33
+    text: ENGINE AND WING ANTI-ICE SWITCHES
+    expect: "OFF"
+    controls:
+      - aice
+    why: "Uses bleed air, only needed in icing"
+    status: checked
+  - id: ifly-737-max8.preflight.electric-hydraulic-pump-switches
+    number: 34
+    text: "HYDRAULIC PUMP SWITCHES"
+    expect: "ENG 1 AND 2 ON, ELEC 1 AND 2 OFF"
+    controls:
+      - elechyd
+    why: "The engine pumps start with the engines. The electric pumps stay off until Before start."
+    check: "Four LOW PRESSURE lights ON, two OVERHEAT lights OUT"
+    status: checked
+  - id: ifly-737-max8.preflight.high-alt-landing-switch
+    text: HIGH ALT LANDING SWITCH
+    expect: "OFF UNLESS THE DESTINATION IS ABOVE 10,000 FT"
+    controls:
+      - hal
+    why: "Raises the altitude at which the cabin altitude warning sounds, for very high airports."
+    status: checked
+  - id: ifly-737-max8.preflight.voice-recorder-switch
+    text: VOICE RECORDER SWITCH
+    expect: AUTO
+    controls:
+      - vrec
+    why: Records the flight deck without a crew action
+    status: draft
+  - id: ifly-737-max8.preflight.trim-air-switch
+    number: 37
+    text: TRIM AIR SWITCH
+    expect: "ON"
+    controls:
+      - trimair
+    why: Fine-tunes each zone temperature
+    status: checked
+  - id: ifly-737-max8.preflight.temperature-selectors
+    number: 38
+    text: TEMPERATURE SELECTORS
+    expect: AUTO
+    controls:
+      - tempsw
+    why: Automatic cabin temperature control
+    status: checked
+  - id: ifly-737-max8.preflight.recirc-fan-switches
+    number: 39
+    text: RECIRC FAN SWITCHES
+    expect: AUTO
+    controls:
+      - recirc
+    why: Reuses cabin air to reduce pack load
+    status: checked
+  - id: ifly-737-max8.preflight.pack-switches
+    number: 40
+    text: PACK SWITCHES
+    expect: AUTO OR HIGH
+    controls:
+      - packs
+    quick: always
+    show_if:
+      all_of:
+        - option: power
+          equals: apu
+        - option: start
+          equals: cold
+    why: "Supplies conditioned air. AUTO is normal. HIGH gives more airflow, for example with only one pack running"
+    check: PACK lights OUT
+    status: checked
+  - id: ifly-737-max8.preflight.isolation-valve-switch
+    number: 41
+    text: ISOLATION VALVE SWITCH
+    expect: OPEN
+    controls:
+      - iso
+    show_if:
+      all_of:
+        - option: power
+          equals: apu
+        - option: start
+          equals: cold
+    why: One APU feeds both packs
+    status: checked
+  - id: ifly-737-max8.preflight.apu-bleed-switch
+    number: 42
+    text: APU BLEED SWITCH
+    expect: "ON"
+    controls:
+      - apubleed
+    quick: always
+    show_if:
+      all_of:
+        - option: power
+          equals: apu
+        - option: start
+          equals: cold
+    why: APU air for the packs now and the engine start later
+    status: checked
+  - id: ifly-737-max8.preflight.engine-bleed-switches
+    text: ENGINE BLEED SWITCHES
+    expect: "ON"
+    controls:
+      - engbleed
+    quick: always
+    note: Lets the engines feed the bleed system once they are running.
+    why: Ready to feed the bleed system once engines run
+    check: DUAL BLEED light on
+    check_detail: Normal while the APU bleed is also on
+    status: checked
+  - id: ifly-737-max8.preflight.pack-lights
+    number: 43
+    text: PACK LIGHTS
+    expect: OUT
+    controls:
+      - packlts
+    show_if:
+      all_of:
+        - option: power
+          equals: apu
+        - option: start
+          equals: cold
+    why: Out when the packs run correctly
+    check: PACK lights OUT
+    status: checked
+  - id: ifly-737-max8.preflight.cabin-pressurization-panel
+    number: 44
+    text: CABIN PRESSURIZATION PANEL
+    expect: "FLT ALT AND LAND ALT SET, MODE AUTO"
+    controls:
+      - press
+    hint:
+      - prefix: CRUISE FL
+        field: cruise_level
+    quick: always
+    why: FLT ALT is your planned cruise altitude and LAND ALT the destination airport elevation. AUTO schedules the cabin from them
+    how: press
+    panel_lights:
+      press:
+        - FLT ALT
+        - FLT ALT KNOB
+        - MODE
+    status: checked
+  - id: ifly-737-max8.preflight.landing-lights-runway-turnoff-and-taxi-lights
+    number: 45
+    text: "LANDING LIGHTS, RUNWAY TURNOFF AND TAXI LIGHTS"
+    expect: "OFF"
+    controls:
+      - landlt
+      - turnoff
+      - lldg
+    why: Not needed while parked
+    status: checked
+  - id: ifly-737-max8.preflight.engine-start-switches
+    number: 46
+    text: ENGINE START SWITCHES
+    expect: "START SWITCHES OFF, IGNITION SELECTOR BOTH"
+    controls:
+      - starts
+    note: "Leave both start switches OFF and turn the ignition selector to BOTH."
+    why: Igniter choice is set before start
+    status: checked
+  - id: ifly-737-max8.preflight.logo-light
+    number: 47
+    text: LOGO LIGHT
+    expect: "ON"
+    controls:
+      - logo
+    why: Makes the airplane easier to see at night
+    status: draft
+  - id: ifly-737-max8.preflight.position-light
+    number: 48
+    text: POSITION LIGHT
+    expect: STEADY
+    controls:
+      - poslt
+    quick: always
+    why: Shows the airplane is powered
+    status: draft
+  - id: ifly-737-max8.preflight.anti-collision-light-wing-light-and-wheel-well
+    number: 49
+    text: "ANTI-COLLISION LIGHT, WING LIGHT, AND WHEEL WELL LIGHT"
+    expect: "OFF"
+    controls:
+      - beacon
+      - wingww
+    why: The beacon comes on just before engine start. Wing and wheel well lights are not needed at the gate
+    status: draft
+  - id: ifly-737-max8.preflight.flight-director-switches
+    number: 50
+    section: EFIS and MCP
+    text: FLIGHT DIRECTOR SWITCHES
+    expect: "LEFT ON, THEN RIGHT ON"
+    controls:
+      - fd
+    quick: always
+    why: "Left first, so it becomes the master"
+    check: MA light on the left side
+    status: checked
+  - id: ifly-737-max8.preflight.bank-angle-selector
+    number: 51
+    text: BANK ANGLE SELECTOR
+    expect: "25 DEGREES"
+    controls:
+      - hdgsel
+    note: Limits bank in HDG SEL and VOR modes. 25 degrees is a common choice.
+    why: Limits bank in HDG SEL and VOR modes
+    status: checked
+  - id: ifly-737-max8.preflight.autopilot-disengage-bar
+    number: 52
+    text: AUTOPILOT DISENGAGE BAR
+    expect: UP
+    controls:
+      - apdis
+    why: DOWN stops the autopilot engaging
+    status: checked
+  - id: ifly-737-max8.preflight.efis-control-panels
+    number: 53
+    text: EFIS CONTROL PANELS
+    expect: "BARO, MINIMUMS AND MAP OPTIONS SET"
+    controls:
+      - efispanel
+    quick: always
+    why: Altimeter must read local QNH for departure
+    check: Both altimeters show field elevation
+    how: efis
+    status: checked
+  - id: ifly-737-max8.preflight.takeoff-config-and-cabin-altitude-lights
+    text: "TAKEOFF CONFIG AND CABIN ALTITUDE LIGHTS"
+    expect: "OUT"
+    why: "Neither warning should be showing at the gate."
+    status: checked
+  - id: ifly-737-max8.preflight.lights-test-autopilot-and-general
+    number: 54
+    text: LIGHTS TEST (AUTOPILOT AND GENERAL)
+    expect: COMPLETE
+    controls:
+      - ltest
+    why: Proves the lights work
+    check: Tested lights come on
+    how: ltest
+    status: checked
+  - id: ifly-737-max8.preflight.stab-out-of-trim-light
+    number: 55
+    text: STAB OUT OF TRIM LIGHT
+    expect: OUT
+    controls:
+      - stabout
+    why: "On the ground it points to a partial flight control computer failure. In flight, the autopilot could not set the trim it needed."
+    check: Light OUT
+    status: checked
+  - id: ifly-737-max8.preflight.flight-instruments-pfd-and-nd
+    number: 56
+    text: FLIGHT INSTRUMENTS (PFD AND ND)
+    expect: "NO FLAGS, HEADING AND ALTITUDE CORRECT"
+    controls:
+      - fltinst
+    why: Confirms the displays are good
+    check: No flags
+    check_detail: Heading and altitude correct
+    status: checked
+  - id: ifly-737-max8.preflight.pfd-mfd-selectors
+    text: PFD/MFD SELECTORS
+    expect: NORM
+    controls:
+      - dsel
+    why: NORM shows the PFD and MFD in their normal positions
+    status: checked
+  - id: ifly-737-max8.preflight.ground-proximity-panel
+    text: "GROUND PROXIMITY INHIBIT SWITCHES"
+    expect: "NORM, GUARDS CLOSED, INOP LIGHTS OUT"
+    why: "The inhibits switch off terrain and configuration warnings, so they stay in NORM."
+    status: checked
+  - id: ifly-737-max8.preflight.gpws-sys-test
+    number: 57
+    text: GPWS SYS TEST
+    expect: COMPLETE
+    controls:
+      - gpwssw
+    why: Warns of terrain and windshear
+    check: "BELOW G/S light, PULL UP and WINDSHEAR alerts shown"
+    check_detail: "Terrain test pattern on the ND, and the aural alerts sound"
+    how: gpws
+    explain: gpws
+    status: draft
+  - id: ifly-737-max8.preflight.integrated-standby-flight-display
+    number: 58
+    text: INTEGRATED STANDBY FLIGHT DISPLAY
+    expect: "BARO SET, INDICATIONS NORMAL"
+    controls:
+      - isfdc
+    quick: always
+    why: Backup if both main displays fail
+    check: Standby baro matches QNH
+    status: checked
+  - id: ifly-737-max8.preflight.landing-gear-lever
+    number: 59
+    text: LANDING GEAR LEVER
+    expect: "DN"
+    controls:
+      - gearlever
+    why: Gear down and locked
+    check: "Lever DN, 3 green lights, no red"
+    status: checked
+  - id: ifly-737-max8.preflight.nose-wheel-steering-switch
+    text: NOSE WHEEL STEERING SWITCH
+    expect: GUARD CLOSED
+    controls:
+      - nws
+    why: Normal steering source
+    check: Guard closed
+    status: checked
+  - id: ifly-737-max8.preflight.primary-engine-indications
+    text: "PRIMARY ENGINE INDICATIONS"
+    expect: "NORMAL, NO WARNING MESSAGES"
+    why: "Confirms the engine display is healthy before start."
+    status: checked
+  - id: ifly-737-max8.preflight.fuel-flow-switch
+    number: 60
+    text: FUEL FLOW SWITCH
+    expect: "RESET, THEN RELEASE TO RATE"
+    controls:
+      - fuelflow
+    why: Resets the used fuel counter
+    check: Returns to RATE
+    how: fuelflow
+    status: checked
+  - id: ifly-737-max8.preflight.autobrake-selector
+    number: 61
+    text: AUTOBRAKE SELECTOR
+    expect: RTO
+    controls:
+      - abrake
+    quick: always
+    why: Maximum braking if you reject at high speed
+    explain: aut
+    status: checked
+  - id: ifly-737-max8.preflight.c-r-switch
+    number: 62
+    text: C/R SWITCH
+    expect: "PRESS, THEN CHECK THAT NO AUTOLAND FAULT SHOWS"
+    controls:
+      - cr
+    why: Shows any stored autoland faults
+    check: No autoland fault messages
+    status: checked
+  - id: ifly-737-max8.preflight.display-selectors-l-c-r
+    number: 63
+    text: DISPLAY SELECTORS (L/C/R)
+    expect: BOTH C
+    controls:
+      - sel
+    note: "The iFly does not simulate what these selectors do."
+    why: "C is the normal setting."
+    simulator_model: true
+    status: checked
+  - id: ifly-737-max8.preflight.speedbrake-lever
+    number: 64
+    text: SPEEDBRAKE LEVER
+    expect: DOWN DETENT
+    controls:
+      - speedbrake
+    quick: turnaround
+    note: Down keeps the spoilers stowed on the ground.
+    why: Keeps the spoilers stowed on the ground
+    check: Lever in DOWN detent
+    status: checked
+  - id: ifly-737-max8.preflight.thrust-levers
+    number: 65
+    text: THRUST LEVERS
+    expect: "CLOSED, REVERSE LEVERS DOWN"
+    controls:
+      - thrust
+    quick: turnaround
+    note: Check that the levers are closed and the reverse levers are down.
+    why: Engines start at idle with reversers stowed
+    check: Levers closed
+    check_detail: Reverse levers down
+    status: checked
+  - id: ifly-737-max8.preflight.flap-lever
+    number: 66
+    text: FLAP LEVER
+    expect: "UP, INDICATION AGREES"
+    controls:
+      - flaplever
+    quick: turnaround
+    note: Compare the lever with the flap indication on the display.
+    why: Lever and indication must match
+    check: Lever UP
+    check_detail: Flap indication agrees
+    status: checked
+  - id: ifly-737-max8.preflight.parking-brake
+    number: 67
+    text: PARKING BRAKE
+    expect: SET
+    controls:
+      - pbrake
+    quick: turnaround
+    why: Holds the airplane while parked
+    check: Parking brake light ON
+    status: checked
+  - id: ifly-737-max8.preflight.engine-start-levers
+    number: 68
+    text: ENGINE START LEVERS
+    expect: CUTOFF
+    controls:
+      - slever
+    quick: always
+    note: Cutoff stops fuel to the engines until you are ready to start.
+    why: No fuel until you are ready to start
+    status: checked
+  - id: ifly-737-max8.preflight.stabilizer-trim-cutout-switches
+    number: 69
+    text: STABILIZER TRIM CUTOUT SWITCHES
+    expect: "NORMAL, GUARDS CLOSED"
+    controls:
+      - stabcut
+    quick: turnaround
+    why: NORMAL keeps electric trim working
+    check: NORMAL
+    check_detail: Guards closed
+    status: checked
+  - id: ifly-737-max8.preflight.cargo-fire-panel
+    number: 70
+    text: CARGO FIRE PANEL
+    expect: TEST COMPLETE
+    controls:
+      - cargofire
+    why: "The cargo holds cannot be reached in flight, so detection and extinguishing must work"
+    check: Bell and fire warning lights
+    check_detail: Green extinguisher lights
+    how: cargo
+    explain: cargo
+    status: checked
+  - id: ifly-737-max8.preflight.radio-tuning-panels
+    number: 71
+    text: RADIO TUNING PANELS
+    expect: ACTIVE AND STANDBY FREQUENCIES SET
+    controls:
+      - radios
+    hint:
+      - prefix: "GND "
+        field: ground_frequency
+      - prefix: "DEP "
+        field: departure_frequency
+    why: "Ground, tower and departure ready to select"
+    status: checked
+  - id: ifly-737-max8.preflight.audio-control-panel
+    text: AUDIO CONTROL PANEL
+    expect: RADIOS AND SPEAKER SET
+    controls:
+      - audio
+    why: Selects what you hear
+    note: "Most audio panel functions are not modeled in the iFly."
+    simulator_model: true
+    status: checked
+  - id: ifly-737-max8.preflight.multi-mode-receiver
+    number: 72
+    text: MULTI-MODE RECEIVER
+    expect: ILS FREQUENCY AND COURSE FOR THE DEPARTURE RUNWAY
+    controls:
+      - mmr
+    why: Guidance back to this runway if you must return
+    status: checked
+  - id: ifly-737-max8.preflight.adf-selector-panel
+    number: 73
+    text: ADF SELECTOR PANEL
+    expect: SET IF NEEDED
+    controls:
+      - adf
+    why: Only for NDB procedures
+    status: checked
+  - id: ifly-737-max8.preflight.weather-radar-panel
+    number: 74
+    text: WEATHER RADAR PANEL
+    expect: NORMAL
+    controls:
+      - wxrp
+    why: Not simulated in the iFly. Leave it in its normal position
+    not_simulated: true
+    status: checked
+  - id: ifly-737-max8.preflight.transponder
+    number: 75
+    text: TRANSPONDER
+    expect: SQUAWK CODE SET
+    controls:
+      - xpndr
+    hint:
+      - prefix: "SQUAWK "
+        field: squawk
+    quick: always
+    note: Enter the squawk code from your ATC clearance.
+    why: Code from your ATC clearance
+    status: checked
+  - id: ifly-737-max8.preflight.stabilizer-trim-override-switch
+    number: 76
+    text: STABILIZER TRIM OVERRIDE SWITCH
+    expect: "NORM, GUARD CLOSED"
+    controls:
+      - staboverride
+    why: "NORM keeps the column cutout working, so pulling against a nose-down trim stops it"
+    status: checked

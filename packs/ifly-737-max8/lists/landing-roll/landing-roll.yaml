@@ -1,0 +1,89 @@
+# SPDX-FileCopyrightText: 2026 offbyonce and Chock to Chock contributors
+# SPDX-License-Identifier: CC-BY-NC-SA-4.0
+#
+# yaml-language-server: $schema=../../../../schemas/checklist.schema.json
+# Imported from 3.0, then validated against vendor documentation. Edit by hand; do not regenerate.
+id: landing-roll-landing-roll
+title: Landing roll
+kind: flow
+basis:
+  - ifly-docs
+steps:
+  - id: ifly-737-max8.landing-roll.autopilot-and-autothrottle
+    text: "AUTOPILOT AND AUTOTHROTTLE"
+    expect: "DISCONNECT AFTER LANDING"
+    why: "Leaves the rollout in your hands."
+    status: checked
+  - id: ifly-737-max8.landing-roll.thrust-levers
+    number: 1
+    text: THRUST LEVERS
+    expect: VERIFY CLOSED
+    controls:
+      - thrust
+    quick: always
+    note: Confirm the levers are closed. The spoilers and autobrake rely on it.
+    why: Spoilers and autobrake rely on it
+    check: Levers closed
+    status: checked
+  - id: ifly-737-max8.landing-roll.speedbrake
+    number: 2
+    text: SPEEDBRAKE
+    expect: VERIFY UP
+    controls:
+      - speedbrake
+    note: "Confirm the lever moved to UP. If it did not, raise it by hand."
+    why: Spoilers slow you down
+    check: Lever UP
+    if_not: Not up
+    if_not_detail: Raise it by hand
+    status: draft
+  - id: ifly-737-max8.landing-roll.reverse-thrust
+    number: 3
+    text: REVERSE THRUST
+    expect: APPLY AS NEEDED
+    controls:
+      - thrust
+    quick: always
+    why: Slows you after landing
+    check: REV green
+    how: rev
+    status: checked
+  - id: ifly-737-max8.landing-roll.rev-indications
+    number: 4
+    text: REV INDICATIONS
+    expect: GREEN ON BOTH ENGINES
+    controls:
+      - engmon
+    note: Reversers are deployed when REV shows green.
+    why: Reversers are deployed
+    check: REV green on both engines
+    status: draft
+  - id: ifly-737-max8.landing-roll.60-knots
+    number: 5
+    text: "60 KNOTS"
+    expect: "BEGIN STOWING THE REVERSERS"
+    controls:
+      - thrust
+    note: Start reducing reverse so the engines reach reverse idle by taxi speed.
+    why: Limits debris thrown up at low speed
+    status: checked
+  - id: ifly-737-max8.landing-roll.reverse-levers
+    number: 6
+    text: REVERSE LEVERS
+    expect: FULL DOWN BEFORE TAXI SPEED
+    controls:
+      - thrust
+    quick: always
+    note: Stow the reversers before you leave the runway.
+    why: Stowed before you leave the runway
+    check: Reversers stowed
+    status: checked
+  - id: ifly-737-max8.landing-roll.autobrake
+    number: 7
+    text: AUTOBRAKE
+    expect: DISARM BEFORE TAXI SPEED
+    controls:
+      - abrake
+    note: "Set the selector to OFF (pressing the toe brakes also disarms it), then brake with the toe brakes."
+    why: Take over with the toe brakes
+    status: checked

@@ -1,0 +1,113 @@
+# SPDX-FileCopyrightText: 2026 offbyonce and Chock to Chock contributors
+# SPDX-License-Identifier: CC-BY-NC-SA-4.0
+#
+# yaml-language-server: $schema=../../../../schemas/checklist.schema.json
+# Imported from 3.0, then validated against official documents. Edit by hand; do not regenerate.
+id: memory-airspeed-unreliable
+title: Airspeed unreliable
+kind: non-normal
+basis:
+  - regulator-docs
+memory: true
+when: You suspect one or more airspeed or Mach readings are wrong.
+why: "Simulator training only. Not for real-world use. A safe pitch and thrust setting keeps the airplane flying while you work out which indications to trust."
+steps:
+  - id: ifly-737-max8.memory.autopilot-if-engaged-airspeed-unreliable
+    number: 1
+    text: AUTOPILOT (IF ENGAGED)
+    expect: DISENGAGE
+    controls:
+      - apdis
+    status: checked
+  - id: ifly-737-max8.memory.autothrottle-if-engaged-airspeed-unreliable
+    number: 2
+    text: AUTOTHROTTLE (IF ENGAGED)
+    expect: DISENGAGE
+    controls:
+      - apdisc
+    status: checked
+  - id: ifly-737-max8.memory.f-d-switches-both
+    number: 3
+    text: F/D SWITCHES (BOTH)
+    expect: "OFF"
+    controls:
+      - fd
+    status: checked
+  - id: ifly-737-max8.memory.if-flaps-extended
+    number: 4
+    text: IF FLAPS EXTENDED
+    expect: "SET 10 DEGREES PITCH AND 80% N1"
+    controls:
+      - fltinst
+    status: checked
+  - id: ifly-737-max8.memory.if-flaps-up
+    number: 5
+    text: IF FLAPS UP
+    expect: "SET 4 DEGREES PITCH AND 75% N1"
+    controls:
+      - fltinst
+    status: checked
+  - id: ifly-737-max8.memory.probe-heat-switches
+    number: 6
+    text: PROBE HEAT SWITCHES
+    expect: "CHECK ON"
+    controls:
+      - pheat
+    non_recall: true
+    status: checked
+  - id: ifly-737-max8.memory.reliable-references
+    number: 7
+    text: RELIABLE REFERENCES
+    expect: "ATTITUDE, N1, GROUND SPEED AND RADIO ALTITUDE"
+    controls:
+      - fltinst
+    non_recall: true
+    note: "Stick shaker, overspeed and low airspeed alerts may sound falsely, even together."
+    status: checked
+  - id: ifly-737-max8.memory.airspeed
+    number: 8
+    text: AIRSPEED
+    expect: FIND A RELIABLE SOURCE AND USE IT
+    controls:
+      - fltinst
+    non_recall: true
+    status: checked
+  - id: ifly-737-max8.memory.if-only-standby-airspeed-is-reliable
+    number: 9
+    text: IF ONLY STANDBY AIRSPEED IS RELIABLE
+    expect: "NO AUTOPILOT, AUTOTHROTTLE OR FLIGHT DIRECTORS"
+    controls:
+      - isfdc
+    non_recall: true
+    status: checked
+  - id: ifly-737-max8.memory.if-captain-or-fo-airspeed-is-reliable
+    number: 10
+    text: IF CAPTAIN OR FO AIRSPEED IS RELIABLE
+    expect: "USE THAT SIDE'S F/D AND AUTOPILOT IF NEEDED. KEEP AUTOTHROTTLE OFF"
+    controls:
+      - fd
+    non_recall: true
+    status: checked
+  - id: ifly-737-max8.memory.if-no-reliable-airspeed
+    number: 11
+    text: IF NO RELIABLE AIRSPEED
+    expect: PITCH AND THRUST FROM APPROVED TABLES
+    controls:
+      - fltinst
+    non_recall: true
+    note: "Once trimmed and stable, compare each airspeed with the table. A gap above 20 knots or 0.03 Mach marks that indicator as unreliable."
+    status: checked
+  - id: ifly-737-max8.memory.transponder
+    number: 12
+    text: TRANSPONDER
+    expect: "USE THE RELIABLE SIDE WITH TRAFFIC ALERTS ONLY. ALTITUDE REPORTING OFF IF BOTH ARE UNRELIABLE"
+    controls:
+      - xpndr
+    non_recall: true
+    note: "The airplane may no longer meet RVSM requirements."
+    status: checked
+  - id: ifly-737-max8.memory.approach-and-go-around-airspeed-unreliable
+    text: "APPROACH AND GO-AROUND"
+    expect: "BARO MINIMUMS ON THE RELIABLE PFD ONLY. NO TO/GA IF ONLY STANDBY AIRSPEED IS RELIABLE"
+    non_recall: true
+    status: checked

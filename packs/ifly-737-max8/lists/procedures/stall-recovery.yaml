@@ -1,0 +1,54 @@
+# SPDX-FileCopyrightText: 2026 offbyonce and Chock to Chock contributors
+# SPDX-License-Identifier: CC-BY-NC-SA-4.0
+#
+# yaml-language-server: $schema=../../../../schemas/checklist.schema.json
+# Imported from 3.0, then validated against official documents. Edit by hand; do not regenerate.
+id: procedures-stall-recovery
+title: Stall recovery
+kind: non-normal
+basis:
+  - regulator-docs
+why: "Simulator training only. Not for real-world use."
+steps:
+  - id: ifly-737-max8.procedures.autopilot-and-autothrottle-stall-recovery
+    number: 1
+    text: AUTOPILOT AND AUTOTHROTTLE
+    expect: "HOLD COLUMN FIRMLY, DISENGAGE BOTH"
+    controls:
+      - column
+    status: checked
+  - id: ifly-737-max8.procedures.pitch
+    number: 2
+    text: PITCH
+    expect: "LOWER THE NOSE UNTIL THE SHAKER AND BUFFET END, TRIMMING AS NEEDED"
+    controls:
+      - column
+    status: checked
+  - id: ifly-737-max8.procedures.roll
+    number: 3
+    text: ROLL
+    expect: "WINGS LEVEL THE SHORT WAY, IF NEEDED"
+    controls:
+      - column
+    status: checked
+  - id: ifly-737-max8.procedures.thrust-and-speedbrakes
+    number: 4
+    text: THRUST AND SPEEDBRAKES
+    expect: "ADVANCE THRUST, RETRACT SPEEDBRAKES"
+    controls:
+      - thrust
+    status: checked
+  - id: ifly-737-max8.procedures.gear-and-flaps-stall-recovery
+    number: 5
+    text: GEAR AND FLAPS
+    expect: "NO CHANGE. EXCEPTION: IF THE STALL IS AT LIFTOFF WITH FLAPS UP, SET FLAPS 1"
+    controls:
+      - flaplever
+    status: checked
+  - id: ifly-737-max8.procedures.flight-path
+    number: 6
+    text: FLIGHT PATH
+    expect: RE-ESTABLISH SPEED AND PITCH. NO FLIGHT DIRECTOR DURING RECOVERY
+    controls:
+      - fltinst
+    status: checked
