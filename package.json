@@ -9,12 +9,10 @@
   },
   "scripts": {
     "check": "biome check . && pnpm -r --if-present run check",
-    "test": "pnpm -r --if-present run test",
-    "tauri": "tauri"
+    "test": "pnpm -r --if-present run test"
   },
   "devDependencies": {
     "@biomejs/biome": "catalog:",
-    "@tauri-apps/cli": "catalog:",
     "lefthook": "catalog:",
     "typescript": "catalog:"
   }

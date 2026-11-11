@@ -29,7 +29,7 @@ checks dependencies. The git hooks (installed by `pnpm install`) run the quick p
 - Commit messages follow [Conventional Commits](https://www.conventionalcommits.org/):
   `feat: …`, `fix: …`, `docs: …`, `pack(ifly-737-max8): …`.
 - Every bug fix comes with a test that would have caught it.
-- Keep logic in `crates/`. The Tauri shell and the interface stay thin.
+- Keep logic in `crates/`. The host crates (`crates/web-host`) and the interface stay thin.
 - Never put an aircraft name in engine code. Aircraft differences belong in pack data.
 - American English everywhere: code identifiers, pack field names, error messages, docs and pack content (color, behavior, license as a noun, optimize, pressurization).
   Exceptions keep their exact spelling: SPDX license IDs, file names such as `LICENSE` and `LICENSES/`, and anything quoted from outside sources.

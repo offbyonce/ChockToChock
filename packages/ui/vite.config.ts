@@ -4,12 +4,9 @@
 import { svelte } from "@sveltejs/vite-plugin-svelte";
 import { defineConfig } from "vitest/config";
 
-// Tauri expects a fixed port and must see Rust errors in the terminal.
+// The shared package is built by the apps that use it; this config is for its tests.
 export default defineConfig(({ mode }) => ({
   plugins: [svelte()],
-  clearScreen: false,
-  server: { port: 1420, strictPort: true },
-  build: { target: "es2022", outDir: "dist", emptyOutDir: true },
   // Vitest runs in "test" mode; Svelte's browser build is needed for component tests.
   resolve: mode === "test" ? { conditions: ["browser"] } : {},
   test: {

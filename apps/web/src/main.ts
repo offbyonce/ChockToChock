@@ -1,11 +1,12 @@
 // SPDX-FileCopyrightText: 2026 offbyonce
 // SPDX-License-Identifier: MIT
 
+import { App, hostContext } from "@chocktochock/ui";
+import "@chocktochock/ui/app.css";
 import { mount } from "svelte";
-import App from "./App.svelte";
-import "./app.css";
+import { webHost } from "./web-host";
 
 const target = document.getElementById("app");
 if (!target) throw new Error("missing #app element");
 
-export default mount(App, { target });
+export default mount(App, { target, context: hostContext(webHost) });

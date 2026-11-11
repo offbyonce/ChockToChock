@@ -21,14 +21,17 @@ aircraft can be added without changing the app.
 
 | Path | What it is |
 | --- | --- |
+| `crates/app-core` | App operations shared by every host |
 | `crates/checklist-core` | The checklist domain: steps and sessions. No I/O. |
 | `crates/pack` | Pack loading (YAML), validation and schemas |
 | `crates/pack-cli` | The `pack` command for checking packs |
 | `crates/simbrief` | SimBrief flight plan parsing |
 | `crates/store` | Saved data (SQLite); parked during Phase 2 |
-| `apps/desktop/src-tauri` | The desktop app shell (Tauri 2); parked during Phase 2 |
-| `apps/desktop/ui` | The interface (Svelte 5) |
-| `packages/bindings` | Typed calls from the interface to Rust; types generated from Rust |
+| `crates/web-host` | WebAssembly glue for the web app |
+| `apps/web` | The web app (GitHub Pages) |
+| `apps/desktop` | The desktop app shell (Tauri 2); parked during Phase 2 |
+| `packages/ui` | The shared interface (Svelte 5) |
+| `packages/bindings` | TypeScript types generated from Rust |
 | `packs/` | Aircraft and library packs (checklist content) |
 | `schemas/` | JSON Schemas for pack authors (generated) |
 | `docs/` | Setup guide and decision records |

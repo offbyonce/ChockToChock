@@ -11,9 +11,10 @@ do not reverse one without the maintainer's agreement.
 ## What this project is
 
 A free training app for flight simulator pilots: checklists, flows, memory items, CDU
-walkthroughs and aircraft systems. Desktop first (Tauri 2, Rust core, Svelte 5), Windows as the
-main target, macOS and Linux too. Aircraft are data packs in `packs/`; the engine never names an
-aircraft. **The app never connects to the simulator** (decision 0006).
+walkthroughs and aircraft systems. Web first (decision 0009): a hosted web app on GitHub Pages
+that installs and works offline, with the Rust core running as WebAssembly and a Svelte 5
+interface; a desktop build (Tauri 2) is parked for later. Aircraft are data packs in `packs/`; the
+engine never names an aircraft. **The app never connects to the simulator** (decision 0006).
 
 ## Non-negotiable rules
 
@@ -33,8 +34,8 @@ aircraft. **The app never connects to the simulator** (decision 0006).
 
 **Code:**
 
-- Logic lives in `crates/`. The Tauri shell (`apps/desktop/src-tauri`) and the interface stay
-  thin. No aircraft names in engine code; differences come from pack data.
+- Logic lives in `crates/`. The host crates (`crates/web-host`; the parked Tauri shell) and the
+  interface stay thin. No aircraft names in engine code; differences come from pack data.
 - Rust types are the single source of truth. Regenerate derived files, never edit them by hand:
   `just schemas` (JSON Schemas) and `just bindings` (TypeScript types).
 - Every bug fix comes with a test that would have caught it.
@@ -80,10 +81,10 @@ aircraft. **The app never connects to the simulator** (decision 0006).
 | `crates/simbrief` | SimBrief OFP parsing |
 | `crates/store` | SQLite saved data and migrations. Parked: not in the workspace (0010) |
 | `crates/web-host` | Thin WebAssembly glue for the web app (exports arrive in Phase 2, step 5) |
-| `apps/web` | Web app for GitHub Pages; `just site` builds it into `apps/web/dist` (decisions 0009, 0010) |
-| `apps/desktop/src-tauri` | Tauri shell: commands, capabilities, config. Parked: not in the workspace (0010) |
-| `apps/desktop/ui` | Svelte 5 interface |
-| `packages/bindings` | Typed command wrappers; `src/generated` comes from Rust |
+| `apps/web` | Web app: Vite entry and web host. `just site` builds the site into `apps/web/dist`; for now it publishes `placeholder/` (decisions 0009, 0010) |
+| `apps/desktop` | Tauri shell (`src-tauri`) and its host. Parked: not in the workspace (0010) |
+| `packages/ui` | The shared Svelte 5 interface and its host interface (`src/host.ts`) |
+| `packages/bindings` | TypeScript types generated from Rust (`src/generated`), and `isAppError` |
 | `tools/import-3x` | One-way converter from the 3.0 checklist to pack YAML (retired, kept for reference) |
 | `packs/` | Content packs (CC BY-NC-SA 4.0) |
 | `schemas/` | Generated JSON Schemas |
@@ -93,7 +94,7 @@ aircraft. **The app never connects to the simulator** (decision 0006).
 
 ```sh
 just setup     # pnpm install + cargo fetch (once after cloning)
-just dev       # run the app (needs a desktop session)
+just dev       # run the web app's dev server
 just test      # Rust and interface tests
 just packs     # validate every pack
 just site      # build the web site into apps/web/dist

@@ -3,8 +3,11 @@ SPDX-FileCopyrightText: 2026 offbyonce
 SPDX-License-Identifier: MIT
 -->
 <script lang="ts">
-  import { type AppInfo, type Checklist, appInfo, exampleChecklist, isAppError } from "@chocktochock/bindings";
+  import { type AppInfo, type Checklist, isAppError } from "@chocktochock/bindings";
+  import { getHost } from "./host";
   import ChecklistView from "./lib/ChecklistView.svelte";
+
+  const host = getHost();
 
   let info = $state<AppInfo | null>(null);
   let list = $state<Checklist | null>(null);
@@ -12,7 +15,7 @@ SPDX-License-Identifier: MIT
 
   async function load(): Promise<void> {
     try {
-      [info, list] = await Promise.all([appInfo(), exampleChecklist()]);
+      [info, list] = await Promise.all([host.appInfo(), host.exampleChecklist()]);
     } catch (e) {
       error = isAppError(e) ? `${e.kind}: ${e.message}` : String(e);
     }
