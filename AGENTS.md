@@ -46,7 +46,7 @@ aircraft. **The app never connects to the simulator** (decision 0006).
 - Work on a branch, never directly on `main`. Never force-push, rewrite history or delete branches
   you did not create.
 - Sign off every commit: `git commit -s`. Conventional Commit messages (`feat:`, `fix:`,
-  `docs:`, `test:`, `chore:`, `ci:`, `pack(<id>):`).
+  `docs:`, `test:`, `refactor:`, `chore:`, `ci:`, `pack(<id>):`).
 - Commit messages carry no session links or session ids (no Claude-Session or similar trailers) and
   no machine names. Co-Authored-By lines are fine.
 - Run `just ci` before every push. If it fails, fix it; never skip hooks or disable checks.
