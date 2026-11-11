@@ -29,13 +29,26 @@ jobs:
         with:
           persist-credentials: false
 
+      # `just site` builds the WebAssembly module and the packs with Rust.
+      - name: Rust (version and targets from rust-toolchain.toml)
+        run: |
+          rustup show active-toolchain || rustup toolchain install
+          rustup target add wasm32-unknown-unknown
+
+      # wasm-bindgen must be the same version as the crate pinned in Cargo.toml.
       - uses: taiki-e/install-action@v2
         with:
-          tool: just
+          tool: just,wasm-bindgen@0.2.130
+
+      # pnpm first (version from package.json "packageManager"), so setup-node can find it.
+      - uses: pnpm/action-setup@v4
 
       - uses: actions/setup-node@v7
         with:
           node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
 
       - run: just site
 
