@@ -81,7 +81,7 @@ engine never names an aircraft. **The app never connects to the simulator** (dec
 | `crates/simbrief` | SimBrief OFP parsing |
 | `crates/store` | SQLite saved data and migrations. Parked: not in the workspace (0010) |
 | `crates/web-host` | Thin WebAssembly glue for the web app; `just wasm` builds it (wasm-bindgen CLI at the crate's pinned version) |
-| `apps/web` | Web app: Vite entry, web host (`src/core.ts` calls the WebAssembly module) and the SimBrief probe page. `just site` builds it into `apps/web/dist` (decisions 0009, 0010) |
+| `apps/web` | Web site: placeholder front page, the work-in-progress app at `app/` (web host in `src/`; `src/core.ts` calls the WebAssembly module) and the SimBrief probe page. `just site` builds it into `apps/web/dist` (decisions 0009, 0010) |
 | `apps/desktop` | Tauri shell (`src-tauri`) and its host. Parked: not in the workspace (0010) |
 | `packages/ui` | The shared Svelte 5 interface and its host interface (`src/host.ts`) |
 | `packages/bindings` | TypeScript types generated from Rust (`src/generated`), and `isAppError` |

@@ -15,7 +15,7 @@ setup:
     pnpm install
     cargo fetch
 
-# Run the web app's dev server.
+# Run the web app's dev server (the app is at /app/).
 dev: wasm web-packs
     pnpm --filter @chocktochock/web dev
 
@@ -53,8 +53,9 @@ wasm:
 web-packs:
     cargo run -q -p pack-cli -- build packs apps/web/public/packs
 
-# Build the deployable web site into apps/web/dist (published to GitHub Pages): the app and the
-# SimBrief probe page, with the WebAssembly module and the flattened packs.
+# Build the deployable web site into apps/web/dist (published to GitHub Pages): the placeholder
+# front page, the work-in-progress app at app/ and the SimBrief probe page, with the WebAssembly
+# module and the flattened packs.
 site: wasm web-packs
     pnpm --filter @chocktochock/web build
 

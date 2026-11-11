@@ -3,6 +3,7 @@
 
 import { App, hostContext } from "@chocktochock/ui";
 import "@chocktochock/ui/app.css";
+import "./app-page.css";
 import { mount } from "svelte";
 import { webHost } from "./web-host";
 

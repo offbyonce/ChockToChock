@@ -1,0 +1,12 @@
+/*
+ * SPDX-FileCopyrightText: 2026 offbyonce
+ * SPDX-License-Identifier: MIT
+ *
+ * The app page's own notice, until the first-launch notice arrives (Phase 2 brief, step 10).
+ */
+.sim-only {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid var(--panel);
+  color: var(--muted);
+  font-size: 0.875rem;
+}

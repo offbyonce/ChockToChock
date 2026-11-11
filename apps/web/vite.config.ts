@@ -34,7 +34,8 @@ function contentSecurityPolicy(): Plugin {
 
 // `base: "./"` keeps paths relative, so the built site works under the Pages project path
 // (decision 0010). `just site` builds the WebAssembly module and the packs first; the packs are
-// copied from ./public.
+// copied from ./public. Pages: the placeholder front page, the app at app/ and the SimBrief
+// probe page.
 export default defineConfig({
   plugins: [svelte(), contentSecurityPolicy()],
   base: "./",
@@ -42,8 +43,13 @@ export default defineConfig({
   build: {
     target: "es2022",
     rollupOptions: {
-      // Relative to this folder, where the build runs.
-      input: { index: "index.html", "simbrief-probe": "simbrief-probe.html" },
+      // Relative to this folder, where the build runs. The front page stays the placeholder until
+      // the app is ready for users; the app is at app/ meanwhile (Phase 2 brief, steps 10 and 11).
+      input: {
+        index: "index.html",
+        app: "app/index.html",
+        "simbrief-probe": "simbrief-probe.html",
+      },
     },
   },
 });

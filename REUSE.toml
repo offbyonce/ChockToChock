@@ -16,7 +16,6 @@ path = [
     "**/*.ico",
     "**/*.icns",
     "packages/bindings/src/generated/**",
-    "apps/web/index.html",
 ]
 precedence = "aggregate"
 SPDX-FileCopyrightText = "2026 offbyonce"

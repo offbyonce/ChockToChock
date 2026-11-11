@@ -61,8 +61,10 @@ every change to `.github/workflows/`. For those, prepare what the step needs and
    temporary JavaScript plan reader (`ofp-probe.js` and its test).
    **Done 2026-11-11:** `pack build` writes `<id>.json`; the web host runs as WebAssembly and the
    app uses it; the `simbrief` crate reads fetched JSON and saved JSON or XML files, and the
-   JavaScript reader is gone. `just site` builds the app and the probe page, with a strict content
-   security policy injected into the built pages. The app does not use the iFly pack yet (step 7).
+   JavaScript reader is gone. `just site` builds the site with a strict content security policy
+   injected into every page: the placeholder stays the front page, the work-in-progress app is at
+   the unlinked `app/` (noindex, with the "simulator training only" line) and the probe page stays
+   where it was. The app does not use the iFly pack yet (step 7).
 6. **Installable and offline.** Web app manifest, service worker and bundled fonts and icons, under
    the content security policy that step 5 added. A new version never replaces content in the
    middle of a session; the app offers a reload instead. Show it working offline in a browser.
@@ -92,7 +94,9 @@ every change to `.github/workflows/`. For those, prepare what the step needs and
     A short privacy note in the app that says what is stored (progress, settings and the SimBrief
     username), where (in this browser, on this device), that nothing is sent to us, that SimBrief
     is contacted directly from the browser, and that GitHub Pages logs visitor addresses under
-    GitHub's privacy statement.
+    GitHub's privacy statement. When the app is ready for users (here or in step 11, as the
+    maintainer decides), it replaces the placeholder as the front page (`index.html`), and the
+    temporary `app/` address and its interim notice line go.
 11. **Beta check.** Run through the parity list on desktop and tablet browsers, installed and
     offline, and report what passes and what does not. Any workflow change still needed, such as
     adding the web build to the CI checks, is listed for the maintainer.
