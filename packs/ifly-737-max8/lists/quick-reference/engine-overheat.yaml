@@ -17,18 +17,15 @@ steps:
     expect: DISENGAGE
     controls:
       - apdisc
-    status: draft
   - id: ifly-737-max8.quick-reference.thrust-lever-affected-engine-engine-overheat
     number: 2
     text: THRUST LEVER (AFFECTED ENGINE)
     expect: "CONFIRM, CLOSE"
     controls:
       - thrust
-    status: draft
   - id: ifly-737-max8.quick-reference.if-eng-overheat-light-stays-illuminated
     number: 3
     text: "OVERHEAT LIGHT STILL ON"
     expect: "GO TO ENGINE FIRE, SEVERE DAMAGE OR SEPARATION"
     controls:
       - firesw
-    status: draft

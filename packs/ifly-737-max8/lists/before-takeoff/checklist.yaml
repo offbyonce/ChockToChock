@@ -21,7 +21,9 @@ steps:
     why: Must match the planned flaps
     check: "CDU, performance sheet (PWB) and flap indication agree"
     check_detail: Green light
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.before-takeoff.takeoff-data
     text: TAKEOFF DATA
     expect: "SET, RUNWAY ___"
@@ -31,7 +33,6 @@ steps:
       - runway
     why: Confirms the takeoff reference
     check: Data and runway agree
-    status: draft
   - id: ifly-737-max8.before-takeoff.v2
     text: V2
     expect: "___ SET"
@@ -44,7 +45,6 @@ steps:
     panel_lights:
       mcpset:
         - IAS/MACH
-    status: draft
   - id: ifly-737-max8.before-takeoff.stabilizer-trim
     text: STABILIZER TRIM
     expect: "___ UNITS"
@@ -55,4 +55,6 @@ steps:
     why: Sets the pitch forces at rotation
     check: Trim matches the takeoff data
     check_detail: In the green band
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09

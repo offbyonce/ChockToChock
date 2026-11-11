@@ -17,11 +17,9 @@ steps:
     expect: "CONFIRM, PULL AND ROTATE"
     controls:
       - apufire
-    status: draft
   - id: ifly-737-max8.quick-reference.apu-switch
     number: 2
     text: APU SWITCH
     expect: "OFF"
     controls:
       - apusw
-    status: draft

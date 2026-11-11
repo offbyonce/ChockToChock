@@ -15,7 +15,9 @@ steps:
     controls:
       - elechyd
     why: Not needed when secured
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.secure.irs-check
     text: IRS
     expect: "OFF"
@@ -23,28 +25,36 @@ steps:
       - irs
     note: Stops the navigation system. It must realign before the next flight.
     why: Must realign before the next flight
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.secure.window-heat
     text: WINDOW HEAT
     expect: "OFF"
     controls:
       - wheat
     why: Not needed when secured
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.secure.emergency-exit-lights-check
     text: EMERGENCY EXIT LIGHTS
     expect: "OFF"
     controls:
       - emerext
     why: ARMED would light the exit lights when power goes off
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.secure.pack-switches-check
     text: PACK SWITCHES
     expect: "OFF"
     controls:
       - packs
     why: Stops the packs before the air source goes off
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.secure.apu-or-ground-power-check
     text: APU OR GROUND POWER
     expect: "OFF"
@@ -55,7 +65,9 @@ steps:
     panel_lights:
       apub:
         - APU GEN
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.secure.battery-check
     text: BATTERY
     expect: "OFF"
@@ -63,4 +75,6 @@ steps:
       - bat
     note: The last switch.
     why: Stops battery drain
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09

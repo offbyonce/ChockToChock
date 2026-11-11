@@ -18,14 +18,12 @@ steps:
     expect: "ON, 100%"
     controls:
       - mask
-    status: draft
   - id: ifly-737-max8.memory.crew-communications
     number: 2
     text: CREW COMMUNICATIONS
     expect: ESTABLISH
     controls:
       - mask
-    status: draft
   - id: ifly-737-max8.memory.pressurization-mode-selector
     number: 3
     text: PRESSURIZATION MODE SELECTOR
@@ -36,7 +34,6 @@ steps:
     panel_lights:
       press:
         - MODE
-    status: draft
   - id: ifly-737-max8.memory.outflow-valve-switch
     number: 4
     text: OUTFLOW VALVE SWITCH
@@ -44,7 +41,6 @@ steps:
     controls:
       - outflow
     non_recall: true
-    status: draft
   - id: ifly-737-max8.memory.if-cabin-altitude-is-uncontrollable
     number: 5
     text: IF CABIN ALTITUDE IS UNCONTROLLABLE
@@ -52,7 +48,6 @@ steps:
     controls:
       - sblts
     non_recall: true
-    status: draft
   - id: ifly-737-max8.memory.if-cabin-altitude-is-above-or-expected-to-go
     number: 6
     text: "IF CABIN ALTITUDE IS ABOVE, OR EXPECTED TO GO ABOVE, 14,000 FT"
@@ -60,7 +55,6 @@ steps:
     controls:
       - paxoxy
     non_recall: true
-    status: draft
   - id: ifly-737-max8.memory.if-cabin-altitude-is-controllable
     number: 7
     text: "IF THE CABIN ALTITUDE RESPONDS"
@@ -68,4 +62,3 @@ steps:
     controls:
       - press
     non_recall: true
-    status: draft

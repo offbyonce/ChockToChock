@@ -16,12 +16,52 @@
     "lights"
   ],
   "$defs": {
+    "Confirmation": {
+      "description": "An internal maintenance record (decision 0013): the kind of source and the day it was\nrecorded, never who or which document. The app never shows it.",
+      "type": "object",
+      "properties": {
+        "date": {
+          "description": "`YYYY-MM-DD`.",
+          "type": "string"
+        },
+        "kind": {
+          "$ref": "#/$defs/ConfirmationKind"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "date"
+      ]
+    },
+    "ConfirmationKind": {
+      "description": "What a step or light note was confirmed against (decision 0013, which defines each kind).\nThe list grows by adding a kind there and here.",
+      "oneOf": [
+        {
+          "description": "Matches the aircraft developer's documentation for the simulated aircraft.",
+          "type": "string",
+          "const": "vendor-docs"
+        },
+        {
+          "description": "Matches an official public document from an aviation authority.",
+          "type": "string",
+          "const": "regulator-docs"
+        }
+      ]
+    },
     "LightNote": {
       "description": "What a panel light means.",
       "type": "object",
       "properties": {
         "action": {
           "type": "string"
+        },
+        "confirmed_by": {
+          "description": "Internal record of what this note was confirmed against (decision 0013).",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Confirmation"
+          }
         },
         "locator": {
           "description": "`<panel>/<section>/<label>/<n>`, where n counts items with that label from 1.",
@@ -34,16 +74,6 @@
           "description": "True when seeing this light is normal.",
           "type": "boolean"
         },
-        "status": {
-          "anyOf": [
-            {
-              "$ref": "#/$defs/Status"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
         "when": {
           "type": "string"
         }
@@ -55,14 +85,6 @@
         "when",
         "action",
         "normal"
-      ]
-    },
-    "Status": {
-      "description": "How far a step has been reviewed.",
-      "type": "string",
-      "enum": [
-        "draft",
-        "checked"
       ]
     }
   }

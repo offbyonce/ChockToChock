@@ -34,7 +34,7 @@ pub use content::{
     UserOption, Zone,
 };
 pub use model::{
-    AutoStart, AutoStartPick, Checklist, FillField, HintPart, ListKind, MAX_ROUTE_LEG, OptionTest,
-    Quick, ShowIf, Status, Step, StepId, Timer, WalkaroundPoint,
+    AutoStart, AutoStartPick, Checklist, Confirmation, ConfirmationKind, FillField, HintPart,
+    ListKind, MAX_ROUTE_LEG, OptionTest, Quick, ShowIf, Step, StepId, Timer, WalkaroundPoint,
 };
 pub use session::{Progress, Session, SessionError};

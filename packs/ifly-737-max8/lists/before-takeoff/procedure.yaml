@@ -17,7 +17,9 @@ steps:
       - oil
     why: Needed before takeoff thrust
     check: Oil at least 31C
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.before-takeoff.efis-control-panels
     number: 2
     text: EFIS CONTROL PANELS
@@ -29,7 +31,9 @@ steps:
       efispanel:
         - WXR
         - TERR
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.before-takeoff.pack-switches
     text: PACK SWITCHES
     expect: AUTO OR OFF PER PERFORMANCE DATA
@@ -38,4 +42,3 @@ steps:
     why: The pack setting must match the one used in your preflight performance calculations
     check: Both PACK switches set for takeoff
     check_detail: "AUTO is normal. OFF when conditions warrant, to align with preflight performance calculations"
-    status: draft

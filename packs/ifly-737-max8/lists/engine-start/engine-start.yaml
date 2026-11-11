@@ -16,12 +16,13 @@ steps:
     controls:
       - atcclr
     why: Request it and read it back
-    status: draft
   - id: ifly-737-max8.engine-start.secondary-engine-indications
     text: "SECONDARY ENGINE INDICATIONS"
     expect: "DISPLAYED"
     why: "N2 and EGT are shown here, and both are watched during the start."
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.engine-start.pack-switches
     number: 2
     text: PACK SWITCHES
@@ -31,7 +32,9 @@ steps:
     quick: always
     why: "With the packs off, all the APU bleed air goes to the starters"
     explain: packoff
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.engine-start.apu-bleed-switch
     number: 3
     text: APU BLEED SWITCH
@@ -40,7 +43,9 @@ steps:
       - apubleed
     note: The APU supplies the air that turns the starters. The packs stay off so that air reaches the engines.
     why: APU air turns the starters
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.engine-start.ignition-selector
     text: IGNITION SELECTOR
     expect: "BOTH"
@@ -52,7 +57,9 @@ steps:
     panel_lights:
       starts:
         - IGNITION
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.engine-start.engine-1-start-switch
     number: 4
     section: Engine 1
@@ -70,7 +77,9 @@ steps:
     panel_lights:
       starts:
         - ENGINE START 1
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.engine-start.motoring-indication-engine-start
     number: 5
     text: MOTORING INDICATION
@@ -83,7 +92,9 @@ steps:
     check: Motoring indication cleared
     if_not: Still showing
     if_not_detail: Do not lift the start lever
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.engine-start.engine-1-start-lever
     number: 6
     text: ENGINE 1 START LEVER
@@ -97,7 +108,6 @@ steps:
     if_not_detail: Run the Aborted engine start checklist (Quick reference)
     explain: lever
     note: "If 25% N2 is not reached, move to IDLE at maximum motoring, but not below 20% N2. This comes from older 737 practice and is not confirmed for the MAX."
-    status: draft
   - id: ifly-737-max8.engine-start.fuel-flow-and-egt-engine-start
     number: 7
     text: FUEL FLOW AND EGT
@@ -110,7 +120,6 @@ steps:
     check_detail: "First a short valve test: fuel flow zero and ENG VALVE CLOSED bright. Then fuel flow rises"
     if_not: No EGT rise
     if_not_detail: "The EEC may stop the start by itself. If it does not, run the Aborted engine start checklist"
-    status: draft
   - id: ifly-737-max8.engine-start.engine-1-start-switch-engine-start
     number: 8
     text: ENGINE 1 START SWITCH
@@ -124,7 +133,9 @@ steps:
     panel_lights:
       starts:
         - ENGINE START 1
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.engine-start.engine-1
     number: 9
     text: ENGINE 1
@@ -136,7 +147,9 @@ steps:
     why: Engine settled at idle
     check: "N1, N2, EGT and oil pressure stable, LOW OIL PRESSURE light OUT"
     check_detail: No alerts
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.engine-start.engine-2-start-switch
     number: 10
     section: Engine 2
@@ -154,7 +167,9 @@ steps:
     panel_lights:
       starts:
         - ENGINE START 2
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.engine-start.motoring-indication
     number: 11
     text: MOTORING INDICATION
@@ -167,7 +182,9 @@ steps:
     check: Motoring indication cleared
     if_not: Still showing
     if_not_detail: Do not lift the start lever
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.engine-start.engine-2-start-lever
     number: 12
     text: ENGINE 2 START LEVER
@@ -181,7 +198,6 @@ steps:
     if_not_detail: Run the Aborted engine start checklist (Quick reference)
     explain: lever
     note: "If 25% N2 is not reached, move to IDLE at maximum motoring, but not below 20% N2. This comes from older 737 practice and is not confirmed for the MAX."
-    status: draft
   - id: ifly-737-max8.engine-start.fuel-flow-and-egt
     number: 13
     text: FUEL FLOW AND EGT
@@ -194,7 +210,6 @@ steps:
     check_detail: "First a short valve test: fuel flow zero and ENG VALVE CLOSED bright. Then fuel flow rises"
     if_not: No EGT rise
     if_not_detail: "The EEC may stop the start by itself. If it does not, run the Aborted engine start checklist"
-    status: draft
   - id: ifly-737-max8.engine-start.engine-2-start-switch-engine-start
     number: 14
     text: ENGINE 2 START SWITCH
@@ -208,7 +223,9 @@ steps:
     panel_lights:
       starts:
         - ENGINE START 2
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.engine-start.engine-2
     number: 15
     text: ENGINE 2
@@ -220,11 +237,15 @@ steps:
     why: Engine settled at idle
     check: "N1, N2, EGT and oil pressure stable, LOW OIL PRESSURE light OUT"
     check_detail: No alerts
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.engine-start.ground-support-items
     text: "GROUND SUPPORT ITEMS (EFB)"
     expect: "ALL REMOVED"
     note: "The iFly has no ground crew, so the EFB stands in for them."
     why: "Nothing may be left attached before taxi."
     simulator_model: true
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09

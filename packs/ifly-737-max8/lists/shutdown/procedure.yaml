@@ -20,7 +20,9 @@ steps:
     why: Puts APU power on both transfer buses
     check: APU GEN OFF BUS light OUT
     how: gens2
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.shutdown.parking-brake
     number: 2
     text: PARKING BRAKE
@@ -30,7 +32,9 @@ steps:
     quick: always
     why: Holds the airplane at the gate
     check: Parking brake light ON
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.shutdown.engine-start-levers
     number: 3
     text: ENGINE START LEVERS
@@ -40,7 +44,9 @@ steps:
     quick: always
     note: Cuts fuel to the engines.
     why: Stops fuel and shuts down the engines
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.shutdown.fasten-belts-selector
     number: 4
     text: FASTEN BELTS SELECTOR
@@ -48,7 +54,9 @@ steps:
     controls:
       - sblts
     why: Passengers may stand
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.shutdown.anti-collision-light
     number: 5
     text: ANTI-COLLISION LIGHT
@@ -57,7 +65,9 @@ steps:
       - beacon
     quick: always
     why: Engines have stopped
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.shutdown.taxi-light
     text: TAXI LIGHT
     expect: "OFF"
@@ -68,7 +78,9 @@ steps:
     check: TAXI switch OFF
     if_not: Taxi light still on
     if_not_detail: Switch the TAXI light OFF
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.shutdown.fuel-pump-switches
     number: 6
     text: FUEL PUMP SWITCHES
@@ -77,7 +89,9 @@ steps:
       - fuelpumps
     quick: always
     why: "Engines stopped, nothing to feed"
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.shutdown.cab-util-and-ife-pass-seat-switches
     number: 7
     text: CAB/UTIL AND IFE/PASS SEAT SWITCHES
@@ -85,7 +99,9 @@ steps:
     controls:
       - cabutil
     why: Cabin power not needed now
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.shutdown.anti-ice
     number: 8
     text: ANTI-ICE
@@ -94,7 +110,9 @@ steps:
       - aice
     quick: always
     why: Not needed after shutdown
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.shutdown.electric-hydraulic-pump-switches
     number: 9
     text: ELECTRIC HYDRAULIC PUMP SWITCHES
@@ -103,7 +121,9 @@ steps:
       - elechyd
     quick: always
     why: No hydraulic pressure needed at the gate
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.shutdown.pack-switches
     number: 10
     text: PACK SWITCHES
@@ -112,7 +132,9 @@ steps:
       - packs
     why: Supplies conditioned air to the cabin
     check: PACK lights OUT
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.shutdown.isolation-valve-switch
     number: 11
     text: ISOLATION VALVE SWITCH
@@ -120,7 +142,9 @@ steps:
     controls:
       - iso
     why: One APU feeds both packs
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.shutdown.apu-bleed-switch
     number: 12
     text: "ENGINE AND APU BLEED SWITCHES"
@@ -128,7 +152,9 @@ steps:
     controls:
       - apubleed
     why: Feeds APU air for ground air conditioning
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.shutdown.flight-directors
     number: 13
     text: FLIGHT DIRECTORS
@@ -137,7 +163,9 @@ steps:
       - fd
     note: Turns off the guidance for the next crew.
     why: Reset for the next crew
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.taxi-in.transponder
     text: TRANSPONDER
     expect: ALT OFF
@@ -146,7 +174,9 @@ steps:
     quick: always
     note: Once parked, set the mode selector to ALT OFF.
     why: The transponder stops reporting once the flight is over.
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.shutdown.wheel-chocks-and-cones
     number: 14
     text: WHEEL CHOCKS AND CONES
@@ -156,7 +186,9 @@ steps:
     note: "Without chocks, the airplane can creep as parking brake pressure bleeds away."
     why: Holds the airplane without the brake
     check: "Chocks in place before the brake is released"
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.shutdown.ground-power
     text: GROUND POWER
     expect: "IF AVAILABLE, CONNECT AND VERIFY ACCEPTED, THEN APU OFF"
@@ -165,7 +197,6 @@ steps:
     why: Takes over before the APU goes off
     check: Ground power on the buses
     check_detail: "GRD POWER switch ON once the AVAILABLE light is on, then the APU switch OFF"
-    status: draft
   - id: ifly-737-max8.shutdown.irs
     number: 15
     text: IRS
@@ -173,4 +204,3 @@ steps:
     controls:
       - irs
     why: Leaving NAV avoids a new alignment if you fly again soon
-    status: draft

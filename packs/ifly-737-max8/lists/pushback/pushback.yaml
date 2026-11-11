@@ -19,7 +19,6 @@ steps:
     note: "If it is cold or wet, confirm the wings and tail are clear of frost and ice before you leave."
     why: No frost or ice before you leave
     check: Wings and tail clear
-    status: draft
   - id: ifly-737-max8.pushback.maintenance-log
     number: 1
     text: MAINTENANCE LOG
@@ -30,7 +29,6 @@ steps:
     why: Confirms the airplane is ready
     check: Log aboard
     check_detail: Nothing open that stops the flight
-    status: draft
   - id: ifly-737-max8.pushback.tcas-and-transponder
     number: 1
     text: TCAS AND TRANSPONDER
@@ -43,7 +41,6 @@ steps:
     note: "Squawk code set, and the transponder at AUTO so it transmits and ground controllers can see you."
     why: Ground controllers can see you
     check: Code set
-    status: draft
   - id: ifly-737-max8.pushback.pushback-clearance
     number: 1
     text: PUSHBACK CLEARANCE
@@ -51,7 +48,6 @@ steps:
     controls:
       - atcclr
     why: Request it and read it back
-    status: draft
   - id: ifly-737-max8.pushback.wheel-chocks
     text: WHEEL CHOCKS
     expect: VERIFY REMOVED
@@ -62,7 +58,6 @@ steps:
     check: Chocks removed before the airplane is pushed
     if_not: Chocks still in place
     if_not_detail: "Remove them, from the EFB ground services page in the sim, before releasing the brake"
-    status: draft
   - id: ifly-737-max8.pushback.parking-brake
     number: 2
     text: PARKING BRAKE
@@ -72,14 +67,15 @@ steps:
     quick: always
     why: Lets the tug move the airplane
     check: Parking brake light OUT
-    status: draft
   - id: ifly-737-max8.pushback.towing-pin-inserted
     text: "TOWING PIN (EFB)"
     expect: "INSERTED"
     note: "The iFly has no ground crew, so the EFB stands in for them."
     why: "Cuts hydraulic pressure to the nose wheel steering so the tug can turn it."
     simulator_model: true
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.pushback.pushback
     number: 3
     text: PUSHBACK
@@ -91,7 +87,9 @@ steps:
     why: "Moves the airplane back from the gate. A sim step, with no switch on the real panel"
     check: Airplane moving back
     simulator_model: true
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.pushback.parking-brake-pushback
     number: 4
     text: PARKING BRAKE
@@ -101,11 +99,12 @@ steps:
     quick: always
     why: Holds the airplane for start
     check: Parking brake light ON
-    status: draft
   - id: ifly-737-max8.pushback.towing-pin-removed
     text: "TOWING PIN (EFB)"
     expect: "REMOVED"
     note: "The iFly has no ground crew, so the EFB stands in for them."
     why: "Restores nose wheel steering after the push."
     simulator_model: true
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09

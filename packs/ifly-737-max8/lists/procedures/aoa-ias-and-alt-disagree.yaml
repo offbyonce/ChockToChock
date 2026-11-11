@@ -16,25 +16,33 @@ steps:
     expect: ACCOMPLISH AIRSPEED UNRELIABLE
     controls:
       - fltinst
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-10
   - id: ifly-737-max8.procedures.ias-disagree
     number: 2
     text: IAS DISAGREE
     expect: ACCOMPLISH AIRSPEED UNRELIABLE
     controls:
       - fltinst
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-10
   - id: ifly-737-max8.procedures.alt-disagree-with-ias-disagree
     number: 3
     text: ALT DISAGREE WITH IAS DISAGREE
     expect: ACCOMPLISH AIRSPEED UNRELIABLE
     controls:
       - fltinst
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-10
   - id: ifly-737-max8.procedures.alt-disagree-alone
     number: 4
     text: ALT DISAGREE ALONE
     expect: "CHECK ALTIMETER SETTINGS. IF THE DISAGREE REMAINS, DO NOT USE THE FLIGHT PATH VECTOR, AND SELECT THE TRANSPONDER TO THE RELIABLE SIDE, OR ALTITUDE REPORTING OFF"
     controls:
       - xpndr
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-10

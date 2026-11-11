@@ -154,7 +154,9 @@ steps:
   - id: demo.preflight.irs
     text: IRS mode selectors
     expect: NAV
-    status: draft
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
     sim_simplified: true
   - id: demo.preflight.yaw-damper
     text: Yaw damper
@@ -167,6 +169,10 @@ steps:
         assert_eq!(list.steps.len(), 2);
         // `NO` must stay text: a switch position, not a boolean.
         assert_eq!(list.steps[1].expect, "NO");
+        // An unquoted date stays text too.
+        let record = &list.steps[0].confirmed_by[0];
+        assert_eq!(record.kind, checklist_core::ConfirmationKind::VendorDocs);
+        assert_eq!(record.date, "2026-11-09");
     }
 
     #[test]

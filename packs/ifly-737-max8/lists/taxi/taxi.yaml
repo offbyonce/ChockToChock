@@ -19,7 +19,9 @@ steps:
       - prefix: "GND "
         field: ground_frequency
     why: Request it and read it back
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.taxi.taxi-and-runway-turnoff-lights
     number: 2
     text: TAXI AND RUNWAY TURNOFF LIGHTS
@@ -30,7 +32,6 @@ steps:
     quick: always
     note: Lets you and others see the taxiway at night or in low visibility.
     why: See and be seen on the taxiway
-    status: draft
   - id: ifly-737-max8.taxi.wing-light
     text: WING LIGHT
     expect: "ON"
@@ -38,7 +39,6 @@ steps:
       - winglt
     why: Makes the airplane visible and lights the wing for ice checks
     check: Wing leading edges lit
-    status: draft
   - id: ifly-737-max8.taxi.parking-brake
     number: 3
     text: PARKING BRAKE
@@ -48,9 +48,10 @@ steps:
     quick: always
     why: Brakes off to taxi
     check: Parking brake light OUT
-    status: draft
   - id: ifly-737-max8.taxi.taxi-thrust
     text: "TAXI THRUST"
     expect: "ABOUT 30% N1 TO START MOVING, THEN 22 TO 25% N1, 15 KNOTS OR LESS"
     why: "More thrust is needed to break away than to keep rolling."
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09

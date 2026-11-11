@@ -21,7 +21,9 @@ steps:
     note: "Below the transition level, altimeters must read local QNH so you see your true altitude above sea level."
     why: True altitude below transition
     how: baro
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.approach.landing-lights-wing-lights-logo-light
     number: 1
     text: "LANDING LIGHTS, WING LIGHTS, LOGO LIGHT"
@@ -32,7 +34,6 @@ steps:
       - logo
     quick: always
     why: "See and be seen below 10,000 ft"
-    status: draft
   - id: ifly-737-max8.approach.fasten-belts-selector
     number: 2
     text: FASTEN BELTS SELECTOR
@@ -41,7 +42,9 @@ steps:
       - sblts
     note: Tells the cabin to sit down for landing.
     why: Cabin seated for landing
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.approach.multi-mode-receiver
     number: 3
     text: MULTI-MODE RECEIVER
@@ -56,7 +59,9 @@ steps:
     why: Identify it before you rely on it
     check: "ILS ident shown on the PFD, or the Morse ident heard"
     how: ils
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.approach.approach-in-the-cdu
     text: APPROACH IN THE CDU
     expect: CORRECT APPROACH ON THE LEGS PAGE
@@ -69,7 +74,6 @@ steps:
     note: "An RNAV approach follows the route in the FMC, so check it matches the chart."
     why: An RNAV approach follows the FMC route
     check: Approach matches the chart
-    status: draft
   - id: ifly-737-max8.approach.course-selectors
     number: 4
     text: COURSE SELECTORS
@@ -79,7 +83,9 @@ steps:
     quick: always
     why: "Both course selectors on the published final approach course, so the localizer can be compared with it"
     check: Course shows on the ND
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.approach.app-mcp
     text: APP (MCP)
     expect: "ARM, VOR/LOC AND G/S ARMED ON THE FMA"
@@ -95,4 +101,6 @@ steps:
     if_not: Localizer or glideslope does not capture
     if_not_detail: Check the ILS frequency and course
     how: ils
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09

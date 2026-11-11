@@ -19,14 +19,18 @@ steps:
       efispanel:
         - WXR
         - TERR
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.after-landing.autobrake-check
     text: AUTOBRAKE
     expect: "OFF"
     controls:
       - abrake
     why: Taxi on the toe brakes
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.after-landing.flaps-check
     text: FLAPS
     expect: UP
@@ -35,7 +39,9 @@ steps:
     note: Retract once you are clear of the runway.
     why: Flaps are not needed for taxi
     check: Flaps UP
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.after-landing.speedbrake-lever-check
     text: SPEEDBRAKE LEVER
     expect: DOWN DETENT
@@ -43,14 +49,18 @@ steps:
       - speedbrake
     why: Keeps the spoilers stowed on the ground
     check: Lever in DOWN detent
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.after-landing.window-heat
     text: WINDOW HEAT
     expect: ON UNTIL SECURE CHECKLIST
     controls:
       - wheat
     why: Keeps the windows warm and clear until the airplane is secured
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.after-landing.probe-heat-check
     text: PROBE HEAT
     expect: AUTO
@@ -58,7 +68,9 @@ steps:
       - pheat
     note: "AUTO keeps probe heat on while an engine runs, then off after shutdown."
     why: Probe heat stops by itself after shutdown
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.after-landing.engine-start-switches-check
     text: ENGINE START SWITCHES
     expect: "OFF"
@@ -69,11 +81,12 @@ steps:
       starts:
         - ENGINE START 1
         - ENGINE START 2
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.after-landing.apu-switch-check
     text: APU SWITCH
     expect: "START, THEN RELEASE TO ON"
     controls:
       - apusw
     why: Starts the APU for power and air
-    status: draft

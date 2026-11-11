@@ -17,35 +17,30 @@ steps:
     expect: DISENGAGE
     controls:
       - apdisc
-    status: draft
   - id: ifly-737-max8.quick-reference.thrust-lever-affected-engine
     number: 2
     text: THRUST LEVER (AFFECTED ENGINE)
     expect: "CONFIRM, CLOSE"
     controls:
       - thrust
-    status: draft
   - id: ifly-737-max8.quick-reference.start-lever-affected-engine
     number: 3
     text: START LEVER (AFFECTED ENGINE)
     expect: "CONFIRM, CUTOFF"
     controls:
       - slever
-    status: draft
   - id: ifly-737-max8.quick-reference.engine-fire-switch-affected-engine
     number: 4
     text: "FIRE SWITCH, AFFECTED ENGINE"
     expect: "CONFIRM, THEN PULL"
     controls:
       - firesw
-    status: draft
   - id: ifly-737-max8.quick-reference.if-the-engine-fire-switch-or-eng-overheat-light
     number: 5
     text: FIRE SWITCH OR OVERHEAT LIGHT STILL ON
     expect: ROTATE THE FIRE SWITCH TO THE STOP AND HOLD 1 SECOND
     controls:
       - firesw
-    status: draft
   - id: ifly-737-max8.quick-reference.if-the-fire-switch-or-eng-overheat-light-is
     number: 6
     text: "FIRE SWITCH OR OVERHEAT LIGHT STILL ON 30 SECONDS LATER"
@@ -53,4 +48,3 @@ steps:
     controls:
       - firesw
     non_recall: true
-    status: draft

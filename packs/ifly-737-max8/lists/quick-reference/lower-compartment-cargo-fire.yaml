@@ -21,7 +21,6 @@ steps:
       cargofire:
         - ARM FWD
         - ARM AFT
-    status: draft
   - id: ifly-737-max8.quick-reference.cargo-fire-disch-switch
     number: 2
     text: CARGO FIRE DISCH SWITCH
@@ -31,11 +30,9 @@ steps:
     panel_lights:
       cargofire:
         - DISCH
-    status: draft
   - id: ifly-737-max8.quick-reference.recirc-fan-switches-both
     number: 3
     text: RECIRC FAN SWITCHES (BOTH)
     expect: "OFF"
     controls:
       - recirc
-    status: draft

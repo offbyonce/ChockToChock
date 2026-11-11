@@ -16,7 +16,6 @@ steps:
       - fdd
     why: Closed before departure
     check: Door closed and locked
-    status: draft
   - id: ifly-737-max8.before-start.fuel
     text: FUEL
     expect: "REQUIRED ___ KG/LBS, ON BOARD ___ KG/LBS, FUEL PUMPS ON, CENTER PUMPS ON IF MORE THAN 1,000 LB (ABOUT 450 KG) IN THE CENTER TANK"
@@ -29,14 +28,15 @@ steps:
     why: Confirms enough fuel for the flight
     check: Departing fuel above minimum
     check_detail: "Pumps ON, center with 1,000 LB or more"
-    status: draft
   - id: ifly-737-max8.before-start.passenger-signs
     text: PASSENGER SIGNS
     expect: "NO SMOKING AND FASTEN BELTS AUTO OR ON"
     controls:
       - signs
     why: "Keeps the cabin signs working for the flight."
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.before-start.flight-deck-windows
     text: FLIGHT DECK WINDOWS
     expect: CLOSED AND LOCKED
@@ -44,7 +44,6 @@ steps:
       - windows
     why: An open window stops pressurization
     check: Windows closed and locked
-    status: draft
   - id: ifly-737-max8.before-start.mcp-check
     text: MCP
     expect: "V2 ___, HEADING ___, ALTITUDE ___"
@@ -56,7 +55,9 @@ steps:
       - initial_altitude
     why: Confirms the departure set-up
     check: "V2, heading and altitude agree"
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.before-start.takeoff-speeds
     text: TAKEOFF SPEEDS
     expect: "V1, VR AND V2 SET AND CHECKED"
@@ -64,7 +65,9 @@ steps:
       - cdu
     why: Speeds match the takeoff data
     check: "V1, VR and V2 shown on the speed tape"
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.before-start.cdu-preflight
     text: CDU PREFLIGHT
     expect: COMPLETE
@@ -72,7 +75,9 @@ steps:
       - cdu
     why: "Route, performance and takeoff reference in"
     check: Preflight pages complete
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.before-start.rudder-and-aileron-trim
     text: RUDDER AND AILERON TRIM
     expect: "FREE, AT ZERO"
@@ -82,14 +87,15 @@ steps:
     why: No trim left in for takeoff
     check: Both trims at zero
     check_detail: Trim controls move freely
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.before-start.taxi-and-takeoff-briefing
     text: TAXI AND TAKEOFF BRIEFING
     expect: COMPLETE
     controls:
       - brief
     why: "Covers the taxi route, the departure, and what to do if something goes wrong"
-    status: draft
   - id: ifly-737-max8.before-start.anti-collision-light-check
     text: ANTI-COLLISION LIGHT
     expect: "ON"
@@ -97,4 +103,6 @@ steps:
       - beacon
     why: Warns people that engines are about to start
     explain: beacon
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09

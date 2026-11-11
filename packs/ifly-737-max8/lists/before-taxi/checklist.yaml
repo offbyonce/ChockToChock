@@ -16,7 +16,9 @@ steps:
       - engen
     why: Engine generators take over the buses
     explain: gen
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.before-taxi.probe-heat-check
     text: PROBE HEAT
     expect: "ON, PROBE LIGHTS OUT"
@@ -28,7 +30,9 @@ steps:
     if_not: An amber probe light stays on with an engine running
     if_not_detail: That probe is not heating. Airspeed or Mach may be wrong in icing
     note: "ON starts heating straight away. AUTO starts it only once the engines are running."
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.before-taxi.anti-ice-check
     text: ANTI-ICE
     expect: AS REQUIRED
@@ -36,7 +40,9 @@ steps:
       - aice
     note: Turn ENG 1 and ENG 2 anti-ice ON when it is 10C or below with visible moisture. Otherwise leave them OFF.
     why: Stops ice building in the engine inlets on the ground
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.before-taxi.isolation-valve-switch-check
     text: ISOLATION VALVE SWITCH
     expect: AUTO
@@ -44,7 +50,9 @@ steps:
       - iso
     note: "AUTO closes the valve when both engine bleeds and both packs are on, and opens it if any of them is off."
     why: "Closes with both bleeds and packs on, opens if one is off"
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.before-taxi.engine-start-switches-check
     text: ENGINE START SWITCHES
     expect: CONT
@@ -56,7 +64,6 @@ steps:
       starts:
         - ENGINE START 1
         - ENGINE START 2
-    status: draft
   - id: ifly-737-max8.before-taxi.recall-check
     text: RECALL
     expect: CHECKED
@@ -64,7 +71,9 @@ steps:
       - recall
     why: Shows any stored system alerts
     check: No unexpected alerts
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.before-taxi.autobrake
     text: AUTOBRAKE
     expect: RTO
@@ -72,7 +81,9 @@ steps:
       - abrake
     why: Maximum braking if you reject at high speed
     explain: aut
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.before-taxi.engine-start-levers
     text: ENGINE START LEVERS
     expect: IDLE DETENT
@@ -80,7 +91,9 @@ steps:
       - slever
     why: Fuel on to both engines
     check: Levers at IDLE detent
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.before-taxi.flight-controls-check
     text: FLIGHT CONTROLS
     expect: CHECKED
@@ -88,7 +101,9 @@ steps:
       - fltcon
     why: A jam is safest found on the ground
     check: "Full, free movement"
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.before-taxi.ground-equipment
     text: GROUND EQUIPMENT
     expect: "TOWING PIN REMOVED, EQUIPMENT CLEAR"
@@ -97,4 +112,6 @@ steps:
     why: "Nothing may be left attached before taxi."
     check: "Towing pin removed in the EFB"
     check_detail: Equipment clear
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09

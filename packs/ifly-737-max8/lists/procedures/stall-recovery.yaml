@@ -16,39 +16,51 @@ steps:
     expect: "HOLD COLUMN FIRMLY, DISENGAGE BOTH"
     controls:
       - column
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-10
   - id: ifly-737-max8.procedures.pitch
     number: 2
     text: PITCH
     expect: "LOWER THE NOSE UNTIL THE SHAKER AND BUFFET END, TRIMMING AS NEEDED"
     controls:
       - column
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-10
   - id: ifly-737-max8.procedures.roll
     number: 3
     text: ROLL
     expect: "WINGS LEVEL THE SHORT WAY, IF NEEDED"
     controls:
       - column
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-10
   - id: ifly-737-max8.procedures.thrust-and-speedbrakes
     number: 4
     text: THRUST AND SPEEDBRAKES
     expect: "ADVANCE THRUST, RETRACT SPEEDBRAKES"
     controls:
       - thrust
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-10
   - id: ifly-737-max8.procedures.gear-and-flaps-stall-recovery
     number: 5
     text: GEAR AND FLAPS
     expect: "NO CHANGE. EXCEPTION: IF THE STALL IS AT LIFTOFF WITH FLAPS UP, SET FLAPS 1"
     controls:
       - flaplever
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-10
   - id: ifly-737-max8.procedures.flight-path
     number: 6
     text: FLIGHT PATH
     expect: RE-ESTABLISH SPEED AND PITCH. NO FLIGHT DIRECTOR DURING RECOVERY
     controls:
       - fltinst
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-10

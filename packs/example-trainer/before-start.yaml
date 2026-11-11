@@ -18,7 +18,9 @@ steps:
     check: Voltage shown on the gauge
     if_not: No voltage
     if_not_detail: Check the battery is connected
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-08
 
   - id: example-trainer.before-start.beacon
     number: 2
@@ -28,7 +30,6 @@ steps:
     simulator_model: true
     callout: Beacon on.
     show_if: {option: power, equals: external}
-    status: draft
 
   - id: example-trainer.before-start.doors
     number: 3

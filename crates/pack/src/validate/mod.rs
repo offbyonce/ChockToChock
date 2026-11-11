@@ -7,6 +7,7 @@
 
 mod aliases;
 mod cdu;
+mod confirmations;
 mod files;
 mod ids;
 mod index;

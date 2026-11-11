@@ -17,39 +17,33 @@ steps:
     controls:
       - apdisc
       - apdis
-    status: draft
   - id: ifly-737-max8.procedures.pitch-tcas-resolution
     number: 2
     text: PITCH
     expect: ADJUST SMOOTHLY TO SATISFY THE RA
     controls:
       - column
-    status: draft
   - id: ifly-737-max8.procedures.lateral-path
     number: 3
     text: LATERAL PATH
     expect: FOLLOW THE PLANNED PATH UNLESS VISUAL CONTACT REQUIRES OTHERWISE
     controls:
       - fltinst
-    status: draft
   - id: ifly-737-max8.procedures.climb-ra-in-landing-configuration
     number: 4
     text: CLIMB RA IN LANDING CONFIGURATION
     expect: "MAXIMUM THRUST, FLAPS 15, GEAR UP AFTER POSITIVE RATE"
     controls:
       - thrust
-    status: draft
   - id: ifly-737-max8.procedures.near-the-ground
     number: 5
     text: NEAR THE GROUND
     expect: "NO DESCEND RA BELOW ABOUT 1,100 FT AGL, NO RA AT ALL BELOW ABOUT 1,000 FT AGL"
     controls:
       - fltinst
-    status: draft
   - id: ifly-737-max8.procedures.atc
     number: 6
     text: ATC
     expect: YOU MAY DEVIATE FROM THE CLEARANCE TO COMPLY WITH THE RA. TELL ATC
     controls:
       - atcclr
-    status: draft

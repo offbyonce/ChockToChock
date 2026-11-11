@@ -19,7 +19,9 @@ steps:
     quick: always
     why: "Configure early so you are stable by 1,000 ft in cloud or 500 ft in visual conditions"
     how: flapdn
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.landing.landing-gear-lever
     number: 2
     text: LANDING GEAR LEVER
@@ -35,7 +37,9 @@ steps:
     if_not: Fewer than 3 green
     if_not_detail: "Gear not down and locked, go around"
     explain: gearw
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.landing.speedbrake-lever
     number: 3
     text: SPEEDBRAKE LEVER
@@ -49,7 +53,9 @@ steps:
     why: Spoilers deploy on landing
     how: sbk
     explain: arm
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.landing.mcp-speed-and-altitude
     text: "MCP SPEED AND ALTITUDE"
     expect: "VREF + 5, MISSED APPROACH ALTITUDE SET AT GLIDESLOPE CAPTURE"
@@ -58,7 +64,9 @@ steps:
       equals: ils
     why: "Sets the final approach speed, and the next altitude is ready if you go around."
     check: VREF confirmed first
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.landing.landing-flaps
     text: LANDING FLAPS
     expect: "SET PER THE FLAP GUIDANCE AFTER GLIDESLOPE CAPTURE"
@@ -71,7 +79,9 @@ steps:
     why: "Final landing configuration. The common Boeing ILS profile is gear down and flaps 15 when the glideslope comes alive, then landing flaps, VREF + 5 and the missed approach altitude at glideslope capture."
     check: Flaps match the lever
     check_detail: Green light
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.landing.landing-gear-lever-before-landing
     text: LANDING GEAR LEVER
     expect: DOWN WITH FLAPS 15 ON BASE OR EARLY FINAL
@@ -86,7 +96,6 @@ steps:
     if_not: Fewer than 3 green
     if_not_detail: "Gear not down and locked, go around"
     explain: gearw
-    status: draft
   - id: ifly-737-max8.landing.speedbrake-lever-before-landing
     text: SPEEDBRAKE LEVER
     expect: ARM
@@ -99,7 +108,9 @@ steps:
     why: Spoilers deploy on landing
     how: sbk
     explain: arm
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.landing.landing-flaps-before-landing
     text: LANDING FLAPS
     expect: "SET BEFORE 500 FT, STABILIZED"
@@ -112,7 +123,6 @@ steps:
     why: Final landing configuration
     check: Flaps match the lever
     check_detail: Green light
-    status: draft
   - id: ifly-737-max8.landing.landing-gear-lever-before-landing-2
     text: LANDING GEAR LEVER
     expect: DOWN WITH FLAPS 15 APPROACHING THE FINAL FIX
@@ -127,7 +137,6 @@ steps:
     if_not: Fewer than 3 green
     if_not_detail: "Gear not down and locked, go around"
     explain: gearw
-    status: draft
   - id: ifly-737-max8.landing.speedbrake-lever-before-landing-2
     text: SPEEDBRAKE LEVER
     expect: ARM
@@ -140,7 +149,9 @@ steps:
     why: Spoilers deploy on landing
     how: sbk
     explain: arm
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.landing.landing-flaps-before-landing-2
     text: LANDING FLAPS
     expect: SET AT THE FINAL APPROACH FIX
@@ -153,7 +164,6 @@ steps:
     why: Final landing configuration
     check: Flaps match the lever
     check_detail: Green light
-    status: draft
   - id: ifly-737-max8.approach.engine-start-switches
     text: ENGINE START SWITCHES
     expect: CONT
@@ -169,7 +179,9 @@ steps:
       starts:
         - ENGINE START 1
         - ENGINE START 2
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.landing.landing-clearance
     number: 4
     text: LANDING CLEARANCE
@@ -178,7 +190,6 @@ steps:
       - clear
     note: Confirm you are cleared to land on this runway.
     why: Cleared to land on this runway
-    status: draft
   - id: ifly-737-max8.landing.taxi-light
     number: 5
     text: TAXI LIGHT
@@ -187,7 +198,6 @@ steps:
       - lldg
     note: Lights the runway ahead for rollout.
     why: Lights the runway for rollout
-    status: draft
   - id: ifly-737-max8.landing.autopilot-and-autothrottle
     text: "AUTOPILOT"
     expect: "DISENGAGE BEFORE 500 FT FOR A MANUAL LANDING"
@@ -199,4 +209,6 @@ steps:
     check_detail: Press each switch again to silence them
     if_not: Not stabilized or no runway in sight at minimums
     if_not_detail: Go around
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09

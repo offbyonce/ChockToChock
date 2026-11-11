@@ -19,7 +19,9 @@ steps:
     panel_lights:
       fctllts:
         - SPEED TRIM FAIL
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-10
   - id: ifly-737-max8.procedures.operation
     number: 2
     text: OPERATION
@@ -29,4 +31,6 @@ steps:
     panel_lights:
       fctllts:
         - SPEED TRIM FAIL
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-10

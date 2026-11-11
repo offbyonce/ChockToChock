@@ -20,7 +20,6 @@ steps:
       "y": 70
     look_for: "Temperature sensor, pitot tubes and angle of attack sensor clear and undamaged. Unused doors and access panels closed."
     location: "Left side, just aft of the nose near the forward entry door."
-    status: draft
   - id: ifly-737-max8.exterior.nose
     number: 2
     text: NOSE
@@ -32,7 +31,6 @@ steps:
       "y": 16
     look_for: "Gear pin installed; the ground crew removes it before pushback. Nose wheel free of cracks or damage. Gear strut, gear door and steering undamaged. Lights intact."
     location: "Front of the airplane, around the nose gear."
-    status: draft
   - id: ifly-737-max8.exterior.right-forward-fuselage
     number: 3
     text: RIGHT FORWARD FUSELAGE
@@ -44,7 +42,6 @@ steps:
       "y": 70
     look_for: "Temperature sensor, pitot tubes and angle of attack sensor clear and undamaged. Unused doors and access panels closed."
     location: "Right side, just aft of the nose."
-    status: draft
   - id: ifly-737-max8.exterior.right-wing-root
     number: 4
     text: RIGHT WING ROOT
@@ -56,7 +53,6 @@ steps:
       "y": 136
     look_for: Ram air deflector door open on the ground. Lower fuselage lights and leading edge flaps undamaged.
     location: Where the right wing meets the fuselage.
-    status: draft
   - id: ifly-737-max8.exterior.engine-2
     number: 5
     text: ENGINE 2
@@ -68,7 +64,6 @@ steps:
       "y": 150
     look_for: Access panels closed and locked. Inlet and tailpipe clear. Fan blades and tailcone undamaged. Thrust reverser stowed.
     location: "Right engine, front and sides."
-    status: draft
   - id: ifly-737-max8.exterior.right-wing-and-leading-edge
     number: 6
     text: RIGHT WING AND LEADING EDGE
@@ -80,7 +75,6 @@ steps:
       "y": 180
     look_for: "No ice, frost or contamination on the upper surface or leading edge. Leading edge flaps and slats undamaged."
     location: Front edge and top of the right wing.
-    status: draft
   - id: ifly-737-max8.exterior.right-wing-tip
     number: 7
     text: RIGHT WING TIP
@@ -92,7 +86,6 @@ steps:
       "y": 226
     look_for: "Position, strobe and winglet aft marker lights intact. Static discharge wicks in place."
     location: End of the right wing.
-    status: draft
   - id: ifly-737-max8.exterior.right-trailing-edge
     number: 8
     text: RIGHT TRAILING EDGE
@@ -104,7 +97,6 @@ steps:
       "y": 236
     look_for: "Aileron and trailing edge flaps undamaged, with no leaks."
     location: Rear edge of the right wing.
-    status: draft
   - id: ifly-737-max8.exterior.right-main-gear
     number: 9
     text: RIGHT MAIN GEAR
@@ -116,7 +108,6 @@ steps:
       "y": 212
     look_for: "Gear pin installed; the ground crew removes it before pushback. Tires, wheels, gear strut, hydraulic lines and brakes undamaged, with no leaks. Check brake wear indicators with the parking brake set."
     location: Under the right wing root.
-    status: draft
   - id: ifly-737-max8.exterior.right-aft-fuselage
     number: 10
     text: RIGHT AFT FUSELAGE
@@ -128,7 +119,6 @@ steps:
       "y": 300
     look_for: Unused doors closed. Negative pressure relief door closed. Outflow valve and fuselage detectors clear.
     location: "Right side, behind the wing."
-    status: draft
   - id: ifly-737-max8.exterior.tail
     number: 11
     text: TAIL
@@ -140,7 +130,6 @@ steps:
       "y": 404
     look_for: "Fin, rudder, horizontal stabilizer and elevator free of ice, snow or frost. Tail skid, static wicks, strobe lights and APU exhaust undamaged."
     location: Rear of the airplane.
-    status: draft
   - id: ifly-737-max8.exterior.left-aft-fuselage
     number: 12
     text: LEFT AFT FUSELAGE
@@ -152,7 +141,6 @@ steps:
       "y": 300
     look_for: Unused doors closed. Negative pressure relief door closed. Outflow valve and fuselage detectors clear.
     location: "Left side, behind the wing."
-    status: draft
   - id: ifly-737-max8.exterior.left-main-gear
     number: 13
     text: LEFT MAIN GEAR
@@ -164,7 +152,6 @@ steps:
       "y": 212
     look_for: "Gear pin installed; the ground crew removes it before pushback. Tires, wheels, gear strut, hydraulic lines and brakes undamaged, with no leaks. Check brake wear indicators with the parking brake set."
     location: Under the left wing root.
-    status: draft
   - id: ifly-737-max8.exterior.left-trailing-edge
     number: 14
     text: LEFT TRAILING EDGE
@@ -176,7 +163,6 @@ steps:
       "y": 236
     look_for: "Aileron and trailing edge flaps undamaged, with no leaks."
     location: Rear edge of the left wing.
-    status: draft
   - id: ifly-737-max8.exterior.left-wing-tip
     number: 15
     text: LEFT WING TIP
@@ -188,7 +174,6 @@ steps:
       "y": 226
     look_for: "Position, strobe and winglet aft marker lights intact. Static discharge wicks in place."
     location: End of the left wing.
-    status: draft
   - id: ifly-737-max8.exterior.left-wing-and-leading-edge
     number: 16
     text: LEFT WING AND LEADING EDGE
@@ -200,7 +185,6 @@ steps:
       "y": 180
     look_for: "No ice, frost or contamination on the upper surface or leading edge. Leading edge flaps and slats undamaged."
     location: Front edge and top of the left wing.
-    status: draft
   - id: ifly-737-max8.exterior.engine-1
     number: 17
     text: ENGINE 1
@@ -212,7 +196,6 @@ steps:
       "y": 150
     look_for: Access panels closed and locked. Inlet and tailpipe clear. Fan blades and tailcone undamaged. Thrust reverser stowed.
     location: "Left engine, front and sides."
-    status: draft
   - id: ifly-737-max8.exterior.left-wing-root
     number: 18
     text: LEFT WING ROOT
@@ -224,4 +207,3 @@ steps:
       "y": 136
     look_for: Ram air deflector door open on the ground. Lower fuselage lights and leading edge flaps undamaged.
     location: Where the left wing meets the fuselage.
-    status: draft

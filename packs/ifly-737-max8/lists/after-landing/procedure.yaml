@@ -17,7 +17,9 @@ steps:
       - abrake
     quick: always
     why: Taxi on the toe brakes
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.after-landing.speedbrake-lever
     number: 2
     text: SPEEDBRAKE LEVER
@@ -27,7 +29,9 @@ steps:
     quick: always
     why: Keeps the spoilers stowed on the ground
     check: Lever in DOWN detent
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.after-landing.probe-heat
     number: 3
     text: PROBE HEAT
@@ -37,7 +41,9 @@ steps:
     quick: always
     note: "AUTO keeps probe heat on while an engine runs, then off after shutdown."
     why: Probe heat stops by itself after shutdown
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.after-landing.position-light
     number: 4
     text: POSITION LIGHT
@@ -46,7 +52,9 @@ steps:
       - poslt
     quick: always
     why: Strobes off on the ground
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.after-landing.wing-light-landing-light-and-turnoff-lights
     number: 5
     text: "WING LIGHT, LANDING LIGHT AND TURNOFF LIGHTS"
@@ -57,7 +65,6 @@ steps:
       - turnoff
     quick: always
     why: Not needed for taxi
-    status: draft
   - id: ifly-737-max8.after-landing.engine-start-switches
     number: 6
     text: ENGINE START SWITCHES
@@ -70,7 +77,9 @@ steps:
       starts:
         - ENGINE START 1
         - ENGINE START 2
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.after-landing.flaps
     number: 7
     text: FLAPS
@@ -80,13 +89,17 @@ steps:
     quick: always
     note: Retract once you are clear of the runway.
     why: Flaps are not needed for taxi
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.after-landing.transponder
     text: "TRANSPONDER"
     expect: "MODE SELECTOR TO XPNDR"
     why: "TCAS alerts are not needed on the ground, but airport surveillance can still track you."
     number: 8
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.after-landing.efis
     number: 9
     text: EFIS
@@ -98,7 +111,9 @@ steps:
       efispanel:
         - WXR
         - TERR
-    status: checked
+    confirmed_by:
+      - kind: vendor-docs
+        date: 2026-11-09
   - id: ifly-737-max8.after-landing.apu-switch
     number: 10
     text: APU SWITCH
@@ -108,4 +123,3 @@ steps:
     quick: always
     why: Starts the APU for power and air
     how: apuland
-    status: draft
