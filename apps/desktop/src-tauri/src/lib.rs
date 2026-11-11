@@ -7,9 +7,8 @@
 //! `run()` lives here (not in `main.rs`) so a mobile entry point can reuse it later.
 
 mod commands;
-mod error;
 
-pub use error::AppError;
+pub use app_core::AppError;
 
 pub fn run() {
     tracing_subscriber::fmt()

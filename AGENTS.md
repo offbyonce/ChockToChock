@@ -72,12 +72,14 @@ aircraft. **The app never connects to the simulator** (decision 0006).
 
 | Path | What it is |
 | --- | --- |
+| `crates/app-core` | App operations that do not depend on where the app runs; `AppError`, `AppInfo` |
 | `crates/checklist-core` | Domain: checklists, steps, sessions. No I/O. |
 | `crates/pack` | Pack manifest, strict YAML loading (`serde-saphyr`), validation, schemas |
 | `crates/pack-cli` | `pack check <dir>`, `pack schema <dir>`, `pack overlap <dir>` |
 | `crates/pack-overlap` | Text-overlap check against private references, with its allow list (`allow.txt`) |
 | `crates/simbrief` | SimBrief OFP parsing |
 | `crates/store` | SQLite saved data and migrations |
+| `crates/web-host` | Thin WebAssembly glue for the web app (exports arrive in Phase 2, step 5) |
 | `apps/web` | Web app for GitHub Pages; `just site` builds it into `apps/web/dist` (decisions 0009, 0010) |
 | `apps/desktop/src-tauri` | Tauri shell: commands, capabilities, config |
 | `apps/desktop/ui` | Svelte 5 interface |

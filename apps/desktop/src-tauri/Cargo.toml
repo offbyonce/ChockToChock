@@ -21,15 +21,11 @@ crate-type = ["staticlib", "cdylib", "rlib"]
 tauri-build.workspace = true
 
 [dependencies]
-checklist-core = { workspace = true, features = ["ts"] }
-pack.workspace = true
-serde.workspace = true
-serde_json.workspace = true
+app-core.workspace = true
+checklist-core.workspace = true
 tauri.workspace = true
-thiserror.workspace = true
 tracing.workspace = true
 tracing-subscriber.workspace = true
-ts-rs.workspace = true
 
 [lints]
 workspace = true

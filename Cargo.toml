@@ -4,12 +4,14 @@
 [workspace]
 resolver = "3"
 members = [
+    "crates/app-core",
     "crates/checklist-core",
     "crates/pack",
     "crates/pack-cli",
     "crates/pack-overlap",
     "crates/simbrief",
     "crates/store",
+    "crates/web-host",
     "apps/desktop/src-tauri",
 ]
 
@@ -25,6 +27,7 @@ publish = false
 # Every dependency version lives here, once. Member crates write `name.workspace = true`.
 [workspace.dependencies]
 # Our own crates
+app-core = { path = "crates/app-core" }
 checklist-core = { path = "crates/checklist-core" }
 pack = { path = "crates/pack" }
 pack-overlap = { path = "crates/pack-overlap" }
