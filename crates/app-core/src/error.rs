@@ -17,6 +17,9 @@ pub enum AppError {
     /// A SimBrief plan could not be requested or read.
     #[error("{0}")]
     FlightPlan(String),
+    /// The interface asked for a change the flight cannot make (a bug, not a pilot error).
+    #[error("{0}")]
+    InvalidAction(String),
 }
 
 impl From<pack::LoadError> for AppError {

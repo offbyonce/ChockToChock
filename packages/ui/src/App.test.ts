@@ -1,52 +1,62 @@
 // SPDX-FileCopyrightText: 2026 offbyonce
 // SPDX-License-Identifier: MIT
 
-import type { AppInfo, Checklist } from "@chocktochock/bindings";
-import { fireEvent, render, screen } from "@testing-library/svelte";
-import { describe, expect, it } from "vitest";
+import type { FlatPack, Flight, Rail, RailPhase, Settings } from "@chocktochock/bindings";
+import { render, screen } from "@testing-library/svelte";
+import { beforeEach, describe, expect, it } from "vitest";
 import App from "./App.svelte";
 import { type Host, hostContext } from "./host";
 
-const info: AppInfo = { name: "Chock to Chock", version: "0.1.0", packSchemaVersion: 1 };
-
-// As Rust sends it: optional fields are left out.
-const checklist = {
-  id: "before-start",
-  title: "Before start",
-  kind: "checklist",
-  basis: ["sim-observed"],
-  steps: [
-    { id: "t.battery", text: "Battery switch", expect: "ON" },
-    { id: "t.doors", text: "Doors", expect: "CLOSED", note: "Check all doors." },
-  ],
-} as unknown as Checklist;
-
-function renderWith(host: Host): void {
-  render(App, { context: hostContext(host) });
+function phase(id: string, title: string, done: number, skipped: number, total: number): RailPhase {
+  const progress = { done, skipped, toDo: total - done - skipped, total };
+  return { id, title, progress, complete: done === total, open: total - done, skipped };
 }
 
+const rail: Rail = {
+  stages: [
+    {
+      title: "Preflight",
+      phases: [phase("power-up", "Power up", 2, 1, 6), phase("exterior", "Exterior", 18, 0, 18)],
+    },
+    { title: "Departure", phases: [phase("taxi", "Taxi", 0, 0, 9)] },
+  ],
+  reference: [phase("memory", "Memory items", 0, 0, 12)],
+};
+
+function host(overrides: Partial<Host> = {}): Host {
+  return {
+    appInfo: async () => ({ name: "Chock to Chock", version: "0.1.0", packSchemaVersion: 2 }),
+    packs: async () => [{ id: "demo", name: "Demo", version: "0.1.0", kind: "aircraft" }],
+    loadPack: async () => ({}) as FlatPack,
+    newFlight: async () => ({ pack: "demo" }) as Flight,
+    apply: async (_pack, flight) => flight,
+    rail: async () => rail,
+    defaultSettings: async () => ({ theme: "dark", dimming: 0 }) as Settings,
+    ...overrides,
+  };
+}
+
+beforeEach(() => {
+  window.location.hash = "";
+});
+
 describe("App", () => {
-  it("shows the version and the checklist, and ticks steps", async () => {
-    renderWith({
-      appInfo: async () => info,
-      exampleChecklist: async () => checklist,
-    });
+  it("shows the stages and phases from the rail, with progress in words", async () => {
+    render(App, { context: hostContext(host()) });
 
-    expect(await screen.findByText("v0.1.0")).toBeTruthy();
-    expect(screen.getByText("Battery switch")).toBeTruthy();
-    expect(screen.getByText("Check all doors.")).toBeTruthy();
-    expect(screen.getByText("0 of 2 done")).toBeTruthy();
-
-    await fireEvent.click(screen.getByRole("checkbox", { name: /Battery switch/ }));
-    expect(screen.getByText("1 of 2 done")).toBeTruthy();
+    expect(await screen.findByRole("heading", { level: 1, name: "Power up" })).toBeTruthy();
+    expect(screen.getByText("2 of 6 done · 1 skipped, still open · 3 to do")).toBeTruthy();
+    expect(screen.getByText("1 skipped")).toBeTruthy();
+    expect(screen.getByRole("link", { name: /Exterior, Complete/ })).toBeTruthy();
+    expect(screen.getByRole("link", { name: /Emergency/ }).getAttribute("href")).toBe("#/reference");
   });
 
   it("shows a tagged error from Rust", async () => {
-    renderWith({
-      appInfo: async () => info,
-      exampleChecklist: () => Promise.reject({ kind: "PackInvalid", message: "line 3: unknown field" }),
+    const failing = host({
+      loadPack: () => Promise.reject({ kind: "PackInvalid", message: "pack format 3 is newer" }),
     });
+    render(App, { context: hostContext(failing) });
 
-    expect((await screen.findByRole("alert")).textContent).toBe("PackInvalid: line 3: unknown field");
+    expect((await screen.findByRole("alert")).textContent).toBe("PackInvalid: pack format 3 is newer");
   });
 });

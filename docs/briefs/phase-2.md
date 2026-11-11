@@ -117,6 +117,21 @@ every change to `.github/workflows/`. For those, prepare what the step needs and
      JavaScript dependencies holds; MIT is already in `LICENSES/`.
    - Adding any new license file to `LICENSES/` needs the maintainer's go-ahead first (B612's
      `OFL-1.1.txt` is approved and added with the font in step 6).
+   Batches (one pull request each, screenshots for review saved outside the repo):
+   0. Foundations: decision 0012, app state in Rust and the WebAssembly calls, themes and
+      dimming with a contrast test, the icon pipeline, the app frame (top bar, phase rail,
+      Emergency button, addresses) and the screenshot tool. **Done 2026-11-11.**
+   1. Lists: phase screen, Checklist and Flow, item states, current-item box, quick and expanded,
+      item detail, completion call, open items, options, Full and Essentials, keyboard, and
+      saving progress on the device (brought forward from step 8).
+   2. Flight data: flight setup, flight strip, values in steps, SimBrief plan loading.
+   3. Panel states, timers and briefings in the flow.
+   4. CDU walkthrough.
+   5. Flight deck: overview map, panel views with our own glyphs, light meanings, exterior
+      inspection on our own airplane outline.
+   6. Reference and learning: emergency reference, glossary, how procedures work, practice,
+      search, guided tour.
+   7. Settings (including Essentials changes and print) and the flight log with the logbook.
 8. **Saved progress, export and import.** Keep progress in browser storage behind the host
    adapter, and ask the browser for persistent storage. Export writes a file in a versioned format
    defined in Rust. Import validates the file, applies aliases for old ids, and never silently

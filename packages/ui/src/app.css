@@ -1,13 +1,22 @@
 /* SPDX-FileCopyrightText: 2026 offbyonce */
 /* SPDX-License-Identifier: MIT */
 
+/* Tokens are set by theme/tokens.ts for the chosen theme and dimming; these are the dark
+   defaults until then. */
 :root {
   --bg: #121c2c;
   --panel: #1b2738;
+  --raised: #24344b;
+  --border: #34465f;
+  --accent-surface: #ffb020;
+  --danger: #c62828;
   --text: #e8ecf2;
-  --muted: #9aa7b8;
+  --muted: #aab6c6;
   --accent: #ffb020;
-  --done: #4cc38a;
+  --on-accent: #0b111a;
+  --on-danger: #ffffff;
+  --done: #5fd39b;
+  --skipped: #ffb020;
   /* B612 is bundled by the app that hosts this interface; system fonts are the fallback. */
   font-family: "B612", system-ui, -apple-system, "Segoe UI", sans-serif;
   color-scheme: dark;
@@ -17,4 +26,18 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
+}
+
+:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
 }

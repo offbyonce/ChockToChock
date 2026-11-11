@@ -986,6 +986,7 @@ name = "web-host"
 version = "0.1.0"
 dependencies = [
  "app-core",
+ "pack",
  "serde",
  "serde_json",
  "ts-rs",

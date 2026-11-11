@@ -33,3 +33,11 @@ path = ["apps/web/src/fonts/*.ttf"]
 precedence = "override"
 SPDX-FileCopyrightText = "2012 The B612 Project Authors"
 SPDX-License-Identifier = "OFL-1.1"
+
+# Tabler icons, copied unmodified (only the ones the interface uses). MIT requires keeping the
+# upstream copyright notice, which names its author; AGENTS.md allows such required notices.
+[[annotations]]
+path = ["packages/ui/src/icons/tabler/*.svg"]
+precedence = "override"
+SPDX-FileCopyrightText = "2020-2026 Paweł Kuna"
+SPDX-License-Identifier = "MIT"

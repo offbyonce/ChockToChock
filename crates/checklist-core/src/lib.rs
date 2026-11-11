@@ -37,4 +37,4 @@ pub use model::{
     AutoStart, AutoStartPick, Checklist, Confirmation, ConfirmationKind, FillField, HintPart,
     ListKind, MAX_ROUTE_LEG, OptionTest, Quick, ShowIf, Step, StepId, Timer, WalkaroundPoint,
 };
-pub use session::{Progress, Session, SessionError};
+pub use session::{Millis, Progress, Session, SessionError, StepState, counts};

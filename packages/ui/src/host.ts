@@ -1,18 +1,27 @@
 // SPDX-FileCopyrightText: 2026 offbyonce
 // SPDX-License-Identifier: MIT
 
-// What the interface needs from wherever it runs (decision 0010). The web app passes a host built
-// on its WebAssembly module and browser APIs; a desktop build would pass one built on Tauri
-// commands. Entry points pass it with hostContext(); components read it with getHost().
+// What the interface needs from wherever it runs (decisions 0010 and 0012). The web app passes a
+// host built on its WebAssembly module and browser APIs; a desktop build would pass one built on
+// Tauri commands. Entry points pass it with hostContext(); components read it with getHost().
+// Every rule (what shows, what counts, what an action does) is decided behind the host, in Rust.
 
-import type { AppInfo, Checklist } from "@chocktochock/bindings";
+import type { Action, AppInfo, FlatPack, Flight, PackSummary, Rail, Settings } from "@chocktochock/bindings";
 import { getContext } from "svelte";
 
 export interface Host {
   /** Basic facts for the About box and the window title. */
   appInfo(): Promise<AppInfo>;
-  /** The bundled format-demo checklist. */
-  exampleChecklist(): Promise<Checklist>;
+  /** The packs this build offers. */
+  packs(): Promise<PackSummary[]>;
+  /** Loads a pack; it stays loaded for the calls below. */
+  loadPack(id: string): Promise<FlatPack>;
+  newFlight(pack: string): Promise<Flight>;
+  /** Applies an action and returns the changed flight. */
+  apply(pack: string, flight: Flight, action: Action): Promise<Flight>;
+  /** The phase rail for a flight. */
+  rail(pack: string, flight: Flight): Promise<Rail>;
+  defaultSettings(): Promise<Settings>;
 }
 
 const HOST = Symbol("host");

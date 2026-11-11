@@ -55,7 +55,9 @@ engine never names an aircraft. **The app never connects to the simulator** (dec
 - Do not edit `.github/workflows/`, `deny.toml`, `lefthook.yml`, licenses or the decision records
   without the maintainer's explicit go-ahead.
 - Never commit secrets, keys, tokens, personal names or email addresses, machine names or IP
-  addresses. Test fixtures are invented and use generic names ("Pilot").
+  addresses. Test fixtures are invented and use generic names ("Pilot"). One exception: a
+  copyright notice that a third-party license requires us to keep (for example on the copied
+  Tabler icons, recorded in `REUSE.toml`) stays as written, even when it names a person.
 
 ## How to work
 
@@ -100,6 +102,7 @@ just test      # Rust and interface tests
 just packs     # validate every pack
 just site      # build the web site into apps/web/dist (WebAssembly, packs, app)
 just update-test  # service worker update test in headless Firefox (local; needs Firefox)
+just screenshots <dir>  # review screenshots (desktop and tablet, dark and light) into <dir>
 just ci        # everything; must pass before a push
 just overlap   # compare packs with private references (CHOCKTOCHOCK_OVERLAP_REFS)
 ```

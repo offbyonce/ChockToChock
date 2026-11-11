@@ -36,6 +36,11 @@ mod tests {
         assert_eq!(flat.manifest.id, "example-trainer");
         assert_eq!(flat.lists.len(), 3);
         assert!(out.join("ifly-737-max8.json").is_file());
+        let index: Vec<pack::PackSummary> =
+            serde_json::from_str(&std::fs::read_to_string(out.join("index.json")).unwrap())
+                .unwrap();
+        let ids: Vec<&str> = index.iter().map(|p| p.id.as_str()).collect();
+        assert_eq!(ids, ["example-trainer", "ifly-737-max8"]);
         std::fs::remove_dir_all(out).unwrap();
     }
 

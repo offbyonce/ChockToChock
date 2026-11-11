@@ -5,7 +5,18 @@
 // Reply; a reply with an error is thrown as the tagged AppError, so callers can branch on `kind`.
 // Run `just wasm` to build the module into ./wasm.
 
-import type { AppInfo, Checklist, FlatPack, Ofp, Reply } from "@chocktochock/bindings";
+import type {
+  Action,
+  AppInfo,
+  Checklist,
+  FlatPack,
+  Flight,
+  Loaded,
+  Ofp,
+  Rail,
+  Reply,
+  Settings,
+} from "@chocktochock/bindings";
 import init, * as wasm from "./wasm/web_host.js";
 
 let ready: Promise<unknown> | undefined;
@@ -32,10 +43,42 @@ export async function exampleChecklist(): Promise<Checklist> {
   return unwrap<Checklist>(wasm.example_checklist());
 }
 
-/** Reads a flattened pack's JSON text, as written by `pack build`. */
+/** Reads a flattened pack's JSON text, as written by `pack build`; the module keeps it loaded. */
 export async function loadPack(json: string): Promise<FlatPack> {
   await load();
   return unwrap<FlatPack>(wasm.load_pack(json));
+}
+
+export async function newFlight(pack: string): Promise<Flight> {
+  await load();
+  return unwrap<Flight>(wasm.new_flight(pack));
+}
+
+export async function apply(pack: string, flight: Flight, action: Action): Promise<Flight> {
+  await load();
+  return unwrap<Flight>(wasm.apply(pack, JSON.stringify(flight), JSON.stringify(action)));
+}
+
+export async function rail(pack: string, flight: Flight): Promise<Rail> {
+  await load();
+  return unwrap<Rail>(wasm.rail(pack, JSON.stringify(flight)));
+}
+
+/** Reads a saved flight: ready (migrated if older), newer, or unreadable (decision 0012). */
+export async function loadFlight(json: string): Promise<Loaded<Flight>> {
+  await load();
+  return unwrap<Loaded<Flight>>(wasm.load_flight(json));
+}
+
+/** Reads saved settings: ready (migrated if older), newer, or unreadable (decision 0012). */
+export async function loadSettings(json: string): Promise<Loaded<Settings>> {
+  await load();
+  return unwrap<Loaded<Settings>>(wasm.load_settings(json));
+}
+
+export async function defaultSettings(): Promise<Settings> {
+  await load();
+  return unwrap<Settings>(wasm.default_settings());
 }
 
 /** The address of the latest SimBrief plan for a username or Pilot ID. */
