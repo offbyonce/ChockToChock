@@ -1,0 +1,57 @@
+# SPDX-FileCopyrightText: 2026 offbyonce
+# SPDX-License-Identifier: MIT
+#
+# Builds the site with `just site` and publishes apps/web/dist to GitHub Pages.
+# Runs on every push to main and on demand.
+
+name: Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Least privilege: the build job can only read the repo. Only the deploy job
+# gets the Pages and OIDC token permissions that deploy-pages needs.
+permissions:
+  contents: read
+
+# One deployment at a time; a newer run waits instead of cancelling one in progress.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: just
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+
+      - run: just site
+
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: apps/web/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5
