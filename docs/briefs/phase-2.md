@@ -44,8 +44,9 @@ every change to `.github/workflows/`. For those, prepare what the step needs and
    Pages address. If it does not, propose a fallback that also needs no server (for example,
    importing a downloaded plan file) and wait for a decision.
    **Done 2026-11-11:** loading the latest plan by username worked from the maintainer's desktop
-   browser on the live site (0009, risks). The probe page also offers the saved-file fallback;
-   that and tablets were not tested. The probe reads plans with a temporary JavaScript reader, so
+   browser on the live site (0009, risks), and so did loading a saved plan file, though the
+   probe's plan loading is clunky (step 7 sets the product requirements). Tablets were not
+   tested. The probe reads plans with a temporary JavaScript reader, so
    no workflow change was needed; the crate as WebAssembly comes in step 5.
 4. **Restructure (paths only).** Move the interface from `apps/desktop/ui` into the shared package
    and create `apps/web` around it, as approved in step 1. No behavior change. Update the pnpm

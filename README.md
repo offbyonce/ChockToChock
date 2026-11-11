@@ -12,8 +12,9 @@ imports your SimBrief flight plan. It never connects to the simulator, so it wor
 alongside MSFS on a PC, a Mac, an Xbox or a PlayStation. Aircraft are data packs, so new
 aircraft can be added without changing the app.
 
-> **Status:** early development (Phase 0: foundation). Not ready for use yet. The current
-> release for the iFly 737 MAX 8 is the single-file HTML checklist on flightsim.to.
+> **Status:** early development. Phases 0 (foundation) and 1 (engine and iFly pack) are complete;
+> Phase 2 (web beta) is in progress. Not ready for use yet. The current release for the iFly 737
+> MAX 8 is the single-file HTML checklist on flightsim.to.
 
 **For simulator use only.** Never use these checklists for real-world flight.
 
