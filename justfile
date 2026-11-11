@@ -41,7 +41,7 @@ test: wasm web-packs
     cargo nextest run --workspace
     cargo test --doc --workspace
     pnpm --filter @chocktochock/ui test
-    node --test "tools/import-3x/*.test.js" "apps/web/*.test.js"
+    node --test "tools/import-3x/*.test.js" "apps/web/*.test.js" "apps/web/build/*.test.js"
 
 # Build the web host as WebAssembly into apps/web/src/wasm. Needs the wasm-bindgen CLI at the
 # same version as the crate (decision 0010).
@@ -58,6 +58,11 @@ web-packs:
 # module and the flattened packs.
 site: wasm web-packs
     pnpm --filter @chocktochock/web build
+
+# The service worker's version-to-version update test in headless Firefox (needs Firefox; not
+# part of `just ci`). See apps/web/build/update-test.mjs.
+update-test: site
+    node apps/web/build/update-test.mjs
 
 # Regenerate the pack JSON Schemas from the Rust types.
 schemas:

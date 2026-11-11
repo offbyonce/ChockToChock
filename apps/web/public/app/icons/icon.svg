@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- SPDX-FileCopyrightText: 2026 offbyonce -->
+  <!-- SPDX-License-Identifier: MIT -->
+  <!-- Our own app icon: a wheel on the ground between two chocks. -->
+  <rect width="512" height="512" rx="96" fill="#121c2c"/>
+  <circle cx="256" cy="248" r="106" fill="none" stroke="#e8ecf2" stroke-width="36"/>
+  <circle cx="256" cy="248" r="30" fill="#e8ecf2"/>
+  <path d="M92 372V292L204 372ZM420 372V292L308 372Z" fill="#ffb020"/>
+  <rect x="56" y="372" width="400" height="24" rx="12" fill="#e8ecf2"/>
+</svg>

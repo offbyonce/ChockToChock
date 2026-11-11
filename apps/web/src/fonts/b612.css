@@ -1,0 +1,23 @@
+/*
+ * SPDX-FileCopyrightText: 2026 offbyonce
+ * SPDX-License-Identifier: MIT
+ *
+ * B612, the open cockpit-display typeface (SIL Open Font License 1.1; license text in
+ * LICENSES/OFL-1.1.txt). The font files are unmodified and bundled with the site, so nothing
+ * loads from other servers (decision 0009).
+ */
+@font-face {
+  font-family: "B612";
+  src: url("./B612-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "B612";
+  src: url("./B612-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
