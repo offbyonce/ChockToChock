@@ -94,14 +94,19 @@ every change to `.github/workflows/`. For those, prepare what the step needs and
      (decision 0006) and never implies it knows a switch position.
    - **Touch targets:** at least 44 to 48 px.
    - **Theme:** dark, with a dimming control, and text contrast of at least 4.5:1 in every theme.
-   - **Typeface:** B612 (SIL Open Font License 1.1), bundled with the site.
+   - **Typeface:** B612 (SIL Open Font License 1.1), bundled and precached with the site (step 6).
+   - **Non-normal lists:** larger type than normal lists.
+   - **Completion:** a clear completion call at the end of each list (for example "Before start
+     checklist complete"), shown only when no item is still open.
    - **Icons:** one permissive general icon set, Tabler Icons (MIT), plus our own small family of
      schematic control glyphs on the same 24 px grid: toggle switch, guarded switch, rotary
      selector, push button with annunciator, lever and light. They are drawn from scratch and
      never traced from any real panel; lit or selected states use fill as well as color, and
-     amber and red always come with the words CAUTION and WARNING.
-   - Adding the font's license text (and any new license file) to `LICENSES/` needs the
-     maintainer's go-ahead first.
+     amber and red always come with the words CAUTION and WARNING. Only the Tabler icons we use
+     are copied in as SVG files, not installed as a package, so decision 0010's rule of no new
+     JavaScript dependencies holds; MIT is already in `LICENSES/`.
+   - Adding any new license file to `LICENSES/` needs the maintainer's go-ahead first (B612's
+     `OFL-1.1.txt` is approved and added with the font in step 6).
 8. **Saved progress, export and import.** Keep progress in browser storage behind the host
    adapter, and ask the browser for persistent storage. Export writes a file in a versioned format
    defined in Rust. Import validates the file, applies aliases for old ids, and never silently

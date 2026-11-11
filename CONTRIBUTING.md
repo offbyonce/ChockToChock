@@ -53,6 +53,10 @@ simplifies the real aircraft. Content imported from the 3.0 checklist starts wit
 `prior-release` and every step as `draft`; each list moves to a real basis and `checked` when the
 maintainer reviews it.
 
+**Responses state the value.** A step's expected response names the actual value or position the
+pilot should see, such as `FLAPS 5`, `ON` or `AUTO`, never just `SET`, so the pilot can check it
+against the cockpit.
+
 **Manufacturer manuals (FCOM, FCTM, QRH).** Facts are checked against vendor documentation. No manual text, link or citation enters the repo. Facts and procedures (switch positions, the order of steps, how a system works)
 are not protected by copyright, but a manual's wording, tables, diagrams and layout are. So:
 

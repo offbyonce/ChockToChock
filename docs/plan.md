@@ -150,3 +150,6 @@ them, and this app's strength is interactive practice with reasons.
 - Add `reuse lint` to `just ci`, with a clear message when the tool is missing.
 - Download EASA AD 2021-0039R2 when EASA's site is back.
 - Pilot review of the procedure open list.
+- Pack pass: responses state the actual value or position, not `SET` (`CONTRIBUTING.md`,
+  content rules). As of 2026-11-11 the iFly pack has 5 responses that are only `SET`, and others
+  that say an item is set without naming its value.
