@@ -95,8 +95,8 @@ describe("PanelSchematic", () => {
     const svg = screen.getByRole("img");
     expect(svg.getAttribute("aria-label")).toBe("Electrical panel, schematic. This step: BATTERY set to ON.");
     expect(screen.getByText("SET TO ON")).toBeTruthy();
-    // One lever is drawn, for the battery; every other switch shows no position.
-    expect(svg.querySelectorAll(".lever")).toHaveLength(1);
+    // One knob at a position, for the battery; every other switch shows no position.
+    expect(svg.querySelectorAll(".knob.set")).toHaveLength(1);
     expect(svg.querySelectorAll(".unknown").length).toBeGreaterThan(0);
   });
 

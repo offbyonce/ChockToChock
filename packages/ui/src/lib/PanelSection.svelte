@@ -46,7 +46,7 @@ however large the drawing is.
   };
 
   /** A toggle's lever position: first position at the top, last at the bottom. */
-  const leverY = (index: number, count: number) => (count < 2 ? 0 : -9 + (18 * index) / (count - 1));
+  const leverY = (index: number, count: number) => (count < 2 ? 0 : -8 + (16 * index) / (count - 1));
 
 
   let top = $derived(band.y0 === 0 ? 0 : band.y0 - TITLE);
@@ -75,8 +75,7 @@ however large the drawing is.
         {/if}
         <rect class="body" x="-6" y="-14" width="12" height="28" rx="6" />
         {#if on && t != null}
-          <line class="lever" x1="0" y1="0" x2="0" y2={leverY(t, positions.length)} />
-          <circle class="knob set" cy={leverY(t, positions.length)} r="4" />
+          <circle class="knob set" cy={leverY(t, positions.length)} r="3.4" />
         {:else}
           <circle class="knob unknown" r="2.6" />
         {/if}
@@ -161,7 +160,9 @@ however large the drawing is.
     stroke-width: 1.4;
   }
   .guard {
-    stroke-dasharray: 3 2;
+    stroke: var(--stop);
+    stroke-width: 1.2;
+    stroke-dasharray: 2.5 2;
   }
   .unknown {
     fill: none;
@@ -187,50 +188,33 @@ however large the drawing is.
   .pos {
     fill: var(--muted);
   }
+  /* As 3.0, color alone marks the controls the step uses: outlines keep their weight, nothing is
+     boxed or bolded. Without color, the knob still tells them apart: only they show a position. */
   .on .body,
   .on .knob-ring,
-  .on .scale {
+  .on .scale,
+  .on .tick.target {
     stroke: var(--accent);
-    stroke-width: 2.4;
-  }
-  .on .body {
-    fill: var(--accent-soft);
-  }
-  .on .guard {
-    stroke: var(--accent);
-  }
-  .on .guard.closed {
-    stroke-dasharray: none;
-    stroke-width: 2;
   }
   .on .body.pressed {
-    fill: var(--accent);
+    stroke-width: 2;
   }
-  .lever,
   .pointer {
     stroke: var(--accent);
-    stroke-width: 2.6;
+    stroke-width: 1.8;
     stroke-linecap: round;
   }
   .set {
     fill: var(--accent);
   }
-  .on .label {
-    fill: var(--accent);
-    font-weight: 700;
-  }
+  .on .label,
   .pos.target {
     fill: var(--accent);
-    font-weight: 700;
-  }
-  .tick.target {
-    stroke: var(--accent);
-    stroke-width: 2.4;
   }
   .set-to {
-    font-weight: 700;
+    font-weight: 600;
     text-anchor: middle;
     fill: var(--accent);
-    letter-spacing: 0.03em;
+    letter-spacing: 0.02em;
   }
 </style>

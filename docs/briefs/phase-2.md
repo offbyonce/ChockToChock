@@ -115,8 +115,10 @@ every change to `.github/workflows/`. For those, prepare what the step needs and
    - **Icons:** one permissive general icon set, Tabler Icons (MIT), plus our own small family of
      schematic control glyphs on the same 24 px grid: toggle switch, guarded switch, rotary
      selector, push button with annunciator, lever and light. They are drawn from scratch and
-     never traced from any real panel; lit or selected states use fill as well as color, and
-     amber and red always come with the words CAUTION and WARNING. Only the Tabler icons we use
+     never traced from any real panel. As in 3.0, color marks the controls a step uses, with no
+     boxes or heavier outlines; without color they still read, because only they show a position
+     (the knob at the target). Lit lights use fill as well as color, and amber and red always come
+     with the words CAUTION and WARNING. Only the Tabler icons we use
      are copied in as SVG files, not installed as a package, so decision 0010's rule of no new
      JavaScript dependencies holds; MIT is already in `LICENSES/`.
    - Adding any new license file to `LICENSES/` needs the maintainer's go-ahead first (B612's

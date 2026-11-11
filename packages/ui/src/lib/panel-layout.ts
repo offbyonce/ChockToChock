@@ -8,8 +8,11 @@
 
 import type { PanelItem } from "@chocktochock/bindings";
 
-/** 3.0's rendered text sizes, in pixels: names and titles 11.8, positions and light words 10.8. */
-export const PX = { name: 11.8, title: 11.8, pos: 10.8, lamp: 10.8, setTo: 10.8 } as const;
+/**
+ * 3.0's rendered text sizes, in pixels: names and titles 11.8, positions and light words 10.8.
+ * "SET TO …" sits under the name, a little smaller so the name reads first.
+ */
+export const PX = { name: 11.8, title: 11.8, pos: 10.8, lamp: 10.8, setTo: 9.5 } as const;
 /** Line height for labels under a control, as a multiple of the text size. */
 const LINE = 1.15;
 
