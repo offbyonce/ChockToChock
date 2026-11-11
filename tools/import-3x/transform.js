@@ -180,7 +180,6 @@ function stepFor(oldId, row, section, ctx) {
     timer: timer(options.tm, ctx.idMap, oldId, ctx.gaps),
     panel_lights: options.pcl,
     not_simulated: options.ns ? true : undefined,
-    status: "draft",
   });
 }
 
@@ -346,7 +345,6 @@ function buildLights(data) {
         when: l.w,
         action: l.a,
         normal: l.n,
-        status: l.c === "confirm" ? "draft" : undefined,
       }),
     ),
   };

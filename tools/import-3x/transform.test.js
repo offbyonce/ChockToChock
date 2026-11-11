@@ -244,7 +244,7 @@ test("list files sit in one folder per phase without repeating the phase", () =>
   }
 });
 
-test("lists get a kind and the prior-release basis, and steps start as draft", () => {
+test("lists get a kind and the prior-release basis, and steps carry no status or confirmation (0013)", () => {
   const r = result();
   assert.deepEqual(
     r.files.lists.map(([, l]) => l.kind),
@@ -252,7 +252,10 @@ test("lists get a kind and the prior-release basis, and steps start as draft", (
   );
   for (const [, list] of r.files.lists) {
     assert.deepEqual(list.basis, ["prior-release"]);
-    for (const step of list.steps) assert.equal(step.status, "draft");
+    for (const step of list.steps) {
+      assert.equal(step.status, undefined);
+      assert.equal(step.confirmed_by, undefined);
+    }
   }
 });
 
@@ -330,8 +333,7 @@ test("controls, panels and lights map across", () => {
   assert.equal(green.color, "green");
   assert.equal(screen.kind, "display_unit");
   assert.equal(screen.width, 20);
-  assert.equal(r.files.lights.lights[0].status, "draft");
-  assert.equal(r.files.lights.lights[1].status, undefined);
+  for (const light of r.files.lights.lights) assert.equal(light.status, undefined);
   assert.equal(guard.controls.length, 1);
   assert.equal(green.controls, undefined);
 });
