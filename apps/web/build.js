@@ -1,8 +1,9 @@
 // SPDX-FileCopyrightText: 2026 offbyonce
 // SPDX-License-Identifier: MIT
 
-// Builds the deployable site into apps/web/dist. For now it copies the placeholder page; later
-// Phase 2 steps replace this with the real build (decision 0010). Run with `just site`.
+// Builds the deployable site into apps/web/dist. For now it copies the placeholder and the
+// SimBrief probe page; later Phase 2 steps replace this with the real build (decision 0010).
+// Run with `just site`.
 
 import fs from "node:fs";
 import path from "node:path";
@@ -10,7 +11,7 @@ import { fileURLToPath } from "node:url";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const out = path.join(here, "dist");
-const files = ["index.html", "site.css"];
+const files = ["index.html", "site.css", "simbrief-probe.html", "simbrief-probe.js", "ofp-probe.js"];
 
 fs.rmSync(out, { recursive: true, force: true });
 fs.mkdirSync(out, { recursive: true });
