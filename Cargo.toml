@@ -90,3 +90,9 @@ lto = true
 opt-level = "s"
 strip = true
 panic = "abort"
+
+# The WebAssembly build (`just wasm`). Not stripped, so wasm-bindgen can read which WebAssembly
+# features the module uses; wasm-bindgen removes the name and producers sections instead.
+[profile.wasm]
+inherits = "release"
+strip = false

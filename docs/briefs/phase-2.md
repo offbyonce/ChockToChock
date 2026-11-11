@@ -52,13 +52,19 @@ every change to `.github/workflows/`. For those, prepare what the step needs and
    and create `apps/web` around it, as approved in step 1. No behavior change. Update the pnpm
    workspace, the `justfile`, the `AGENTS.md` repository map and any docs naming moved paths.
    `just ci` green.
+   **Done 2026-11-11** (PR #10): `packages/ui` with a host interface, `apps/web`, `crates/app-core`
+   and `crates/web-host`; the Tauri shell and `crates/store` parked.
 5. **Packs as flattened JSON, and the web host.** Add a `pack-cli` command that writes one
    flattened JSON file per aircraft, checked by `pack check` first, with a test that it matches
    the pack snapshots. Build the web host crate that exposes the core to the interface. Types
    still come from `ts-rs`. Once the `simbrief` crate runs as WebAssembly, remove the probe's
    temporary JavaScript plan reader (`ofp-probe.js` and its test).
-6. **Installable and offline.** Web app manifest, service worker, bundled fonts and icons, and a
-   strict content security policy in a `<meta>` tag. A new version never replaces content in the
+   **Done 2026-11-11:** `pack build` writes `<id>.json`; the web host runs as WebAssembly and the
+   app uses it; the `simbrief` crate reads fetched JSON and saved JSON or XML files, and the
+   JavaScript reader is gone. `just site` builds the app and the probe page, with a strict content
+   security policy injected into the built pages. The app does not use the iFly pack yet (step 7).
+6. **Installable and offline.** Web app manifest, service worker and bundled fonts and icons, under
+   the content security policy that step 5 added. A new version never replaces content in the
    middle of a session; the app offers a reload instead. Show it working offline in a browser.
 7. **Interface parity.** Phases, checklists and flows, panel states, timers, the CDU walkthrough,
    SimBrief import and the guided tour, matching 3.0. Report one feature at a time. Include the

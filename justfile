@@ -15,8 +15,8 @@ setup:
     pnpm install
     cargo fetch
 
-# Run the web app's dev server (its host calls work from Phase 2, step 5).
-dev:
+# Run the web app's dev server.
+dev: wasm web-packs
     pnpm --filter @chocktochock/web dev
 
 # Format everything in place.
@@ -30,7 +30,7 @@ fmt-check:
     pnpm exec biome format .
 
 # Lints and type checks (warnings fail).
-lint:
+lint: wasm
     cargo clippy --workspace --all-targets -- -D warnings
     pnpm exec biome check .
     pnpm --filter @chocktochock/ui check
@@ -41,21 +41,22 @@ test: wasm web-packs
     cargo nextest run --workspace
     cargo test --doc --workspace
     pnpm --filter @chocktochock/ui test
-    node --test "tools/import-3x/*.test.js" "apps/web/placeholder/*.test.js" "apps/web/*.test.js"
+    node --test "tools/import-3x/*.test.js" "apps/web/*.test.js"
 
 # Build the web host as WebAssembly into apps/web/src/wasm. Needs the wasm-bindgen CLI at the
 # same version as the crate (decision 0010).
 wasm:
-    cargo build -q -p web-host --target wasm32-unknown-unknown --release
-    wasm-bindgen --target web --out-dir apps/web/src/wasm target/wasm32-unknown-unknown/release/web_host.wasm
+    cargo build -q -p web-host --target wasm32-unknown-unknown --profile wasm
+    wasm-bindgen --target web --remove-name-section --remove-producers-section --out-dir apps/web/src/wasm target/wasm32-unknown-unknown/wasm/web_host.wasm
 
 # Check every pack and write it as flattened JSON for the web app to fetch.
 web-packs:
     cargo run -q -p pack-cli -- build packs apps/web/public/packs
 
-# Build the deployable web site into apps/web/dist (published to GitHub Pages).
-site:
-    node apps/web/build.js
+# Build the deployable web site into apps/web/dist (published to GitHub Pages): the app and the
+# SimBrief probe page, with the WebAssembly module and the flattened packs.
+site: wasm web-packs
+    pnpm --filter @chocktochock/web build
 
 # Regenerate the pack JSON Schemas from the Rust types.
 schemas:

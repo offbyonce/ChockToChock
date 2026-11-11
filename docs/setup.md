@@ -4,8 +4,9 @@ SPDX-License-Identifier: MIT
 -->
 # Development setup
 
-One-time installs, then `just setup`. Rust's exact version comes from
-`rust-toolchain.toml`; rustup downloads it automatically the first time you build.
+One-time installs, then `just setup`. Rust's exact version and the WebAssembly target come from
+`rust-toolchain.toml`; rustup downloads them automatically the first time you build. The
+`wasm-bindgen-cli` version must match the `wasm-bindgen` crate pinned in `Cargo.toml`.
 
 ## macOS
 
@@ -14,7 +15,7 @@ xcode-select --install                       # Apple's compiler tools
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh   # Rust (rustup)
 brew install node just                       # Node 22+ and the task runner
 corepack enable                              # pinned pnpm (Node 25+ has no corepack: npm i -g pnpm@12.18.0)
-cargo install --locked cargo-nextest cargo-deny
+cargo install --locked cargo-nextest cargo-deny wasm-bindgen-cli@0.2.130
 ```
 
 ## Windows
@@ -26,7 +27,7 @@ cargo install --locked cargo-nextest cargo-deny
    ```powershell
    winget install OpenJS.NodeJS.LTS Casey.Just
    corepack enable
-   cargo install --locked cargo-nextest cargo-deny
+   cargo install --locked cargo-nextest cargo-deny wasm-bindgen-cli@0.2.130
    ```
 
 ## Linux (Ubuntu 22.04 or newer)
@@ -41,7 +42,7 @@ Then Rust, Node 22+, pnpm and the tools:
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 # Node 22-24 include corepack; Node 25 and later do not, so install pnpm with npm instead:
 corepack enable || npm install -g --prefix ~/.local pnpm@12.18.0   # ~/.local/bin must be on PATH
-cargo install --locked just cargo-nextest cargo-deny
+cargo install --locked just cargo-nextest cargo-deny wasm-bindgen-cli@0.2.130
 ```
 
 ## Every machine
