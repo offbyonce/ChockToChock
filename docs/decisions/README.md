@@ -18,5 +18,6 @@ Never rewrite an accepted record; add a new one that supersedes it.
 | [0007](0007-pack-content-model.md) | Pack content model; list-level basis tags instead of per-step sources | Accepted |
 | [0008](0008-platform-scope.md) | Learn to operate the airplane like a trained crew; what we do not build | Accepted |
 | [0009](0009-web-first-delivery.md) | Web first: a hosted app that installs and works offline | Accepted |
+| [0010](0010-web-build-tooling.md) | Web build layout and tooling | Accepted |
 
 Template: Context, Decision, Consequences. Keep it under a page.

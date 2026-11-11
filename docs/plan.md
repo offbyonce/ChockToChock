@@ -120,6 +120,8 @@ features, and anything needing a sim connection. The reason for each is in decis
 ## Open items
 
 - GitHub Pages deploy workflow (maintainer; Phase 2 brief).
+- Move CI from `ubuntu-22.04` to `ubuntu-latest` (possible once the Tauri shell is parked, 0010), together
+  with updating the required check name "ci (ubuntu-22.04)" in the `main` ruleset (maintainer).
 - Low-severity Dependabot alert on the default branch (check and fix or document).
 - `pnpm/action-setup@v4` warns about running on an old Node version; move to a newer release.
 - Updater signing key: generate and back up before the first release (0005).
