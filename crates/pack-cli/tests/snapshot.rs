@@ -3,8 +3,8 @@
 
 //! Golden snapshots of the iFly pack as loaded for the app, so every content change shows up in
 //! review. After an intended change, run `INSTA_UPDATE=always cargo nextest run -p pack-cli --test
-//! snapshot` and read the diff. The snapshots hold pack content, so they live under `packs/` and
-//! carry its license.
+//! snapshot` and read the diff. The snapshots hold pack content, so they carry its license
+//! (CC BY-NC-SA 4.0, set in `REUSE.toml`).
 
 #[cfg(test)]
 mod tests {
@@ -17,7 +17,9 @@ mod tests {
         let content = &pack.content;
 
         let mut settings = insta::Settings::clone_current();
-        settings.set_snapshot_path(packs.join("snapshots/ifly-737-max8"));
+        settings.set_snapshot_path(
+            Path::new(env!("CARGO_MANIFEST_DIR")).join("tests/snapshots/ifly-737-max8"),
+        );
         settings.set_prepend_module_to_snapshot(false);
         settings.set_omit_expression(true);
         settings.bind(|| {
