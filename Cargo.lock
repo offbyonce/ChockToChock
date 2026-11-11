@@ -564,6 +564,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ba39f3699c378cd8970968dcbff9c43159ea4cfbd88d43c00b22f2ef10a435d2"
 
 [[package]]
+name = "roxmltree"
+version = "0.21.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9da7f59328b09405b181fee1018925fad50f157afb43c0c0f5c522c256dd5907"
+dependencies = [
+ "memchr",
+]
+
+[[package]]
 name = "rstest"
 version = "0.28.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -750,6 +759,7 @@ version = "0.1.0"
 dependencies = [
  "insta",
  "proptest",
+ "roxmltree",
  "serde",
  "serde_json",
  "thiserror",

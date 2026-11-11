@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SPDX-FileCopyrightText: 2026 offbyonce -->
+<!-- SPDX-License-Identifier: MIT -->
+<!-- Invented test data, the same plan as ofp-sample.json in SimBrief's XML form. -->
+<OFP>
+  <fetch>
+    <status>Success</status>
+  </fetch>
+  <params>
+    <units>kgs</units>
+    <airac>2406</airac>
+  </params>
+  <general>
+    <icao_airline>TSTX</icao_airline>
+    <flight_number>4567</flight_number>
+    <initial_altitude>37000</initial_altitude>
+    <route>SUMMA2 SUMMA J1 BTG</route>
+    <costindex>35</costindex>
+  </general>
+  <origin>
+    <icao_code>EGLL</icao_code>
+    <plan_rwy>09R</plan_rwy>
+    <elevation>83</elevation>
+    <trans_alt>6000</trans_alt>
+  </origin>
+  <destination>
+    <icao_code>LFPG</icao_code>
+    <plan_rwy></plan_rwy>
+    <elevation>392</elevation>
+    <trans_level>7000</trans_level>
+  </destination>
+  <fuel>
+    <plan_ramp>6400</plan_ramp>
+    <reserve>1200</reserve>
+  </fuel>
+  <weights>
+    <est_zfw>52300</est_zfw>
+  </weights>
+  <aircraft>
+    <reg></reg>
+  </aircraft>
+  <navlog>
+    <fix>
+      <ident>SUMMA</ident>
+      <via_airway>SUMMA2</via_airway>
+      <is_sid_star>1</is_sid_star>
+      <stage>CLB</stage>
+    </fix>
+    <fix>
+      <ident>BTG</ident>
+      <via_airway>J1</via_airway>
+      <is_sid_star>0</is_sid_star>
+      <stage>CRZ</stage>
+    </fix>
+  </navlog>
+</OFP>
