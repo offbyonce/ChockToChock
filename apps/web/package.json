@@ -1,0 +1,7 @@
+{
+  "name": "@chocktochock/web",
+  "private": true,
+  "description": "The Chock to Chock web app, built into apps/web/dist for GitHub Pages.",
+  "license": "MIT",
+  "type": "module"
+}

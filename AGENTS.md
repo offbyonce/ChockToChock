@@ -78,6 +78,7 @@ aircraft. **The app never connects to the simulator** (decision 0006).
 | `crates/pack-overlap` | Text-overlap check against private references, with its allow list (`allow.txt`) |
 | `crates/simbrief` | SimBrief OFP parsing |
 | `crates/store` | SQLite saved data and migrations |
+| `apps/web` | Web app for GitHub Pages; `just site` builds it into `apps/web/dist` (decisions 0009, 0010) |
 | `apps/desktop/src-tauri` | Tauri shell: commands, capabilities, config |
 | `apps/desktop/ui` | Svelte 5 interface |
 | `packages/bindings` | Typed command wrappers; `src/generated` comes from Rust |
@@ -93,6 +94,7 @@ just setup     # pnpm install + cargo fetch (once after cloning)
 just dev       # run the app (needs a desktop session)
 just test      # Rust and interface tests
 just packs     # validate every pack
+just site      # build the web site into apps/web/dist
 just ci        # everything; must pass before a push
 just overlap   # compare packs with private references (CHOCKTOCHOCK_OVERLAP_REFS)
 ```

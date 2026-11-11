@@ -50,6 +50,10 @@ test: ui-build
     pnpm --filter @chocktochock/ui test
     node --test "tools/import-3x/*.test.js"
 
+# Build the deployable web site into apps/web/dist (published to GitHub Pages).
+site:
+    node apps/web/build.js
+
 # Regenerate the pack JSON Schemas from the Rust types.
 schemas:
     cargo run -q -p pack-cli -- schema schemas
@@ -76,5 +80,5 @@ deny:
     pnpm audit --prod
 
 # Everything a change must pass. Same command locally and in CI.
-ci: fmt-check lint test generated-check packs deny
+ci: fmt-check lint test generated-check packs site deny
     @echo "All checks passed."
