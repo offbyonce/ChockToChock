@@ -5,6 +5,8 @@
 // offers a reload when a new version is ready. Never swap mid-session (decision 0010): the new
 // version runs only after the pilot presses Reload, or on the next launch.
 
+import { watchForUpdates } from "./update-watch.js";
+
 const CHECK_EVERY_MS = 60 * 60 * 1000;
 
 function offerReload(worker: ServiceWorker, onReload: () => void): void {
@@ -40,13 +42,7 @@ export function registerServiceWorker(): void {
   };
   window.addEventListener("load", async () => {
     const registration = await workers.register("./sw.js");
-    if (registration.waiting && workers.controller) offerReload(registration.waiting, onReload);
-    registration.addEventListener("updatefound", () => {
-      const worker = registration.installing;
-      worker?.addEventListener("statechange", () => {
-        if (worker.state === "installed" && workers.controller) offerReload(worker, onReload);
-      });
-    });
+    watchForUpdates(workers, registration, (worker) => offerReload(worker, onReload));
     // Long sessions: check for a new version now and then, and when the app comes back into view.
     setInterval(() => void registration.update(), CHECK_EVERY_MS);
     document.addEventListener("visibilitychange", () => {

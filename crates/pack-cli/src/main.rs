@@ -3,7 +3,8 @@
 
 //! `pack check <dir>...`  validate one or more pack folders (or a folder of packs).
 //! `pack schema <dir>`    write the JSON Schemas into `<dir>`.
-//! `pack build <dir> <out-dir>`  check each pack, then write it as one flattened `<id>.json`.
+//! `pack build <dir> <out-dir>`  check each pack, then write it as one flattened `<id>.json`,
+//!                        plus `index.json` listing the packs written.
 //! `pack overlap <dir> [--refs <folder>] [--allow <file>]`  compare pack text with private
 //! reference files. The folder can also come from `CHOCKTOCHOCK_OVERLAP_REFS`.
 //!
@@ -14,7 +15,7 @@ use std::path::{Path, PathBuf};
 use std::process::ExitCode;
 
 use anyhow::{Context, Result, bail};
-use pack::{FlatPack, Severity, load_pack_dir, validate_pack};
+use pack::{FlatPack, PackSummary, Severity, load_pack_dir, validate_pack};
 use pack_overlap::{
     AllowList, REFS_VARIABLE, check_refs_location, find_overlaps, load_references, repo_roots,
 };
@@ -210,6 +211,7 @@ fn build(packs: &str, out: &Path) -> Result<bool> {
     }
     std::fs::create_dir_all(out).with_context(|| format!("cannot create {}", out.display()))?;
     let mut ok = true;
+    let mut index = Vec::new();
     for dir in dirs {
         let pack = load_pack_dir(&dir).with_context(|| format!("cannot load {}", dir.display()))?;
         let errors: Vec<_> = validate_pack(&pack)
@@ -225,9 +227,14 @@ fn build(packs: &str, out: &Path) -> Result<bool> {
             continue;
         }
         let path = out.join(format!("{}.json", pack.manifest.id));
+        index.push(PackSummary::from(&pack.manifest));
         let json = serde_json::to_string(&FlatPack::from(pack))?;
         std::fs::write(&path, &json).with_context(|| format!("cannot write {}", path.display()))?;
         println!("built {} ({} bytes)", path.display(), json.len());
     }
+    let path = out.join("index.json");
+    std::fs::write(&path, serde_json::to_string(&index)?)
+        .with_context(|| format!("cannot write {}", path.display()))?;
+    println!("wrote {} ({} packs)", path.display(), index.len());
     Ok(ok)
 }

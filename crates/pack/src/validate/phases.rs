@@ -5,6 +5,8 @@
 
 use std::collections::BTreeSet;
 
+use checklist_core::UserOption;
+
 use super::index::Index;
 use super::{Issue, error};
 use crate::Pack;
@@ -15,6 +17,10 @@ pub(super) fn check_phases(pack: &Pack, idx: &Index, issues: &mut Vec<Issue>) {
     };
     for option in &file.options {
         idx.check_option_value(&option.id, &option.id, &option.default, issues);
+        check_choices(option, issues);
+        for phase in &option.ask_in {
+            idx.require_phase(&option.id, phase, issues);
+        }
     }
     let mut placed = BTreeSet::new();
     for phase in &file.phases {
@@ -42,9 +48,35 @@ pub(super) fn check_phases(pack: &Pack, idx: &Index, issues: &mut Vec<Issue>) {
     }
 }
 
+/// Choices, when given, show each value of the option exactly once.
+fn check_choices(option: &UserOption, issues: &mut Vec<Issue>) {
+    if option.choices.is_empty() {
+        return;
+    }
+    let mut seen = BTreeSet::new();
+    for choice in &option.choices {
+        if !option.values.contains(&choice.value) {
+            issues.push(error(
+                &option.id,
+                format!("choice for unknown value `{}`", choice.value),
+            ));
+        } else if !seen.insert(choice.value.as_str()) {
+            issues.push(error(
+                &option.id,
+                format!("more than one choice for value `{}`", choice.value),
+            ));
+        }
+    }
+    for value in &option.values {
+        if !seen.contains(value.as_str()) {
+            issues.push(error(&option.id, format!("no choice for value `{value}`")));
+        }
+    }
+}
+
 #[cfg(test)]
 mod tests {
-    use checklist_core::{OptionTest, ShowIf};
+    use checklist_core::{OptionChoice, OptionTest, ShowIf};
 
     use super::super::test_support::{assert_flags, pack, step};
 
@@ -74,6 +106,35 @@ mod tests {
         }
         assert_flags(&p, "more than one phase");
         assert_flags(&p, "unknown list");
+    }
+
+    #[test]
+    fn choices_cover_each_value_once_and_ask_in_names_phases() {
+        let choice = |value: &str| OptionChoice {
+            value: value.into(),
+            label: value.to_uppercase(),
+            description: None,
+        };
+        let mut p = pack(vec![step("a")], vec![]);
+        if let Some(file) = &mut p.content.phases {
+            file.options[0].choices = vec![choice("gpu"), choice("gpu"), choice("solar")];
+            file.options[0].ask_in = vec!["preflight".into(), "ghost".into()];
+        }
+        assert_flags(&p, "more than one choice for value `gpu`");
+        assert_flags(&p, "choice for unknown value `solar`");
+        assert_flags(&p, "no choice for value `apu`");
+        assert_flags(&p, "unknown phase `ghost`");
+
+        let mut p = pack(vec![step("a")], vec![]);
+        if let Some(file) = &mut p.content.phases {
+            file.options[0].choices = vec![choice("gpu"), choice("apu")];
+            file.options[0].ask_in = vec!["preflight".into()];
+        }
+        assert!(
+            crate::validate_pack(&p)
+                .iter()
+                .all(|i| !i.message.contains("choice"))
+        );
     }
 
     #[test]

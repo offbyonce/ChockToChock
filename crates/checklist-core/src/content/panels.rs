@@ -46,6 +46,10 @@ data_types! {
         /// The positions it can be set to, as text.
         #[serde(default, skip_serializing_if = "Option::is_none")]
         pub positions: Option<String>,
+        /// Where it rests when the airplane is cold and dark: one of `positions`. Drawings show it,
+        /// dimmed, on controls a step does not use (decision 0014).
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        pub rest: Option<String>,
         pub description: String,
         #[serde(default, skip_serializing_if = "Option::is_none")]
         pub width: Option<f64>,

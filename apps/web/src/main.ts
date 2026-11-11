@@ -4,7 +4,7 @@
 import { App, hostContext } from "@chocktochock/ui";
 import "@chocktochock/ui/app.css";
 import "./app-page.css";
-import "./fonts/b612.css";
+import "./fonts/fonts.css";
 import { mount } from "svelte";
 import { registerServiceWorker } from "./updates";
 import { webHost } from "./web-host";

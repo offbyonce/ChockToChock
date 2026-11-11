@@ -30,7 +30,7 @@ engine never names an aircraft. **The app never connects to the simulator** (dec
   airline SOPs are never used as a basis.
 - Never add images, screenshots, PDFs or any files from an aircraft developer, manufacturer or
   simulator. Switch names, positions and values are facts and are fine.
-  Open-licensed fonts (such as B612 under the OFL) are allowed, bundled unmodified with their license.
+  Open-licensed fonts (such as Geist and B612 Mono under the OFL) are allowed, bundled unmodified with their license.
 - Label systems content as real aircraft, simulator model, or both.
 
 **Code:**
@@ -55,7 +55,9 @@ engine never names an aircraft. **The app never connects to the simulator** (dec
 - Do not edit `.github/workflows/`, `deny.toml`, `lefthook.yml`, licenses or the decision records
   without the maintainer's explicit go-ahead.
 - Never commit secrets, keys, tokens, personal names or email addresses, machine names or IP
-  addresses. Test fixtures are invented and use generic names ("Pilot").
+  addresses. Test fixtures are invented and use generic names ("Pilot"). One exception: a
+  copyright notice that a third-party license requires us to keep (for example on the copied
+  Tabler icons, recorded in `REUSE.toml`) stays as written, even when it names a person.
 
 ## How to work
 
@@ -100,6 +102,8 @@ just test      # Rust and interface tests
 just packs     # validate every pack
 just site      # build the web site into apps/web/dist (WebAssembly, packs, app)
 just update-test  # service worker update test in headless Firefox (local; needs Firefox)
+just screenshots <dir>  # review screenshots (desktop and tablet, dark and light) into <dir>;
+                        # with CHOCKTOCHOCK_BASELINE=<local 3.0 HTML file>, also 3.0 side by side in <dir>/compare
 just ci        # everything; must pass before a push
 just overlap   # compare packs with private references (CHOCKTOCHOCK_OVERLAP_REFS)
 ```

@@ -41,7 +41,7 @@ test: wasm web-packs
     cargo nextest run --workspace
     cargo test --doc --workspace
     pnpm --filter @chocktochock/ui test
-    node --test "tools/import-3x/*.test.js" "apps/web/*.test.js" "apps/web/build/*.test.js"
+    node --test "tools/import-3x/*.test.js" "apps/web/*.test.js" "apps/web/src/*.test.js" "apps/web/build/*.test.js"
 
 # Build the web host as WebAssembly into apps/web/src/wasm. Needs the wasm-bindgen CLI at the
 # same version as the crate (decision 0010).
@@ -49,9 +49,10 @@ wasm:
     cargo build -q -p web-host --target wasm32-unknown-unknown --profile wasm
     wasm-bindgen --target web --remove-name-section --remove-producers-section --out-dir apps/web/src/wasm target/wasm32-unknown-unknown/wasm/web_host.wasm
 
-# Check every pack and write it as flattened JSON for the web app to fetch.
+# Check the published packs and write them as flattened JSON for the web app to fetch. The
+# example pack is a format demo for authors and is not published.
 web-packs:
-    cargo run -q -p pack-cli -- build packs apps/web/public/packs
+    cargo run -q -p pack-cli -- build packs/ifly-737-max8 apps/web/public/packs
 
 # Build the deployable web site into apps/web/dist (published to GitHub Pages): the placeholder
 # front page, the work-in-progress app at app/ and the SimBrief probe page, with the WebAssembly
@@ -63,6 +64,11 @@ site: wasm web-packs
 # part of `just ci`). See apps/web/build/update-test.mjs.
 update-test: site
     node apps/web/build/update-test.mjs
+
+# Screenshots of the built app for review (desktop and tablet, dark and light), written to a
+# folder outside the repo. Needs Firefox; not part of `just ci`.
+screenshots out: site
+    node apps/web/build/screenshots.mjs {{out}}
 
 # Regenerate the pack JSON Schemas from the Rust types.
 schemas:

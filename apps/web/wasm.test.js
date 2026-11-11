@@ -42,3 +42,22 @@ test("SimBrief plans read in both forms, and errors arrive tagged", () => {
   });
   assert.match(ok(wasm.plan_url("123456")), /userid=123456&json=1$/);
 });
+
+test("the module keeps a loaded pack for flights, actions and the rail", () => {
+  ok(wasm.load_pack(fs.readFileSync(path.join(here, "public/packs/ifly-737-max8.json"), "utf8")));
+  const flight = ok(wasm.new_flight("ifly-737-max8"));
+  assert.equal(flight.options.power, "gpu");
+  const step = "ifly-737-max8.exterior.left-forward-fuselage";
+  const skipped = ok(
+    wasm.apply("ifly-737-max8", JSON.stringify(flight), JSON.stringify({ type: "skip", step, at: 1 })),
+  );
+  const rail = ok(wasm.rail("ifly-737-max8", JSON.stringify(skipped)));
+  const exterior = rail.stages[0].phases.find((p) => p.id === "exterior");
+  assert.equal(exterior.skipped, 1);
+  assert.equal(exterior.complete, false);
+  assert.deepEqual(
+    rail.reference.map((p) => p.id),
+    ["memory", "quick-reference", "procedures"],
+  );
+  assert.equal(JSON.parse(wasm.load_flight('{"format":99}')).ok.state, "newer");
+});

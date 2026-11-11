@@ -101,22 +101,54 @@ every change to `.github/workflows/`. For those, prepare what the step needs and
    - **Detail levels:** a quick level (item and value) and an expanded level (where it is, why,
      and links such as the CDU walkthrough).
    - **Wording:** make clear that the pilot confirms each item. The app has no simulator link
-     (decision 0006) and never implies it knows a switch position.
+     (decision 0006), so it never claims to know the simulator's state. That does not mean hiding
+     what a step asks for: control drawings show the step's target position, highlighted and
+     labeled as the target ("set to ON"), never as live state.
    - **Touch targets:** at least 44 to 48 px.
    - **Theme:** dark, with a dimming control, and text contrast of at least 4.5:1 in every theme.
-   - **Typeface:** B612 (SIL Open Font License 1.1), bundled and precached with the site (step 6).
+   - **Typeface:** Geist for interface text, as in 3.0, and B612 Mono for values (both SIL Open
+     Font License 1.1), bundled and precached with the site. B612, bundled in step 6, was replaced
+     on the batch 0 review so the app matches 3.0's type.
    - **Non-normal lists:** larger type than normal lists.
    - **Completion:** a clear completion call at the end of each list (for example "Before start
      checklist complete"), shown only when no item is still open.
    - **Icons:** one permissive general icon set, Tabler Icons (MIT), plus our own small family of
      schematic control glyphs on the same 24 px grid: toggle switch, guarded switch, rotary
      selector, push button with annunciator, lever and light. They are drawn from scratch and
-     never traced from any real panel; lit or selected states use fill as well as color, and
-     amber and red always come with the words CAUTION and WARNING. Only the Tabler icons we use
+     never traced from any real panel. As in 3.0, color marks the controls a step uses, with no
+     boxes or heavier outlines; without color they still read, because only they show a position
+     (the knob at the target). Lit lights use fill as well as color, and amber and red always come
+     with the words CAUTION and WARNING. Only the Tabler icons we use
      are copied in as SVG files, not installed as a package, so decision 0010's rule of no new
      JavaScript dependencies holds; MIT is already in `LICENSES/`.
    - Adding any new license file to `LICENSES/` needs the maintainer's go-ahead first (B612's
      `OFL-1.1.txt` is approved and added with the font in step 6).
+   Batches (one pull request each, screenshots for review saved outside the repo). 3.0 is the
+   design baseline: the layout and look match 3.0, and the requirements above are improvements on
+   top of it, not a different design. Each batch's review screenshots include 3.0 and the new app
+   side by side, at the same size and theme (`just screenshots` with `CHOCKTOCHOCK_BASELINE`),
+   and a checklist of every visible 3.0 element on the screens covered, each marked kept,
+   improved, missing until batch N, or worse with its fix. The checklist comes from an
+   independent reviewer with fresh context, given only the compare images and 3.0 as the
+   reference; its findings are included unedited, with the fixes. A batch is ready only when
+   nothing is worse. The new app replaces the front page only when it clearly exceeds 3.0.
+   0. Foundations: decision 0012, app state in Rust and the WebAssembly calls, themes and
+      dimming with a contrast test, the icon pipeline, the app frame (top bar, phase rail,
+      Emergency button, addresses) and the screenshot tool. Reworked on review to the 3.0
+      layout: stage tabs and phase chips, the flight strip, step rows, Flow view with the
+      current-item box, and the context panel with the flight deck map and control schematic.
+   1. Lists: phase screen, Checklist and Flow, item states, current-item box, quick and expanded,
+      item detail, completion call, open items, options, Full and Essentials, keyboard, and
+      saving progress on the device (brought forward from step 8).
+   2. Flight data: flight setup, flight strip, values in steps, SimBrief plan loading.
+   3. Panel states, timers and briefings in the flow. Control drawings show each control at its
+      expected position for the start state and the steps already confirmed (decision 0015).
+   4. CDU walkthrough.
+   5. Flight deck: overview map, panel views with our own glyphs, light meanings, exterior
+      inspection on our own airplane outline.
+   6. Reference and learning: emergency reference, glossary, how procedures work, practice,
+      search, guided tour.
+   7. Settings (including Essentials changes and print) and the flight log with the logbook.
 8. **Saved progress, export and import.** Keep progress in browser storage behind the host
    adapter, and ask the browser for persistent storage. Export writes a file in a versioned format
    defined in Rust. Import validates the file, applies aliases for old ids, and never silently

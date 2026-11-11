@@ -1,5 +1,6 @@
 ---
 source: crates/pack-cli/tests/snapshot.rs
+assertion_line: 34
 ---
 [
   {
@@ -88,7 +89,7 @@ source: crates/pack-cli/tests/snapshot.rs
         "text": "ELECTRIC HYDRAULIC PUMP SWITCHES",
         "expect": "OFF",
         "controls": [
-          "hydpumps"
+          "elechyd"
         ],
         "note": "They are the two inner switches on the hydraulic panel.",
         "why": "These pumps run from the AC bus, so with the switches on they would start as soon as ground or APU power arrives, which pressurizes the hydraulic systems and can move flight controls with people near the airplane.",
@@ -6497,7 +6498,7 @@ source: crates/pack-cli/tests/snapshot.rs
         "text": "HYDRAULIC PUMP SWITCHES",
         "expect": "ELEC 1 AND 2 OFF",
         "controls": [
-          "hydpumps"
+          "elechyd"
         ],
         "why": "Not needed after shutdown",
         "confirmed_by": [

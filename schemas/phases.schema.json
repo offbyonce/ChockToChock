@@ -49,6 +49,29 @@
         "text"
       ]
     },
+    "OptionChoice": {
+      "description": "How one value of an option is shown, e.g. \"Ground power at the gate\".",
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "label": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "value",
+        "label"
+      ]
+    },
     "OptionTest": {
       "description": "One test against a pilot-chosen option. The options are declared by the pack.",
       "anyOf": [
@@ -210,9 +233,30 @@
       "description": "A choice the pilot makes that decides what is shown, e.g. the power source.",
       "type": "object",
       "properties": {
+        "ask_in": {
+          "description": "Phases that show the choice above their lists.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "choices": {
+          "description": "How each value is shown. When present, every value has exactly one.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/OptionChoice"
+          }
+        },
         "default": {
           "description": "The value used until the pilot chooses. Must be one of `values`.",
           "type": "string"
+        },
+        "description": {
+          "description": "What the choice changes, shown beside it.",
+          "type": [
+            "string",
+            "null"
+          ]
         },
         "id": {
           "type": "string"

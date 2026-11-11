@@ -1,5 +1,6 @@
 ---
 source: crates/pack-cli/tests/snapshot.rs
+assertion_line: 38
 ---
 [
   {
@@ -26,6 +27,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "fltctrl"
             ],
             "positions": "STBY RUD, OFF, ON",
+            "rest": "STBY RUD",
             "description": "Gives hydraulic system A to the ailerons, elevator and rudder."
           },
           {
@@ -38,6 +40,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "fltctrl"
             ],
             "positions": "STBY RUD, OFF, ON",
+            "rest": "STBY RUD",
             "description": "Gives hydraulic system B to the ailerons, elevator and rudder."
           },
           {
@@ -105,6 +108,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "altflap"
             ],
             "positions": "OFF, ARM",
+            "rest": "OFF",
             "description": "Arms alternate flap operation. Red guard."
           },
           {
@@ -116,6 +120,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "altflap"
             ],
             "positions": "UP, OFF, DOWN",
+            "rest": "OFF",
             "description": "Moves the flaps electrically when armed."
           },
           {
@@ -128,6 +133,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "spoilsw"
             ],
             "positions": "OFF, ON",
+            "rest": "OFF",
             "description": "Hydraulic system A to the flight spoilers."
           },
           {
@@ -140,6 +146,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "spoilsw"
             ],
             "positions": "OFF, ON",
+            "rest": "OFF",
             "description": "Hydraulic system B to the flight spoilers."
           },
           {
@@ -217,6 +224,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "yawd"
             ],
             "positions": "OFF, ON",
+            "rest": "OFF",
             "description": "Damps Dutch roll."
           }
         ]
@@ -238,6 +246,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "navsw"
             ],
             "positions": "BOTH ON 1, NORMAL, BOTH ON 2",
+            "rest": "NORMAL",
             "description": "Normally each side uses its own VHF NAV receiver."
           },
           {
@@ -249,6 +258,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "navsw"
             ],
             "positions": "BOTH ON L, NORMAL, BOTH ON R",
+            "rest": "NORMAL",
             "description": "Normally each side uses its own IRS."
           },
           {
@@ -260,6 +270,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "navsw"
             ],
             "positions": "BOTH ON L, NORMAL, BOTH ON R",
+            "rest": "NORMAL",
             "description": "Normally each side uses its own FMC."
           }
         ]
@@ -281,6 +292,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "dispsw"
             ],
             "positions": "ALL ON 1, AUTO, ALL ON 2",
+            "rest": "AUTO",
             "description": "Chooses which computer drives the displays."
           },
           {
@@ -292,6 +304,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "dispsw"
             ],
             "positions": "BOTH ON 1, NORMAL, BOTH ON 2",
+            "rest": "NORMAL",
             "description": "Chooses which EFIS panel controls both sides."
           }
         ]
@@ -397,6 +410,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "xfeed"
             ],
             "positions": "Closed, open",
+            "rest": "Closed",
             "description": "Joins the left and right fuel manifolds."
           },
           {
@@ -430,6 +444,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "fuelpumps"
             ],
             "positions": "OFF, ON",
+            "rest": "OFF",
             "description": "Center tank left pump."
           },
           {
@@ -441,6 +456,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "fuelpumps"
             ],
             "positions": "OFF, ON",
+            "rest": "OFF",
             "description": "Center tank right pump."
           },
           {
@@ -496,6 +512,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "fuelpumps"
             ],
             "positions": "OFF, ON",
+            "rest": "OFF",
             "description": "Aft pump, tank 1."
           },
           {
@@ -507,6 +524,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "fuelpumps"
             ],
             "positions": "OFF, ON",
+            "rest": "OFF",
             "description": "Forward pump, tank 1."
           },
           {
@@ -518,6 +536,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "fuelpumps"
             ],
             "positions": "OFF, ON",
+            "rest": "OFF",
             "description": "Forward pump, tank 2."
           },
           {
@@ -529,6 +548,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "fuelpumps"
             ],
             "positions": "OFF, ON",
+            "rest": "OFF",
             "description": "Aft pump, tank 2."
           }
         ]
@@ -605,6 +625,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "eleclts"
             ],
             "positions": "STBY PWR, BAT BUS, BAT, AUX BAT, TR1, TR2, TR3, TEST",
+            "rest": "STBY PWR",
             "description": "Chooses what the DC meters show."
           },
           {
@@ -616,6 +637,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "eleclts"
             ],
             "positions": "STBY PWR, GRD PWR, GEN 1, APU GEN, GEN 2, INV, TEST",
+            "rest": "STBY PWR",
             "description": "Chooses what the AC meters show."
           },
           {
@@ -628,6 +650,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "bat"
             ],
             "positions": "OFF, ON",
+            "rest": "OFF",
             "description": "Connects the battery. Guarded."
           },
           {
@@ -639,6 +662,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "cabutil"
             ],
             "positions": "OFF, ON",
+            "rest": "OFF",
             "description": "Power to the galleys and cabin utilities."
           },
           {
@@ -650,6 +674,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "cabutil"
             ],
             "positions": "OFF, ON",
+            "rest": "OFF",
             "description": "Power to seat equipment."
           }
         ]
@@ -705,6 +730,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "gendrive"
             ],
             "positions": "Guarded",
+            "rest": "Guarded",
             "description": "Disconnects generator drive 1. Not reset in flight."
           },
           {
@@ -717,6 +743,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "stby"
             ],
             "positions": "BAT, OFF, AUTO",
+            "rest": "AUTO",
             "description": "Normally AUTO. Guarded."
           },
           {
@@ -729,6 +756,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "gendrive"
             ],
             "positions": "Guarded",
+            "rest": "Guarded",
             "description": "Disconnects generator drive 2. Not reset in flight."
           }
         ]
@@ -762,6 +790,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "grddisc"
             ],
             "positions": "OFF, ON",
+            "rest": "OFF",
             "description": "Spring-loaded. Puts ground power on the buses."
           },
           {
@@ -774,6 +803,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "bustrans"
             ],
             "positions": "OFF, AUTO",
+            "rest": "AUTO",
             "description": "Normally AUTO. Guarded."
           },
           {
@@ -863,6 +893,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "apub"
             ],
             "positions": "OFF, ON",
+            "rest": "OFF",
             "description": "Spring-loaded. Puts generator 1 on the bus."
           },
           {
@@ -875,6 +906,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "apub"
             ],
             "positions": "OFF, ON",
+            "rest": "OFF",
             "description": "Spring-loaded. Puts the APU on the left bus."
           },
           {
@@ -887,6 +919,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "apub"
             ],
             "positions": "OFF, ON",
+            "rest": "OFF",
             "description": "Spring-loaded. Puts the APU on the right bus."
           },
           {
@@ -899,6 +932,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "apub"
             ],
             "positions": "OFF, ON",
+            "rest": "OFF",
             "description": "Spring-loaded. Puts generator 2 on the bus."
           }
         ]
@@ -920,6 +954,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "wiper"
             ],
             "positions": "PARK, INT, LOW, HIGH",
+            "rest": "PARK",
             "description": "Left windshield wiper."
           }
         ]
@@ -938,6 +973,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "x": 54.0,
             "y": 48.0,
             "positions": "OFF to BRIGHT",
+            "rest": "OFF to BRIGHT",
             "description": "Circuit breaker panel lights."
           },
           {
@@ -946,6 +982,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "x": 54.0,
             "y": 116.0,
             "positions": "OFF to BRIGHT",
+            "rest": "OFF to BRIGHT",
             "description": "Overhead panel lights."
           },
           {
@@ -990,6 +1027,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "equip"
             ],
             "positions": "NORM, ALTN",
+            "rest": "NORM",
             "description": "Equipment cooling supply fan."
           },
           {
@@ -1001,6 +1039,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "equip"
             ],
             "positions": "NORM, ALTN",
+            "rest": "NORM",
             "description": "Equipment cooling exhaust fan."
           },
           {
@@ -1035,6 +1074,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "emerext"
             ],
             "positions": "OFF, ARMED, ON",
+            "rest": "OFF",
             "description": "Normally ARMED. Guarded."
           },
           {
@@ -1046,6 +1086,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "signs"
             ],
             "positions": "OFF, AUTO, ON",
+            "rest": "OFF",
             "description": "Cabin no smoking sign."
           },
           {
@@ -1058,6 +1099,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "signs"
             ],
             "positions": "OFF, AUTO, ON",
+            "rest": "OFF",
             "description": "Cabin seat belt sign."
           },
           {
@@ -1093,6 +1135,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "wiper"
             ],
             "positions": "PARK, INT, LOW, HIGH",
+            "rest": "PARK",
             "description": "Right windshield wiper."
           }
         ]
@@ -1202,6 +1245,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "wheat"
             ],
             "positions": "OFF, ON",
+            "rest": "OFF",
             "description": "Left side window heat."
           },
           {
@@ -1213,6 +1257,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "wheat"
             ],
             "positions": "OFF, ON",
+            "rest": "OFF",
             "description": "Left forward window heat."
           },
           {
@@ -1232,6 +1277,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "wheat"
             ],
             "positions": "OFF, ON",
+            "rest": "OFF",
             "description": "Right forward window heat."
           },
           {
@@ -1243,6 +1289,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "wheat"
             ],
             "positions": "OFF, ON",
+            "rest": "OFF",
             "description": "Right side window heat."
           },
           {
@@ -1342,6 +1389,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "pheat"
             ],
             "positions": "AUTO, ON",
+            "rest": "AUTO",
             "description": "Probe heat system A."
           },
           {
@@ -1353,6 +1401,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "pheat"
             ],
             "positions": "AUTO, ON",
+            "rest": "AUTO",
             "description": "Probe heat system B."
           }
         ]
@@ -1473,6 +1522,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "aice"
             ],
             "positions": "OFF, ON",
+            "rest": "OFF",
             "description": "Bleed air to the wing leading edge."
           },
           {
@@ -1484,6 +1534,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "aice"
             ],
             "positions": "OFF, ON",
+            "rest": "OFF",
             "description": "Bleed air to the engine 1 inlet."
           },
           {
@@ -1495,6 +1546,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "aice"
             ],
             "positions": "OFF, ON",
+            "rest": "OFF",
             "description": "Bleed air to the engine 2 inlet."
           }
         ]
@@ -1582,6 +1634,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "hydpumps"
             ],
             "positions": "OFF, ON",
+            "rest": "ON",
             "description": "Engine 1 pump, system A."
           },
           {
@@ -1593,6 +1646,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "elechyd"
             ],
             "positions": "OFF, ON",
+            "rest": "OFF",
             "description": "Electric pump, system A."
           },
           {
@@ -1604,6 +1658,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "elechyd"
             ],
             "positions": "OFF, ON",
+            "rest": "OFF",
             "description": "Electric pump, system B."
           },
           {
@@ -1615,6 +1670,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "hydpumps"
             ],
             "positions": "OFF, ON",
+            "rest": "ON",
             "description": "Engine 2 pump, system B."
           }
         ]
@@ -1870,6 +1926,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "vrec"
             ],
             "positions": "AUTO, ON",
+            "rest": "AUTO",
             "description": "AUTO runs the recorder automatically."
           }
         ]
@@ -1901,6 +1958,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "tempsw"
             ],
             "positions": "Supply duct, passenger cabin, pack",
+            "rest": "Supply duct",
             "description": "Chooses what the gauge reads."
           },
           {
@@ -1912,6 +1970,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "trimair"
             ],
             "positions": "OFF, ON",
+            "rest": "OFF",
             "description": "Adds hot air to fine-tune each zone."
           },
           {
@@ -1956,6 +2015,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "tempsw"
             ],
             "positions": "OFF, C, AUTO, W",
+            "rest": "OFF",
             "description": "Control cabin temperature."
           },
           {
@@ -1967,6 +2027,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "tempsw"
             ],
             "positions": "OFF, C, AUTO, W",
+            "rest": "OFF",
             "description": "Forward cabin temperature."
           },
           {
@@ -1978,6 +2039,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "tempsw"
             ],
             "positions": "OFF, C, AUTO, W",
+            "rest": "OFF",
             "description": "Aft cabin temperature."
           }
         ]
@@ -2010,6 +2072,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "recirc"
             ],
             "positions": "OFF, AUTO",
+            "rest": "OFF",
             "description": "Left recirculation fan."
           },
           {
@@ -2021,6 +2084,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "recirc"
             ],
             "positions": "OFF, AUTO",
+            "rest": "OFF",
             "description": "Right recirculation fan."
           },
           {
@@ -2046,6 +2110,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "packs"
             ],
             "positions": "OFF, AUTO, HIGH",
+            "rest": "OFF",
             "description": "Left air conditioning pack."
           },
           {
@@ -2057,6 +2122,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "iso"
             ],
             "positions": "CLOSE, AUTO, OPEN",
+            "rest": "OPEN",
             "description": "Joins or separates the bleed ducts."
           },
           {
@@ -2068,6 +2134,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "packs"
             ],
             "positions": "OFF, AUTO, HIGH",
+            "rest": "OFF",
             "description": "Right air conditioning pack."
           },
           {
@@ -2152,6 +2219,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "engbleed"
             ],
             "positions": "OFF, ON",
+            "rest": "ON",
             "description": "Engine 1 bleed air."
           },
           {
@@ -2163,6 +2231,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "apubleed"
             ],
             "positions": "OFF, ON",
+            "rest": "OFF",
             "description": "APU bleed air."
           },
           {
@@ -2174,6 +2243,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "engbleed"
             ],
             "positions": "OFF, ON",
+            "rest": "ON",
             "description": "Engine 2 bleed air."
           }
         ]
@@ -2291,6 +2361,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "outflow"
             ],
             "positions": "CLOSE, OPEN",
+            "rest": "CLOSE",
             "description": "Spring-loaded. Used in MAN."
           },
           {
@@ -2302,6 +2373,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "press"
             ],
             "positions": "AUTO, ALTN, MAN",
+            "rest": "AUTO",
             "description": "Pressurization mode."
           }
         ]
@@ -2323,6 +2395,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "landlt"
             ],
             "positions": "OFF, FLASH, ON",
+            "rest": "OFF",
             "description": "Left landing light."
           },
           {
@@ -2334,6 +2407,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "landlt"
             ],
             "positions": "OFF, FLASH, ON",
+            "rest": "OFF",
             "description": "Right landing light."
           },
           {
@@ -2345,6 +2419,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "turnoff"
             ],
             "positions": "OFF, ON",
+            "rest": "OFF",
             "description": "Left runway turnoff light."
           },
           {
@@ -2356,6 +2431,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "turnoff"
             ],
             "positions": "OFF, ON",
+            "rest": "OFF",
             "description": "Right runway turnoff light."
           },
           {
@@ -2367,6 +2443,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "lldg"
             ],
             "positions": "OFF, ON",
+            "rest": "OFF",
             "description": "Taxi light."
           }
         ]
@@ -2388,6 +2465,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "apusw"
             ],
             "positions": "OFF, ON, START",
+            "rest": "OFF",
             "description": "START is spring-loaded back to ON."
           }
         ]
@@ -2409,6 +2487,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "starts"
             ],
             "positions": "GRD, OFF, CONT, FLT",
+            "rest": "OFF",
             "description": "Engine 1 start and ignition."
           },
           {
@@ -2420,6 +2499,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "starts"
             ],
             "positions": "IGN L, BOTH, IGN R",
+            "rest": "IGN L",
             "description": "Chooses the igniters."
           },
           {
@@ -2431,6 +2511,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "starts"
             ],
             "positions": "GRD, OFF, CONT, FLT",
+            "rest": "OFF",
             "description": "Engine 2 start and ignition."
           }
         ]
@@ -2452,6 +2533,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "logo"
             ],
             "positions": "OFF, ON",
+            "rest": "OFF",
             "description": "Tail logo lights."
           },
           {
@@ -2463,6 +2545,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "poslt"
             ],
             "positions": "STROBE & STEADY, OFF, STEADY",
+            "rest": "OFF",
             "description": "Position and strobe lights."
           },
           {
@@ -2474,6 +2557,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "beacon"
             ],
             "positions": "OFF, ON",
+            "rest": "OFF",
             "description": "Red beacon lights."
           },
           {
@@ -2486,6 +2570,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "wingww"
             ],
             "positions": "OFF, ON",
+            "rest": "OFF",
             "description": "Wing lights."
           },
           {
@@ -2497,6 +2582,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "wingww"
             ],
             "positions": "OFF, ON",
+            "rest": "OFF",
             "description": "Wheel well lights."
           }
         ]
@@ -2580,6 +2666,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "elt"
             ],
             "positions": "ARM, ON",
+            "rest": "ARM",
             "description": "Emergency locator transmitter. Stays guarded."
           }
         ]
@@ -2633,6 +2720,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "x": 58.0,
             "y": 82.0,
             "positions": "TEST, TK/GS, PPOS, WIND, HDG/STS",
+            "rest": "TEST",
             "description": "Chooses what the IRS display shows."
           },
           {
@@ -2641,6 +2729,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "x": 58.0,
             "y": 140.0,
             "positions": "L, R",
+            "rest": "L",
             "description": "Chooses the left or right IRS."
           },
           {
@@ -2782,6 +2871,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "irs"
             ],
             "positions": "OFF, ALIGN, NAV, ATT",
+            "rest": "OFF",
             "description": "Left IRS mode."
           },
           {
@@ -2793,6 +2883,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "irs"
             ],
             "positions": "OFF, ALIGN, NAV, ATT",
+            "rest": "OFF",
             "description": "Right IRS mode."
           }
         ]
@@ -2811,6 +2902,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "x": 48.0,
             "y": 46.0,
             "positions": "OFF, ON",
+            "rest": "OFF",
             "description": "Connects the service interphone."
           }
         ]
@@ -2911,6 +3003,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "eec"
             ],
             "positions": "ON, ALTN",
+            "rest": "ON",
             "description": "Engine 1 control. ON is normal. ALTN shows alternate mode.",
             "width": 40.0
           },
@@ -2923,6 +3016,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "eec"
             ],
             "positions": "ON, ALTN",
+            "rest": "ON",
             "description": "Engine 2 control. ON is normal. ALTN shows alternate mode.",
             "width": 40.0
           }
@@ -2956,6 +3050,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "paxoxy"
             ],
             "positions": "NORMAL, ON",
+            "rest": "NORMAL",
             "description": "Drops the cabin masks. Guarded."
           },
           {
@@ -2985,6 +3080,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "x": 70.0,
             "y": 34.0,
             "positions": "OFF, ON, CREW ONLY",
+            "rest": "OFF",
             "description": "Cabin broadband power."
           }
         ]
@@ -3007,6 +3103,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "fltrec"
             ],
             "positions": "TEST, NORMAL",
+            "rest": "NORMAL",
             "description": "Guarded. Runs automatically."
           },
           {
@@ -3103,6 +3200,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "elevjam"
             ],
             "positions": "OFF, ON",
+            "rest": "OFF",
             "description": "Not simulated."
           }
         ]
@@ -3142,6 +3240,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "x": 44.0,
             "y": 40.0,
             "positions": "DIM, OFF, BRIGHT",
+            "rest": "OFF",
             "description": "Flight deck dome light."
           }
         ]
@@ -3215,6 +3314,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "efispanel"
             ],
             "positions": "RADIO, BARO",
+            "rest": "RADIO",
             "description": "Outer ring selects RADIO or BARO. Inner knob sets minimums. Center button is RST."
           },
           {
@@ -3227,6 +3327,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "efispanel"
             ],
             "positions": "IN, HPA, STD",
+            "rest": "IN",
             "description": "Inner knob sets the altimeter. Outer ring selects IN or HPA. Center button is STD."
           },
           {
@@ -3252,6 +3353,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "efispanel"
             ],
             "positions": "APP, VOR, MAP, PLN",
+            "rest": "APP",
             "description": "ND mode. CTR centers it."
           },
           {
@@ -3263,6 +3365,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "efispanel"
             ],
             "positions": "ND range",
+            "rest": "ND range",
             "description": "ND range. TFC shows traffic."
           },
           {
@@ -3461,6 +3564,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "fd"
             ],
             "positions": "OFF, ON",
+            "rest": "OFF",
             "description": "Left flight director."
           },
           {
@@ -3472,6 +3576,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "mcpset"
             ],
             "positions": "OFF, ARM",
+            "rest": "OFF",
             "description": "Arms the autothrottle."
           },
           {
@@ -3528,6 +3633,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "mcpset"
             ],
             "positions": "Bank 10 to 30",
+            "rest": "Bank 10 to 30",
             "description": "Sets heading. The outer ring limits bank."
           },
           {
@@ -3642,6 +3748,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "fd"
             ],
             "positions": "OFF, ON",
+            "rest": "OFF",
             "description": "Right flight director."
           },
           {
@@ -3654,6 +3761,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "apdis"
             ],
             "positions": "UP, DOWN",
+            "rest": "UP",
             "description": "Autopilot disengage bar."
           },
           {
@@ -3786,6 +3894,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "efispanel"
             ],
             "positions": "RADIO, BARO",
+            "rest": "RADIO",
             "description": "Outer ring selects RADIO or BARO. Inner knob sets minimums. Center button is RST."
           },
           {
@@ -3798,6 +3907,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "efispanel"
             ],
             "positions": "IN, HPA, STD",
+            "rest": "IN",
             "description": "Inner knob sets the altimeter. Outer ring selects IN or HPA. Center button is STD."
           },
           {
@@ -3823,6 +3933,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "efispanel"
             ],
             "positions": "APP, VOR, MAP, PLN",
+            "rest": "APP",
             "description": "ND mode. CTR centers it."
           },
           {
@@ -3834,6 +3945,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "efispanel"
             ],
             "positions": "ND range",
+            "rest": "ND range",
             "description": "ND range. TFC shows traffic."
           },
           {
@@ -3965,6 +4077,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "ltest"
             ],
             "positions": "TEST, BRT, DIM",
+            "rest": "BRT",
             "description": "Tests the lights and sets brightness."
           },
           {
@@ -4165,6 +4278,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "gearup"
             ],
             "positions": "UP, DN",
+            "rest": "DN",
             "description": "Raises and lowers the gear."
           },
           {
@@ -4184,6 +4298,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "nws"
             ],
             "positions": "NORM",
+            "rest": "NORM",
             "description": "Guarded at NORM, which steers with system A. ALT uses system B."
           }
         ]
@@ -4316,6 +4431,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "panellts"
             ],
             "positions": "OFF to BRIGHT",
+            "rest": "OFF to BRIGHT",
             "description": "Panel brightness."
           },
           {
@@ -4327,6 +4443,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "dsel"
             ],
             "positions": "OUTBD, NORM, INBD",
+            "rest": "NORM",
             "description": "Moves the displays."
           },
           {
@@ -4338,6 +4455,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "panellts"
             ],
             "positions": "OFF to BRIGHT",
+            "rest": "OFF to BRIGHT",
             "description": "Background brightness."
           },
           {
@@ -4349,6 +4467,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "panellts"
             ],
             "positions": "OFF to BRIGHT",
+            "rest": "OFF to BRIGHT",
             "description": "Glareshield flood light."
           },
           {
@@ -4417,6 +4536,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "x": 68.0,
             "y": 52.0,
             "positions": "NORM",
+            "rest": "NORM",
             "description": "Guarded at NORM. INHIBIT silences the flap, gear, terrain or runway alerts."
           },
           {
@@ -4426,6 +4546,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "x": 112.0,
             "y": 52.0,
             "positions": "NORM",
+            "rest": "NORM",
             "description": "Guarded at NORM. INHIBIT silences the flap, gear, terrain or runway alerts."
           },
           {
@@ -4435,6 +4556,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "x": 156.0,
             "y": 52.0,
             "positions": "NORM",
+            "rest": "NORM",
             "description": "Guarded at NORM. INHIBIT silences the flap, gear, terrain or runway alerts."
           },
           {
@@ -4444,6 +4566,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "x": 200.0,
             "y": 52.0,
             "positions": "NORM",
+            "rest": "NORM",
             "description": "Guarded at NORM. INHIBIT silences the flap, gear, terrain or runway alerts."
           },
           {
@@ -4455,6 +4578,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "dsel"
             ],
             "positions": "INBD, NORM, OUTBD",
+            "rest": "NORM",
             "description": "Moves the displays."
           },
           {
@@ -4466,6 +4590,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "panellts"
             ],
             "positions": "OFF to BRIGHT",
+            "rest": "OFF to BRIGHT",
             "description": "Panel brightness."
           },
           {
@@ -4555,6 +4680,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "fuelflow"
             ],
             "positions": "RESET, RATE, USED",
+            "rest": "RATE",
             "description": "RATE shows flow, USED shows fuel used, RESET zeroes the count."
           },
           {
@@ -4566,6 +4692,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "sel"
             ],
             "positions": "L, C, R",
+            "rest": "L",
             "description": "Left display selector."
           },
           {
@@ -4588,6 +4715,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "abrake"
             ],
             "positions": "RTO, OFF, 1, 2, 3, MAX",
+            "rest": "RTO",
             "description": "Sets the autobrake."
           },
           {
@@ -4638,6 +4766,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "sel"
             ],
             "positions": "L, C, R",
+            "rest": "L",
             "description": "Right display selector.",
             "height": 26.0
           },
@@ -4729,6 +4858,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "speedbrake"
             ],
             "positions": "DOWN, ARMED, FLIGHT, UP",
+            "rest": "DOWN",
             "description": "Raises the spoilers."
           },
           {
@@ -4773,6 +4903,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "flaplever"
             ],
             "positions": "UP, 1, 2, 5, 10, 15, 25, 30, 40",
+            "rest": "UP",
             "description": "Sets the flaps."
           },
           {
@@ -4808,6 +4939,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "pbrake"
             ],
             "positions": "PULL",
+            "rest": "PULL",
             "description": "Red handle."
           },
           {
@@ -4831,6 +4963,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "slever"
             ],
             "positions": "IDLE, CUTOFF",
+            "rest": "CUTOFF",
             "description": "Fuel to engine 1."
           },
           {
@@ -4843,6 +4976,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "slever"
             ],
             "positions": "IDLE, CUTOFF",
+            "rest": "CUTOFF",
             "description": "Fuel to engine 2."
           },
           {
@@ -4861,6 +4995,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "stabcut"
             ],
             "positions": "NORMAL, CUT OUT",
+            "rest": "NORMAL",
             "description": "Either switch cuts all electric stabilizer trim."
           },
           {
@@ -4872,6 +5007,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "stabcut"
             ],
             "positions": "NORMAL, CUT OUT",
+            "rest": "NORMAL",
             "description": "Either switch cuts all electric stabilizer trim."
           }
         ]
@@ -4890,6 +5026,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "x": 44.0,
             "y": 46.0,
             "positions": "A, NORMAL, B",
+            "rest": "NORMAL",
             "description": "Selects loop A, B, or both (NORMAL) for engine 1."
           },
           {
@@ -4921,6 +5058,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "firesw"
             ],
             "positions": "PULL, ROTATE L, R",
+            "rest": "PULL",
             "description": "Engine 1 fire switch."
           },
           {
@@ -4964,6 +5102,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "apufire"
             ],
             "positions": "PULL, ROTATE",
+            "rest": "PULL",
             "description": "APU fire switch."
           },
           {
@@ -4972,6 +5111,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "x": 394.0,
             "y": 46.0,
             "positions": "A, NORMAL, B",
+            "rest": "NORMAL",
             "description": "Selects loop A, B, or both (NORMAL) for engine 2."
           },
           {
@@ -4992,6 +5132,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "firesw"
             ],
             "positions": "PULL, ROTATE L, R",
+            "rest": "PULL",
             "description": "Engine 2 fire switch."
           },
           {
@@ -5105,6 +5246,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "x": 114.0,
             "y": 42.0,
             "positions": "A, NORM, B",
+            "rest": "NORM",
             "description": "Forward detector select.",
             "width": 38.0,
             "height": 26.0
@@ -5115,6 +5257,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "x": 152.0,
             "y": 42.0,
             "positions": "A, NORM, B",
+            "rest": "NORM",
             "description": "Aft detector select.",
             "width": 38.0,
             "height": 26.0
@@ -5306,6 +5449,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "xpndr"
             ],
             "positions": "1, 2",
+            "rest": "1",
             "description": "Chooses which air data source sends altitude to the transponder."
           },
           {
@@ -5317,6 +5461,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "xpndr"
             ],
             "positions": "STBY, AUTO",
+            "rest": "STBY",
             "description": "Transponder."
           },
           {
@@ -5340,6 +5485,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "xpndr"
             ],
             "positions": "ALT OFF, XPNDR, TA ONLY, TA/RA",
+            "rest": "ALT OFF",
             "description": "TCAS and transponder mode."
           },
           {
@@ -5351,6 +5497,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "xpndr"
             ],
             "positions": "1, 2",
+            "rest": "1",
             "description": "Second altitude source selector."
           }
         ]
@@ -5453,6 +5600,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "adf"
             ],
             "positions": "1, OFF, 2",
+            "rest": "OFF",
             "description": "ADF select knob: chooses which receiver you hear (OFF, 1 or 2)."
           },
           {
@@ -5464,6 +5612,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "adf"
             ],
             "positions": "ADF, ANT, OFF",
+            "rest": "ADF",
             "description": "ADF 1 mode. TEST button in the center."
           },
           {
@@ -5475,6 +5624,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "adf"
             ],
             "positions": "ADF, ANT, OFF",
+            "rest": "ADF",
             "description": "ADF 2 mode. TEST button in the center."
           }
         ]
@@ -5493,6 +5643,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "x": 60.0,
             "y": 66.18181818181819,
             "positions": "OFF to BRIGHT",
+            "rest": "OFF to BRIGHT",
             "description": "Flood lights."
           },
           {
@@ -5501,6 +5652,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "x": 160.0,
             "y": 66.18181818181819,
             "positions": "OFF to BRIGHT",
+            "rest": "OFF to BRIGHT",
             "description": "Panel lights."
           }
         ]
@@ -5564,6 +5716,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "staboverride"
             ],
             "positions": "NORM, OVRD",
+            "rest": "NORM",
             "description": "OVRD restores electric trim when the column cutout has stopped it. Guarded at NORM."
           },
           {
@@ -5575,6 +5728,7 @@ source: crates/pack-cli/tests/snapshot.rs
               "fdd"
             ],
             "positions": "UNLKD, AUTO, DENY",
+            "rest": "AUTO",
             "description": "Flight deck door."
           }
         ]

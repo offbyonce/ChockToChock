@@ -22,19 +22,21 @@ macro_rules! data_types {
 
 pub mod content;
 pub mod model;
-pub mod session;
+pub mod positions;
+mod session;
 
 pub use content::{
     Alias, AliasKind, AliasesFile, BriefItem, Briefing, BriefingsFile, CduField, CduFile,
     CduInline, CduPage, CduPart, CduRouteCount, CduRow, CduScreen, CduStyle, CduStyled, CduText,
     CduWalkthrough, CduWhen, Control, ControlsFile, ExplainNote, Fault, FaultsFile, GlossaryEntry,
-    GlossaryFile, HowNote, IntroParagraph, LightColor, LightNote, LightsFile, NotesFile, Overview,
-    OverviewArea, OverviewCaption, Panel, PanelItem, PanelItemKind, PanelSection, Phase,
-    PhasesFile, RouteLegCount, RouteLegPart, Stage, StagePhase, StartState, StartStatesFile,
-    UserOption, Zone,
+    GlossaryFile, HowNote, IntroParagraph, LightColor, LightNote, LightsFile, NotesFile,
+    OptionChoice, Overview, OverviewArea, OverviewCaption, OverviewRegion, Panel, PanelItem,
+    PanelItemKind, PanelSection, Phase, PhasesFile, RouteLegCount, RouteLegPart, Stage, StagePhase,
+    StartState, StartStatesFile, UserOption, Zone,
 };
 pub use model::{
     AutoStart, AutoStartPick, Checklist, Confirmation, ConfirmationKind, FillField, HintPart,
     ListKind, MAX_ROUTE_LEG, OptionTest, Quick, ShowIf, Step, StepId, Timer, WalkaroundPoint,
 };
-pub use session::{Progress, Session, SessionError};
+pub use positions::named_position;
+pub use session::{Millis, Progress, Session, SessionError, StepState, counts};

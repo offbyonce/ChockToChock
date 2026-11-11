@@ -16,7 +16,7 @@ pub use manifest::{PackKind, PackManifest};
 pub use validate::{Issue, Severity, validate_pack};
 
 /// The pack schema version this build of the app understands.
-pub const SCHEMA_VERSION: u32 = 2;
+pub const SCHEMA_VERSION: u32 = 3;
 
 /// Everything a pack holds besides its manifest and lists. Each part is optional.
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -64,6 +64,30 @@ impl From<Pack> for FlatPack {
             manifest: pack.manifest,
             lists: pack.checklists,
             content: pack.content,
+        }
+    }
+}
+
+/// One built pack in `index.json`, which `pack build` writes beside the packs so the app can
+/// find them without naming any aircraft.
+#[derive(Debug, Clone, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
+#[cfg_attr(feature = "ts", derive(ts_rs::TS), ts(export))]
+#[serde(deny_unknown_fields)]
+pub struct PackSummary {
+    pub id: String,
+    pub name: String,
+    #[cfg_attr(feature = "ts", ts(type = "string"))]
+    pub version: semver::Version,
+    pub kind: PackKind,
+}
+
+impl From<&PackManifest> for PackSummary {
+    fn from(m: &PackManifest) -> Self {
+        Self {
+            id: m.id.clone(),
+            name: m.name.clone(),
+            version: m.version.clone(),
+            kind: m.kind,
         }
     }
 }

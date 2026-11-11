@@ -1,5 +1,6 @@
 ---
 source: crates/pack-cli/tests/snapshot.rs
+assertion_line: 35
 ---
 {
   "options": [
@@ -10,7 +11,22 @@ source: crates/pack-cli/tests/snapshot.rs
         "gpu",
         "apu"
       ],
-      "default": "gpu"
+      "default": "gpu",
+      "choices": [
+        {
+          "value": "gpu",
+          "label": "Ground power at the gate",
+          "description": "Preflight on ground power. Start the APU before the Before start procedure."
+        },
+        {
+          "value": "apu",
+          "label": "No ground power",
+          "description": "Start the APU now, straight after power up."
+        }
+      ],
+      "ask_in": [
+        "cold-dark"
+      ]
     },
     {
       "id": "start",
@@ -19,7 +35,18 @@ source: crates/pack-cli/tests/snapshot.rs
         "cold",
         "turn"
       ],
-      "default": "cold"
+      "default": "cold",
+      "description": "Turnaround skips Power up, for a next leg with the airplane already powered.",
+      "choices": [
+        {
+          "value": "cold",
+          "label": "Cold and dark"
+        },
+        {
+          "value": "turn",
+          "label": "Turnaround"
+        }
+      ]
     },
     {
       "id": "approach",
@@ -29,7 +56,26 @@ source: crates/pack-cli/tests/snapshot.rs
         "rnav",
         "vis"
       ],
-      "default": "ils"
+      "default": "ils",
+      "description": "Set this once you know your approach. It changes the approach and landing steps.",
+      "choices": [
+        {
+          "value": "ils",
+          "label": "ILS"
+        },
+        {
+          "value": "rnav",
+          "label": "RNAV"
+        },
+        {
+          "value": "vis",
+          "label": "Visual"
+        }
+      ],
+      "ask_in": [
+        "descent",
+        "approach"
+      ]
     }
   ],
   "stages": [
@@ -411,7 +457,7 @@ source: crates/pack-cli/tests/snapshot.rs
     },
     {
       "id": "procedures",
-      "title": "Non-normal procedures",
+      "title": "Non-normal",
       "reference": true,
       "intro": [
         {

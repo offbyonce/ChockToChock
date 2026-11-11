@@ -22,11 +22,13 @@ pub use cdu::{
     CduField, CduFile, CduInline, CduPage, CduPart, CduRouteCount, CduRow, CduScreen, CduStyle,
     CduStyled, CduText, CduWalkthrough, CduWhen, RouteLegCount, RouteLegPart,
 };
-pub use controls::{Control, ControlsFile, Overview, OverviewArea, OverviewCaption, Zone};
+pub use controls::{
+    Control, ControlsFile, Overview, OverviewArea, OverviewCaption, OverviewRegion, Zone,
+};
 pub use faults::{Fault, FaultsFile};
 pub use glossary::{GlossaryEntry, GlossaryFile};
 pub use lights::{LightNote, LightsFile};
 pub use notes::{ExplainNote, HowNote, NotesFile};
 pub use panels::{LightColor, Panel, PanelItem, PanelItemKind, PanelSection};
-pub use phases::{IntroParagraph, Phase, PhasesFile, Stage, StagePhase, UserOption};
+pub use phases::{IntroParagraph, OptionChoice, Phase, PhasesFile, Stage, StagePhase, UserOption};
 pub use start_states::{StartState, StartStatesFile};
