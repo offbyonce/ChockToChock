@@ -76,12 +76,12 @@ engine never names an aircraft. **The app never connects to the simulator** (dec
 | `crates/app-core` | App operations that do not depend on where the app runs; `AppError`, `AppInfo` |
 | `crates/checklist-core` | Domain: checklists, steps, sessions. No I/O. |
 | `crates/pack` | Pack manifest, strict YAML loading (`serde-saphyr`), validation, schemas |
-| `crates/pack-cli` | `pack check <dir>`, `pack schema <dir>`, `pack overlap <dir>` |
+| `crates/pack-cli` | `pack check <dir>`, `pack schema <dir>`, `pack build <dir> <out>` (flattened JSON), `pack overlap <dir>` |
 | `crates/pack-overlap` | Text-overlap check against private references, with its allow list (`allow.txt`) |
 | `crates/simbrief` | SimBrief OFP parsing |
 | `crates/store` | SQLite saved data and migrations. Parked: not in the workspace (0010) |
-| `crates/web-host` | Thin WebAssembly glue for the web app (exports arrive in Phase 2, step 5) |
-| `apps/web` | Web app: Vite entry and web host. `just site` builds the site into `apps/web/dist`; for now it publishes `placeholder/` (decisions 0009, 0010) |
+| `crates/web-host` | Thin WebAssembly glue for the web app; `just wasm` builds it (wasm-bindgen CLI at the crate's pinned version) |
+| `apps/web` | Web site: placeholder front page, the work-in-progress app at `app/` (web host in `src/`; `src/core.ts` calls the WebAssembly module) and the SimBrief probe page. `just site` builds it into `apps/web/dist` (decisions 0009, 0010) |
 | `apps/desktop` | Tauri shell (`src-tauri`) and its host. Parked: not in the workspace (0010) |
 | `packages/ui` | The shared Svelte 5 interface and its host interface (`src/host.ts`) |
 | `packages/bindings` | TypeScript types generated from Rust (`src/generated`), and `isAppError` |
@@ -97,7 +97,7 @@ just setup     # pnpm install + cargo fetch (once after cloning)
 just dev       # run the web app's dev server
 just test      # Rust and interface tests
 just packs     # validate every pack
-just site      # build the web site into apps/web/dist
+just site      # build the web site into apps/web/dist (WebAssembly, packs, app)
 just ci        # everything; must pass before a push
 just overlap   # compare packs with private references (CHOCKTOCHOCK_OVERLAP_REFS)
 ```

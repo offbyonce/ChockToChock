@@ -9,7 +9,9 @@ import type { AppError } from "./generated/AppError";
 import type { AppInfo } from "./generated/AppInfo";
 import type { Checklist } from "./generated/Checklist";
 
+export type { FlatPack } from "./generated/FlatPack";
 export type { Ofp } from "./generated/Ofp";
+export type { Reply } from "./generated/Reply";
 export type { Step } from "./generated/Step";
 export type { StepId } from "./generated/StepId";
 export type { AppError, AppInfo, Checklist };

@@ -19,7 +19,9 @@ pub use validate::{Issue, Severity, validate_pack};
 pub const SCHEMA_VERSION: u32 = 2;
 
 /// Everything a pack holds besides its manifest and lists. Each part is optional.
-#[derive(Debug, Clone, Default, PartialEq, serde::Serialize)]
+#[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]
+#[cfg_attr(feature = "ts", derive(ts_rs::TS), ts(export))]
+#[serde(deny_unknown_fields)]
 pub struct PackContent {
     pub phases: Option<checklist_core::PhasesFile>,
     pub controls: Option<checklist_core::ControlsFile>,
@@ -42,4 +44,26 @@ pub struct Pack {
     pub content: PackContent,
     /// Files in the pack folder that the manifest does not list (checked for images).
     pub other_files: Vec<std::path::PathBuf>,
+}
+
+/// A pack as the app receives it: everything in one JSON file, written by `pack build` once the
+/// pack has passed `pack check`. Library packs and overrides will be resolved into it when they
+/// exist, so the app never reads YAML or follows references between packs.
+#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
+#[cfg_attr(feature = "ts", derive(ts_rs::TS), ts(export))]
+#[serde(deny_unknown_fields)]
+pub struct FlatPack {
+    pub manifest: PackManifest,
+    pub lists: Vec<checklist_core::Checklist>,
+    pub content: PackContent,
+}
+
+impl From<Pack> for FlatPack {
+    fn from(pack: Pack) -> Self {
+        Self {
+            manifest: pack.manifest,
+            lists: pack.checklists,
+            content: pack.content,
+        }
+    }
 }

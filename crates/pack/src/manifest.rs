@@ -10,6 +10,7 @@ use semver::{Version, VersionReq};
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
+#[cfg_attr(feature = "ts", derive(ts_rs::TS), ts(export))]
 #[serde(rename_all = "snake_case")]
 pub enum PackKind {
     /// A flyable aircraft (e.g. `ifly-737-max8`).
@@ -19,6 +20,7 @@ pub enum PackKind {
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize, JsonSchema)]
+#[cfg_attr(feature = "ts", derive(ts_rs::TS), ts(export))]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 pub struct PackManifest {
     /// Optional path to `pack.schema.json`, so editors offer autocomplete. Ignored by the app.
@@ -28,16 +30,19 @@ pub struct PackManifest {
     pub id: String,
     pub name: String,
     #[schemars(with = "String")]
+    #[cfg_attr(feature = "ts", ts(type = "string"))]
     pub version: Version,
     /// Pack format version; the app rejects packs newer than it understands.
     pub schema_version: u32,
     pub kind: PackKind,
     /// App versions this pack works with, e.g. `>=0.1, <1`.
     #[schemars(with = "String")]
+    #[cfg_attr(feature = "ts", ts(type = "string"))]
     pub engine: VersionReq,
     /// Other packs this one includes, with the versions it accepts.
     #[serde(default)]
     #[schemars(with = "BTreeMap<String, String>")]
+    #[cfg_attr(feature = "ts", ts(type = "Record<string, string>"))]
     pub dependencies: BTreeMap<String, VersionReq>,
     /// SPDX license id for the pack content, e.g. `CC-BY-NC-SA-4.0`.
     pub license: String,

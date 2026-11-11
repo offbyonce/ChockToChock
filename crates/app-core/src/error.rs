@@ -14,10 +14,19 @@ pub enum AppError {
     /// A pack failed to load or did not pass validation.
     #[error("{0}")]
     PackInvalid(String),
+    /// A SimBrief plan could not be requested or read.
+    #[error("{0}")]
+    FlightPlan(String),
 }
 
 impl From<pack::LoadError> for AppError {
     fn from(e: pack::LoadError) -> Self {
         Self::PackInvalid(e.to_string())
+    }
+}
+
+impl From<simbrief::OfpError> for AppError {
+    fn from(e: simbrief::OfpError) -> Self {
+        Self::FlightPlan(e.to_string())
     }
 }

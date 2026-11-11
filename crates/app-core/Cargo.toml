@@ -14,13 +14,12 @@ publish.workspace = true
 
 [dependencies]
 checklist-core = { workspace = true, features = ["ts"] }
-pack.workspace = true
+pack = { workspace = true, features = ["ts"] }
 serde.workspace = true
+serde_json.workspace = true
+simbrief.workspace = true
 thiserror.workspace = true
 ts-rs.workspace = true
-
-[dev-dependencies]
-serde_json.workspace = true
 
 [lints]
 workspace = true

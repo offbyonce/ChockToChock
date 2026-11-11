@@ -84,7 +84,7 @@ Add the `wasm-bindgen` CLI to the existing install step:
 ```yaml
       - uses: taiki-e/install-action@v2
         with:
-          tool: just,cargo-nextest,cargo-deny,wasm-bindgen@0.2.128
+          tool: just,cargo-nextest,cargo-deny,wasm-bindgen@0.2.130
 ```
 
 Remove the Linux WebKit step:

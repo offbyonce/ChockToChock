@@ -3,6 +3,7 @@
 
 //! `pack check <dir>...`  validate one or more pack folders (or a folder of packs).
 //! `pack schema <dir>`    write the JSON Schemas into `<dir>`.
+//! `pack build <dir> <out-dir>`  check each pack, then write it as one flattened `<id>.json`.
 //! `pack overlap <dir> [--refs <folder>] [--allow <file>]`  compare pack text with private
 //! reference files. The folder can also come from `CHOCKTOCHOCK_OVERLAP_REFS`.
 //!
@@ -13,12 +14,12 @@ use std::path::{Path, PathBuf};
 use std::process::ExitCode;
 
 use anyhow::{Context, Result, bail};
-use pack::{Severity, load_pack_dir, validate_pack};
+use pack::{FlatPack, Severity, load_pack_dir, validate_pack};
 use pack_overlap::{
     AllowList, REFS_VARIABLE, check_refs_location, find_overlaps, load_references, repo_roots,
 };
 
-const USAGE: &str = "usage:\n  pack check <pack-dir | packs-dir>...\n  pack schema <out-dir>\n  pack overlap <pack-dir | packs-dir> [--refs <folder>] [--allow <file>]";
+const USAGE: &str = "usage:\n  pack check <pack-dir | packs-dir>...\n  pack schema <out-dir>\n  pack build <pack-dir | packs-dir> <out-dir>\n  pack overlap <pack-dir | packs-dir> [--refs <folder>] [--allow <file>]";
 
 fn main() -> ExitCode {
     match run() {
@@ -36,6 +37,7 @@ fn run() -> Result<bool> {
     match args.split_first() {
         Some((cmd, rest)) if cmd == "check" && !rest.is_empty() => check(rest),
         Some((cmd, [out])) if cmd == "schema" => schema(Path::new(out)).map(|()| true),
+        Some((cmd, [packs, out])) if cmd == "build" => build(packs, Path::new(out)),
         Some((cmd, rest)) if cmd == "overlap" && !rest.is_empty() => overlap(rest),
         _ => bail!("{USAGE}"),
     }
@@ -198,4 +200,34 @@ fn schema(out: &Path) -> Result<()> {
         println!("wrote {}", path.display());
     }
     Ok(())
+}
+
+/// Check every pack, then write each one as `<out>/<id>.json`. A pack with errors is not written.
+fn build(packs: &str, out: &Path) -> Result<bool> {
+    let dirs = pack_dirs(packs)?;
+    if dirs.is_empty() {
+        bail!("no packs found in {packs}");
+    }
+    std::fs::create_dir_all(out).with_context(|| format!("cannot create {}", out.display()))?;
+    let mut ok = true;
+    for dir in dirs {
+        let pack = load_pack_dir(&dir).with_context(|| format!("cannot load {}", dir.display()))?;
+        let errors: Vec<_> = validate_pack(&pack)
+            .into_iter()
+            .filter(|i| i.severity == Severity::Error)
+            .collect();
+        if !errors.is_empty() {
+            ok = false;
+            eprintln!("FAIL {}: not built, run `pack check`", pack.manifest.id);
+            for issue in errors {
+                eprintln!("  {issue}");
+            }
+            continue;
+        }
+        let path = out.join(format!("{}.json", pack.manifest.id));
+        let json = serde_json::to_string(&FlatPack::from(pack))?;
+        std::fs::write(&path, &json).with_context(|| format!("cannot write {}", path.display()))?;
+        println!("built {} ({} bytes)", path.display(), json.len());
+    }
+    Ok(ok)
 }
