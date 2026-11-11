@@ -36,6 +36,25 @@ pub(super) fn check_panels_and_lights(pack: &Pack, idx: &Index, issues: &mut Vec
                 ));
             }
         }
+        unique(
+            "overview region",
+            overview.regions.iter().map(|r| r.name.as_str()),
+            issues,
+        );
+        for region in &overview.regions {
+            let inside = region.x >= 0.0
+                && region.y >= 0.0
+                && region.width > 0.0
+                && region.height > 0.0
+                && region.x + region.width <= overview.width
+                && region.y + region.height <= overview.height;
+            if !inside {
+                issues.push(error(
+                    &region.name,
+                    "region must have a size and lie inside the overview",
+                ));
+            }
+        }
     }
     unique("panel", c.panels.iter().map(|p| p.id.as_str()), issues);
     let mut labels: BTreeMap<(&str, &str, &str), usize> = BTreeMap::new();
@@ -117,8 +136,8 @@ fn locator_resolves(locator: &str, labels: &BTreeMap<(&str, &str, &str), usize>)
 #[cfg(test)]
 mod tests {
     use checklist_core::{
-        Control, ControlsFile, LightColor, LightNote, LightsFile, Overview, OverviewArea, Panel,
-        PanelItem, PanelItemKind, PanelSection,
+        Control, ControlsFile, LightColor, LightNote, LightsFile, Overview, OverviewArea,
+        OverviewRegion, Panel, PanelItem, PanelItemKind, PanelSection,
     };
 
     use super::super::test_support::{alias_pack, assert_flags, messages, pack, step};
@@ -214,11 +233,46 @@ mod tests {
                 height: 100.0,
                 captions: vec![],
                 areas: vec![area("overhead"), area("overhead"), area("ghost")],
+                regions: vec![],
             });
         }
         let joined = messages(&p);
         assert!(joined.contains("unknown zone `ghost`"), "{joined}");
         assert!(!joined.contains("`overhead`"), "{joined}");
+    }
+
+    #[test]
+    fn overview_regions_are_unique_and_inside_the_map() {
+        let mut p = alias_pack(vec![]);
+        let region = |name: &str, x: f64| OverviewRegion {
+            name: name.into(),
+            code: None,
+            x,
+            y: 0.0,
+            width: 50.0,
+            height: 50.0,
+            top: None,
+            bottom: None,
+            left: None,
+            right: None,
+            locate: None,
+        };
+        if let Some(file) = &mut p.content.controls {
+            file.overview = Some(Overview {
+                width: 100.0,
+                height: 100.0,
+                captions: vec![],
+                areas: vec![],
+                regions: vec![
+                    region("Overhead", 0.0),
+                    region("Overhead", 10.0),
+                    region("Wide", 80.0),
+                ],
+            });
+        }
+        let joined = messages(&p);
+        assert!(joined.contains("Overhead"), "{joined}");
+        assert!(joined.contains("lie inside the overview"), "{joined}");
     }
 
     #[test]

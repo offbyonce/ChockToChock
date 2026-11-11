@@ -10,6 +10,7 @@ a time (lib/FlowView.svelte).
   import type { Checklist, Detail, Flight, PhaseView } from "@chocktochock/bindings";
   import Icon from "../lib/Icon.svelte";
   import ListCard from "../lib/ListCard.svelte";
+  import OptionChoices from "../lib/OptionChoices.svelte";
   import type { PackIndex } from "../pack-index";
   import { phaseHref } from "../route.svelte";
 
@@ -23,6 +24,7 @@ a time (lib/FlowView.svelte).
     onTick,
     onSkip,
     onSelect,
+    onOption,
   }: {
     index: PackIndex;
     view: PhaseView;
@@ -33,13 +35,24 @@ a time (lib/FlowView.svelte).
     onTick: (id: string, done: boolean) => void;
     onSkip: (id: string) => void;
     onSelect: (id: string) => void;
+    onOption: (option: string, value: string) => void;
   } = $props();
+
+  let asked = $derived(index.options.filter((o) => (o.ask_in ?? []).includes(view.id)));
 </script>
 
 {#if view.stage && view.position}
   <p class="crumb">{view.stage} · Phase {view.position[0]} of {view.position[1]}</p>
 {/if}
 <h1>{view.title}</h1>
+
+{#each asked as option (option.id)}
+  <OptionChoices
+    {option}
+    value={flight.options[option.id] ?? option.default}
+    onChoose={(value) => onOption(option.id, value)}
+  />
+{/each}
 
 {#each view.lists as list (list.id)}
   <ListCard

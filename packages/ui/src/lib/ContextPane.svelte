@@ -2,25 +2,59 @@
 SPDX-FileCopyrightText: 2026 offbyonce
 SPDX-License-Identifier: MIT
 
-The context for one step, as in 3.0's right-hand panel: where the control is on the flight deck
-map, and the panel section it is on as a schematic. Shown beside the list on wide screens and
-inside the step on narrow ones.
+The context for one step, as in 3.0's right-hand panel: the control, where it is on the flight
+deck map ("Where is this?" shows the whole flight deck), the panel sections it is on with the
+step's target position, then where to find it and what it does. A step with no control on the
+map shows its details and the steps coming up instead, so the panel is never empty. Shown beside
+the list on wide screens and inside the step on narrow ones.
 -->
 <script lang="ts">
-  import type { Step } from "@chocktochock/bindings";
+  import type { ItemTarget, Step, StepState } from "@chocktochock/bindings";
   import { type PackIndex, splitArea } from "../pack-index";
+  import Locator from "./Locator.svelte";
   import OverviewMap from "./OverviewMap.svelte";
   import PanelSchematic from "./PanelSchematic.svelte";
+  import StepDetail from "./StepDetail.svelte";
 
-  let { index, step, heading = true }: { index: PackIndex; step: Step; heading?: boolean } = $props();
+  let {
+    index,
+    step,
+    targets,
+    upcoming = [],
+    heading = true,
+  }: {
+    index: PackIndex;
+    step: Step;
+    /** The step's panel items and target positions (from Rust). */
+    targets: ItemTarget[];
+    /** The steps after this one, for a step with no control on the map. */
+    upcoming?: { step: Step; state: StepState }[];
+    heading?: boolean;
+  } = $props();
 
   /** A panel section's title as a panel's name, as in 3.0: "Electrical meters panel". */
   const panelName = (title: string) => (/panel$/i.test(title) ? title : `${title} panel`);
 
   let place = $derived(index.place(step));
-  let area = $derived(place ? splitArea(place.zone.area) : null);
-  let items = $derived(
-    place?.section?.items.filter((i) => (i.controls ?? []).some((c) => (step.controls ?? []).includes(c))) ?? [],
+  let region = $derived(place ? (index.region(place.zone)?.region ?? null) : null);
+  let area = $derived(place ? (region ? [region.name, region.code ?? null] : splitArea(place.zone.area)) : null);
+  // Up to three sections, as 3.0 shows, starting with the control's own.
+  let sections = $derived.by(() => {
+    const ids = [...new Set([place?.section?.id, ...targets.map((t) => t.section)].filter((x): x is string => !!x))];
+    return ids
+      .map((id) => index.section(id))
+      .filter((s): s is NonNullable<typeof s> => !!s)
+      .slice(0, 3);
+  });
+  let guardClosed = $derived(/\bGUARDS? CLOSED\b/i.test(step.expect));
+  let setTo = $derived(
+    targets
+      .map((t) => {
+        const item = index.section(t.section)?.items[t.item];
+        const pos = t.position != null ? item?.positions?.split(",")[t.position]?.trim() : undefined;
+        return item && pos ? `${item.label} set to ${pos}` : null;
+      })
+      .filter(Boolean),
   );
 </script>
 
@@ -36,18 +70,22 @@ inside the step on narrow ones.
     <div class="where">
       <span class="label">Where it is</span>
       <b>{area[0]}</b>{#if area[1]}<span class="code"> · {area[1]}</span>{/if}
+      <Locator {index} zone={place.zone} />
     </div>
-    {#if index.overview}
-      <OverviewMap overview={index.overview} zones={index.zones} zone={place.zone} />
-    {/if}
+    <OverviewMap {index} zone={place.zone} />
 
-    {#if place.section}
+    {#if sections.length}
       <h3 class="label">The controls</h3>
-      <figure class="card">
-        <figcaption>{panelName(place.section.title)}</figcaption>
-        <PanelSchematic section={place.section} controls={step.controls ?? []} />
-      </figure>
-      <p class="tiny">Schematic, not to scale. Switch positions are not shown; set each control as the step says.</p>
+      {#each sections as section (section.id)}
+        <figure class="card">
+          <figcaption>{panelName(section.title)}</figcaption>
+          <PanelSchematic {section} {targets} {guardClosed} />
+        </figure>
+      {/each}
+      <p class="tiny">
+        {#if setTo.length}Highlighted: what this step asks for ({setTo.join("; ")}). Not the simulator's live state.{/if}
+        Schematic, not to scale.
+      </p>
     {/if}
 
     {#if place.control}
@@ -60,17 +98,23 @@ inside the step on narrow ones.
         <p>{place.control.function}</p>
       </div>
     {/if}
-    {#each items as item (item.label)}
-      <p class="item"><b>{item.label}</b>{#if item.positions}<span class="mono"> {item.positions}</span>{/if}. {item.description}</p>
-    {/each}
   {:else}
-    {#if step.why}
-      <div>
-        <p class="lbl">Why</p>
-        <p>{step.why}</p>
-      </div>
+    <p class="label">About this step</p>
+    <StepDetail {index} {step} />
+    {#if !step.check && !step.why && !step.how && !step.note && !step.explain}
+      <p class="tiny">This step has no control on the flight deck map.</p>
     {/if}
-    <p class="tiny">This step has no control on the flight deck map.</p>
+    {#if upcoming.length}
+      <h3 class="label">Coming up</h3>
+      <ol class="next">
+        {#each upcoming as u (u.step.id)}
+          <li class={u.state}>
+            <span class="nm">{u.step.text}</span>
+            <span class="mono">{u.step.expect}</span>
+          </li>
+        {/each}
+      </ol>
+    {/if}
   {/if}
 </div>
 
@@ -104,7 +148,7 @@ inside the step on narrow ones.
   .where {
     display: flex;
     flex-wrap: wrap;
-    align-items: baseline;
+    align-items: center;
     gap: 0.25rem 0.5rem;
     font-size: 0.8125rem;
   }
@@ -147,8 +191,33 @@ inside the step on narrow ones.
     margin: 0;
     font-size: 0.875rem;
   }
-  .item .mono {
+  .next {
+    display: grid;
+    gap: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .next li {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.125rem 1rem;
+    padding: 0.5rem 0;
+    border-top: 1px solid var(--line);
+    font-size: 0.875rem;
+  }
+  .next li:first-child {
+    border-top: 0;
+  }
+  .nm {
+    font-weight: 500;
+  }
+  .next .mono {
     color: var(--muted);
     font-size: 0.8125rem;
+  }
+  .next li.done {
+    color: var(--muted);
   }
 </style>

@@ -149,11 +149,20 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
     screen === "phase" || screen === "start" ? (rail?.stages.find((s) => s.title === stage)?.phases ?? []) : [],
   );
   let current = $derived(view?.lists.find((l) => l.current)?.current ?? null);
-  /** The step the context panel shows. */
-  let paneStep = $derived.by(() => {
+  /** The step the context panel shows, its row, and the steps after it. */
+  let pane = $derived.by(() => {
     if (!index || !view || screen === "settings") return null;
     const id = flow ? (cursor ?? current) : (selected ?? (screen === "reference" ? null : current));
-    return id ? (index.step(id) ?? null) : null;
+    const rows = view.lists.flatMap((l) => l.steps);
+    const at = rows.findIndex((r) => r.id === id);
+    const row = rows[at];
+    const step = id ? index.step(id) : undefined;
+    if (!row || !step) return null;
+    const upcoming = rows
+      .slice(at + 1, at + 5)
+      .map((r) => ({ step: index?.step(r.id), state: r.state }))
+      .filter((u): u is { step: NonNullable<typeof u.step>; state: typeof u.state } => !!u.step);
+    return { step, row, upcoming };
   });
 
   async function act(action: Action): Promise<void> {
@@ -205,7 +214,7 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
       version={info?.version ?? null}
       onClose={() => (menuOpen = false)}
     />
-    <div class="app" class:nopane={!paneStep} class:flow={flow && screen !== "settings"}>
+    <div class="app" class:nopane={!pane} class:flow={flow && screen !== "settings"}>
       <main>
         <div class="inner">
           {#if screen === "settings"}
@@ -239,6 +248,7 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
                 onTick={tick}
                 onSkip={skip}
                 onSelect={(id) => (selected = id)}
+                onOption={(option, value) => act({ type: "setOption", option, value })}
               />
             {/if}
           {:else}
@@ -246,10 +256,10 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
           {/if}
         </div>
       </main>
-      {#if paneStep}
-        <aside class="pane" aria-label="Where it is">
-          {#key paneStep.id}
-            <ContextPane {index} step={paneStep} />
+      {#if pane}
+        <aside class="pane" aria-label="About the step">
+          {#key pane.step.id}
+            <ContextPane {index} step={pane.step} targets={pane.row.targets} upcoming={pane.upcoming} />
           {/key}
         </aside>
       {/if}

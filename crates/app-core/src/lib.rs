@@ -14,6 +14,7 @@ mod plans;
 mod rail;
 mod saved;
 mod settings;
+mod targets;
 #[cfg(test)]
 mod test_support;
 mod visibility;
@@ -30,4 +31,5 @@ pub use saved::{Loaded, load_flight, load_settings};
 pub use settings::{
     Detail, EssentialsChanges, ListView, MAX_DIMMING, SETTINGS_FORMAT, Settings, Theme,
 };
+pub use targets::{ItemTarget, named_position, step_targets};
 pub use visibility::{passes, step_shows, visible_steps};

@@ -41,10 +41,9 @@ mod tests {
 
     #[test]
     fn a_newer_or_broken_pack_is_refused() {
-        let newer = example_json().replace(
-            &format!("\"schemaVersion\":{SCHEMA_VERSION}"),
-            &format!("\"schemaVersion\":{}", SCHEMA_VERSION + 1),
-        );
+        let mut json: serde_json::Value = serde_json::from_str(&example_json()).unwrap();
+        json["manifest"]["schemaVersion"] = (SCHEMA_VERSION + 1).into();
+        let newer = json.to_string();
         let Err(AppError::PackInvalid(message)) = load_pack(&newer) else {
             panic!("a newer pack must be refused");
         };

@@ -16,7 +16,7 @@ pub use manifest::{PackKind, PackManifest};
 pub use validate::{Issue, Severity, validate_pack};
 
 /// The pack schema version this build of the app understands.
-pub const SCHEMA_VERSION: u32 = 2;
+pub const SCHEMA_VERSION: u32 = 3;
 
 /// Everything a pack holds besides its manifest and lists. Each part is optional.
 #[derive(Debug, Clone, Default, PartialEq, serde::Serialize, serde::Deserialize)]

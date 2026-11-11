@@ -13,6 +13,7 @@ value on the right. The pilot confirms each step; the app never knows a switch p
   import { phaseHref } from "../route.svelte";
   import ContextPane from "./ContextPane.svelte";
   import Icon from "./Icon.svelte";
+  import StepDetail from "./StepDetail.svelte";
 
   let {
     index,
@@ -72,7 +73,13 @@ value on the right. The pilot confirms each step; the app never knows a switch p
     {#if place && detail === "expanded"}<p class="crumb">{place.zone.area} · {place.zone.title}</p>{/if}
 
     <section class="box {entry.row.state}" aria-labelledby="flow-step">
-      <h1 id="flow-step">{step.text}</h1>
+      <h1
+        id="flow-step"
+        style:--len={step.text.length}
+        style:--longest={Math.max(...step.text.split(/\s+/).map((w) => w.length))}
+      >
+        {step.text}
+      </h1>
       <p class="value">{step.expect}</p>
       <p class="state">
         {#if entry.row.state === "done"}<Icon name="check" /> Done. Confirm again to move on.
@@ -85,13 +92,10 @@ value on the right. The pilot confirms each step; the app never knows a switch p
     {#if detail === "expanded"}
       {#if showDetail}
         <div class="more">
-          {#if step.check}<p class="check"><b>Check</b>{step.check}</p>{/if}
-          {#if step.why}<p><b>Why</b> · {step.why}</p>{/if}
-          {#if step.how}<p><b>How</b> · {step.how}</p>{/if}
-          {#if step.note}<p><b>Note</b> · {step.note}</p>{/if}
+          <StepDetail {index} {step} large />
           <details class="inline-context">
             <summary><Icon name="map-pin" /> Where is this?</summary>
-            <ContextPane {index} {step} heading={false} />
+            <ContextPane {index} {step} targets={entry.row.targets} heading={false} />
           </details>
         </div>
       {/if}
@@ -183,13 +187,22 @@ value on the right. The pilot confirms each step; the app never knows a switch p
     border-left-style: dashed;
     border-left-color: var(--warn);
   }
+  /* The headline is sized to fit its column: its longest word on one line and the whole name in
+     about three, so it never breaks inside a word or leaves one word hanging. */
+  .box {
+    container-type: inline-size;
+  }
   h1 {
     margin: 0;
-    font-size: clamp(2.2rem, 3.8vw, 3.4rem);
+    font-size: clamp(
+      1.6rem,
+      min(calc(55cqi / (var(--longest) * 0.66)), calc(160cqi / (var(--len) * 0.66))),
+      3.4rem
+    );
     font-weight: 650;
     line-height: 1.06;
     letter-spacing: -0.02em;
-    overflow-wrap: anywhere;
+    text-wrap: balance;
   }
   .value {
     margin: 0;
@@ -224,20 +237,6 @@ value on the right. The pilot confirms each step; the app never knows a switch p
   }
   .more p {
     margin: 0;
-  }
-  .check {
-    padding: 0.625rem 0.875rem;
-    border-radius: 0.5rem;
-    background: var(--accent-soft);
-    font-size: 1.05rem;
-    font-weight: 600;
-  }
-  .check b {
-    display: block;
-    color: var(--accent);
-    font-size: 0.72rem;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
   }
   .link {
     align-self: flex-start;

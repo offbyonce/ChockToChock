@@ -56,6 +56,9 @@ pub(super) fn phases() -> PhasesFile {
             title: "Power".into(),
             values: vec!["gpu".into(), "apu".into()],
             default: "gpu".into(),
+            description: None,
+            choices: vec![],
+            ask_in: vec![],
         }],
         stages: vec![Stage {
             title: "Preflight".into(),

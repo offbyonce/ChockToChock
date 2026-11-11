@@ -1429,3 +1429,61 @@ overview:
       "y": 602
       width: 96
       height: 50
+  regions:
+    - name: Aft overhead
+      code: P5
+      x: 56
+      "y": 18
+      width: 408
+      height: 82
+      top: AFT, TOWARD THE CABIN
+      bottom: FORWARD, TOWARD THE WINDSHIELD
+      left: CAPTAIN SIDE
+      right: F/O SIDE
+      locate: Above your head, on the back part of the overhead panel. Look up and slightly back from the seat.
+    - name: Forward overhead
+      code: P5
+      x: 16
+      "y": 112
+      width: 488
+      height: 188
+      top: AFT, TOWARD THE CABIN
+      bottom: FORWARD, TOWARD THE WINDSHIELD
+      left: CAPTAIN SIDE
+      right: F/O SIDE
+      locate: Above the windshield, in front of your head. Look up from the seat.
+    - name: Glareshield
+      code: P7
+      x: 16
+      "y": 304
+      width: 488
+      height: 40
+      left: CAPTAIN SIDE
+      right: F/O SIDE
+      locate: Straight ahead at eye level, along the bottom of the windshield, above the main panel.
+    - name: Main panel
+      code: P1–P3
+      x: 16
+      "y": 356
+      width: 488
+      height: 80
+      left: CAPTAIN SIDE
+      right: F/O SIDE
+      locate: Straight ahead below the glareshield, behind the control column.
+    - name: Center console
+      code: P9 · CONTROL STAND · P8
+      x: 126
+      "y": 448
+      width: 268
+      height: 322
+      top: FORWARD, TOWARD THE MAIN PANEL
+      bottom: AFT, TOWARD THE CABIN
+      left: CAPTAIN SIDE
+      right: F/O SIDE
+      locate: "Between the two seats. From the front: the forward electronic panel (P9) with the CDUs, just below the main panel; the control stand with the thrust levers, at hand height; then the aft electronic panel (P8) by your knees, with the fire handles, radios and transponder."
+    - name: Around the flight deck
+      x: 16
+      "y": 448
+      width: 488
+      height: 208
+      locate: "Elsewhere on the flight deck: the side walls and seats, the floor, and outside the airplane for the walk around."

@@ -13,6 +13,7 @@ use ts_rs::TS;
 use crate::error::AppError;
 use crate::flight::Flight;
 use crate::rail::rail;
+use crate::targets::{ItemTarget, step_targets};
 use crate::visibility::visible_steps;
 
 /// One step in a list, as shown.
@@ -24,6 +25,8 @@ pub struct StepRow {
     pub state: StepState,
     /// False for a step the simulator does not model: it can be ticked but is not counted.
     pub counts: bool,
+    /// The panel items the step uses and the position it asks for, for the control drawings.
+    pub targets: Vec<ItemTarget>,
 }
 
 /// One list in a phase.
@@ -97,6 +100,7 @@ pub fn phase_view(pack: &FlatPack, flight: &Flight, id: &str) -> Result<PhaseVie
                     id: id.clone(),
                     state,
                     counts: counts(step),
+                    targets: step_targets(pack, step),
                 })
                 .collect();
             let progress = flight.session.progress(visible.iter().copied());

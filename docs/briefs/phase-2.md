@@ -101,7 +101,9 @@ every change to `.github/workflows/`. For those, prepare what the step needs and
    - **Detail levels:** a quick level (item and value) and an expanded level (where it is, why,
      and links such as the CDU walkthrough).
    - **Wording:** make clear that the pilot confirms each item. The app has no simulator link
-     (decision 0006) and never implies it knows a switch position.
+     (decision 0006), so it never claims to know the simulator's state. That does not mean hiding
+     what a step asks for: control drawings show the step's target position, highlighted and
+     labeled as the target ("set to ON"), never as live state.
    - **Touch targets:** at least 44 to 48 px.
    - **Theme:** dark, with a dimming control, and text contrast of at least 4.5:1 in every theme.
    - **Typeface:** Geist for interface text, as in 3.0, and B612 Mono for values (both SIL Open
@@ -122,7 +124,10 @@ every change to `.github/workflows/`. For those, prepare what the step needs and
    Batches (one pull request each, screenshots for review saved outside the repo). 3.0 is the
    design baseline: the layout and look match 3.0, and the requirements above are improvements on
    top of it, not a different design. Each batch's review screenshots include 3.0 and the new app
-   side by side, at the same size and theme (`just screenshots` with `CHOCKTOCHOCK_BASELINE`).
+   side by side, at the same size and theme (`just screenshots` with `CHOCKTOCHOCK_BASELINE`),
+   and a checklist of every visible 3.0 element on the screens covered, each marked kept,
+   improved, missing until batch N, or worse with its fix. A batch is ready only when nothing is
+   worse. The new app replaces the front page only when it clearly exceeds 3.0.
    0. Foundations: decision 0012, app state in Rust and the WebAssembly calls, themes and
       dimming with a contrast test, the icon pipeline, the app frame (top bar, phase rail,
       Emergency button, addresses) and the screenshot tool. Reworked on review to the 3.0

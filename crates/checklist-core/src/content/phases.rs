@@ -13,6 +13,23 @@ data_types! {
         pub values: Vec<String>,
         /// The value used until the pilot chooses. Must be one of `values`.
         pub default: String,
+        /// What the choice changes, shown beside it.
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        pub description: Option<String>,
+        /// How each value is shown. When present, every value has exactly one.
+        #[serde(default, skip_serializing_if = "Vec::is_empty")]
+        pub choices: Vec<OptionChoice>,
+        /// Phases that show the choice above their lists.
+        #[serde(default, skip_serializing_if = "Vec::is_empty")]
+        pub ask_in: Vec<String>,
+    }
+
+    /// How one value of an option is shown, e.g. "Ground power at the gate".
+    pub struct OptionChoice {
+        pub value: String,
+        pub label: String,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        pub description: Option<String>,
     }
 
     /// A phase's place in a stage.

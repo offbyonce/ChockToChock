@@ -45,7 +45,27 @@ const pack = {
       ],
     },
   ],
-  content: { phases: { options: [], stages: [], phases: [] }, controls: null, panels: [] },
+  content: {
+    phases: {
+      options: [
+        {
+          id: "power",
+          title: "Power source",
+          values: ["gpu", "apu"],
+          default: "gpu",
+          choices: [
+            { value: "gpu", label: "Ground power at the gate", description: "Start the APU later." },
+            { value: "apu", label: "No ground power", description: "Start the APU now." },
+          ],
+          ask_in: ["power-up"],
+        },
+      ],
+      stages: [],
+      phases: [],
+    },
+    controls: null,
+    panels: [],
+  },
 } as unknown as FlatPack;
 
 function view(states: [StepState, StepState]): PhaseView {
@@ -67,7 +87,7 @@ function view(states: [StepState, StepState]): PhaseView {
         id: "power-up-flow",
         title: "Power up flow",
         kind: "flow",
-        steps: ids.map((id, i) => ({ id, state: states[i] as StepState, counts: true })),
+        steps: ids.map((id, i) => ({ id, state: states[i] as StepState, counts: true, targets: [] })),
         progress,
         complete: done === 2,
         current,
@@ -83,7 +103,8 @@ function host(overrides: Partial<Host> = {}): Host {
     appInfo: async () => ({ name: "Chock to Chock", version: "0.1.0", packSchemaVersion: 2 }),
     packs: async () => [{ id: "demo", name: "Demo", version: "0.1.0", kind: "aircraft" }],
     loadPack: async () => pack,
-    newFlight: async () => ({ pack: "demo", session: { done: {}, skipped: {} } }) as unknown as Flight,
+    newFlight: async () =>
+      ({ pack: "demo", options: { power: "gpu" }, session: { done: {}, skipped: {} } }) as unknown as Flight,
     apply: async (_pack, flight) => flight,
     rail: async () => rail,
     phaseView: async () => view(["skipped", "current"]),
@@ -142,6 +163,25 @@ describe("App", () => {
     await fireEvent.click(screen.getByRole("button", { name: "Confirm BATTERY: ON" }));
     expect(await screen.findByText("Power up flow complete")).toBeTruthy();
     expect(actions.map((a) => a.type === "tick" && a.step)).toEqual(["standby", "battery"]);
+  });
+
+  it("shows the options the pack asks for on a phase as cards, and applies a choice", async () => {
+    const actions: Action[] = [];
+    const h = host({
+      apply: async (_pack, flight, action) => {
+        actions.push(action);
+        return { ...flight, options: { power: "apu" } };
+      },
+    });
+    render(App, { context: hostContext(h) });
+
+    const gpu = await screen.findByRole("button", { name: /Ground power at the gate/ });
+    expect(gpu.getAttribute("aria-pressed")).toBe("true");
+    await fireEvent.click(screen.getByRole("button", { name: /No ground power/ }));
+    expect(actions[0]).toEqual({ type: "setOption", option: "power", value: "apu" });
+    expect(
+      (await screen.findByRole("button", { name: /No ground power/ })).getAttribute("aria-pressed"),
+    ).toBe("true");
   });
 
   it("shows the current step in a large box in Flow view", async () => {

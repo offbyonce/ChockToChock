@@ -13,6 +13,7 @@ with the words "Skipped, still open". The quick level shows the item and value o
   import type { PackIndex } from "../pack-index";
   import ContextPane from "./ContextPane.svelte";
   import Icon from "./Icon.svelte";
+  import StepDetail from "./StepDetail.svelte";
 
   let {
     index,
@@ -81,17 +82,13 @@ with the words "Skipped, still open". The quick level shows the item and value o
       </button>
       {#if open}
         <div class="dtl">
-          {#if step.check}<p class="check"><b>Check</b> {step.check}</p>{/if}
-          {#if step.why}<p><b>Why</b> · {step.why}</p>{/if}
-          {#if step.how}<p><b>How</b> · {step.how}</p>{/if}
-          {#if step.note}<p><b>Note</b> · {step.note}</p>{/if}
-          {#if step.if_not}<p><b>If not</b> · {step.if_not}</p>{/if}
+          <StepDetail {index} {step} />
           <div class="acts">
             {#if row.state !== "skipped" && row.state !== "done"}
               <button class="btn skip" type="button" onclick={onSkip}><Icon name="skip" /> Skip for now</button>
             {/if}
           </div>
-          <div class="inline-context"><ContextPane {index} {step} heading={false} /></div>
+          <div class="inline-context"><ContextPane {index} {step} targets={row.targets} heading={false} /></div>
         </div>
       {/if}
     {/if}
@@ -237,24 +234,6 @@ with the words "Skipped, still open". The quick level shows the item and value o
     background: var(--bg);
     font-size: 0.87rem;
     line-height: 1.45;
-  }
-  .dtl p {
-    margin: 0;
-  }
-  .dtl b {
-    font-weight: 600;
-  }
-  .check {
-    padding: 0.5rem 0.75rem;
-    border-radius: 0.5rem;
-    background: var(--accent-soft);
-  }
-  .check b {
-    display: block;
-    color: var(--accent);
-    font-size: 0.6875rem;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
   }
   .acts:empty {
     display: none;

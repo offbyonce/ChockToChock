@@ -42,6 +42,32 @@ data_types! {
         pub label: Option<String>,
     }
 
+    /// A part of the cockpit on the overview map, e.g. the forward overhead panel. A map of one
+    /// region shows the areas whose centers fall inside its rectangle (the first region that
+    /// holds them), with its captions around the edges.
+    pub struct OverviewRegion {
+        pub name: String,
+        /// A short reference shown after the name, e.g. "P5".
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        pub code: Option<String>,
+        pub x: f64,
+        pub y: f64,
+        pub width: f64,
+        pub height: f64,
+        /// Captions for the edges, saying which way each faces.
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        pub top: Option<String>,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        pub bottom: Option<String>,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        pub left: Option<String>,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        pub right: Option<String>,
+        /// Where to look from the seat, for "Where is this?".
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        pub locate: Option<String>,
+    }
+
     /// A schematic of the whole cockpit, in our own layout.
     pub struct Overview {
         pub width: f64,
@@ -49,6 +75,8 @@ data_types! {
         #[serde(default, skip_serializing_if = "Vec::is_empty")]
         pub captions: Vec<OverviewCaption>,
         pub areas: Vec<OverviewArea>,
+        #[serde(default, skip_serializing_if = "Vec::is_empty")]
+        pub regions: Vec<OverviewRegion>,
     }
 
     /// `controls.yaml`.

@@ -28,10 +28,10 @@ pub use content::{
     Alias, AliasKind, AliasesFile, BriefItem, Briefing, BriefingsFile, CduField, CduFile,
     CduInline, CduPage, CduPart, CduRouteCount, CduRow, CduScreen, CduStyle, CduStyled, CduText,
     CduWalkthrough, CduWhen, Control, ControlsFile, ExplainNote, Fault, FaultsFile, GlossaryEntry,
-    GlossaryFile, HowNote, IntroParagraph, LightColor, LightNote, LightsFile, NotesFile, Overview,
-    OverviewArea, OverviewCaption, Panel, PanelItem, PanelItemKind, PanelSection, Phase,
-    PhasesFile, RouteLegCount, RouteLegPart, Stage, StagePhase, StartState, StartStatesFile,
-    UserOption, Zone,
+    GlossaryFile, HowNote, IntroParagraph, LightColor, LightNote, LightsFile, NotesFile,
+    OptionChoice, Overview, OverviewArea, OverviewCaption, OverviewRegion, Panel, PanelItem,
+    PanelItemKind, PanelSection, Phase, PhasesFile, RouteLegCount, RouteLegPart, Stage, StagePhase,
+    StartState, StartStatesFile, UserOption, Zone,
 };
 pub use model::{
     AutoStart, AutoStartPick, Checklist, Confirmation, ConfirmationKind, FillField, HintPart,
