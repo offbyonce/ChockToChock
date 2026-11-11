@@ -43,6 +43,8 @@ roxmltree = "0.21.2"
 schemars = "1.2"
 semver = { version = "1.0.28", features = ["serde"] }
 ts-rs = { version = "12.0", features = ["no-serde-warnings"] }
+# WebAssembly glue. Exact pin: the wasm-bindgen CLI must be the same version (decision 0010).
+wasm-bindgen = "=0.2.130"
 
 # Errors and logging
 thiserror = "2.0.21"

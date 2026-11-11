@@ -9,6 +9,7 @@
       "!**/generated",
       "!**/gen",
       "!**/dist",
+      "!apps/web/src/wasm",
       "!schemas",
       "!target"
     ]

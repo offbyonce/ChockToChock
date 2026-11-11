@@ -37,11 +37,21 @@ lint:
     pnpm --filter @chocktochock/web check
 
 # All tests: Rust (nextest + doctests), the interface (Vitest), the 3.0 converter and the web site.
-test:
+test: wasm web-packs
     cargo nextest run --workspace
     cargo test --doc --workspace
     pnpm --filter @chocktochock/ui test
-    node --test "tools/import-3x/*.test.js" "apps/web/placeholder/*.test.js"
+    node --test "tools/import-3x/*.test.js" "apps/web/placeholder/*.test.js" "apps/web/*.test.js"
+
+# Build the web host as WebAssembly into apps/web/src/wasm. Needs the wasm-bindgen CLI at the
+# same version as the crate (decision 0010).
+wasm:
+    cargo build -q -p web-host --target wasm32-unknown-unknown --release
+    wasm-bindgen --target web --out-dir apps/web/src/wasm target/wasm32-unknown-unknown/release/web_host.wasm
+
+# Check every pack and write it as flattened JSON for the web app to fetch.
+web-packs:
+    cargo run -q -p pack-cli -- build packs apps/web/public/packs
 
 # Build the deployable web site into apps/web/dist (published to GitHub Pages).
 site:

@@ -5,4 +5,6 @@
 [toolchain]
 channel = "1.99"
 components = ["rustfmt", "clippy", "llvm-tools-preview"]
+# The web host is built as WebAssembly (decision 0010).
+targets = ["wasm32-unknown-unknown"]
 profile = "minimal"

@@ -1,0 +1,44 @@
+// SPDX-FileCopyrightText: 2026 offbyonce
+// SPDX-License-Identifier: MIT
+
+// Loads the built WebAssembly module in Node and calls each export once, including on the
+// flattened iFly pack. Run `just wasm web-packs` first (`just test` does).
+
+import assert from "node:assert/strict";
+import fs from "node:fs";
+import path from "node:path";
+import { test } from "node:test";
+import * as wasm from "./src/wasm/web_host.js";
+
+const here = import.meta.dirname;
+wasm.initSync({ module: fs.readFileSync(path.join(here, "src/wasm/web_host_bg.wasm")) });
+
+const fixture = (name) =>
+  fs.readFileSync(path.join(here, "../../crates/simbrief/tests/fixtures", name), "utf8");
+const ok = (answer) => {
+  const reply = JSON.parse(answer);
+  assert.ok("ok" in reply, answer);
+  return reply.ok;
+};
+
+test("the module answers with app facts and the example checklist", () => {
+  assert.equal(ok(wasm.app_info()).name, "Chock to Chock");
+  assert.equal(ok(wasm.example_checklist()).steps.length, 3);
+});
+
+test("the flattened iFly pack loads", () => {
+  const pack = ok(
+    wasm.load_pack(fs.readFileSync(path.join(here, "public/packs/ifly-737-max8.json"), "utf8")),
+  );
+  assert.equal(pack.manifest.id, "ifly-737-max8");
+  assert.equal(pack.lists.length, 65);
+});
+
+test("SimBrief plans read in both forms, and errors arrive tagged", () => {
+  assert.equal(ok(wasm.parse_plan(fixture("ofp-sample.json"))).route, "SUMMA2 SUMMA J1 BTG");
+  assert.equal(ok(wasm.parse_plan(fixture("ofp-sample.xml"))).origin, "EGLL");
+  assert.deepEqual(JSON.parse(wasm.parse_plan(fixture("ofp-error.json"))), {
+    error: { kind: "FlightPlan", message: "SimBrief says: Error: Unknown UserID" },
+  });
+  assert.match(ok(wasm.plan_url("123456")), /userid=123456&json=1$/);
+});
