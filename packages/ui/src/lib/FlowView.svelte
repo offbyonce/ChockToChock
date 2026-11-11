@@ -69,7 +69,7 @@ value on the right. The pilot confirms each step; the app never knows a switch p
 
 <div class="flow">
   {#if entry && step}
-    <p class="crumb">{entry.list.title} · Step {entry.i + 1} of {entry.list.steps.length}</p>
+    <p class="crumb">{view.title} · Step {at + 1} of {entries.length}</p>
     {#if place && detail === "expanded"}<p class="crumb">{place.zone.area} · {place.zone.title}</p>{/if}
 
     <section class="box {entry.row.state}" aria-labelledby="flow-step">
@@ -161,7 +161,8 @@ value on the right. The pilot confirms each step; the app never knows a switch p
   .flow {
     display: flex;
     flex-direction: column;
-    min-height: calc(100vh - var(--top-h) - var(--rail-h) - 4rem);
+    /* The screen under the bars, less the flight strip and padding, so Next stays in view. */
+    min-height: calc(100vh - var(--top-h) - var(--rail-h) - 8.5rem);
   }
   .crumb {
     margin: 0;

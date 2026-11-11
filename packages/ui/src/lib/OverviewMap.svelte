@@ -52,7 +52,8 @@ from the pack, and the zone marked by a thicker outline, fill and bold label as 
 
   /** A label that fits its box: one line, or two split at " / " or near the middle. */
   function lines(label: string, width: number): string[] {
-    if (label.length * LABEL * 0.6 <= width - 6) return [label];
+    // One line if it fits, even at the smallest size; split only when it cannot.
+    if (label.length * (8.5 / k) * 0.6 <= width - 4) return [label];
     const slash = label.indexOf(" / ");
     if (slash > 0) return [`${label.slice(0, slash)} /`, label.slice(slash + 3)];
     const mid = label.lastIndexOf(" ", Math.ceil(label.length / 2));

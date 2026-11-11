@@ -41,6 +41,10 @@ with the words "Skipped, still open". The quick level shows the item and value o
 
   let open = $state(false);
   let mapOpen = $state(false);
+  /** As 3.0: a value that is long or has blanks to fill goes on its own line, in the text face. */
+  let long = $derived(step.expect.includes("___") || step.expect.length > 36);
+  /** Other controls the step uses, shown as "+N" after where it is. */
+  let more = $derived(Math.max(0, (step.controls?.length ?? 0) - 1));
   let place = $derived(index.place(step));
   let time = $derived(
     doneAt === undefined ? "" : new Date(doneAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
@@ -68,10 +72,17 @@ with the words "Skipped, still open". The quick level shows the item and value o
         {#if row.state === "done"}<span class="tag done" aria-hidden="true">Done {time}</span>{/if}
         {#if !row.counts}<span class="tag ns" aria-hidden="true">Not modeled in the simulator</span>{/if}
       </span>
-      {#if step.expect}<span class="val">{step.expect}</span>{/if}
+      {#if step.expect}
+        <span class="val" class:long>
+          {#each step.expect.split("___") as part, n (n)}{#if n > 0}<span class="blank" aria-label="blank"></span>{/if}{part}{/each}
+        </span>
+      {/if}
     </button>
     {#if detail === "expanded"}
-      {#if place}<div class="loc">{place.zone.area} · {place.zone.title}</div>{/if}
+      {#if place}
+        <div class="loc">{place.zone.area} · {place.zone.title}{#if more > 0}<span class="more"> +{more}</span>{/if}</div>
+      {/if}
+      {#if step.look_for}<div class="look"><b>Look for:</b> {step.look_for}</div>{/if}
       <button
         class="chev"
         type="button"
@@ -182,8 +193,33 @@ with the words "Skipped, still open". The quick level shows the item and value o
     min-width: 0;
     max-width: 62%;
     margin-left: auto;
-    font: 0.8438rem/1.5 var(--mono);
+    font: 0.8125rem/1.5 var(--mono);
     text-align: right;
+  }
+  .val.long {
+    flex: 1 1 100%;
+    max-width: none;
+    margin: 0.1rem 0 0;
+    font: 400 0.9rem/1.45 var(--sans);
+    text-align: left;
+  }
+  .blank {
+    display: inline-block;
+    width: 3.2em;
+    height: 1em;
+    margin: 0 0.25em;
+    border-bottom: 1.5px solid var(--muted);
+    vertical-align: -0.15em;
+  }
+  .more {
+    color: var(--muted);
+  }
+  .look {
+    margin-top: 0.1875rem;
+    font-size: 0.8438rem;
+  }
+  .look b {
+    font-weight: 600;
   }
   .done .name,
   .done .val {

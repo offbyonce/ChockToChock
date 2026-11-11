@@ -45,7 +45,8 @@ pub struct PhaseList {
     pub progress: Progress,
     /// Every counted step is done; only then does the interface show the completion call.
     pub complete: bool,
-    /// The first step that is neither done nor skipped.
+    /// The phase's current step, if it is in this list: the first step of the phase, in list
+    /// order, that is neither done nor skipped. A phase has one current step at most.
     pub current: Option<StepId>,
 }
 
@@ -89,7 +90,7 @@ pub fn phase_view(pack: &FlatPack, flight: &Flight, id: &str) -> Result<PhaseVie
         .and_then(|file| file.phases.iter().find(|p| p.id == id))
         .ok_or_else(|| AppError::InvalidAction(format!("no phase `{id}` in this pack")))?;
 
-    let lists: Vec<PhaseList> = phase
+    let mut lists: Vec<PhaseList> = phase
         .lists
         .iter()
         .filter_map(|list_id| pack.lists.iter().find(|l| &l.id == list_id))
@@ -124,6 +125,20 @@ pub fn phase_view(pack: &FlatPack, flight: &Flight, id: &str) -> Result<PhaseVie
             }
         })
         .collect();
+    // One current step per phase: the first list's. Later lists' first open steps are to do.
+    let mut seen = false;
+    for list in &mut lists {
+        if seen {
+            list.current = None;
+            for step in &mut list.steps {
+                if step.state == StepState::Current {
+                    step.state = StepState::ToDo;
+                }
+            }
+        } else if list.current.is_some() {
+            seen = true;
+        }
+    }
     let progress = lists
         .iter()
         .map(|l| l.progress)
@@ -286,6 +301,41 @@ mod tests {
         assert_eq!(view.stage, None);
         assert_eq!(view.position, None);
         assert!(view.previous.is_none() && view.next.is_none());
+    }
+
+    #[test]
+    fn a_phase_has_one_current_step() {
+        // Before start has a procedure and a checklist; both once showed a current step.
+        let pack = ifly_pack();
+        let mut flight = new_flight(&pack);
+        let current = |f: &Flight| -> Vec<StepId> {
+            phase_view(&pack, f, "before-start")
+                .unwrap()
+                .lists
+                .iter()
+                .flat_map(|l| &l.steps)
+                .filter(|s| s.state == StepState::Current)
+                .map(|s| s.id.clone())
+                .collect()
+        };
+        let view = phase_view(&pack, &flight, "before-start").unwrap();
+        assert!(view.lists.len() > 1);
+        assert_eq!(current(&flight), vec![view.lists[0].steps[0].id.clone()]);
+        assert!(view.lists[1..].iter().all(|l| l.current.is_none()));
+        // Once the first list is done, the current step moves to the next list.
+        for s in &view.lists[0].steps {
+            flight = apply(
+                &pack,
+                flight,
+                Action::Tick {
+                    step: s.id.clone(),
+                    at: 1,
+                },
+            )
+            .unwrap();
+        }
+        let view = phase_view(&pack, &flight, "before-start").unwrap();
+        assert_eq!(current(&flight), vec![view.lists[1].steps[0].id.clone()]);
     }
 
     #[test]

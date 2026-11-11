@@ -62,7 +62,7 @@ saves them on the device, and batch 7 adds the rest.
 </script>
 
 <h1>Settings</h1>
-<p class="lead">Choose how the checklist looks. For this visit only until saving arrives in batch 1.</p>
+<p class="lead">Choose how the checklist looks. Your choices stay in place when you clear a flight.</p>
 <div class="card">
   {#each ROWS as row (row.key)}
     <div class="set">
@@ -97,7 +97,7 @@ saves them on the device, and batch 7 adds the rest.
   }
   .set {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-columns: minmax(0, 1fr) 15rem;
     align-items: center;
     gap: 1rem 2rem;
     padding: 1rem;
@@ -122,7 +122,8 @@ saves them on the device, and batch 7 adds the rest.
     background: var(--zone);
   }
   .seg button {
-    min-width: 3rem;
+    flex: 1;
+    min-width: 0;
     min-height: 2.75rem;
     padding: 0 1rem;
     border-radius: 0.5rem;

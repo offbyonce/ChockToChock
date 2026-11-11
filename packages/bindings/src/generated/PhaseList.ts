@@ -13,6 +13,7 @@ export type PhaseList = { id: string, title: string, kind: ListKind, steps: Arra
  */
 complete: boolean, 
 /**
- * The first step that is neither done nor skipped.
+ * The phase's current step, if it is in this list: the first step of the phase, in list
+ * order, that is neither done nor skipped. A phase has one current step at most.
  */
 current: StepId | null, };

@@ -254,6 +254,10 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
           {:else}
             <p class="msg">That phase is not in this flight.</p>
           {/if}
+          <p class="legal">
+            Simulator training only. Not for real-world use. A study aid for flight simulation, not
+            an approved checklist; follow your operator's or training provider's procedures.
+          </p>
         </div>
       </main>
       {#if pane}
@@ -301,6 +305,11 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
   }
   .msg {
     padding: 1.5rem;
+  }
+  .legal {
+    margin: 1.75rem 0 0;
+    color: var(--stop);
+    font-size: 0.7812rem;
   }
   /* Narrow screens show the context inside the step instead. */
   @media (max-width: 1023px) {

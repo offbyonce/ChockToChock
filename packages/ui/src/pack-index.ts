@@ -11,6 +11,7 @@ import type {
   Overview,
   OverviewArea,
   OverviewRegion,
+  Panel,
   PanelSection,
   Step,
   UserOption,
@@ -31,6 +32,8 @@ export type PackIndex = {
   explain(id: string): ExplainNote | undefined;
   /** A panel section by id. */
   section(id: string): PanelSection | undefined;
+  /** The panel a section is on. */
+  panelOf(id: string): Panel | undefined;
   /** The overview region a zone is in, and the map areas that region shows. */
   region(zone: Zone): MapRegion | null;
 };
@@ -59,7 +62,13 @@ export function indexPack(pack: FlatPack): PackIndex {
   const controls = new Map((pack.content.controls?.controls ?? []).map((c) => [c.id, c]));
   const zones = new Map((pack.content.controls?.zones ?? []).map((z) => [z.id, z]));
   const sections = new Map<string, PanelSection>();
-  for (const panel of pack.content.panels ?? []) for (const s of panel.sections) sections.set(s.id, s);
+  const panels = new Map<string, Panel>();
+  for (const panel of pack.content.panels ?? []) {
+    for (const s of panel.sections) {
+      sections.set(s.id, s);
+      panels.set(s.id, panel);
+    }
+  }
 
   return {
     name: pack.manifest.name,
@@ -76,6 +85,7 @@ export function indexPack(pack: FlatPack): PackIndex {
     overview: pack.content.controls?.overview ?? null,
     options: pack.content.phases?.options ?? [],
     section: (id) => sections.get(id),
+    panelOf: (id) => panels.get(id),
     how: (id) => pack.content.notes?.how?.find((n) => n.id === id)?.steps,
     explain: (id) => pack.content.notes?.explain?.find((n) => n.id === id),
     region(zone) {

@@ -36,20 +36,31 @@ the list on wide screens and inside the step on narrow ones.
     details?: boolean;
   } = $props();
 
+  /** "LANDING GEAR PINS" as "Landing gear pins", like control names; mixed case stays. */
+  const sentence = (text: string) =>
+    text === text.toUpperCase() ? text.charAt(0) + text.slice(1).toLowerCase() : text;
+
   /** A panel section's title as a panel's name, as in 3.0: "Electrical meters panel". */
   const panelName = (title: string) => (/panel$/i.test(title) ? title : `${title} panel`);
 
   let place = $derived(index.place(step));
   let region = $derived(place ? (index.region(place.zone)?.region ?? null) : null);
   let area = $derived(place ? (region ? [region.name, region.code ?? null] : splitArea(place.zone.area)) : null);
-  // Up to three sections, as 3.0 shows, starting with the control's own.
-  let sections = $derived.by(() => {
+  // One drawing per panel, starting with the control's own section; up to three, as 3.0 shows.
+  let cards = $derived.by(() => {
     const ids = [...new Set([place?.section?.id, ...targets.map((t) => t.section)].filter((x): x is string => !!x))];
-    return ids
-      .map((id) => index.section(id))
-      .filter((s): s is NonNullable<typeof s> => !!s)
-      .slice(0, 3);
+    const byPanel = new Map<string, { panel: NonNullable<ReturnType<PackIndex["panelOf"]>>; focus: string[] }>();
+    for (const id of ids) {
+      const panel = index.panelOf(id);
+      if (!panel) continue;
+      const card = byPanel.get(panel.id) ?? { panel, focus: [] };
+      card.focus.push(id);
+      byPanel.set(panel.id, card);
+    }
+    return [...byPanel.values()].slice(0, 3);
   });
+  const cardTitle = (focus: string[]) =>
+    panelName(focus.map((id) => index.section(id)?.title ?? id).join(" and "));
   let guardClosed = $derived(/\bGUARDS? CLOSED\b/i.test(step.expect));
   let setTo = $derived(
     targets
@@ -64,7 +75,7 @@ the list on wide screens and inside the step on narrow ones.
 
 <div class="context">
   {#if heading}
-    <h2>{place?.control?.name ?? step.text}</h2>
+    <h2>{place?.control?.name ?? sentence(step.text)}</h2>
     {#if place}
       <p class="path">{place.zone.area} · {place.zone.title}</p>
     {/if}
@@ -78,13 +89,13 @@ the list on wide screens and inside the step on narrow ones.
     </div>
     <OverviewMap {index} zone={place.zone} />
 
-    {#if sections.length}
+    {#if cards.length}
       <h3 class="label">The controls</h3>
-      {#each sections as section (section.id)}
+      {#each cards as card (card.panel.id)}
         <figure class="card">
-          <figcaption>{panelName(section.title)}</figcaption>
+          <figcaption>{cardTitle(card.focus)}</figcaption>
           {#if region?.top}<p class="edge">↑ {region.top}</p>{/if}
-          <div class="pad"><PanelSchematic {section} {targets} {guardClosed} /></div>
+          <div class="pad"><PanelSchematic panel={card.panel} focus={card.focus} {targets} {guardClosed} /></div>
           {#if region?.bottom}<p class="edge">↓ {region.bottom}</p>{/if}
         </figure>
       {/each}
@@ -216,9 +227,8 @@ the list on wide screens and inside the step on narrow ones.
     list-style: none;
   }
   .next li {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 55%);
     gap: 0.125rem 1rem;
     padding: 0.5rem 0;
     border-top: 1px solid var(--line);
@@ -233,6 +243,7 @@ the list on wide screens and inside the step on narrow ones.
   .next .mono {
     color: var(--muted);
     font-size: 0.8125rem;
+    text-align: right;
   }
   .next li.done {
     color: var(--muted);

@@ -71,7 +71,7 @@ so instead.
   </ol>
   {#if list.complete}
     <p class="call done" role="status"><Icon name="check" /> {list.title} complete</p>
-  {:else if !list.current && list.progress.skipped > 0}
+  {:else if list.progress.toDo === 0 && list.progress.skipped > 0}
     <p class="call open" role="status">
       <Icon name="alert-triangle" />
       {list.progress.skipped} skipped {list.progress.skipped === 1 ? "step" : "steps"} still open. {list.title} is not complete.

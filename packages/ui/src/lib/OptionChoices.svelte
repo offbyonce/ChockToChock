@@ -76,7 +76,7 @@ applies the option in Rust, which decides what shows.
   }
   .row {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-columns: minmax(0, 1fr) 15rem;
     align-items: center;
     gap: 1rem 2rem;
     padding: 1rem;
@@ -97,7 +97,8 @@ applies the option in Rust, which decides what shows.
     background: var(--zone);
   }
   .seg button {
-    min-width: 3rem;
+    flex: 1;
+    min-width: 0;
     min-height: 2.75rem;
     padding: 0 1rem;
     border-radius: 0.5rem;

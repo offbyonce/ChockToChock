@@ -134,6 +134,7 @@ batches add flight setup, the flight log, practice and the rest here.
     padding: 0 0.625rem;
     border-radius: 0.5rem;
     background: var(--bg);
+    color: var(--muted);
     font-size: 0.875rem;
     font-weight: 500;
     text-decoration: none;

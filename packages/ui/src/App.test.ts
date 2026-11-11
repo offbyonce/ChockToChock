@@ -217,7 +217,7 @@ describe("App", () => {
     await fireEvent.click(screen.getByRole("button", { name: "Flow view" }));
 
     expect(await screen.findByRole("heading", { level: 1, name: "STANDBY POWER" })).toBeTruthy();
-    expect(screen.getByText("Power up flow · Step 2 of 2")).toBeTruthy();
+    expect(screen.getByText("Power up · Step 2 of 2")).toBeTruthy();
     expect(screen.getByRole("button", { name: "Confirmed, next step" })).toBeTruthy();
     expect((screen.getByRole("button", { name: "Back" }) as HTMLButtonElement).disabled).toBe(false);
   });

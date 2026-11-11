@@ -11,7 +11,8 @@ batch 2; until then it says no plan is loaded.
 
 <div class="strip card">
   <b>Flight</b>
-  <span class="sum">No flight plan loaded. Flight setup and SimBrief arrive in batch 2.</span>
+  <span class="sum">Add your clearance: runway, departure, squawk and frequencies</span>
+  <button class="edit" type="button" disabled title="Flight setup arrives in batch 2">Edit</button>
 </div>
 
 <style>
@@ -26,6 +27,22 @@ batch 2; until then it says no plan is loaded.
   b {
     flex: none;
     font-weight: 600;
+  }
+  .edit {
+    position: relative;
+    color: var(--accent);
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+  .edit:disabled {
+    opacity: 0.6;
+  }
+  .edit::after {
+    position: absolute;
+    inset: 50% -0.5rem auto;
+    height: 2.75rem;
+    content: "";
+    transform: translateY(-50%);
   }
   .sum {
     flex: 1;

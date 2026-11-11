@@ -3,7 +3,12 @@
  * SPDX-License-Identifier: MIT
  *
  * The app page's own notice, until the first-launch notice arrives (Phase 2 brief, step 10).
+ * Once the app is running it shows a fuller notice under each screen, so this one hides.
  */
+body:has([data-app-ready]) .sim-only {
+  display: none;
+}
+
 .sim-only {
   padding: 1rem clamp(1rem, 3vw, 2.5rem);
   border-top: 1px solid var(--line);

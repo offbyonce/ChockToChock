@@ -94,22 +94,34 @@ started, a filled circle with a check when complete, and a dashed ring when a st
   .chips {
     padding: 0.25rem 0;
   }
+  /* 3.0's small filled dots. State reads without color too: half filled when started, a check
+     ring when complete, dashed when a step is skipped. */
   .dot {
     position: relative;
     width: 0.5rem;
     height: 0.5rem;
-    border: 1.5px solid currentcolor;
     border-radius: 50%;
+    background: var(--line);
+  }
+  [aria-current="true"] .dot {
+    background: var(--accent);
   }
   .dot.started {
-    background: linear-gradient(90deg, currentcolor 50%, transparent 50%);
+    background: linear-gradient(90deg, var(--accent) 50%, var(--line) 50%);
   }
   .dot.complete {
-    border-color: var(--go);
     background: var(--go);
+    box-shadow: 0 0 0 2px var(--surface), 0 0 0 3px var(--go);
   }
   .dot.skipped {
+    background: none;
     border: 1.5px dashed var(--warn);
+  }
+  /* A row of chips wider than the screen fades at its edge, so more is clearly there. */
+  @media (max-width: 1100px) {
+    .chips {
+      mask-image: linear-gradient(90deg, #000 calc(100% - 2rem), transparent);
+    }
   }
   .meta {
     display: flex;

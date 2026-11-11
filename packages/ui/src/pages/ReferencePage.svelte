@@ -37,6 +37,9 @@ type (step 7 requirement for non-normal lists).
     onSkip: (id: string) => void;
     onSelect: (id: string) => void;
   } = $props();
+
+  // The notice is under every screen already; a pack introduction that repeats it is skipped.
+  let shown = $derived(intro.filter((p) => p.heading || !/^Simulator training only\./.test(p.text)));
 </script>
 
 <h1>Emergency</h1>
@@ -46,9 +49,9 @@ type (step 7 requirement for non-normal lists).
   {/each}
 </nav>
 
-{#if intro.length}
+{#if shown.length}
   <div class="intro card">
-    {#each intro as para, i (i)}
+    {#each shown as para, i (i)}
       <p>{#if para.heading}<b>{para.heading}:</b>{" "}{/if}{para.text}</p>
     {/each}
   </div>
@@ -121,9 +124,9 @@ type (step 7 requirement for non-normal lists).
     display: flex;
     align-items: center;
     gap: 0.625rem;
-    min-height: 3.25rem;
+    min-height: 3rem;
     padding: 0.5rem 1rem;
-    font-size: 1rem;
+    font-size: 0.9375rem;
     font-weight: 600;
     list-style: none;
     cursor: pointer;
