@@ -60,7 +60,7 @@ batches add flight setup, the flight log, practice and the rest here.
   <p class="grp">Reference</p>
   <a class="ref" href="#/reference" onclick={onClose}>Emergency</a>
   <div class="foot">
-    <a class="ref" href="#/settings" onclick={onClose}>Settings <span>Full · {detail === "expanded" ? "Expanded" : "Quick"}</span></a>
+    <a class="ref" href="#/settings" onclick={onClose}>Settings <span>Full · {detail === "expanded" ? "Detailed" : "Simple"}</span></a>
     {#if version}<p class="ver">Version {version}</p>{/if}
   </div>
 </nav>

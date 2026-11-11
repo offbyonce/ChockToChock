@@ -22,7 +22,8 @@ macro_rules! data_types {
 
 pub mod content;
 pub mod model;
-pub mod session;
+pub mod positions;
+mod session;
 
 pub use content::{
     Alias, AliasKind, AliasesFile, BriefItem, Briefing, BriefingsFile, CduField, CduFile,
@@ -37,4 +38,5 @@ pub use model::{
     AutoStart, AutoStartPick, Checklist, Confirmation, ConfirmationKind, FillField, HintPart,
     ListKind, MAX_ROUTE_LEG, OptionTest, Quick, ShowIf, Step, StepId, Timer, WalkaroundPoint,
 };
+pub use positions::named_position;
 pub use session::{Millis, Progress, Session, SessionError, StepState, counts};

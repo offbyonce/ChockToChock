@@ -141,7 +141,8 @@ every change to `.github/workflows/`. For those, prepare what the step needs and
       item detail, completion call, open items, options, Full and Essentials, keyboard, and
       saving progress on the device (brought forward from step 8).
    2. Flight data: flight setup, flight strip, values in steps, SimBrief plan loading.
-   3. Panel states, timers and briefings in the flow.
+   3. Panel states, timers and briefings in the flow. Control drawings show each control at its
+      expected position for the start state and the steps already confirmed (decision 0015).
    4. CDU walkthrough.
    5. Flight deck: overview map, panel views with our own glyphs, light meanings, exterior
       inspection on our own airplane outline.

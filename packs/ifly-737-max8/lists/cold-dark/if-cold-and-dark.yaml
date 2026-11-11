@@ -62,7 +62,7 @@ steps:
     text: ELECTRIC HYDRAULIC PUMP SWITCHES
     expect: "OFF"
     controls:
-      - hydpumps
+      - elechyd
     note: They are the two inner switches on the hydraulic panel.
     why: "These pumps run from the AC bus, so with the switches on they would start as soon as ground or APU power arrives, which pressurizes the hydraulic systems and can move flight controls with people near the airplane."
     check: ELEC 1 and ELEC 2 OFF

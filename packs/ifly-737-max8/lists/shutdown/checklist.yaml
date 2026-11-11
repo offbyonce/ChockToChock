@@ -31,7 +31,7 @@ steps:
     text: HYDRAULIC PUMP SWITCHES
     expect: ELEC 1 AND 2 OFF
     controls:
-      - hydpumps
+      - elechyd
     why: Not needed after shutdown
     confirmed_by:
       - kind: vendor-docs

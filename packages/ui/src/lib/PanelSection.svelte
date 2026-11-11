@@ -68,6 +68,8 @@ however large the drawing is.
     {@const positions = positionsOf(item)}
     {@const t = byItem.get(i)?.position ?? null}
     {@const h = half(item)}
+    <!-- A control the step does not use rests where the pack says, drawn dimmed. -->
+    {@const r = !on && item.rest ? positions.indexOf(item.rest) : -1}
     <g class="item {item.kind}" class:on transform="translate({item.x} {item.y})">
       {#if item.kind === "toggle_switch"}
         {#if item.guarded}
@@ -76,12 +78,14 @@ however large the drawing is.
         <rect class="body" x="-6" y="-14" width="12" height="28" rx="6" />
         {#if on && t != null}
           <circle class="knob set" cy={leverY(t, positions.length)} r="3.4" />
+        {:else if r >= 0}
+          <circle class="knob rest" cy={leverY(r, positions.length)} r="2.8" />
         {:else}
           <circle class="knob unknown" r="2.6" />
         {/if}
         {#if positions.length <= 3}
           {#each positions as p, n (n)}
-            <text class="pos" class:target={on && n === t} x={item.guarded ? 14 : 10} y={leverY(n, positions.length) + 2.5} style:font-size={fs(PX.pos)}>{p}</text>
+            <text class="pos" class:target={on && n === t} class:at-rest={n === r} x={item.guarded ? 14 : 10} y={leverY(n, positions.length) + 2.5} style:font-size={fs(PX.pos)}>{p}</text>
           {/each}
         {/if}
       {:else if item.kind === "selector"}
@@ -92,11 +96,14 @@ however large the drawing is.
         {#if on && t != null}
           <line class="pointer" x1="0" y1="0" x2="0" y2="-9" transform="rotate({angle(t, positions.length)})" />
           <circle class="knob set" r="2.4" />
+        {:else if r >= 0}
+          <line class="pointer rest" x1="0" y1="0" x2="0" y2="-8" transform="rotate({angle(r, positions.length)})" />
+          <circle class="knob-ring" r="2.2" />
         {:else}
           <circle class="knob-ring" r="4.5" />
         {/if}
         <!-- Each label sits at its own tick, so the pointer and its label always agree. -->
-        {#each labelledPositions(positions.length, on ? t : null) as n (n)}
+        {#each labelledPositions(positions.length, on ? t : r >= 0 ? r : null) as n (n)}
           {@const a = (angle(n, positions.length) * Math.PI) / 180}
           {@const r = 18.5}
           <text
@@ -163,6 +170,19 @@ however large the drawing is.
     stroke: var(--stop);
     stroke-width: 1.2;
     stroke-dasharray: 2.5 2;
+  }
+  /* Resting positions of controls the step does not use: hollow and muted, so they never look
+     like the step's target (solid, in the accent color). */
+  .knob.rest {
+    fill: none;
+    stroke: var(--muted);
+    stroke-width: 1.4;
+    opacity: 0.75;
+  }
+  .pointer.rest {
+    stroke: var(--muted);
+    stroke-width: 1.4;
+    opacity: 0.75;
   }
   .unknown {
     fill: none;

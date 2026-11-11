@@ -5,7 +5,7 @@
 //! step's target, read from its expected value; it is never the simulator's state, which the app
 //! does not know (decision 0006).
 
-use checklist_core::Step;
+use checklist_core::{Step, named_position};
 use pack::FlatPack;
 use serde::Serialize;
 use ts_rs::TS;
@@ -21,34 +21,6 @@ pub struct ItemTarget {
     pub item: usize,
     /// The index of the target position in the item's `positions`, when the step names one.
     pub position: Option<usize>,
-}
-
-/// Whether `word` appears in `text` as a whole word or phrase (case-insensitive).
-fn names(text: &str, word: &str) -> bool {
-    let (text, word) = (text.to_uppercase(), word.to_uppercase());
-    if word.is_empty() {
-        return false;
-    }
-    let edge = |c: Option<char>| c.is_none_or(|c| !c.is_alphanumeric());
-    text.match_indices(&word).any(|(at, _)| {
-        edge(text[..at].chars().next_back()) && edge(text[at + word.len()..].chars().next())
-    })
-}
-
-/// The position a value names, when it names exactly one of them. "ON, GUARD CLOSED" names ON
-/// of "OFF, ON"; "ENG 1 AND 2 ON, ELEC 1 AND 2 OFF" names both, so neither is the target.
-pub fn named_position(expect: &str, positions: &str) -> Option<usize> {
-    let named: Vec<usize> = positions
-        .split(',')
-        .map(str::trim)
-        .enumerate()
-        .filter(|(_, p)| names(expect, p))
-        .map(|(i, _)| i)
-        .collect();
-    match named[..] {
-        [one] => Some(one),
-        _ => None,
-    }
 }
 
 /// The panel items a step uses, with the position it asks for.

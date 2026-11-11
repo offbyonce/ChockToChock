@@ -5,7 +5,7 @@
 
 use std::collections::BTreeMap;
 
-use checklist_core::{PanelItem, PanelItemKind};
+use checklist_core::{PanelItem, PanelItemKind, named_position};
 
 use super::confirmations::check_confirmations;
 use super::ids::unique;
@@ -76,6 +76,7 @@ pub(super) fn check_panels_and_lights(pack: &Pack, idx: &Index, issues: &mut Vec
             }
         }
     }
+    check_rest_against_cold_start(pack, issues);
     let Some(file) = &c.lights else {
         return;
     };
@@ -101,6 +102,18 @@ fn check_panel_item(at: &str, item: &PanelItem, issues: &mut Vec<Issue>) {
     if !is_light && item.color.is_some() {
         issues.push(error(at, format!("`{label}`: only a light has a `color`")));
     }
+    if let Some(rest) = &item.rest {
+        let named = item
+            .positions
+            .as_deref()
+            .is_some_and(|p| p.split(',').any(|x| x.trim() == rest));
+        if !named {
+            issues.push(error(
+                at,
+                format!("`{label}`: rest `{rest}` is not one of its positions"),
+            ));
+        }
+    }
     if item.guarded
         && !matches!(
             item.kind,
@@ -111,6 +124,58 @@ fn check_panel_item(at: &str, item: &PanelItem, issues: &mut Vec<Issue>) {
             at,
             format!("`{label}`: only a toggle switch or push button can be `guarded`"),
         ));
+    }
+}
+
+/// Resting positions must agree with the cold and dark start state (the start state that opens
+/// on the first phase of the first stage): a step that state counts as done is one whose
+/// controls already rest where the step asks.
+fn check_rest_against_cold_start(pack: &Pack, issues: &mut Vec<Issue>) {
+    let c = &pack.content;
+    let first = c
+        .phases
+        .as_ref()
+        .and_then(|f| f.stages.first())
+        .and_then(|s| s.phases.first())
+        .map(|p| p.phase.as_str());
+    let Some(cold) = c
+        .start_states
+        .as_ref()
+        .and_then(|f| f.states.iter().find(|s| Some(s.phase.as_str()) == first))
+    else {
+        return;
+    };
+    let steps: BTreeMap<_, _> = pack
+        .checklists
+        .iter()
+        .flat_map(|l| &l.steps)
+        .map(|s| (&s.id, s))
+        .collect();
+    for id in &cold.done {
+        let Some(step) = steps.get(id) else { continue };
+        for section in c.panels.iter().flat_map(|p| &p.sections) {
+            for item in &section.items {
+                let (Some(rest), Some(positions)) = (&item.rest, &item.positions) else {
+                    continue;
+                };
+                if !item.controls.iter().any(|k| step.controls.contains(k)) {
+                    continue;
+                }
+                let Some(target) = named_position(&step.expect, positions) else {
+                    continue;
+                };
+                let target = positions.split(',').nth(target).unwrap_or_default().trim();
+                if target != rest {
+                    issues.push(error(
+                        &section.id,
+                        format!(
+                            "`{}` rests at `{rest}`, but start state `{}` counts `{}` as done, which sets it to `{target}`",
+                            item.label, cold.id, step.id
+                        ),
+                    ));
+                }
+            }
+        }
     }
 }
 
@@ -137,7 +202,7 @@ fn locator_resolves(locator: &str, labels: &BTreeMap<(&str, &str, &str), usize>)
 mod tests {
     use checklist_core::{
         Control, ControlsFile, LightColor, LightNote, LightsFile, Overview, OverviewArea,
-        OverviewRegion, Panel, PanelItem, PanelItemKind, PanelSection,
+        OverviewRegion, Panel, PanelItem, PanelItemKind, PanelSection, StartState, StartStatesFile,
     };
 
     use super::super::test_support::{alias_pack, assert_flags, messages, pack, step};
@@ -177,6 +242,7 @@ mod tests {
                     y: 2.0,
                     controls: vec!["bat".into()],
                     positions: None,
+                    rest: None,
                     description: "Low".into(),
                     width: None,
                     height: None,
@@ -184,6 +250,45 @@ mod tests {
             }],
         }];
         p
+    }
+
+    /// The battery as a toggle switch resting at `rest`, and a cold start that counts a step
+    /// setting it OFF as done.
+    fn rest_pack(rest: &str) -> Pack {
+        let mut p = panel_pack();
+        let item = &mut p.content.panels[0].sections[0].items[0];
+        item.kind = PanelItemKind::ToggleSwitch;
+        item.color = None;
+        item.positions = Some("OFF, ON".into());
+        item.rest = Some(rest.into());
+        let id = p.checklists[0].steps[0].id.clone();
+        p.checklists[0].steps[0].controls = vec!["bat".into()];
+        p.checklists[0].steps[0].expect = "OFF".into();
+        p.content.start_states = Some(StartStatesFile {
+            states: vec![StartState {
+                id: "cold".into(),
+                title: "Cold".into(),
+                description: "Cold".into(),
+                set: std::collections::BTreeMap::default(),
+                phase: "preflight".into(),
+                done: vec![id],
+                skip: vec![],
+            }],
+        });
+        p
+    }
+
+    #[test]
+    fn a_rest_position_is_one_of_the_positions_and_agrees_with_the_cold_start() {
+        assert!(!messages(&rest_pack("OFF")).contains("rest"));
+        assert_flags(
+            &rest_pack("MAYBE"),
+            "rest `MAYBE` is not one of its positions",
+        );
+        assert_flags(
+            &rest_pack("ON"),
+            "rests at `ON`, but start state `cold` counts",
+        );
     }
 
     fn light(locator: &str) -> LightsFile {

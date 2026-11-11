@@ -21,7 +21,7 @@ saves them on the device, and batch 7 adds the rest.
     {
       key: "listView",
       title: "View",
-      text: "Checklist shows whole lists you tick. Flow shows one step at a time in large type.",
+      text: "Checklist shows full lists you tick. Flow shows one step at a time in large text.",
       choices: [
         ["checklist", "Checklist"],
         ["flow", "Flow"],
@@ -30,16 +30,16 @@ saves them on the device, and batch 7 adds the rest.
     {
       key: "detail",
       title: "Step info",
-      text: "Expanded shows where each control is and lets you open a step for more. Quick shows the item and its value.",
+      text: "Detailed shows where each control is and lets you open a step for more. Simple shows only the step and its setting.",
       choices: [
-        ["expanded", "Expanded"],
-        ["quick", "Quick"],
+        ["expanded", "Detailed"],
+        ["quick", "Simple"],
       ],
     },
     {
       key: "theme",
       title: "Appearance",
-      text: "Auto follows your device's setting.",
+      text: "Auto follows your system setting.",
       choices: [
         ["system", "Auto"],
         ["light", "Light"],

@@ -23,5 +23,6 @@ Never rewrite an accepted record; add a new one that supersedes it.
 | [0012](0012-app-state.md) | App state for the web beta: one flight, rules in Rust, skipped stays open | Accepted |
 | [0013](0013-step-presentation-and-provenance.md) | Every step presented the same way; provenance kept as an internal record | Accepted |
 | [0014](0014-pack-format-3.md) | Pack format 3: option choices, map regions and target positions | Accepted |
+| [0015](0015-resting-positions.md) | Resting positions for controls a step does not use | Accepted |
 
 Template: Context, Decision, Consequences. Keep it under a page.

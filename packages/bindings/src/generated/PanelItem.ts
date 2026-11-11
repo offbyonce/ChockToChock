@@ -21,4 +21,9 @@ controls?: Array<string>,
 /**
  * The positions it can be set to, as text.
  */
-positions?: string | null, description: string, width?: number | null, height?: number | null, };
+positions?: string | null, 
+/**
+ * Where it rests when the airplane is cold and dark: one of `positions`. Drawings show it,
+ * dimmed, on controls a step does not use (decision 0014).
+ */
+rest?: string | null, description: string, width?: number | null, height?: number | null, };

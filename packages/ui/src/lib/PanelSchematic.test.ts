@@ -159,4 +159,22 @@ describe("PanelSchematic", () => {
     // The label sits in the control's group, which is placed at the control's y (50).
     expect(50 + Number(setTo.getAttribute("y"))).toBeLessThan(frameBottom);
   });
+
+  it("draws an unused control at its resting position, dimmed and unlike the target", () => {
+    const rested = structuredClone(panel);
+    const cab = rested.sections[0]?.items[1];
+    if (cab) cab.rest = "OFF";
+    render(PanelSchematic, {
+      panel: rested,
+      focus: ["elec"],
+      targets: [{ section: "elec", item: 0, position: 1 }],
+    });
+
+    const svg = screen.getByRole("img");
+    // The battery's target is solid; CAB/UTIL rests at OFF, hollow and muted.
+    expect(svg.querySelectorAll(".knob.set")).toHaveLength(1);
+    expect(svg.querySelectorAll(".knob.rest")).toHaveLength(1);
+    const restLabels = [...svg.querySelectorAll(".pos.at-rest")].map((t) => t.textContent);
+    expect(restLabels).toEqual(["OFF"]);
+  });
 });

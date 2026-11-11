@@ -94,6 +94,13 @@
             "null"
           ]
         },
+        "rest": {
+          "description": "Where it rests when the airplane is cold and dark: one of `positions`. Drawings show it,\ndimmed, on controls a step does not use (decision 0014).",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
         "width": {
           "type": [
             "number",

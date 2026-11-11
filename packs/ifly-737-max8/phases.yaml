@@ -253,7 +253,7 @@ phases:
       - quick-reference-landing-configuration-warning
       - quick-reference-passenger-evacuation
   - id: procedures
-    title: Non-normal procedures
+    title: Non-normal
     reference: true
     intro:
       - text: "Maneuvers, go-around and MAX trim and airspeed procedures for situations outside the normal flow."
