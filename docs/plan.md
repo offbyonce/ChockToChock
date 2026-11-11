@@ -134,10 +134,9 @@ library pack.
 
 ## Out of scope
 
-Performance calculations, charts and navigation data or a full EFB, ATC, virtual first officer or
-copilot voice features, automatic checking of cockpit switches, and anything needing a sim
-connection. The reasons are in decisions 0006 and 0008. Also not planned: video courses. Others make
-them, and this app's strength is interactive practice with reasons.
+Performance calculations, charts and navigation data, a full EFB, ATC, virtual first officer or
+copilot voice features, video courses, and anything needing a sim connection, including automatic
+checking of cockpit switches. The reasons are in decision 0011, which updates the list in 0008.
 
 ## Open items
 

@@ -31,11 +31,9 @@ Out of scope:
 | --- | --- |
 | Performance calculations | Takeoff and landing numbers depend on data we do not hold, and a wrong number teaches something dangerous. SimBrief and the aircraft's own tools already produce them; we teach how to use them. |
 | Charts and navigation data | They are licensed and change every cycle, and dedicated providers do this well. We use only what the flight plan or the pilot supplies. |
-| A full EFB | An EFB bundles charts, navigation data and performance tools, which this table already rules out, and dedicated tools do it well. We teach how to use the aircraft's own EFB instead (0011). |
 | ATC | The simulator, online networks and dedicated tools already provide it. Radio phraseology and ATC interaction are left to those tools. |
 | Virtual first officer or copilot voice features | To work well they must follow the airplane's state, which needs a sim connection, and sim-linked tools do it better. We teach both crew roles instead. |
-| Anything needing a sim connection, including automatic checking of cockpit switches | Decision 0006: the app must be usable alongside the simulator on any platform, including Xbox and PlayStation. |
-| Video courses | Others make them, and this app's strength is interactive practice with the reasons behind each step (0011). |
+| Anything needing a sim connection | Decision 0006: the app must be usable alongside the simulator on any platform, including Xbox and PlayStation. |
 
 ## Consequences
 - Phase 3 is larger, so each feature still needs review with beta pilots before it ships.

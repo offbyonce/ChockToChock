@@ -30,6 +30,7 @@ engine never names an aircraft. **The app never connects to the simulator** (dec
   airline SOPs are never used as a basis.
 - Never add images, screenshots, PDFs or any files from an aircraft developer, manufacturer or
   simulator. Switch names, positions and values are facts and are fine.
+  Open-licensed fonts (such as B612 under the OFL) are allowed, bundled unmodified with their license.
 - Label systems content as real aircraft, simulator model, or both.
 
 **Code:**
