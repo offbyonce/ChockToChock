@@ -68,6 +68,14 @@ every change to `.github/workflows/`. For those, prepare what the step needs and
 6. **Installable and offline.** Web app manifest, service worker and bundled fonts and icons, under
    the content security policy that step 5 added. A new version never replaces content in the
    middle of a session; the app offers a reload instead. Show it working offline in a browser.
+   **Done 2026-11-11:** the app at `app/` has a web app manifest and our own icons, and B612 is
+   bundled. A hand-written service worker precaches the app, the WebAssembly module, the fonts and
+   the packs, under a cache named from a hash of the built files; it never takes over mid-session
+   and offers a reload instead. `just update-test` runs the version-to-version test in headless
+   Firefox (first visit, offline, new version waiting with the reload offer, reload); it passes.
+   Still to do by hand on the live site, once per release while the beta lasts: install the app,
+   deploy a new version, and check the reload offer and the new version on a desktop browser and
+   a tablet.
 7. **Interface parity.** Phases, checklists and flows, panel states, timers, the CDU walkthrough,
    SimBrief import and the guided tour, matching 3.0. Report one feature at a time. Include the
    carried-over checks from the Phase 1 brief: the LEGS page renders correctly with no departure

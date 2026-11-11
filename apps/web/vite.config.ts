@@ -3,6 +3,7 @@
 
 import { svelte } from "@sveltejs/vite-plugin-svelte";
 import { defineConfig, type Plugin } from "vite";
+import { writeServiceWorker } from "./build/precache.js";
 
 // The site's content security policy (decision 0009): everything from this site only, except
 // SimBrief, which the browser calls directly. 'wasm-unsafe-eval' lets the WebAssembly module
@@ -13,6 +14,9 @@ const CSP = [
   "script-src 'self' 'wasm-unsafe-eval'",
   "style-src 'self'",
   "img-src 'self'",
+  "font-src 'self'",
+  "manifest-src 'self'",
+  "worker-src 'self'",
   "connect-src 'self' https://www.simbrief.com",
   "base-uri 'none'",
   "form-action 'none'",
@@ -32,12 +36,31 @@ function contentSecurityPolicy(): Plugin {
   };
 }
 
+// After the build, write the service worker with the list of files to precache and a version
+// derived from them (decision 0010; see build/precache.js).
+function serviceWorker(): Plugin {
+  let root = "";
+  let outDir = "";
+  return {
+    name: "service-worker",
+    apply: "build",
+    configResolved(config) {
+      root = config.root;
+      outDir = config.build.outDir;
+    },
+    closeBundle() {
+      const { version, files } = writeServiceWorker(root, outDir);
+      this.info(`service worker ${version}: ${files.length} files to precache`);
+    },
+  };
+}
+
 // `base: "./"` keeps paths relative, so the built site works under the Pages project path
 // (decision 0010). `just site` builds the WebAssembly module and the packs first; the packs are
 // copied from ./public. Pages: the placeholder front page, the app at app/ and the SimBrief
 // probe page.
 export default defineConfig({
-  plugins: [svelte(), contentSecurityPolicy()],
+  plugins: [svelte(), contentSecurityPolicy(), serviceWorker()],
   base: "./",
   server: { port: 1420, strictPort: true },
   build: {
