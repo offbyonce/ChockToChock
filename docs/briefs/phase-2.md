@@ -126,8 +126,10 @@ every change to `.github/workflows/`. For those, prepare what the step needs and
    top of it, not a different design. Each batch's review screenshots include 3.0 and the new app
    side by side, at the same size and theme (`just screenshots` with `CHOCKTOCHOCK_BASELINE`),
    and a checklist of every visible 3.0 element on the screens covered, each marked kept,
-   improved, missing until batch N, or worse with its fix. A batch is ready only when nothing is
-   worse. The new app replaces the front page only when it clearly exceeds 3.0.
+   improved, missing until batch N, or worse with its fix. The checklist comes from an
+   independent reviewer with fresh context, given only the compare images and 3.0 as the
+   reference; its findings are included unedited, with the fixes. A batch is ready only when
+   nothing is worse. The new app replaces the front page only when it clearly exceeds 3.0.
    0. Foundations: decision 0012, app state in Rust and the WebAssembly calls, themes and
       dimming with a contrast test, the icon pipeline, the app frame (top bar, phase rail,
       Emergency button, addresses) and the screenshot tool. Reworked on review to the 3.0

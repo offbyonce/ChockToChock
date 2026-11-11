@@ -22,6 +22,10 @@ use crate::visibility::visible_steps;
 #[ts(export)]
 pub struct StepRow {
     pub id: StepId,
+    /// The number shown: the step's position among the steps that show, from 1. The pack's own
+    /// `number` is not used for this; 3.0 numbered by position too, and the import kept only the
+    /// numbers 3.0 stored, so many steps have none.
+    pub number: usize,
     pub state: StepState,
     /// False for a step the simulator does not model: it can be ticked but is not counted.
     pub counts: bool,
@@ -96,8 +100,10 @@ pub fn phase_view(pack: &FlatPack, flight: &Flight, id: &str) -> Result<PhaseVie
                 .states(visible.iter().copied())
                 .into_iter()
                 .zip(&visible)
-                .map(|((id, state), step)| StepRow {
+                .enumerate()
+                .map(|(i, ((id, state), step))| StepRow {
                     id: id.clone(),
+                    number: i + 1,
                     state,
                     counts: counts(step),
                     targets: step_targets(pack, step),
@@ -280,6 +286,46 @@ mod tests {
         assert_eq!(view.stage, None);
         assert_eq!(view.position, None);
         assert!(view.previous.is_none() && view.next.is_none());
+    }
+
+    #[test]
+    fn every_step_that_shows_is_numbered_in_order() {
+        // Before start's procedure has steps with no number in the pack (Landing gear pins,
+        // TERR, Electric hydraulic pump switches); they once showed unnumbered.
+        let pack = ifly_pack();
+        let flight = new_flight(&pack);
+        for phase in ["before-start", "cold-dark", "preflight", "memory"] {
+            for list in phase_view(&pack, &flight, phase).unwrap().lists {
+                let numbers: Vec<usize> = list.steps.iter().map(|s| s.number).collect();
+                let expected: Vec<usize> = (1..=list.steps.len()).collect();
+                assert_eq!(numbers, expected, "{}", list.id);
+            }
+        }
+    }
+
+    #[test]
+    fn numbers_follow_the_steps_that_show_for_the_options() {
+        let pack = ifly_pack();
+        let flight = new_flight(&pack);
+        let turn = apply(
+            &pack,
+            flight.clone(),
+            Action::SetOption {
+                option: "start".into(),
+                value: "turn".into(),
+            },
+        )
+        .unwrap();
+        for f in [&flight, &turn] {
+            for stage in crate::rail::rail(&pack, f).stages {
+                for p in stage.phases {
+                    for list in phase_view(&pack, f, &p.id).unwrap().lists {
+                        let last = list.steps.last().map_or(0, |s| s.number);
+                        assert_eq!(last, list.steps.len(), "{}", list.id);
+                    }
+                }
+            }
+        }
     }
 
     #[test]

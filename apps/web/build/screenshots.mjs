@@ -43,7 +43,7 @@ const SHOTS = [
         click(".it .tick", 0),
         click(".it .tick", 1),
         click(".it .chev", 2),
-        `[...document.querySelectorAll(".dtl .btn.skip")][0].click(); true`,
+        `[...document.querySelectorAll(".dskip .btn")][0].click(); true`,
       ],
     },
     base: { hash: "#cold-dark", before: [click(".it .tick", 0), click(".it .tick", 1)] },

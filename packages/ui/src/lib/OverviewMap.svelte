@@ -12,9 +12,6 @@ from the pack, and the zone marked by a thicker outline, fill and bold label as 
 
   let { index, zone }: { index: PackIndex; zone: Zone } = $props();
 
-  // Map units, not pixels: the map is drawn at about 0.75x in the side panel, so this reads
-  // at about 10px, as 3.0's labels do.
-  const LABEL = 14;
   let byId = $derived(new Map(index.zones.map((z) => [z.id, z])));
   let map = $derived(index.region(zone));
   let region = $derived(map?.region ?? null);
@@ -42,6 +39,14 @@ from the pack, and the zone marked by a thicker outline, fill and bold label as 
     w: bounds.x1 - bounds.x0 + pad.left + pad.right,
     h: bounds.y1 - bounds.y0 + pad.top + pad.bottom,
   });
+  /**
+   * Labels keep 3.0's rendered sizes (measured: about 9.5px for areas, 9.3px for the edge
+   * captions) however large the map is drawn; `width` is the map's width on screen.
+   */
+  const PX = { label: 9.5, edge: 9.3 };
+  let width = $state(0);
+  let k = $derived(width > 0 ? width / box.w : 0.75);
+  let LABEL = $derived(PX.label / k);
   let cx = $derived((bounds.x0 + bounds.x1) / 2);
   let cy = $derived((bounds.y0 + bounds.y1) / 2);
 
@@ -55,10 +60,14 @@ from the pack, and the zone marked by a thicker outline, fill and bold label as 
   }
   /** Shrinks a label that still does not fit, so it never spills out of its box. */
   const size = (text: string[], width: number, height: number) =>
-    Math.min(LABEL, (width - 4) / (Math.max(...text.map((t) => t.length)) * 0.6), (height - 2) / (text.length * 1.15));
+    Math.max(
+      8.5 / k,
+      Math.min(LABEL, (width - 4) / (Math.max(...text.map((t) => t.length)) * 0.6), (height - 2) / (text.length * 1.15)),
+    );
 </script>
 
 {#if map && map.areas.length}
+  <div class="wrap" bind:clientWidth={width}>
   <svg
     class="map"
     viewBox="{box.x} {box.y} {box.w} {box.h}"
@@ -77,28 +86,32 @@ from the pack, and the zone marked by a thicker outline, fill and bold label as 
           <text
             x={area.x + area.width / 2}
             y={area.y + area.height / 2 + (n - (text.length - 1) / 2) * fs * 1.1}
-            font-size={fs}
+            style:font-size="{fs}px"
           >{line}</text>
         {/each}
       </g>
     {/each}
     {#if region?.top}
-      <text class="edge" x={cx} y={bounds.y0 - 13}>↑ {region.top}</text>
+      <text class="edge" x={cx} y={bounds.y0 - 13} style:font-size="{PX.edge / k}px">↑ {region.top}</text>
     {/if}
     {#if region?.bottom}
-      <text class="edge" x={cx} y={bounds.y1 + 15}>↓ {region.bottom}</text>
+      <text class="edge" x={cx} y={bounds.y1 + 15} style:font-size="{PX.edge / k}px">↓ {region.bottom}</text>
     {/if}
     {#if sides && short}
-      {#if region?.left}<text class="edge" x={bounds.x0} y={bounds.y0 - 13} text-anchor="start">{region.left}</text>{/if}
-      {#if region?.right}<text class="edge" x={bounds.x1} y={bounds.y0 - 13} text-anchor="end">{region.right}</text>{/if}
+      {#if region?.left}<text class="edge" x={bounds.x0} y={bounds.y0 - 13} text-anchor="start" style:font-size="{PX.edge / k}px">{region.left}</text>{/if}
+      {#if region?.right}<text class="edge" x={bounds.x1} y={bounds.y0 - 13} text-anchor="end" style:font-size="{PX.edge / k}px">{region.right}</text>{/if}
     {:else if sides}
-      {#if region?.left}<text class="edge" transform="translate({bounds.x0 - 14} {cy}) rotate(-90)">{region.left}</text>{/if}
-      {#if region?.right}<text class="edge" transform="translate({bounds.x1 + 14} {cy}) rotate(90)">{region.right}</text>{/if}
+      {#if region?.left}<text class="edge" transform="translate({bounds.x0 - 14} {cy}) rotate(-90)" style:font-size="{PX.edge / k}px">{region.left}</text>{/if}
+      {#if region?.right}<text class="edge" transform="translate({bounds.x1 + 14} {cy}) rotate(90)" style:font-size="{PX.edge / k}px">{region.right}</text>{/if}
     {/if}
   </svg>
+  </div>
 {/if}
 
 <style>
+  .wrap {
+    width: 100%;
+  }
   .map {
     display: block;
     width: 100%;
@@ -119,7 +132,6 @@ from the pack, and the zone marked by a thicker outline, fill and bold label as 
     dominant-baseline: central;
   }
   .edge {
-    font-size: 11px;
     letter-spacing: 0.05em;
     fill: var(--muted);
   }

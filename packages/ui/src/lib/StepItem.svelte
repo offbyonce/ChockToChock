@@ -40,6 +40,7 @@ with the words "Skipped, still open". The quick level shows the item and value o
   } = $props();
 
   let open = $state(false);
+  let mapOpen = $state(false);
   let place = $derived(index.place(step));
   let time = $derived(
     doneAt === undefined ? "" : new Date(doneAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
@@ -60,7 +61,7 @@ with the words "Skipped, still open". The quick level shows the item and value o
     <!-- Selecting a step shows it in the context panel; the tick box is the only thing that ticks. -->
     <button class="row" type="button" onclick={onSelect} aria-current={selected ? "true" : undefined}>
       <span class="name">
-        {#if step.number != null}<small>{step.number}</small>{/if}{step.text}
+        <small>{row.number}</small>{step.text}
         <span class="sr-only">, {STATE_WORDS[row.state]}</span>
         {#if row.state === "current"}<span class="tag cur" aria-hidden="true">Current</span>{/if}
         {#if row.state === "skipped"}<span class="tag skip" aria-hidden="true">Skipped, still open</span>{/if}
@@ -81,14 +82,29 @@ with the words "Skipped, still open". The quick level shows the item and value o
         <Icon name="chevron-down" />
       </button>
       {#if open}
+        <!-- As 3.0: the details, where it is and the map on narrow screens (the side panel has
+             them on wide ones), then Skip for now as a quiet button at the bottom. -->
         <div class="dtl">
           <StepDetail {index} {step} />
-          <div class="acts">
-            {#if row.state !== "skipped" && row.state !== "done"}
-              <button class="btn skip" type="button" onclick={onSkip}><Icon name="skip" /> Skip for now</button>
+          {#if place?.control}
+            <p class="narrow where"><b>Where</b> · {place.control.location}</p>
+          {/if}
+          {#if place}
+            <button class="btn quiet narrow" type="button" aria-expanded={mapOpen} onclick={() => (mapOpen = !mapOpen)}>
+              <Icon name="map-pin" />{mapOpen ? "Hide map" : "Show on map"}
+            </button>
+            {#if mapOpen}
+              <div class="narrow inmap"><ContextPane {index} {step} targets={row.targets} heading={false} details={false} /></div>
             {/if}
-          </div>
-          <div class="inline-context"><ContextPane {index} {step} targets={row.targets} heading={false} /></div>
+          {/if}
+          {#if row.state === "skipped"}
+            <p class="dskip"><span>Skipped. It stays open until you tick it.</span></p>
+          {:else if row.state !== "done"}
+            <p class="dskip">
+              <button class="btn quiet" type="button" onclick={onSkip}><Icon name="skip" /> Skip for now</button>
+              <span>Find it later in Open steps.</span>
+            </p>
+          {/if}
         </div>
       {/if}
     {/if}
@@ -229,19 +245,47 @@ with the words "Skipped, still open". The quick level shows the item and value o
     flex-direction: column;
     gap: 0.625rem;
     margin: 0.5rem 0 0.2rem;
-    padding: 0.75rem;
-    border-radius: 0.55rem;
-    background: var(--bg);
+    padding: 0.25rem 0 0.25rem;
     font-size: 0.87rem;
     line-height: 1.45;
   }
-  .acts:empty {
-    display: none;
+  .where {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.875rem;
   }
-  /* Wide screens show the context in the panel beside the list. */
+  .where b {
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .btn.quiet {
+    align-self: flex-start;
+    min-height: 2.75rem;
+    font-weight: 500;
+  }
+  .btn.quiet :global(.icon) {
+    color: var(--muted);
+  }
+  .inmap {
+    padding-top: 0.25rem;
+  }
+  .dskip {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 0.75rem;
+    margin: 0.25rem 0 0;
+    padding-top: 0.625rem;
+    border-top: 1px solid var(--line);
+  }
+  .dskip span {
+    color: var(--muted);
+    font-size: 0.8125rem;
+  }
+  /* Wide screens show where it is and the map in the panel beside the list. */
   @media (min-width: 1024px) {
-    .inline-context {
-      display: none;
+    .narrow {
+      display: none !important;
     }
   }
   /* Non-normal and reference lists use larger type (step 7). */

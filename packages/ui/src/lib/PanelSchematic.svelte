@@ -80,6 +80,20 @@ Highlighting uses a thicker outline and fill as well as color.
   const TITLE = 18;
 
   /**
+   * Text keeps 3.0's rendered sizes (measured: names and titles 11.8px, positions and light words
+   * 10.8px) however large the drawing is: the controls scale to fill the card, the text does not.
+   * `width` is the drawing's width on screen; font sizes are set in drawing units from it.
+   */
+  const PX = { name: 11.8, title: 11.8, pos: 10.8, lamp: 10.8, setTo: 10.8 };
+  let width = $state(0);
+  // The drawing is as wide as its box, but never more than `scale` times the pack's size.
+  let k = $derived(width > 0 ? Math.min(width, (section.width + 4) * scale) / (section.width + 4) : 1.6);
+  const fs = (px: number) => `${(px / k).toFixed(2)}px`;
+  /** Light words shrink only if they would not fit inside the light. */
+  const lampFs = (words: string[], boxWidth: number) =>
+    `${Math.min(PX.lamp / k, (boxWidth - 3) / (Math.max(...words.map((w) => w.length)) * 0.62)).toFixed(2)}px`;
+
+  /**
    * The part of the section to draw. Like 3.0, a tall section is cut down to the rows around the
    * step's controls (the row above for context), so the drawing stays large enough to read; with
    * no control of the step in it, the whole section shows.
@@ -107,6 +121,7 @@ Highlighting uses a thicker outline and fill as well as color.
   );
 </script>
 
+<div class="wrap" bind:clientWidth={width}>
 <svg
   class="schematic"
   viewBox="-2 {top - 2} {section.width + 4} {band.y1 - top + 4}"
@@ -115,7 +130,7 @@ Highlighting uses a thicker outline and fill as well as color.
   aria-label="{section.title} panel, schematic.{described ? ` This step: ${described}.` : ''}"
 >
   <rect class="frame" y={top} width={section.width} height={band.y1 - top} rx="3" />
-  <text class="title" x="8" y={top + 13}>{section.title.toUpperCase()}</text>
+  <text class="title" x="8" y={top + 13} style:font-size={fs(PX.title)}>{section.title.toUpperCase()}</text>
   {#each shown as { item, i } (i)}
     {@const on = byItem.has(i)}
     {@const target = targetOf(i, item)}
@@ -136,7 +151,7 @@ Highlighting uses a thicker outline and fill as well as color.
         {/if}
         {#if positions.length <= 3}
           {#each positions as p, n (n)}
-            <text class="pos" class:target={on && n === t} x={item.guarded ? 14 : 10} y={leverY(n, positions.length) + 2.5}>{p}</text>
+            <text class="pos" class:target={on && n === t} x={item.guarded ? 14 : 10} y={leverY(n, positions.length) + 2.5} style:font-size={fs(PX.pos)}>{p}</text>
           {/each}
         {/if}
       {:else if item.kind === "selector"}
@@ -151,8 +166,8 @@ Highlighting uses a thicker outline and fill as well as color.
           <circle class="knob-ring" r="4.5" />
         {/if}
         {#if positions.length >= 2}
-          <text class="pos end" x="-14" y="-12" text-anchor="end">{positions[0]}</text>
-          <text class="pos end" x="14" y="-12">{positions[positions.length - 1]}</text>
+          <text class="pos end" x="-14" y="-12" text-anchor="end" style:font-size={fs(PX.pos)}>{positions[0]}</text>
+          <text class="pos end" x="14" y="-12" style:font-size={fs(PX.pos)}>{positions[positions.length - 1]}</text>
         {/if}
       {:else if item.kind === "push_button"}
         {#if item.guarded}
@@ -163,7 +178,7 @@ Highlighting uses a thicker outline and fill as well as color.
         {@const words = lines(item.label, 9)}
         <rect class="body lamp" x="-19" y="-10" width="38" height="20" rx="2" />
         {#each words as line, n (n)}
-          <text class="lamp-text" y={(n - (words.length - 1) / 2) * 7 + 2}>{line}</text>
+          <text class="lamp-text" y={(n - (words.length - 1) / 2) * 7 + 2} style:font-size={lampFs(words, 38)}>{line}</text>
         {/each}
       {:else if item.kind === "gauge"}
         <circle class="body" r="14" />
@@ -172,21 +187,25 @@ Highlighting uses a thicker outline and fill as well as color.
         {@const w = item.width ?? 60}
         {@const hh = item.height ?? 30}
         <rect class="body screen" x={-w / 2} y={-hh / 2} width={w} height={hh} rx="3" />
-        <text class="lamp-text" y="2">{item.label}</text>
+        <text class="lamp-text" y="2" style:font-size={lampFs([item.label], w)}>{item.label}</text>
       {/if}
       {#if item.kind !== "light" && item.kind !== "readout" && item.kind !== "display_unit"}
         {#each lines(item.label) as line, n (n)}
-          <text class="label" y={h + 12 + n * 11}>{line}</text>
+          <text class="label" y={h + 4 + (n + 1) * (PX.name * 1.15) / k} style:font-size={fs(PX.name)}>{line}</text>
         {/each}
         {#if on && target}
-          <text class="set-to" y={h + 12 + lines(item.label).length * 11}>SET TO {target}</text>
+          <text class="set-to" y={h + 4 + (lines(item.label).length + 1) * (PX.name * 1.15) / k} style:font-size={fs(PX.setTo)}>SET TO {target}</text>
         {/if}
       {/if}
     </g>
   {/each}
 </svg>
+</div>
 
 <style>
+  .wrap {
+    width: 100%;
+  }
   .schematic {
     display: block;
     height: auto;
@@ -198,7 +217,6 @@ Highlighting uses a thicker outline and fill as well as color.
     stroke: var(--line);
   }
   .title {
-    font-size: 8.5px;
     font-weight: 600;
     letter-spacing: 0.06em;
     fill: var(--muted);
@@ -229,17 +247,14 @@ Highlighting uses a thicker outline and fill as well as color.
     fill: var(--zone-ink);
   }
   .label {
-    font-size: 10px;
     font-weight: 600;
     text-anchor: middle;
   }
   .lamp-text {
-    font-size: 7px;
     font-weight: 600;
     text-anchor: middle;
   }
   .pos {
-    font-size: 8px;
     fill: var(--muted);
   }
   .on .body,
@@ -283,7 +298,6 @@ Highlighting uses a thicker outline and fill as well as color.
     stroke-width: 2.4;
   }
   .set-to {
-    font-size: 9px;
     font-weight: 700;
     text-anchor: middle;
     fill: var(--accent);

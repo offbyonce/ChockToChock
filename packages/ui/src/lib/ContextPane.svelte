@@ -5,7 +5,8 @@ SPDX-License-Identifier: MIT
 The context for one step, as in 3.0's right-hand panel: the control, where it is on the flight
 deck map ("Where is this?" shows the whole flight deck), the panel sections it is on with the
 step's target position, then where to find it and what it does. A step with no control on the
-map shows its details and the steps coming up instead, so the panel is never empty. Shown beside
+map shows the steps coming up instead, so the panel is never empty; its details stay in the list
+or Flow view, never repeated here. Shown beside
 the list on wide screens and inside the step on narrow ones.
 -->
 <script lang="ts">
@@ -14,7 +15,6 @@ the list on wide screens and inside the step on narrow ones.
   import Locator from "./Locator.svelte";
   import OverviewMap from "./OverviewMap.svelte";
   import PanelSchematic from "./PanelSchematic.svelte";
-  import StepDetail from "./StepDetail.svelte";
 
   let {
     index,
@@ -22,6 +22,7 @@ the list on wide screens and inside the step on narrow ones.
     targets,
     upcoming = [],
     heading = true,
+    details = true,
   }: {
     index: PackIndex;
     step: Step;
@@ -30,6 +31,9 @@ the list on wide screens and inside the step on narrow ones.
     /** The steps after this one, for a step with no control on the map. */
     upcoming?: { step: Step; state: StepState }[];
     heading?: boolean;
+    /** For a step with no map control, show the steps coming up. Off inside an opened step. The
+     * step's own details are never repeated here: the list or Flow view shows them. */
+    details?: boolean;
   } = $props();
 
   /** A panel section's title as a panel's name, as in 3.0: "Electrical meters panel". */
@@ -80,7 +84,7 @@ the list on wide screens and inside the step on narrow ones.
         <figure class="card">
           <figcaption>{panelName(section.title)}</figcaption>
           {#if region?.top}<p class="edge">↑ {region.top}</p>{/if}
-          <PanelSchematic {section} {targets} {guardClosed} />
+          <div class="pad"><PanelSchematic {section} {targets} {guardClosed} /></div>
           {#if region?.bottom}<p class="edge">↓ {region.bottom}</p>{/if}
         </figure>
       {/each}
@@ -100,12 +104,8 @@ the list on wide screens and inside the step on narrow ones.
         <p>{place.control.function}</p>
       </div>
     {/if}
-  {:else}
-    <p class="label">About this step</p>
-    <StepDetail {index} {step} />
-    {#if !step.check && !step.why && !step.how && !step.note && !step.explain}
-      <p class="tiny">This step has no control on the flight deck map.</p>
-    {/if}
+  {:else if details}
+    <p class="tiny">This step has no control on the flight deck map.</p>
     {#if upcoming.length}
       <h3 class="label">Coming up</h3>
       <ol class="next">
@@ -175,7 +175,7 @@ the list on wide screens and inside the step on narrow ones.
     font-size: 0.8125rem;
     font-weight: 600;
   }
-  figure :global(.schematic) {
+  .pad {
     padding: 0.5rem 0.75rem;
   }
   /* The region's orientation captions around the panel, as 3.0 shows them. */
@@ -187,7 +187,7 @@ the list on wide screens and inside the step on narrow ones.
     letter-spacing: 0.05em;
     text-align: center;
   }
-  .edge + :global(.schematic) {
+  .edge + .pad {
     padding-top: 0.25rem;
   }
   figure > .edge:last-child {

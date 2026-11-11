@@ -40,8 +40,16 @@ const pack = {
       title: "Power up flow",
       kind: "flow",
       steps: [
-        { id: "battery", number: 1, text: "BATTERY", expect: "ON" },
-        { id: "standby", number: 2, text: "STANDBY POWER", expect: "AUTO" },
+        {
+          id: "battery",
+          number: 1,
+          text: "BATTERY",
+          expect: "ON",
+          why: "First power.",
+          check: "Voltage shows",
+        },
+        // No number in the pack, as for some real steps; the shown number comes from Rust.
+        { id: "standby", text: "STANDBY POWER", expect: "AUTO" },
       ],
     },
   ],
@@ -87,7 +95,13 @@ function view(states: [StepState, StepState]): PhaseView {
         id: "power-up-flow",
         title: "Power up flow",
         kind: "flow",
-        steps: ids.map((id, i) => ({ id, state: states[i] as StepState, counts: true, targets: [] })),
+        steps: ids.map((id, i) => ({
+          id,
+          number: i + 1,
+          state: states[i] as StepState,
+          counts: true,
+          targets: [],
+        })),
         progress,
         complete: done === 2,
         current,
@@ -163,6 +177,19 @@ describe("App", () => {
     await fireEvent.click(screen.getByRole("button", { name: "Confirm BATTERY: ON" }));
     expect(await screen.findByText("Power up flow complete")).toBeTruthy();
     expect(actions.map((a) => a.type === "tick" && a.step)).toEqual(["standby", "battery"]);
+  });
+
+  it("opens a step with its details once and a quiet Skip for now at the bottom", async () => {
+    let states: [StepState, StepState] = ["current", "to_do"];
+    render(App, { context: hostContext(host({ phaseView: async () => view(states) })) });
+
+    await fireEvent.click(await screen.findByRole("button", { name: "Show details for BATTERY" }));
+    expect(screen.getAllByText(/First power\./)).toHaveLength(1);
+    expect(screen.getByText("CHECK")).toBeTruthy();
+    expect(screen.getByText("Find it later in Open steps.")).toBeTruthy();
+    const skip = screen.getByRole("button", { name: "Skip for now" });
+    expect(skip.classList.contains("quiet")).toBe(true);
+    states = ["skipped", "current"];
   });
 
   it("shows the options the pack asks for on a phase as cards, and applies a choice", async () => {

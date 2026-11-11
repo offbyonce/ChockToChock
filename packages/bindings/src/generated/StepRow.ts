@@ -6,7 +6,13 @@ import type { StepState } from "./StepState";
 /**
  * One step in a list, as shown.
  */
-export type StepRow = { id: StepId, state: StepState, 
+export type StepRow = { id: StepId, 
+/**
+ * The number shown: the step's position among the steps that show, from 1. The pack's own
+ * `number` is not used for this; 3.0 numbered by position too, and the import kept only the
+ * numbers 3.0 stored, so many steps have none.
+ */
+number: number, state: StepState, 
 /**
  * False for a step the simulator does not model: it can be ticked but is not counted.
  */
