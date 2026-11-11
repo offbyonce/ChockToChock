@@ -143,6 +143,5 @@ from the pack, and the zone marked by a thicker outline, fill and bold label as 
   }
   .on text {
     fill: var(--accent);
-    font-weight: 700;
   }
 </style>

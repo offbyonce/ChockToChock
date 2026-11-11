@@ -240,9 +240,11 @@ the list on wide screens and inside the step on narrow ones.
   .nm {
     font-weight: 500;
   }
+  /* In the text face, as long values are in the list: the monospaced face makes "1,000" look like
+     "1, 000" and its parentheses look like brackets. */
   .next .mono {
     color: var(--muted);
-    font-size: 0.8125rem;
+    font: 0.8125rem/1.4 var(--sans);
     text-align: right;
   }
   .next li.done {

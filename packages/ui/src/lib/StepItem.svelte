@@ -14,6 +14,7 @@ with the words "Skipped, still open". The quick level shows the item and value o
   import ContextPane from "./ContextPane.svelte";
   import Icon from "./Icon.svelte";
   import StepDetail from "./StepDetail.svelte";
+  import { fillParts } from "./value-parts";
 
   let {
     index,
@@ -44,14 +45,7 @@ with the words "Skipped, still open". The quick level shows the item and value o
   /** As 3.0: a value that is long or has blanks to fill goes on its own line, in the text face. */
   let long = $derived(step.expect.includes("___") || step.expect.length > 36);
   /** A value with blanks: the parts with blanks first, the rest of the instruction after. */
-  let fill = $derived.by(() => {
-    if (!step.expect.includes("___")) return null;
-    const parts = step.expect.split(/,\s*/);
-    return {
-      blanks: parts.filter((p) => p.includes("___")).join(", "),
-      rest: parts.filter((p) => !p.includes("___")).join(", "),
-    };
-  });
+  let fill = $derived(fillParts(step.expect));
   /** Other controls the step uses, shown as "+N" after where it is. */
   let more = $derived(Math.max(0, (step.controls?.length ?? 0) - 1));
   let place = $derived(index.place(step));
