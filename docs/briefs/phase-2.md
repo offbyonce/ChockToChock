@@ -104,7 +104,9 @@ every change to `.github/workflows/`. For those, prepare what the step needs and
      (decision 0006) and never implies it knows a switch position.
    - **Touch targets:** at least 44 to 48 px.
    - **Theme:** dark, with a dimming control, and text contrast of at least 4.5:1 in every theme.
-   - **Typeface:** B612 (SIL Open Font License 1.1), bundled and precached with the site (step 6).
+   - **Typeface:** Geist for interface text, as in 3.0, and B612 Mono for values (both SIL Open
+     Font License 1.1), bundled and precached with the site. B612, bundled in step 6, was replaced
+     on the batch 0 review so the app matches 3.0's type.
    - **Non-normal lists:** larger type than normal lists.
    - **Completion:** a clear completion call at the end of each list (for example "Before start
      checklist complete"), shown only when no item is still open.
@@ -117,10 +119,15 @@ every change to `.github/workflows/`. For those, prepare what the step needs and
      JavaScript dependencies holds; MIT is already in `LICENSES/`.
    - Adding any new license file to `LICENSES/` needs the maintainer's go-ahead first (B612's
      `OFL-1.1.txt` is approved and added with the font in step 6).
-   Batches (one pull request each, screenshots for review saved outside the repo):
+   Batches (one pull request each, screenshots for review saved outside the repo). 3.0 is the
+   design baseline: the layout and look match 3.0, and the requirements above are improvements on
+   top of it, not a different design. Each batch's review screenshots include 3.0 and the new app
+   side by side, at the same size and theme (`just screenshots` with `CHOCKTOCHOCK_BASELINE`).
    0. Foundations: decision 0012, app state in Rust and the WebAssembly calls, themes and
       dimming with a contrast test, the icon pipeline, the app frame (top bar, phase rail,
-      Emergency button, addresses) and the screenshot tool. **Done 2026-11-11.**
+      Emergency button, addresses) and the screenshot tool. Reworked on review to the 3.0
+      layout: stage tabs and phase chips, the flight strip, step rows, Flow view with the
+      current-item box, and the context panel with the flight deck map and control schematic.
    1. Lists: phase screen, Checklist and Flow, item states, current-item box, quick and expanded,
       item detail, completion call, open items, options, Full and Essentials, keyboard, and
       saving progress on the device (brought forward from step 8).

@@ -1,9 +1,18 @@
 // SPDX-FileCopyrightText: 2026 offbyonce
 // SPDX-License-Identifier: MIT
 
-import type { FlatPack, Flight, Rail, RailPhase, Settings } from "@chocktochock/bindings";
-import { render, screen } from "@testing-library/svelte";
-import { beforeEach, describe, expect, it } from "vitest";
+import type {
+  Action,
+  FlatPack,
+  Flight,
+  PhaseView,
+  Rail,
+  RailPhase,
+  Settings,
+  StepState,
+} from "@chocktochock/bindings";
+import { cleanup, fireEvent, render, screen, within } from "@testing-library/svelte";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import App from "./App.svelte";
 import { type Host, hostContext } from "./host";
 
@@ -16,22 +25,70 @@ const rail: Rail = {
   stages: [
     {
       title: "Preflight",
-      phases: [phase("power-up", "Power up", 2, 1, 6), phase("exterior", "Exterior", 18, 0, 18)],
+      phases: [phase("power-up", "Power up", 0, 1, 2), phase("exterior", "Exterior", 18, 0, 18)],
     },
     { title: "Departure", phases: [phase("taxi", "Taxi", 0, 0, 9)] },
   ],
   reference: [phase("memory", "Memory items", 0, 0, 12)],
 };
 
+const pack = {
+  manifest: { name: "Demo aircraft" },
+  lists: [
+    {
+      id: "power-up-flow",
+      title: "Power up flow",
+      kind: "flow",
+      steps: [
+        { id: "battery", number: 1, text: "BATTERY", expect: "ON" },
+        { id: "standby", number: 2, text: "STANDBY POWER", expect: "AUTO" },
+      ],
+    },
+  ],
+  content: { phases: { options: [], stages: [], phases: [] }, controls: null, panels: [] },
+} as unknown as FlatPack;
+
+function view(states: [StepState, StepState]): PhaseView {
+  const done = states.filter((s) => s === "done").length;
+  const skipped = states.filter((s) => s === "skipped").length;
+  const progress = { done, skipped, toDo: 2 - done - skipped, total: 2 };
+  const ids = ["battery", "standby"];
+  const current = ids[states.indexOf("current")] ?? null;
+  return {
+    id: "power-up",
+    title: "Power up",
+    reference: false,
+    stage: "Preflight",
+    position: [1, 2],
+    previous: null,
+    next: { id: "exterior", title: "Exterior" },
+    lists: [
+      {
+        id: "power-up-flow",
+        title: "Power up flow",
+        kind: "flow",
+        steps: ids.map((id, i) => ({ id, state: states[i] as StepState, counts: true })),
+        progress,
+        complete: done === 2,
+        current,
+      },
+    ],
+    progress,
+    complete: done === 2,
+  };
+}
+
 function host(overrides: Partial<Host> = {}): Host {
   return {
     appInfo: async () => ({ name: "Chock to Chock", version: "0.1.0", packSchemaVersion: 2 }),
     packs: async () => [{ id: "demo", name: "Demo", version: "0.1.0", kind: "aircraft" }],
-    loadPack: async () => ({}) as FlatPack,
-    newFlight: async () => ({ pack: "demo" }) as Flight,
+    loadPack: async () => pack,
+    newFlight: async () => ({ pack: "demo", session: { done: {}, skipped: {} } }) as unknown as Flight,
     apply: async (_pack, flight) => flight,
     rail: async () => rail,
-    defaultSettings: async () => ({ theme: "dark", dimming: 0 }) as Settings,
+    phaseView: async () => view(["skipped", "current"]),
+    defaultSettings: async () =>
+      ({ theme: "dark", dimming: 0, detail: "expanded", listView: "checklist" }) as Settings,
     ...overrides,
   };
 }
@@ -39,21 +96,68 @@ function host(overrides: Partial<Host> = {}): Host {
 beforeEach(() => {
   window.location.hash = "";
 });
+afterEach(cleanup);
 
 describe("App", () => {
-  it("shows the stages and phases from the rail, with progress in words", async () => {
+  it("lays out stages, phase chips and steps, with states in words", async () => {
     render(App, { context: hostContext(host()) });
 
     expect(await screen.findByRole("heading", { level: 1, name: "Power up" })).toBeTruthy();
-    expect(screen.getByText("2 of 6 done · 1 skipped, still open · 3 to do")).toBeTruthy();
-    expect(screen.getByText("1 skipped")).toBeTruthy();
-    expect(screen.getByRole("link", { name: /Exterior, Complete/ })).toBeTruthy();
-    expect(screen.getByRole("link", { name: /Emergency/ }).getAttribute("href")).toBe("#/reference");
+    const stages = screen.getByRole("navigation", { name: "Stages" });
+    expect(within(stages).getByRole("link", { name: "Preflight" }).getAttribute("aria-current")).toBe("true");
+    expect(screen.getByRole("link", { name: "Exterior, complete" })).toBeTruthy();
+    expect(screen.getByRole("link", { name: "Power up, has skipped steps" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "1BATTERY , skipped, still open ON" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "2STANDBY POWER , current AUTO" })).toBeTruthy();
+    const top = document.querySelector<HTMLElement>("header.top");
+    expect(
+      top &&
+        within(top)
+          .getByRole("link", { name: /Emergency/ })
+          .getAttribute("href"),
+    ).toBe("#/reference");
+  });
+
+  it("ticks through the host and gives the completion call only when nothing is open", async () => {
+    const actions: Action[] = [];
+    const after: [StepState, StepState][] = [
+      ["skipped", "done"],
+      ["done", "done"],
+    ];
+    let states: [StepState, StepState] = ["skipped", "current"];
+    const h = host({
+      apply: async (_pack, flight, action) => {
+        actions.push(action);
+        states = after.shift() ?? states;
+        return { ...flight };
+      },
+      phaseView: async () => view(states),
+    });
+    render(App, { context: hostContext(h) });
+
+    await fireEvent.click(await screen.findByRole("button", { name: "Confirm STANDBY POWER: AUTO" }));
+    expect(await screen.findByText("1 skipped step still open. Power up flow is not complete.")).toBeTruthy();
+    expect(screen.queryByText("Power up flow complete")).toBeNull();
+
+    await fireEvent.click(screen.getByRole("button", { name: "Confirm BATTERY: ON" }));
+    expect(await screen.findByText("Power up flow complete")).toBeTruthy();
+    expect(actions.map((a) => a.type === "tick" && a.step)).toEqual(["standby", "battery"]);
+  });
+
+  it("shows the current step in a large box in Flow view", async () => {
+    render(App, { context: hostContext(host()) });
+    await screen.findByRole("heading", { level: 1, name: "Power up" });
+    await fireEvent.click(screen.getByRole("button", { name: "Flow view" }));
+
+    expect(await screen.findByRole("heading", { level: 1, name: "STANDBY POWER" })).toBeTruthy();
+    expect(screen.getByText("Power up flow · Step 2 of 2")).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Confirmed, next step" })).toBeTruthy();
+    expect((screen.getByRole("button", { name: "Back" }) as HTMLButtonElement).disabled).toBe(false);
   });
 
   it("shows a tagged error from Rust", async () => {
     const failing = host({
-      loadPack: () => Promise.reject({ kind: "PackInvalid", message: "pack format 3 is newer" }),
+      loadPack: vi.fn(() => Promise.reject({ kind: "PackInvalid", message: "pack format 3 is newer" })),
     });
     render(App, { context: hostContext(failing) });
 

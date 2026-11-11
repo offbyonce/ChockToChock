@@ -13,6 +13,7 @@ import type {
   Flight,
   Loaded,
   Ofp,
+  PhaseView,
   Rail,
   Reply,
   Settings,
@@ -62,6 +63,11 @@ export async function apply(pack: string, flight: Flight, action: Action): Promi
 export async function rail(pack: string, flight: Flight): Promise<Rail> {
   await load();
   return unwrap<Rail>(wasm.rail(pack, JSON.stringify(flight)));
+}
+
+export async function phaseView(pack: string, flight: Flight, phase: string): Promise<PhaseView> {
+  await load();
+  return unwrap<PhaseView>(wasm.phase_view(pack, JSON.stringify(flight), phase));
 }
 
 /** Reads a saved flight: ready (migrated if older), newer, or unreadable (decision 0012). */

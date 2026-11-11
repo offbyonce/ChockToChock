@@ -103,6 +103,15 @@ pub fn rail(pack: &str, flight: &str) -> String {
     )
 }
 
+/// One phase of a flight as the interface shows it: lists, step states, progress, neighbors.
+#[wasm_bindgen]
+pub fn phase_view(pack: &str, flight: &str, phase: &str) -> String {
+    reply(
+        read::<Flight>("flight", flight)
+            .and_then(|flight| with_pack(pack, |p| app_core::phase_view(p, &flight, phase))),
+    )
+}
+
 /// Read a saved flight: ready (migrated if older), newer, or unreadable.
 #[wasm_bindgen]
 pub fn load_flight(json: &str) -> String {
@@ -184,5 +193,16 @@ mod tests {
             7
         );
         assert!(json(&rail("example-trainer", &ticked.to_string()))["ok"]["stages"].is_array());
+        let view = json(&phase_view(
+            "example-trainer",
+            &ticked.to_string(),
+            "before-start",
+        ))["ok"]
+            .clone();
+        assert_eq!(view["lists"][0]["steps"][0]["state"], "done");
+        assert_eq!(
+            json(&phase_view("example-trainer", &flight, "nope"))["error"]["kind"],
+            "InvalidAction"
+        );
     }
 }

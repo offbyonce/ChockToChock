@@ -2,54 +2,88 @@
 SPDX-FileCopyrightText: 2026 offbyonce
 SPDX-License-Identifier: MIT
 
-One phase. Batch 0 shows its title and progress; its lists arrive in step 7, batch 1.
+A phase in Checklist view, as in 3.0: the flight strip, where the phase sits, the title, the
+lists as cards, and buttons to the phases either side. Flow view shows the same phase one step at
+a time (lib/FlowView.svelte).
 -->
 <script lang="ts">
-  import type { RailPhase } from "@chocktochock/bindings";
+  import type { Checklist, Detail, Flight, PhaseView } from "@chocktochock/bindings";
+  import Icon from "../lib/Icon.svelte";
+  import ListCard from "../lib/ListCard.svelte";
+  import type { PackIndex } from "../pack-index";
+  import { phaseHref } from "../route.svelte";
 
-  let { phase, stage }: { phase: RailPhase; stage: string | null } = $props();
-
-  let summary = $derived.by(() => {
-    const p = phase.progress;
-    const parts = [`${p.done} of ${p.total} done`];
-    if (p.skipped > 0) parts.push(`${p.skipped} skipped, still open`);
-    if (p.toDo > 0) parts.push(`${p.toDo} to do`);
-    return parts.join(" · ");
-  });
+  let {
+    index,
+    view,
+    lists,
+    flight,
+    detail,
+    selected,
+    onTick,
+    onSkip,
+    onSelect,
+  }: {
+    index: PackIndex;
+    view: PhaseView;
+    lists: Map<string, Checklist>;
+    flight: Flight;
+    detail: Detail;
+    selected: string | null;
+    onTick: (id: string, done: boolean) => void;
+    onSkip: (id: string) => void;
+    onSelect: (id: string) => void;
+  } = $props();
 </script>
 
-<article class="page">
-  {#if stage}<p class="stage">{stage}</p>{/if}
-  <h1>{phase.title}</h1>
-  <p class="summary">{phase.complete ? "Complete" : summary}</p>
-  <p class="placeholder">The checklists and flows for this phase arrive in step 7, batch 1.</p>
-</article>
+{#if view.stage && view.position}
+  <p class="crumb">{view.stage} · Phase {view.position[0]} of {view.position[1]}</p>
+{/if}
+<h1>{view.title}</h1>
+
+{#each view.lists as list (list.id)}
+  <ListCard
+    {index}
+    {list}
+    source={lists.get(list.id)}
+    {flight}
+    {detail}
+    {selected}
+    large={list.kind === "non-normal"}
+    {onTick}
+    {onSkip}
+    {onSelect}
+  />
+{/each}
+
+<nav class="nav" aria-label="Phases either side">
+  {#if view.previous}
+    <a class="btn" href={phaseHref(view.previous.id)}><Icon name="arrow-left" /> {view.previous.title}</a>
+  {:else}
+    <span></span>
+  {/if}
+  {#if view.next}
+    <a class="btn primary" href={phaseHref(view.next.id)}>{view.next.title} <Icon name="arrow-right" /></a>
+  {/if}
+</nav>
 
 <style>
-  .page {
-    max-width: 52rem;
-    padding: 1.5rem;
-  }
-  .stage {
-    margin: 0;
+  .crumb {
+    margin: 0 0 0.125rem;
     color: var(--muted);
-    font-size: 0.875rem;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
+    font-size: 0.8125rem;
   }
   h1 {
-    margin: 0.25rem 0 0.5rem;
-    font-size: 1.75rem;
+    margin: 0 0 1.125rem;
+    font-size: 1.6875rem;
+    font-weight: 650;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
   }
-  .summary {
-    margin: 0 0 1.5rem;
-    color: var(--muted);
-  }
-  .placeholder {
-    padding: 1rem 1.25rem;
-    border: 1px dashed var(--border);
-    border-radius: 0.5rem;
-    color: var(--muted);
+  .nav {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.625rem;
+    margin-top: 0.375rem;
   }
 </style>

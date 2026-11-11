@@ -4,7 +4,7 @@
 // The version-to-version update test (decision 0010), run with `just update-test` after
 // `just site`. It drives a real headless Firefox over WebDriver BiDi through four checks:
 //   1. version A: the first visit installs the service worker and caches A;
-//   2. offline: with the server stopped, the installed app still loads, in B612;
+//   2. offline: with the server stopped, the installed app still loads, in Geist;
 //   3. version B deployed while A is open: A keeps running, B waits, the reload offer shows;
 //   4. Reload: B runs and A's cache is gone.
 // Version B is the built site with a changed page title and its own service worker version.
@@ -73,8 +73,8 @@ async function main() {
     await send("browsingContext.reload", { context, wait: "complete" });
     await until(appShown, "the app to render offline");
     s = await state();
-    const font = await js(`(async () => { await document.fonts.ready; return document.fonts.check("16px B612"); })()`);
-    check("offline: the installed app loads with no server, in B612", s.app && s.caches[0] === cacheA && font, JSON.stringify({ ...s, font }));
+    const font = await js(`(async () => { await document.fonts.ready; return document.fonts.check("16px Geist"); })()`);
+    check("offline: the installed app loads with no server, in Geist", s.app && s.caches[0] === cacheA && font, JSON.stringify({ ...s, font }));
 
     server = await serve(b);
     await js("(async () => { await (await navigator.serviceWorker.getRegistration()).update(); return true; })()");

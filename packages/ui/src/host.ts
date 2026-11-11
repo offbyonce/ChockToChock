@@ -6,7 +6,16 @@
 // Tauri commands. Entry points pass it with hostContext(); components read it with getHost().
 // Every rule (what shows, what counts, what an action does) is decided behind the host, in Rust.
 
-import type { Action, AppInfo, FlatPack, Flight, PackSummary, Rail, Settings } from "@chocktochock/bindings";
+import type {
+  Action,
+  AppInfo,
+  FlatPack,
+  Flight,
+  PackSummary,
+  PhaseView,
+  Rail,
+  Settings,
+} from "@chocktochock/bindings";
 import { getContext } from "svelte";
 
 export interface Host {
@@ -21,6 +30,8 @@ export interface Host {
   apply(pack: string, flight: Flight, action: Action): Promise<Flight>;
   /** The phase rail for a flight. */
   rail(pack: string, flight: Flight): Promise<Rail>;
+  /** One phase as shown: its lists, step states, progress and neighbors. */
+  phaseView(pack: string, flight: Flight, phase: string): Promise<PhaseView>;
   defaultSettings(): Promise<Settings>;
 }
 

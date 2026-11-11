@@ -1,63 +1,91 @@
 // SPDX-FileCopyrightText: 2026 offbyonce
 // SPDX-License-Identifier: MIT
 
-// Color tokens for the dark and light themes, and dimming (Phase 2 brief, step 7). Text contrast
-// stays at least 4.5:1 in every theme and at every dimming step; tokens.test.ts checks it.
-// Tokens are applied as CSS custom properties through the CSSOM, which the content security
-// policy allows (no inline <style>).
+// Color tokens for the dark and light themes, and dimming (Phase 2 brief, step 7). The roles and
+// base colors follow the 3.0 design. Text contrast stays at least 4.5:1 in every theme and at
+// every dimming step; tokens.test.ts checks it. Tokens are applied as CSS custom properties
+// through the CSSOM, which the content security policy allows (no inline <style>).
 
 export type Palette = {
-  // Surfaces.
+  // Surfaces: dim with the screen.
   bg: string;
-  panel: string;
-  raised: string;
-  border: string;
-  accentSurface: string;
-  danger: string;
-  // Text and icons.
-  text: string;
+  surface: string;
+  zone: string;
+  line: string;
+  accentSoft: string;
+  goSoft: string;
+  warnSoft: string;
+  stopSoft: string;
+  // Text, icons and signal surfaces (the primary button, the Emergency button): dim less, so
+  // they stay readable.
+  ink: string;
   muted: string;
+  zoneInk: string;
   accent: string;
+  go: string;
+  warn: string;
+  stop: string;
+  accentSurface: string;
+  emergency: string;
+  // Text on a signal surface: does not change.
   onAccent: string;
-  onDanger: string;
-  done: string;
-  skipped: string;
+  onEmergency: string;
 };
 
-const SURFACES: (keyof Palette)[] = ["bg", "panel", "raised", "border", "accentSurface", "danger"];
-/** Text on a colored surface stays as it is, so it stays readable as the surface dims. */
-const ON_SURFACE: (keyof Palette)[] = ["onAccent", "onDanger"];
+const SURFACES: (keyof Palette)[] = [
+  "bg",
+  "surface",
+  "zone",
+  "line",
+  "accentSoft",
+  "goSoft",
+  "warnSoft",
+  "stopSoft",
+];
+const ON_SIGNAL: (keyof Palette)[] = ["onAccent", "onEmergency"];
 
 export const DARK: Palette = {
-  bg: "#121c2c",
-  panel: "#1b2738",
-  raised: "#24344b",
-  border: "#34465f",
-  accentSurface: "#ffb020",
-  danger: "#c62828",
-  text: "#e8ecf2",
-  muted: "#aab6c6",
-  accent: "#ffb020",
-  onAccent: "#0b111a",
-  onDanger: "#ffffff",
-  done: "#5fd39b",
-  skipped: "#ffb020",
+  bg: "#0e1116",
+  surface: "#161a21",
+  zone: "#1e242d",
+  line: "#262c36",
+  accentSoft: "#15273d",
+  goSoft: "#10291f",
+  warnSoft: "#2b2110",
+  stopSoft: "#2c1616",
+  ink: "#e8ebf0",
+  muted: "#97a1b1",
+  zoneInk: "#b4bdca",
+  accent: "#5aa2f0",
+  go: "#3ecf8e",
+  warn: "#f0b35e",
+  stop: "#ff8a80",
+  accentSurface: "#5aa2f0",
+  emergency: "#b42318",
+  onAccent: "#0b1320",
+  onEmergency: "#ffffff",
 };
 
 export const LIGHT: Palette = {
-  bg: "#f4f6f9",
-  panel: "#ffffff",
-  raised: "#e9eef4",
-  border: "#c9d2dd",
-  accentSurface: "#8a5200",
-  danger: "#b3261e",
-  text: "#16202c",
-  muted: "#465364",
-  accent: "#8a5200",
+  bg: "#f7f8fa",
+  surface: "#ffffff",
+  zone: "#eef1f4",
+  line: "#e2e5ea",
+  accentSoft: "#e8f1fb",
+  goSoft: "#e3f5ec",
+  warnSoft: "#fdf3e3",
+  stopSoft: "#fdecec",
+  ink: "#12161c",
+  muted: "#5d6677",
+  zoneInk: "#44505c",
+  accent: "#0a66c2",
+  go: "#0f7d4d",
+  warn: "#9a4b07",
+  stop: "#c62828",
+  accentSurface: "#0a66c2",
+  emergency: "#b42318",
   onAccent: "#ffffff",
-  onDanger: "#ffffff",
-  done: "#17693f",
-  skipped: "#8a5200",
+  onEmergency: "#ffffff",
 };
 
 /** Brightness factors for each dimming step, 0 (full) to 4. */
@@ -65,19 +93,24 @@ export const DIMMING = [1, 0.8, 0.64, 0.5, 0.4] as const;
 
 /** Text and background pairs that must stay readable. */
 export const TEXT_PAIRS: [keyof Palette, keyof Palette][] = [
-  ["text", "bg"],
-  ["text", "panel"],
-  ["text", "raised"],
+  ["ink", "bg"],
+  ["ink", "surface"],
+  ["ink", "zone"],
   ["muted", "bg"],
-  ["muted", "panel"],
-  ["muted", "raised"],
+  ["muted", "surface"],
+  ["muted", "zone"],
+  ["zoneInk", "zone"],
   ["accent", "bg"],
-  ["accent", "panel"],
-  ["accent", "raised"],
-  ["done", "panel"],
-  ["skipped", "panel"],
+  ["accent", "surface"],
+  ["accent", "accentSoft"],
+  ["go", "surface"],
+  ["go", "goSoft"],
+  ["warn", "surface"],
+  ["warn", "warnSoft"],
+  ["stop", "surface"],
+  ["stop", "stopSoft"],
   ["onAccent", "accentSurface"],
-  ["onDanger", "danger"],
+  ["onEmergency", "emergency"],
 ];
 
 function channels(hex: string): [number, number, number] {
@@ -116,16 +149,16 @@ export function dim(hex: string, factor: number): string {
 }
 
 /**
- * The palette for a theme at a dimming step. Surfaces dim by the step's factor. Text dims less in
- * the dark theme and darkens more in the light theme, so contrast holds as the screen dims; text
- * on a colored surface does not change.
+ * The palette for a theme at a dimming step. Surfaces dim by the step's factor. Text and signal
+ * surfaces dim less in the dark theme and darken more in the light theme, so contrast holds as
+ * the screen dims; text on a signal surface does not change.
  */
 export function palette(dark: boolean, dimming: number): Palette {
   const base = dark ? DARK : LIGHT;
   const factor = DIMMING[Math.min(Math.max(dimming, 0), DIMMING.length - 1)] ?? 1;
   const textFactor = dark ? Math.sqrt(factor) : factor ** 1.5;
   const factorFor = (key: keyof Palette) => {
-    if (ON_SURFACE.includes(key)) return 1;
+    if (ON_SIGNAL.includes(key)) return 1;
     return SURFACES.includes(key) ? factor : textFactor;
   };
   return Object.fromEntries(
@@ -133,25 +166,12 @@ export function palette(dark: boolean, dimming: number): Palette {
   ) as Palette;
 }
 
-const CSS_NAMES: Record<keyof Palette, string> = {
-  bg: "--bg",
-  panel: "--panel",
-  raised: "--raised",
-  border: "--border",
-  text: "--text",
-  muted: "--muted",
-  accentSurface: "--accent-surface",
-  accent: "--accent",
-  onAccent: "--on-accent",
-  danger: "--danger",
-  onDanger: "--on-danger",
-  done: "--done",
-  skipped: "--skipped",
-};
+/** `accentSoft` becomes `--accent-soft`. */
+const cssName = (key: string) => `--${key.replace(/[A-Z]/g, (c) => `-${c.toLowerCase()}`)}`;
 
 /** Sets the theme's tokens on the page. */
 export function applyPalette(root: HTMLElement, dark: boolean, dimming: number): void {
   const p = palette(dark, dimming);
-  for (const [key, name] of Object.entries(CSS_NAMES)) root.style.setProperty(name, p[key as keyof Palette]);
+  for (const [key, value] of Object.entries(p)) root.style.setProperty(cssName(key), value);
   root.style.setProperty("color-scheme", dark ? "dark" : "light");
 }

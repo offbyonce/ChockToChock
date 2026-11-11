@@ -5,10 +5,10 @@
  * The app page's own notice, until the first-launch notice arrives (Phase 2 brief, step 10).
  */
 .sim-only {
-  padding: 1rem 1.5rem;
-  border-top: 1px solid var(--panel);
-  color: var(--muted);
-  font-size: 0.875rem;
+  padding: 1rem clamp(1rem, 3vw, 2.5rem);
+  border-top: 1px solid var(--line);
+  color: var(--stop);
+  font-size: 0.8125rem;
 }
 
 /* "A new version is ready" with a Reload button (src/updates.ts). */
@@ -25,8 +25,8 @@
   margin: 0 auto;
   padding: 0.75rem 1rem;
   border-radius: 0.5rem;
-  background: var(--panel);
-  color: var(--text);
+  background: var(--surface);
+  color: var(--ink);
   box-shadow: 0 4px 16px rgb(0 0 0 / 40%);
 }
 
@@ -36,8 +36,8 @@
   padding: 0 1.25rem;
   border: 0;
   border-radius: 0.375rem;
-  background: var(--accent);
-  color: #121c2c;
+  background: var(--accent-surface);
+  color: var(--on-accent);
   font: inherit;
   font-weight: 700;
   cursor: pointer;

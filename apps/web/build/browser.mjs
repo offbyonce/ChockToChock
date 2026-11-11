@@ -22,6 +22,7 @@ const TYPES = {
   ".png": "image/png",
   ".svg": "image/svg+xml",
   ".ttf": "font/ttf",
+  ".woff2": "font/woff2",
 };
 
 /** Serves one built site on localhost until closed. */
@@ -89,12 +90,19 @@ export async function session(port) {
     pending.get(reply.id)?.(reply);
     pending.delete(reply.id);
   };
-  const send = (method, params) =>
+  // Every command gives up after `ms`, so a stuck page fails the run instead of hanging it.
+  const send = (method, params, ms = 30000) =>
     new Promise((resolve, reject) => {
       const id = nextId++;
-      pending.set(id, (reply) =>
-        reply.type === "error" ? reject(new Error(`${method}: ${reply.message}`)) : resolve(reply.result),
-      );
+      const timer = setTimeout(() => {
+        pending.delete(id);
+        reject(new Error(`${method}: no answer in ${ms} ms`));
+      }, ms);
+      pending.set(id, (reply) => {
+        clearTimeout(timer);
+        if (reply.type === "error") reject(new Error(`${method}: ${reply.message}`));
+        else resolve(reply.result);
+      });
       ws.send(JSON.stringify({ id, method, params }));
     });
   await send("session.new", { capabilities: {} });

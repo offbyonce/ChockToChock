@@ -41,7 +41,7 @@ test: wasm web-packs
     cargo nextest run --workspace
     cargo test --doc --workspace
     pnpm --filter @chocktochock/ui test
-    node --test "tools/import-3x/*.test.js" "apps/web/*.test.js" "apps/web/build/*.test.js"
+    node --test "tools/import-3x/*.test.js" "apps/web/*.test.js" "apps/web/src/*.test.js" "apps/web/build/*.test.js"
 
 # Build the web host as WebAssembly into apps/web/src/wasm. Needs the wasm-bindgen CLI at the
 # same version as the crate (decision 0010).

@@ -2,74 +2,161 @@
 SPDX-FileCopyrightText: 2026 offbyonce
 SPDX-License-Identifier: MIT
 
-Behind the Emergency button: the reference phases, in larger type (step 7 requirement for
-non-normal lists).
+Behind the Emergency button, as in 3.0: a tab for each reference phase (memory items, quick
+reference, non-normal), its introduction, and its lists as cards that open. Steps here use larger
+type (step 7 requirement for non-normal lists).
 -->
 <script lang="ts">
-  import type { RailPhase } from "@chocktochock/bindings";
+  import type { Checklist, Detail, Flight, PhaseView, RailPhase } from "@chocktochock/bindings";
   import Icon from "../lib/Icon.svelte";
-  import { phaseHref } from "../route.svelte";
+  import ListCard from "../lib/ListCard.svelte";
+  import type { PackIndex } from "../pack-index";
 
-  let { phases }: { phases: RailPhase[] } = $props();
+  let {
+    index,
+    phases,
+    view,
+    intro,
+    lists,
+    flight,
+    detail,
+    selected,
+    onTick,
+    onSkip,
+    onSelect,
+  }: {
+    index: PackIndex;
+    phases: RailPhase[];
+    view: PhaseView | null;
+    intro: { heading?: string | null; text: string }[];
+    lists: Map<string, Checklist>;
+    flight: Flight;
+    detail: Detail;
+    selected: string | null;
+    onTick: (id: string, done: boolean) => void;
+    onSkip: (id: string) => void;
+    onSelect: (id: string) => void;
+  } = $props();
 </script>
 
-<article class="page">
-  <h1>Emergency</h1>
-  <p class="lead">Memory items, quick reference checklists and non-normal procedures.</p>
-  <ul>
-    {#each phases as phase (phase.id)}
-      <li>
-        <a href={phaseHref(phase.id)}>
-          <span>{phase.title}</span>
-          <span class="count">{phase.progress.total} items</span>
-          <Icon name="chevron-right" />
-        </a>
-      </li>
+<h1>Emergency</h1>
+<nav class="tabs" aria-label="Reference">
+  {#each phases as p (p.id)}
+    <a href="#/reference/{encodeURIComponent(p.id)}" aria-current={p.id === view?.id ? "page" : undefined}>{p.title}</a>
+  {/each}
+</nav>
+
+{#if intro.length}
+  <div class="intro card">
+    {#each intro as para, i (i)}
+      <p>{#if para.heading}<b>{para.heading}:</b>{" "}{/if}{para.text}</p>
     {/each}
-  </ul>
-</article>
+  </div>
+{/if}
+
+{#if view}
+  {#each view.lists as list (list.id)}
+    <details class="card group">
+      <summary>
+        <span>{list.title}</span><span class="n mono">{list.steps.length} steps</span><Icon name="chevron-down" />
+      </summary>
+      <ListCard
+        {index}
+        {list}
+        source={lists.get(list.id)}
+        {flight}
+        {detail}
+        {selected}
+        large
+        {onTick}
+        {onSkip}
+        {onSelect}
+      />
+    </details>
+  {/each}
+{/if}
 
 <style>
-  .page {
-    max-width: 52rem;
-    padding: 1.5rem;
-    font-size: 1.25rem;
-  }
   h1 {
-    margin: 0 0 0.5rem;
-    font-size: 2rem;
+    margin: 0 0 1.125rem;
+    font-size: 1.6875rem;
+    font-weight: 650;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
   }
-  .lead {
-    margin: 0 0 1.5rem;
-    color: var(--muted);
-  }
-  ul {
+  .tabs {
     display: grid;
-    gap: 0.75rem;
-    margin: 0;
-    padding: 0;
-    list-style: none;
+    grid-auto-columns: 1fr;
+    grid-auto-flow: column;
+    gap: 0.25rem;
+    margin-bottom: 1rem;
+    padding: 0.25rem;
+    border: 1px solid var(--line);
+    border-radius: 0.75rem;
+    background: var(--zone);
   }
-  a {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    min-height: 64px;
-    padding: 0 1.25rem;
-    border: 1px solid var(--border);
-    border-left: 6px solid var(--danger);
+  .tabs a {
+    display: grid;
+    place-items: center;
+    min-height: 2.75rem;
+    padding: 0 0.5rem;
     border-radius: 0.5rem;
-    background: var(--panel);
-    color: var(--text);
-    font-weight: 700;
+    color: var(--muted);
+    font-weight: 500;
+    text-align: center;
     text-decoration: none;
   }
-  a span:first-child {
-    flex: 1;
+  .tabs a[aria-current="page"] {
+    background: var(--surface);
+    color: var(--accent);
   }
-  .count {
-    color: var(--muted);
+  .intro {
+    padding: 0.75rem 1rem;
+    font-size: 0.9375rem;
+  }
+  .intro p {
+    margin: 0.25rem 0;
+  }
+  summary {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    min-height: 3.25rem;
+    padding: 0.5rem 1rem;
     font-size: 1rem;
+    font-weight: 600;
+    list-style: none;
+    cursor: pointer;
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+  .n {
+    margin-left: auto;
+    color: var(--muted);
+    font-size: 0.8125rem;
     font-weight: 400;
+  }
+  details[open] summary {
+    border-bottom: 1px solid var(--line);
+  }
+  summary :global(.icon) {
+    color: var(--muted);
+    transition: transform 0.12s;
+  }
+  details[open] summary :global(.icon) {
+    transform: rotate(180deg);
+  }
+  .intro b {
+    font-weight: 600;
+  }
+  /* The card inside a card drops its own frame and title row. */
+  .group :global(section.card) {
+    margin: 0;
+    border: 0;
+    border-radius: 0;
+  }
+  .group :global(section.card > header) {
+    display: none;
   }
 </style>

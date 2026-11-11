@@ -2,14 +2,32 @@
 SPDX-FileCopyrightText: 2026 offbyonce
 SPDX-License-Identifier: MIT
 
-The app frame: top bar, phase rail and the screen for the current address. State comes from the
-host (decision 0012): a flight, settings and the rail, all computed in Rust.
+The app frame, laid out as in 3.0: the top bar with stage tabs, the phase chips, the screen for
+the current address, and on wide screens the context panel for the selected step. State comes
+from the host (decision 0012): a flight, settings, the rail and the phase on screen, all computed
+in Rust. Progress lives in memory until batch 1 saves it on the device.
 -->
 <script lang="ts">
-  import { type AppInfo, type Flight, isAppError, type Rail, type Settings } from "@chocktochock/bindings";
+  import {
+    type Action,
+    type AppInfo,
+    type Checklist,
+    type Flight,
+    isAppError,
+    type ListView,
+    type PhaseView,
+    type Progress,
+    type Rail,
+    type Settings,
+  } from "@chocktochock/bindings";
   import { getHost } from "./host";
-  import PhaseRail from "./lib/PhaseRail.svelte";
+  import ContextPane from "./lib/ContextPane.svelte";
+  import Drawer from "./lib/Drawer.svelte";
+  import FlightStrip from "./lib/FlightStrip.svelte";
+  import FlowView from "./lib/FlowView.svelte";
+  import PhaseChips from "./lib/PhaseChips.svelte";
   import TopBar from "./lib/TopBar.svelte";
+  import { indexPack, type PackIndex } from "./pack-index";
   import PhasePage from "./pages/PhasePage.svelte";
   import ReferencePage from "./pages/ReferencePage.svelte";
   import SettingsPage from "./pages/SettingsPage.svelte";
@@ -20,23 +38,40 @@ host (decision 0012): a flight, settings and the rail, all computed in Rust.
   const route = currentRoute();
 
   let info = $state<AppInfo | null>(null);
+  let packId = $state("");
+  let index = $state<PackIndex | null>(null);
+  let lists = $state(new Map<string, Checklist>());
+  let intros = $state(new Map<string, { heading?: string | null; text: string }[]>());
   let settings = $state<Settings | null>(null);
   let flight = $state<Flight | null>(null);
   let rail = $state<Rail | null>(null);
+  let view = $state<PhaseView | null>(null);
   let error = $state<string | null>(null);
   let menuOpen = $state(false);
+  /** The step shown in the context panel; null means the current step. */
+  let selected = $state<string | null>(null);
+  /** The step Flow view shows; null follows the current step. */
+  let cursor = $state<string | null>(null);
+
+  function fail(e: unknown): void {
+    error = isAppError(e) ? `${e.kind}: ${e.message}` : String(e);
+  }
 
   async function start(): Promise<void> {
     try {
       info = await host.appInfo();
       const aircraft = (await host.packs()).find((p) => p.kind === "aircraft");
       if (!aircraft) throw new Error("No aircraft pack was found.");
-      await host.loadPack(aircraft.id);
+      const pack = await host.loadPack(aircraft.id);
+      packId = aircraft.id;
+      index = indexPack(pack);
+      lists = new Map(pack.lists.map((l) => [l.id, l]));
+      intros = new Map((pack.content.phases?.phases ?? []).map((p) => [p.id, p.intro ?? []]));
       settings = await host.defaultSettings();
       flight = await host.newFlight(aircraft.id);
       rail = await host.rail(aircraft.id, flight);
     } catch (e) {
-      error = isAppError(e) ? `${e.kind}: ${e.message}` : String(e);
+      fail(e);
     }
   }
 
@@ -55,115 +90,215 @@ host (decision 0012): a flight, settings and the rail, all computed in Rust.
     return () => query?.removeEventListener("change", apply);
   });
 
-  let firstPhase = $derived(rail?.stages[0]?.phases[0]?.id ?? null);
+  let screen = $derived(route.value.screen);
+  /** The phase on screen: a rail phase, or the open reference tab. */
   let phaseId = $derived.by(() => {
     const r = route.value;
     if (r.screen === "phase") return r.id;
-    return r.screen === "start" ? firstPhase : null;
+    if (r.screen === "reference") return r.id ?? rail?.reference[0]?.id ?? null;
+    if (r.screen === "start") return rail?.stages[0]?.phases[0]?.id ?? null;
+    return null;
   });
-  let located = $derived.by(() => {
-    if (!rail || !phaseId) return null;
-    for (const stage of rail.stages) {
-      const phase = stage.phases.find((p) => p.id === phaseId);
-      if (phase) return { phase, stage: stage.title };
+
+  // A new screen starts on its current step.
+  $effect(() => {
+    void phaseId;
+    selected = null;
+    cursor = null;
+  });
+
+  $effect(() => {
+    const f = flight;
+    const id = phaseId;
+    if (!f || !id || !packId) {
+      view = null;
+      return;
     }
-    const phase = rail.reference.find((p) => p.id === phaseId);
-    return phase ? { phase, stage: "Emergency" } : null;
+    let stale = false;
+    host.phaseView(packId, f, id).then(
+      (v) => {
+        if (!stale) view = v;
+      },
+      (e) => {
+        if (stale) return;
+        view = null;
+        if (!(isAppError(e) && e.kind === "InvalidAction")) fail(e);
+      },
+    );
+    return () => {
+      stale = true;
+    };
   });
+
+  let listView = $derived<ListView>(settings?.listView ?? "checklist");
+  let detail = $derived(settings?.detail ?? "expanded");
+  let flow = $derived(screen !== "reference" && listView === "flow");
+  let total = $derived<Progress>(
+    (rail?.stages ?? [])
+      .flatMap((s) => s.phases)
+      .map((p) => p.progress)
+      .reduce((a, b) => ({ done: a.done + b.done, skipped: a.skipped + b.skipped, toDo: a.toDo + b.toDo, total: a.total + b.total }), {
+        done: 0,
+        skipped: 0,
+        toDo: 0,
+        total: 0,
+      }),
+  );
+  let stage = $derived(view?.stage ?? null);
+  let stagePhases = $derived(
+    screen === "phase" || screen === "start" ? (rail?.stages.find((s) => s.title === stage)?.phases ?? []) : [],
+  );
+  let current = $derived(view?.lists.find((l) => l.current)?.current ?? null);
+  /** The step the context panel shows. */
+  let paneStep = $derived.by(() => {
+    if (!index || !view || screen === "settings") return null;
+    const id = flow ? (cursor ?? current) : (selected ?? (screen === "reference" ? null : current));
+    return id ? (index.step(id) ?? null) : null;
+  });
+
+  async function act(action: Action): Promise<void> {
+    if (!flight) return;
+    try {
+      flight = await host.apply(packId, flight, action);
+      rail = await host.rail(packId, flight);
+    } catch (e) {
+      fail(e);
+    }
+  }
+
+  const tick = (id: string, done: boolean) => act(done ? { type: "untick", step: id } : { type: "tick", step: id, at: Date.now() });
+  const skip = (id: string) => {
+    cursor = null;
+    return act({ type: "skip", step: id, at: Date.now() });
+  };
+  const confirm = (id: string) => {
+    cursor = null;
+    return act({ type: "tick", step: id, at: Date.now() });
+  };
+  const changeView = (v: ListView) => {
+    if (settings) settings = { ...settings, listView: v };
+  };
 </script>
 
-<div class="app" data-app-ready={rail ? "" : undefined}>
-  <TopBar version={info?.version ?? null} {menuOpen} onMenu={() => (menuOpen = !menuOpen)} />
+<div class="shell" data-app-ready={rail && (view || screen === "settings") ? "" : undefined}>
+  <TopBar
+    aircraft={index?.name ?? ""}
+    {rail}
+    {stage}
+    view={settings && view && (screen === "phase" || screen === "start") ? listView : null}
+    {menuOpen}
+    onMenu={() => (menuOpen = !menuOpen)}
+    onView={changeView}
+  />
   {#if error}
-    <p class="error" role="alert">{error}</p>
-  {:else if !rail}
-    <p class="loading">Loading…</p>
+    <p class="msg" role="alert">{error}</p>
+  {:else if !rail || !settings || !flight || !index}
+    <p class="msg">Loading…</p>
   {:else}
-    <div class="body">
-      <aside id="phase-rail" class:open={menuOpen}>
-        <PhaseRail {rail} current={phaseId} onNavigate={() => (menuOpen = false)} />
-      </aside>
-      {#if menuOpen}
-        <button class="scrim" type="button" aria-label="Close phases" onclick={() => (menuOpen = false)}></button>
-      {/if}
+    <PhaseChips phases={stagePhases} current={phaseId} {detail} {total} />
+    <Drawer
+      open={menuOpen}
+      {rail}
+      {stage}
+      {total}
+      {detail}
+      version={info?.version ?? null}
+      onClose={() => (menuOpen = false)}
+    />
+    <div class="app" class:nopane={!paneStep} class:flow={flow && screen !== "settings"}>
       <main>
-        {#if route.value.screen === "reference"}
-          <ReferencePage phases={rail.reference} />
-        {:else if route.value.screen === "settings"}
-          <SettingsPage />
-        {:else if located}
-          <PhasePage phase={located.phase} stage={located.stage} />
-        {:else}
-          <p class="loading">That phase is not in this flight.</p>
-        {/if}
+        <div class="inner">
+          {#if screen === "settings"}
+            <SettingsPage {settings} onChange={(s) => (settings = s)} />
+          {:else if screen === "reference"}
+            <ReferencePage
+              {index}
+              phases={rail.reference}
+              {view}
+              intro={view ? (intros.get(view.id) ?? []) : []}
+              {lists}
+              {flight}
+              {detail}
+              {selected}
+              onTick={tick}
+              onSkip={skip}
+              onSelect={(id) => (selected = id)}
+            />
+          {:else if view}
+            <FlightStrip />
+            {#if flow}
+              <FlowView {index} {view} {cursor} {detail} onConfirm={confirm} onSkip={skip} onMove={(id) => (cursor = id)} />
+            {:else}
+              <PhasePage
+                {index}
+                {view}
+                {lists}
+                {flight}
+                {detail}
+                {selected}
+                onTick={tick}
+                onSkip={skip}
+                onSelect={(id) => (selected = id)}
+              />
+            {/if}
+          {:else}
+            <p class="msg">That phase is not in this flight.</p>
+          {/if}
+        </div>
       </main>
+      {#if paneStep}
+        <aside class="pane" aria-label="Where it is">
+          {#key paneStep.id}
+            <ContextPane {index} step={paneStep} />
+          {/key}
+        </aside>
+      {/if}
     </div>
   {/if}
 </div>
 
 <style>
   .app {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) clamp(24rem, 33vw, 40rem);
+    align-items: start;
   }
-  .body {
-    position: relative;
-    display: flex;
-    flex: 1;
-  }
-  /* The rail keeps its own scroll under the sticky top bar (64px). */
-  aside {
-    position: sticky;
-    top: 64px;
-    width: 300px;
-    height: calc(100vh - 64px);
-    flex: none;
-    overflow-y: auto;
-    border-right: 1px solid var(--border);
-    background: var(--panel);
+  .app.nopane {
+    grid-template-columns: minmax(0, 1fr);
   }
   main {
-    flex: 1;
     min-width: 0;
+    padding: 1.5rem clamp(1rem, 3vw, 2.5rem) 3rem;
   }
-  .scrim {
-    display: none;
+  .inner {
+    max-width: 54rem;
+    margin: 0 auto;
   }
-  .loading,
-  .error {
+  .nopane .inner {
+    max-width: 70rem;
+  }
+  .flow .inner {
+    max-width: 60rem;
+  }
+  .pane {
+    position: sticky;
+    top: calc(var(--top-h) + var(--rail-h));
+    height: calc(100vh - var(--top-h) - var(--rail-h));
+    padding: 1.375rem 1.25rem;
+    overflow-y: auto;
+    border-left: 1px solid var(--line);
+    background: var(--surface);
+  }
+  .msg {
     padding: 1.5rem;
   }
-  .error {
-    color: var(--accent);
-  }
+  /* Narrow screens show the context inside the step instead. */
   @media (max-width: 1023px) {
-    aside {
-      position: fixed;
-      z-index: 2;
-      top: 64px;
-      bottom: 0;
-      left: 0;
-      height: auto;
-      transform: translateX(-100%);
-      transition: transform 0.15s ease-out;
+    .app {
+      grid-template-columns: minmax(0, 1fr);
     }
-    aside.open {
-      transform: none;
-      box-shadow: 0 0 24px rgb(0 0 0 / 45%);
-    }
-    .scrim {
-      position: fixed;
-      z-index: 1;
-      inset: 64px 0 0;
-      display: block;
-      border: 0;
-      background: rgb(0 0 0 / 40%);
-    }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    aside {
-      transition: none;
+    .pane {
+      display: none;
     }
   }
 </style>
