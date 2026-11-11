@@ -48,10 +48,14 @@ to third-party material. A first-party link needs the maintainer's approval.
 `manufacturer-docs` or `sim-observed`, from the tags the pack declares. Never a document name or
 link.
 
-**Steps may carry a `status`** of `draft` or `checked`, and `sim_simplified` where the simulator
-simplifies the real aircraft. Content imported from the 3.0 checklist starts with basis
-`prior-release` and every step as `draft`; each list moves to a real basis and `checked` when the
-maintainer reviews it.
+**Confirmation records are internal.** A step or panel light note may carry `confirmed_by`, a
+list of `{ kind, date }` entries saying what kind of source it was confirmed against and when
+(kinds defined in [decision 0013](docs/decisions/0013-step-presentation-and-provenance.md),
+for example `vendor-docs`). Record only the kind and the date, never who or which document. The
+app never shows these records or the list `basis`, and `pack check` never flags a step without a
+record: every step in a pack is presented the same way. Steps may also set `sim_simplified` where
+the simulator simplifies the real aircraft. Content imported from the 3.0 checklist starts with
+basis `prior-release`; each list moves to a real basis when the maintainer reviews it.
 
 **Responses state the value.** A step's expected response names the actual value or position the
 pilot should see, such as `FLAPS 5`, `ON` or `AUTO`, never just `SET`, so the pilot can check it

@@ -91,6 +91,8 @@ every change to `.github/workflows/`. For those, prepare what the step needs and
      shown only when the pilot chooses it.
 
    Interface requirements for every list:
+   - **One presentation:** every step looks the same; there is no status or verification marker
+     (decision 0013). Practice and the reference screens use every step.
    - **Item states:** pending, current, done and skipped, each shown by shape and text as well as
      color, so they read in grayscale and for color-blind pilots. A skipped item stays visibly
      open, and a list with skipped items never looks complete.
@@ -124,13 +126,18 @@ every change to `.github/workflows/`. For those, prepare what the step needs and
    marked with the 3.0 app name and version 3). Import that file through the alias table, with the
    same validation and replace warning as step 8, and test it with an invented 3.0 export.
 10. **Notices.** The notice "Simulator training only. Not for real-world use." once at first
-    launch, covering the whole app. A subtle, visible "not yet verified" marker on `draft` steps.
+    launch, covering the whole app. Every step is presented the same way, with no status or
+    verification marker (decision 0013).
     A short privacy note in the app that says what is stored (progress, settings and the SimBrief
     username), where (in this browser, on this device), that nothing is sent to us, that SimBrief
     is contacted directly from the browser, and that GitHub Pages logs visitor addresses under
     GitHub's privacy statement. When the app is ready for users (here or in step 11, as the
     maintainer decides), it replaces the placeholder as the front page (`index.html`), and the
     temporary `app/` address and its interim notice line go.
+    **Report a problem with a step:** each step offers a link that opens a prefilled GitHub issue
+    form (`.github/ISSUE_TEMPLATE/step-problem.yml`, added in this step) with the pack, list, step
+    id and app version filled in. There is no backend, and the form asks for nothing personal
+    beyond what GitHub requires.
 11. **Beta check.** Run through the parity list on desktop and tablet browsers, installed and
     offline, and report what passes and what does not. Any workflow change still needed, such as
     adding the web build to the CI checks, is listed for the maintainer.
