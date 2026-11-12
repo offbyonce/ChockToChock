@@ -7,7 +7,7 @@
 id: mn
 title: Main panel
 width: 2027
-height: 538
+height: 606
 sections:
   - id: cl
     title: Captain lights
@@ -309,12 +309,12 @@ sections:
     title: Captain display select and lighting
     x: 10
     "y": 349
-    width: 568
+    width: 590
     height: 133
     items:
       - kind: selector
         label: MAIN PANEL
-        x: 165
+        x: 170
         "y": 34
         controls:
           - panellts
@@ -323,7 +323,7 @@ sections:
         description: Panel brightness.
       - kind: selector
         label: PFD/MFD
-        x: 254
+        x: 263
         "y": 34
         controls:
           - dsel
@@ -332,7 +332,7 @@ sections:
         description: Moves the displays.
       - kind: selector
         label: BACKGROUND
-        x: 347
+        x: 359
         "y": 61
         controls:
           - panellts
@@ -341,7 +341,7 @@ sections:
         description: Background brightness.
       - kind: selector
         label: AFDS FLOOD
-        x: 454
+        x: 471
         "y": 61
         controls:
           - panellts
@@ -355,24 +355,24 @@ sections:
         description: Pull for foot air.
       - kind: push_button
         label: WINDSHIELD AIR
-        x: 92
+        x: 94
         "y": 61
         description: Pull for windshield air.
       - kind: selector
         label: OUTBD DU
-        x: 165
+        x: 170
         "y": 90
         description: Outboard display brightness.
       - kind: selector
         label: INBD DU
-        x: 254
+        x: 263
         "y": 90
         description: Inboard display brightness.
   - id: gp
     title: "Ground proximity, display select and air"
     x: 582
-    "y": 418
-    width: 533
+    "y": 486
+    width: 619
     height: 114
     items:
       - kind: light
@@ -393,7 +393,7 @@ sections:
       - kind: toggle_switch
         label: FLAP INHIBIT
         guarded: true
-        x: 82
+        x: 91
         "y": 56
         positions: NORM
         rest: "NORM"
@@ -401,7 +401,7 @@ sections:
       - kind: toggle_switch
         label: GEAR INHIBIT
         guarded: true
-        x: 136
+        x: 154
         "y": 56
         positions: NORM
         rest: "NORM"
@@ -409,7 +409,7 @@ sections:
       - kind: toggle_switch
         label: TERR INHIBIT
         guarded: true
-        x: 189
+        x: 216
         "y": 56
         positions: NORM
         rest: "NORM"
@@ -417,14 +417,14 @@ sections:
       - kind: toggle_switch
         label: RUNWAY INHIBIT
         guarded: true
-        x: 243
+        x: 279
         "y": 56
         positions: NORM
         rest: "NORM"
         description: "Guarded at NORM. INHIBIT silences the flap, gear, terrain or runway alerts."
       - kind: selector
         label: PFD/MFD
-        x: 308
+        x: 355
         "y": 38
         controls:
           - dsel
@@ -433,7 +433,7 @@ sections:
         description: Moves the displays.
       - kind: selector
         label: MAIN PANEL
-        x: 391
+        x: 452
         "y": 38
         controls:
           - panellts
@@ -448,21 +448,21 @@ sections:
         description: Runway awareness is inoperative.
       - kind: selector
         label: INBD DU
-        x: 308
+        x: 355
         "y": 88
         description: Inboard display brightness and contrast.
       - kind: selector
         label: OUTBD DU
-        x: 391
+        x: 452
         "y": 88
         description: Outboard display brightness and contrast.
       - kind: push_button
         label: WINDSHIELD AIR
-        x: 457
+        x: 529
         "y": 62
         description: Pull for windshield air.
       - kind: push_button
         label: FOOT AIR
-        x: 505
+        x: 586
         "y": 62
         description: Pull for foot air.

@@ -304,6 +304,44 @@ describe("PanelSchematic", () => {
     expect(Math.abs(gripMid - (Number(set?.getAttribute("y")) - 3))).toBeLessThan(1);
   });
 
+  it("draws every light and push button as one standard key size", () => {
+    // MAINT (a push button) was drawn smaller than the BAT DISCHARGE, TR UNIT and ELEC lights.
+    const key = (kind: string, label: string, x: number) =>
+      ({
+        kind,
+        label,
+        x,
+        y: 40,
+        controls: ["c"],
+        color: kind === "light" ? "amber" : undefined,
+        description: "",
+      }) as unknown;
+    const keys = {
+      id: "oh",
+      title: "Overhead",
+      width: 300,
+      height: 80,
+      sections: [
+        {
+          id: "elec",
+          title: "Electrical",
+          x: 0,
+          y: 0,
+          width: 300,
+          height: 80,
+          items: [key("light", "TR UNIT", 50), key("light", "ELEC", 130), key("push_button", "MAINT", 220)],
+        },
+      ],
+    } as unknown as Panel;
+    render(PanelSchematic, { panel: keys, focus: ["elec"], targets: [] });
+
+    const sizes = [
+      ...screen.getByRole("img").querySelectorAll(".light rect.body, .push_button rect.body"),
+    ].map((r) => `${r.getAttribute("width")}x${r.getAttribute("height")}`);
+    expect(sizes).toHaveLength(3);
+    expect(new Set(sizes).size).toBe(1);
+  });
+
   it("draws every selector dial the same size, however many positions it has", () => {
     // The DC (8 positions) and AC (7) meters dials grew with their positions and looked oversized
     // and unequal; only their labels may move out.

@@ -56,8 +56,14 @@ export function half(item: PanelItem): number {
   }
 }
 
-/** Every light is the same size, as in 3.0, so lights side by side line up. */
-export const LAMP = { w: 50, h: 20 } as const;
+/**
+ * The one size of every key on a panel: lights and push buttons alike, so keys side by side line
+ * up and none looks bigger than another. Drawings take every size from these templates (KEY,
+ * TOGGLE, DIAL); no item has a size of its own.
+ */
+export const KEY = { w: 50, h: 20 } as const;
+/** A light: a key. */
+export const LAMP = KEY;
 /** Every selector dial's body radius: one size for every dial, however many positions it has. */
 export const DIAL = 10.5;
 /**
@@ -72,7 +78,7 @@ export const labelRing = (item: PanelItem) => {
 };
 
 /** A push button, as 3.0 draws it: a key with its name inside and a line along its bottom. */
-export const BUTTON = { w: 42, h: 22 } as const;
+export const BUTTON = KEY;
 
 /**
  * A light's words wrapped to its fixed width, up to three lines as 3.0 does, and their size in

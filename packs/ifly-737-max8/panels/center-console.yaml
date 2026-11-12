@@ -31,7 +31,7 @@ sections:
     title: Engine display and autobrake
     x: 226
     "y": 6
-    width: 324
+    width: 348
     height: 144
     items:
       - kind: toggle_switch
@@ -55,14 +55,14 @@ sections:
       - kind: light
         label: AUTO BRAKE DISARM
         color: amber
-        x: 115
+        x: 121
         "y": 30
         controls:
           - abrake
         description: Autobrake disarmed or faulty. Lights 1 to 2 seconds when RTO is selected.
       - kind: selector
         label: AUTO BRAKE
-        x: 115
+        x: 121
         "y": 72
         controls:
           - abrake
@@ -71,7 +71,7 @@ sections:
         description: Sets the autobrake.
       - kind: push_button
         label: ENG
-        x: 236
+        x: 252
         "y": 30
         controls:
           - engmon
@@ -79,19 +79,19 @@ sections:
         description: Shows secondary engine data.
       - kind: push_button
         label: SYS
-        x: 287
+        x: 307
         "y": 30
         controls:
           - sysp
         description: Shows system data.
       - kind: push_button
         label: INFO
-        x: 236
+        x: 252
         "y": 70
         description: Information display.
       - kind: push_button
         label: C/R
-        x: 287
+        x: 307
         "y": 70
         controls:
           - cr
@@ -99,7 +99,7 @@ sections:
         height: 26
       - kind: selector
         label: SELECTOR R
-        x: 283
+        x: 303
         "y": 117
         controls:
           - sel
@@ -110,29 +110,29 @@ sections:
       - kind: light
         label: ANTISKID INOP
         color: amber
-        x: 115
+        x: 121
         "y": 121
         description: Antiskid fault. Antiskid is off for one or more wheels.
       - kind: light
         label: BRAKE TEMP
         color: amber
-        x: 177
+        x: 188
         "y": 30
         description: A brake is hot.
       - kind: light
         label: TIRE PRESS
         color: amber
-        x: 177
+        x: 188
         "y": 60
         description: Tire pressure is low.
       - kind: push_button
         label: ENG TFR
-        x: 177
+        x: 188
         "y": 102
         description: Moves the engine display to the other screen.
   - id: cdur
     title: Right CDU
-    x: 554
+    x: 578
     "y": 6
     width: 210
     height: 120

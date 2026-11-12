@@ -267,7 +267,9 @@ however large the drawing is.
     stroke: var(--muted);
     stroke-width: 1.2;
   }
-  /* Unlit lights are quiet outlines, as in 3.0, so the step's controls stand out. */
+  /* Unlit lights and push buttons the step does not use are quiet outlines of one weight, as in
+     3.0, so the step's controls stand out. */
+  .push_button:not(.on) .body,
   .lamp {
     fill: none;
     stroke-width: 1;
