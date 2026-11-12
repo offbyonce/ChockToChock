@@ -47,7 +47,6 @@ steps:
     targets:
       - at: "oh/start/ENGINE START 1/1"
         set: "CONT"
-      - at: "oh/start/IGNITION/1"
       - at: "oh/start/ENGINE START 2/1"
         set: "CONT"
     panel_lights:
@@ -108,9 +107,6 @@ steps:
     controls:
       - mask
     targets:
-      - at: "seat/side/MASK STOWAGE/1"
-      - at: "seat/side/RESET/TEST/1"
-      - at: "seat/side/EMERGENCY/TEST/1"
       - at: "seat/side/NORMAL/100%/1"
         set: "NORMAL"
     non_recall: true

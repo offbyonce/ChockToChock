@@ -19,9 +19,6 @@ steps:
     controls:
       - mask
     targets:
-      - at: "seat/side/MASK STOWAGE/1"
-      - at: "seat/side/RESET/TEST/1"
-      - at: "seat/side/EMERGENCY/TEST/1"
       - at: "seat/side/NORMAL/100%/1"
         set: "100%"
   - id: ifly-737-max8.memory.smoke-goggles-if-required

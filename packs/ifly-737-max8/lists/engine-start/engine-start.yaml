@@ -83,7 +83,6 @@ steps:
     targets:
       - at: "oh/start/ENGINE START 1/1"
         set: "GRD"
-      - at: "oh/start/IGNITION/1"
       - at: "oh/start/ENGINE START 2/1"
         set: "GRD"
     quick: always
@@ -158,7 +157,6 @@ steps:
     targets:
       - at: "oh/start/ENGINE START 1/1"
         set: "OFF"
-      - at: "oh/start/IGNITION/1"
       - at: "oh/start/ENGINE START 2/1"
         set: "OFF"
     quick: always
@@ -198,7 +196,6 @@ steps:
     targets:
       - at: "oh/start/ENGINE START 1/1"
         set: "GRD"
-      - at: "oh/start/IGNITION/1"
       - at: "oh/start/ENGINE START 2/1"
         set: "GRD"
     quick: always
@@ -273,7 +270,6 @@ steps:
     targets:
       - at: "oh/start/ENGINE START 1/1"
         set: "OFF"
-      - at: "oh/start/IGNITION/1"
       - at: "oh/start/ENGINE START 2/1"
         set: "OFF"
     quick: always

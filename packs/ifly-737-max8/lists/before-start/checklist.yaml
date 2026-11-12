@@ -37,7 +37,6 @@ steps:
         set: "ON"
       - at: "oh/fuel/AFT 2/1"
         set: "ON"
-      - at: "mn/cd/INBOARD DU: ND AND ENGINES/1"
     fill:
       - minimum_takeoff_fuel
       - fuel

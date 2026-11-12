@@ -44,23 +44,13 @@ steps:
       - fuelpumps
     targets:
       - at: "oh/fuel/LOW PRESSURE/1"
-        light: out
+        light: on
       - at: "oh/fuel/LOW PRESSURE/2"
-        light: out
+        light: on
       - at: "oh/fuel/CTR L/1"
+        set: "OFF"
       - at: "oh/fuel/CTR R/1"
-      - at: "oh/fuel/LOW PRESSURE/3"
-        light: out
-      - at: "oh/fuel/LOW PRESSURE/4"
-        light: out
-      - at: "oh/fuel/LOW PRESSURE/5"
-        light: out
-      - at: "oh/fuel/LOW PRESSURE/6"
-        light: out
-      - at: "oh/fuel/AFT 1/1"
-      - at: "oh/fuel/FWD 1/1"
-      - at: "oh/fuel/FWD 2/1"
-      - at: "oh/fuel/AFT 2/1"
+        set: "OFF"
     quick: always
     note: Switch them off when the center tank is empty. Running them dry is a safety risk.
     why: Running pumps dry is a safety risk

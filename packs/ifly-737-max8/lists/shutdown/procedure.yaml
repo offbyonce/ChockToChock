@@ -242,12 +242,8 @@ steps:
     controls:
       - xpndr
     targets:
-      - at: "con/atc/ALT SOURCE 1/1"
-      - at: "con/atc/XPNDR/1"
-      - at: "con/atc/CODE/1"
       - at: "con/atc/MODE/1"
         set: "ALT OFF"
-      - at: "con/atc/ALT SOURCE 2/1"
     quick: always
     note: Once parked, set the mode selector to ALT OFF.
     why: The transponder stops reporting once the flight is over.

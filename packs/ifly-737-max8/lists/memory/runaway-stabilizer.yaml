@@ -89,7 +89,9 @@ steps:
       - stabcut
     targets:
       - at: "con/lo/STAB TRIM PRI/1"
+        set: "CUT OUT"
       - at: "con/lo/STAB TRIM B/U/1"
+        set: "CUT OUT"
     confirmed_by:
       - kind: vendor-docs
         date: 2026-11-10

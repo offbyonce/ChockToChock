@@ -17,7 +17,6 @@ steps:
     targets:
       - at: "oh/start/ENGINE START 1/1"
         set: "CONT"
-      - at: "oh/start/IGNITION/1"
       - at: "oh/start/ENGINE START 2/1"
         set: "CONT"
     why: Ignition on for approach and landing
@@ -49,7 +48,14 @@ steps:
     controls:
       - gearlever
     targets:
+      - at: "mn/ctr/LEFT GEAR/2"
+        light: on
+      - at: "mn/ctr/NOSE GEAR/2"
+        light: on
+      - at: "mn/ctr/RIGHT GEAR/2"
+        light: on
       - at: "mn/ctr/LANDING GEAR LEVER/1"
+        set: "DN"
     why: Gear down and locked
     check: "3 green lights"
     confirmed_by:

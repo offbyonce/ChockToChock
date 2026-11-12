@@ -17,17 +17,43 @@ pub fn names(text: &str, word: &str) -> bool {
     })
 }
 
+/// Other words a step's wording uses for a position: "DOWN" for a lever's DN, "ARM" for ARMED.
+const POSITION_WORDS: &[(&str, &[&str])] = &[
+    ("DN", &["DOWN"]),
+    ("ARMED", &["ARM"]),
+    ("RELEASED", &["RELEASE"]),
+    ("CUT OUT", &["CUTOUT"]),
+    ("MAN", &["MANUAL"]),
+];
+
+/// Whether a value names a position, by its name or another word for it.
+pub fn names_position(text: &str, position: &str) -> bool {
+    names(text, position)
+        || POSITION_WORDS
+            .iter()
+            .filter(|(p, _)| *p == position)
+            .flat_map(|(_, words)| words.iter())
+            .any(|w| names(text, w))
+}
+
 /// The position a value names, when it names exactly one of them. "ON, GUARD CLOSED" names ON
-/// of "OFF, ON"; "ENG 1 AND 2 ON, ELEC 1 AND 2 OFF" names both, so neither is the target.
+/// of "OFF, ON"; "ENG 1 AND 2 ON, ELEC 1 AND 2 OFF" names both, so neither is the target. A
+/// position named inside a longer one also named ("STEADY" in "STROBE & STEADY") gives way to it.
 pub fn named_position(expect: &str, positions: &str) -> Option<usize> {
-    let named: Vec<usize> = positions
-        .split(',')
-        .map(str::trim)
-        .enumerate()
-        .filter(|(_, p)| names(expect, p))
-        .map(|(i, _)| i)
+    let all: Vec<&str> = positions.split(',').map(str::trim).collect();
+    let named: Vec<usize> = (0..all.len())
+        .filter(|&i| names_position(expect, all[i]))
         .collect();
-    match named[..] {
+    let longest: Vec<usize> = named
+        .iter()
+        .copied()
+        .filter(|&i| {
+            !named
+                .iter()
+                .any(|&j| j != i && all[j].len() > all[i].len() && names(all[j], all[i]))
+        })
+        .collect();
+    match longest[..] {
         [one] => Some(one),
         _ => None,
     }
@@ -56,9 +82,17 @@ pub fn says_light_on(expect: &str, label: &str) -> (bool, bool) {
 
 /// A value with the names of some lights taken out, so a switch's position is read from what is
 /// left: "PASS OXY ON LIGHT OUT" does not name ON.
-pub fn switch_value<'a>(expect: &str, light_labels: impl IntoIterator<Item = &'a str>) -> String {
+pub fn switch_value<'a>(
+    expect: &str,
+    light_labels: impl IntoIterator<Item = &'a str>,
+    switch_positions: &[&str],
+) -> String {
     let mut value = expect.to_owned();
-    for label in light_labels {
+    // A light named like a position (window heat ON) is not taken out: the word is the switch's.
+    for label in light_labels
+        .into_iter()
+        .filter(|l| !switch_positions.contains(l))
+    {
         value = value.replace(label, " ");
     }
     value

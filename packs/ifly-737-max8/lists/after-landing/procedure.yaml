@@ -80,6 +80,14 @@ steps:
     targets:
       - at: "oh/lte/WING/1"
         set: "OFF"
+      - at: "oh/ltl/LANDING L/1"
+        set: "OFF"
+      - at: "oh/ltl/LANDING R/1"
+        set: "OFF"
+      - at: "oh/ltl/TURNOFF L/1"
+        set: "OFF"
+      - at: "oh/ltl/TURNOFF R/1"
+        set: "OFF"
     quick: always
     why: Not needed for taxi
   - id: ifly-737-max8.after-landing.engine-start-switches
@@ -91,7 +99,6 @@ steps:
     targets:
       - at: "oh/start/ENGINE START 1/1"
         set: "OFF"
-      - at: "oh/start/IGNITION/1"
       - at: "oh/start/ENGINE START 2/1"
         set: "OFF"
     quick: always
@@ -168,6 +175,7 @@ steps:
       - apusw
     targets:
       - at: "oh/apu/APU/1"
+        set: "ON"
     quick: always
     why: Starts the APU for power and air
     how: apuland

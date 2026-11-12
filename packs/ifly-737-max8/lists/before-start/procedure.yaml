@@ -36,7 +36,6 @@ steps:
     targets:
       - at: "gl/mcp/A/T ARM/1"
         set: "ARM"
-      - at: "gl/mcp/IAS/MACH/1"
       - at: "gl/mcp/HEADING/1"
       - at: "gl/mcp/ALTITUDE/1"
     quick: always

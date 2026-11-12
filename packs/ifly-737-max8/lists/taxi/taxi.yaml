@@ -34,6 +34,10 @@ steps:
     targets:
       - at: "oh/ltl/TAXI/1"
         set: "ON"
+      - at: "oh/ltl/TURNOFF L/1"
+        set: "ON"
+      - at: "oh/ltl/TURNOFF R/1"
+        set: "ON"
     quick: always
     note: Lets you and others see the taxiway at night or in low visibility.
     why: See and be seen on the taxiway
@@ -55,6 +59,7 @@ steps:
       - pbrake
     targets:
       - at: "con/lo/PARKING BRAKE/1"
+        set: "RELEASED"
     quick: always
     why: Brakes off to taxi
     check: Parking brake light OUT

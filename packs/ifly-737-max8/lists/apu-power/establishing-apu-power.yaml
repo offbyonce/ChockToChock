@@ -116,6 +116,7 @@ steps:
       - apusw
     targets:
       - at: "oh/apu/APU/1"
+        set: "ON"
     quick: always
     why: Starts the APU for power and air
     check: "LOW OIL PRESSURE light during the start, then APU GEN OFF BUS light on"
@@ -252,19 +253,9 @@ steps:
     controls:
       - packlts
     targets:
-      - at: "oh/bleed/DUAL BLEED/1"
-        light: out
       - at: "oh/bleed/PACK/1"
         light: out
-      - at: "oh/bleed/WING-BODY OVERHEAT/1"
-        light: out
-      - at: "oh/bleed/BLEED/1"
-        light: out
       - at: "oh/bleed/PACK/2"
-        light: out
-      - at: "oh/bleed/WING-BODY OVERHEAT/2"
-        light: out
-      - at: "oh/bleed/BLEED/2"
         light: out
     show_if:
       any_of:

@@ -34,6 +34,7 @@ steps:
       - emerext
     targets:
       - at: "oh/col/NOT ARMED/1"
+        light: on
       - at: "oh/col/EMER EXIT LIGHTS/1"
         set: "OFF"
     quick: always
@@ -109,19 +110,7 @@ steps:
     controls:
       - genbus
     targets:
-      - at: "oh/elecl/TRANSFER BUS OFF/1"
-        light: out
-      - at: "oh/elecl/SOURCE OFF/1"
-        light: out
-      - at: "oh/elecl/GEN OFF BUS/1"
-        light: out
       - at: "oh/elecl/APU GEN OFF BUS/1"
-        light: out
-      - at: "oh/elecl/TRANSFER BUS OFF/2"
-        light: out
-      - at: "oh/elecl/SOURCE OFF/2"
-        light: out
-      - at: "oh/elecl/GEN OFF BUS/2"
         light: out
     quick: always
     why: Lets the APU finish its shutdown before power is removed

@@ -16,13 +16,7 @@ steps:
     controls:
       - fctllts
     targets:
-      - at: "oh/fctl/LOW PRESSURE/2"
-      - at: "oh/fctl/LOW PRESSURE/3"
-      - at: "oh/fctl/FEEL DIFF PRESS/1"
       - at: "oh/fctl/SPEED TRIM FAIL/1"
-      - at: "oh/fctl/MACH TRIM FAIL/1"
-      - at: "oh/fctl/AUTO SLAT FAIL/1"
-      - at: "oh/fctl/SPOILERS/1"
     panel_lights:
       fctllts:
         - SPEED TRIM FAIL
@@ -36,13 +30,7 @@ steps:
     controls:
       - fctllts
     targets:
-      - at: "oh/fctl/LOW PRESSURE/2"
-      - at: "oh/fctl/LOW PRESSURE/3"
-      - at: "oh/fctl/FEEL DIFF PRESS/1"
       - at: "oh/fctl/SPEED TRIM FAIL/1"
-      - at: "oh/fctl/MACH TRIM FAIL/1"
-      - at: "oh/fctl/AUTO SLAT FAIL/1"
-      - at: "oh/fctl/SPOILERS/1"
     panel_lights:
       fctllts:
         - SPEED TRIM FAIL

@@ -97,9 +97,13 @@ steps:
       - at: "oh/heat/ON/4"
         light: on
       - at: "oh/heat/L SIDE/1"
+        set: "ON"
       - at: "oh/heat/L FWD/1"
+        set: "ON"
       - at: "oh/heat/R FWD/1"
+        set: "ON"
       - at: "oh/heat/R SIDE/1"
+        set: "ON"
     why: Keeps the windows warm and clear until the airplane is secured
     confirmed_by:
       - kind: vendor-docs
@@ -127,7 +131,6 @@ steps:
     targets:
       - at: "oh/start/ENGINE START 1/1"
         set: "OFF"
-      - at: "oh/start/IGNITION/1"
       - at: "oh/start/ENGINE START 2/1"
         set: "OFF"
     why: Ignition not needed for taxi
@@ -145,4 +148,5 @@ steps:
       - apusw
     targets:
       - at: "oh/apu/APU/1"
+        set: "ON"
     why: Starts the APU for power and air

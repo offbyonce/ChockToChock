@@ -63,6 +63,7 @@ steps:
       - emerext
     targets:
       - at: "oh/col/NOT ARMED/1"
+        light: on
       - at: "oh/col/EMER EXIT LIGHTS/1"
         set: "OFF"
     why: ARMED would light the exit lights when power goes off

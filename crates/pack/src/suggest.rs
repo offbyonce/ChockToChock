@@ -154,6 +154,26 @@ fn keep_named(
     out.into_iter().filter(|x| keep(x)).collect()
 }
 
+/// Where a step sets some switches, another switch it neither sets nor names (the ignition
+/// selector on an engine start switch step) is not the step's.
+fn drop_unnamed_switches(
+    step: &Step,
+    found: &[Found],
+    out: Vec<(usize, StepTarget)>,
+) -> Vec<(usize, StepTarget)> {
+    if !out.iter().any(|(_, t)| t.set.is_some()) {
+        return out;
+    }
+    let text = format!("{} {}", step.text, step.expect);
+    out.into_iter()
+        .filter(|(n, t)| {
+            found[*n].item.kind == PanelItemKind::Light
+                || t.set.is_some()
+                || names(&text, &found[*n].item.label)
+        })
+        .collect()
+}
+
 /// Draft the targets of a step from its controls and wording.
 pub fn suggest(panels: &[Panel], step: &Step) -> Suggestion {
     let mut flags = vec![];
@@ -176,12 +196,19 @@ pub fn suggest(panels: &[Panel], step: &Step) -> Suggestion {
         .filter(|f| f.item.controls.iter().any(|c| step.controls.contains(c)))
         .collect();
     let is_light = |f: &Found| f.item.kind == PanelItemKind::Light;
+    let switch_positions: Vec<&str> = found
+        .iter()
+        .filter(|f| !is_light(f))
+        .filter_map(|f| f.item.positions.as_deref())
+        .flat_map(|p| p.split(',').map(str::trim))
+        .collect();
     let value = switch_value(
         &step.expect,
         found
             .iter()
             .filter(|f| is_light(f))
             .map(|f| f.item.label.as_str()),
+        &switch_positions,
     );
     let set = read_positions(&found, &value, &mut flags);
     let sets_a_switch = found
@@ -234,6 +261,7 @@ pub fn suggest(panels: &[Panel], step: &Step) -> Suggestion {
         ));
     }
     let out = keep_named(step, &found, out, &mut flags);
+    let out = drop_unnamed_switches(step, &found, out);
     if out.is_empty() && !found.is_empty() {
         flags.push("no target found".into());
     }

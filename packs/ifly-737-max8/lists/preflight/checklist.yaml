@@ -55,9 +55,13 @@ steps:
       - at: "oh/heat/ON/4"
         light: on
       - at: "oh/heat/L SIDE/1"
+        set: "ON"
       - at: "oh/heat/L FWD/1"
+        set: "ON"
       - at: "oh/heat/R FWD/1"
+        set: "ON"
       - at: "oh/heat/R SIDE/1"
+        set: "ON"
     why: "Heated windows resist ice and fogging, and warm windshield panels are more resistant to bird strikes."
     confirmed_by:
       - kind: vendor-docs

@@ -18,4 +18,11 @@ steps:
     controls:
       - gearlever
     targets:
+      - at: "mn/ctr/LEFT GEAR/2"
+        light: on
+      - at: "mn/ctr/NOSE GEAR/2"
+        light: on
+      - at: "mn/ctr/RIGHT GEAR/2"
+        light: on
       - at: "mn/ctr/LANDING GEAR LEVER/1"
+        set: "DN"

@@ -20,7 +20,6 @@ steps:
     targets:
       - at: "oh/start/ENGINE START 1/1"
         set: "OFF"
-      - at: "oh/start/IGNITION/1"
       - at: "oh/start/ENGINE START 2/1"
         set: "OFF"
     panel_lights:

@@ -8,7 +8,8 @@
 use std::collections::BTreeSet;
 
 use checklist_core::{
-    LightState, PanelItemKind, Step, locate, named_position, names, says_light_on, switch_value,
+    LightState, PanelItemKind, Step, locate, named_position, names, names_position, says_light_on,
+    switch_value,
 };
 
 use super::{Issue, error};
@@ -43,7 +44,16 @@ fn check_step(panels: &[checklist_core::Panel], step: &Step, issues: &mut Vec<Is
         .filter(|i| i.kind == PanelItemKind::Light)
         .map(|i| i.label.as_str())
         .collect();
-    let value = switch_value(&step.expect, lights.iter().copied());
+    let switch_positions: Vec<&str> = step
+        .targets
+        .iter()
+        .filter_map(|t| locate(panels, &t.at))
+        .filter_map(|(s, i)| s.items.get(i))
+        .filter(|i| i.kind != PanelItemKind::Light)
+        .filter_map(|i| i.positions.as_deref())
+        .flat_map(|p| p.split(',').map(str::trim))
+        .collect();
+    let value = switch_value(&step.expect, lights.iter().copied(), &switch_positions);
     for t in &step.targets {
         if !seen.insert(t.at.as_str()) {
             issues.push(error(at, format!("target `{}` is listed twice", t.at)));
@@ -79,7 +89,9 @@ fn check_step(panels: &[checklist_core::Panel], step: &Step, issues: &mut Vec<Is
 }
 
 /// A target agrees with the step's wording: a `set` position the wording names, a position the
-/// wording names is set, and a light's state is not contradicted by the clause naming it.
+/// wording names is set, and a light's state is not contradicted by the clause naming it (a
+/// clause saying both OFF and ON, "OFF WHEN BOTH LOW PRESSURE LIGHTS COME ON", contradicts
+/// neither).
 fn check_wording(
     at: &str,
     step: &Step,
@@ -100,7 +112,7 @@ fn check_wording(
                 at,
                 format!("`{}`: `{set}` is not one of its positions", t.at),
             ));
-        } else if !names(value, set) {
+        } else if !names_position(value, set) {
             issues.push(error(
                 at,
                 format!(
@@ -124,10 +136,9 @@ fn check_wording(
         ));
     }
     if let Some(light) = t.light {
-        let says_out = step
-            .expect
-            .split([',', ';'])
-            .any(|c| names(c, &item.label) && (names(c, "OUT") || names(c, "OFF")));
+        let says_out = step.expect.split([',', ';']).any(|c| {
+            names(c, &item.label) && (names(c, "OUT") || names(c, "OFF")) && !names(c, "ON")
+        });
         let (on, sure) = says_light_on(&step.expect, &item.label);
         match light {
             LightState::On if says_out => issues.push(error(

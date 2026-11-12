@@ -34,6 +34,10 @@ steps:
     controls:
       - pheat
     targets:
+      - at: "oh/heat/PROBE A/1"
+        set: "ON"
+      - at: "oh/heat/PROBE B/1"
+        set: "ON"
       - at: "oh/heat/CAPT PITOT/1"
         light: out
       - at: "oh/heat/L ELEV PITOT/1"
@@ -50,10 +54,6 @@ steps:
         light: out
       - at: "oh/heat/AUX PITOT/1"
         light: out
-      - at: "oh/heat/PROBE A/1"
-        set: "ON"
-      - at: "oh/heat/PROBE B/1"
-        set: "ON"
     quick: always
     why: "Heats the probes for flight. The lights go out once heating is working."
     check: "Both PROBE HEAT switches ON, probe lights OUT"
@@ -136,7 +136,6 @@ steps:
     targets:
       - at: "oh/start/ENGINE START 1/1"
         set: "CONT"
-      - at: "oh/start/IGNITION/1"
       - at: "oh/start/ENGINE START 2/1"
         set: "CONT"
     quick: always
@@ -224,12 +223,9 @@ steps:
     controls:
       - xpndr
     targets:
-      - at: "con/atc/ALT SOURCE 1/1"
       - at: "con/atc/XPNDR/1"
-      - at: "con/atc/CODE/1"
       - at: "con/atc/MODE/1"
         set: "XPNDR"
-      - at: "con/atc/ALT SOURCE 2/1"
     quick: always
     note: Keeps the transponder active so airport surveillance can track you.
     why: Airport surveillance can track you

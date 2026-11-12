@@ -226,7 +226,9 @@ mod tests {
             for t in step_targets(&pack, step).iter().filter(|t| t.lit) {
                 let (label, _) = label_of(&pack, t);
                 for clause in step.expect.split([',', ';']) {
-                    if names(clause, label) {
+                    // A clause saying both OFF and ON ("OFF WHEN BOTH LOW PRESSURE LIGHTS COME
+                    // ON") is about a switch and a light; it does not say the light is out.
+                    if names(clause, label) && !names(clause, "ON") {
                         assert!(
                             !names(clause, "OUT") && !names(clause, "OFF"),
                             "{}: {label} shown on, but `{clause}`",

@@ -46,6 +46,10 @@ steps:
         set: "OFF"
       - at: "oh/lte/WING/1"
         set: "OFF"
+      - at: "oh/ltl/TURNOFF L/1"
+        set: "OFF"
+      - at: "oh/ltl/TURNOFF R/1"
+        set: "OFF"
     why: Not needed in the climb
   - id: ifly-737-max8.climb.fasten-belts-selector
     number: 3

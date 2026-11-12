@@ -40,7 +40,6 @@ steps:
     targets:
       - at: "oh/start/ENGINE START 1/1"
         set: "CONT"
-      - at: "oh/start/IGNITION/1"
       - at: "oh/start/ENGINE START 2/1"
         set: "CONT"
     why: Igniters ready against a flameout on takeoff
@@ -56,6 +55,7 @@ steps:
       - poslt
     targets:
       - at: "oh/lte/POSITION/1"
+        set: "STROBE & STEADY"
     quick: always
     why: Strobes on for takeoff and flight
     confirmed_by:
@@ -97,12 +97,8 @@ steps:
     controls:
       - xpndr
     targets:
-      - at: "con/atc/ALT SOURCE 1/1"
-      - at: "con/atc/XPNDR/1"
-      - at: "con/atc/CODE/1"
       - at: "con/atc/MODE/1"
         set: "TA/RA"
-      - at: "con/atc/ALT SOURCE 2/1"
     quick: always
     note: TA/RA gives you full TCAS alerts in the air.
     why: Full TCAS alerts in the air

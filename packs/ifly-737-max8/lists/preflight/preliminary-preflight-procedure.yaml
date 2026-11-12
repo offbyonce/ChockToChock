@@ -161,8 +161,11 @@ steps:
       - gearovhd
     targets:
       - at: "aft/gear/LEFT GEAR/1"
+        light: on
       - at: "aft/gear/RIGHT GEAR/1"
+        light: on
       - at: "aft/gear/NOSE GEAR/1"
+        light: on
     why: "Second set of lights, green is down and locked"
     check: "3 green lights"
     confirmed_by:
@@ -331,10 +334,6 @@ steps:
     controls:
       - fctllts
     targets:
-      - at: "oh/fctl/LOW PRESSURE/2"
-        light: out
-      - at: "oh/fctl/LOW PRESSURE/3"
-        light: out
       - at: "oh/fctl/FEEL DIFF PRESS/1"
         light: out
       - at: "oh/fctl/SPEED TRIM FAIL/1"
@@ -385,6 +384,8 @@ steps:
     targets:
       - at: "oh/disp/SOURCE/1"
         set: "AUTO"
+      - at: "oh/disp/CONTROL PANEL/1"
+        set: "NORMAL"
     why: "Each side's displays run from their own computer"
     confirmed_by:
       - kind: vendor-docs
@@ -465,11 +466,15 @@ steps:
       - fuelpumps
     targets:
       - at: "oh/fuel/CTR L/1"
+        set: "OFF"
       - at: "oh/fuel/CTR R/1"
+        set: "OFF"
       - at: "oh/fuel/AFT 1/1"
       - at: "oh/fuel/FWD 1/1"
       - at: "oh/fuel/FWD 2/1"
+        set: "OFF"
       - at: "oh/fuel/AFT 2/1"
+        set: "OFF"
     show_if:
       all_of:
         - option: power
@@ -559,17 +564,7 @@ steps:
     controls:
       - genbus
     targets:
-      - at: "oh/elecl/TRANSFER BUS OFF/1"
-        light: on
-      - at: "oh/elecl/SOURCE OFF/1"
-        light: on
       - at: "oh/elecl/GEN OFF BUS/1"
-        light: on
-      - at: "oh/elecl/APU GEN OFF BUS/1"
-        light: on
-      - at: "oh/elecl/TRANSFER BUS OFF/2"
-        light: on
-      - at: "oh/elecl/SOURCE OFF/2"
         light: on
       - at: "oh/elecl/GEN OFF BUS/2"
         light: on
@@ -628,6 +623,7 @@ steps:
       - emerext
     targets:
       - at: "oh/col/NOT ARMED/1"
+        light: out
       - at: "oh/col/EMER EXIT LIGHTS/1"
         set: "ARMED"
     quick: always
@@ -668,9 +664,13 @@ steps:
       - at: "oh/heat/ON/4"
         light: on
       - at: "oh/heat/L SIDE/1"
+        set: "ON"
       - at: "oh/heat/L FWD/1"
+        set: "ON"
       - at: "oh/heat/R FWD/1"
+        set: "ON"
       - at: "oh/heat/R SIDE/1"
+        set: "ON"
     quick: always
     why: "Heats the windshields. A green ON light shows the heating is working."
     check: Green ON lights
@@ -707,6 +707,10 @@ steps:
     targets:
       - at: "oh/aice/WING ANTI-ICE/1"
         set: "OFF"
+      - at: "oh/aice/ENG 1/1"
+        set: "OFF"
+      - at: "oh/aice/ENG 2/1"
+        set: "OFF"
     why: "Uses bleed air, only needed in icing"
     confirmed_by:
       - kind: vendor-docs
@@ -719,7 +723,9 @@ steps:
       - elechyd
     targets:
       - at: "oh/hyd/ELEC 2/1"
+        set: "OFF"
       - at: "oh/hyd/ELEC 1/1"
+        set: "OFF"
     why: "The engine pumps start with the engines. The electric pumps stay off until Before start."
     check: "Four LOW PRESSURE lights ON, two OVERHEAT lights OUT"
     confirmed_by:
@@ -763,8 +769,6 @@ steps:
     controls:
       - tempsw
     targets:
-      - at: "oh/air/TEMP/1"
-      - at: "oh/air/SOURCE/1"
       - at: "oh/air/CONT CAB/1"
         set: "AUTO"
       - at: "oh/air/FWD CAB/1"
@@ -875,19 +879,9 @@ steps:
     controls:
       - packlts
     targets:
-      - at: "oh/bleed/DUAL BLEED/1"
-        light: out
       - at: "oh/bleed/PACK/1"
         light: out
-      - at: "oh/bleed/WING-BODY OVERHEAT/1"
-        light: out
-      - at: "oh/bleed/BLEED/1"
-        light: out
       - at: "oh/bleed/PACK/2"
-        light: out
-      - at: "oh/bleed/WING-BODY OVERHEAT/2"
-        light: out
-      - at: "oh/bleed/BLEED/2"
         light: out
     show_if:
       all_of:
@@ -907,10 +901,7 @@ steps:
     controls:
       - press
     targets:
-      - at: "oh/cab/CABIN ALT/1"
-      - at: "oh/cab/CABIN CLIMB/1"
       - at: "oh/press/FLT ALT/1"
-      - at: "oh/press/FLT ALT KNOB/1"
       - at: "oh/press/MODE/1"
         set: "AUTO"
     hint:
@@ -937,6 +928,14 @@ steps:
       - lldg
     targets:
       - at: "oh/ltl/TAXI/1"
+        set: "OFF"
+      - at: "oh/ltl/LANDING L/1"
+        set: "OFF"
+      - at: "oh/ltl/LANDING R/1"
+        set: "OFF"
+      - at: "oh/ltl/TURNOFF L/1"
+        set: "OFF"
+      - at: "oh/ltl/TURNOFF R/1"
         set: "OFF"
     why: Not needed while parked
     confirmed_by:
@@ -992,6 +991,8 @@ steps:
       - at: "oh/lte/WING/1"
         set: "OFF"
       - at: "oh/lte/WHEEL WELL/1"
+        set: "OFF"
+      - at: "oh/lte/ANTI COLLISION/1"
         set: "OFF"
     why: The beacon comes on just before engine start. Wing and wheel well lights are not needed at the gate
   - id: ifly-737-max8.preflight.flight-director-switches
@@ -1050,25 +1051,11 @@ steps:
       - at: "gl/efisl/BARO/1"
       - at: "gl/efisl/MODE/1"
         set: "MAP"
-      - at: "gl/efisl/RANGE/1"
-      - at: "gl/efisl/WXR/1"
-      - at: "gl/efisl/TERR/1"
-      - at: "gl/efisl/POS/1"
-      - at: "gl/efisl/STA/1"
-      - at: "gl/efisl/WPT/1"
-      - at: "gl/efisl/ARPT/1"
       - at: "gl/efisr/MINS/1"
         set: "BARO"
       - at: "gl/efisr/BARO/1"
       - at: "gl/efisr/MODE/1"
         set: "MAP"
-      - at: "gl/efisr/RANGE/1"
-      - at: "gl/efisr/WXR/1"
-      - at: "gl/efisr/TERR/1"
-      - at: "gl/efisr/POS/1"
-      - at: "gl/efisr/STA/1"
-      - at: "gl/efisr/WPT/1"
-      - at: "gl/efisr/ARPT/1"
     quick: always
     why: Altimeter must read local QNH for departure
     check: Both altimeters show field elevation
@@ -1223,6 +1210,7 @@ steps:
       - fuelflow
     targets:
       - at: "con/ed/FUEL FLOW/1"
+        set: "RATE"
     why: Resets the used fuel counter
     check: Returns to RATE
     how: fuelflow

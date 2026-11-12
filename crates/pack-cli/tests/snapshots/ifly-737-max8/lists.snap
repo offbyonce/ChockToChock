@@ -450,7 +450,8 @@ assertion_line: 34
         ],
         "targets": [
           {
-            "at": "oh/apu/APU/1"
+            "at": "oh/apu/APU/1",
+            "set": "ON"
           }
         ],
         "quick": "always",
@@ -685,31 +686,11 @@ assertion_line: 34
         ],
         "targets": [
           {
-            "at": "oh/bleed/DUAL BLEED/1",
-            "light": "out"
-          },
-          {
             "at": "oh/bleed/PACK/1",
             "light": "out"
           },
           {
-            "at": "oh/bleed/WING-BODY OVERHEAT/1",
-            "light": "out"
-          },
-          {
-            "at": "oh/bleed/BLEED/1",
-            "light": "out"
-          },
-          {
             "at": "oh/bleed/PACK/2",
-            "light": "out"
-          },
-          {
-            "at": "oh/bleed/WING-BODY OVERHEAT/2",
-            "light": "out"
-          },
-          {
-            "at": "oh/bleed/BLEED/2",
             "light": "out"
           }
         ],
@@ -1272,13 +1253,16 @@ assertion_line: 34
         ],
         "targets": [
           {
-            "at": "aft/gear/LEFT GEAR/1"
+            "at": "aft/gear/LEFT GEAR/1",
+            "light": "on"
           },
           {
-            "at": "aft/gear/RIGHT GEAR/1"
+            "at": "aft/gear/RIGHT GEAR/1",
+            "light": "on"
           },
           {
-            "at": "aft/gear/NOSE GEAR/1"
+            "at": "aft/gear/NOSE GEAR/1",
+            "light": "on"
           }
         ],
         "why": "Second set of lights, green is down and locked",
@@ -1558,14 +1542,6 @@ assertion_line: 34
         ],
         "targets": [
           {
-            "at": "oh/fctl/LOW PRESSURE/2",
-            "light": "out"
-          },
-          {
-            "at": "oh/fctl/LOW PRESSURE/3",
-            "light": "out"
-          },
-          {
             "at": "oh/fctl/FEEL DIFF PRESS/1",
             "light": "out"
           },
@@ -1648,6 +1624,10 @@ assertion_line: 34
           {
             "at": "oh/disp/SOURCE/1",
             "set": "AUTO"
+          },
+          {
+            "at": "oh/disp/CONTROL PANEL/1",
+            "set": "NORMAL"
           }
         ],
         "why": "Each side's displays run from their own computer",
@@ -1791,10 +1771,12 @@ assertion_line: 34
         ],
         "targets": [
           {
-            "at": "oh/fuel/CTR L/1"
+            "at": "oh/fuel/CTR L/1",
+            "set": "OFF"
           },
           {
-            "at": "oh/fuel/CTR R/1"
+            "at": "oh/fuel/CTR R/1",
+            "set": "OFF"
           },
           {
             "at": "oh/fuel/AFT 1/1"
@@ -1803,10 +1785,12 @@ assertion_line: 34
             "at": "oh/fuel/FWD 1/1"
           },
           {
-            "at": "oh/fuel/FWD 2/1"
+            "at": "oh/fuel/FWD 2/1",
+            "set": "OFF"
           },
           {
-            "at": "oh/fuel/AFT 2/1"
+            "at": "oh/fuel/AFT 2/1",
+            "set": "OFF"
           }
         ],
         "show_if": {
@@ -1958,27 +1942,7 @@ assertion_line: 34
         ],
         "targets": [
           {
-            "at": "oh/elecl/TRANSFER BUS OFF/1",
-            "light": "on"
-          },
-          {
-            "at": "oh/elecl/SOURCE OFF/1",
-            "light": "on"
-          },
-          {
             "at": "oh/elecl/GEN OFF BUS/1",
-            "light": "on"
-          },
-          {
-            "at": "oh/elecl/APU GEN OFF BUS/1",
-            "light": "on"
-          },
-          {
-            "at": "oh/elecl/TRANSFER BUS OFF/2",
-            "light": "on"
-          },
-          {
-            "at": "oh/elecl/SOURCE OFF/2",
             "light": "on"
           },
           {
@@ -2075,7 +2039,8 @@ assertion_line: 34
         ],
         "targets": [
           {
-            "at": "oh/col/NOT ARMED/1"
+            "at": "oh/col/NOT ARMED/1",
+            "light": "out"
           },
           {
             "at": "oh/col/EMER EXIT LIGHTS/1",
@@ -2145,16 +2110,20 @@ assertion_line: 34
             "light": "on"
           },
           {
-            "at": "oh/heat/L SIDE/1"
+            "at": "oh/heat/L SIDE/1",
+            "set": "ON"
           },
           {
-            "at": "oh/heat/L FWD/1"
+            "at": "oh/heat/L FWD/1",
+            "set": "ON"
           },
           {
-            "at": "oh/heat/R FWD/1"
+            "at": "oh/heat/R FWD/1",
+            "set": "ON"
           },
           {
-            "at": "oh/heat/R SIDE/1"
+            "at": "oh/heat/R SIDE/1",
+            "set": "ON"
           }
         ],
         "quick": "always",
@@ -2211,6 +2180,14 @@ assertion_line: 34
           {
             "at": "oh/aice/WING ANTI-ICE/1",
             "set": "OFF"
+          },
+          {
+            "at": "oh/aice/ENG 1/1",
+            "set": "OFF"
+          },
+          {
+            "at": "oh/aice/ENG 2/1",
+            "set": "OFF"
           }
         ],
         "why": "Uses bleed air, only needed in icing",
@@ -2231,10 +2208,12 @@ assertion_line: 34
         ],
         "targets": [
           {
-            "at": "oh/hyd/ELEC 2/1"
+            "at": "oh/hyd/ELEC 2/1",
+            "set": "OFF"
           },
           {
-            "at": "oh/hyd/ELEC 1/1"
+            "at": "oh/hyd/ELEC 1/1",
+            "set": "OFF"
           }
         ],
         "why": "The engine pumps start with the engines. The electric pumps stay off until Before start.",
@@ -2307,12 +2286,6 @@ assertion_line: 34
           "tempsw"
         ],
         "targets": [
-          {
-            "at": "oh/air/TEMP/1"
-          },
-          {
-            "at": "oh/air/SOURCE/1"
-          },
           {
             "at": "oh/air/CONT CAB/1",
             "set": "AUTO"
@@ -2506,31 +2479,11 @@ assertion_line: 34
         ],
         "targets": [
           {
-            "at": "oh/bleed/DUAL BLEED/1",
-            "light": "out"
-          },
-          {
             "at": "oh/bleed/PACK/1",
             "light": "out"
           },
           {
-            "at": "oh/bleed/WING-BODY OVERHEAT/1",
-            "light": "out"
-          },
-          {
-            "at": "oh/bleed/BLEED/1",
-            "light": "out"
-          },
-          {
             "at": "oh/bleed/PACK/2",
-            "light": "out"
-          },
-          {
-            "at": "oh/bleed/WING-BODY OVERHEAT/2",
-            "light": "out"
-          },
-          {
-            "at": "oh/bleed/BLEED/2",
             "light": "out"
           }
         ],
@@ -2565,16 +2518,7 @@ assertion_line: 34
         ],
         "targets": [
           {
-            "at": "oh/cab/CABIN ALT/1"
-          },
-          {
-            "at": "oh/cab/CABIN CLIMB/1"
-          },
-          {
             "at": "oh/press/FLT ALT/1"
-          },
-          {
-            "at": "oh/press/FLT ALT KNOB/1"
           },
           {
             "at": "oh/press/MODE/1",
@@ -2617,6 +2561,22 @@ assertion_line: 34
         "targets": [
           {
             "at": "oh/ltl/TAXI/1",
+            "set": "OFF"
+          },
+          {
+            "at": "oh/ltl/LANDING L/1",
+            "set": "OFF"
+          },
+          {
+            "at": "oh/ltl/LANDING R/1",
+            "set": "OFF"
+          },
+          {
+            "at": "oh/ltl/TURNOFF L/1",
+            "set": "OFF"
+          },
+          {
+            "at": "oh/ltl/TURNOFF R/1",
             "set": "OFF"
           }
         ],
@@ -2708,6 +2668,10 @@ assertion_line: 34
           },
           {
             "at": "oh/lte/WHEEL WELL/1",
+            "set": "OFF"
+          },
+          {
+            "at": "oh/lte/ANTI COLLISION/1",
             "set": "OFF"
           }
         ],
@@ -2807,27 +2771,6 @@ assertion_line: 34
             "set": "MAP"
           },
           {
-            "at": "gl/efisl/RANGE/1"
-          },
-          {
-            "at": "gl/efisl/WXR/1"
-          },
-          {
-            "at": "gl/efisl/TERR/1"
-          },
-          {
-            "at": "gl/efisl/POS/1"
-          },
-          {
-            "at": "gl/efisl/STA/1"
-          },
-          {
-            "at": "gl/efisl/WPT/1"
-          },
-          {
-            "at": "gl/efisl/ARPT/1"
-          },
-          {
             "at": "gl/efisr/MINS/1",
             "set": "BARO"
           },
@@ -2837,27 +2780,6 @@ assertion_line: 34
           {
             "at": "gl/efisr/MODE/1",
             "set": "MAP"
-          },
-          {
-            "at": "gl/efisr/RANGE/1"
-          },
-          {
-            "at": "gl/efisr/WXR/1"
-          },
-          {
-            "at": "gl/efisr/TERR/1"
-          },
-          {
-            "at": "gl/efisr/POS/1"
-          },
-          {
-            "at": "gl/efisr/STA/1"
-          },
-          {
-            "at": "gl/efisr/WPT/1"
-          },
-          {
-            "at": "gl/efisr/ARPT/1"
           }
         ],
         "quick": "always",
@@ -3118,7 +3040,8 @@ assertion_line: 34
         ],
         "targets": [
           {
-            "at": "con/ed/FUEL FLOW/1"
+            "at": "con/ed/FUEL FLOW/1",
+            "set": "RATE"
           }
         ],
         "why": "Resets the used fuel counter",
@@ -3693,16 +3616,20 @@ assertion_line: 34
             "light": "on"
           },
           {
-            "at": "oh/heat/L SIDE/1"
+            "at": "oh/heat/L SIDE/1",
+            "set": "ON"
           },
           {
-            "at": "oh/heat/L FWD/1"
+            "at": "oh/heat/L FWD/1",
+            "set": "ON"
           },
           {
-            "at": "oh/heat/R FWD/1"
+            "at": "oh/heat/R FWD/1",
+            "set": "ON"
           },
           {
-            "at": "oh/heat/R SIDE/1"
+            "at": "oh/heat/R SIDE/1",
+            "set": "ON"
           }
         ],
         "why": "Heated windows resist ice and fogging, and warm windshield panels are more resistant to bird strikes.",
@@ -3876,9 +3803,6 @@ assertion_line: 34
           {
             "at": "gl/mcp/A/T ARM/1",
             "set": "ARM"
-          },
-          {
-            "at": "gl/mcp/IAS/MACH/1"
           },
           {
             "at": "gl/mcp/HEADING/1"
@@ -4173,9 +4097,6 @@ assertion_line: 34
           {
             "at": "oh/fuel/AFT 2/1",
             "set": "ON"
-          },
-          {
-            "at": "mn/cd/INBOARD DU: ND AND ENGINES/1"
           }
         ],
         "fill": [
@@ -4405,21 +4326,12 @@ assertion_line: 34
         ],
         "targets": [
           {
-            "at": "con/atc/ALT SOURCE 1/1"
-          },
-          {
             "at": "con/atc/XPNDR/1",
             "set": "AUTO"
           },
           {
-            "at": "con/atc/CODE/1"
-          },
-          {
             "at": "con/atc/MODE/1",
             "set": "XPNDR"
-          },
-          {
-            "at": "con/atc/ALT SOURCE 2/1"
           }
         ],
         "hint": [
@@ -4470,7 +4382,8 @@ assertion_line: 34
         ],
         "targets": [
           {
-            "at": "con/lo/PARKING BRAKE/1"
+            "at": "con/lo/PARKING BRAKE/1",
+            "set": "RELEASED"
           }
         ],
         "quick": "always",
@@ -4678,9 +4591,6 @@ assertion_line: 34
             "set": "GRD"
           },
           {
-            "at": "oh/start/IGNITION/1"
-          },
-          {
             "at": "oh/start/ENGINE START 2/1",
             "set": "GRD"
           }
@@ -4793,9 +4703,6 @@ assertion_line: 34
             "set": "OFF"
           },
           {
-            "at": "oh/start/IGNITION/1"
-          },
-          {
             "at": "oh/start/ENGINE START 2/1",
             "set": "OFF"
           }
@@ -4857,9 +4764,6 @@ assertion_line: 34
           {
             "at": "oh/start/ENGINE START 1/1",
             "set": "GRD"
-          },
-          {
-            "at": "oh/start/IGNITION/1"
           },
           {
             "at": "oh/start/ENGINE START 2/1",
@@ -4974,9 +4878,6 @@ assertion_line: 34
             "set": "OFF"
           },
           {
-            "at": "oh/start/IGNITION/1"
-          },
-          {
             "at": "oh/start/ENGINE START 2/1",
             "set": "OFF"
           }
@@ -5088,6 +4989,14 @@ assertion_line: 34
         ],
         "targets": [
           {
+            "at": "oh/heat/PROBE A/1",
+            "set": "ON"
+          },
+          {
+            "at": "oh/heat/PROBE B/1",
+            "set": "ON"
+          },
+          {
             "at": "oh/heat/CAPT PITOT/1",
             "light": "out"
           },
@@ -5118,14 +5027,6 @@ assertion_line: 34
           {
             "at": "oh/heat/AUX PITOT/1",
             "light": "out"
-          },
-          {
-            "at": "oh/heat/PROBE A/1",
-            "set": "ON"
-          },
-          {
-            "at": "oh/heat/PROBE B/1",
-            "set": "ON"
           }
         ],
         "quick": "always",
@@ -5261,9 +5162,6 @@ assertion_line: 34
           {
             "at": "oh/start/ENGINE START 1/1",
             "set": "CONT"
-          },
-          {
-            "at": "oh/start/IGNITION/1"
           },
           {
             "at": "oh/start/ENGINE START 2/1",
@@ -5403,20 +5301,11 @@ assertion_line: 34
         ],
         "targets": [
           {
-            "at": "con/atc/ALT SOURCE 1/1"
-          },
-          {
             "at": "con/atc/XPNDR/1"
-          },
-          {
-            "at": "con/atc/CODE/1"
           },
           {
             "at": "con/atc/MODE/1",
             "set": "XPNDR"
-          },
-          {
-            "at": "con/atc/ALT SOURCE 2/1"
           }
         ],
         "quick": "always",
@@ -5530,6 +5419,14 @@ assertion_line: 34
         ],
         "targets": [
           {
+            "at": "oh/heat/PROBE A/1",
+            "set": "ON"
+          },
+          {
+            "at": "oh/heat/PROBE B/1",
+            "set": "ON"
+          },
+          {
             "at": "oh/heat/CAPT PITOT/1",
             "light": "out"
           },
@@ -5560,14 +5457,6 @@ assertion_line: 34
           {
             "at": "oh/heat/AUX PITOT/1",
             "light": "out"
-          },
-          {
-            "at": "oh/heat/PROBE A/1",
-            "set": "ON"
-          },
-          {
-            "at": "oh/heat/PROBE B/1",
-            "set": "ON"
           }
         ],
         "note": "ON starts heating straight away. AUTO starts it only once the engines are running.",
@@ -5643,9 +5532,6 @@ assertion_line: 34
           {
             "at": "oh/start/ENGINE START 1/1",
             "set": "CONT"
-          },
-          {
-            "at": "oh/start/IGNITION/1"
           },
           {
             "at": "oh/start/ENGINE START 2/1",
@@ -5846,6 +5732,14 @@ assertion_line: 34
           {
             "at": "oh/ltl/TAXI/1",
             "set": "ON"
+          },
+          {
+            "at": "oh/ltl/TURNOFF L/1",
+            "set": "ON"
+          },
+          {
+            "at": "oh/ltl/TURNOFF R/1",
+            "set": "ON"
           }
         ],
         "quick": "always",
@@ -5878,7 +5772,8 @@ assertion_line: 34
         ],
         "targets": [
           {
-            "at": "con/lo/PARKING BRAKE/1"
+            "at": "con/lo/PARKING BRAKE/1",
+            "set": "RELEASED"
           }
         ],
         "quick": "always",
@@ -6210,9 +6105,6 @@ assertion_line: 34
             "set": "CONT"
           },
           {
-            "at": "oh/start/IGNITION/1"
-          },
-          {
             "at": "oh/start/ENGINE START 2/1",
             "set": "CONT"
           }
@@ -6235,7 +6127,8 @@ assertion_line: 34
         ],
         "targets": [
           {
-            "at": "oh/lte/POSITION/1"
+            "at": "oh/lte/POSITION/1",
+            "set": "STROBE & STEADY"
           }
         ],
         "quick": "always",
@@ -6306,20 +6199,8 @@ assertion_line: 34
         ],
         "targets": [
           {
-            "at": "con/atc/ALT SOURCE 1/1"
-          },
-          {
-            "at": "con/atc/XPNDR/1"
-          },
-          {
-            "at": "con/atc/CODE/1"
-          },
-          {
             "at": "con/atc/MODE/1",
             "set": "TA/RA"
-          },
-          {
-            "at": "con/atc/ALT SOURCE 2/1"
           }
         ],
         "quick": "always",
@@ -6919,9 +6800,6 @@ assertion_line: 34
             "at": "oh/start/ENGINE START 1/1"
           },
           {
-            "at": "oh/start/IGNITION/1"
-          },
-          {
             "at": "oh/start/ENGINE START 2/1"
           }
         ],
@@ -7000,6 +6878,14 @@ assertion_line: 34
           },
           {
             "at": "oh/lte/WING/1",
+            "set": "OFF"
+          },
+          {
+            "at": "oh/ltl/TURNOFF L/1",
+            "set": "OFF"
+          },
+          {
+            "at": "oh/ltl/TURNOFF R/1",
             "set": "OFF"
           }
         ],
@@ -7191,45 +7077,19 @@ assertion_line: 34
         "targets": [
           {
             "at": "oh/fuel/LOW PRESSURE/1",
-            "light": "out"
+            "light": "on"
           },
           {
             "at": "oh/fuel/LOW PRESSURE/2",
-            "light": "out"
+            "light": "on"
           },
           {
-            "at": "oh/fuel/CTR L/1"
+            "at": "oh/fuel/CTR L/1",
+            "set": "OFF"
           },
           {
-            "at": "oh/fuel/CTR R/1"
-          },
-          {
-            "at": "oh/fuel/LOW PRESSURE/3",
-            "light": "out"
-          },
-          {
-            "at": "oh/fuel/LOW PRESSURE/4",
-            "light": "out"
-          },
-          {
-            "at": "oh/fuel/LOW PRESSURE/5",
-            "light": "out"
-          },
-          {
-            "at": "oh/fuel/LOW PRESSURE/6",
-            "light": "out"
-          },
-          {
-            "at": "oh/fuel/AFT 1/1"
-          },
-          {
-            "at": "oh/fuel/FWD 1/1"
-          },
-          {
-            "at": "oh/fuel/FWD 2/1"
-          },
-          {
-            "at": "oh/fuel/AFT 2/1"
+            "at": "oh/fuel/CTR R/1",
+            "set": "OFF"
           }
         ],
         "quick": "always",
@@ -7818,6 +7678,14 @@ assertion_line: 34
           {
             "at": "oh/lte/WING/1",
             "set": "ON"
+          },
+          {
+            "at": "oh/ltl/LANDING L/1",
+            "set": "ON"
+          },
+          {
+            "at": "oh/ltl/LANDING R/1",
+            "set": "ON"
           }
         ],
         "quick": "always",
@@ -8089,7 +7957,20 @@ assertion_line: 34
         ],
         "targets": [
           {
-            "at": "mn/ctr/LANDING GEAR LEVER/1"
+            "at": "mn/ctr/LEFT GEAR/2",
+            "light": "on"
+          },
+          {
+            "at": "mn/ctr/NOSE GEAR/2",
+            "light": "on"
+          },
+          {
+            "at": "mn/ctr/RIGHT GEAR/2",
+            "light": "on"
+          },
+          {
+            "at": "mn/ctr/LANDING GEAR LEVER/1",
+            "set": "DN"
           }
         ],
         "quick": "always",
@@ -8119,7 +8000,12 @@ assertion_line: 34
         ],
         "targets": [
           {
-            "at": "con/st/SPEEDBRAKE LEVER/1"
+            "at": "mn/cl/SPEED BRAKE ARMED/1",
+            "light": "on"
+          },
+          {
+            "at": "con/st/SPEEDBRAKE LEVER/1",
+            "set": "ARMED"
           }
         ],
         "quick": "always",
@@ -8190,7 +8076,20 @@ assertion_line: 34
         ],
         "targets": [
           {
-            "at": "mn/ctr/LANDING GEAR LEVER/1"
+            "at": "mn/ctr/LEFT GEAR/2",
+            "light": "on"
+          },
+          {
+            "at": "mn/ctr/NOSE GEAR/2",
+            "light": "on"
+          },
+          {
+            "at": "mn/ctr/RIGHT GEAR/2",
+            "light": "on"
+          },
+          {
+            "at": "mn/ctr/LANDING GEAR LEVER/1",
+            "set": "DN"
           }
         ],
         "quick": "always",
@@ -8213,7 +8112,12 @@ assertion_line: 34
         ],
         "targets": [
           {
-            "at": "con/st/SPEEDBRAKE LEVER/1"
+            "at": "mn/cl/SPEED BRAKE ARMED/1",
+            "light": "on"
+          },
+          {
+            "at": "con/st/SPEEDBRAKE LEVER/1",
+            "set": "ARMED"
           }
         ],
         "quick": "always",
@@ -8261,7 +8165,20 @@ assertion_line: 34
         ],
         "targets": [
           {
-            "at": "mn/ctr/LANDING GEAR LEVER/1"
+            "at": "mn/ctr/LEFT GEAR/2",
+            "light": "on"
+          },
+          {
+            "at": "mn/ctr/NOSE GEAR/2",
+            "light": "on"
+          },
+          {
+            "at": "mn/ctr/RIGHT GEAR/2",
+            "light": "on"
+          },
+          {
+            "at": "mn/ctr/LANDING GEAR LEVER/1",
+            "set": "DN"
           }
         ],
         "quick": "always",
@@ -8284,7 +8201,12 @@ assertion_line: 34
         ],
         "targets": [
           {
-            "at": "con/st/SPEEDBRAKE LEVER/1"
+            "at": "mn/cl/SPEED BRAKE ARMED/1",
+            "light": "on"
+          },
+          {
+            "at": "con/st/SPEEDBRAKE LEVER/1",
+            "set": "ARMED"
           }
         ],
         "quick": "always",
@@ -8334,9 +8256,6 @@ assertion_line: 34
           {
             "at": "oh/start/ENGINE START 1/1",
             "set": "CONT"
-          },
-          {
-            "at": "oh/start/IGNITION/1"
           },
           {
             "at": "oh/start/ENGINE START 2/1",
@@ -8443,9 +8362,6 @@ assertion_line: 34
             "set": "CONT"
           },
           {
-            "at": "oh/start/IGNITION/1"
-          },
-          {
             "at": "oh/start/ENGINE START 2/1",
             "set": "CONT"
           }
@@ -8499,7 +8415,20 @@ assertion_line: 34
         ],
         "targets": [
           {
-            "at": "mn/ctr/LANDING GEAR LEVER/1"
+            "at": "mn/ctr/LEFT GEAR/2",
+            "light": "on"
+          },
+          {
+            "at": "mn/ctr/NOSE GEAR/2",
+            "light": "on"
+          },
+          {
+            "at": "mn/ctr/RIGHT GEAR/2",
+            "light": "on"
+          },
+          {
+            "at": "mn/ctr/LANDING GEAR LEVER/1",
+            "set": "DN"
           }
         ],
         "why": "Gear down and locked",
@@ -8852,6 +8781,22 @@ assertion_line: 34
           {
             "at": "oh/lte/WING/1",
             "set": "OFF"
+          },
+          {
+            "at": "oh/ltl/LANDING L/1",
+            "set": "OFF"
+          },
+          {
+            "at": "oh/ltl/LANDING R/1",
+            "set": "OFF"
+          },
+          {
+            "at": "oh/ltl/TURNOFF L/1",
+            "set": "OFF"
+          },
+          {
+            "at": "oh/ltl/TURNOFF R/1",
+            "set": "OFF"
           }
         ],
         "quick": "always",
@@ -8869,9 +8814,6 @@ assertion_line: 34
           {
             "at": "oh/start/ENGINE START 1/1",
             "set": "OFF"
-          },
-          {
-            "at": "oh/start/IGNITION/1"
           },
           {
             "at": "oh/start/ENGINE START 2/1",
@@ -9023,7 +8965,8 @@ assertion_line: 34
         ],
         "targets": [
           {
-            "at": "oh/apu/APU/1"
+            "at": "oh/apu/APU/1",
+            "set": "ON"
           }
         ],
         "quick": "always",
@@ -9214,16 +9157,20 @@ assertion_line: 34
             "light": "on"
           },
           {
-            "at": "oh/heat/L SIDE/1"
+            "at": "oh/heat/L SIDE/1",
+            "set": "ON"
           },
           {
-            "at": "oh/heat/L FWD/1"
+            "at": "oh/heat/L FWD/1",
+            "set": "ON"
           },
           {
-            "at": "oh/heat/R FWD/1"
+            "at": "oh/heat/R FWD/1",
+            "set": "ON"
           },
           {
-            "at": "oh/heat/R SIDE/1"
+            "at": "oh/heat/R SIDE/1",
+            "set": "ON"
           }
         ],
         "why": "Keeps the windows warm and clear until the airplane is secured",
@@ -9273,9 +9220,6 @@ assertion_line: 34
             "set": "OFF"
           },
           {
-            "at": "oh/start/IGNITION/1"
-          },
-          {
             "at": "oh/start/ENGINE START 2/1",
             "set": "OFF"
           }
@@ -9303,7 +9247,8 @@ assertion_line: 34
         ],
         "targets": [
           {
-            "at": "oh/apu/APU/1"
+            "at": "oh/apu/APU/1",
+            "set": "ON"
           }
         ],
         "why": "Starts the APU for power and air"
@@ -9770,20 +9715,8 @@ assertion_line: 34
         ],
         "targets": [
           {
-            "at": "con/atc/ALT SOURCE 1/1"
-          },
-          {
-            "at": "con/atc/XPNDR/1"
-          },
-          {
-            "at": "con/atc/CODE/1"
-          },
-          {
             "at": "con/atc/MODE/1",
             "set": "ALT OFF"
-          },
-          {
-            "at": "con/atc/ALT SOURCE 2/1"
           }
         ],
         "quick": "always",
@@ -9979,7 +9912,12 @@ assertion_line: 34
         ],
         "targets": [
           {
-            "at": "con/lo/PARKING BRAKE/1"
+            "at": "con/lo/PARKING BRAKE/1",
+            "set": "SET"
+          },
+          {
+            "at": "con/lo/PARK BRAKE LIGHT/1",
+            "light": "on"
           }
         ],
         "why": "Holds the airplane while parked",
@@ -10191,7 +10129,8 @@ assertion_line: 34
         ],
         "targets": [
           {
-            "at": "oh/col/NOT ARMED/1"
+            "at": "oh/col/NOT ARMED/1",
+            "light": "on"
           },
           {
             "at": "oh/col/EMER EXIT LIGHTS/1",
@@ -10321,31 +10260,7 @@ assertion_line: 34
         ],
         "targets": [
           {
-            "at": "oh/elecl/TRANSFER BUS OFF/1",
-            "light": "out"
-          },
-          {
-            "at": "oh/elecl/SOURCE OFF/1",
-            "light": "out"
-          },
-          {
-            "at": "oh/elecl/GEN OFF BUS/1",
-            "light": "out"
-          },
-          {
             "at": "oh/elecl/APU GEN OFF BUS/1",
-            "light": "out"
-          },
-          {
-            "at": "oh/elecl/TRANSFER BUS OFF/2",
-            "light": "out"
-          },
-          {
-            "at": "oh/elecl/SOURCE OFF/2",
-            "light": "out"
-          },
-          {
-            "at": "oh/elecl/GEN OFF BUS/2",
             "light": "out"
           }
         ],
@@ -10496,7 +10411,8 @@ assertion_line: 34
         ],
         "targets": [
           {
-            "at": "oh/col/NOT ARMED/1"
+            "at": "oh/col/NOT ARMED/1",
+            "light": "on"
           },
           {
             "at": "oh/col/EMER EXIT LIGHTS/1",
@@ -10749,10 +10665,12 @@ assertion_line: 34
         ],
         "targets": [
           {
-            "at": "con/lo/STAB TRIM PRI/1"
+            "at": "con/lo/STAB TRIM PRI/1",
+            "set": "CUT OUT"
           },
           {
-            "at": "con/lo/STAB TRIM B/U/1"
+            "at": "con/lo/STAB TRIM B/U/1",
+            "set": "CUT OUT"
           }
         ],
         "confirmed_by": [
@@ -11229,15 +11147,6 @@ assertion_line: 34
         ],
         "targets": [
           {
-            "at": "seat/side/MASK STOWAGE/1"
-          },
-          {
-            "at": "seat/side/RESET/TEST/1"
-          },
-          {
-            "at": "seat/side/EMERGENCY/TEST/1"
-          },
-          {
             "at": "seat/side/NORMAL/100%/1",
             "set": "100%"
           }
@@ -11396,15 +11305,6 @@ assertion_line: 34
         ],
         "targets": [
           {
-            "at": "seat/side/MASK STOWAGE/1"
-          },
-          {
-            "at": "seat/side/RESET/TEST/1"
-          },
-          {
-            "at": "seat/side/EMERGENCY/TEST/1"
-          },
-          {
             "at": "seat/side/NORMAL/100%/1",
             "set": "100%"
           }
@@ -11501,9 +11401,6 @@ assertion_line: 34
           {
             "at": "oh/start/ENGINE START 1/1",
             "set": "OFF"
-          },
-          {
-            "at": "oh/start/IGNITION/1"
           },
           {
             "at": "oh/start/ENGINE START 2/1",
@@ -11786,9 +11683,6 @@ assertion_line: 34
             "set": "FLT"
           },
           {
-            "at": "oh/start/IGNITION/1"
-          },
-          {
             "at": "oh/start/ENGINE START 2/1",
             "set": "FLT"
           }
@@ -11882,7 +11776,8 @@ assertion_line: 34
         ],
         "targets": [
           {
-            "at": "oh/apu/APU/1"
+            "at": "oh/apu/APU/1",
+            "set": "ON"
           }
         ]
       }
@@ -12002,9 +11897,6 @@ assertion_line: 34
             "set": "CONT"
           },
           {
-            "at": "oh/start/IGNITION/1"
-          },
-          {
             "at": "oh/start/ENGINE START 2/1",
             "set": "CONT"
           }
@@ -12110,15 +12002,6 @@ assertion_line: 34
           "mask"
         ],
         "targets": [
-          {
-            "at": "seat/side/MASK STOWAGE/1"
-          },
-          {
-            "at": "seat/side/RESET/TEST/1"
-          },
-          {
-            "at": "seat/side/EMERGENCY/TEST/1"
-          },
           {
             "at": "seat/side/NORMAL/100%/1",
             "set": "NORMAL"
@@ -12337,7 +12220,20 @@ assertion_line: 34
         ],
         "targets": [
           {
-            "at": "mn/ctr/LANDING GEAR LEVER/1"
+            "at": "mn/ctr/LEFT GEAR/2",
+            "light": "on"
+          },
+          {
+            "at": "mn/ctr/NOSE GEAR/2",
+            "light": "on"
+          },
+          {
+            "at": "mn/ctr/RIGHT GEAR/2",
+            "light": "on"
+          },
+          {
+            "at": "mn/ctr/LANDING GEAR LEVER/1",
+            "set": "DN"
           }
         ]
       }
@@ -12561,10 +12457,12 @@ assertion_line: 34
         ],
         "targets": [
           {
-            "at": "con/lo/STAB TRIM PRI/1"
+            "at": "con/lo/STAB TRIM PRI/1",
+            "set": "CUT OUT"
           },
           {
-            "at": "con/lo/STAB TRIM B/U/1"
+            "at": "con/lo/STAB TRIM B/U/1",
+            "set": "CUT OUT"
           }
         ],
         "confirmed_by": [
@@ -12836,25 +12734,7 @@ assertion_line: 34
         ],
         "targets": [
           {
-            "at": "oh/fctl/LOW PRESSURE/2"
-          },
-          {
-            "at": "oh/fctl/LOW PRESSURE/3"
-          },
-          {
-            "at": "oh/fctl/FEEL DIFF PRESS/1"
-          },
-          {
             "at": "oh/fctl/SPEED TRIM FAIL/1"
-          },
-          {
-            "at": "oh/fctl/MACH TRIM FAIL/1"
-          },
-          {
-            "at": "oh/fctl/AUTO SLAT FAIL/1"
-          },
-          {
-            "at": "oh/fctl/SPOILERS/1"
           }
         ],
         "panel_lights": {
@@ -12879,25 +12759,7 @@ assertion_line: 34
         ],
         "targets": [
           {
-            "at": "oh/fctl/LOW PRESSURE/2"
-          },
-          {
-            "at": "oh/fctl/LOW PRESSURE/3"
-          },
-          {
-            "at": "oh/fctl/FEEL DIFF PRESS/1"
-          },
-          {
             "at": "oh/fctl/SPEED TRIM FAIL/1"
-          },
-          {
-            "at": "oh/fctl/MACH TRIM FAIL/1"
-          },
-          {
-            "at": "oh/fctl/AUTO SLAT FAIL/1"
-          },
-          {
-            "at": "oh/fctl/SPOILERS/1"
           }
         ],
         "panel_lights": {
@@ -13665,9 +13527,6 @@ assertion_line: 34
           {
             "at": "seat/yoke/STAB TRIM/1",
             "set": "NOSE DOWN"
-          },
-          {
-            "at": "seat/yoke/A/P DISENGAGE/1"
           }
         ]
       },
@@ -13683,9 +13542,6 @@ assertion_line: 34
           {
             "at": "seat/yoke/STAB TRIM/1",
             "set": "NOSE UP"
-          },
-          {
-            "at": "seat/yoke/A/P DISENGAGE/1"
           }
         ]
       }

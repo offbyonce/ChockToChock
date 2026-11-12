@@ -36,13 +36,10 @@ steps:
     controls:
       - xpndr
     targets:
-      - at: "con/atc/ALT SOURCE 1/1"
       - at: "con/atc/XPNDR/1"
         set: "AUTO"
-      - at: "con/atc/CODE/1"
       - at: "con/atc/MODE/1"
         set: "XPNDR"
-      - at: "con/atc/ALT SOURCE 2/1"
     hint:
       - prefix: "SQUAWK "
         field: squawk
@@ -76,6 +73,7 @@ steps:
       - pbrake
     targets:
       - at: "con/lo/PARKING BRAKE/1"
+        set: "RELEASED"
     quick: always
     why: Lets the tug move the airplane
     check: Parking brake light OUT
