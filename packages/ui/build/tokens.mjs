@@ -20,9 +20,12 @@ const entries = (o) => Object.entries(o).filter(([k]) => !k.startsWith("$"));
 /** A pixel value in rem, so it scales with the root size (wide screens and Text size). */
 const rem = (px) => `${+(px / 16).toFixed(4)}rem`;
 
+// The generated files' own license header, built from parts so reuse doesn't read it as this
+// script's header.
+const SPDX = "SPDX" + "-";
 const header = [
-  "/* SPDX-FileCopyrightText: 2026 offbyonce */",
-  "/* SPDX-License-Identifier: MIT */",
+  `/* ${SPDX}FileCopyrightText: 2026 offbyonce */`,
+  `/* ${SPDX}License-Identifier: MIT */`,
   "",
   "/* Generated from docs/design/tokens.json by packages/ui/build/tokens.mjs (just tokens). Do not",
   "   edit by hand. */",
@@ -82,8 +85,8 @@ const css = [
 const sets = (group) =>
   Object.fromEntries(["dark", "light"].map((theme) => [theme, Object.fromEntries(entries(group[theme]))]));
 const ts = [
-  "// SPDX-FileCopyrightText: 2026 offbyonce",
-  "// SPDX-License-Identifier: MIT",
+  `// ${SPDX}FileCopyrightText: 2026 offbyonce`,
+  `// ${SPDX}License-Identifier: MIT`,
   "",
   "// Generated from docs/design/tokens.json by packages/ui/build/tokens.mjs (just tokens). Do not",
   "// edit by hand.",
