@@ -27,5 +27,6 @@ Never rewrite an accepted record; add a new one that supersedes it.
 | [0016](0016-levers-handles-and-lit-lights.md) | Levers, handles, and lights a step expects on | Accepted |
 | [0017](0017-selector-dials.md) | Selector dials: every position named, at its real angle | Accepted |
 | [0018](0018-lights-and-switch-values.md) | Explicit step targets | Accepted |
+| [0019](0019-flight-data.md) | Flight data: values, units, saved plan and import | Proposed |
 
 Template: Context, Decision, Consequences. Keep it under a page.
