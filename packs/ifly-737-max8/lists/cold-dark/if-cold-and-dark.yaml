@@ -51,8 +51,6 @@ steps:
     targets:
       - at: "oh/fctl/ALT FLAPS MASTER/1"
         set: "OFF"
-      - at: "oh/fctl/ALT FLAPS/1"
-        set: "OFF"
     note: The position switch beside it is checked in the preliminary preflight.
     why: "The backup flap drive is electric, so it must be off before normal power comes on."
     confirmed_by:

@@ -3686,7 +3686,7 @@ assertion_line: 38
             "kind": "push_button",
             "label": "VOR LOC",
             "x": 318.0,
-            "y": 92.0,
+            "y": 90.0,
             "controls": [
               "rollmode"
             ],
@@ -3696,7 +3696,7 @@ assertion_line: 38
             "kind": "push_button",
             "label": "APP",
             "x": 318.0,
-            "y": 134.0,
+            "y": 130.0,
             "controls": [
               "appmode",
               "rollmode"
@@ -3755,14 +3755,14 @@ assertion_line: 38
             "kind": "push_button",
             "label": "CWS A",
             "x": 470.0,
-            "y": 92.0,
+            "y": 90.0,
             "description": "Autopilot holds the attitude you set with the control wheel."
           },
           {
             "kind": "push_button",
             "label": "CWS B",
             "x": 522.0,
-            "y": 92.0,
+            "y": 90.0,
             "description": "Autopilot holds the attitude you set with the control wheel."
           },
           {
@@ -3782,7 +3782,7 @@ assertion_line: 38
             "label": "DISENGAGE",
             "guarded": true,
             "x": 496.0,
-            "y": 134.0,
+            "y": 130.0,
             "controls": [
               "apdis"
             ],

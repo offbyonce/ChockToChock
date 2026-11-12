@@ -480,4 +480,44 @@ describe("PanelSchematic", () => {
     const widths = svgs.map((s) => Number((s.getAttribute("viewBox") ?? "").split(" ")[2]));
     expect(Math.abs((widths[0] ?? 0) - (widths[1] ?? 0))).toBeLessThan(1);
   });
+
+  it("rests a step's switch where the pack says when the step leaves its position open", () => {
+    // The center fuel pumps showed their knob midway, at a position that does not exist.
+    const panel = {
+      id: "oh",
+      title: "Overhead",
+      width: 200,
+      height: 100,
+      sections: [
+        {
+          id: "fuel",
+          title: "Fuel",
+          x: 0,
+          y: 0,
+          width: 180,
+          height: 90,
+          items: [
+            {
+              kind: "toggle_switch",
+              label: "CTR L",
+              x: 60,
+              y: 50,
+              controls: ["c"],
+              positions: "OFF, ON",
+              rest: "OFF",
+              description: "",
+            },
+          ],
+        },
+      ],
+    } as unknown as Panel;
+    const { container } = render(PanelSchematic, {
+      panel,
+      focus: ["fuel"],
+      targets: [{ section: "fuel", item: 0, position: null, lit: false }],
+    });
+    const knob = container.querySelector(".knob.rest");
+    expect(knob).not.toBeNull();
+    expect(container.querySelector(".knob.unknown")).toBeNull();
+  });
 });

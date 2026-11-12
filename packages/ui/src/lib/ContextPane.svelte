@@ -113,7 +113,8 @@ the list on wide screens and inside the step on narrow ones.
         {#if setTo.length}Highlighted: what this step asks for ({setTo.join("; ")}). Not the simulator's live state.{/if}
         Schematic, not to scale.
       </p>
-    {:else if place.control}
+    {/if}
+    {#if !targets.length && place.control}
       <!-- A control no panel draws, such as the control column: say so, rather than show nothing. -->
       <p class="tiny">{place.control.name} isn't drawn on the map.</p>
     {/if}

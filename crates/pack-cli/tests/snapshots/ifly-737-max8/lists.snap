@@ -74,10 +74,6 @@ assertion_line: 34
           {
             "at": "oh/fctl/ALT FLAPS MASTER/1",
             "set": "OFF"
-          },
-          {
-            "at": "oh/fctl/ALT FLAPS/1",
-            "set": "OFF"
           }
         ],
         "note": "The position switch beside it is checked in the preliminary preflight.",

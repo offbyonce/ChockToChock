@@ -102,7 +102,8 @@ however large the drawing is.
     {@const positions = positionsOf(item)}
     {@const t = byItem.get(i)?.position ?? null}
     <!-- A control the step does not use rests where the pack says, drawn dimmed. -->
-    {@const r = !on && item.rest ? positions.indexOf(item.rest) : -1}
+    <!-- A step's control whose position the step leaves open rests there too, dimmed. -->
+    {@const r = (!on || t == null) && item.rest ? positions.indexOf(item.rest) : -1}
     <g class="item {item.kind}" class:on transform="translate({item.x} {item.y})">
       {#if item.kind === "toggle_switch"}
         {#if item.guarded}

@@ -75,4 +75,14 @@ describe("bundled pack panels", () => {
       }
     }
   }
+
+  it("keeps the MCP's bottom row of keys level", () => {
+    // APP sat 4 units below HDG SEL and ALT HLD.
+    const mcp = packs
+      .flatMap((p) => p.panels)
+      .flatMap((p) => p.sections)
+      .find((s) => s.id === "mcp");
+    const y = (label: string) => mcp?.items.find((i) => i.label === label)?.y;
+    expect(new Set([y("HDG SEL"), y("APP"), y("ALT HLD")]).size).toBe(1);
+  });
 });

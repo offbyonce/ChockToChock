@@ -276,14 +276,14 @@ sections:
       - kind: push_button
         label: VOR LOC
         x: 318
-        "y": 92
+        "y": 90
         controls:
           - rollmode
         description: Tracks a VOR or localizer.
       - kind: push_button
         label: APP
         x: 318
-        "y": 134
+        "y": 130
         controls:
           - appmode
           - rollmode
@@ -325,12 +325,12 @@ sections:
       - kind: push_button
         label: CWS A
         x: 470
-        "y": 92
+        "y": 90
         description: Autopilot holds the attitude you set with the control wheel.
       - kind: push_button
         label: CWS B
         x: 522
-        "y": 92
+        "y": 90
         description: Autopilot holds the attitude you set with the control wheel.
       - kind: toggle_switch
         label: F/D R
@@ -345,7 +345,7 @@ sections:
         label: DISENGAGE
         guarded: true
         x: 496
-        "y": 134
+        "y": 130
         controls:
           - apdis
         positions: "UP, DOWN"
