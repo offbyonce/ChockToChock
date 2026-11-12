@@ -39,27 +39,32 @@ const go = (hash) => `location.hash = ${JSON.stringify(hash)}; true`;
 const SHOTS = [
   { name: "phase", app: { hash: "" }, base: { hash: "#cold-dark" } },
   {
+    // The same step selected and opened on both sides (Alternate flaps); the app also skips one.
     name: "states",
     app: {
       hash: "",
       before: [
         click(".it .tick", 0),
         click(".it .tick", 1),
-        click(".it .chev", 2),
+        click(".it .chev", 3),
         `[...document.querySelectorAll(".dskip .btn")][0].click(); true`,
+        click(".it .row", 2),
+        click(".it .chev", 2),
       ],
     },
     base: { hash: "#cold-dark", before: [click(".it .tick", 0), click(".it .tick", 1)] },
   },
   {
+    // N1 BUGS opened on both sides (the pack lists Landing gear pins first).
     name: "detail",
-    app: { hash: "#/phase/before-start", before: [click(".it .chev", 0)] },
+    app: { hash: "#/phase/before-start", before: [click(".it .row", 1), click(".it .chev", 1)] },
     base: { hash: "#before-start", before: [click(".it .chev", 0)] },
   },
   { name: "checklist", app: { hash: "#/phase/before-start" }, base: { hash: "#before-start" } },
   {
+    // N1 BUGS in Flow on both sides: the app ticks Landing gear pins first.
     name: "flow",
-    app: { hash: "#/phase/before-start", before: [click("header.top .tool", 1)] },
+    app: { hash: "#/phase/before-start", before: [click(".it .tick", 0), click("header.top .tool", 1)] },
     base: { hash: "#before-start", before: [click("#flowb")] },
   },
   {

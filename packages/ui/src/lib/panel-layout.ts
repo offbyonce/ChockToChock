@@ -220,7 +220,7 @@ function place(
   scale: number,
   bounds: { x0: number; x1: number },
 ): { layout: SectionLayout; clear: boolean } {
-  const placed: Box[] = [];
+  const placed: (Box & { owner?: number })[] = [];
   let clear = true;
   const posPx = PX.pos * scale;
   const moved = section;
@@ -237,14 +237,16 @@ function place(
     const h = lamp ? LAMP.h / 2 : half(it);
     return { x0: it.x - hw, y0: it.y - h, x1: it.x + hw, y1: it.y + h };
   };
-  for (const i of shown) placed.push(glyph(i));
+  for (const i of shown) placed.push({ ...glyph(i), owner: i });
   const order = [...shown].sort((a, b) => {
     const [ta, tb] = [target(a).on, target(b).on];
     if (ta !== tb) return ta ? -1 : 1;
     return (section.items[a]?.x ?? 0) - (section.items[b]?.x ?? 0);
   });
   const inside = (b: Box) => b.x0 >= bounds.x0 + 1 && b.x1 <= bounds.x1 - 1;
-  const free = (b: Box) => inside(b) && !placed.some((p) => overlaps(p, b));
+  /** Clear of everything placed; a control's own shape does not block its own position labels. */
+  const free = (b: Box, own?: number) =>
+    inside(b) && !placed.some((p) => (own === undefined || p.owner !== own) && overlaps(p, b));
   const items = new Map<number, ItemLayout>();
   for (const i of order) {
     const it = moved.items[i] as PanelItem;
@@ -283,12 +285,12 @@ function place(
         }));
       const right = side(true);
       const left = side(false);
-      const chosen = right.every((l) => free(boxOf(l)))
+      const chosen = right.every((l) => free(boxOf(l), i))
         ? right
-        : left.every((l) => free(boxOf(l)))
+        : left.every((l) => free(boxOf(l), i))
           ? left
           : right;
-      if (!chosen.every((l) => free(boxOf(l)))) clear = false;
+      if (!chosen.every((l) => free(boxOf(l), i))) clear = false;
       for (const l of chosen) placed.push(boxOf(l));
       layout.positions = chosen;
     } else if (it.kind === "toggle_switch" && pos.length <= 3) {
@@ -300,12 +302,12 @@ function place(
         });
       const right = side(true);
       const left = side(false);
-      const chosen = right.every((l) => free(boxOf(l)))
+      const chosen = right.every((l) => free(boxOf(l), i))
         ? right
-        : left.every((l) => free(boxOf(l)))
+        : left.every((l) => free(boxOf(l), i))
           ? left
           : right;
-      if (!chosen.every((l) => free(boxOf(l)))) clear = false;
+      if (!chosen.every((l) => free(boxOf(l), i))) clear = false;
       for (const l of chosen) placed.push(boxOf(l));
       layout.positions = chosen;
     } else if (it.kind === "selector") {
@@ -318,7 +320,7 @@ function place(
           y: -Math.cos(a) * 18.5 + 3,
           anchor: sn < -0.3 ? "end" : sn > 0.3 ? "start" : "middle",
         };
-        if (!free(boxOf(l))) clear = false;
+        if (!free(boxOf(l), i)) clear = false;
         placed.push(boxOf(l));
         layout.positions.push(l);
       }

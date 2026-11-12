@@ -161,8 +161,12 @@ however large the drawing is.
         {/each}
       {:else if item.kind === "handle"}
         <!-- A T-shaped pull handle on a short stem. -->
-        <rect class="body stem" x="-2" y="-2" width="4" height="12" rx="1" />
-        <rect class="body grip" class:pressed={on && t != null} x="-13" y="-11" width="26" height="10" rx="4" />
+        <!-- The grip sits at the target (or resting) position, beside its label: in at the top,
+             pulled out at the bottom. -->
+        {@const at = on && t != null ? t : r >= 0 ? r : -1}
+        {@const gy = at >= 0 ? leverY(at, positions.length) : 0}
+        <rect class="body stem" x="-2" y="-12" width="4" height={gy + 8} rx="1" />
+        <rect class="body grip" class:pressed={on && t != null} x="-13" y={gy - 5} width="26" height="10" rx="4" />
         {#each layout.items.get(i)?.positions ?? [] as l (l.n)}
           <text class="pos" class:target={on && l.n === t} class:at-rest={l.n === r} x={l.x} y={l.y} text-anchor={l.anchor} style:font-size={fs(PX.pos * layout.scale)}>{positions[l.n]}</text>
         {/each}

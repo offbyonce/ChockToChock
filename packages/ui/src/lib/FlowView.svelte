@@ -93,10 +93,12 @@ value on the right. The pilot confirms each step; the app never knows a switch p
       {#if showDetail}
         <div class="more">
           <StepDetail {index} {step} large />
-          <details class="inline-context">
-            <summary><Icon name="map-pin" /> Where is this?</summary>
-            <ContextPane {index} {step} targets={entry.row.targets} heading={false} details={false} />
-          </details>
+          {#if place}
+            <details class="inline-context">
+              <summary><Icon name="map-pin" /> Where is this?</summary>
+              <ContextPane {index} {step} targets={entry.row.targets} heading={false} details={false} />
+            </details>
+          {/if}
         </div>
       {/if}
       <button class="link" type="button" onclick={() => (showDetail = !showDetail)}>

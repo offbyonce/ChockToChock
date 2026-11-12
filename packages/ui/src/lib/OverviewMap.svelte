@@ -8,7 +8,7 @@ from the pack, and the zone marked by a thicker outline, fill and bold label as 
 -->
 <script lang="ts">
   import type { Zone } from "@chocktochock/bindings";
-  import type { PackIndex } from "../pack-index";
+  import { type PackIndex, splitArea } from "../pack-index";
 
   let { index, zone }: { index: PackIndex; zone: Zone } = $props();
 
@@ -25,12 +25,33 @@ from the pack, and the zone marked by a thicker outline, fill and bold label as 
     };
   });
   let short = $derived(bounds.y1 - bounds.y0 < 100);
+  /**
+   * Where a region stacks several panels one above another (the center console's P9, control
+   * stand and P8), each gets a label down the left side, as 3.0 has, from the pack's area names.
+   */
+  let groups = $derived.by(() => {
+    const out = new Map<string, { y0: number; y1: number }>();
+    for (const a of map?.areas ?? []) {
+      const name = byId.get(a.zone)?.area ?? "";
+      const g = out.get(name) ?? { y0: a.y, y1: a.y + a.height };
+      out.set(name, { y0: Math.min(g.y0, a.y), y1: Math.max(g.y1, a.y + a.height) });
+    }
+    const list = [...out.entries()].map(([name, g]) => ({ name, ...g })).sort((a, b) => a.y0 - b.y0);
+    const stacked = list.length > 1 && list.every((g, n) => n === 0 || g.y0 >= (list[n - 1]?.y1 ?? 0) - 1);
+    return stacked
+      ? list.map((g) => {
+          const [name, code] = splitArea(g.name);
+          const words = name.toUpperCase().replace(/ PANEL$/, "").split(" ");
+          return { ...g, lines: code ? [code, ...words] : words };
+        })
+      : [];
+  });
   let sides = $derived(!!(region?.left || region?.right));
   // Room around the areas for the captions, as 3.0 lays them out.
   let pad = $derived({
     top: region?.top || (sides && short) ? 28 : 6,
     bottom: region?.bottom ? 28 : 6,
-    left: sides && !short ? 26 : 6,
+    left: (sides && !short ? 26 : 6) + (groups.length ? 62 : 0),
     right: sides && !short ? 26 : 6,
   });
   let box = $derived({
@@ -54,17 +75,18 @@ from the pack, and the zone marked by a thicker outline, fill and bold label as 
   /** A label that fits its box: one line, or two split at " / " or near the middle. */
   function lines(label: string, width: number): string[] {
     // One line if it fits, even at the smallest size; split only when it cannot.
-    if (label.length * (8.5 / k) * 0.6 <= width - 4) return [label];
+    if (label.length * (7.5 / k) * 0.62 <= width - 7) return [label];
     const slash = label.indexOf(" / ");
     if (slash > 0) return [`${label.slice(0, slash)} /`, label.slice(slash + 3)];
     const mid = label.lastIndexOf(" ", Math.ceil(label.length / 2));
     return mid > 0 ? [label.slice(0, mid), label.slice(mid + 1)] : [label];
   }
   /** Shrinks a label that still does not fit, so it never spills out of its box. */
+  /** Labels shrink to stay inside their boxes, as 3.0's do, never below 6.5px. */
   const size = (text: string[], width: number, height: number) =>
     Math.max(
-      8.5 / k,
-      Math.min(LABEL, (width - 4) / (Math.max(...text.map((t) => t.length)) * 0.6), (height - 2) / (text.length * 1.15)),
+      6.5 / k,
+      Math.min(LABEL, (width - 7) / (Math.max(...text.map((t) => t.length)) * 0.62), (height - 3) / (text.length * 1.2)),
     );
 </script>
 
@@ -93,6 +115,17 @@ from the pack, and the zone marked by a thicker outline, fill and bold label as 
         {/each}
       </g>
     {/each}
+    {#each groups as g (g.name)}
+      {#each g.lines as line, n (n)}
+        <text
+          class="edge group"
+          x={bounds.x0 - (sides && !short ? 28 : 8)}
+          y={(g.y0 + g.y1) / 2 + (n - (g.lines.length - 1) / 2) * ((PX.edge * 1.15) / k)}
+          style:text-anchor="end"
+          style:font-size="{PX.edge / k}px">{line}</text
+        >
+      {/each}
+    {/each}
     {#if region?.top}
       <text class="edge" x={cx} y={bounds.y0 - 13} style:font-size="{PX.edge / k}px">↑ {region.top}</text>
     {/if}
@@ -100,8 +133,8 @@ from the pack, and the zone marked by a thicker outline, fill and bold label as 
       <text class="edge" x={cx} y={bounds.y1 + 15} style:font-size="{PX.edge / k}px">↓ {region.bottom}</text>
     {/if}
     {#if sides && short}
-      {#if region?.left}<text class="edge" x={bounds.x0} y={bounds.y0 - 13} text-anchor="start" style:font-size="{PX.edge / k}px">{region.left}</text>{/if}
-      {#if region?.right}<text class="edge" x={bounds.x1} y={bounds.y0 - 13} text-anchor="end" style:font-size="{PX.edge / k}px">{region.right}</text>{/if}
+      {#if region?.left}<text class="edge" x={bounds.x0} y={bounds.y0 - 13} style:text-anchor="start" style:font-size="{PX.edge / k}px">{region.left}</text>{/if}
+      {#if region?.right}<text class="edge" x={bounds.x1} y={bounds.y0 - 13} style:text-anchor="end" style:font-size="{PX.edge / k}px">{region.right}</text>{/if}
     {:else if sides}
       {#if region?.left}<text class="edge" transform="translate({bounds.x0 - 14} {cy}) rotate(-90)" style:font-size="{PX.edge / k}px">{region.left}</text>{/if}
       {#if region?.right}<text class="edge" transform="translate({bounds.x1 + 14} {cy}) rotate(90)" style:font-size="{PX.edge / k}px">{region.right}</text>{/if}

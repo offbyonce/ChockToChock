@@ -229,6 +229,8 @@ describe("App", () => {
     expect(screen.getByText("Power up · Step 2 of 2")).toBeTruthy();
     expect(screen.getByRole("button", { name: "Confirmed, next step" })).toBeTruthy();
     expect((screen.getByRole("button", { name: "Back" }) as HTMLButtonElement).disabled).toBe(false);
+    // The demo steps have no control on the map, so Flow view offers no "Where is this?".
+    expect(screen.queryByText("Where is this?")).toBeNull();
   });
 
   it("shows a tagged error from Rust", async () => {

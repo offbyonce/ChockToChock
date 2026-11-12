@@ -227,4 +227,45 @@ describe("PanelSchematic", () => {
     expect(lamps[1]?.classList.contains("lit")).toBe(false);
     expect(screen.getByText("EXPECTED ON")).toBeTruthy();
   });
+
+  it("draws a handle's grip at its target, beside that position's label", () => {
+    const handle = {
+      id: "con",
+      title: "Console",
+      width: 200,
+      height: 100,
+      sections: [
+        {
+          id: "lo",
+          title: "Parking brake",
+          x: 0,
+          y: 0,
+          width: 200,
+          height: 100,
+          items: [
+            {
+              kind: "handle",
+              label: "PARKING BRAKE",
+              x: 60,
+              y: 50,
+              controls: ["pbrake"],
+              positions: "RELEASED, SET",
+              description: "",
+            },
+          ],
+        },
+      ],
+    } as unknown as Panel;
+    render(PanelSchematic, {
+      panel: handle,
+      focus: ["lo"],
+      targets: [{ section: "lo", item: 0, position: 1, lit: false }],
+    });
+
+    const grip = screen.getByRole("img").querySelector(".grip");
+    const set = [...screen.getByRole("img").querySelectorAll(".pos")].find((t) => t.textContent === "SET");
+    const gripMid = Number(grip?.getAttribute("y")) + Number(grip?.getAttribute("height")) / 2;
+    // The label's baseline sits about 3 units below the position it names.
+    expect(Math.abs(gripMid - (Number(set?.getAttribute("y")) - 3))).toBeLessThan(1);
+  });
 });

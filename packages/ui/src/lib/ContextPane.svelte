@@ -45,7 +45,17 @@ the list on wide screens and inside the step on narrow ones.
 
   let place = $derived(index.place(step));
   let region = $derived(place ? (index.region(place.zone)?.region ?? null) : null);
-  let area = $derived(place ? (region ? [region.name, region.code ?? null] : splitArea(place.zone.area)) : null);
+  /**
+   * "Forward overhead · P5"; where a region holds several panels ("P9 · CONTROL STAND · P8"), the
+   * zone's own panel instead, as 3.0 shows it ("Center console · Control stand").
+   */
+  let area = $derived.by(() => {
+    if (!place) return null;
+    const [name, code] = splitArea(place.zone.area);
+    if (!region) return [name, code];
+    const many = (region.code ?? "").includes("·");
+    return [region.name, many ? (code ?? name) : (region.code ?? code)];
+  });
   // One drawing per panel, starting with the control's own section; up to three, as 3.0 shows.
   let cards = $derived.by(() => {
     const ids = [...new Set([place?.section?.id, ...targets.map((t) => t.section)].filter((x): x is string => !!x))];
@@ -84,7 +94,7 @@ the list on wide screens and inside the step on narrow ones.
   {#if place && area}
     <div class="where">
       <span class="label">Where it is</span>
-      <span><b>{area[0]}</b>{#if area[1]}<span class="code"> · {area[1]}</span>{/if}</span>
+      <span><b>{area[0]}</b>{#if area[1]}<span class="dot">{" · "}</span><span class="code">{area[1]}</span>{/if}</span>
       <Locator {index} zone={place.zone} />
     </div>
     <OverviewMap {index} zone={place.zone} />
@@ -168,6 +178,10 @@ the list on wide screens and inside the step on narrow ones.
   .where b {
     font-weight: 600;
   }
+  .dot {
+    color: var(--muted);
+    white-space: pre;
+  }
   .code {
     color: var(--muted);
     font: 0.75rem var(--mono);
@@ -228,7 +242,7 @@ the list on wide screens and inside the step on narrow ones.
   }
   .next li {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 55%);
+    grid-template-columns: auto minmax(0, 1fr);
     gap: 0.125rem 1rem;
     padding: 0.5rem 0;
     border-top: 1px solid var(--line);

@@ -115,4 +115,29 @@ describe("nameFit", () => {
     } as PanelSection;
     expect(layoutSection(roomy, [0, 1], () => ({ on: false, t: null, rest: 0 }), 1.6, 0).scale).toBe(1);
   });
+
+  it("keeps full-size labels on a lone selector: its own outline does not block its labels", () => {
+    const wiper = {
+      id: "lwip",
+      title: "L wiper",
+      x: 0,
+      y: 0,
+      width: 97,
+      height: 84,
+      items: [
+        {
+          kind: "selector",
+          label: "L WIPER",
+          x: 48,
+          y: 50,
+          controls: [],
+          positions: "PARK, INT, LOW, HIGH",
+          description: "",
+        },
+      ],
+    } as unknown as PanelSection;
+    const out = layoutSection(wiper, [0], () => ({ on: true, t: 0, rest: -1 }), 1.75, 0);
+    expect(out.scale).toBe(1);
+    expect(out.items.get(0)?.positions.map((l) => l.n)).toEqual([0, 1, 2, 3]);
+  });
 });

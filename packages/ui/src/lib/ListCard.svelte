@@ -156,7 +156,7 @@ so instead.
     color: var(--ink);
   }
   .clear:disabled {
-    opacity: 0.5;
+    cursor: default;
   }
   .clear.confirming {
     color: var(--stop);
