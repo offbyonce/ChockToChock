@@ -1,0 +1,72 @@
+# SPDX-FileCopyrightText: 2026 offbyonce and Chock to Chock contributors
+# SPDX-License-Identifier: CC-BY-NC-SA-4.0
+#
+# yaml-language-server: $schema=../../../schemas/panel.schema.json
+# The controls at each pilot seat that the memory items and non-normal checklists use. Our own
+# schematic layout; switch names and positions are facts.
+id: seat
+title: Pilot station
+width: 640
+height: 140
+sections:
+  - id: yoke
+    title: Control wheel
+    x: 10
+    "y": 6
+    width: 260
+    height: 128
+    items:
+      - kind: toggle_switch
+        label: STAB TRIM
+        x: 70
+        "y": 72
+        controls:
+          - column
+        positions: "NOSE DOWN, NOSE UP"
+        description: "Main electric stabilizer trim: two thumb switches on the outboard grip of the wheel, moved together. Spring-loaded to the center."
+      - kind: push_button
+        label: A/P DISENGAGE
+        x: 190
+        "y": 72
+        controls:
+          - column
+        description: Disengages the autopilot. On the outboard grip of the wheel.
+  - id: side
+    title: Oxygen mask
+    x: 278
+    "y": 6
+    width: 352
+    height: 128
+    items:
+      - kind: display_unit
+        label: MASK STOWAGE
+        x: 66
+        "y": 72
+        width: 84
+        height: 44
+        controls:
+          - mask
+        description: "The mask is stowed in a box beside the seat, with its flow indicator. Squeeze the red levers and pull to don it."
+      - kind: push_button
+        label: RESET/TEST
+        x: 158
+        "y": 72
+        controls:
+          - mask
+        description: Tests the mask and turns off the flow after a test.
+      - kind: push_button
+        label: EMERGENCY/TEST
+        x: 236
+        "y": 72
+        controls:
+          - mask
+        description: Gives oxygen under positive pressure, and tests that pressure.
+      - kind: toggle_switch
+        label: NORMAL/100%
+        x: 312
+        "y": 72
+        controls:
+          - mask
+        positions: "NORMAL, 100%"
+        rest: "NORMAL"
+        description: "The regulator: NORMAL mixes cabin air with oxygen; 100% gives pure oxygen."

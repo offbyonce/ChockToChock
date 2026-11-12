@@ -84,7 +84,8 @@
     "panels/aft.yaml",
     "panels/gl.yaml",
     "panels/mn.yaml",
-    "panels/center-console.yaml"
+    "panels/center-console.yaml",
+    "panels/seat.yaml"
   ],
   "lights": "lights.yaml",
   "faults": "faults.yaml",

@@ -40,6 +40,8 @@ const pack = {
       id: "power-up-flow",
       title: "Power up flow",
       kind: "flow",
+      when: "Cold and dark.",
+      why: "Power comes first.",
       steps: [
         {
           id: "battery",
@@ -218,6 +220,15 @@ describe("App", () => {
     expect(
       (await screen.findByRole("button", { name: /No ground power/ })).getAttribute("aria-pressed"),
     ).toBe("true");
+  });
+
+  it("shows a list's When and Why above its steps, as 3.0 does", async () => {
+    // Emergency lists carried a Why in the pack that the card never showed.
+    const { container } = render(App, { context: hostContext(host()) });
+    await screen.findByRole("heading", { level: 1, name: "Power up" });
+    const intro = container.querySelector(".when")?.textContent ?? "";
+    expect(intro).toContain("When · Cold and dark.");
+    expect(intro).toContain("Why · Power comes first.");
   });
 
   it("shows the current step in a large box in Flow view", async () => {

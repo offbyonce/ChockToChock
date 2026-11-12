@@ -142,6 +142,26 @@ mod tests {
     }
 
     #[test]
+    fn every_emergency_step_with_a_control_has_a_drawing() {
+        // Memory items, quick reference and non-normal steps showed no drawing when their
+        // controls (the control column, the oxygen masks, the PA) were on no panel.
+        let pack = ifly_pack();
+        let missing: Vec<&str> = pack
+            .lists
+            .iter()
+            .flat_map(|l| &l.steps)
+            .filter(|s| {
+                let phase = s.id.as_str().split('.').nth(1).unwrap_or_default();
+                ["memory", "quick-reference", "procedures"].contains(&phase)
+                    && !s.controls.is_empty()
+                    && step_targets(&pack, s).is_empty()
+            })
+            .map(|s| s.id.as_str())
+            .collect();
+        assert_eq!(missing, Vec::<&str>::new());
+    }
+
+    #[test]
     fn the_flight_control_step_targets_each_switch_by_its_own_name() {
         // The switches read A ON and B ON, as on the panel; one value names both.
         let pack = ifly_pack();

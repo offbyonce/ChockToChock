@@ -78,8 +78,11 @@ so instead.
       {confirming ? "Clear all?" : "Clear"}
     </button>
   </header>
-  {#if source?.when}
-    <p class="when"><b>When</b> · {source.when}</p>
+  {#if source?.when || source?.why}
+    <div class="when">
+      {#if source?.when}<p><b>When</b> · {source.when}</p>{/if}
+      {#if source?.why}<p><b>Why</b> · {source.why}</p>{/if}
+    </div>
   {/if}
   <ol class="items">
     {#each rows as row (row.id)}
@@ -180,6 +183,12 @@ so instead.
     border-bottom: 1px solid var(--line);
     background: var(--bg);
     font-size: 0.86rem;
+  }
+  .when p {
+    margin: 0;
+  }
+  .when p + p {
+    margin-top: 0.25rem;
   }
   .items {
     margin: 0;
