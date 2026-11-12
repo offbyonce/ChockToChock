@@ -3081,6 +3081,7 @@ assertion_line: 38
             "controls": [
               "paxoxy"
             ],
+            "lit_at": "ON",
             "description": "The passenger masks have dropped and oxygen is flowing in the cabin."
           }
         ]
@@ -4127,6 +4128,7 @@ assertion_line: 38
             "controls": [
               "speedbrake"
             ],
+            "lit_at": "ARMED",
             "description": "The speedbrake is armed and will deploy by itself on touchdown."
           },
           {
@@ -4256,6 +4258,7 @@ assertion_line: 38
             "controls": [
               "gearlever"
             ],
+            "lit_at": "DN",
             "description": "The left main gear is down and locked.",
             "width": 42.0,
             "height": 0.0
@@ -4269,6 +4272,7 @@ assertion_line: 38
             "controls": [
               "gearlever"
             ],
+            "lit_at": "DN",
             "description": "The nose gear is down and locked.",
             "width": 42.0,
             "height": 0.0
@@ -4282,6 +4286,7 @@ assertion_line: 38
             "controls": [
               "gearlever"
             ],
+            "lit_at": "DN",
             "description": "The right main gear is down and locked.",
             "width": 42.0,
             "height": 0.0

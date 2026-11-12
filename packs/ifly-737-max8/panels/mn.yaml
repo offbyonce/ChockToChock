@@ -72,6 +72,7 @@ sections:
         "y": 71
         controls:
           - speedbrake
+        lit_at: "ARMED"
         description: The speedbrake is armed and will deploy by itself on touchdown.
       - kind: light
         label: A/P
@@ -171,6 +172,7 @@ sections:
         "y": 164
         controls:
           - gearlever
+        lit_at: "DN"
         description: The left main gear is down and locked.
         width: 42
         height: 0
@@ -181,6 +183,7 @@ sections:
         "y": 138
         controls:
           - gearlever
+        lit_at: "DN"
         description: The nose gear is down and locked.
         width: 42
         height: 0
@@ -191,6 +194,7 @@ sections:
         "y": 164
         controls:
           - gearlever
+        lit_at: "DN"
         description: The right main gear is down and locked.
         width: 42
         height: 0

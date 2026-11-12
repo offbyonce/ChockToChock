@@ -324,6 +324,7 @@ sections:
         "y": 94
         controls:
           - paxoxy
+        lit_at: "ON"
         description: The passenger masks have dropped and oxygen is flowing in the cabin.
   - id: bb
     title: Broadband system

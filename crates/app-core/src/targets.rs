@@ -35,9 +35,45 @@ fn says_on(text: &str) -> bool {
     words.iter().any(|w| names(text, w)) && !out.iter().any(|w| names(text, w))
 }
 
+/// Whether a value says this light is on. A value about several lights ("VALVE LIGHTS ON,
+/// FILTER BYPASS OUT") is read clause by clause: the clause naming the light (or a word of its
+/// name), else the whole value.
+fn says_light_on(expect: &str, label: &str) -> bool {
+    let clauses: Vec<&str> = expect.split([',', ';']).map(str::trim).collect();
+    let words: Vec<&str> = label.split_whitespace().filter(|w| w.len() > 3).collect();
+    let clause = clauses
+        .iter()
+        .find(|c| names(c, label))
+        .or_else(|| clauses.iter().find(|c| words.iter().any(|w| names(c, w))));
+    says_on(clause.copied().unwrap_or(expect))
+}
+
+/// Whether a step is about its lights: it says LIGHT or LIGHTS, or names the light.
+fn mentions_light(step: &Step, label: &str) -> bool {
+    let text = format!("{} {}", step.text, step.expect);
+    ["LIGHT", "LIGHTS", "LT", "LTS"]
+        .iter()
+        .any(|w| names(&text, w))
+        || names(&text, label)
+}
+
 /// The panel items a step uses, with the position it asks for and the lights it expects on.
 pub fn step_targets(pack: &FlatPack, step: &Step) -> Vec<ItemTarget> {
     let mut out = vec![];
+    // The value with the names of the step's lights taken out, so "PASS OXY ON LIGHT OUT" does
+    // not read as the switch at ON: a switch's position is read from what is left.
+    let mut switch_value = step.expect.clone();
+    for item in pack
+        .content
+        .panels
+        .iter()
+        .flat_map(|p| &p.sections)
+        .flat_map(|s| &s.items)
+        .filter(|i| i.kind == checklist_core::PanelItemKind::Light)
+        .filter(|i| i.controls.iter().any(|c| step.controls.contains(c)))
+    {
+        switch_value = switch_value.replace(&item.label, " ");
+    }
     let used: Vec<(&checklist_core::PanelItem, Option<usize>)> = pack
         .content
         .panels
@@ -50,7 +86,7 @@ pub fn step_targets(pack: &FlatPack, step: &Step) -> Vec<ItemTarget> {
                 e,
                 e.positions
                     .as_deref()
-                    .and_then(|p| named_position(&step.expect, p)),
+                    .and_then(|p| named_position(&switch_value, p)),
             )
         })
         .collect();
@@ -63,7 +99,7 @@ pub fn step_targets(pack: &FlatPack, step: &Step) -> Vec<ItemTarget> {
                 let position = entry
                     .positions
                     .as_deref()
-                    .and_then(|p| named_position(&step.expect, p));
+                    .and_then(|p| named_position(&switch_value, p));
                 let lit = entry.kind == checklist_core::PanelItemKind::Light
                     && match &entry.lit_at {
                         Some(at) => used.iter().any(|(o, t)| {
@@ -74,7 +110,7 @@ pub fn step_targets(pack: &FlatPack, step: &Step) -> Vec<ItemTarget> {
                         // A value naming a switch's position (pumps ON) is about the switch, not
                         // its lights, which may well go out (decision 0018).
                         None => {
-                            says_on(&step.expect)
+                            says_light_on(&step.expect, &entry.label)
                                 && !used.iter().any(|(o, t)| {
                                     o.kind != checklist_core::PanelItemKind::Light && t.is_some()
                                 })
@@ -89,20 +125,29 @@ pub fn step_targets(pack: &FlatPack, step: &Step) -> Vec<ItemTarget> {
             }
         }
     }
-    // A step that names some of its controls (TERR on the EFIS panel) targets only those, as 3.0
-    // picks them out, and the lights it expects on.
-    let label = |t: &ItemTarget| {
+    let item_of = |t: &ItemTarget| {
         pack.content
             .panels
             .iter()
             .flat_map(|p| &p.sections)
             .find(|s| s.id == t.section)
             .and_then(|s| s.items.get(t.item))
-            .map(|i| i.label.as_str())
-            .unwrap_or_default()
     };
+    let label = |t: &ItemTarget| item_of(t).map(|i| i.label.as_str()).unwrap_or_default();
+    let is_light =
+        |t: &ItemTarget| item_of(t).is_some_and(|i| i.kind == checklist_core::PanelItemKind::Light);
+    // A light filed with the switches a step sets is the step's only when the step expects it on
+    // or speaks of its lights: setting the fuel pumps ON does not point at their LOW PRESSURE
+    // lights, which go out (decision 0018). A step about lights alone keeps them all.
+    if out.iter().any(|t| !is_light(t)) {
+        out.retain(|t| !is_light(t) || t.lit || mentions_light(step, label(t)));
+    }
+    // A step that names some of its controls (TERR on the EFIS panel) targets only those, as 3.0
+    // picks them out, and the lights it expects on.
     if out.iter().any(|t| names(&step.text, label(t))) {
-        out.retain(|t| t.lit || names(&step.text, label(t)));
+        out.retain(|t| {
+            t.lit || names(&step.text, label(t)) || (is_light(t) && mentions_light(step, label(t)))
+        });
     }
     out
 }
@@ -111,6 +156,7 @@ pub fn step_targets(pack: &FlatPack, step: &Step) -> Vec<ItemTarget> {
 mod tests {
     use super::*;
     use crate::test_support::ifly_pack;
+    use checklist_core::PanelItemKind;
 
     #[test]
     fn a_value_names_one_position_as_a_whole_word() {
@@ -209,6 +255,119 @@ mod tests {
             "the switches are set ON"
         );
         assert!(targets.iter().all(|t| !t.lit), "no light is expected on");
+        assert!(
+            targets
+                .iter()
+                .all(|t| label_of(&pack, t).1 != PanelItemKind::Light),
+            "the step points at the switches only"
+        );
+    }
+
+    fn label_of<'a>(pack: &'a FlatPack, t: &ItemTarget) -> (&'a str, PanelItemKind) {
+        let item = pack
+            .content
+            .panels
+            .iter()
+            .flat_map(|p| &p.sections)
+            .find(|s| s.id == t.section)
+            .map(|s| &s.items[t.item])
+            .unwrap();
+        (item.label.as_str(), item.kind)
+    }
+
+    fn step_where(pack: &FlatPack, f: impl Fn(&Step) -> bool) -> &Step {
+        pack.lists
+            .iter()
+            .flat_map(|l| &l.steps)
+            .find(|s| f(s))
+            .unwrap()
+    }
+
+    #[test]
+    fn a_step_about_several_lights_reads_each_one() {
+        // "VALVE LIGHTS ON, FILTER BYPASS OUT": the valve lights on, FILTER BYPASS not.
+        let pack = ifly_pack();
+        let step = step_where(&pack, |s| s.expect == "VALVE LIGHTS ON, FILTER BYPASS OUT");
+        for t in step_targets(&pack, step) {
+            let (label, _) = label_of(&pack, &t);
+            assert_eq!(t.lit, label.contains("VALVE"), "{label}");
+        }
+    }
+
+    #[test]
+    fn a_switch_step_that_checks_its_light_keeps_it_unlit() {
+        // "ELT SWITCH — GUARD CLOSED, LIGHT OUT": the light is the step's, and out.
+        let pack = ifly_pack();
+        let step = step_where(&pack, |s| s.text == "ELT SWITCH");
+        let lights: Vec<ItemTarget> = step_targets(&pack, step)
+            .into_iter()
+            .filter(|t| label_of(&pack, t).1 == PanelItemKind::Light)
+            .collect();
+        assert!(!lights.is_empty(), "the ELT light is the step's");
+        assert!(lights.iter().all(|t| !t.lit), "and it is out");
+    }
+
+    #[test]
+    fn gear_down_lights_the_three_green_lights_only() {
+        let pack = ifly_pack();
+        let step = step_where(&pack, |s| {
+            s.text == "LANDING GEAR LEVER" && s.expect == "DN"
+        });
+        let lit: Vec<&str> = step_targets(&pack, step)
+            .iter()
+            .filter(|t| t.lit)
+            .map(|t| label_of(&pack, t).0)
+            .collect();
+        assert_eq!(lit, ["LEFT GEAR", "NOSE GEAR", "RIGHT GEAR"]);
+    }
+
+    #[test]
+    fn no_light_is_shown_on_where_the_step_says_it_is_out() {
+        // Across every step: a lit light's own clause in the value never says OUT or OFF.
+        let pack = ifly_pack();
+        for step in pack.lists.iter().flat_map(|l| &l.steps) {
+            for t in step_targets(&pack, step).iter().filter(|t| t.lit) {
+                let (label, _) = label_of(&pack, t);
+                for clause in step.expect.split([',', ';']) {
+                    if names(clause, label) {
+                        assert!(
+                            !names(clause, "OUT") && !names(clause, "OFF"),
+                            "{}: {label} shown on, but `{clause}`",
+                            step.id
+                        );
+                    }
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn every_step_that_speaks_of_lights_keeps_them() {
+        // No entry is missed: a step mentioning lights, on controls that have lights, shows them.
+        let pack = ifly_pack();
+        for step in pack.lists.iter().flat_map(|l| &l.steps) {
+            let text = format!("{} {}", step.text, step.expect);
+            if !names(&text, "LIGHT") && !names(&text, "LIGHTS") {
+                continue;
+            }
+            let has_lights = pack
+                .content
+                .panels
+                .iter()
+                .flat_map(|p| &p.sections)
+                .flat_map(|s| &s.items)
+                .any(|i| {
+                    i.kind == PanelItemKind::Light
+                        && i.controls.iter().any(|c| step.controls.contains(c))
+                });
+            if !has_lights {
+                continue;
+            }
+            let kept = step_targets(&pack, step)
+                .iter()
+                .any(|t| label_of(&pack, t).1 == PanelItemKind::Light);
+            assert!(kept, "{} speaks of lights but shows none", step.id);
+        }
     }
 
     #[test]
