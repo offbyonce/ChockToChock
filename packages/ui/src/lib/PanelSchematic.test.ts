@@ -128,7 +128,14 @@ describe("PanelSchematic", () => {
 
   it("shows no position for it, not even its resting one", () => {
     // Drawn at rest (OFF), the center fuel pumps read as set OFF.
-    const rests = { ...panel, sections: panel.sections.map((s) => (s.id === "elec" ? { ...s, items: s.items.map((it, n) => (n === 0 ? { ...it, rest: "OFF" } : it)) } : s)) };
+    const rests = {
+      ...panel,
+      sections: panel.sections.map((s) =>
+        s.id === "elec"
+          ? { ...s, items: s.items.map((it, n) => (n === 0 ? { ...it, rest: "OFF" } : it)) }
+          : s,
+      ),
+    };
     const { container } = render(PanelSchematic, {
       panel: rests,
       focus: ["elec"],
