@@ -116,7 +116,7 @@ the list on wide screens and inside the step on narrow ones.
     {/if}
     {#if !targets.length && place.control}
       <!-- A control no panel draws, such as the control column: say so, rather than show nothing. -->
-      <p class="tiny">{place.control.name} isn't drawn on the map.</p>
+      <p class="tiny">{place.control.name} isn't drawn among the controls.</p>
     {/if}
 
     {#if place.control}
