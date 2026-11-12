@@ -15,6 +15,8 @@ steps:
     expect: OBTAIN
     controls:
       - atcclr
+    targets:
+      - at: "con/r1/VHF RADIO 1/1"
     hint:
       - prefix: "GND "
         field: ground_frequency
@@ -29,6 +31,13 @@ steps:
     controls:
       - lldg
       - turnoff
+    targets:
+      - at: "oh/ltl/TAXI/1"
+        set: "ON"
+      - at: "oh/ltl/TURNOFF L/1"
+        set: "ON"
+      - at: "oh/ltl/TURNOFF R/1"
+        set: "ON"
     quick: always
     note: Lets you and others see the taxiway at night or in low visibility.
     why: See and be seen on the taxiway
@@ -37,6 +46,9 @@ steps:
     expect: "ON"
     controls:
       - winglt
+    targets:
+      - at: "oh/lte/WING/1"
+        set: "ON"
     why: Makes the airplane visible and lights the wing for ice checks
     check: Wing leading edges lit
   - id: ifly-737-max8.taxi.parking-brake
@@ -45,6 +57,9 @@ steps:
     expect: RELEASE
     controls:
       - pbrake
+    targets:
+      - at: "con/lo/PARKING BRAKE/1"
+        set: "RELEASED"
     quick: always
     why: Brakes off to taxi
     check: Parking brake light OUT

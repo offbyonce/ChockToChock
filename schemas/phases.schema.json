@@ -21,6 +21,17 @@
       "items": {
         "$ref": "#/$defs/Stage"
       }
+    },
+    "turnaround": {
+      "description": "Which option choices make a turnaround, for steps in Essentials only on a turnaround\n(`quick: turnaround`). Required when any step uses it.",
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ShowIf"
+        },
+        {
+          "type": "null"
+        }
+      ]
     }
   },
   "additionalProperties": false,

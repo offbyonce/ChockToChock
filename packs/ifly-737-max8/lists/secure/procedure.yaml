@@ -15,6 +15,11 @@ steps:
     expect: "OFF"
     controls:
       - irs
+    targets:
+      - at: "aft/irs/IRS L/1"
+        set: "OFF"
+      - at: "aft/irs/IRS R/1"
+        set: "OFF"
     quick: always
     note: Stops the navigation system. It must realign before the next flight.
     why: Must realign before the next flight
@@ -27,6 +32,11 @@ steps:
     expect: "OFF"
     controls:
       - emerext
+    targets:
+      - at: "oh/col/NOT ARMED/1"
+        light: on
+      - at: "oh/col/EMER EXIT LIGHTS/1"
+        set: "OFF"
     quick: always
     why: ARMED would light the exit lights when power goes off
     confirmed_by:
@@ -37,6 +47,15 @@ steps:
     expect: "OFF"
     controls:
       - wheat
+    targets:
+      - at: "oh/heat/L SIDE/1"
+        set: "OFF"
+      - at: "oh/heat/L FWD/1"
+        set: "OFF"
+      - at: "oh/heat/R FWD/1"
+        set: "OFF"
+      - at: "oh/heat/R SIDE/1"
+        set: "OFF"
     quick: always
     why: Not needed once the airplane is secured
     check: All four window heat switches OFF
@@ -52,6 +71,11 @@ steps:
     expect: "OFF"
     controls:
       - packs
+    targets:
+      - at: "oh/bleed/L PACK/1"
+        set: "OFF"
+      - at: "oh/bleed/R PACK/1"
+        set: "OFF"
     why: Stops the packs before the air source goes off
     confirmed_by:
       - kind: vendor-docs
@@ -62,6 +86,17 @@ steps:
     expect: "OFF"
     controls:
       - apub
+      - apusw
+      - grdpwr
+    targets:
+      - at: "oh/elecl/APU GEN/1"
+        open: true
+      - at: "oh/elecl/APU GEN/2"
+        open: true
+      - at: "oh/apu/APU/1"
+        set: "OFF"
+      - at: "oh/elecl/GRD PWR/1"
+        open: true
     quick: always
     note: Do this just before the battery goes off.
     why: Removes AC power from the airplane
@@ -76,6 +111,9 @@ steps:
     expect: "IF THE APU RAN, WAIT ABOUT 5 MINUTES AFTER THE APU GEN OFF BUS LIGHT GOES OUT"
     controls:
       - genbus
+    targets:
+      - at: "oh/elecl/APU GEN OFF BUS/1"
+        light: out
     quick: always
     why: Lets the APU finish its shutdown before power is removed
     timer:
@@ -96,6 +134,9 @@ steps:
     expect: "OFF"
     controls:
       - bat
+    targets:
+      - at: "oh/elecu/BATTERY/1"
+        set: "OFF"
     quick: always
     note: The last switch.
     why: Stops battery drain

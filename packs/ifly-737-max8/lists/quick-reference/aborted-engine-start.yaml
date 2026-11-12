@@ -9,7 +9,7 @@ kind: non-normal
 basis:
   - prior-release
 when: "A start must be stopped, such as no EGT rise or EGT nearing the limit."
-why: "Simulator training only. Not for real-world use. Stopping the start or the fuel prevents engine damage."
+why: "Stopping the start or the fuel prevents engine damage."
 steps:
   - id: ifly-737-max8.quick-reference.before-start-lever-is-raised-to-idle
     number: 1
@@ -17,6 +17,11 @@ steps:
     expect: START SWITCH OFF
     controls:
       - starts
+    targets:
+      - at: "oh/start/ENGINE START 1/1"
+        open: true
+      - at: "oh/start/ENGINE START 2/1"
+        open: true
     panel_lights:
       starts:
         - ENGINE START 1
@@ -27,3 +32,8 @@ steps:
     expect: START LEVER CUTOFF
     controls:
       - slever
+    targets:
+      - at: "con/lo/START LEVER 1/1"
+        open: true
+      - at: "con/lo/START LEVER 2/1"
+        open: true

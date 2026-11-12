@@ -19,7 +19,8 @@ steps:
     expect: "MATCH THE GREEN N1 REFERENCE"
     controls:
       - n1
-    note: "Compare the takeoff thrust bugs with the green N1 reference on the engine display."
+    targets:
+      - at: "mn/cd/INBOARD DU: ND AND ENGINES/1"
     why: Takeoff thrust target
     check: "N1 bugs match the N1 reference"
     how: n1
@@ -32,6 +33,16 @@ steps:
     expect: "SET V2, HEADING, ALTITUDE, ARM A/T, ARM LNAV AND VNAV FOR AN RNAV DEPARTURE"
     controls:
       - mcpset
+      - rollmode
+      - pitchmode
+    targets:
+      - at: "gl/mcp/A/T ARM/1"
+        set: "ARM"
+      - at: "gl/mcp/HEADING/1"
+      - at: "gl/mcp/ALTITUDE/1"
+      - at: "gl/mcp/IAS/MACH/1"
+      - at: "gl/mcp/LNAV/1"
+      - at: "gl/mcp/VNAV/1"
     quick: always
     why: "Departure speed, heading and altitude"
     check: "A/T ARM switch at ARM, green light on"
@@ -46,6 +57,29 @@ steps:
     expect: ALL OUT
     controls:
       - doorsp
+    targets:
+      - at: "oh/door/EQUIP/1"
+        light: out
+      - at: "oh/door/FWD ENTRY/1"
+        light: out
+      - at: "oh/door/LEFT FWD OVERWING/1"
+        light: out
+      - at: "oh/door/LEFT AFT OVERWING/1"
+        light: out
+      - at: "oh/door/AFT ENTRY/1"
+        light: out
+      - at: "oh/door/FWD SERVICE/1"
+        light: out
+      - at: "oh/door/RIGHT FWD OVERWING/1"
+        light: out
+      - at: "oh/door/RIGHT AFT OVERWING/1"
+        light: out
+      - at: "oh/door/AFT SERVICE/1"
+        light: out
+      - at: "oh/door/FWD CARGO/1"
+        light: out
+      - at: "oh/door/AFT CARGO/1"
+        light: out
     quick: always
     note: Any light on means a door is not closed. All lights must be out before pushback.
     why: All closed before pushback
@@ -60,6 +94,9 @@ steps:
     expect: "ON"
     controls:
       - efispanel
+    targets:
+      - at: "gl/efisl/TERR/1"
+      - at: "gl/efisr/TERR/1"
     note: Shows surrounding terrain on the ND for departure.
     why: Terrain awareness for departure
     check: TERR shown on the ND
@@ -72,6 +109,19 @@ steps:
     expect: "ALL ON, CENTER PUMPS ON IF MORE THAN 1,000 LB (ABOUT 450 KG) IN THE CENTER TANK"
     controls:
       - fuelpumps
+    targets:
+      - at: "oh/fuel/CTR L/1"
+        open: true
+      - at: "oh/fuel/CTR R/1"
+        open: true
+      - at: "oh/fuel/AFT 1/1"
+        set: "ON"
+      - at: "oh/fuel/FWD 1/1"
+        set: "ON"
+      - at: "oh/fuel/FWD 2/1"
+        set: "ON"
+      - at: "oh/fuel/AFT 2/1"
+        set: "ON"
     quick: always
     why: Feeds fuel to the engines under pressure
     check: LOW PRESSURE lights OUT
@@ -87,6 +137,11 @@ steps:
     expect: "ON"
     controls:
       - elechyd
+    targets:
+      - at: "oh/hyd/ELEC 2/1"
+        set: "ON"
+      - at: "oh/hyd/ELEC 1/1"
+        set: "ON"
     quick: always
     why: "System A and B pressure for brakes, steering and controls before push"
     check: ELEC 1 and ELEC 2 LOW PRESSURE lights OUT
@@ -99,6 +154,9 @@ steps:
     expect: "ON"
     controls:
       - beacon
+    targets:
+      - at: "oh/lte/ANTI COLLISION/1"
+        set: "ON"
     quick: always
     why: Warns people that engines are about to start
     explain: beacon
@@ -111,6 +169,9 @@ steps:
     expect: SET TO TAKEOFF UNITS
     controls:
       - stabind
+    targets:
+      - at: "con/st/STAB TRIM WHEEL/1"
+      - at: "con/st/STAB TRIM WHEEL/2"
     quick: always
     note: Takeoff trim depends on weight and center of gravity. Set the units shown on the CDU.
     why: Sets the pitch forces at rotation

@@ -78,6 +78,10 @@ assertion_line: 35
       ]
     }
   ],
+  "turnaround": {
+    "option": "start",
+    "equals": "turn"
+  },
   "stages": [
     {
       "title": "Preflight",

@@ -16,6 +16,8 @@ steps:
     controls:
       - flaplever
       - speedt
+    targets:
+      - at: "con/st/FLAP LEVER/1"
     quick: always
     why: "Configure early so you are stable by 1,000 ft in cloud or 500 ft in visual conditions"
     how: flapdn
@@ -28,6 +30,15 @@ steps:
     expect: "DOWN WHEN SPEED ALLOWS"
     controls:
       - gearlever
+    targets:
+      - at: "mn/ctr/LEFT GEAR/2"
+        light: on
+      - at: "mn/ctr/NOSE GEAR/2"
+        light: on
+      - at: "mn/ctr/RIGHT GEAR/2"
+        light: on
+      - at: "mn/ctr/LANDING GEAR LEVER/1"
+        set: "DN"
     quick: always
     show_if:
       option: approach
@@ -46,6 +57,11 @@ steps:
     expect: ARM
     controls:
       - speedbrake
+    targets:
+      - at: "mn/cl/SPEED BRAKE ARMED/1"
+        light: on
+      - at: "con/st/SPEEDBRAKE LEVER/1"
+        set: "ARMED"
     quick: always
     show_if:
       option: approach
@@ -72,6 +88,8 @@ steps:
     expect: "SET PER THE FLAP GUIDANCE AFTER GLIDESLOPE CAPTURE"
     controls:
       - flaplever
+    targets:
+      - at: "con/st/FLAP LEVER/1"
     quick: always
     show_if:
       option: approach
@@ -87,6 +105,15 @@ steps:
     expect: DOWN WITH FLAPS 15 ON BASE OR EARLY FINAL
     controls:
       - gearlever
+    targets:
+      - at: "mn/ctr/LEFT GEAR/2"
+        light: on
+      - at: "mn/ctr/NOSE GEAR/2"
+        light: on
+      - at: "mn/ctr/RIGHT GEAR/2"
+        light: on
+      - at: "mn/ctr/LANDING GEAR LEVER/1"
+        set: "DN"
     quick: always
     show_if:
       option: approach
@@ -101,6 +128,11 @@ steps:
     expect: ARM
     controls:
       - speedbrake
+    targets:
+      - at: "mn/cl/SPEED BRAKE ARMED/1"
+        light: on
+      - at: "con/st/SPEEDBRAKE LEVER/1"
+        set: "ARMED"
     quick: always
     show_if:
       option: approach
@@ -116,6 +148,8 @@ steps:
     expect: "SET BEFORE 500 FT, STABILIZED"
     controls:
       - flaplever
+    targets:
+      - at: "con/st/FLAP LEVER/1"
     quick: always
     show_if:
       option: approach
@@ -128,6 +162,15 @@ steps:
     expect: DOWN WITH FLAPS 15 APPROACHING THE FINAL FIX
     controls:
       - gearlever
+    targets:
+      - at: "mn/ctr/LEFT GEAR/2"
+        light: on
+      - at: "mn/ctr/NOSE GEAR/2"
+        light: on
+      - at: "mn/ctr/RIGHT GEAR/2"
+        light: on
+      - at: "mn/ctr/LANDING GEAR LEVER/1"
+        set: "DN"
     quick: always
     show_if:
       option: approach
@@ -142,6 +185,11 @@ steps:
     expect: ARM
     controls:
       - speedbrake
+    targets:
+      - at: "mn/cl/SPEED BRAKE ARMED/1"
+        light: on
+      - at: "con/st/SPEEDBRAKE LEVER/1"
+        set: "ARMED"
     quick: always
     show_if:
       option: approach
@@ -157,6 +205,8 @@ steps:
     expect: SET AT THE FINAL APPROACH FIX
     controls:
       - flaplever
+    targets:
+      - at: "con/st/FLAP LEVER/1"
     quick: always
     show_if:
       option: approach
@@ -169,6 +219,11 @@ steps:
     expect: CONT
     controls:
       - starts
+    targets:
+      - at: "oh/start/ENGINE START 1/1"
+        set: "CONT"
+      - at: "oh/start/ENGINE START 2/1"
+        set: "CONT"
     quick: always
     why: Ignition on for approach and landing
     check: Both start switches at CONT
@@ -188,6 +243,8 @@ steps:
     expect: OBTAIN
     controls:
       - clear
+    targets:
+      - at: "con/r1/VHF RADIO 1/1"
     note: Confirm you are cleared to land on this runway.
     why: Cleared to land on this runway
   - id: ifly-737-max8.landing.taxi-light
@@ -196,6 +253,9 @@ steps:
     expect: "ON"
     controls:
       - lldg
+    targets:
+      - at: "oh/ltl/TAXI/1"
+        set: "ON"
     note: Lights the runway ahead for rollout.
     why: Lights the runway for rollout
   - id: ifly-737-max8.landing.autopilot-and-autothrottle
@@ -203,6 +263,8 @@ steps:
     expect: "DISENGAGE BEFORE 500 FT FOR A MANUAL LANDING"
     controls:
       - apdisc
+    targets:
+      - at: "seat/yoke/A/P DISENGAGE/1"
     quick: always
     why: Hands on for a manual landing
     check: "Autopilot disengage warning"

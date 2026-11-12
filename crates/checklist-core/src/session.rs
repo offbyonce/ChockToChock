@@ -121,6 +121,21 @@ impl Session {
         Ok(())
     }
 
+    /// Clear a step's skip mark; it is to do again.
+    pub fn unskip(&mut self, list: &Checklist, id: &StepId) -> Result<(), SessionError> {
+        Self::check(list, id)?;
+        self.skipped.remove(id);
+        Ok(())
+    }
+
+    /// Clear every tick and skip in one list.
+    pub fn clear_list(&mut self, list: &Checklist) {
+        for step in &list.steps {
+            self.done.remove(&step.id);
+            self.skipped.remove(&step.id);
+        }
+    }
+
     /// Skip a step at `at` (clearing its done mark if needed). It stays open.
     pub fn skip(&mut self, list: &Checklist, id: &StepId, at: Millis) -> Result<(), SessionError> {
         Self::check(list, id)?;

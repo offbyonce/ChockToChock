@@ -8,6 +8,7 @@ mod actions;
 mod app;
 mod error;
 mod flight;
+mod open_steps;
 mod packs;
 mod phase_view;
 mod plans;
@@ -23,6 +24,7 @@ pub use actions::{Action, apply};
 pub use app::{AppInfo, app_info, example_checklist};
 pub use error::AppError;
 pub use flight::{FLIGHT_FORMAT, Flight, new_flight};
+pub use open_steps::{OpenStep, open_steps};
 pub use packs::load_pack;
 pub use phase_view::{PhaseLink, PhaseList, PhaseView, StepRow, phase_view};
 pub use plans::{parse_plan, plan_url};
@@ -32,4 +34,4 @@ pub use settings::{
     Detail, EssentialsChanges, ListView, MAX_DIMMING, SETTINGS_FORMAT, Settings, Theme,
 };
 pub use targets::{ItemTarget, step_targets};
-pub use visibility::{passes, step_shows, visible_steps};
+pub use visibility::{Shown, in_essentials, passes, shown_steps, step_shows, visible_steps};

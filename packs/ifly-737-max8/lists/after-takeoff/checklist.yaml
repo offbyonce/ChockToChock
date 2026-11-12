@@ -14,6 +14,11 @@ steps:
     expect: "ON"
     controls:
       - engbleed
+    targets:
+      - at: "oh/bleed/ENG BLEED 1/1"
+        set: "ON"
+      - at: "oh/bleed/ENG BLEED 2/1"
+        set: "ON"
     why: Bleed air into the pneumatic system
     confirmed_by:
       - kind: vendor-docs
@@ -23,6 +28,11 @@ steps:
     expect: AUTO
     controls:
       - packs
+    targets:
+      - at: "oh/bleed/L PACK/1"
+        set: "AUTO"
+      - at: "oh/bleed/R PACK/1"
+        set: "AUTO"
     why: Packs back in AUTO after a packs-off takeoff
     check: PACK lights OUT
     confirmed_by:
@@ -33,6 +43,9 @@ steps:
     expect: UP
     controls:
       - gearup
+    targets:
+      - at: "mn/ctr/LANDING GEAR LEVER/1"
+        set: "UP"
     why: Gear up and locked
     check: Red and green gear lights OUT
     confirmed_by:
@@ -43,6 +56,9 @@ steps:
     expect: "UP, NO LIGHTS"
     controls:
       - flaplever
+    targets:
+      - at: "con/st/FLAP LEVER/1"
+        set: "UP"
     why: Clean for the climb
     check: Flaps UP
     check_detail: No leading edge flap lights (TRANSIT or EXT)

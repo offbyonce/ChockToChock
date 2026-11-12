@@ -9,7 +9,7 @@ kind: non-normal
 basis:
   - prior-release
 when: FWD or AFT cargo fire warning.
-why: "Simulator training only. Not for real-world use. Discharge the bottle into the affected compartment, and turn off recirculation fans to limit smoke."
+why: "Discharge the bottle into the affected compartment, and turn off recirculation fans to limit smoke."
 steps:
   - id: ifly-737-max8.quick-reference.cargo-fire-armed-switch-affected-compartment
     number: 1
@@ -17,6 +17,9 @@ steps:
     expect: "PUSH, CONFIRM ARMED"
     controls:
       - cargofire
+    targets:
+      - at: "con/cf/ARM FWD/1"
+      - at: "con/cf/ARM AFT/1"
     panel_lights:
       cargofire:
         - ARM FWD
@@ -27,6 +30,8 @@ steps:
     expect: PUSH AND HOLD FOR 1 SECOND
     controls:
       - cargofire
+    targets:
+      - at: "con/cf/DISCH/1"
     panel_lights:
       cargofire:
         - DISCH
@@ -36,3 +41,8 @@ steps:
     expect: "OFF"
     controls:
       - recirc
+    targets:
+      - at: "oh/bleed/L RECIRC FAN/1"
+        set: "OFF"
+      - at: "oh/bleed/R RECIRC FAN/1"
+        set: "OFF"

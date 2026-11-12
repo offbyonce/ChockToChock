@@ -35,6 +35,10 @@ steps:
     expect: "SQUAWK SET, XPNDR AUTO"
     controls:
       - xpndr
+    targets:
+      - at: "con/atc/XPNDR/1"
+        set: "AUTO"
+      - at: "con/atc/CODE/1"
     hint:
       - prefix: "SQUAWK "
         field: squawk
@@ -47,6 +51,8 @@ steps:
     expect: OBTAIN
     controls:
       - atcclr
+    targets:
+      - at: "con/r1/VHF RADIO 1/1"
     why: Request it and read it back
   - id: ifly-737-max8.pushback.wheel-chocks
     text: WHEEL CHOCKS
@@ -64,6 +70,9 @@ steps:
     expect: RELEASE WHEN TUG IS READY
     controls:
       - pbrake
+    targets:
+      - at: "con/lo/PARKING BRAKE/1"
+        set: "RELEASED"
     quick: always
     why: Lets the tug move the airplane
     check: Parking brake light OUT
@@ -96,6 +105,11 @@ steps:
     expect: SET AT END OF PUSH
     controls:
       - pbrake
+    targets:
+      - at: "con/lo/PARKING BRAKE/1"
+        set: "SET"
+      - at: "con/lo/PARK BRAKE LIGHT/1"
+        light: on
     quick: always
     why: Holds the airplane for start
     check: Parking brake light ON

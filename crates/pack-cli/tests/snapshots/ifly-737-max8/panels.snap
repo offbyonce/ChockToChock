@@ -1,13 +1,12 @@
 ---
 source: crates/pack-cli/tests/snapshot.rs
-assertion_line: 38
 ---
 [
   {
     "id": "oh",
     "title": "Forward overhead",
-    "width": 1000.0,
-    "height": 1010.0,
+    "width": 1121.0,
+    "height": 1491.0,
     "sections": [
       {
         "id": "fctl",
@@ -15,18 +14,18 @@ assertion_line: 38
         "x": 10.0,
         "y": 6.0,
         "width": 235.0,
-        "height": 322.0,
+        "height": 346.0,
         "items": [
           {
             "kind": "toggle_switch",
             "label": "FLT CONTROL A",
             "guarded": true,
             "x": 46.0,
-            "y": 62.0,
+            "y": 64.0,
             "controls": [
               "fltctrl"
             ],
-            "positions": "STBY RUD, OFF, ON",
+            "positions": "STBY RUD, OFF, A ON",
             "rest": "STBY RUD",
             "description": "Gives hydraulic system A to the ailerons, elevator and rudder."
           },
@@ -35,11 +34,11 @@ assertion_line: 38
             "label": "FLT CONTROL B",
             "guarded": true,
             "x": 112.0,
-            "y": 62.0,
+            "y": 64.0,
             "controls": [
               "fltctrl"
             ],
-            "positions": "STBY RUD, OFF, ON",
+            "positions": "STBY RUD, OFF, B ON",
             "rest": "STBY RUD",
             "description": "Gives hydraulic system B to the ailerons, elevator and rudder."
           },
@@ -59,7 +58,7 @@ assertion_line: 38
             "label": "LOW PRESSURE",
             "color": "amber",
             "x": 195.0,
-            "y": 60.0,
+            "y": 62.0,
             "controls": [
               "stbyhyd"
             ],
@@ -70,7 +69,7 @@ assertion_line: 38
             "label": "STBY RUD ON",
             "color": "amber",
             "x": 195.0,
-            "y": 86.0,
+            "y": 90.0,
             "controls": [
               "stbyhyd"
             ],
@@ -81,7 +80,7 @@ assertion_line: 38
             "label": "LOW PRESSURE",
             "color": "amber",
             "x": 44.0,
-            "y": 124.0,
+            "y": 131.0,
             "controls": [
               "fctllts"
             ],
@@ -92,7 +91,7 @@ assertion_line: 38
             "label": "LOW PRESSURE",
             "color": "amber",
             "x": 104.0,
-            "y": 124.0,
+            "y": 131.0,
             "controls": [
               "fctllts"
             ],
@@ -103,7 +102,7 @@ assertion_line: 38
             "label": "ALT FLAPS MASTER",
             "guarded": true,
             "x": 150.0,
-            "y": 132.0,
+            "y": 140.0,
             "controls": [
               "altflap"
             ],
@@ -115,7 +114,7 @@ assertion_line: 38
             "kind": "toggle_switch",
             "label": "ALT FLAPS",
             "x": 205.0,
-            "y": 134.0,
+            "y": 142.0,
             "controls": [
               "altflap"
             ],
@@ -128,7 +127,7 @@ assertion_line: 38
             "label": "SPOILER A",
             "guarded": true,
             "x": 46.0,
-            "y": 190.0,
+            "y": 203.0,
             "controls": [
               "spoilsw"
             ],
@@ -141,7 +140,7 @@ assertion_line: 38
             "label": "SPOILER B",
             "guarded": true,
             "x": 112.0,
-            "y": 190.0,
+            "y": 203.0,
             "controls": [
               "spoilsw"
             ],
@@ -154,7 +153,7 @@ assertion_line: 38
             "label": "FEEL DIFF PRESS",
             "color": "amber",
             "x": 195.0,
-            "y": 184.0,
+            "y": 196.0,
             "controls": [
               "fctllts"
             ],
@@ -165,7 +164,7 @@ assertion_line: 38
             "label": "SPEED TRIM FAIL",
             "color": "amber",
             "x": 195.0,
-            "y": 208.0,
+            "y": 222.0,
             "controls": [
               "fctllts"
             ],
@@ -176,7 +175,7 @@ assertion_line: 38
             "label": "MACH TRIM FAIL",
             "color": "amber",
             "x": 195.0,
-            "y": 232.0,
+            "y": 248.0,
             "controls": [
               "fctllts"
             ],
@@ -187,7 +186,7 @@ assertion_line: 38
             "label": "AUTO SLAT FAIL",
             "color": "amber",
             "x": 195.0,
-            "y": 256.0,
+            "y": 274.0,
             "controls": [
               "fctllts"
             ],
@@ -198,7 +197,7 @@ assertion_line: 38
             "label": "SPOILERS",
             "color": "amber",
             "x": 195.0,
-            "y": 280.0,
+            "y": 300.0,
             "controls": [
               "fctllts"
             ],
@@ -209,7 +208,7 @@ assertion_line: 38
             "label": "YAW DAMPER",
             "color": "amber",
             "x": 74.0,
-            "y": 262.0,
+            "y": 281.0,
             "controls": [
               "yawd"
             ],
@@ -219,7 +218,7 @@ assertion_line: 38
             "kind": "toggle_switch",
             "label": "YAW DAMPER",
             "x": 74.0,
-            "y": 298.0,
+            "y": 320.0,
             "controls": [
               "yawd"
             ],
@@ -233,7 +232,7 @@ assertion_line: 38
         "id": "nav",
         "title": "Navigation",
         "x": 10.0,
-        "y": 332.0,
+        "y": 356.0,
         "width": 235.0,
         "height": 136.0,
         "items": [
@@ -279,7 +278,7 @@ assertion_line: 38
         "id": "disp",
         "title": "Displays",
         "x": 10.0,
-        "y": 472.0,
+        "y": 496.0,
         "width": 235.0,
         "height": 118.0,
         "items": [
@@ -313,18 +312,18 @@ assertion_line: 38
         "id": "fuel",
         "title": "Fuel",
         "x": 10.0,
-        "y": 596.0,
-        "width": 235.0,
-        "height": 312.0,
+        "y": 618.0,
+        "width": 309.0,
+        "height": 392.0,
         "items": [
           {
             "kind": "light",
             "label": "ENG VALVE CLOSED",
             "color": "blue",
-            "x": 38.0,
-            "y": 20.0,
+            "x": 51.0,
+            "y": 30.0,
             "controls": [
-              "fuelpumps"
+              "fuellts"
             ],
             "description": "Engine 1 fuel valve. Out: open. Dim: closed. Bright: moving or disagrees with the start lever."
           },
@@ -332,28 +331,28 @@ assertion_line: 38
             "kind": "light",
             "label": "SPAR VALVE CLOSED",
             "color": "blue",
-            "x": 38.0,
-            "y": 48.0,
+            "x": 51.0,
+            "y": 63.0,
             "controls": [
-              "fuelpumps"
+              "fuellts"
             ],
             "description": "Engine 1 spar valve. Out: open. Dim: closed. Bright: moving or disagrees with the start lever."
           },
           {
             "kind": "gauge",
             "label": "FUEL TEMP",
-            "x": 118.0,
-            "y": 44.0,
+            "x": 151.0,
+            "y": 59.0,
             "description": "Fuel temperature gauge."
           },
           {
             "kind": "light",
             "label": "ENG VALVE CLOSED",
             "color": "blue",
-            "x": 198.0,
-            "y": 20.0,
+            "x": 250.0,
+            "y": 30.0,
             "controls": [
-              "fuelpumps"
+              "fuellts"
             ],
             "description": "Engine 2 fuel valve. Out: open. Dim: closed. Bright: moving or disagrees with the start lever."
           },
@@ -361,10 +360,10 @@ assertion_line: 38
             "kind": "light",
             "label": "SPAR VALVE CLOSED",
             "color": "blue",
-            "x": 198.0,
-            "y": 48.0,
+            "x": 250.0,
+            "y": 63.0,
             "controls": [
-              "fuelpumps"
+              "fuellts"
             ],
             "description": "Engine 2 spar valve. Out: open. Dim: closed. Bright: moving or disagrees with the start lever."
           },
@@ -372,10 +371,10 @@ assertion_line: 38
             "kind": "light",
             "label": "FILTER BYPASS",
             "color": "amber",
-            "x": 42.0,
-            "y": 94.0,
+            "x": 56.0,
+            "y": 118.0,
             "controls": [
-              "fuelpumps"
+              "fuellts"
             ],
             "description": "Fuel filter clogged, about to bypass or bypassing."
           },
@@ -383,8 +382,8 @@ assertion_line: 38
             "kind": "light",
             "label": "VALVE OPEN",
             "color": "blue",
-            "x": 118.0,
-            "y": 94.0,
+            "x": 151.0,
+            "y": 118.0,
             "controls": [
               "xfeed"
             ],
@@ -394,18 +393,18 @@ assertion_line: 38
             "kind": "light",
             "label": "FILTER BYPASS",
             "color": "amber",
-            "x": 194.0,
-            "y": 94.0,
+            "x": 245.0,
+            "y": 118.0,
             "controls": [
-              "fuelpumps"
+              "fuellts"
             ],
             "description": "Fuel filter clogged, about to bypass or bypassing."
           },
           {
             "kind": "selector",
             "label": "CROSSFEED",
-            "x": 118.0,
-            "y": 134.0,
+            "x": 151.0,
+            "y": 166.0,
             "controls": [
               "xfeed"
             ],
@@ -417,8 +416,8 @@ assertion_line: 38
             "kind": "light",
             "label": "LOW PRESSURE",
             "color": "amber",
-            "x": 88.0,
-            "y": 172.0,
+            "x": 113.0,
+            "y": 211.0,
             "controls": [
               "fuelpumps"
             ],
@@ -428,8 +427,8 @@ assertion_line: 38
             "kind": "light",
             "label": "LOW PRESSURE",
             "color": "amber",
-            "x": 148.0,
-            "y": 172.0,
+            "x": 188.0,
+            "y": 211.0,
             "controls": [
               "fuelpumps"
             ],
@@ -438,8 +437,8 @@ assertion_line: 38
           {
             "kind": "toggle_switch",
             "label": "CTR L",
-            "x": 88.0,
-            "y": 204.0,
+            "x": 113.0,
+            "y": 249.0,
             "controls": [
               "fuelpumps"
             ],
@@ -450,8 +449,8 @@ assertion_line: 38
           {
             "kind": "toggle_switch",
             "label": "CTR R",
-            "x": 148.0,
-            "y": 204.0,
+            "x": 188.0,
+            "y": 249.0,
             "controls": [
               "fuelpumps"
             ],
@@ -463,8 +462,8 @@ assertion_line: 38
             "kind": "light",
             "label": "LOW PRESSURE",
             "color": "amber",
-            "x": 32.0,
-            "y": 238.0,
+            "x": 44.0,
+            "y": 290.0,
             "controls": [
               "fuelpumps"
             ],
@@ -474,8 +473,8 @@ assertion_line: 38
             "kind": "light",
             "label": "LOW PRESSURE",
             "color": "amber",
-            "x": 86.0,
-            "y": 238.0,
+            "x": 111.0,
+            "y": 290.0,
             "controls": [
               "fuelpumps"
             ],
@@ -485,8 +484,8 @@ assertion_line: 38
             "kind": "light",
             "label": "LOW PRESSURE",
             "color": "amber",
-            "x": 150.0,
-            "y": 238.0,
+            "x": 190.0,
+            "y": 290.0,
             "controls": [
               "fuelpumps"
             ],
@@ -496,8 +495,8 @@ assertion_line: 38
             "kind": "light",
             "label": "LOW PRESSURE",
             "color": "amber",
-            "x": 204.0,
-            "y": 238.0,
+            "x": 257.0,
+            "y": 290.0,
             "controls": [
               "fuelpumps"
             ],
@@ -506,8 +505,8 @@ assertion_line: 38
           {
             "kind": "toggle_switch",
             "label": "AFT 1",
-            "x": 32.0,
-            "y": 274.0,
+            "x": 44.0,
+            "y": 333.0,
             "controls": [
               "fuelpumps"
             ],
@@ -518,8 +517,8 @@ assertion_line: 38
           {
             "kind": "toggle_switch",
             "label": "FWD 1",
-            "x": 86.0,
-            "y": 274.0,
+            "x": 111.0,
+            "y": 333.0,
             "controls": [
               "fuelpumps"
             ],
@@ -530,8 +529,8 @@ assertion_line: 38
           {
             "kind": "toggle_switch",
             "label": "FWD 2",
-            "x": 150.0,
-            "y": 274.0,
+            "x": 190.0,
+            "y": 333.0,
             "controls": [
               "fuelpumps"
             ],
@@ -542,8 +541,8 @@ assertion_line: 38
           {
             "kind": "toggle_switch",
             "label": "AFT 2",
-            "x": 204.0,
-            "y": 274.0,
+            "x": 257.0,
+            "y": 333.0,
             "controls": [
               "fuelpumps"
             ],
@@ -558,13 +557,13 @@ assertion_line: 38
         "title": "Electrical meters",
         "x": 252.0,
         "y": 120.0,
-        "width": 225.0,
+        "width": 248.0,
         "height": 318.0,
         "items": [
           {
             "kind": "readout",
             "label": "METER DISPLAY",
-            "x": 112.0,
+            "x": 121.0,
             "y": 70.0,
             "controls": [
               "eleclts"
@@ -588,7 +587,7 @@ assertion_line: 38
             "kind": "light",
             "label": "TR UNIT",
             "color": "amber",
-            "x": 98.0,
+            "x": 105.0,
             "y": 148.0,
             "controls": [
               "eleclts"
@@ -599,7 +598,7 @@ assertion_line: 38
             "kind": "light",
             "label": "ELEC",
             "color": "amber",
-            "x": 152.0,
+            "x": 166.0,
             "y": 148.0,
             "controls": [
               "eleclts"
@@ -609,7 +608,7 @@ assertion_line: 38
           {
             "kind": "push_button",
             "label": "MAINT",
-            "x": 198.0,
+            "x": 217.0,
             "y": 148.0,
             "controls": [
               "eleclts"
@@ -619,32 +618,51 @@ assertion_line: 38
           {
             "kind": "selector",
             "label": "DC METERS",
-            "x": 60.0,
+            "x": 62.0,
             "y": 206.0,
             "controls": [
               "eleclts"
             ],
             "positions": "STBY PWR, BAT BUS, BAT, AUX BAT, TR1, TR2, TR3, TEST",
-            "rest": "STBY PWR",
+            "rest": "AUX BAT",
+            "angles": [
+              -135.0,
+              -90.0,
+              -45.0,
+              0.0,
+              45.0,
+              90.0,
+              135.0,
+              180.0
+            ],
             "description": "Chooses what the DC meters show."
           },
           {
             "kind": "selector",
             "label": "AC METERS",
-            "x": 168.0,
+            "x": 184.0,
             "y": 206.0,
             "controls": [
               "eleclts"
             ],
-            "positions": "STBY PWR, GRD PWR, GEN 1, APU GEN, GEN 2, INV, TEST",
-            "rest": "STBY PWR",
+            "positions": "STBY PWR, GRD PWR, GEN1, APU GEN, GEN2, INV, TEST",
+            "rest": "APU GEN",
+            "angles": [
+              -135.0,
+              -90.0,
+              -45.0,
+              0.0,
+              45.0,
+              90.0,
+              135.0
+            ],
             "description": "Chooses what the AC meters show."
           },
           {
             "kind": "toggle_switch",
             "label": "BATTERY",
             "guarded": true,
-            "x": 60.0,
+            "x": 62.0,
             "y": 276.0,
             "controls": [
               "bat"
@@ -656,7 +674,7 @@ assertion_line: 38
           {
             "kind": "toggle_switch",
             "label": "CAB/UTIL",
-            "x": 140.0,
+            "x": 152.0,
             "y": 276.0,
             "controls": [
               "cabutil"
@@ -668,7 +686,7 @@ assertion_line: 38
           {
             "kind": "toggle_switch",
             "label": "IFE/PASS SEAT",
-            "x": 196.0,
+            "x": 215.0,
             "y": 276.0,
             "controls": [
               "cabutil"
@@ -685,14 +703,14 @@ assertion_line: 38
         "x": 252.0,
         "y": 442.0,
         "width": 225.0,
-        "height": 150.0,
+        "height": 158.0,
         "items": [
           {
             "kind": "light",
             "label": "DRIVE 1",
             "color": "amber",
             "x": 42.0,
-            "y": 22.0,
+            "y": 30.0,
             "controls": [
               "gendrive"
             ],
@@ -703,7 +721,7 @@ assertion_line: 38
             "label": "STANDBY PWR OFF",
             "color": "amber",
             "x": 112.0,
-            "y": 22.0,
+            "y": 30.0,
             "controls": [
               "stby"
             ],
@@ -714,7 +732,7 @@ assertion_line: 38
             "label": "DRIVE 2",
             "color": "amber",
             "x": 182.0,
-            "y": 22.0,
+            "y": 30.0,
             "controls": [
               "gendrive"
             ],
@@ -725,7 +743,7 @@ assertion_line: 38
             "label": "DISCONNECT 1",
             "guarded": true,
             "x": 42.0,
-            "y": 92.0,
+            "y": 100.0,
             "controls": [
               "gendrive"
             ],
@@ -738,7 +756,7 @@ assertion_line: 38
             "label": "STANDBY POWER",
             "guarded": true,
             "x": 112.0,
-            "y": 76.0,
+            "y": 84.0,
             "controls": [
               "stby"
             ],
@@ -751,7 +769,7 @@ assertion_line: 38
             "label": "DISCONNECT 2",
             "guarded": true,
             "x": 182.0,
-            "y": 92.0,
+            "y": 100.0,
             "controls": [
               "gendrive"
             ],
@@ -764,17 +782,17 @@ assertion_line: 38
       {
         "id": "elecl",
         "title": "Ground power and generators",
-        "x": 252.0,
-        "y": 596.0,
-        "width": 225.0,
-        "height": 226.0,
+        "x": 323.0,
+        "y": 1010.0,
+        "width": 245.0,
+        "height": 255.0,
         "items": [
           {
             "kind": "light",
             "label": "GRD POWER AVAILABLE",
             "color": "blue",
-            "x": 112.0,
-            "y": 18.0,
+            "x": 121.0,
+            "y": 30.0,
             "controls": [
               "grdpwr"
             ],
@@ -783,8 +801,8 @@ assertion_line: 38
           {
             "kind": "toggle_switch",
             "label": "GRD PWR",
-            "x": 112.0,
-            "y": 50.0,
+            "x": 121.0,
+            "y": 64.0,
             "controls": [
               "grdpwr",
               "grddisc"
@@ -797,8 +815,8 @@ assertion_line: 38
             "kind": "toggle_switch",
             "label": "BUS TRANS",
             "guarded": true,
-            "x": 112.0,
-            "y": 92.0,
+            "x": 121.0,
+            "y": 108.0,
             "controls": [
               "bustrans"
             ],
@@ -810,8 +828,8 @@ assertion_line: 38
             "kind": "light",
             "label": "TRANSFER BUS OFF",
             "color": "amber",
-            "x": 40.0,
-            "y": 92.0,
+            "x": 45.0,
+            "y": 108.0,
             "controls": [
               "genbus"
             ],
@@ -821,8 +839,8 @@ assertion_line: 38
             "kind": "light",
             "label": "SOURCE OFF",
             "color": "amber",
-            "x": 40.0,
-            "y": 118.0,
+            "x": 45.0,
+            "y": 136.0,
             "controls": [
               "genbus"
             ],
@@ -832,8 +850,8 @@ assertion_line: 38
             "kind": "light",
             "label": "GEN OFF BUS",
             "color": "blue",
-            "x": 40.0,
-            "y": 144.0,
+            "x": 45.0,
+            "y": 164.0,
             "controls": [
               "genbus"
             ],
@@ -843,8 +861,8 @@ assertion_line: 38
             "kind": "light",
             "label": "APU GEN OFF BUS",
             "color": "blue",
-            "x": 112.0,
-            "y": 144.0,
+            "x": 121.0,
+            "y": 164.0,
             "controls": [
               "genbus"
             ],
@@ -854,8 +872,8 @@ assertion_line: 38
             "kind": "light",
             "label": "TRANSFER BUS OFF",
             "color": "amber",
-            "x": 184.0,
-            "y": 92.0,
+            "x": 197.0,
+            "y": 108.0,
             "controls": [
               "genbus"
             ],
@@ -865,8 +883,8 @@ assertion_line: 38
             "kind": "light",
             "label": "SOURCE OFF",
             "color": "amber",
-            "x": 184.0,
-            "y": 118.0,
+            "x": 197.0,
+            "y": 136.0,
             "controls": [
               "genbus"
             ],
@@ -876,8 +894,8 @@ assertion_line: 38
             "kind": "light",
             "label": "GEN OFF BUS",
             "color": "blue",
-            "x": 184.0,
-            "y": 144.0,
+            "x": 197.0,
+            "y": 164.0,
             "controls": [
               "genbus"
             ],
@@ -886,8 +904,8 @@ assertion_line: 38
           {
             "kind": "toggle_switch",
             "label": "GEN 1",
-            "x": 30.0,
-            "y": 192.0,
+            "x": 34.0,
+            "y": 214.0,
             "controls": [
               "engen",
               "apub"
@@ -899,8 +917,8 @@ assertion_line: 38
           {
             "kind": "toggle_switch",
             "label": "APU GEN",
-            "x": 84.0,
-            "y": 192.0,
+            "x": 91.0,
+            "y": 214.0,
             "controls": [
               "apugen",
               "apub"
@@ -912,8 +930,8 @@ assertion_line: 38
           {
             "kind": "toggle_switch",
             "label": "APU GEN",
-            "x": 140.0,
-            "y": 192.0,
+            "x": 151.0,
+            "y": 214.0,
             "controls": [
               "apugen",
               "apub"
@@ -925,8 +943,8 @@ assertion_line: 38
           {
             "kind": "toggle_switch",
             "label": "GEN 2",
-            "x": 194.0,
-            "y": 192.0,
+            "x": 208.0,
+            "y": 214.0,
             "controls": [
               "engen",
               "apub"
@@ -941,7 +959,7 @@ assertion_line: 38
         "id": "wipe",
         "title": "L wiper",
         "x": 380.0,
-        "y": 826.0,
+        "y": 863.0,
         "width": 97.0,
         "height": 84.0,
         "items": [
@@ -962,15 +980,15 @@ assertion_line: 38
       {
         "id": "col",
         "title": "Lights and service",
-        "x": 482.0,
-        "y": 186.0,
-        "width": 110.0,
-        "height": 640.0,
+        "x": 504.0,
+        "y": 326.0,
+        "width": 142.0,
+        "height": 680.0,
         "items": [
           {
             "kind": "selector",
             "label": "CIRCUIT BREAKER",
-            "x": 54.0,
+            "x": 65.0,
             "y": 48.0,
             "positions": "OFF to BRIGHT",
             "rest": "OFF to BRIGHT",
@@ -979,8 +997,8 @@ assertion_line: 38
           {
             "kind": "selector",
             "label": "PANEL",
-            "x": 54.0,
-            "y": 116.0,
+            "x": 65.0,
+            "y": 120.0,
             "positions": "OFF to BRIGHT",
             "rest": "OFF to BRIGHT",
             "description": "Overhead panel lights."
@@ -989,8 +1007,8 @@ assertion_line: 38
             "kind": "light",
             "label": "LAVATORY SMOKE",
             "color": "amber",
-            "x": 54.0,
-            "y": 172.0,
+            "x": 65.0,
+            "y": 179.0,
             "controls": [
               "lavsmoke"
             ],
@@ -1000,8 +1018,8 @@ assertion_line: 38
             "kind": "light",
             "label": "EQUIP OFF",
             "color": "amber",
-            "x": 32.0,
-            "y": 226.0,
+            "x": 37.0,
+            "y": 237.0,
             "controls": [
               "equip"
             ],
@@ -1011,8 +1029,8 @@ assertion_line: 38
             "kind": "light",
             "label": "EQUIP OFF",
             "color": "amber",
-            "x": 78.0,
-            "y": 226.0,
+            "x": 96.0,
+            "y": 237.0,
             "controls": [
               "equip"
             ],
@@ -1021,8 +1039,8 @@ assertion_line: 38
           {
             "kind": "toggle_switch",
             "label": "SUPPLY",
-            "x": 32.0,
-            "y": 262.0,
+            "x": 37.0,
+            "y": 275.0,
             "controls": [
               "equip"
             ],
@@ -1033,8 +1051,8 @@ assertion_line: 38
           {
             "kind": "toggle_switch",
             "label": "EXHAUST",
-            "x": 78.0,
-            "y": 262.0,
+            "x": 96.0,
+            "y": 275.0,
             "controls": [
               "equip"
             ],
@@ -1046,8 +1064,8 @@ assertion_line: 38
             "kind": "light",
             "label": "EQUIP SMOKE",
             "color": "amber",
-            "x": 54.0,
-            "y": 300.0,
+            "x": 65.0,
+            "y": 315.0,
             "controls": [
               "equip"
             ],
@@ -1057,8 +1075,8 @@ assertion_line: 38
             "kind": "light",
             "label": "NOT ARMED",
             "color": "amber",
-            "x": 54.0,
-            "y": 370.0,
+            "x": 65.0,
+            "y": 389.0,
             "controls": [
               "emerext"
             ],
@@ -1068,8 +1086,8 @@ assertion_line: 38
             "kind": "toggle_switch",
             "label": "EMER EXIT LIGHTS",
             "guarded": true,
-            "x": 54.0,
-            "y": 412.0,
+            "x": 65.0,
+            "y": 434.0,
             "controls": [
               "emerext"
             ],
@@ -1080,8 +1098,8 @@ assertion_line: 38
           {
             "kind": "toggle_switch",
             "label": "NO SMOKING",
-            "x": 32.0,
-            "y": 482.0,
+            "x": 37.0,
+            "y": 508.0,
             "controls": [
               "signs"
             ],
@@ -1092,8 +1110,8 @@ assertion_line: 38
           {
             "kind": "toggle_switch",
             "label": "FASTEN BELTS",
-            "x": 78.0,
-            "y": 482.0,
+            "x": 96.0,
+            "y": 508.0,
             "controls": [
               "sblts",
               "signs"
@@ -1105,15 +1123,15 @@ assertion_line: 38
           {
             "kind": "push_button",
             "label": "ATTEND",
-            "x": 30.0,
-            "y": 568.0,
+            "x": 34.0,
+            "y": 599.0,
             "description": "Calls the cabin crew."
           },
           {
             "kind": "push_button",
             "label": "GRD CALL",
-            "x": 80.0,
-            "y": 568.0,
+            "x": 98.0,
+            "y": 599.0,
             "description": "Calls the ground crew."
           }
         ]
@@ -1122,7 +1140,7 @@ assertion_line: 38
         "id": "rwip",
         "title": "R wiper",
         "x": 482.0,
-        "y": 826.0,
+        "y": 1269.0,
         "width": 110.0,
         "height": 84.0,
         "items": [
@@ -1145,15 +1163,15 @@ assertion_line: 38
         "title": "Window and probe heat",
         "x": 596.0,
         "y": 6.0,
-        "width": 210.0,
-        "height": 306.0,
+        "width": 249.0,
+        "height": 316.0,
         "items": [
           {
             "kind": "light",
             "label": "OVERHEAT",
             "color": "amber",
             "x": 34.0,
-            "y": 20.0,
+            "y": 30.0,
             "controls": [
               "wheat"
             ],
@@ -1163,8 +1181,8 @@ assertion_line: 38
             "kind": "light",
             "label": "OVERHEAT",
             "color": "amber",
-            "x": 80.0,
-            "y": 20.0,
+            "x": 90.0,
+            "y": 30.0,
             "controls": [
               "wheat"
             ],
@@ -1174,8 +1192,8 @@ assertion_line: 38
             "kind": "light",
             "label": "OVERHEAT",
             "color": "amber",
-            "x": 130.0,
-            "y": 20.0,
+            "x": 151.0,
+            "y": 30.0,
             "controls": [
               "wheat"
             ],
@@ -1185,8 +1203,8 @@ assertion_line: 38
             "kind": "light",
             "label": "OVERHEAT",
             "color": "amber",
-            "x": 176.0,
-            "y": 20.0,
+            "x": 207.0,
+            "y": 30.0,
             "controls": [
               "wheat"
             ],
@@ -1197,7 +1215,7 @@ assertion_line: 38
             "label": "ON",
             "color": "green",
             "x": 34.0,
-            "y": 46.0,
+            "y": 56.0,
             "controls": [
               "wheat"
             ],
@@ -1207,8 +1225,8 @@ assertion_line: 38
             "kind": "light",
             "label": "ON",
             "color": "green",
-            "x": 80.0,
-            "y": 46.0,
+            "x": 90.0,
+            "y": 56.0,
             "controls": [
               "wheat"
             ],
@@ -1218,8 +1236,8 @@ assertion_line: 38
             "kind": "light",
             "label": "ON",
             "color": "green",
-            "x": 130.0,
-            "y": 46.0,
+            "x": 151.0,
+            "y": 56.0,
             "controls": [
               "wheat"
             ],
@@ -1229,8 +1247,8 @@ assertion_line: 38
             "kind": "light",
             "label": "ON",
             "color": "green",
-            "x": 176.0,
-            "y": 46.0,
+            "x": 207.0,
+            "y": 56.0,
             "controls": [
               "wheat"
             ],
@@ -1240,7 +1258,7 @@ assertion_line: 38
             "kind": "toggle_switch",
             "label": "L SIDE",
             "x": 34.0,
-            "y": 102.0,
+            "y": 112.0,
             "controls": [
               "wheat"
             ],
@@ -1251,8 +1269,8 @@ assertion_line: 38
           {
             "kind": "toggle_switch",
             "label": "L FWD",
-            "x": 80.0,
-            "y": 102.0,
+            "x": 90.0,
+            "y": 112.0,
             "controls": [
               "wheat"
             ],
@@ -1263,16 +1281,16 @@ assertion_line: 38
           {
             "kind": "toggle_switch",
             "label": "OVHT TEST",
-            "x": 105.0,
-            "y": 150.0,
+            "x": 120.0,
+            "y": 160.0,
             "positions": "OVHT, PWR TEST",
             "description": "OVHT simulates an overheat. PWR TEST checks the heat circuits."
           },
           {
             "kind": "toggle_switch",
             "label": "R FWD",
-            "x": 130.0,
-            "y": 102.0,
+            "x": 151.0,
+            "y": 112.0,
             "controls": [
               "wheat"
             ],
@@ -1283,8 +1301,8 @@ assertion_line: 38
           {
             "kind": "toggle_switch",
             "label": "R SIDE",
-            "x": 176.0,
-            "y": 102.0,
+            "x": 207.0,
+            "y": 112.0,
             "controls": [
               "wheat"
             ],
@@ -1297,7 +1315,7 @@ assertion_line: 38
             "label": "CAPT PITOT",
             "color": "amber",
             "x": 34.0,
-            "y": 160.0,
+            "y": 170.0,
             "controls": [
               "pheat"
             ],
@@ -1308,7 +1326,7 @@ assertion_line: 38
             "label": "L ELEV PITOT",
             "color": "amber",
             "x": 34.0,
-            "y": 190.0,
+            "y": 200.0,
             "controls": [
               "pheat"
             ],
@@ -1319,7 +1337,7 @@ assertion_line: 38
             "label": "L ALPHA VANE",
             "color": "amber",
             "x": 34.0,
-            "y": 220.0,
+            "y": 230.0,
             "controls": [
               "pheat"
             ],
@@ -1330,7 +1348,7 @@ assertion_line: 38
             "label": "TEMP PROBE",
             "color": "amber",
             "x": 34.0,
-            "y": 250.0,
+            "y": 260.0,
             "controls": [
               "pheat"
             ],
@@ -1340,8 +1358,8 @@ assertion_line: 38
             "kind": "light",
             "label": "F/O PITOT",
             "color": "amber",
-            "x": 176.0,
-            "y": 160.0,
+            "x": 207.0,
+            "y": 170.0,
             "controls": [
               "pheat"
             ],
@@ -1351,8 +1369,8 @@ assertion_line: 38
             "kind": "light",
             "label": "R ELEV PITOT",
             "color": "amber",
-            "x": 176.0,
-            "y": 190.0,
+            "x": 207.0,
+            "y": 200.0,
             "controls": [
               "pheat"
             ],
@@ -1362,8 +1380,8 @@ assertion_line: 38
             "kind": "light",
             "label": "R ALPHA VANE",
             "color": "amber",
-            "x": 176.0,
-            "y": 220.0,
+            "x": 207.0,
+            "y": 230.0,
             "controls": [
               "pheat"
             ],
@@ -1373,8 +1391,8 @@ assertion_line: 38
             "kind": "light",
             "label": "AUX PITOT",
             "color": "amber",
-            "x": 176.0,
-            "y": 250.0,
+            "x": 207.0,
+            "y": 260.0,
             "controls": [
               "pheat"
             ],
@@ -1383,8 +1401,8 @@ assertion_line: 38
           {
             "kind": "toggle_switch",
             "label": "PROBE A",
-            "x": 80.0,
-            "y": 202.0,
+            "x": 90.0,
+            "y": 212.0,
             "controls": [
               "pheat"
             ],
@@ -1395,8 +1413,8 @@ assertion_line: 38
           {
             "kind": "toggle_switch",
             "label": "PROBE B",
-            "x": 130.0,
-            "y": 202.0,
+            "x": 151.0,
+            "y": 212.0,
             "controls": [
               "pheat"
             ],
@@ -1409,17 +1427,17 @@ assertion_line: 38
       {
         "id": "aice",
         "title": "Anti-ice",
-        "x": 596.0,
-        "y": 316.0,
-        "width": 210.0,
-        "height": 134.0,
+        "x": 650.0,
+        "y": 326.0,
+        "width": 267.0,
+        "height": 150.0,
         "items": [
           {
             "kind": "light",
             "label": "ICE DETECTOR",
             "color": "amber",
-            "x": 64.0,
-            "y": 24.0,
+            "x": 74.0,
+            "y": 31.0,
             "controls": [
               "aice"
             ],
@@ -1430,7 +1448,7 @@ assertion_line: 38
             "label": "L VALVE",
             "color": "amber",
             "x": 32.0,
-            "y": 56.0,
+            "y": 65.0,
             "controls": [
               "aice"
             ],
@@ -1440,8 +1458,8 @@ assertion_line: 38
             "kind": "light",
             "label": "R VALVE",
             "color": "amber",
-            "x": 94.0,
-            "y": 56.0,
+            "x": 114.0,
+            "y": 65.0,
             "controls": [
               "aice"
             ],
@@ -1451,8 +1469,8 @@ assertion_line: 38
             "kind": "light",
             "label": "ENG 1 ANTI-ICE",
             "color": "amber",
-            "x": 136.0,
-            "y": 16.0,
+            "x": 169.0,
+            "y": 22.0,
             "controls": [
               "aice"
             ],
@@ -1462,8 +1480,8 @@ assertion_line: 38
             "kind": "light",
             "label": "ENG 2 ANTI-ICE",
             "color": "amber",
-            "x": 184.0,
-            "y": 16.0,
+            "x": 232.0,
+            "y": 22.0,
             "controls": [
               "aice"
             ],
@@ -1473,8 +1491,8 @@ assertion_line: 38
             "kind": "light",
             "label": "COWL ANTI-ICE",
             "color": "amber",
-            "x": 136.0,
-            "y": 42.0,
+            "x": 169.0,
+            "y": 50.0,
             "controls": [
               "aice"
             ],
@@ -1484,8 +1502,8 @@ assertion_line: 38
             "kind": "light",
             "label": "COWL ANTI-ICE",
             "color": "amber",
-            "x": 184.0,
-            "y": 42.0,
+            "x": 232.0,
+            "y": 50.0,
             "controls": [
               "aice"
             ],
@@ -1495,8 +1513,8 @@ assertion_line: 38
             "kind": "light",
             "label": "COWL VALVE",
             "color": "amber",
-            "x": 136.0,
-            "y": 68.0,
+            "x": 169.0,
+            "y": 78.0,
             "controls": [
               "aice"
             ],
@@ -1506,8 +1524,8 @@ assertion_line: 38
             "kind": "light",
             "label": "COWL VALVE",
             "color": "amber",
-            "x": 184.0,
-            "y": 68.0,
+            "x": 232.0,
+            "y": 78.0,
             "controls": [
               "aice"
             ],
@@ -1516,8 +1534,8 @@ assertion_line: 38
           {
             "kind": "toggle_switch",
             "label": "WING ANTI-ICE",
-            "x": 60.0,
-            "y": 104.0,
+            "x": 69.0,
+            "y": 117.0,
             "controls": [
               "aice"
             ],
@@ -1528,8 +1546,8 @@ assertion_line: 38
           {
             "kind": "toggle_switch",
             "label": "ENG 1",
-            "x": 136.0,
-            "y": 104.0,
+            "x": 169.0,
+            "y": 117.0,
             "controls": [
               "aice"
             ],
@@ -1540,8 +1558,8 @@ assertion_line: 38
           {
             "kind": "toggle_switch",
             "label": "ENG 2",
-            "x": 184.0,
-            "y": 104.0,
+            "x": 232.0,
+            "y": 117.0,
             "controls": [
               "aice"
             ],
@@ -1554,17 +1572,17 @@ assertion_line: 38
       {
         "id": "hyd",
         "title": "Hydraulic pumps",
-        "x": 596.0,
-        "y": 454.0,
-        "width": 210.0,
-        "height": 122.0,
+        "x": 650.0,
+        "y": 480.0,
+        "width": 241.0,
+        "height": 134.0,
         "items": [
           {
             "kind": "light",
             "label": "OVERHEAT",
             "color": "amber",
-            "x": 80.0,
-            "y": 18.0,
+            "x": 88.0,
+            "y": 30.0,
             "controls": [
               "hydpumps"
             ],
@@ -1574,8 +1592,8 @@ assertion_line: 38
             "kind": "light",
             "label": "OVERHEAT",
             "color": "amber",
-            "x": 130.0,
-            "y": 18.0,
+            "x": 147.0,
+            "y": 30.0,
             "controls": [
               "hydpumps"
             ],
@@ -1586,7 +1604,7 @@ assertion_line: 38
             "label": "LOW PRESSURE",
             "color": "amber",
             "x": 32.0,
-            "y": 44.0,
+            "y": 56.0,
             "controls": [
               "hydpumps"
             ],
@@ -1596,8 +1614,8 @@ assertion_line: 38
             "kind": "light",
             "label": "LOW PRESSURE",
             "color": "amber",
-            "x": 80.0,
-            "y": 44.0,
+            "x": 88.0,
+            "y": 56.0,
             "controls": [
               "hydpumps"
             ],
@@ -1607,8 +1625,8 @@ assertion_line: 38
             "kind": "light",
             "label": "LOW PRESSURE",
             "color": "amber",
-            "x": 130.0,
-            "y": 44.0,
+            "x": 147.0,
+            "y": 56.0,
             "controls": [
               "hydpumps"
             ],
@@ -1618,8 +1636,8 @@ assertion_line: 38
             "kind": "light",
             "label": "LOW PRESSURE",
             "color": "amber",
-            "x": 178.0,
-            "y": 44.0,
+            "x": 203.0,
+            "y": 56.0,
             "controls": [
               "hydpumps"
             ],
@@ -1629,7 +1647,7 @@ assertion_line: 38
             "kind": "toggle_switch",
             "label": "ENG 1",
             "x": 32.0,
-            "y": 92.0,
+            "y": 104.0,
             "controls": [
               "hydpumps"
             ],
@@ -1640,8 +1658,8 @@ assertion_line: 38
           {
             "kind": "toggle_switch",
             "label": "ELEC 2",
-            "x": 80.0,
-            "y": 92.0,
+            "x": 88.0,
+            "y": 104.0,
             "controls": [
               "elechyd"
             ],
@@ -1652,8 +1670,8 @@ assertion_line: 38
           {
             "kind": "toggle_switch",
             "label": "ELEC 1",
-            "x": 130.0,
-            "y": 92.0,
+            "x": 147.0,
+            "y": 104.0,
             "controls": [
               "elechyd"
             ],
@@ -1664,8 +1682,8 @@ assertion_line: 38
           {
             "kind": "toggle_switch",
             "label": "ENG 2",
-            "x": 178.0,
-            "y": 92.0,
+            "x": 203.0,
+            "y": 104.0,
             "controls": [
               "hydpumps"
             ],
@@ -1679,16 +1697,16 @@ assertion_line: 38
         "id": "door",
         "title": "Doors",
         "x": 596.0,
-        "y": 580.0,
-        "width": 210.0,
-        "height": 102.0,
+        "y": 1010.0,
+        "width": 232.0,
+        "height": 112.0,
         "items": [
           {
             "kind": "light",
             "label": "EQUIP",
             "color": "amber",
-            "x": 26.0,
-            "y": 44.0,
+            "x": 31.0,
+            "y": 42.0,
             "controls": [
               "doorsp"
             ],
@@ -1698,7 +1716,7 @@ assertion_line: 38
             "kind": "light",
             "label": "FWD ENTRY",
             "color": "amber",
-            "x": 74.0,
+            "x": 87.0,
             "y": 16.0,
             "controls": [
               "doorsp"
@@ -1710,8 +1728,8 @@ assertion_line: 38
             "kind": "light",
             "label": "LEFT FWD OVERWING",
             "color": "amber",
-            "x": 74.0,
-            "y": 40.0,
+            "x": 87.0,
+            "y": 42.0,
             "controls": [
               "doorsp"
             ],
@@ -1722,8 +1740,8 @@ assertion_line: 38
             "kind": "light",
             "label": "LEFT AFT OVERWING",
             "color": "amber",
-            "x": 74.0,
-            "y": 64.0,
+            "x": 87.0,
+            "y": 68.0,
             "controls": [
               "doorsp"
             ],
@@ -1734,8 +1752,8 @@ assertion_line: 38
             "kind": "light",
             "label": "AFT ENTRY",
             "color": "amber",
-            "x": 74.0,
-            "y": 88.0,
+            "x": 87.0,
+            "y": 94.0,
             "controls": [
               "doorsp"
             ],
@@ -1746,7 +1764,7 @@ assertion_line: 38
             "kind": "light",
             "label": "FWD SERVICE",
             "color": "amber",
-            "x": 122.0,
+            "x": 143.0,
             "y": 16.0,
             "controls": [
               "doorsp"
@@ -1758,8 +1776,8 @@ assertion_line: 38
             "kind": "light",
             "label": "RIGHT FWD OVERWING",
             "color": "amber",
-            "x": 122.0,
-            "y": 40.0,
+            "x": 143.0,
+            "y": 42.0,
             "controls": [
               "doorsp"
             ],
@@ -1770,8 +1788,8 @@ assertion_line: 38
             "kind": "light",
             "label": "RIGHT AFT OVERWING",
             "color": "amber",
-            "x": 122.0,
-            "y": 64.0,
+            "x": 143.0,
+            "y": 68.0,
             "controls": [
               "doorsp"
             ],
@@ -1782,8 +1800,8 @@ assertion_line: 38
             "kind": "light",
             "label": "AFT SERVICE",
             "color": "amber",
-            "x": 122.0,
-            "y": 88.0,
+            "x": 143.0,
+            "y": 94.0,
             "controls": [
               "doorsp"
             ],
@@ -1794,8 +1812,8 @@ assertion_line: 38
             "kind": "light",
             "label": "FWD CARGO",
             "color": "amber",
-            "x": 176.0,
-            "y": 38.0,
+            "x": 199.0,
+            "y": 42.0,
             "controls": [
               "doorsp"
             ],
@@ -1807,8 +1825,8 @@ assertion_line: 38
             "kind": "light",
             "label": "AFT CARGO",
             "color": "amber",
-            "x": 176.0,
-            "y": 60.0,
+            "x": 199.0,
+            "y": 68.0,
             "controls": [
               "doorsp"
             ],
@@ -1822,15 +1840,15 @@ assertion_line: 38
         "id": "cvr",
         "title": "Cockpit voice recorder microphone monitor",
         "x": 596.0,
-        "y": 686.0,
-        "width": 210.0,
-        "height": 56.0,
+        "y": 1131.0,
+        "width": 211.0,
+        "height": 50.0,
         "items": [
           {
             "kind": "push_button",
             "label": "ERASE",
-            "x": 82.0,
-            "y": 24.0,
+            "x": 86.0,
+            "y": 31.0,
             "controls": [
               "cvrpanel"
             ],
@@ -1841,7 +1859,7 @@ assertion_line: 38
             "label": "STATUS",
             "color": "green",
             "x": 34.0,
-            "y": 30.0,
+            "y": 31.0,
             "controls": [
               "cvrpanel"
             ],
@@ -1851,8 +1869,8 @@ assertion_line: 38
           {
             "kind": "push_button",
             "label": "TEST",
-            "x": 124.0,
-            "y": 24.0,
+            "x": 134.0,
+            "y": 31.0,
             "controls": [
               "cvrpanel"
             ],
@@ -1862,8 +1880,8 @@ assertion_line: 38
           {
             "kind": "push_button",
             "label": "HEADPHONE",
-            "x": 176.0,
-            "y": 24.0,
+            "x": 182.0,
+            "y": 31.0,
             "controls": [
               "cvrpanel"
             ],
@@ -1876,7 +1894,7 @@ assertion_line: 38
         "id": "cab",
         "title": "Cabin altitude",
         "x": 596.0,
-        "y": 746.0,
+        "y": 1198.0,
         "width": 210.0,
         "height": 164.0,
         "items": [
@@ -1912,7 +1930,7 @@ assertion_line: 38
       {
         "id": "vrec",
         "title": "Voice recorder",
-        "x": 812.0,
+        "x": 849.0,
         "y": 6.0,
         "width": 178.0,
         "height": 62.0,
@@ -1934,9 +1952,9 @@ assertion_line: 38
       {
         "id": "air",
         "title": "Air temperature",
-        "x": 812.0,
+        "x": 849.0,
         "y": 72.0,
-        "width": 178.0,
+        "width": 184.0,
         "height": 240.0,
         "items": [
           {
@@ -1952,7 +1970,7 @@ assertion_line: 38
           {
             "kind": "selector",
             "label": "SOURCE",
-            "x": 130.0,
+            "x": 134.0,
             "y": 56.0,
             "controls": [
               "tempsw"
@@ -1964,7 +1982,7 @@ assertion_line: 38
           {
             "kind": "toggle_switch",
             "label": "TRIM AIR",
-            "x": 89.0,
+            "x": 91.0,
             "y": 122.0,
             "controls": [
               "trimair"
@@ -1988,7 +2006,7 @@ assertion_line: 38
             "kind": "light",
             "label": "ZONE TEMP",
             "color": "amber",
-            "x": 89.0,
+            "x": 91.0,
             "y": 162.0,
             "controls": [
               "tempsw"
@@ -1999,7 +2017,7 @@ assertion_line: 38
             "kind": "light",
             "label": "ZONE TEMP",
             "color": "amber",
-            "x": 142.0,
+            "x": 146.0,
             "y": 162.0,
             "controls": [
               "tempsw"
@@ -2021,7 +2039,7 @@ assertion_line: 38
           {
             "kind": "selector",
             "label": "FWD CAB",
-            "x": 89.0,
+            "x": 91.0,
             "y": 206.0,
             "controls": [
               "tempsw"
@@ -2033,7 +2051,7 @@ assertion_line: 38
           {
             "kind": "selector",
             "label": "AFT CAB",
-            "x": 142.0,
+            "x": 146.0,
             "y": 206.0,
             "controls": [
               "tempsw"
@@ -2047,17 +2065,17 @@ assertion_line: 38
       {
         "id": "bleed",
         "title": "Bleed air",
-        "x": 812.0,
-        "y": 316.0,
-        "width": 178.0,
-        "height": 366.0,
+        "x": 921.0,
+        "y": 326.0,
+        "width": 190.0,
+        "height": 394.0,
         "items": [
           {
             "kind": "light",
             "label": "DUAL BLEED",
             "color": "amber",
-            "x": 60.0,
-            "y": 16.0,
+            "x": 62.0,
+            "y": 30.0,
             "controls": [
               "packlts"
             ],
@@ -2067,7 +2085,7 @@ assertion_line: 38
             "kind": "toggle_switch",
             "label": "L RECIRC FAN",
             "x": 32.0,
-            "y": 56.0,
+            "y": 72.0,
             "controls": [
               "recirc"
             ],
@@ -2078,8 +2096,8 @@ assertion_line: 38
           {
             "kind": "toggle_switch",
             "label": "R RECIRC FAN",
-            "x": 146.0,
-            "y": 56.0,
+            "x": 155.0,
+            "y": 72.0,
             "controls": [
               "recirc"
             ],
@@ -2090,22 +2108,22 @@ assertion_line: 38
           {
             "kind": "gauge",
             "label": "DUCT PRESS",
-            "x": 89.0,
-            "y": 84.0,
+            "x": 94.0,
+            "y": 101.0,
             "description": "Left and right bleed duct pressure."
           },
           {
             "kind": "push_button",
             "label": "OVHT TEST",
-            "x": 150.0,
-            "y": 106.0,
+            "x": 160.0,
+            "y": 124.0,
             "description": "Tests duct and wing overheat."
           },
           {
             "kind": "toggle_switch",
             "label": "L PACK",
             "x": 32.0,
-            "y": 160.0,
+            "y": 180.0,
             "controls": [
               "packs"
             ],
@@ -2116,8 +2134,8 @@ assertion_line: 38
           {
             "kind": "toggle_switch",
             "label": "ISOLATION VALVE",
-            "x": 89.0,
-            "y": 178.0,
+            "x": 94.0,
+            "y": 198.0,
             "controls": [
               "iso"
             ],
@@ -2128,8 +2146,8 @@ assertion_line: 38
           {
             "kind": "toggle_switch",
             "label": "R PACK",
-            "x": 146.0,
-            "y": 160.0,
+            "x": 155.0,
+            "y": 180.0,
             "controls": [
               "packs"
             ],
@@ -2141,8 +2159,8 @@ assertion_line: 38
             "kind": "light",
             "label": "PACK",
             "color": "amber",
-            "x": 40.0,
-            "y": 220.0,
+            "x": 41.0,
+            "y": 242.0,
             "controls": [
               "packlts"
             ],
@@ -2152,8 +2170,8 @@ assertion_line: 38
             "kind": "light",
             "label": "WING-BODY OVERHEAT",
             "color": "amber",
-            "x": 40.0,
-            "y": 246.0,
+            "x": 41.0,
+            "y": 269.0,
             "controls": [
               "packlts"
             ],
@@ -2163,8 +2181,8 @@ assertion_line: 38
             "kind": "light",
             "label": "BLEED",
             "color": "amber",
-            "x": 40.0,
-            "y": 272.0,
+            "x": 41.0,
+            "y": 296.0,
             "controls": [
               "packlts"
             ],
@@ -2173,16 +2191,16 @@ assertion_line: 38
           {
             "kind": "push_button",
             "label": "TRIP RESET",
-            "x": 89.0,
-            "y": 248.0,
+            "x": 94.0,
+            "y": 271.0,
             "description": "Resets BLEED, PACK and ZONE TEMP trips once the fault clears."
           },
           {
             "kind": "light",
             "label": "PACK",
             "color": "amber",
-            "x": 138.0,
-            "y": 220.0,
+            "x": 147.0,
+            "y": 242.0,
             "controls": [
               "packlts"
             ],
@@ -2192,8 +2210,8 @@ assertion_line: 38
             "kind": "light",
             "label": "WING-BODY OVERHEAT",
             "color": "amber",
-            "x": 138.0,
-            "y": 246.0,
+            "x": 147.0,
+            "y": 269.0,
             "controls": [
               "packlts"
             ],
@@ -2203,8 +2221,8 @@ assertion_line: 38
             "kind": "light",
             "label": "BLEED",
             "color": "amber",
-            "x": 138.0,
-            "y": 272.0,
+            "x": 147.0,
+            "y": 296.0,
             "controls": [
               "packlts"
             ],
@@ -2214,7 +2232,7 @@ assertion_line: 38
             "kind": "toggle_switch",
             "label": "ENG BLEED 1",
             "x": 32.0,
-            "y": 330.0,
+            "y": 357.0,
             "controls": [
               "engbleed"
             ],
@@ -2225,8 +2243,8 @@ assertion_line: 38
           {
             "kind": "toggle_switch",
             "label": "APU BLEED",
-            "x": 89.0,
-            "y": 330.0,
+            "x": 94.0,
+            "y": 357.0,
             "controls": [
               "apubleed"
             ],
@@ -2237,8 +2255,8 @@ assertion_line: 38
           {
             "kind": "toggle_switch",
             "label": "ENG BLEED 2",
-            "x": 146.0,
-            "y": 330.0,
+            "x": 155.0,
+            "y": 357.0,
             "controls": [
               "engbleed"
             ],
@@ -2251,17 +2269,17 @@ assertion_line: 38
       {
         "id": "press",
         "title": "Cabin pressure",
-        "x": 812.0,
-        "y": 686.0,
-        "width": 178.0,
-        "height": 224.0,
+        "x": 832.0,
+        "y": 1131.0,
+        "width": 203.0,
+        "height": 354.0,
         "items": [
           {
             "kind": "light",
             "label": "AUTO FAIL",
             "color": "amber",
             "x": 36.0,
-            "y": 14.0,
+            "y": 30.0,
             "controls": [
               "press"
             ],
@@ -2271,8 +2289,8 @@ assertion_line: 38
             "kind": "light",
             "label": "OFF SCHED DESCENT",
             "color": "amber",
-            "x": 84.0,
-            "y": 14.0,
+            "x": 92.0,
+            "y": 30.0,
             "controls": [
               "press"
             ],
@@ -2283,7 +2301,7 @@ assertion_line: 38
             "label": "ALTN",
             "color": "green",
             "x": 36.0,
-            "y": 38.0,
+            "y": 67.0,
             "controls": [
               "press"
             ],
@@ -2294,8 +2312,8 @@ assertion_line: 38
             "kind": "light",
             "label": "MANUAL",
             "color": "green",
-            "x": 84.0,
-            "y": 38.0,
+            "x": 92.0,
+            "y": 67.0,
             "controls": [
               "press"
             ],
@@ -2305,8 +2323,8 @@ assertion_line: 38
           {
             "kind": "readout",
             "label": "FLT ALT",
-            "x": 54.0,
-            "y": 58.0,
+            "x": 57.0,
+            "y": 98.0,
             "controls": [
               "press"
             ],
@@ -2315,8 +2333,8 @@ assertion_line: 38
           {
             "kind": "selector",
             "label": "FLT ALT KNOB",
-            "x": 54.0,
-            "y": 92.0,
+            "x": 57.0,
+            "y": 150.0,
             "controls": [
               "press"
             ],
@@ -2325,8 +2343,8 @@ assertion_line: 38
           {
             "kind": "readout",
             "label": "LAND ALT",
-            "x": 54.0,
-            "y": 134.0,
+            "x": 57.0,
+            "y": 215.0,
             "controls": [
               "ldgalt"
             ],
@@ -2335,8 +2353,8 @@ assertion_line: 38
           {
             "kind": "selector",
             "label": "LAND ALT KNOB",
-            "x": 54.0,
-            "y": 172.0,
+            "x": 57.0,
+            "y": 273.0,
             "controls": [
               "ldgalt"
             ],
@@ -2345,8 +2363,8 @@ assertion_line: 38
           {
             "kind": "gauge",
             "label": "VALVE",
-            "x": 132.0,
-            "y": 62.0,
+            "x": 148.0,
+            "y": 104.0,
             "controls": [
               "outflow"
             ],
@@ -2355,8 +2373,8 @@ assertion_line: 38
           {
             "kind": "toggle_switch",
             "label": "OUTFLOW",
-            "x": 132.0,
-            "y": 110.0,
+            "x": 148.0,
+            "y": 178.0,
             "controls": [
               "outflow"
             ],
@@ -2367,8 +2385,8 @@ assertion_line: 38
           {
             "kind": "selector",
             "label": "MODE",
-            "x": 132.0,
-            "y": 172.0,
+            "x": 148.0,
+            "y": 273.0,
             "controls": [
               "press"
             ],
@@ -2382,7 +2400,7 @@ assertion_line: 38
         "id": "ltl",
         "title": "Landing and taxi lights",
         "x": 10.0,
-        "y": 914.0,
+        "y": 1102.0,
         "width": 300.0,
         "height": 90.0,
         "items": [
@@ -2452,7 +2470,7 @@ assertion_line: 38
         "id": "apu",
         "title": "APU",
         "x": 314.0,
-        "y": 914.0,
+        "y": 1357.0,
         "width": 84.0,
         "height": 90.0,
         "items": [
@@ -2474,7 +2492,7 @@ assertion_line: 38
         "id": "start",
         "title": "Engine start",
         "x": 402.0,
-        "y": 914.0,
+        "y": 1366.0,
         "width": 290.0,
         "height": 90.0,
         "items": [
@@ -2591,9 +2609,9 @@ assertion_line: 38
         "id": "apul",
         "title": "APU lights",
         "x": 252.0,
-        "y": 826.0,
-        "width": 124.0,
-        "height": 84.0,
+        "y": 1269.0,
+        "width": 121.0,
+        "height": 72.0,
         "items": [
           {
             "kind": "light",
@@ -2607,7 +2625,7 @@ assertion_line: 38
             "kind": "light",
             "label": "LOW OIL PRESSURE",
             "color": "amber",
-            "x": 90.0,
+            "x": 88.0,
             "y": 28.0,
             "description": "APU oil pressure is low."
           },
@@ -2616,15 +2634,15 @@ assertion_line: 38
             "label": "FAULT",
             "color": "amber",
             "x": 32.0,
-            "y": 62.0,
+            "y": 54.0,
             "description": "APU fault. The APU has shut down automatically."
           },
           {
             "kind": "light",
             "label": "OVER SPEED",
             "color": "amber",
-            "x": 90.0,
-            "y": 62.0,
+            "x": 88.0,
+            "y": 54.0,
             "description": "APU overspeed shutdown."
           }
         ]
@@ -2634,8 +2652,8 @@ assertion_line: 38
   {
     "id": "aft",
     "title": "Aft overhead",
-    "width": 1000.0,
-    "height": 488.0,
+    "width": 1221.0,
+    "height": 520.0,
     "sections": [
       {
         "id": "elt",
@@ -2677,13 +2695,13 @@ assertion_line: 38
         "x": 8.0,
         "y": 296.0,
         "width": 228.0,
-        "height": 98.0,
+        "height": 104.0,
         "items": [
           {
             "kind": "display_unit",
             "label": "LE FLAPS AND SLATS",
             "x": 114.0,
-            "y": 38.0,
+            "y": 43.0,
             "description": "Shows leading edge device position: transit, extended or full extended.",
             "width": 190.0,
             "height": 46.0
@@ -2692,7 +2710,7 @@ assertion_line: 38
             "kind": "push_button",
             "label": "TEST",
             "x": 114.0,
-            "y": 82.0,
+            "y": 87.0,
             "description": "Tests the leading edge device lights."
           }
         ]
@@ -2702,14 +2720,14 @@ assertion_line: 38
         "title": "IRS",
         "x": 238.0,
         "y": 70.0,
-        "width": 230.0,
-        "height": 326.0,
+        "width": 273.0,
+        "height": 358.0,
         "items": [
           {
             "kind": "display_unit",
             "label": "IRS DISPLAY",
-            "x": 115.0,
-            "y": 24.0,
+            "x": 132.0,
+            "y": 31.0,
             "description": "Shows the data chosen on DSPL SEL.",
             "width": 210.0,
             "height": 22.0
@@ -2717,8 +2735,8 @@ assertion_line: 38
           {
             "kind": "selector",
             "label": "DSPL SEL",
-            "x": 58.0,
-            "y": 82.0,
+            "x": 63.0,
+            "y": 94.0,
             "positions": "TEST, TK/GS, PPOS, WIND, HDG/STS",
             "rest": "TEST",
             "description": "Chooses what the IRS display shows."
@@ -2726,8 +2744,8 @@ assertion_line: 38
           {
             "kind": "selector",
             "label": "SYS DSPL",
-            "x": 58.0,
-            "y": 140.0,
+            "x": 63.0,
+            "y": 156.0,
             "positions": "L, R",
             "rest": "L",
             "description": "Chooses the left or right IRS."
@@ -2735,8 +2753,8 @@ assertion_line: 38
           {
             "kind": "display_unit",
             "label": "KEYPAD",
-            "x": 165.0,
-            "y": 110.0,
+            "x": 193.0,
+            "y": 124.0,
             "description": "Enters position and heading.",
             "width": 80.0,
             "height": 80.0
@@ -2745,8 +2763,8 @@ assertion_line: 38
             "kind": "light",
             "label": "GPS",
             "color": "amber",
-            "x": 50.0,
-            "y": 190.0,
+            "x": 53.0,
+            "y": 211.0,
             "controls": [
               "gpslts"
             ],
@@ -2756,8 +2774,8 @@ assertion_line: 38
             "kind": "light",
             "label": "ILS",
             "color": "amber",
-            "x": 115.0,
-            "y": 190.0,
+            "x": 132.0,
+            "y": 211.0,
             "controls": [
               "gpslts"
             ],
@@ -2767,8 +2785,8 @@ assertion_line: 38
             "kind": "light",
             "label": "GLS",
             "color": "amber",
-            "x": 180.0,
-            "y": 190.0,
+            "x": 211.0,
+            "y": 211.0,
             "controls": [
               "gpslts"
             ],
@@ -2779,7 +2797,7 @@ assertion_line: 38
             "label": "ALIGN",
             "color": "amber",
             "x": 36.0,
-            "y": 220.0,
+            "y": 243.0,
             "controls": [
               "irs"
             ],
@@ -2789,8 +2807,8 @@ assertion_line: 38
             "kind": "light",
             "label": "ON DC",
             "color": "amber",
-            "x": 82.0,
-            "y": 220.0,
+            "x": 92.0,
+            "y": 243.0,
             "controls": [
               "irs"
             ],
@@ -2801,7 +2819,7 @@ assertion_line: 38
             "label": "FAULT",
             "color": "amber",
             "x": 36.0,
-            "y": 244.0,
+            "y": 269.0,
             "controls": [
               "irs"
             ],
@@ -2811,8 +2829,8 @@ assertion_line: 38
             "kind": "light",
             "label": "DC FAIL",
             "color": "amber",
-            "x": 82.0,
-            "y": 244.0,
+            "x": 92.0,
+            "y": 269.0,
             "controls": [
               "irs"
             ],
@@ -2822,8 +2840,8 @@ assertion_line: 38
             "kind": "light",
             "label": "ALIGN",
             "color": "amber",
-            "x": 148.0,
-            "y": 220.0,
+            "x": 172.0,
+            "y": 243.0,
             "controls": [
               "irs"
             ],
@@ -2833,8 +2851,8 @@ assertion_line: 38
             "kind": "light",
             "label": "ON DC",
             "color": "amber",
-            "x": 194.0,
-            "y": 220.0,
+            "x": 228.0,
+            "y": 243.0,
             "controls": [
               "irs"
             ],
@@ -2844,8 +2862,8 @@ assertion_line: 38
             "kind": "light",
             "label": "FAULT",
             "color": "amber",
-            "x": 148.0,
-            "y": 244.0,
+            "x": 172.0,
+            "y": 269.0,
             "controls": [
               "irs"
             ],
@@ -2855,8 +2873,8 @@ assertion_line: 38
             "kind": "light",
             "label": "DC FAIL",
             "color": "amber",
-            "x": 194.0,
-            "y": 244.0,
+            "x": 228.0,
+            "y": 269.0,
             "controls": [
               "irs"
             ],
@@ -2865,8 +2883,8 @@ assertion_line: 38
           {
             "kind": "selector",
             "label": "IRS L",
-            "x": 60.0,
-            "y": 294.0,
+            "x": 65.0,
+            "y": 323.0,
             "controls": [
               "irs"
             ],
@@ -2877,8 +2895,8 @@ assertion_line: 38
           {
             "kind": "selector",
             "label": "IRS R",
-            "x": 170.0,
-            "y": 294.0,
+            "x": 199.0,
+            "y": 323.0,
             "controls": [
               "irs"
             ],
@@ -2891,7 +2909,7 @@ assertion_line: 38
       {
         "id": "svc",
         "title": "Service interphone",
-        "x": 470.0,
+        "x": 1115.0,
         "y": 220.0,
         "width": 96.0,
         "height": 90.0,
@@ -2931,31 +2949,37 @@ assertion_line: 38
         "title": "Engine",
         "x": 570.0,
         "y": 182.0,
-        "width": 226.0,
-        "height": 94.0,
+        "width": 232.0,
+        "height": 118.0,
         "items": [
           {
             "kind": "light",
             "label": "REVERSER COMMAND",
             "color": "amber",
-            "x": 90.0,
+            "x": 87.0,
             "y": 20.0,
+            "controls": [
+              "eec"
+            ],
             "description": "In flight, a reverse thrust lever is not fully down."
           },
           {
             "kind": "light",
             "label": "REVERSER AIR/GRD",
             "color": "amber",
-            "x": 140.0,
+            "x": 143.0,
             "y": 20.0,
+            "controls": [
+              "eec"
+            ],
             "description": "The air/ground logic used by the thrust reversers has failed."
           },
           {
             "kind": "light",
             "label": "REVERSER LIMITED",
             "color": "amber",
-            "x": 28.0,
-            "y": 48.0,
+            "x": 31.0,
+            "y": 46.0,
             "controls": [
               "eec"
             ],
@@ -2965,8 +2989,8 @@ assertion_line: 38
             "kind": "light",
             "label": "ENGINE CONTROL",
             "color": "amber",
-            "x": 28.0,
-            "y": 76.0,
+            "x": 31.0,
+            "y": 100.0,
             "controls": [
               "eec"
             ],
@@ -2976,8 +3000,8 @@ assertion_line: 38
             "kind": "light",
             "label": "REVERSER LIMITED",
             "color": "amber",
-            "x": 198.0,
-            "y": 48.0,
+            "x": 199.0,
+            "y": 46.0,
             "controls": [
               "eec"
             ],
@@ -2987,8 +3011,8 @@ assertion_line: 38
             "kind": "light",
             "label": "ENGINE CONTROL",
             "color": "amber",
-            "x": 198.0,
-            "y": 76.0,
+            "x": 199.0,
+            "y": 100.0,
             "controls": [
               "eec"
             ],
@@ -2997,8 +3021,8 @@ assertion_line: 38
           {
             "kind": "push_button",
             "label": "EEC 1",
-            "x": 90.0,
-            "y": 62.0,
+            "x": 87.0,
+            "y": 73.0,
             "controls": [
               "eec"
             ],
@@ -3010,8 +3034,8 @@ assertion_line: 38
           {
             "kind": "push_button",
             "label": "EEC 2",
-            "x": 140.0,
-            "y": 62.0,
+            "x": 143.0,
+            "y": 73.0,
             "controls": [
               "eec"
             ],
@@ -3026,7 +3050,7 @@ assertion_line: 38
         "id": "oxy",
         "title": "Oxygen",
         "x": 570.0,
-        "y": 280.0,
+        "y": 304.0,
         "width": 226.0,
         "height": 114.0,
         "items": [
@@ -3062,6 +3086,7 @@ assertion_line: 38
             "controls": [
               "paxoxy"
             ],
+            "lit_at": "ON",
             "description": "The passenger masks have dropped and oxygen is flowing in the cabin."
           }
         ]
@@ -3088,9 +3113,9 @@ assertion_line: 38
       {
         "id": "rec",
         "title": "Flight recorder and Mach test",
-        "x": 800.0,
+        "x": 828.0,
         "y": 182.0,
-        "width": 192.0,
+        "width": 283.0,
         "height": 94.0,
         "items": [
           {
@@ -3110,7 +3135,7 @@ assertion_line: 38
             "kind": "light",
             "label": "OFF",
             "color": "amber",
-            "x": 104.0,
+            "x": 140.0,
             "y": 66.0,
             "controls": [
               "fltrec"
@@ -3120,7 +3145,7 @@ assertion_line: 38
           {
             "kind": "push_button",
             "label": "MACH TEST 1",
-            "x": 146.0,
+            "x": 207.0,
             "y": 52.0,
             "controls": [
               "mach"
@@ -3131,7 +3156,7 @@ assertion_line: 38
           {
             "kind": "push_button",
             "label": "MACH TEST 2",
-            "x": 176.0,
+            "x": 255.0,
             "y": 52.0,
             "controls": [
               "mach"
@@ -3145,15 +3170,15 @@ assertion_line: 38
         "id": "stall",
         "title": "Stall warning test",
         "x": 800.0,
-        "y": 280.0,
-        "width": 192.0,
-        "height": 56.0,
+        "y": 304.0,
+        "width": 141.0,
+        "height": 50.0,
         "items": [
           {
             "kind": "push_button",
             "label": "STALL TEST 1",
             "x": 64.0,
-            "y": 26.0,
+            "y": 31.0,
             "controls": [
               "stalltest"
             ],
@@ -3162,8 +3187,8 @@ assertion_line: 38
           {
             "kind": "push_button",
             "label": "STALL TEST 2",
-            "x": 128.0,
-            "y": 26.0,
+            "x": 112.0,
+            "y": 31.0,
             "controls": [
               "stalltest"
             ],
@@ -3209,7 +3234,7 @@ assertion_line: 38
         "id": "mnt",
         "title": "Maintenance",
         "x": 218.0,
-        "y": 400.0,
+        "y": 432.0,
         "width": 250.0,
         "height": 82.0,
         "items": [
@@ -3230,7 +3255,7 @@ assertion_line: 38
         "id": "dome",
         "title": "Dome light",
         "x": 472.0,
-        "y": 400.0,
+        "y": 432.0,
         "width": 96.0,
         "height": 82.0,
         "items": [
@@ -3249,16 +3274,16 @@ assertion_line: 38
         "id": "gear",
         "title": "Gear lights",
         "x": 572.0,
-        "y": 400.0,
-        "width": 220.0,
-        "height": 82.0,
+        "y": 422.0,
+        "width": 195.0,
+        "height": 74.0,
         "items": [
           {
             "kind": "light",
             "label": "LEFT GEAR",
             "color": "green",
             "x": 50.0,
-            "y": 26.0,
+            "y": 30.0,
             "controls": [
               "gearovhd"
             ],
@@ -3268,8 +3293,8 @@ assertion_line: 38
             "kind": "light",
             "label": "RIGHT GEAR",
             "color": "green",
-            "x": 102.0,
-            "y": 26.0,
+            "x": 162.0,
+            "y": 30.0,
             "controls": [
               "gearovhd"
             ],
@@ -3279,8 +3304,8 @@ assertion_line: 38
             "kind": "light",
             "label": "NOSE GEAR",
             "color": "green",
-            "x": 76.0,
-            "y": 58.0,
+            "x": 106.0,
+            "y": 56.0,
             "controls": [
               "gearovhd"
             ],
@@ -3293,7 +3318,7 @@ assertion_line: 38
   {
     "id": "gl",
     "title": "Glareshield",
-    "width": 1292.0,
+    "width": 1418.0,
     "height": 240.0,
     "sections": [
       {
@@ -3442,14 +3467,14 @@ assertion_line: 38
         "title": "Left annunciators",
         "x": 236.0,
         "y": 6.0,
-        "width": 150.0,
-        "height": 228.0,
+        "width": 155.0,
+        "height": 139.0,
         "items": [
           {
             "kind": "push_button",
             "label": "FLT CONT",
             "x": 30.0,
-            "y": 140.0,
+            "y": 92.0,
             "controls": [
               "recall"
             ],
@@ -3460,8 +3485,8 @@ assertion_line: 38
           {
             "kind": "push_button",
             "label": "IRS",
-            "x": 75.0,
-            "y": 140.0,
+            "x": 78.0,
+            "y": 92.0,
             "controls": [
               "recall"
             ],
@@ -3472,8 +3497,8 @@ assertion_line: 38
           {
             "kind": "push_button",
             "label": "FUEL",
-            "x": 120.0,
-            "y": 140.0,
+            "x": 126.0,
+            "y": 92.0,
             "controls": [
               "recall"
             ],
@@ -3485,7 +3510,7 @@ assertion_line: 38
             "kind": "push_button",
             "label": "ELEC",
             "x": 30.0,
-            "y": 184.0,
+            "y": 120.0,
             "controls": [
               "recall"
             ],
@@ -3496,8 +3521,8 @@ assertion_line: 38
           {
             "kind": "push_button",
             "label": "APU",
-            "x": 75.0,
-            "y": 184.0,
+            "x": 78.0,
+            "y": 120.0,
             "controls": [
               "recall"
             ],
@@ -3508,8 +3533,8 @@ assertion_line: 38
           {
             "kind": "push_button",
             "label": "OVHT/DET",
-            "x": 120.0,
-            "y": 184.0,
+            "x": 126.0,
+            "y": 120.0,
             "controls": [
               "recall"
             ],
@@ -3520,7 +3545,7 @@ assertion_line: 38
           {
             "kind": "push_button",
             "label": "FIRE WARN",
-            "x": 42.0,
+            "x": 30.0,
             "y": 64.0,
             "description": "Fire warning. Push to silence the bell and reset.",
             "width": 54.0,
@@ -3529,7 +3554,7 @@ assertion_line: 38
           {
             "kind": "push_button",
             "label": "MASTER CAUTION",
-            "x": 108.0,
+            "x": 126.0,
             "y": 64.0,
             "description": "Master caution. Push to reset; the six-pack shows which system.",
             "width": 54.0,
@@ -3540,7 +3565,7 @@ assertion_line: 38
       {
         "id": "mcp",
         "title": "Mode control panel",
-        "x": 336.0,
+        "x": 400.0,
         "y": 6.0,
         "width": 620.0,
         "height": 228.0,
@@ -3563,7 +3588,7 @@ assertion_line: 38
             "controls": [
               "fd"
             ],
-            "positions": "OFF, ON",
+            "positions": "ON, OFF",
             "rest": "OFF",
             "description": "Left flight director."
           },
@@ -3575,7 +3600,7 @@ assertion_line: 38
             "controls": [
               "mcpset"
             ],
-            "positions": "OFF, ARM",
+            "positions": "ARM, OFF",
             "rest": "OFF",
             "description": "Arms the autothrottle."
           },
@@ -3660,7 +3685,7 @@ assertion_line: 38
             "kind": "push_button",
             "label": "VOR LOC",
             "x": 318.0,
-            "y": 92.0,
+            "y": 90.0,
             "controls": [
               "rollmode"
             ],
@@ -3670,7 +3695,7 @@ assertion_line: 38
             "kind": "push_button",
             "label": "APP",
             "x": 318.0,
-            "y": 134.0,
+            "y": 130.0,
             "controls": [
               "appmode",
               "rollmode"
@@ -3729,14 +3754,14 @@ assertion_line: 38
             "kind": "push_button",
             "label": "CWS A",
             "x": 470.0,
-            "y": 92.0,
+            "y": 90.0,
             "description": "Autopilot holds the attitude you set with the control wheel."
           },
           {
             "kind": "push_button",
             "label": "CWS B",
             "x": 522.0,
-            "y": 92.0,
+            "y": 90.0,
             "description": "Autopilot holds the attitude you set with the control wheel."
           },
           {
@@ -3747,7 +3772,7 @@ assertion_line: 38
             "controls": [
               "fd"
             ],
-            "positions": "OFF, ON",
+            "positions": "ON, OFF",
             "rest": "OFF",
             "description": "Right flight director."
           },
@@ -3756,7 +3781,7 @@ assertion_line: 38
             "label": "DISENGAGE",
             "guarded": true,
             "x": 496.0,
-            "y": 134.0,
+            "y": 130.0,
             "controls": [
               "apdis"
             ],
@@ -3779,16 +3804,16 @@ assertion_line: 38
       {
         "id": "annr",
         "title": "Right annunciators",
-        "x": 960.0,
+        "x": 1024.0,
         "y": 6.0,
-        "width": 150.0,
-        "height": 228.0,
+        "width": 155.0,
+        "height": 139.0,
         "items": [
           {
             "kind": "push_button",
             "label": "ANTI-ICE",
             "x": 30.0,
-            "y": 140.0,
+            "y": 92.0,
             "controls": [
               "recall"
             ],
@@ -3799,8 +3824,8 @@ assertion_line: 38
           {
             "kind": "push_button",
             "label": "HYD",
-            "x": 75.0,
-            "y": 140.0,
+            "x": 78.0,
+            "y": 92.0,
             "controls": [
               "recall"
             ],
@@ -3811,8 +3836,8 @@ assertion_line: 38
           {
             "kind": "push_button",
             "label": "DOORS",
-            "x": 120.0,
-            "y": 140.0,
+            "x": 126.0,
+            "y": 92.0,
             "controls": [
               "recall"
             ],
@@ -3824,7 +3849,7 @@ assertion_line: 38
             "kind": "push_button",
             "label": "ENG",
             "x": 30.0,
-            "y": 184.0,
+            "y": 120.0,
             "controls": [
               "recall"
             ],
@@ -3835,8 +3860,8 @@ assertion_line: 38
           {
             "kind": "push_button",
             "label": "OVERHEAD",
-            "x": 75.0,
-            "y": 184.0,
+            "x": 78.0,
+            "y": 120.0,
             "controls": [
               "recall"
             ],
@@ -3847,8 +3872,8 @@ assertion_line: 38
           {
             "kind": "push_button",
             "label": "AIR COND",
-            "x": 120.0,
-            "y": 184.0,
+            "x": 126.0,
+            "y": 120.0,
             "controls": [
               "recall"
             ],
@@ -3859,7 +3884,7 @@ assertion_line: 38
           {
             "kind": "push_button",
             "label": "FIRE WARN",
-            "x": 108.0,
+            "x": 126.0,
             "y": 64.0,
             "description": "Fire warning. Push to silence the bell and reset.",
             "width": 54.0,
@@ -3868,7 +3893,7 @@ assertion_line: 38
           {
             "kind": "push_button",
             "label": "MASTER CAUTION",
-            "x": 42.0,
+            "x": 30.0,
             "y": 64.0,
             "description": "Master caution. Push to reset; the six-pack shows which system.",
             "width": 54.0,
@@ -3879,7 +3904,7 @@ assertion_line: 38
       {
         "id": "efisr",
         "title": "First officer EFIS",
-        "x": 1062.0,
+        "x": 1188.0,
         "y": 6.0,
         "width": 220.0,
         "height": 228.0,
@@ -4022,45 +4047,45 @@ assertion_line: 38
   {
     "id": "mn",
     "title": "Main panel",
-    "width": 1000.0,
-    "height": 430.0,
+    "width": 2027.0,
+    "height": 538.0,
     "sections": [
       {
         "id": "cl",
         "title": "Captain lights",
         "x": 10.0,
         "y": 6.0,
-        "width": 434.0,
-        "height": 96.0,
+        "width": 918.0,
+        "height": 109.0,
         "items": [
           {
             "kind": "light",
             "label": "BELOW G/S",
             "color": "amber",
-            "x": 28.0,
-            "y": 40.0,
+            "x": 31.0,
+            "y": 43.0,
             "description": "The airplane has gone well below the glideslope on the approach."
           },
           {
             "kind": "light",
             "label": "TAKEOFF CONFIG",
             "color": "red",
-            "x": 76.0,
-            "y": 40.0,
+            "x": 136.0,
+            "y": 43.0,
             "description": "When thrust went up for takeoff, an item such as the flaps, speedbrake, stabilizer trim or parking brake was not set for takeoff."
           },
           {
             "kind": "light",
             "label": "CABIN ALTITUDE",
             "color": "red",
-            "x": 124.0,
-            "y": 40.0,
+            "x": 241.0,
+            "y": 43.0,
             "description": "The cabin altitude has climbed above about 10,000 ft."
           },
           {
             "kind": "toggle_switch",
             "label": "A/P A/T TEST",
-            "x": 222.0,
+            "x": 456.0,
             "y": 22.0,
             "controls": [
               "ltest"
@@ -4071,8 +4096,8 @@ assertion_line: 38
           {
             "kind": "toggle_switch",
             "label": "LIGHTS",
-            "x": 356.0,
-            "y": 26.0,
+            "x": 750.0,
+            "y": 27.0,
             "controls": [
               "ltest"
             ],
@@ -4084,16 +4109,16 @@ assertion_line: 38
             "kind": "light",
             "label": "SPEED BRAKE DO NOT ARM",
             "color": "amber",
-            "x": 310.0,
-            "y": 64.0,
+            "x": 649.0,
+            "y": 71.0,
             "description": "Automatic speedbrake fault. Arm only by hand after landing."
           },
           {
             "kind": "light",
             "label": "STAB OUT OF TRIM",
             "color": "amber",
-            "x": 356.0,
-            "y": 64.0,
+            "x": 750.0,
+            "y": 71.0,
             "controls": [
               "stabout"
             ],
@@ -4103,35 +4128,36 @@ assertion_line: 38
             "kind": "light",
             "label": "SPEED BRAKE ARMED",
             "color": "green",
-            "x": 402.0,
-            "y": 64.0,
+            "x": 850.0,
+            "y": 71.0,
             "controls": [
               "speedbrake"
             ],
+            "lit_at": "ARMED",
             "description": "The speedbrake is armed and will deploy by itself on touchdown."
           },
           {
             "kind": "light",
             "label": "A/P",
             "color": "amber",
-            "x": 196.0,
-            "y": 78.0,
+            "x": 399.0,
+            "y": 88.0,
             "description": "Autopilot, autothrottle and FMC alert light."
           },
           {
             "kind": "light",
             "label": "A/T",
             "color": "amber",
-            "x": 222.0,
-            "y": 78.0,
+            "x": 456.0,
+            "y": 88.0,
             "description": "Autopilot, autothrottle and FMC alert light."
           },
           {
             "kind": "light",
             "label": "FMC",
             "color": "amber",
-            "x": 248.0,
-            "y": 78.0,
+            "x": 513.0,
+            "y": 88.0,
             "description": "Autopilot, autothrottle and FMC alert light."
           }
         ]
@@ -4140,7 +4166,7 @@ assertion_line: 38
         "id": "cd",
         "title": "Captain displays",
         "x": 10.0,
-        "y": 94.0,
+        "y": 119.0,
         "width": 434.0,
         "height": 226.0,
         "items": [
@@ -4181,16 +4207,16 @@ assertion_line: 38
       {
         "id": "ctr",
         "title": "Standby and gear",
-        "x": 450.0,
+        "x": 932.0,
         "y": 6.0,
-        "width": 104.0,
-        "height": 404.0,
+        "width": 174.0,
+        "height": 408.0,
         "items": [
           {
             "kind": "display_unit",
             "label": "STANDBY DISPLAY",
-            "x": 52.0,
-            "y": 54.0,
+            "x": 87.0,
+            "y": 58.0,
             "controls": [
               "isfdc"
             ],
@@ -4202,8 +4228,8 @@ assertion_line: 38
             "kind": "light",
             "label": "LEFT GEAR",
             "color": "red",
-            "x": 13.0,
-            "y": 134.0,
+            "x": 31.0,
+            "y": 138.0,
             "description": "The left main gear is moving or not where the gear lever says, or it is not down and locked with a thrust lever at idle below 800 ft.",
             "width": 42.0,
             "height": 0.0
@@ -4212,8 +4238,8 @@ assertion_line: 38
             "kind": "light",
             "label": "NOSE GEAR",
             "color": "red",
-            "x": 52.0,
-            "y": 108.0,
+            "x": 87.0,
+            "y": 112.0,
             "description": "The nose gear is moving or not where the gear lever says, or it is not down and locked with a thrust lever at idle below 800 ft.",
             "width": 42.0,
             "height": 0.0
@@ -4222,8 +4248,8 @@ assertion_line: 38
             "kind": "light",
             "label": "RIGHT GEAR",
             "color": "red",
-            "x": 91.0,
-            "y": 134.0,
+            "x": 142.0,
+            "y": 138.0,
             "description": "The right main gear is moving or not where the gear lever says, or it is not down and locked with a thrust lever at idle below 800 ft.",
             "width": 42.0,
             "height": 0.0
@@ -4232,11 +4258,12 @@ assertion_line: 38
             "kind": "light",
             "label": "LEFT GEAR",
             "color": "green",
-            "x": 13.0,
-            "y": 160.0,
+            "x": 31.0,
+            "y": 164.0,
             "controls": [
               "gearlever"
             ],
+            "lit_at": "DN",
             "description": "The left main gear is down and locked.",
             "width": 42.0,
             "height": 0.0
@@ -4245,11 +4272,12 @@ assertion_line: 38
             "kind": "light",
             "label": "NOSE GEAR",
             "color": "green",
-            "x": 52.0,
-            "y": 134.0,
+            "x": 87.0,
+            "y": 138.0,
             "controls": [
               "gearlever"
             ],
+            "lit_at": "DN",
             "description": "The nose gear is down and locked.",
             "width": 42.0,
             "height": 0.0
@@ -4258,21 +4286,21 @@ assertion_line: 38
             "kind": "light",
             "label": "RIGHT GEAR",
             "color": "green",
-            "x": 91.0,
-            "y": 160.0,
+            "x": 142.0,
+            "y": 164.0,
             "controls": [
               "gearlever"
             ],
+            "lit_at": "DN",
             "description": "The right main gear is down and locked.",
             "width": 42.0,
             "height": 0.0
           },
           {
-            "kind": "toggle_switch",
+            "kind": "lever",
             "label": "LANDING GEAR LEVER",
-            "guarded": true,
-            "x": 24.0,
-            "y": 266.0,
+            "x": 47.0,
+            "y": 270.0,
             "controls": [
               "gearlever",
               "gearup"
@@ -4284,16 +4312,16 @@ assertion_line: 38
           {
             "kind": "push_button",
             "label": "LOCK OVRD",
-            "x": 56.0,
-            "y": 236.0,
+            "x": 92.0,
+            "y": 240.0,
             "description": "Lets the gear lever go UP when the ground lock holds it."
           },
           {
             "kind": "toggle_switch",
             "label": "NOSE WHEEL STEER ALT",
             "guarded": true,
-            "x": 88.0,
-            "y": 268.0,
+            "x": 138.0,
+            "y": 272.0,
             "controls": [
               "nws"
             ],
@@ -4306,23 +4334,23 @@ assertion_line: 38
       {
         "id": "fl",
         "title": "First officer lights",
-        "x": 560.0,
+        "x": 1110.0,
         "y": 6.0,
-        "width": 430.0,
-        "height": 96.0,
+        "width": 907.0,
+        "height": 109.0,
         "items": [
           {
             "kind": "light",
             "label": "SPEEDBRAKES EXTENDED",
             "color": "amber",
-            "x": 30.0,
-            "y": 40.0,
+            "x": 31.0,
+            "y": 43.0,
             "description": "Speedbrakes are out at the wrong time."
           },
           {
             "kind": "toggle_switch",
             "label": "A/P A/T TEST",
-            "x": 156.0,
+            "x": 307.0,
             "y": 22.0,
             "controls": [
               "ltest"
@@ -4334,48 +4362,48 @@ assertion_line: 38
             "kind": "light",
             "label": "CABIN ALTITUDE",
             "color": "red",
-            "x": 306.0,
-            "y": 40.0,
+            "x": 636.0,
+            "y": 43.0,
             "description": "The cabin altitude has climbed above about 10,000 ft."
           },
           {
             "kind": "light",
             "label": "TAKEOFF CONFIG",
             "color": "red",
-            "x": 354.0,
-            "y": 40.0,
+            "x": 741.0,
+            "y": 43.0,
             "description": "When thrust went up for takeoff, an item such as the flaps, speedbrake, stabilizer trim or parking brake was not set for takeoff."
           },
           {
             "kind": "light",
             "label": "BELOW G/S",
             "color": "amber",
-            "x": 402.0,
-            "y": 40.0,
+            "x": 846.0,
+            "y": 43.0,
             "description": "The airplane has gone well below the glideslope on the approach."
           },
           {
             "kind": "light",
             "label": "A/P",
             "color": "amber",
-            "x": 130.0,
-            "y": 78.0,
+            "x": 250.0,
+            "y": 88.0,
             "description": "Autopilot, autothrottle and FMC alert light."
           },
           {
             "kind": "light",
             "label": "A/T",
             "color": "amber",
-            "x": 156.0,
-            "y": 78.0,
+            "x": 307.0,
+            "y": 88.0,
             "description": "Autopilot, autothrottle and FMC alert light."
           },
           {
             "kind": "light",
             "label": "FMC",
             "color": "amber",
-            "x": 182.0,
-            "y": 78.0,
+            "x": 364.0,
+            "y": 88.0,
             "description": "Autopilot, autothrottle and FMC alert light."
           }
         ]
@@ -4383,8 +4411,8 @@ assertion_line: 38
       {
         "id": "fd",
         "title": "First officer displays",
-        "x": 560.0,
-        "y": 94.0,
+        "x": 1110.0,
+        "y": 119.0,
         "width": 430.0,
         "height": 226.0,
         "items": [
@@ -4418,14 +4446,14 @@ assertion_line: 38
         "id": "clt",
         "title": "Captain display select and lighting",
         "x": 10.0,
-        "y": 326.0,
-        "width": 434.0,
-        "height": 110.0,
+        "y": 349.0,
+        "width": 568.0,
+        "height": 133.0,
         "items": [
           {
             "kind": "selector",
             "label": "MAIN PANEL",
-            "x": 118.0,
+            "x": 165.0,
             "y": 34.0,
             "controls": [
               "panellts"
@@ -4437,7 +4465,7 @@ assertion_line: 38
           {
             "kind": "selector",
             "label": "PFD/MFD",
-            "x": 188.0,
+            "x": 254.0,
             "y": 34.0,
             "controls": [
               "dsel"
@@ -4449,8 +4477,8 @@ assertion_line: 38
           {
             "kind": "selector",
             "label": "BACKGROUND",
-            "x": 262.0,
-            "y": 58.0,
+            "x": 347.0,
+            "y": 61.0,
             "controls": [
               "panellts"
             ],
@@ -4461,8 +4489,8 @@ assertion_line: 38
           {
             "kind": "selector",
             "label": "AFDS FLOOD",
-            "x": 346.0,
-            "y": 58.0,
+            "x": 454.0,
+            "y": 61.0,
             "controls": [
               "panellts"
             ],
@@ -4473,29 +4501,29 @@ assertion_line: 38
           {
             "kind": "push_button",
             "label": "FOOT AIR",
-            "x": 18.0,
-            "y": 58.0,
+            "x": 39.0,
+            "y": 61.0,
             "description": "Pull for foot air."
           },
           {
             "kind": "push_button",
             "label": "WINDSHIELD AIR",
-            "x": 60.0,
-            "y": 58.0,
+            "x": 92.0,
+            "y": 61.0,
             "description": "Pull for windshield air."
           },
           {
             "kind": "selector",
             "label": "OUTBD DU",
-            "x": 118.0,
-            "y": 84.0,
+            "x": 165.0,
+            "y": 90.0,
             "description": "Outboard display brightness."
           },
           {
             "kind": "selector",
             "label": "INBD DU",
-            "x": 188.0,
-            "y": 84.0,
+            "x": 254.0,
+            "y": 90.0,
             "description": "Inboard display brightness."
           }
         ]
@@ -4503,17 +4531,17 @@ assertion_line: 38
       {
         "id": "gp",
         "title": "Ground proximity, display select and air",
-        "x": 560.0,
-        "y": 326.0,
-        "width": 430.0,
-        "height": 110.0,
+        "x": 582.0,
+        "y": 418.0,
+        "width": 533.0,
+        "height": 114.0,
         "items": [
           {
             "kind": "light",
             "label": "GND PROX INOP",
             "color": "amber",
-            "x": 26.0,
-            "y": 26.0,
+            "x": 31.0,
+            "y": 30.0,
             "controls": [
               "gpwssw"
             ],
@@ -4522,8 +4550,8 @@ assertion_line: 38
           {
             "kind": "push_button",
             "label": "SYS TEST",
-            "x": 26.0,
-            "y": 56.0,
+            "x": 31.0,
+            "y": 60.0,
             "controls": [
               "gpwssw"
             ],
@@ -4533,8 +4561,8 @@ assertion_line: 38
             "kind": "toggle_switch",
             "label": "FLAP INHIBIT",
             "guarded": true,
-            "x": 68.0,
-            "y": 52.0,
+            "x": 82.0,
+            "y": 56.0,
             "positions": "NORM",
             "rest": "NORM",
             "description": "Guarded at NORM. INHIBIT silences the flap, gear, terrain or runway alerts."
@@ -4543,8 +4571,8 @@ assertion_line: 38
             "kind": "toggle_switch",
             "label": "GEAR INHIBIT",
             "guarded": true,
-            "x": 112.0,
-            "y": 52.0,
+            "x": 136.0,
+            "y": 56.0,
             "positions": "NORM",
             "rest": "NORM",
             "description": "Guarded at NORM. INHIBIT silences the flap, gear, terrain or runway alerts."
@@ -4553,8 +4581,8 @@ assertion_line: 38
             "kind": "toggle_switch",
             "label": "TERR INHIBIT",
             "guarded": true,
-            "x": 156.0,
-            "y": 52.0,
+            "x": 189.0,
+            "y": 56.0,
             "positions": "NORM",
             "rest": "NORM",
             "description": "Guarded at NORM. INHIBIT silences the flap, gear, terrain or runway alerts."
@@ -4563,8 +4591,8 @@ assertion_line: 38
             "kind": "toggle_switch",
             "label": "RUNWAY INHIBIT",
             "guarded": true,
-            "x": 200.0,
-            "y": 52.0,
+            "x": 243.0,
+            "y": 56.0,
             "positions": "NORM",
             "rest": "NORM",
             "description": "Guarded at NORM. INHIBIT silences the flap, gear, terrain or runway alerts."
@@ -4572,8 +4600,8 @@ assertion_line: 38
           {
             "kind": "selector",
             "label": "PFD/MFD",
-            "x": 254.0,
-            "y": 34.0,
+            "x": 308.0,
+            "y": 38.0,
             "controls": [
               "dsel"
             ],
@@ -4584,8 +4612,8 @@ assertion_line: 38
           {
             "kind": "selector",
             "label": "MAIN PANEL",
-            "x": 322.0,
-            "y": 34.0,
+            "x": 391.0,
+            "y": 38.0,
             "controls": [
               "panellts"
             ],
@@ -4597,36 +4625,36 @@ assertion_line: 38
             "kind": "light",
             "label": "RUNWAY INOP",
             "color": "amber",
-            "x": 26.0,
-            "y": 88.0,
+            "x": 31.0,
+            "y": 92.0,
             "description": "Runway awareness is inoperative."
           },
           {
             "kind": "selector",
             "label": "INBD DU",
-            "x": 254.0,
-            "y": 84.0,
+            "x": 308.0,
+            "y": 88.0,
             "description": "Inboard display brightness and contrast."
           },
           {
             "kind": "selector",
             "label": "OUTBD DU",
-            "x": 322.0,
-            "y": 84.0,
+            "x": 391.0,
+            "y": 88.0,
             "description": "Outboard display brightness and contrast."
           },
           {
             "kind": "push_button",
             "label": "WINDSHIELD AIR",
-            "x": 376.0,
-            "y": 58.0,
+            "x": 457.0,
+            "y": 62.0,
             "description": "Pull for windshield air."
           },
           {
             "kind": "push_button",
             "label": "FOOT AIR",
-            "x": 416.0,
-            "y": 58.0,
+            "x": 505.0,
+            "y": 62.0,
             "description": "Pull for foot air."
           }
         ]
@@ -4636,8 +4664,8 @@ assertion_line: 38
   {
     "id": "con",
     "title": "Center console",
-    "width": 700.0,
-    "height": 1124.0,
+    "width": 838.0,
+    "height": 1287.0,
     "sections": [
       {
         "id": "cdul",
@@ -4668,14 +4696,14 @@ assertion_line: 38
         "title": "Engine display and autobrake",
         "x": 226.0,
         "y": 6.0,
-        "width": 288.0,
-        "height": 120.0,
+        "width": 324.0,
+        "height": 144.0,
         "items": [
           {
             "kind": "toggle_switch",
             "label": "FUEL FLOW",
-            "x": 34.0,
-            "y": 40.0,
+            "x": 38.0,
+            "y": 49.0,
             "controls": [
               "fuelflow"
             ],
@@ -4686,8 +4714,8 @@ assertion_line: 38
           {
             "kind": "selector",
             "label": "SELECTOR L",
-            "x": 34.0,
-            "y": 100.0,
+            "x": 38.0,
+            "y": 113.0,
             "controls": [
               "sel"
             ],
@@ -4699,8 +4727,8 @@ assertion_line: 38
             "kind": "light",
             "label": "AUTO BRAKE DISARM",
             "color": "amber",
-            "x": 104.0,
-            "y": 22.0,
+            "x": 115.0,
+            "y": 30.0,
             "controls": [
               "abrake"
             ],
@@ -4709,8 +4737,8 @@ assertion_line: 38
           {
             "kind": "selector",
             "label": "AUTO BRAKE",
-            "x": 104.0,
-            "y": 62.0,
+            "x": 115.0,
+            "y": 72.0,
             "controls": [
               "abrake"
             ],
@@ -4721,8 +4749,8 @@ assertion_line: 38
           {
             "kind": "push_button",
             "label": "ENG",
-            "x": 214.0,
-            "y": 22.0,
+            "x": 236.0,
+            "y": 30.0,
             "controls": [
               "engmon",
               "oil"
@@ -4732,8 +4760,8 @@ assertion_line: 38
           {
             "kind": "push_button",
             "label": "SYS",
-            "x": 260.0,
-            "y": 22.0,
+            "x": 287.0,
+            "y": 30.0,
             "controls": [
               "sysp"
             ],
@@ -4742,15 +4770,15 @@ assertion_line: 38
           {
             "kind": "push_button",
             "label": "INFO",
-            "x": 214.0,
-            "y": 60.0,
+            "x": 236.0,
+            "y": 70.0,
             "description": "Information display."
           },
           {
             "kind": "push_button",
             "label": "C/R",
-            "x": 260.0,
-            "y": 60.0,
+            "x": 287.0,
+            "y": 70.0,
             "controls": [
               "cr"
             ],
@@ -4760,8 +4788,8 @@ assertion_line: 38
           {
             "kind": "selector",
             "label": "SELECTOR R",
-            "x": 256.0,
-            "y": 104.0,
+            "x": 283.0,
+            "y": 117.0,
             "controls": [
               "sel"
             ],
@@ -4774,31 +4802,31 @@ assertion_line: 38
             "kind": "light",
             "label": "ANTISKID INOP",
             "color": "amber",
-            "x": 104.0,
-            "y": 108.0,
+            "x": 115.0,
+            "y": 121.0,
             "description": "Antiskid fault. Antiskid is off for one or more wheels."
           },
           {
             "kind": "light",
             "label": "BRAKE TEMP",
             "color": "amber",
-            "x": 160.0,
-            "y": 22.0,
+            "x": 177.0,
+            "y": 30.0,
             "description": "A brake is hot."
           },
           {
             "kind": "light",
             "label": "TIRE PRESS",
             "color": "amber",
-            "x": 160.0,
-            "y": 50.0,
+            "x": 177.0,
+            "y": 60.0,
             "description": "Tire pressure is low."
           },
           {
             "kind": "push_button",
             "label": "ENG TFR",
-            "x": 160.0,
-            "y": 90.0,
+            "x": 177.0,
+            "y": 102.0,
             "description": "Moves the engine display to the other screen."
           }
         ]
@@ -4806,7 +4834,7 @@ assertion_line: 38
       {
         "id": "cdur",
         "title": "Right CDU",
-        "x": 480.0,
+        "x": 554.0,
         "y": 6.0,
         "width": 210.0,
         "height": 120.0,
@@ -4831,7 +4859,7 @@ assertion_line: 38
         "id": "st",
         "title": "Control stand",
         "x": 10.0,
-        "y": 130.0,
+        "y": 154.0,
         "width": 680.0,
         "height": 250.0,
         "items": [
@@ -4849,9 +4877,8 @@ assertion_line: 38
             "height": 190.0
           },
           {
-            "kind": "toggle_switch",
+            "kind": "lever",
             "label": "SPEEDBRAKE LEVER",
-            "guarded": true,
             "x": 150.0,
             "y": 120.0,
             "controls": [
@@ -4894,9 +4921,8 @@ assertion_line: 38
             "description": "Disconnects the autothrottle."
           },
           {
-            "kind": "toggle_switch",
+            "kind": "lever",
             "label": "FLAP LEVER",
-            "guarded": true,
             "x": 532.0,
             "y": 120.0,
             "controls": [
@@ -4925,39 +4951,38 @@ assertion_line: 38
         "id": "lo",
         "title": "Parking brake and start levers",
         "x": 10.0,
-        "y": 384.0,
-        "width": 680.0,
-        "height": 110.0,
+        "y": 408.0,
+        "width": 725.0,
+        "height": 122.0,
         "items": [
           {
-            "kind": "toggle_switch",
+            "kind": "handle",
             "label": "PARKING BRAKE",
-            "guarded": true,
-            "x": 80.0,
+            "x": 84.0,
             "y": 50.0,
             "controls": [
               "pbrake"
             ],
-            "positions": "PULL",
-            "rest": "PULL",
+            "positions": "RELEASED, SET",
+            "rest": "SET",
             "description": "Red handle."
           },
           {
             "kind": "light",
             "label": "PARK BRAKE LIGHT",
-            "color": "amber",
-            "x": 170.0,
+            "color": "red",
+            "x": 179.0,
             "y": 52.0,
             "controls": [
               "pbrake"
             ],
+            "lit_at": "SET",
             "description": "The parking brake is holding the airplane."
           },
           {
-            "kind": "toggle_switch",
+            "kind": "lever",
             "label": "START LEVER 1",
-            "guarded": true,
-            "x": 270.0,
+            "x": 285.0,
             "y": 50.0,
             "controls": [
               "slever"
@@ -4967,10 +4992,9 @@ assertion_line: 38
             "description": "Fuel to engine 1."
           },
           {
-            "kind": "toggle_switch",
+            "kind": "lever",
             "label": "START LEVER 2",
-            "guarded": true,
-            "x": 350.0,
+            "x": 370.0,
             "y": 50.0,
             "controls": [
               "slever"
@@ -4982,14 +5006,14 @@ assertion_line: 38
           {
             "kind": "push_button",
             "label": "HORN CUTOUT",
-            "x": 310.0,
-            "y": 96.0,
+            "x": 328.0,
+            "y": 99.0,
             "description": "Silences the gear horn."
           },
           {
             "kind": "toggle_switch",
             "label": "STAB TRIM PRI",
-            "x": 540.0,
+            "x": 572.0,
             "y": 50.0,
             "controls": [
               "stabcut"
@@ -5001,7 +5025,7 @@ assertion_line: 38
           {
             "kind": "toggle_switch",
             "label": "STAB TRIM B/U",
-            "x": 610.0,
+            "x": 646.0,
             "y": 50.0,
             "controls": [
               "stabcut"
@@ -5016,8 +5040,8 @@ assertion_line: 38
         "id": "fi",
         "title": "Fire protection",
         "x": 10.0,
-        "y": 498.0,
-        "width": 680.0,
+        "y": 534.0,
+        "width": 818.0,
         "height": 150.0,
         "items": [
           {
@@ -5025,6 +5049,9 @@ assertion_line: 38
             "label": "OVHT DET 1",
             "x": 44.0,
             "y": 46.0,
+            "controls": [
+              "ovhtdet"
+            ],
             "positions": "A, NORMAL, B",
             "rest": "NORMAL",
             "description": "Selects loop A, B, or both (NORMAL) for engine 1."
@@ -5049,23 +5076,21 @@ assertion_line: 38
             "description": "Tests the fire warnings."
           },
           {
-            "kind": "toggle_switch",
+            "kind": "handle",
             "label": "FIRE 1",
-            "guarded": true,
-            "x": 130.0,
+            "x": 149.0,
             "y": 76.0,
             "controls": [
               "firesw"
             ],
             "positions": "PULL, ROTATE L, R",
-            "rest": "PULL",
             "description": "Engine 1 fire switch."
           },
           {
             "kind": "light",
             "label": "FAULT",
             "color": "amber",
-            "x": 222.0,
+            "x": 261.0,
             "y": 40.0,
             "description": "Both detector loops of an engine have failed."
           },
@@ -5073,7 +5098,7 @@ assertion_line: 38
             "kind": "light",
             "label": "APU DET INOP",
             "color": "amber",
-            "x": 222.0,
+            "x": 261.0,
             "y": 76.0,
             "description": "The APU fire detector loop has failed, so an APU fire may not be detected."
           },
@@ -5081,35 +5106,36 @@ assertion_line: 38
             "kind": "light",
             "label": "APU BOTTLE DISCHARGE",
             "color": "amber",
-            "x": 222.0,
+            "x": 261.0,
             "y": 112.0,
             "description": "The APU fire bottle is empty or has lost pressure."
           },
           {
             "kind": "push_button",
             "label": "BELL CUTOUT",
-            "x": 310.0,
+            "x": 368.0,
             "y": 34.0,
             "description": "Silences the fire warning bell."
           },
           {
-            "kind": "toggle_switch",
+            "kind": "handle",
             "label": "FIRE APU",
-            "guarded": true,
-            "x": 310.0,
+            "x": 368.0,
             "y": 92.0,
             "controls": [
               "apufire"
             ],
             "positions": "PULL, ROTATE",
-            "rest": "PULL",
             "description": "APU fire switch."
           },
           {
             "kind": "toggle_switch",
             "label": "OVHT DET 2",
-            "x": 394.0,
+            "x": 470.0,
             "y": 46.0,
+            "controls": [
+              "ovhtdet"
+            ],
             "positions": "A, NORMAL, B",
             "rest": "NORMAL",
             "description": "Selects loop A, B, or both (NORMAL) for engine 2."
@@ -5118,28 +5144,26 @@ assertion_line: 38
             "kind": "light",
             "label": "ENG 2 OVERHEAT",
             "color": "amber",
-            "x": 394.0,
+            "x": 470.0,
             "y": 86.0,
             "description": "The detectors around engine 2 sense more heat than normal, but not a fire."
           },
           {
-            "kind": "toggle_switch",
+            "kind": "handle",
             "label": "FIRE 2",
-            "guarded": true,
-            "x": 480.0,
+            "x": 574.0,
             "y": 76.0,
             "controls": [
               "firesw"
             ],
             "positions": "PULL, ROTATE L, R",
-            "rest": "PULL",
             "description": "Engine 2 fire switch."
           },
           {
             "kind": "light",
             "label": "L BOTTLE DISCHARGE",
             "color": "amber",
-            "x": 560.0,
+            "x": 672.0,
             "y": 34.0,
             "description": "The left engine fire bottle has been fired or has lost pressure."
           },
@@ -5147,14 +5171,14 @@ assertion_line: 38
             "kind": "light",
             "label": "R BOTTLE DISCHARGE",
             "color": "amber",
-            "x": 628.0,
+            "x": 755.0,
             "y": 34.0,
             "description": "The right engine fire bottle has been fired or has lost pressure."
           },
           {
             "kind": "toggle_switch",
             "label": "EXT TEST",
-            "x": 594.0,
+            "x": 713.0,
             "y": 78.0,
             "controls": [
               "exttest"
@@ -5166,7 +5190,7 @@ assertion_line: 38
             "kind": "light",
             "label": "L",
             "color": "amber",
-            "x": 548.0,
+            "x": 657.0,
             "y": 122.0,
             "description": "Green during the extinguisher test."
           },
@@ -5174,7 +5198,7 @@ assertion_line: 38
             "kind": "light",
             "label": "R",
             "color": "amber",
-            "x": 594.0,
+            "x": 713.0,
             "y": 122.0,
             "description": "Green during the extinguisher test."
           },
@@ -5182,7 +5206,7 @@ assertion_line: 38
             "kind": "light",
             "label": "APU",
             "color": "amber",
-            "x": 640.0,
+            "x": 769.0,
             "y": 122.0,
             "description": "Green during the extinguisher test."
           }
@@ -5192,7 +5216,7 @@ assertion_line: 38
         "id": "r1",
         "title": "Radio 1",
         "x": 10.0,
-        "y": 652.0,
+        "y": 688.0,
         "width": 222.0,
         "height": 112.0,
         "items": [
@@ -5216,15 +5240,15 @@ assertion_line: 38
         "id": "cf",
         "title": "Cargo fire",
         "x": 238.0,
-        "y": 652.0,
-        "width": 224.0,
-        "height": 112.0,
+        "y": 688.0,
+        "width": 300.0,
+        "height": 121.0,
         "items": [
           {
             "kind": "light",
             "label": "EXT FWD",
             "color": "amber",
-            "x": 22.0,
+            "x": 35.0,
             "y": 42.0,
             "description": "Green during the cargo fire test.",
             "width": 38.0,
@@ -5234,7 +5258,7 @@ assertion_line: 38
             "kind": "light",
             "label": "EXT AFT",
             "color": "amber",
-            "x": 68.0,
+            "x": 94.0,
             "y": 42.0,
             "description": "Green during the cargo fire test.",
             "width": 38.0,
@@ -5243,7 +5267,7 @@ assertion_line: 38
           {
             "kind": "toggle_switch",
             "label": "DET FWD",
-            "x": 114.0,
+            "x": 154.0,
             "y": 42.0,
             "positions": "A, NORM, B",
             "rest": "NORM",
@@ -5254,7 +5278,7 @@ assertion_line: 38
           {
             "kind": "toggle_switch",
             "label": "DET AFT",
-            "x": 152.0,
+            "x": 203.0,
             "y": 42.0,
             "positions": "A, NORM, B",
             "rest": "NORM",
@@ -5266,7 +5290,7 @@ assertion_line: 38
             "kind": "light",
             "label": "DETECTOR FAULT",
             "color": "amber",
-            "x": 198.0,
+            "x": 262.0,
             "y": 42.0,
             "description": "One or more selected detection loops in a hold has failed, so detection there may be reduced.",
             "width": 42.0,
@@ -5275,8 +5299,8 @@ assertion_line: 38
           {
             "kind": "push_button",
             "label": "TEST",
-            "x": 25.0,
-            "y": 82.0,
+            "x": 39.0,
+            "y": 84.0,
             "controls": [
               "cargofire"
             ],
@@ -5287,8 +5311,8 @@ assertion_line: 38
           {
             "kind": "push_button",
             "label": "ARM FWD",
-            "x": 85.0,
-            "y": 82.0,
+            "x": 116.0,
+            "y": 84.0,
             "controls": [
               "cargofire"
             ],
@@ -5299,8 +5323,8 @@ assertion_line: 38
           {
             "kind": "push_button",
             "label": "ARM AFT",
-            "x": 137.0,
-            "y": 82.0,
+            "x": 183.0,
+            "y": 84.0,
             "controls": [
               "cargofire"
             ],
@@ -5311,8 +5335,8 @@ assertion_line: 38
           {
             "kind": "push_button",
             "label": "DISCH",
-            "x": 195.0,
-            "y": 82.0,
+            "x": 258.0,
+            "y": 84.0,
             "controls": [
               "cargofire"
             ],
@@ -5325,8 +5349,8 @@ assertion_line: 38
       {
         "id": "r2",
         "title": "Radio 2",
-        "x": 468.0,
-        "y": 652.0,
+        "x": 542.0,
+        "y": 688.0,
         "width": 222.0,
         "height": 112.0,
         "items": [
@@ -5348,7 +5372,7 @@ assertion_line: 38
         "id": "n1",
         "title": "NAV 1",
         "x": 10.0,
-        "y": 768.0,
+        "y": 804.0,
         "width": 222.0,
         "height": 84.0,
         "items": [
@@ -5370,7 +5394,7 @@ assertion_line: 38
         "id": "wx",
         "title": "Weather radar",
         "x": 238.0,
-        "y": 768.0,
+        "y": 813.0,
         "width": 224.0,
         "height": 84.0,
         "items": [
@@ -5392,7 +5416,7 @@ assertion_line: 38
         "id": "n2",
         "title": "NAV 2",
         "x": 468.0,
-        "y": 768.0,
+        "y": 813.0,
         "width": 222.0,
         "height": 84.0,
         "items": [
@@ -5414,7 +5438,7 @@ assertion_line: 38
         "id": "a1",
         "title": "Audio 1",
         "x": 10.0,
-        "y": 856.0,
+        "y": 892.0,
         "width": 222.0,
         "height": 84.0,
         "items": [
@@ -5424,7 +5448,8 @@ assertion_line: 38
             "x": 111.0,
             "y": 48.0,
             "controls": [
-              "audio"
+              "audio",
+              "pa"
             ],
             "description": "Radio and intercom audio.",
             "width": 170.0,
@@ -5436,15 +5461,15 @@ assertion_line: 38
         "id": "atc",
         "title": "ATC/TCAS",
         "x": 238.0,
-        "y": 856.0,
-        "width": 224.0,
-        "height": 84.0,
+        "y": 901.0,
+        "width": 265.0,
+        "height": 131.0,
         "items": [
           {
             "kind": "selector",
             "label": "ALT SOURCE 1",
-            "x": 30.0,
-            "y": 22.0,
+            "x": 38.0,
+            "y": 35.0,
             "controls": [
               "xpndr"
             ],
@@ -5455,8 +5480,8 @@ assertion_line: 38
           {
             "kind": "toggle_switch",
             "label": "XPNDR",
-            "x": 82.0,
-            "y": 48.0,
+            "x": 96.0,
+            "y": 64.0,
             "controls": [
               "xpndr"
             ],
@@ -5467,8 +5492,8 @@ assertion_line: 38
           {
             "kind": "display_unit",
             "label": "CODE",
-            "x": 134.0,
-            "y": 48.0,
+            "x": 155.0,
+            "y": 64.0,
             "controls": [
               "xpndr"
             ],
@@ -5479,8 +5504,8 @@ assertion_line: 38
           {
             "kind": "selector",
             "label": "MODE",
-            "x": 194.0,
-            "y": 48.0,
+            "x": 222.0,
+            "y": 64.0,
             "controls": [
               "xpndr"
             ],
@@ -5491,8 +5516,8 @@ assertion_line: 38
           {
             "kind": "selector",
             "label": "ALT SOURCE 2",
-            "x": 30.0,
-            "y": 78.0,
+            "x": 38.0,
+            "y": 98.0,
             "controls": [
               "xpndr"
             ],
@@ -5505,8 +5530,8 @@ assertion_line: 38
       {
         "id": "a2",
         "title": "Audio 2",
-        "x": 468.0,
-        "y": 856.0,
+        "x": 507.0,
+        "y": 901.0,
         "width": 222.0,
         "height": 84.0,
         "items": [
@@ -5516,7 +5541,8 @@ assertion_line: 38
             "x": 111.0,
             "y": 48.0,
             "controls": [
-              "audio"
+              "audio",
+              "pa"
             ],
             "description": "Radio and intercom audio.",
             "width": 170.0,
@@ -5528,7 +5554,7 @@ assertion_line: 38
         "id": "r3",
         "title": "Radio 3",
         "x": 10.0,
-        "y": 944.0,
+        "y": 980.0,
         "width": 222.0,
         "height": 60.0,
         "items": [
@@ -5547,7 +5573,7 @@ assertion_line: 38
         "id": "adf",
         "title": "ADF",
         "x": 238.0,
-        "y": 944.0,
+        "y": 1036.0,
         "width": 454.0,
         "height": 96.0,
         "items": [
@@ -5633,7 +5659,7 @@ assertion_line: 38
         "id": "lp",
         "title": "Lighting",
         "x": 10.0,
-        "y": 1008.0,
+        "y": 1044.0,
         "width": 222.0,
         "height": 130.0,
         "items": [
@@ -5641,7 +5667,7 @@ assertion_line: 38
             "kind": "selector",
             "label": "FLOOD",
             "x": 60.0,
-            "y": 66.18181818181819,
+            "y": 66.0,
             "positions": "OFF to BRIGHT",
             "rest": "OFF to BRIGHT",
             "description": "Flood lights."
@@ -5650,7 +5676,7 @@ assertion_line: 38
             "kind": "selector",
             "label": "PANEL",
             "x": 160.0,
-            "y": 66.18181818181819,
+            "y": 66.0,
             "positions": "OFF to BRIGHT",
             "rest": "OFF to BRIGHT",
             "description": "Panel lights."
@@ -5661,15 +5687,18 @@ assertion_line: 38
         "id": "tr",
         "title": "Trim",
         "x": 238.0,
-        "y": 1008.0,
-        "width": 224.0,
-        "height": 130.0,
+        "y": 1136.0,
+        "width": 249.0,
+        "height": 145.0,
         "items": [
           {
             "kind": "readout",
             "label": "RUDDER TRIM",
-            "x": 112.0,
+            "x": 121.0,
             "y": 22.0,
+            "controls": [
+              "trimp"
+            ],
             "description": "Rudder trim position indicator, in units nose left or right.",
             "width": 110.0,
             "height": 18.0
@@ -5677,8 +5706,8 @@ assertion_line: 38
           {
             "kind": "toggle_switch",
             "label": "AILERON",
-            "x": 58.0,
-            "y": 92.0,
+            "x": 62.0,
+            "y": 98.0,
             "controls": [
               "trimp"
             ],
@@ -5688,8 +5717,8 @@ assertion_line: 38
           {
             "kind": "selector",
             "label": "RUDDER",
-            "x": 166.0,
-            "y": 92.0,
+            "x": 179.0,
+            "y": 98.0,
             "controls": [
               "trimp"
             ],
@@ -5701,8 +5730,8 @@ assertion_line: 38
       {
         "id": "dr",
         "title": "Stab override and door",
-        "x": 468.0,
-        "y": 1008.0,
+        "x": 491.0,
+        "y": 1136.0,
         "width": 222.0,
         "height": 130.0,
         "items": [
@@ -5711,7 +5740,7 @@ assertion_line: 38
             "label": "STAB TRIM OVRD",
             "guarded": true,
             "x": 60.0,
-            "y": 68.54545454545455,
+            "y": 69.0,
             "controls": [
               "staboverride"
             ],
@@ -5723,13 +5752,106 @@ assertion_line: 38
             "kind": "selector",
             "label": "FLT DK DOOR",
             "x": 160.0,
-            "y": 68.54545454545455,
+            "y": 69.0,
             "controls": [
               "fdd"
             ],
             "positions": "UNLKD, AUTO, DENY",
             "rest": "AUTO",
             "description": "Flight deck door."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "seat",
+    "title": "Pilot station",
+    "width": 640.0,
+    "height": 140.0,
+    "sections": [
+      {
+        "id": "yoke",
+        "title": "Control wheel",
+        "x": 10.0,
+        "y": 6.0,
+        "width": 260.0,
+        "height": 128.0,
+        "items": [
+          {
+            "kind": "toggle_switch",
+            "label": "STAB TRIM",
+            "x": 70.0,
+            "y": 72.0,
+            "controls": [
+              "stabtrim"
+            ],
+            "positions": "NOSE DOWN, NOSE UP",
+            "description": "Main electric stabilizer trim: two thumb switches on the outboard grip of the wheel, moved together. Spring-loaded to the center."
+          },
+          {
+            "kind": "push_button",
+            "label": "A/P DISENGAGE",
+            "x": 190.0,
+            "y": 72.0,
+            "controls": [
+              "apdisc"
+            ],
+            "description": "Disengages the autopilot. On the outboard grip of the wheel."
+          }
+        ]
+      },
+      {
+        "id": "side",
+        "title": "Oxygen mask",
+        "x": 278.0,
+        "y": 6.0,
+        "width": 352.0,
+        "height": 128.0,
+        "items": [
+          {
+            "kind": "display_unit",
+            "label": "MASK STOWAGE",
+            "x": 66.0,
+            "y": 72.0,
+            "controls": [
+              "mask"
+            ],
+            "description": "The mask is stowed in a box beside the seat, with its flow indicator. Squeeze the red levers and pull to don it.",
+            "width": 84.0,
+            "height": 44.0
+          },
+          {
+            "kind": "push_button",
+            "label": "RESET/TEST",
+            "x": 158.0,
+            "y": 72.0,
+            "controls": [
+              "mask"
+            ],
+            "description": "Tests the mask and turns off the flow after a test."
+          },
+          {
+            "kind": "push_button",
+            "label": "EMERGENCY/TEST",
+            "x": 236.0,
+            "y": 72.0,
+            "controls": [
+              "mask"
+            ],
+            "description": "Gives oxygen under positive pressure, and tests that pressure."
+          },
+          {
+            "kind": "toggle_switch",
+            "label": "NORMAL/100%",
+            "x": 312.0,
+            "y": 72.0,
+            "controls": [
+              "mask"
+            ],
+            "positions": "NORMAL, 100%",
+            "rest": "NORMAL",
+            "description": "The regulator: NORMAL mixes cabin air with oxygen; 100% gives pure oxygen."
           }
         ]
       }

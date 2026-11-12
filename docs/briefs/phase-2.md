@@ -73,9 +73,10 @@ every change to `.github/workflows/`. For those, prepare what the step needs and
    the packs, under a cache named from a hash of the built files; it never takes over mid-session
    and offers a reload instead. `just update-test` runs the version-to-version test in headless
    Firefox (first visit, offline, new version waiting with the reload offer, reload); it passes.
-   Still to do by hand on the live site, once per release while the beta lasts: install the app,
-   deploy a new version, and check the reload offer and the new version on a desktop browser and
-   a tablet.
+   Checked by hand on the live site after batch 0's deploy: the reload offer appeared and Reload
+   brought in the new version. The step is done. While the beta lasts, repeat the check once per
+   release: install the app, deploy a new version, and check the reload offer and the new version
+   on a desktop browser and a tablet.
 7. **Interface parity.** Phases, checklists and flows, panel states, timers, the CDU walkthrough,
    SimBrief import and the guided tour, matching 3.0. Report one feature at a time. Include the
    carried-over checks from the Phase 1 brief: the LEGS page renders correctly with no departure
@@ -140,9 +141,14 @@ every change to `.github/workflows/`. For those, prepare what the step needs and
    1. Lists: phase screen, Checklist and Flow, item states, current-item box, quick and expanded,
       item detail, completion call, open items, options, Full and Essentials, keyboard, and
       saving progress on the device (brought forward from step 8).
-   2. Flight data: flight setup, flight strip, values in steps, SimBrief plan loading.
+   2. Flight data: flight setup, flight strip, values in steps, SimBrief plan loading. Also the
+      drawing leftovers from batch 1's review: the "ND range" and "Bank 10 to 30" captions in the
+      same upper-case style as other labels, one clear title for the two EFIS panels, and more
+      room between a "SEE STEP" caption and the item below it.
    3. Panel states, timers and briefings in the flow. Control drawings show each control at its
       expected position for the start state and the steps already confirmed (decision 0015).
+      Captions for lights expected out and for buttons and dials whose step sets no single
+      position (batch 1's review left these here).
    4. CDU walkthrough.
    5. Flight deck: overview map, panel views with our own glyphs, light meanings, exterior
       inspection on our own airplane outline.

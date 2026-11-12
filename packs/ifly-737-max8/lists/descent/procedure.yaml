@@ -14,6 +14,9 @@ steps:
     expect: VERIFIED
     controls:
       - cdu
+    targets:
+      - at: "con/cdul/CDU/1"
+      - at: "con/cdur/CDU/1"
     note: Check the arrival and approach in the CDU match your clearance.
     why: Confirms the route ahead
     check: Arrival and approach match the clearance
@@ -26,6 +29,9 @@ steps:
     expect: DESTINATION ELEVATION SET
     controls:
       - ldgalt
+    targets:
+      - at: "oh/press/LAND ALT/1"
+      - at: "oh/press/LAND ALT KNOB/1"
     note: The pressurization system uses this to bring the cabin down to the airport elevation.
     why: Brings the cabin down to airport elevation
     confirmed_by:
@@ -37,6 +43,9 @@ steps:
     expect: SET LANDING FLAPS AND VREF
     controls:
       - vref
+    targets:
+      - at: "con/cdul/CDU/1"
+      - at: "con/cdur/CDU/1"
     quick: always
     why: Target speed for flaps and weight
     check: VREF on the speed tape
@@ -49,6 +58,19 @@ steps:
     expect: "PRESS, NO UNEXPECTED ALERTS"
     controls:
       - recall
+    targets:
+      - at: "gl/annl/FLT CONT/1"
+      - at: "gl/annl/IRS/1"
+      - at: "gl/annl/FUEL/1"
+      - at: "gl/annl/ELEC/1"
+      - at: "gl/annl/APU/1"
+      - at: "gl/annl/OVHT/DET/1"
+      - at: "gl/annr/ANTI-ICE/1"
+      - at: "gl/annr/HYD/1"
+      - at: "gl/annr/DOORS/1"
+      - at: "gl/annr/ENG/1"
+      - at: "gl/annr/OVERHEAD/1"
+      - at: "gl/annr/AIR COND/1"
     why: Shows any stored system alerts
     check: No unexpected alerts
     how: recall
@@ -61,6 +83,9 @@ steps:
     expect: BARO OR RADIO SET PER CHART
     controls:
       - mins
+    targets:
+      - at: "gl/efisl/MINS/1"
+      - at: "gl/efisr/MINS/1"
     quick: always
     note: Set the altitude at which you must see the runway or go around.
     why: "At minimums you must see the runway, or go around"
@@ -74,6 +99,8 @@ steps:
     expect: "1, 2, 3 OR MAX AS NEEDED"
     controls:
       - abrake
+    targets:
+      - at: "con/ed/AUTO BRAKE/1"
     quick: always
     why: "Pick by runway length and surface: lower settings on long dry runways, higher on short or wet ones"
     confirmed_by:

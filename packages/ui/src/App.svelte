@@ -18,9 +18,10 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
     type PhaseView,
     type Progress,
     type Rail,
+    type OpenStep,
     type Settings,
   } from "@chocktochock/bindings";
-  import { getHost } from "./host";
+  import { getHost, type SavedItem } from "./host";
   import ContextPane from "./lib/ContextPane.svelte";
   import Drawer from "./lib/Drawer.svelte";
   import FlightStrip from "./lib/FlightStrip.svelte";
@@ -28,6 +29,9 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
   import PhaseChips from "./lib/PhaseChips.svelte";
   import TopBar from "./lib/TopBar.svelte";
   import { indexPack, type PackIndex } from "./pack-index";
+  import KeptNotice from "./lib/KeptNotice.svelte";
+  import OpenStepsCard from "./lib/OpenStepsCard.svelte";
+  import OpenStepsPage from "./pages/OpenStepsPage.svelte";
   import PhasePage from "./pages/PhasePage.svelte";
   import ReferencePage from "./pages/ReferencePage.svelte";
   import SettingsPage from "./pages/SettingsPage.svelte";
@@ -45,7 +49,16 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
   let settings = $state<Settings | null>(null);
   let flight = $state<Flight | null>(null);
   let rail = $state<Rail | null>(null);
+  let open = $state<OpenStep[]>([]);
+  /** Open steps from the phases before the one on screen. */
+  let behind = $state<OpenStep[]>([]);
+  /** When progress or settings were last saved on this device. */
+  let savedAt = $state<number | null>(null);
+  /** Saved data the app could not use, kept until the pilot decides (decision 0012). */
+  let kept = $state<{ what: "flight" | "settings"; state: "newer" | "unreadable"; text: string }[]>([]);
   let view = $state<PhaseView | null>(null);
+  /** In Essentials, the same phase in Full, for "Show N more steps from Full". */
+  let fullView = $state<PhaseView | null>(null);
   let error = $state<string | null>(null);
   let menuOpen = $state(false);
   /** The step shown in the context panel; null means the current step. */
@@ -67,9 +80,18 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
       index = indexPack(pack);
       lists = new Map(pack.lists.map((l) => [l.id, l]));
       intros = new Map((pack.content.phases?.phases ?? []).map((p) => [p.id, p.intro ?? []]));
-      settings = await host.defaultSettings();
-      flight = await host.newFlight(aircraft.id);
-      rail = await host.rail(aircraft.id, flight);
+      // What is saved on this device, if anything; what cannot be used is kept, never dropped.
+      const saved = await host.loadSaved(aircraft.id);
+      const usable = <T,>(what: "flight" | "settings", item: SavedItem<T>): T | null => {
+        if (!item) return null;
+        if (item.loaded.state === "ready") return item.loaded.value;
+        kept = [...kept, { what, state: item.loaded.state, text: item.text }];
+        return null;
+      };
+      settings = usable("settings", saved.settings) ?? (await host.defaultSettings());
+      const savedFlight = usable("flight", saved.flight);
+      flight = savedFlight && savedFlight.pack === aircraft.id ? savedFlight : await host.newFlight(aircraft.id);
+      await refresh();
     } catch (e) {
       fail(e);
     }
@@ -115,7 +137,19 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
       return;
     }
     let stale = false;
-    host.phaseView(packId, f, id).then(
+    const s = settings;
+    if (!s) return;
+    host.openSteps(packId, f, s, id).then((b) => {
+      if (!stale) behind = b;
+    });
+    if (s.essentials) {
+      host.phaseView(packId, f, { ...s, essentials: false }, id).then((v) => {
+        if (!stale) fullView = v;
+      });
+    } else {
+      fullView = null;
+    }
+    host.phaseView(packId, f, s, id).then(
       (v) => {
         if (!stale) view = v;
       },
@@ -151,7 +185,7 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
   let current = $derived(view?.lists.find((l) => l.current)?.current ?? null);
   /** The step the context panel shows, its row, and the steps after it. */
   let pane = $derived.by(() => {
-    if (!index || !view || screen === "settings") return null;
+    if (!index || !view || screen === "settings" || screen === "open") return null;
     const id = flow ? (cursor ?? current) : (selected ?? (screen === "reference" ? null : current));
     const rows = view.lists.flatMap((l) => l.steps);
     const at = rows.findIndex((r) => r.id === id);
@@ -165,14 +199,45 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
     return { step, row, upcoming };
   });
 
+  /** The rail and open steps for the flight and settings. */
+  async function refresh(): Promise<void> {
+    if (!flight || !settings) return;
+    rail = await host.rail(packId, flight, settings);
+    open = await host.openSteps(packId, flight, settings);
+  }
+
+  /** Saves on this device, unless saved data the app cannot use is waiting for the pilot. */
+  async function persist(what: "flight" | "settings"): Promise<void> {
+    const value = what === "flight" ? flight : settings;
+    if (!value || kept.some((k) => k.what === what)) return;
+    savedAt = await host.save(packId, what, value);
+  }
+
   async function act(action: Action): Promise<void> {
     if (!flight) return;
     try {
       flight = await host.apply(packId, flight, action);
-      rail = await host.rail(packId, flight);
+      await refresh();
+      await persist("flight");
     } catch (e) {
       fail(e);
     }
+  }
+
+  async function changeSettings(next: Settings): Promise<void> {
+    settings = next;
+    try {
+      await refresh();
+      await persist("settings");
+    } catch (e) {
+      fail(e);
+    }
+  }
+
+  async function startFresh(what: "flight" | "settings"): Promise<void> {
+    await host.setAside(packId, what);
+    kept = kept.filter((k) => k.what !== what);
+    await persist(what);
   }
 
   const tick = (id: string, done: boolean) => act(done ? { type: "untick", step: id } : { type: "tick", step: id, at: Date.now() });
@@ -185,11 +250,11 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
     return act({ type: "tick", step: id, at: Date.now() });
   };
   const changeView = (v: ListView) => {
-    if (settings) settings = { ...settings, listView: v };
+    if (settings) void changeSettings({ ...settings, listView: v });
   };
 </script>
 
-<div class="shell" data-app-ready={rail && (view || screen === "settings") ? "" : undefined}>
+<div class="shell" data-app-ready={rail && (view || screen === "settings" || screen === "open") ? "" : undefined}>
   <TopBar
     aircraft={index?.name ?? ""}
     {rail}
@@ -204,21 +269,33 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
   {:else if !rail || !settings || !flight || !index}
     <p class="msg">Loading…</p>
   {:else}
-    <PhaseChips phases={stagePhases} current={phaseId} {detail} {total} />
+    <PhaseChips phases={stagePhases} current={phaseId} {detail} essentials={settings.essentials} {total} {savedAt} />
     <Drawer
       open={menuOpen}
       {rail}
       {stage}
       {total}
       {detail}
+      essentials={settings.essentials}
+      openCount={open.length}
       version={info?.version ?? null}
       onClose={() => (menuOpen = false)}
     />
     <div class="app" class:nopane={!pane} class:flow={flow && screen !== "settings"}>
       <main>
         <div class="inner">
+          {#each kept as k (k.what)}
+            <KeptNotice what={k.what} state={k.state} text={k.text} onFresh={() => startFresh(k.what)} />
+          {/each}
           {#if screen === "settings"}
-            <SettingsPage {settings} onChange={(s) => (settings = s)} />
+            <SettingsPage {settings} onChange={(s) => void changeSettings(s)} />
+          {:else if screen === "open"}
+            <OpenStepsPage
+              {index}
+              {open}
+              onTick={(id) => act({ type: "tick", step: id, at: Date.now() })}
+              onUnskip={(id) => act({ type: "unskip", step: id })}
+            />
           {:else if screen === "reference"}
             <ReferencePage
               {index}
@@ -231,10 +308,15 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
               {selected}
               onTick={tick}
               onSkip={skip}
+              onUnskip={(id) => act({ type: "unskip", step: id })}
               onSelect={(id) => (selected = id)}
+              onClear={(list) => act({ type: "clearList", list })}
             />
           {:else if view}
             <FlightStrip />
+            {#if !flow}
+              <OpenStepsCard {index} open={behind} onTick={(id) => act({ type: "tick", step: id, at: Date.now() })} />
+            {/if}
             {#if flow}
               <FlowView {index} {view} {cursor} {detail} onConfirm={confirm} onSkip={skip} onMove={(id) => (cursor = id)} />
             {:else}
@@ -247,7 +329,11 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
                 {selected}
                 onTick={tick}
                 onSkip={skip}
+                onUnskip={(id) => act({ type: "unskip", step: id })}
                 onSelect={(id) => (selected = id)}
+                onClear={(list) => act({ type: "clearList", list })}
+                full={!settings.essentials}
+                {fullView}
                 onOption={(option, value) => act({ type: "setOption", option, value })}
               />
             {/if}
@@ -274,8 +360,12 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
 <style>
   .app {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) clamp(24rem, 33vw, 40rem);
+    grid-template-columns: minmax(0, 1fr) clamp(26rem, 42vw, 50rem);
     align-items: start;
+  }
+  /* Flow view gives the map and drawing a wider column, as 3.0's does. */
+  .app.flow {
+    grid-template-columns: minmax(0, 1fr) minmax(26rem, 42%);
   }
   .app.nopane {
     grid-template-columns: minmax(0, 1fr);
@@ -298,7 +388,7 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
     position: sticky;
     top: calc(var(--top-h) + var(--rail-h));
     height: calc(100vh - var(--top-h) - var(--rail-h));
-    padding: 1.375rem 1.25rem;
+    padding: 1.375rem 1rem;
     overflow-y: auto;
     border-left: 1px solid var(--line);
     background: var(--surface);
@@ -306,14 +396,16 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
   .msg {
     padding: 1.5rem;
   }
+  /* Muted, not red: it is a standing notice, not an error. */
   .legal {
     margin: 1.75rem 0 0;
-    color: var(--stop);
+    color: var(--muted);
     font-size: 0.7812rem;
   }
   /* Narrow screens show the context inside the step instead. */
   @media (max-width: 1023px) {
-    .app {
+    .app,
+    .app.flow {
       grid-template-columns: minmax(0, 1fr);
     }
     .pane {

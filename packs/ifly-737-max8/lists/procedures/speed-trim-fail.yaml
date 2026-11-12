@@ -8,7 +8,6 @@ title: Speed trim fail
 kind: non-normal
 basis:
   - regulator-docs
-why: "Simulator training only. Not for real-world use."
 steps:
   - id: ifly-737-max8.procedures.speed-trim-and-mcas
     number: 1
@@ -16,6 +15,8 @@ steps:
     expect: INOPERATIVE FOR THE REMAINDER OF THE FLIGHT
     controls:
       - fctllts
+    targets:
+      - at: "oh/fctl/SPEED TRIM FAIL/1"
     panel_lights:
       fctllts:
         - SPEED TRIM FAIL
@@ -28,6 +29,8 @@ steps:
     expect: CONTINUE NORMAL OPERATION
     controls:
       - fctllts
+    targets:
+      - at: "oh/fctl/SPEED TRIM FAIL/1"
     panel_lights:
       fctllts:
         - SPEED TRIM FAIL

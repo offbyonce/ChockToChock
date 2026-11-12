@@ -7,7 +7,8 @@
 
 import type { PackSummary } from "@chocktochock/bindings";
 import type { Host } from "@chocktochock/ui";
-import { appInfo, apply, defaultSettings, loadPack, newFlight, phaseView, rail } from "./core";
+import { appInfo, apply, defaultSettings, loadPack, newFlight, openSteps, phaseView, rail } from "./core";
+import { loadSaved, save, setAside } from "./saved";
 
 async function fetchText(path: string): Promise<string> {
   const response = await fetch(path);
@@ -23,5 +24,9 @@ export const webHost: Host = {
   apply,
   rail,
   phaseView,
+  openSteps,
+  loadSaved,
+  save,
+  setAside,
   defaultSettings,
 };

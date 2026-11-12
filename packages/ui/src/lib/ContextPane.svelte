@@ -45,7 +45,17 @@ the list on wide screens and inside the step on narrow ones.
 
   let place = $derived(index.place(step));
   let region = $derived(place ? (index.region(place.zone)?.region ?? null) : null);
-  let area = $derived(place ? (region ? [region.name, region.code ?? null] : splitArea(place.zone.area)) : null);
+  /**
+   * "Forward overhead · P5"; where a region holds several panels ("P9 · CONTROL STAND · P8"), the
+   * zone's own panel instead, as 3.0 shows it ("Center console · Control stand").
+   */
+  let area = $derived.by(() => {
+    if (!place) return null;
+    const [name, code] = splitArea(place.zone.area);
+    if (!region) return [name, code];
+    const many = (region.code ?? "").includes("·");
+    return [region.name, many ? (code ?? name) : (region.code ?? code)];
+  });
   // One drawing per panel, starting with the control's own section; up to three, as 3.0 shows.
   let cards = $derived.by(() => {
     const ids = [...new Set([place?.section?.id, ...targets.map((t) => t.section)].filter((x): x is string => !!x))];
@@ -84,7 +94,7 @@ the list on wide screens and inside the step on narrow ones.
   {#if place && area}
     <div class="where">
       <span class="label">Where it is</span>
-      <b>{area[0]}</b>{#if area[1]}<span class="code"> · {area[1]}</span>{/if}
+      <span><b>{area[0]}</b>{#if area[1]}<span class="dot">{" · "}</span><span class="code">{area[1]}</span>{/if}</span>
       <Locator {index} zone={place.zone} />
     </div>
     <OverviewMap {index} zone={place.zone} />
@@ -104,6 +114,10 @@ the list on wide screens and inside the step on narrow ones.
         Schematic, not to scale.
       </p>
     {/if}
+    {#if !targets.length && place.control}
+      <!-- A control no panel draws, such as the control column: say so, rather than show nothing. -->
+      <p class="tiny">{place.control.name} isn't drawn among the controls.</p>
+    {/if}
 
     {#if place.control}
       <div>
@@ -121,7 +135,7 @@ the list on wide screens and inside the step on narrow ones.
       <h3 class="label">Coming up</h3>
       <ol class="next">
         {#each upcoming as u (u.step.id)}
-          <li class={u.state}>
+          <li class={u.state} class:long={u.step.expect.length > 28}>
             <span class="nm">{u.step.text}</span>
             <span class="mono">{u.step.expect}</span>
           </li>
@@ -168,6 +182,10 @@ the list on wide screens and inside the step on narrow ones.
   .where b {
     font-weight: 600;
   }
+  .dot {
+    color: var(--muted);
+    white-space: pre;
+  }
   .code {
     color: var(--muted);
     font: 0.75rem var(--mono);
@@ -186,8 +204,9 @@ the list on wide screens and inside the step on narrow ones.
     font-size: 0.8125rem;
     font-weight: 600;
   }
+  /* The drawing takes the card's width; its own frame gives it a margin. */
   .pad {
-    padding: 0.5rem 0.75rem;
+    padding: 0.25rem;
   }
   /* The region's orientation captions around the panel, as 3.0 shows them. */
   .edge {
@@ -228,7 +247,7 @@ the list on wide screens and inside the step on narrow ones.
   }
   .next li {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 55%);
+    grid-template-columns: auto minmax(0, 1fr);
     gap: 0.125rem 1rem;
     padding: 0.5rem 0;
     border-top: 1px solid var(--line);
@@ -242,6 +261,12 @@ the list on wide screens and inside the step on narrow ones.
   }
   /* In the text face, as long values are in the list: the monospaced face makes "1,000" look like
      "1, 000" and its parentheses look like brackets. */
+  .next li.long {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .next li.long .mono {
+    text-align: left;
+  }
   .next .mono {
     color: var(--muted);
     font: 0.8125rem/1.4 var(--sans);

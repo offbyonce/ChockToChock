@@ -8,7 +8,6 @@ title: Go-around
 kind: non-normal
 basis:
   - prior-release
-why: "Simulator training only. Not for real-world use."
 steps:
   - id: ifly-737-max8.procedures.to-ga
     number: 1
@@ -16,36 +15,54 @@ steps:
     expect: PUSH
     controls:
       - toga
+    targets:
+      - at: "con/st/TO/GA/1"
   - id: ifly-737-max8.procedures.flaps
     number: 2
     text: FLAPS
     expect: "15"
     controls:
       - flaplever
+    targets:
+      - at: "con/st/FLAP LEVER/1"
+        set: "15"
   - id: ifly-737-max8.procedures.thrust-go-around
     number: 3
     text: THRUST
     expect: VERIFY GO-AROUND THRUST
     controls:
       - engmon
+    targets:
+      - at: "mn/cd/INBOARD DU: ND AND ENGINES/1"
+      - at: "con/ed/ENG/1"
   - id: ifly-737-max8.procedures.positive-rate
     number: 4
     text: POSITIVE RATE
     expect: GEAR UP
     controls:
       - gearup
+    targets:
+      - at: "mn/ctr/LANDING GEAR LEVER/1"
+        set: "UP"
   - id: ifly-737-max8.procedures.missed-approach-altitude
     number: 5
     text: MISSED APPROACH ALTITUDE
     expect: VERIFY SET
     controls:
       - mcpalt
+    targets:
+      - at: "gl/mcp/ALTITUDE/1"
   - id: ifly-737-max8.procedures.roll-mode
     number: 6
     text: ROLL MODE
     expect: SELECT ABOVE 400 FT
     controls:
       - rollmode
+    targets:
+      - at: "gl/mcp/HDG SEL/1"
+      - at: "gl/mcp/LNAV/1"
+      - at: "gl/mcp/VOR LOC/1"
+      - at: "gl/mcp/APP/1"
     panel_lights:
       rollmode:
         - HDG SEL
@@ -57,21 +74,34 @@ steps:
     controls:
       - flaplever
       - speedt
+    targets:
+      - at: "mn/cd/OUTBOARD DU: PFD/1"
+      - at: "con/st/FLAP LEVER/1"
   - id: ifly-737-max8.procedures.pitch-mode
     number: 8
     text: PITCH MODE
     expect: "AT FLAP SPEED, SELECT LVL CHG OR VNAV, VERIFY CLIMB THRUST"
     controls:
       - pitchmode
+    targets:
+      - at: "gl/mcp/VNAV/1"
+      - at: "gl/mcp/LVL CHG/1"
   - id: ifly-737-max8.procedures.missed-approach-altitude-go-around
     number: 9
     text: MISSED APPROACH ALTITUDE
     expect: VERIFY CAPTURED
     controls:
       - mcpalt
+    targets:
+      - at: "gl/mcp/ALTITUDE/1"
   - id: ifly-737-max8.procedures.after-takeoff-checklist
     number: 10
     text: AFTER TAKEOFF CHECKLIST
     expect: COMPLETE
     controls:
       - fltinst
+    targets:
+      - at: "mn/cd/OUTBOARD DU: PFD/1"
+      - at: "mn/cd/INBOARD DU: ND AND ENGINES/1"
+      - at: "mn/fd/INBOARD DU: ND/1"
+      - at: "mn/fd/OUTBOARD DU: PFD/1"

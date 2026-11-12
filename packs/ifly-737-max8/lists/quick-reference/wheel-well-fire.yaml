@@ -9,7 +9,7 @@ kind: non-normal
 basis:
   - prior-release
 when: Wheel well fire warning.
-why: "Simulator training only. Not for real-world use. There is no extinguisher in the wheel well. Lowering the gear moves hot wheels into the airstream to cool them."
+why: "There is no extinguisher in the wheel well. Lowering the gear moves hot wheels into the airstream to cool them."
 steps:
   - id: ifly-737-max8.quick-reference.airspeed-wheel-well-fire
     number: 1
@@ -17,9 +17,20 @@ steps:
     expect: "270 KT/.82M MAXIMUM"
     controls:
       - speedt
+    targets:
+      - at: "mn/cd/OUTBOARD DU: PFD/1"
   - id: ifly-737-max8.quick-reference.landing-gear-lever
     number: 2
     text: LANDING GEAR LEVER
     expect: DN
     controls:
       - gearlever
+    targets:
+      - at: "mn/ctr/LEFT GEAR/2"
+        light: on
+      - at: "mn/ctr/NOSE GEAR/2"
+        light: on
+      - at: "mn/ctr/RIGHT GEAR/2"
+        light: on
+      - at: "mn/ctr/LANDING GEAR LEVER/1"
+        set: "DN"

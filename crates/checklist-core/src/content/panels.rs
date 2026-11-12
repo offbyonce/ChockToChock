@@ -15,6 +15,10 @@ data_types! {
         Gauge,
         Readout,
         DisplayUnit,
+        /// A lever moved along a slot, such as the start, speedbrake, gear and flap levers.
+        Lever,
+        /// A handle that is pulled, such as the parking brake and the fire handles.
+        Handle,
     }
 
     /// The color of a panel light.
@@ -47,9 +51,19 @@ data_types! {
         #[serde(default, skip_serializing_if = "Option::is_none")]
         pub positions: Option<String>,
         /// Where it rests when the airplane is cold and dark: one of `positions`. Drawings show it,
-        /// dimmed, on controls a step does not use (decision 0014).
+        /// dimmed, on controls a step does not use (decision 0015).
         #[serde(default, skip_serializing_if = "Option::is_none")]
         pub rest: Option<String>,
+        /// Only on a light: the position, on another item it shares a control with, that turns
+        /// it on, e.g. the parking brake at SET. Drawings show the light on, as expected, when a
+        /// step asks for that position.
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        pub lit_at: Option<String>,
+        /// Only on a selector: each position's angle on the dial, in degrees clockwise from
+        /// straight up, as on the panel (decision 0017). Without it, the positions spread over
+        /// the top of the dial.
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        pub angles: Option<Vec<f64>>,
         pub description: String,
         #[serde(default, skip_serializing_if = "Option::is_none")]
         pub width: Option<f64>,

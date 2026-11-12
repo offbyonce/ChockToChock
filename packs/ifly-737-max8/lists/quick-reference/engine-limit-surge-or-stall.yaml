@@ -9,7 +9,7 @@ kind: non-normal
 basis:
   - prior-release
 when: "Engine indications exceed limits, or the engine surges or stalls."
-why: "Simulator training only. Not for real-world use. Less thrust often brings the engine back within limits."
+why: "Less thrust often brings the engine back within limits."
 steps:
   - id: ifly-737-max8.quick-reference.autothrottle-if-engaged-engine-limit-surge
     number: 1
@@ -17,9 +17,13 @@ steps:
     expect: DISENGAGE
     controls:
       - apdisc
+    targets:
+      - at: "con/st/A/T DISENGAGE/1"
   - id: ifly-737-max8.quick-reference.thrust-lever-affected-engine-engine-limit-surge
     number: 2
     text: THRUST LEVER (AFFECTED ENGINE)
     expect: "CONFIRM, RETARD UNTIL INDICATIONS STAY WITHIN LIMITS OR LEVER IS CLOSED"
     controls:
       - thrust
+    targets:
+      - at: "con/st/THRUST LEVERS 1 AND 2/1"

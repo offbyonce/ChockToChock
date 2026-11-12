@@ -71,6 +71,10 @@ data_types! {
     pub struct PhasesFile {
         #[serde(default, skip_serializing_if = "Vec::is_empty")]
         pub options: Vec<UserOption>,
+        /// Which option choices make a turnaround, for steps in Essentials only on a turnaround
+        /// (`quick: turnaround`). Required when any step uses it.
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        pub turnaround: Option<ShowIf>,
         pub stages: Vec<Stage>,
         pub phases: Vec<Phase>,
     }

@@ -79,7 +79,7 @@ engine never names an aircraft. **The app never connects to the simulator** (dec
 | `crates/app-core` | App operations that do not depend on where the app runs; `AppError`, `AppInfo` |
 | `crates/checklist-core` | Domain: checklists, steps, sessions. No I/O. |
 | `crates/pack` | Pack manifest, strict YAML loading (`serde-saphyr`), validation, schemas |
-| `crates/pack-cli` | `pack check <dir>`, `pack schema <dir>`, `pack build <dir> <out>` (flattened JSON), `pack overlap <dir>` |
+| `crates/pack-cli` | `pack check <dir>`, `pack schema <dir>`, `pack build <dir> <out>` (flattened JSON), `pack overlap <dir>`, `pack suggest-targets <dir>` (drafts step targets) |
 | `crates/pack-overlap` | Text-overlap check against private references, with its allow list (`allow.txt`) |
 | `crates/simbrief` | SimBrief OFP parsing |
 | `crates/store` | SQLite saved data and migrations. Parked: not in the workspace (0010) |

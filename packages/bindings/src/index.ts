@@ -21,6 +21,7 @@ export type { ListKind } from "./generated/ListKind";
 export type { ListView } from "./generated/ListView";
 export type { Loaded } from "./generated/Loaded";
 export type { Ofp } from "./generated/Ofp";
+export type { OpenStep } from "./generated/OpenStep";
 export type { OptionChoice } from "./generated/OptionChoice";
 export type { Overview } from "./generated/Overview";
 export type { OverviewArea } from "./generated/OverviewArea";

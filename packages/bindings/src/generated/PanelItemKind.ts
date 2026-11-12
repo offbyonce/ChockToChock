@@ -3,4 +3,4 @@
 /**
  * What a panel item is, which decides how it is drawn.
  */
-export type PanelItemKind = "toggle_switch" | "selector" | "push_button" | "light" | "gauge" | "readout" | "display_unit";
+export type PanelItemKind = "toggle_switch" | "selector" | "push_button" | "light" | "gauge" | "readout" | "display_unit" | "lever" | "handle";

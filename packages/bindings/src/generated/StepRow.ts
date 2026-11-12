@@ -20,4 +20,8 @@ counts: boolean,
 /**
  * The panel items the step uses and the position it asks for, for the control drawings.
  */
-targets: Array<ItemTarget>, };
+targets: Array<ItemTarget>, 
+/**
+ * In Essentials (the pack's list, with the pilot's changes).
+ */
+essential: boolean, };

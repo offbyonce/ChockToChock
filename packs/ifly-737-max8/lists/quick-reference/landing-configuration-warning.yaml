@@ -9,7 +9,7 @@ kind: non-normal
 basis:
   - prior-release
 when: "In flight, the steady warning horn sounds."
-why: "Simulator training only. Not for real-world use. The airplane is not configured to land."
+why: "The airplane is not configured to land."
 steps:
   - id: ifly-737-max8.quick-reference.configuration
     number: 1
@@ -17,3 +17,17 @@ steps:
     expect: "GEAR DOWN AND LOCKED, FLAPS AND SPEEDBRAKE SET FOR LANDING"
     controls:
       - gearlever
+      - flaplever
+      - speedbrake
+    targets:
+      - at: "mn/ctr/LEFT GEAR/2"
+        light: on
+      - at: "mn/ctr/NOSE GEAR/2"
+        light: on
+      - at: "mn/ctr/RIGHT GEAR/2"
+        light: on
+      - at: "mn/ctr/LANDING GEAR LEVER/1"
+        set: "DN"
+      - at: "con/st/FLAP LEVER/1"
+      - at: "con/st/SPEEDBRAKE LEVER/1"
+        open: true

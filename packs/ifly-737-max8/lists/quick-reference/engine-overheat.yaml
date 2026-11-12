@@ -9,7 +9,7 @@ kind: non-normal
 basis:
   - prior-release
 when: ENG OVERHEAT light.
-why: "Simulator training only. Not for real-world use. Reducing thrust may clear the overheat. If not, treat it as an engine fire."
+why: "Reducing thrust may clear the overheat. If not, treat it as an engine fire."
 steps:
   - id: ifly-737-max8.quick-reference.autothrottle-if-engaged-engine-overheat
     number: 1
@@ -17,15 +17,22 @@ steps:
     expect: DISENGAGE
     controls:
       - apdisc
+    targets:
+      - at: "con/st/A/T DISENGAGE/1"
   - id: ifly-737-max8.quick-reference.thrust-lever-affected-engine-engine-overheat
     number: 2
     text: THRUST LEVER (AFFECTED ENGINE)
     expect: "CONFIRM, CLOSE"
     controls:
       - thrust
+    targets:
+      - at: "con/st/THRUST LEVERS 1 AND 2/1"
   - id: ifly-737-max8.quick-reference.if-eng-overheat-light-stays-illuminated
     number: 3
     text: "OVERHEAT LIGHT STILL ON"
     expect: "GO TO ENGINE FIRE, SEVERE DAMAGE OR SEPARATION"
     controls:
       - firesw
+    targets:
+      - at: "con/fi/FIRE 1/1"
+      - at: "con/fi/FIRE 2/1"

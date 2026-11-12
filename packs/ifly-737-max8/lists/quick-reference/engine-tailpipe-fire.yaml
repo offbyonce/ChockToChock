@@ -9,7 +9,7 @@ kind: non-normal
 basis:
   - prior-release
 when: "Fire in the engine tailpipe on the ground, with no engine fire warning."
-why: "Simulator training only. Not for real-world use. Stop fuel to the engine."
+why: "Stop fuel to the engine."
 steps:
   - id: ifly-737-max8.quick-reference.start-lever-affected-engine-engine-tailpipe-fire
     number: 1
@@ -17,3 +17,8 @@ steps:
     expect: CUTOFF
     controls:
       - slever
+    targets:
+      - at: "con/lo/START LEVER 1/1"
+        open: true
+      - at: "con/lo/START LEVER 2/1"
+        open: true

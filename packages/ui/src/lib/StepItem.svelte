@@ -23,9 +23,12 @@ with the words "Skipped, still open". The quick level shows the item and value o
     doneAt,
     detail,
     selected,
+    marked,
     large = false,
+    full = true,
     onTick,
     onSkip,
+    onUnskip,
     onSelect,
   }: {
     index: PackIndex;
@@ -34,9 +37,13 @@ with the words "Skipped, still open". The quick level shows the item and value o
     doneAt: number | undefined;
     detail: Detail;
     selected: boolean;
+    /** Carries the blue bar: the step the side pane shows. */
+    marked: boolean;
     large?: boolean;
+    full?: boolean;
     onTick: () => void;
     onSkip: () => void;
+    onUnskip: () => void;
     onSelect: () => void;
   } = $props();
 
@@ -58,7 +65,7 @@ with the words "Skipped, still open". The quick level shows the item and value o
   );
 </script>
 
-<li class="it {row.state}" class:sel={selected} class:large>
+<li class="it {row.state}" class:sel={selected} class:marked class:large>
   <button class="tick" type="button" aria-label={tickLabel} aria-pressed={row.state === "done"} onclick={onTick}>
     <span class="box">
       {#if row.state === "done"}<Icon name="check" />{:else if row.state === "skipped"}<Icon name="skip" />{/if}
@@ -69,6 +76,7 @@ with the words "Skipped, still open". The quick level shows the item and value o
     <button class="row" type="button" onclick={onSelect} aria-current={selected ? "true" : undefined}>
       <span class="name">
         <small>{row.number}</small>{step.text}
+        {#if full && row.essential && !large}<span class="ebadge" title="In Essentials" aria-hidden="true">E</span><span class="sr-only">, in Essentials</span>{/if}
         <span class="sr-only">, {STATE_WORDS[row.state]}</span>
         {#if row.state === "current"}<span class="tag cur" aria-hidden="true">Current</span>{/if}
         {#if row.state === "skipped"}<span class="tag skip" aria-hidden="true">Skipped, still open</span>{/if}
@@ -108,6 +116,10 @@ with the words "Skipped, still open". The quick level shows the item and value o
           {#if place?.control}
             <p class="narrow where"><b>Where</b> · {place.control.location}</p>
           {/if}
+          <!-- A step with no Why says what its control does, in the step on every width, as 3.0 did. -->
+          {#if !step.why && place?.control?.function}
+            <p class="where"><b>What it does</b> · {place.control.function}</p>
+          {/if}
           {#if place}
             <button class="btn quiet narrow" type="button" aria-expanded={mapOpen} onclick={() => (mapOpen = !mapOpen)}>
               <Icon name="map-pin" />{mapOpen ? "Hide map" : "Show on map"}
@@ -117,7 +129,10 @@ with the words "Skipped, still open". The quick level shows the item and value o
             {/if}
           {/if}
           {#if row.state === "skipped"}
-            <p class="dskip"><span>Skipped. It stays open until you tick it.</span></p>
+            <p class="dskip">
+              <button class="btn quiet" type="button" onclick={onUnskip}>Unskip</button>
+              <span>Skipped. It stays in Open steps until you tick it.</span>
+            </p>
           {:else if row.state !== "done"}
             <p class="dskip">
               <button class="btn quiet" type="button" onclick={onSkip}><Icon name="skip" /> Skip for now</button>
@@ -141,7 +156,7 @@ with the words "Skipped, still open". The quick level shows the item and value o
   .it:first-child {
     border-top: 0;
   }
-  .it.current {
+  .it.marked {
     box-shadow: inset 0.1875rem 0 0 var(--accent);
   }
   .it.sel {
@@ -197,6 +212,7 @@ with the words "Skipped, still open". The quick level shows the item and value o
     margin-right: 0.4375rem;
     color: var(--muted);
     font: 400 0.75rem var(--mono);
+    vertical-align: 0.15em;
   }
   .val {
     min-width: 0;
@@ -246,6 +262,20 @@ with the words "Skipped, still open". The quick level shows the item and value o
     margin-top: 1px;
     color: var(--muted);
     font-size: 0.7812rem;
+  }
+  /* 3.0's boxed E after a step in Essentials. */
+  .ebadge {
+    display: inline-grid;
+    place-items: center;
+    width: 1rem;
+    height: 1rem;
+    margin-left: 0.4375rem;
+    border: 1px solid var(--accent);
+    border-radius: 0.1875rem;
+    color: var(--accent);
+    font-size: 0.625rem;
+    font-weight: 600;
+    vertical-align: 0.125rem;
   }
   .tag {
     display: inline-block;

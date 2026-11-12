@@ -14,6 +14,11 @@ steps:
     expect: "ON"
     controls:
       - engen
+    targets:
+      - at: "oh/elecl/GEN 1/1"
+        set: "ON"
+      - at: "oh/elecl/GEN 2/1"
+        set: "ON"
     why: Engine generators take over the buses
     explain: gen
     confirmed_by:
@@ -24,6 +29,27 @@ steps:
     expect: "ON, PROBE LIGHTS OUT"
     controls:
       - pheat
+    targets:
+      - at: "oh/heat/PROBE A/1"
+        set: "ON"
+      - at: "oh/heat/PROBE B/1"
+        set: "ON"
+      - at: "oh/heat/CAPT PITOT/1"
+        light: out
+      - at: "oh/heat/L ELEV PITOT/1"
+        light: out
+      - at: "oh/heat/L ALPHA VANE/1"
+        light: out
+      - at: "oh/heat/TEMP PROBE/1"
+        light: out
+      - at: "oh/heat/F/O PITOT/1"
+        light: out
+      - at: "oh/heat/R ELEV PITOT/1"
+        light: out
+      - at: "oh/heat/R ALPHA VANE/1"
+        light: out
+      - at: "oh/heat/AUX PITOT/1"
+        light: out
     why: "Heats the probes for flight. The lights go out once heating is working."
     check: "Both PROBE HEAT switches ON, probe lights OUT"
     check_detail: Amber probe lights out once an engine is running
@@ -38,6 +64,10 @@ steps:
     expect: AS REQUIRED
     controls:
       - aice
+    targets:
+      - at: "oh/aice/WING ANTI-ICE/1"
+      - at: "oh/aice/ENG 1/1"
+      - at: "oh/aice/ENG 2/1"
     note: Turn ENG 1 and ENG 2 anti-ice ON when it is 10C or below with visible moisture. Otherwise leave them OFF.
     why: Stops ice building in the engine inlets on the ground
     confirmed_by:
@@ -48,6 +78,9 @@ steps:
     expect: AUTO
     controls:
       - iso
+    targets:
+      - at: "oh/bleed/ISOLATION VALVE/1"
+        set: "AUTO"
     note: "AUTO closes the valve when both engine bleeds and both packs are on, and opens it if any of them is off."
     why: "Closes with both bleeds and packs on, opens if one is off"
     confirmed_by:
@@ -58,6 +91,11 @@ steps:
     expect: CONT
     controls:
       - starts
+    targets:
+      - at: "oh/start/ENGINE START 1/1"
+        set: "CONT"
+      - at: "oh/start/ENGINE START 2/1"
+        set: "CONT"
     note: "CONT keeps the igniters firing, ready against a flameout on takeoff."
     why: Igniters ready against a flameout on takeoff
     panel_lights:
@@ -69,6 +107,19 @@ steps:
     expect: CHECKED
     controls:
       - recall
+    targets:
+      - at: "gl/annl/FLT CONT/1"
+      - at: "gl/annl/IRS/1"
+      - at: "gl/annl/FUEL/1"
+      - at: "gl/annl/ELEC/1"
+      - at: "gl/annl/APU/1"
+      - at: "gl/annl/OVHT/DET/1"
+      - at: "gl/annr/ANTI-ICE/1"
+      - at: "gl/annr/HYD/1"
+      - at: "gl/annr/DOORS/1"
+      - at: "gl/annr/ENG/1"
+      - at: "gl/annr/OVERHEAD/1"
+      - at: "gl/annr/AIR COND/1"
     why: Shows any stored system alerts
     check: No unexpected alerts
     confirmed_by:
@@ -79,6 +130,9 @@ steps:
     expect: RTO
     controls:
       - abrake
+    targets:
+      - at: "con/ed/AUTO BRAKE/1"
+        set: "RTO"
     why: Maximum braking if you reject at high speed
     explain: aut
     confirmed_by:
@@ -89,6 +143,11 @@ steps:
     expect: IDLE DETENT
     controls:
       - slever
+    targets:
+      - at: "con/lo/START LEVER 1/1"
+        set: "IDLE"
+      - at: "con/lo/START LEVER 2/1"
+        set: "IDLE"
     why: Fuel on to both engines
     check: Levers at IDLE detent
     confirmed_by:

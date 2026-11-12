@@ -22,6 +22,8 @@ steps:
     expect: VERIFY CLOSED
     controls:
       - thrust
+    targets:
+      - at: "con/st/THRUST LEVERS 1 AND 2/1"
     quick: always
     note: Confirm the levers are closed. The spoilers and autobrake rely on it.
     why: Spoilers and autobrake rely on it
@@ -35,6 +37,9 @@ steps:
     expect: VERIFY UP
     controls:
       - speedbrake
+    targets:
+      - at: "con/st/SPEEDBRAKE LEVER/1"
+        set: "UP"
     note: "Confirm the lever moved to UP. If it did not, raise it by hand."
     why: Spoilers slow you down
     check: Lever UP
@@ -46,6 +51,8 @@ steps:
     expect: APPLY AS NEEDED
     controls:
       - thrust
+    targets:
+      - at: "con/st/THRUST LEVERS 1 AND 2/1"
     quick: always
     why: Slows you after landing
     check: REV green
@@ -59,6 +66,9 @@ steps:
     expect: GREEN ON BOTH ENGINES
     controls:
       - engmon
+    targets:
+      - at: "mn/cd/INBOARD DU: ND AND ENGINES/1"
+      - at: "con/ed/ENG/1"
     note: Reversers are deployed when REV shows green.
     why: Reversers are deployed
     check: REV green on both engines
@@ -68,6 +78,8 @@ steps:
     expect: "BEGIN STOWING THE REVERSERS"
     controls:
       - thrust
+    targets:
+      - at: "con/st/THRUST LEVERS 1 AND 2/1"
     note: Start reducing reverse so the engines reach reverse idle by taxi speed.
     why: Limits debris thrown up at low speed
     confirmed_by:
@@ -79,6 +91,8 @@ steps:
     expect: FULL DOWN BEFORE TAXI SPEED
     controls:
       - thrust
+    targets:
+      - at: "con/st/THRUST LEVERS 1 AND 2/1"
     quick: always
     note: Stow the reversers before you leave the runway.
     why: Stowed before you leave the runway
@@ -92,6 +106,8 @@ steps:
     expect: DISARM BEFORE TAXI SPEED
     controls:
       - abrake
+    targets:
+      - at: "con/ed/AUTO BRAKE/1"
     note: "Set the selector to OFF (pressing the toe brakes also disarms it), then brake with the toe brakes."
     why: Take over with the toe brakes
     confirmed_by:

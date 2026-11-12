@@ -7,6 +7,8 @@
 //!                        plus `index.json` listing the packs written.
 //! `pack overlap <dir> [--refs <folder>] [--allow <file>]`  compare pack text with private
 //! reference files. The folder can also come from `CHOCKTOCHOCK_OVERLAP_REFS`.
+//! `pack suggest-targets <pack-dir>`  draft each step's targets from its wording, as JSON, with
+//! every place the reading was not certain (decision 0018). An author checks and keeps them.
 //!
 //! Output goes to stdout/stderr on purpose: this is a command-line tool.
 #![allow(clippy::print_stdout, clippy::print_stderr)]
@@ -20,7 +22,7 @@ use pack_overlap::{
     AllowList, REFS_VARIABLE, check_refs_location, find_overlaps, load_references, repo_roots,
 };
 
-const USAGE: &str = "usage:\n  pack check <pack-dir | packs-dir>...\n  pack schema <out-dir>\n  pack build <pack-dir | packs-dir> <out-dir>\n  pack overlap <pack-dir | packs-dir> [--refs <folder>] [--allow <file>]";
+const USAGE: &str = "usage:\n  pack check <pack-dir | packs-dir>...\n  pack schema <out-dir>\n  pack build <pack-dir | packs-dir> <out-dir>\n  pack overlap <pack-dir | packs-dir> [--refs <folder>] [--allow <file>]\n  pack suggest-targets <pack-dir>";
 
 fn main() -> ExitCode {
     match run() {
@@ -40,8 +42,24 @@ fn run() -> Result<bool> {
         Some((cmd, [out])) if cmd == "schema" => schema(Path::new(out)).map(|()| true),
         Some((cmd, [packs, out])) if cmd == "build" => build(packs, Path::new(out)),
         Some((cmd, rest)) if cmd == "overlap" && !rest.is_empty() => overlap(rest),
+        Some((cmd, [dir])) if cmd == "suggest-targets" => suggest_targets(Path::new(dir)),
         _ => bail!("{USAGE}"),
     }
+}
+
+/// Prints each step's drafted targets and flags, by step id.
+fn suggest_targets(dir: &Path) -> Result<bool> {
+    let pack = load_pack_dir(dir).map_err(|e| anyhow::anyhow!("{e}"))?;
+    let mut out = serde_json::Map::new();
+    for step in pack.checklists.iter().flat_map(|l| &l.steps) {
+        if step.controls.is_empty() {
+            continue;
+        }
+        let s = pack::suggest::suggest(&pack.content.panels, step);
+        out.insert(step.id.to_string(), serde_json::to_value(s)?);
+    }
+    println!("{}", serde_json::to_string_pretty(&out)?);
+    Ok(true)
 }
 
 /// A folder with `pack.json` is one pack; otherwise each child folder with one is a pack.

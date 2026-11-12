@@ -226,6 +226,14 @@
         "field"
       ]
     },
+    "LightState": {
+      "description": "The state a step expects a light in.",
+      "type": "string",
+      "enum": [
+        "on",
+        "out"
+      ]
+    },
     "ListKind": {
       "description": "What kind of list this is.",
       "oneOf": [
@@ -505,6 +513,13 @@
           "description": "The step's note describes how the simulator behaves, not the real aircraft.",
           "type": "boolean"
         },
+        "targets": {
+          "description": "The panel items the step involves and the state it asks of each, which the control\ndrawings show exactly (decision 0018). `pack check` holds them to the step's wording.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/StepTarget"
+          }
+        },
         "text": {
           "description": "The challenge, e.g. \"IRS mode selectors\".",
           "type": "string"
@@ -546,6 +561,42 @@
     "StepId": {
       "description": "A stable step id: `<pack-id>.<phase>.<short-name>`, e.g. `demo-aircraft.preflight.irs-mode`.\nAn id never changes once published, even if the step is reworded or moved to another phase.",
       "type": "string"
+    },
+    "StepTarget": {
+      "description": "One panel item a step involves, and what the step asks of it (decision 0018).",
+      "type": "object",
+      "properties": {
+        "at": {
+          "description": "The item, as `panel/section/LABEL/n`: the n-th item (from 1) with that label in the\nsection, as light notes name them.",
+          "type": "string"
+        },
+        "light": {
+          "description": "The state the step expects a light in. Leave it out for a light that may cycle (window\nheat ON lights), so a drawing never claims a state the light may not be in.",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/LightState"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "open": {
+          "description": "The step's wording names one of the item's positions, but leaves it open: a condition\n(\"ON IF MORE THAN 1,000 LB\"), an option, one engine of two, or the word belongs to\nsomething else. The drawing claims no position, and `pack check` accepts the wording.",
+          "type": "boolean"
+        },
+        "set": {
+          "description": "The position the step sets a switch, selector, lever or handle to: one of its\n`positions`.",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "at"
+      ]
     },
     "Timer": {
       "description": "A wait attached to a step.",

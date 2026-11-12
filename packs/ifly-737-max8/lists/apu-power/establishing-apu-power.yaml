@@ -15,6 +15,13 @@ steps:
     controls:
       - apufire
       - firetest
+      - ovhtdet
+    targets:
+      - at: "con/fi/FIRE APU/1"
+      - at: "con/fi/OVHT DET 1/1"
+        set: "NORMAL"
+      - at: "con/fi/OVHT DET 2/1"
+        set: "NORMAL"
     quick: always
     why: Confirms the fire protection panel is in its normal state before it is tested.
     confirmed_by:
@@ -26,6 +33,9 @@ steps:
     expect: HOLD AT FAULT/INOP
     controls:
       - firetest
+    targets:
+      - at: "con/fi/FIRE TEST/1"
+        set: "FAULT/INOP"
     quick: always
     why: Fire detection must work before the APU is started
     check: "MASTER CAUTION and OVHT/DET lights, FAULT and APU DET INOP lights on"
@@ -42,6 +52,9 @@ steps:
     expect: HOLD AT OVHT/FIRE
     controls:
       - firetest
+    targets:
+      - at: "con/fi/FIRE TEST/1"
+        set: "OVHT/FIRE"
     quick: always
     why: Proves every fire and overheat warning works
     check: "Fire bell, FIRE WARN, MASTER CAUTION and OVHT/DET, engine and APU fire switch lights, ENG OVERHEAT and WHEEL WELL lights on"
@@ -57,6 +70,8 @@ steps:
     expect: "TO 1, THEN TO 2"
     controls:
       - exttest
+    targets:
+      - at: "con/fi/EXT TEST/1"
     quick: always
     why: Proves the discharge circuit to each fire bottle is intact.
     check: Three green EXT TEST lights at each position
@@ -71,6 +86,11 @@ steps:
     expect: "ON (OPTIONAL)"
     controls:
       - fuelpumps
+    targets:
+      - at: "oh/fuel/AFT 1/1"
+        open: true
+      - at: "oh/fuel/FWD 1/1"
+        open: true
     show_if:
       any_of:
         - option: power
@@ -90,6 +110,9 @@ steps:
     expect: "START, THEN RELEASE TO ON"
     controls:
       - apusw
+    targets:
+      - at: "oh/apu/APU/1"
+        set: "ON"
     quick: always
     why: Starts the APU for power and air
     check: "LOW OIL PRESSURE light during the start, then APU GEN OFF BUS light on"
@@ -104,6 +127,11 @@ steps:
     expect: BOTH ON
     controls:
       - apugen
+    targets:
+      - at: "oh/elecl/APU GEN/1"
+        set: "ON"
+      - at: "oh/elecl/APU GEN/2"
+        set: "ON"
     quick: always
     why: "Puts APU power on the transfer buses. The last source connected is the one in use, so the APU takes over from ground power."
     check: "TRANSFER BUS OFF, STANDBY PWR OFF and SOURCE OFF lights OUT"
@@ -117,6 +145,11 @@ steps:
     expect: "ON (OPTIONAL)"
     controls:
       - fuelpumps
+    targets:
+      - at: "oh/fuel/AFT 1/1"
+        open: true
+      - at: "oh/fuel/FWD 1/1"
+        open: true
     show_if:
       all_of:
         - option: power
@@ -137,6 +170,10 @@ steps:
     expect: DISCONNECT
     controls:
       - grddisc
+      - grdpwr
+    targets:
+      - at: "oh/elecl/GRD POWER AVAILABLE/1"
+        light: out
     quick: always
     show_if:
       any_of:
@@ -157,6 +194,9 @@ steps:
     expect: "ON"
     controls:
       - apubleed
+    targets:
+      - at: "oh/bleed/APU BLEED/1"
+        set: "ON"
     quick: always
     show_if:
       any_of:
@@ -170,6 +210,9 @@ steps:
     expect: AUTO OR HIGH
     controls:
       - packs
+    targets:
+      - at: "oh/bleed/L PACK/1"
+      - at: "oh/bleed/R PACK/1"
     quick: always
     show_if:
       any_of:
@@ -184,6 +227,9 @@ steps:
     expect: OPEN
     controls:
       - iso
+    targets:
+      - at: "oh/bleed/ISOLATION VALVE/1"
+        set: "OPEN"
     show_if:
       any_of:
         - option: power
@@ -196,6 +242,11 @@ steps:
     expect: OUT
     controls:
       - packlts
+    targets:
+      - at: "oh/bleed/PACK/1"
+        light: out
+      - at: "oh/bleed/PACK/2"
+        light: out
     show_if:
       any_of:
         - option: power

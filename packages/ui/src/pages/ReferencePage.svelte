@@ -23,7 +23,10 @@ type (step 7 requirement for non-normal lists).
     selected,
     onTick,
     onSkip,
+    onUnskip,
     onSelect,
+    onClear,
+    full = true,
   }: {
     index: PackIndex;
     phases: RailPhase[];
@@ -35,7 +38,10 @@ type (step 7 requirement for non-normal lists).
     selected: string | null;
     onTick: (id: string, done: boolean) => void;
     onSkip: (id: string) => void;
+    onUnskip: (id: string) => void;
     onSelect: (id: string) => void;
+    onClear: (list: string) => void;
+    full?: boolean;
   } = $props();
 
   // The notice is under every screen already; a pack introduction that repeats it is skipped.
@@ -73,7 +79,9 @@ type (step 7 requirement for non-normal lists).
         large
         {onTick}
         {onSkip}
+        {onUnskip}
         {onSelect}
+        {onClear}
       />
     </details>
   {/each}
@@ -146,11 +154,8 @@ type (step 7 requirement for non-normal lists).
   }
   summary :global(.icon) {
     color: var(--muted);
-    font-size: 1.15rem;
+    font-size: 1rem;
     transition: transform 0.12s;
-  }
-  summary :global(.icon svg) {
-    stroke-width: 2.5;
   }
   details[open] summary :global(.icon) {
     transform: rotate(180deg);

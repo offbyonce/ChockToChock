@@ -24,6 +24,18 @@ controls?: Array<string>,
 positions?: string | null, 
 /**
  * Where it rests when the airplane is cold and dark: one of `positions`. Drawings show it,
- * dimmed, on controls a step does not use (decision 0014).
+ * dimmed, on controls a step does not use (decision 0015).
  */
-rest?: string | null, description: string, width?: number | null, height?: number | null, };
+rest?: string | null, 
+/**
+ * Only on a light: the position, on another item it shares a control with, that turns
+ * it on, e.g. the parking brake at SET. Drawings show the light on, as expected, when a
+ * step asks for that position.
+ */
+lit_at?: string | null, 
+/**
+ * Only on a selector: each position's angle on the dial, in degrees clockwise from
+ * straight up, as on the panel (decision 0017). Without it, the positions spread over
+ * the top of the dial.
+ */
+angles?: Array<number> | null, description: string, width?: number | null, height?: number | null, };

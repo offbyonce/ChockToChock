@@ -14,6 +14,9 @@ steps:
     expect: "___ SET"
     controls:
       - baro
+    targets:
+      - at: "gl/efisl/BARO/1"
+      - at: "gl/efisr/BARO/1"
     fill:
       - qnh
     note: "Below the transition level, altimeters must read local QNH so you see your true altitude above sea level."
@@ -26,6 +29,8 @@ steps:
     expect: "AUTO OR ON"
     controls:
       - sblts
+    targets:
+      - at: "oh/col/FASTEN BELTS/1"
     note: Tells the cabin to sit down for landing.
     why: Cabin seated for landing
     confirmed_by:
@@ -38,4 +43,13 @@ steps:
       - landlt
       - winglt
       - logo
+    targets:
+      - at: "oh/ltl/LANDING L/1"
+        set: "ON"
+      - at: "oh/ltl/LANDING R/1"
+        set: "ON"
+      - at: "oh/lte/LOGO/1"
+        set: "ON"
+      - at: "oh/lte/WING/1"
+        set: "ON"
     why: "See and be seen below 10,000 ft"

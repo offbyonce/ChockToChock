@@ -8,7 +8,6 @@ title: Stabilizer out of trim
 kind: non-normal
 basis:
   - regulator-docs
-why: "Simulator training only. Not for real-world use."
 steps:
   - id: ifly-737-max8.procedures.stab-out-of-trim-light-on-the-ground
     number: 1
@@ -16,6 +15,9 @@ steps:
     expect: DO NOT TAKE OFF
     controls:
       - stabout
+    targets:
+      - at: "mn/cl/STAB OUT OF TRIM/1"
+        light: on
     confirmed_by:
       - kind: vendor-docs
         date: 2026-11-10
@@ -25,6 +27,8 @@ steps:
     expect: CONTINUE NORMAL OPERATION
     controls:
       - stabout
+    targets:
+      - at: "mn/cl/STAB OUT OF TRIM/1"
     confirmed_by:
       - kind: vendor-docs
         date: 2026-11-10
@@ -34,6 +38,12 @@ steps:
     expect: "HOLD COLUMN, DISENGAGE A/P AND A/T, USE MAIN ELECTRIC TRIM"
     controls:
       - column
+      - stabtrim
+      - apdisc
+    targets:
+      - at: "seat/yoke/STAB TRIM/1"
+      - at: "seat/yoke/A/P DISENGAGE/1"
+      - at: "con/st/A/T DISENGAGE/1"
     confirmed_by:
       - kind: vendor-docs
         date: 2026-11-10
@@ -43,6 +53,8 @@ steps:
     expect: DO NOT RE-ENGAGE A/P OR A/T
     controls:
       - apdis
+    targets:
+      - at: "gl/mcp/DISENGAGE/1"
     confirmed_by:
       - kind: vendor-docs
         date: 2026-11-10
@@ -52,6 +64,9 @@ steps:
     expect: GO TO STABILIZER TRIM INOPERATIVE
     controls:
       - stabwheel
+    targets:
+      - at: "con/st/STAB TRIM WHEEL/1"
+      - at: "con/st/STAB TRIM WHEEL/2"
     confirmed_by:
       - kind: vendor-docs
         date: 2026-11-10
@@ -61,6 +76,8 @@ steps:
     expect: THE FLIGHT CONTROL COMPUTER (FCC) TRIM MONITOR TRIPPED IN FLIGHT
     controls:
       - stabout
+    targets:
+      - at: "mn/cl/STAB OUT OF TRIM/1"
     confirmed_by:
       - kind: vendor-docs
         date: 2026-11-10

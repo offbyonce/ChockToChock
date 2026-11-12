@@ -5,6 +5,7 @@ import type {
   Action,
   FlatPack,
   Flight,
+  Loaded,
   PhaseView,
   Rail,
   RailPhase,
@@ -39,6 +40,8 @@ const pack = {
       id: "power-up-flow",
       title: "Power up flow",
       kind: "flow",
+      when: "Cold and dark.",
+      why: "Power comes first.",
       steps: [
         {
           id: "battery",
@@ -49,7 +52,7 @@ const pack = {
           check: "Voltage shows",
         },
         // No number in the pack, as for some real steps; the shown number comes from Rust.
-        { id: "standby", text: "STANDBY POWER", expect: "AUTO" },
+        { id: "standby", text: "STANDBY POWER", expect: "AUTO", controls: ["stby"] },
       ],
     },
   ],
@@ -71,7 +74,18 @@ const pack = {
       stages: [],
       phases: [],
     },
-    controls: null,
+    controls: {
+      zones: [{ id: "elec", area: "Forward overhead", title: "Electrical", short_title: "ELEC" }],
+      controls: [
+        {
+          id: "stby",
+          name: "Standby power switch",
+          zone: "elec",
+          location: "Forward overhead.",
+          function: "Powers the standby bus.",
+        },
+      ],
+    },
     panels: [],
   },
 } as unknown as FlatPack;
@@ -101,7 +115,9 @@ function view(states: [StepState, StepState]): PhaseView {
           state: states[i] as StepState,
           counts: true,
           targets: [],
+          essential: i === 0,
         })),
+        hidden: 0,
         progress,
         complete: done === 2,
         current,
@@ -122,6 +138,10 @@ function host(overrides: Partial<Host> = {}): Host {
     apply: async (_pack, flight) => flight,
     rail: async () => rail,
     phaseView: async () => view(["skipped", "current"]),
+    openSteps: async () => [],
+    loadSaved: async () => ({ flight: null, settings: null }),
+    save: async () => 0,
+    setAside: async () => {},
     defaultSettings: async () =>
       ({ theme: "dark", dimming: 0, detail: "expanded", listView: "checklist" }) as Settings,
     ...overrides,
@@ -142,7 +162,9 @@ describe("App", () => {
     expect(within(stages).getByRole("link", { name: "Preflight" }).getAttribute("aria-current")).toBe("true");
     expect(screen.getByRole("link", { name: "Exterior, complete" })).toBeTruthy();
     expect(screen.getByRole("link", { name: "Power up, has skipped steps" })).toBeTruthy();
-    expect(screen.getByRole("button", { name: "1BATTERY , skipped, still open ON" })).toBeTruthy();
+    expect(
+      screen.getByRole("button", { name: "1BATTERY , in Essentials , skipped, still open ON" }),
+    ).toBeTruthy();
     expect(screen.getByRole("button", { name: "2STANDBY POWER , current AUTO" })).toBeTruthy();
     const top = document.querySelector<HTMLElement>("header.top");
     expect(
@@ -211,6 +233,33 @@ describe("App", () => {
     ).toBe("true");
   });
 
+  it("shows what a control does on a step without a Why, where the side panel is hidden", async () => {
+    // 3.0 showed it as the step's Why; on tablets the step had none.
+    render(App, { context: hostContext(host()) });
+    await screen.findByRole("heading", { level: 1, name: "Power up" });
+    const row = [...document.querySelectorAll(".it")].find((el) => el.textContent?.includes("STANDBY POWER"));
+    const chev = row?.querySelector(".chev") as HTMLElement | null;
+    if (chev && !document.querySelector("p.where")) await fireEvent.click(chev);
+    const where = [...document.querySelectorAll("p.where")].map((p) => p.textContent);
+    expect(where, "the expanded step's narrow lines").toContain("What it does · Powers the standby bus.");
+  });
+
+  it("says when a step's control is not drawn, rather than show nothing", async () => {
+    // The control column has a place on the map but no drawing.
+    render(App, { context: hostContext(host()) });
+    await screen.findByRole("heading", { level: 1, name: "Power up" });
+    expect(await screen.findByText("Standby power switch isn't drawn among the controls.")).toBeTruthy();
+  });
+
+  it("shows a list's When and Why above its steps, as 3.0 does", async () => {
+    // Emergency lists carried a Why in the pack that the card never showed.
+    const { container } = render(App, { context: hostContext(host()) });
+    await screen.findByRole("heading", { level: 1, name: "Power up" });
+    const intro = container.querySelector(".when")?.textContent ?? "";
+    expect(intro).toContain("When · Cold and dark.");
+    expect(intro).toContain("Why · Power comes first.");
+  });
+
   it("shows the current step in a large box in Flow view", async () => {
     render(App, { context: hostContext(host()) });
     await screen.findByRole("heading", { level: 1, name: "Power up" });
@@ -220,6 +269,11 @@ describe("App", () => {
     expect(screen.getByText("Power up · Step 2 of 2")).toBeTruthy();
     expect(screen.getByRole("button", { name: "Confirmed, next step" })).toBeTruthy();
     expect((screen.getByRole("button", { name: "Back" }) as HTMLButtonElement).disabled).toBe(false);
+    // The standby step's control has a place, so Flow view offers "Where is this?".
+    expect(screen.getByText("Where is this?")).toBeTruthy();
+    // Nor does the step set a control, so the hint does not ask to set it.
+    expect(screen.getByText("Check it, then confirm.")).toBeTruthy();
+    expect(screen.queryByText("Set it, check it, then confirm.")).toBeNull();
   });
 
   it("shows a tagged error from Rust", async () => {
@@ -229,5 +283,165 @@ describe("App", () => {
     render(App, { context: hostContext(failing) });
 
     expect((await screen.findByRole("alert")).textContent).toBe("PackInvalid: pack format 3 is newer");
+  });
+
+  it("saves a tick on the device and shows when", async () => {
+    const saves: string[] = [];
+    const h = host({
+      save: async (_p, what) => {
+        saves.push(what);
+        return new Date(2026, 10, 11, 14, 5).getTime();
+      },
+    });
+    render(App, { context: hostContext(h) });
+
+    await fireEvent.click(await screen.findByRole("button", { name: "Confirm STANDBY POWER: AUTO" }));
+    expect(await screen.findByText(/^Saved /)).toBeTruthy();
+    expect(saves).toContain("flight");
+  });
+
+  it("restores saved progress", async () => {
+    const savedFlight = {
+      pack: "demo",
+      options: { power: "apu" },
+      session: { done: {}, skipped: {} },
+    } as unknown as Flight;
+    let given: Flight | null = null;
+    const h = host({
+      loadSaved: async () => ({
+        flight: {
+          loaded: { state: "ready", value: savedFlight, migratedFrom: null } as Loaded<Flight>,
+          text: "{}",
+        },
+        settings: null,
+      }),
+      phaseView: async (_p, f) => {
+        given = f;
+        return view(["skipped", "current"]);
+      },
+    });
+    render(App, { context: hostContext(h) });
+
+    await screen.findByRole("heading", { level: 1, name: "Power up" });
+    expect(given).toEqual(savedFlight);
+  });
+
+  it("keeps newer saved progress, saves nothing over it, and sets it aside on Start fresh", async () => {
+    const saves: string[] = [];
+    const asides: string[] = [];
+    const h = host({
+      loadSaved: async () => ({
+        flight: { loaded: { state: "newer", format: 9 } as Loaded<Flight>, text: '{"format":9}' },
+        settings: null,
+      }),
+      save: async (_p, what) => {
+        saves.push(what);
+        return 0;
+      },
+      setAside: async (_p, what) => {
+        asides.push(what);
+      },
+    });
+    render(App, { context: hostContext(h) });
+
+    expect(await screen.findByText("Your saved progress is from a newer version of the app.")).toBeTruthy();
+    expect(screen.getByRole("link", { name: "Save a copy" })).toBeTruthy();
+    await fireEvent.click(await screen.findByRole("button", { name: "Confirm STANDBY POWER: AUTO" }));
+    await new Promise((r) => setTimeout(r, 20));
+    expect(saves).not.toContain("flight");
+
+    await fireEvent.click(screen.getByRole("button", { name: "Start fresh" }));
+    await new Promise((r) => setTimeout(r, 20));
+    expect(asides).toEqual(["flight"]);
+    expect(saves).toContain("flight");
+    expect(screen.queryByText(/newer version of the app/)).toBeNull();
+  });
+
+  it("clears a list only after a second press", async () => {
+    const actions: Action[] = [];
+    const h = host({
+      apply: async (_pack, flight, action) => {
+        actions.push(action);
+        return { ...flight };
+      },
+    });
+    render(App, { context: hostContext(h) });
+
+    await fireEvent.click(await screen.findByRole("button", { name: "Clear" }));
+    expect(actions).toHaveLength(0);
+    await fireEvent.click(screen.getByRole("button", { name: "Clear all?" }));
+    expect(actions).toEqual([{ type: "clearList", list: "power-up-flow" }]);
+  });
+
+  it("lists open steps and puts one back to do", async () => {
+    window.location.hash = "#/open";
+    const actions: Action[] = [];
+    const h = host({
+      openSteps: async () => [
+        {
+          step: "battery",
+          phase: "power-up",
+          phaseTitle: "Power up",
+          listTitle: "Power up flow",
+          skipped: true,
+        },
+      ],
+      apply: async (_pack, flight, action) => {
+        actions.push(action);
+        return { ...flight };
+      },
+    });
+    render(App, { context: hostContext(h) });
+
+    expect(await screen.findByRole("heading", { level: 1, name: "Open steps" })).toBeTruthy();
+    expect(await screen.findByText("BATTERY")).toBeTruthy();
+    await fireEvent.click(screen.getByRole("button", { name: "Unskip" }));
+    expect(actions).toEqual([{ type: "unskip", step: "battery" }]);
+  });
+
+  it("moves between steps with the arrow keys and ticks with Space in Checklist view", async () => {
+    const actions: Action[] = [];
+    const h = host({
+      apply: async (_pack, flight, action) => {
+        actions.push(action);
+        return { ...flight };
+      },
+    });
+    render(App, { context: hostContext(h) });
+    await screen.findByRole("heading", { level: 1, name: "Power up" });
+
+    await fireEvent.keyDown(window, { key: "ArrowUp" });
+    expect(screen.getByRole("button", { name: /^1BATTERY/ }).getAttribute("aria-current")).toBe("true");
+    await fireEvent.keyDown(window, { key: " " });
+    expect(actions[0]).toMatchObject({ type: "tick", step: "battery" });
+  });
+
+  it("shows open steps from earlier pages on a phase, and ticks one from there", async () => {
+    const actions: Action[] = [];
+    const h = host({
+      openSteps: async (_p, _f, _s, before) =>
+        before
+          ? [
+              {
+                step: "standby",
+                phase: "earlier",
+                phaseTitle: "Earlier",
+                listTitle: "Earlier flow",
+                skipped: false,
+              },
+            ]
+          : [],
+      apply: async (_pack, flight, action) => {
+        actions.push(action);
+        return { ...flight };
+      },
+    });
+    render(App, { context: hostContext(h) });
+
+    const line = await screen.findByRole("button", { name: /Open steps.*1 from earlier pages.*Earlier 1/ });
+    await fireEvent.click(line);
+    expect(screen.getByText("Missed")).toBeTruthy();
+    await fireEvent.click(screen.getByRole("button", { name: "Tick STANDBY POWER" }));
+    expect(actions[0]).toMatchObject({ type: "tick", step: "standby" });
   });
 });

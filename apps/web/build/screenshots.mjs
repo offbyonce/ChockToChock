@@ -28,6 +28,15 @@ const VIEWPORTS = {
 const THEMES = { dark: 0, light: 1 };
 
 const click = (selector, n = 0) => `document.querySelectorAll(${JSON.stringify(selector)})[${n}].click(); true`;
+/** Clicks `part` (".row" or ".chev") of the list step whose text contains `title`. */
+const stepNamed = (title, part) =>
+  `[...document.querySelectorAll(".it")].find((it) => it.textContent.trim().toUpperCase().includes(${JSON.stringify(title)})).querySelector(${JSON.stringify(part)}).click(); true`;
+/** Scrolls the side pane `pane` so its controls drawing starts at the top. */
+const paneToControls = (pane) =>
+  `(() => { const p = document.querySelector(${JSON.stringify(pane)}); const h = [...p.querySelectorAll("*")].find((e) => e.children.length === 0 && e.textContent.trim().toUpperCase() === "THE CONTROLS"); p.scrollTop += h.getBoundingClientRect().top - p.getBoundingClientRect().top; })(); true`;
+const pressText = (text) =>
+  `[...document.querySelectorAll("button")].find((b) => b.textContent.trim() === ${JSON.stringify(text)}).click(); true`;
+const go = (hash) => `location.hash = ${JSON.stringify(hash)}; true`;
 
 /**
  * The screens to capture: a name, and for each app the address after `#` and an optional script
@@ -36,31 +45,108 @@ const click = (selector, n = 0) => `document.querySelectorAll(${JSON.stringify(s
 const SHOTS = [
   { name: "phase", app: { hash: "" }, base: { hash: "#cold-dark" } },
   {
+    // The same steps on both sides: two ticked, Wipers skipped, Alternate flaps selected and opened.
     name: "states",
     app: {
       hash: "",
       before: [
         click(".it .tick", 0),
         click(".it .tick", 1),
-        click(".it .chev", 2),
+        click(".it .chev", 3),
         `[...document.querySelectorAll(".dskip .btn")][0].click(); true`,
+        click(".it .row", 2),
+        click(".it .chev", 2),
       ],
     },
-    base: { hash: "#cold-dark", before: [click(".it .tick", 0), click(".it .tick", 1)] },
+    base: {
+      hash: "#cold-dark",
+      before: [
+        click(".it .tick", 0),
+        click(".it .tick", 1),
+        click(".it .chev", 3),
+        `[...document.querySelectorAll(".dskip .btn")][0].click(); true`,
+        // 3.0 opens a step when its row is clicked.
+        click(".it .row", 2),
+      ],
+    },
   },
   {
+    // N1 BUGS opened on both sides (the pack lists Landing gear pins first).
     name: "detail",
-    app: { hash: "#/phase/before-start", before: [click(".it .chev", 0)] },
+    app: { hash: "#/phase/before-start", before: [click(".it .row", 1), click(".it .chev", 1)] },
     base: { hash: "#before-start", before: [click(".it .chev", 0)] },
   },
   { name: "checklist", app: { hash: "#/phase/before-start" }, base: { hash: "#before-start" } },
   {
+    // N1 BUGS in Flow on both sides: the app ticks Landing gear pins first.
     name: "flow",
-    app: { hash: "#/phase/before-start", before: [click("header.top .tool", 1)] },
+    app: { hash: "#/phase/before-start", before: [click(".it .tick", 0), click("header.top .tool", 1)] },
     base: { hash: "#before-start", before: [click("#flowb")] },
   },
+  {
+    name: "essentials",
+    app: { hash: "#/settings", before: [pressText("Essentials"), go("")] },
+    base: { hash: "#settings", before: [pressText("Essentials"), go("#cold-dark")] },
+  },
+  {
+    name: "open",
+    app: { hash: "", before: [click(".it .tick", 0), go("#/phase/gpu-power"), click(".opn .line")] },
+    base: { hash: "#cold-dark", before: [click(".it .tick", 0), go("#gpu-power"), click("#opbtn")] },
+  },
   { name: "emergency", app: { hash: "#/reference" }, base: { hash: "#memory" } },
+  {
+    // The first memory item opened and its first step chosen, so the drawing shows.
+    name: "emergency-step",
+    app: { hash: "#/reference", before: [click("details summary", 0), click(".it .row", 0), click(".it .chev", 0)] },
+    base: { hash: "#memory", before: [click("details summary", 0), click(".it .chev", 0)] },
+  },
   { name: "settings", app: { hash: "#/settings" }, base: { hash: "#settings" } },
+  {
+    // Before start: MCP (glareshield). The app lists Landing gear pins first, so its rows run one ahead.
+    // Both sides show the step opened.
+    name: "panel-mcp",
+    only: "desktop",
+    app: { hash: "#/phase/before-start", before: [click(".it .row", 2), click(".it .chev", 2)] },
+    base: { hash: "#before-start", before: [click(".it .chev", 1)] },
+  },
+  {
+    // Before start: door lights (overhead). The app lists Landing gear pins first, so its rows run one ahead.
+    // Both sides show the step opened.
+    name: "panel-doors",
+    only: "desktop",
+    app: { hash: "#/phase/before-start", before: [click(".it .row", 3), click(".it .chev", 3)] },
+    base: { hash: "#before-start", before: [click(".it .chev", 2)] },
+  },
+  {
+    // Before start: TERR (main panel). The app lists Landing gear pins first, so its rows run one ahead.
+    // Both sides show the step opened.
+    name: "panel-terr",
+    only: "desktop",
+    app: { hash: "#/phase/before-start", before: [click(".it .row", 4), click(".it .chev", 4)] },
+    base: { hash: "#before-start", before: [click(".it .chev", 3)] },
+  },
+  {
+    // Before start: fuel pumps (overhead). The app lists Landing gear pins first, so its rows run one ahead.
+    // Both sides show the step opened.
+    name: "panel-fuel",
+    only: "desktop",
+    app: { hash: "#/phase/before-start", before: [click(".it .row", 5), click(".it .chev", 5)] },
+    base: { hash: "#before-start", before: [click(".it .chev", 4)] },
+  },
+  {
+    // Preflight: the electrical warning lights, with the side pane scrolled to the meter dials.
+    name: "panel-elec",
+    only: "desktop",
+    app: {
+      hash: "#/phase/preflight",
+      before: [
+        stepNamed("BAT DISCHARGE, TR UNIT", ".row"),
+        stepNamed("BAT DISCHARGE, TR UNIT", ".chev"),
+        paneToControls("aside.pane"),
+      ],
+    },
+    base: { hash: "#preflight", before: [stepNamed("BAT DISCHARGE, TR UNIT", ".chev"), paneToControls("#pane")] },
+  },
   {
     name: "menu",
     only: "tablet",
@@ -174,6 +260,8 @@ async function main() {
       url: (hash) => `http://localhost:8772/app/?shot=${Date.now()}${hash}`,
       ready: "!!document.querySelector('[data-app-ready]')",
       dir: out,
+      // The app saves progress on the device: each screen starts from nothing saved.
+      reset: "localStorage.clear(); true",
     },
   ];
   if (baseline) {

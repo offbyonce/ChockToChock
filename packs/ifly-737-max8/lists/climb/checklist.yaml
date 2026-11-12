@@ -17,12 +17,27 @@ steps:
       - turnoff
       - winglt
       - logo
+    targets:
+      - at: "oh/ltl/LANDING L/1"
+        set: "OFF"
+      - at: "oh/ltl/LANDING R/1"
+        set: "OFF"
+      - at: "oh/ltl/TURNOFF L/1"
+        set: "OFF"
+      - at: "oh/ltl/TURNOFF R/1"
+        set: "OFF"
+      - at: "oh/lte/LOGO/1"
+        set: "OFF"
+      - at: "oh/lte/WING/1"
+        set: "OFF"
     why: Not needed in the climb
   - id: ifly-737-max8.climb.fasten-belts-selector-check
     text: FASTEN BELTS SELECTOR
     expect: AS DESIRED
     controls:
       - sblts
+    targets:
+      - at: "oh/col/FASTEN BELTS/1"
     why: Belts off in smooth air if you choose
     confirmed_by:
       - kind: vendor-docs
@@ -32,6 +47,11 @@ steps:
     expect: STD AT TRANSITION ALTITUDE
     controls:
       - baro
+    targets:
+      - at: "gl/efisl/BARO/1"
+        set: "STD"
+      - at: "gl/efisr/BARO/1"
+        set: "STD"
     hint:
       - prefix: "TRANS ALT "
         field: transition_altitude

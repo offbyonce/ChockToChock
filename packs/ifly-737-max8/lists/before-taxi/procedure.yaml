@@ -15,6 +15,11 @@ steps:
     expect: BOTH ON
     controls:
       - engen
+    targets:
+      - at: "oh/elecl/GEN 1/1"
+        set: "ON"
+      - at: "oh/elecl/GEN 2/1"
+        set: "ON"
     quick: always
     why: Engine generators take over the buses
     how: gens
@@ -28,6 +33,27 @@ steps:
     expect: "ON, PROBE LIGHTS OUT"
     controls:
       - pheat
+    targets:
+      - at: "oh/heat/PROBE A/1"
+        set: "ON"
+      - at: "oh/heat/PROBE B/1"
+        set: "ON"
+      - at: "oh/heat/CAPT PITOT/1"
+        light: out
+      - at: "oh/heat/L ELEV PITOT/1"
+        light: out
+      - at: "oh/heat/L ALPHA VANE/1"
+        light: out
+      - at: "oh/heat/TEMP PROBE/1"
+        light: out
+      - at: "oh/heat/F/O PITOT/1"
+        light: out
+      - at: "oh/heat/R ELEV PITOT/1"
+        light: out
+      - at: "oh/heat/R ALPHA VANE/1"
+        light: out
+      - at: "oh/heat/AUX PITOT/1"
+        light: out
     quick: always
     why: "Heats the probes for flight. The lights go out once heating is working."
     check: "Both PROBE HEAT switches ON, probe lights OUT"
@@ -45,6 +71,10 @@ steps:
     expect: AS REQUIRED
     controls:
       - aice
+    targets:
+      - at: "oh/aice/WING ANTI-ICE/1"
+      - at: "oh/aice/ENG 1/1"
+      - at: "oh/aice/ENG 2/1"
     quick: always
     note: Turn ENG 1 and ENG 2 anti-ice ON when it is 10C or below with visible moisture. Otherwise leave them OFF.
     why: Stops ice building in the engine inlets on the ground
@@ -57,6 +87,11 @@ steps:
     expect: AUTO
     controls:
       - packs
+    targets:
+      - at: "oh/bleed/L PACK/1"
+        set: "AUTO"
+      - at: "oh/bleed/R PACK/1"
+        set: "AUTO"
     quick: always
     why: Supplies conditioned air to the cabin
     check: PACK lights OUT
@@ -69,6 +104,9 @@ steps:
     expect: AUTO
     controls:
       - iso
+    targets:
+      - at: "oh/bleed/ISOLATION VALVE/1"
+        set: "AUTO"
     quick: always
     note: "AUTO closes the valve when both engine bleeds and both packs are on, and opens it if any of them is off."
     why: "Closes with both bleeds and packs on, opens if one is off"
@@ -80,6 +118,11 @@ steps:
     expect: "ON"
     controls:
       - engbleed
+    targets:
+      - at: "oh/bleed/ENG BLEED 1/1"
+        set: "ON"
+      - at: "oh/bleed/ENG BLEED 2/1"
+        set: "ON"
     note: "With the APU bleed about to go off, the engines now supply the packs."
     why: Engines now supply the packs before the APU bleed goes off
     confirmed_by:
@@ -90,6 +133,11 @@ steps:
     expect: CONT
     controls:
       - starts
+    targets:
+      - at: "oh/start/ENGINE START 1/1"
+        set: "CONT"
+      - at: "oh/start/ENGINE START 2/1"
+        set: "CONT"
     quick: always
     note: "CONT keeps the igniters firing, ready against a flameout on takeoff."
     why: Igniters ready against a flameout on takeoff
@@ -103,6 +151,9 @@ steps:
     expect: "OFF"
     controls:
       - apubleed
+    targets:
+      - at: "oh/bleed/APU BLEED/1"
+        set: "OFF"
     quick: always
     why: Engine bleeds now supply the air
     confirmed_by:
@@ -114,6 +165,9 @@ steps:
     expect: "OFF"
     controls:
       - apusw
+    targets:
+      - at: "oh/apu/APU/1"
+        set: "OFF"
     quick: always
     why: "Saves fuel, after the engine generators are on"
     explain: apuoff
@@ -126,6 +180,8 @@ steps:
     expect: TAKEOFF FLAPS PER CDU AND PWB
     controls:
       - flaplever
+    targets:
+      - at: "con/st/FLAP LEVER/1"
     quick: always
     why: Takeoff performance depends on it. Use the flap setting from the CDU and the performance (PWB) sheet
     check: "Flap indication matches, LE FLAPS EXT green"
@@ -142,6 +198,8 @@ steps:
     expect: "PRESS, FLIGHT CONTROLS SHOWN"
     controls:
       - sysp
+    targets:
+      - at: "con/ed/SYS/1"
     note: "Shows flight control positions on the display, ready for your control check."
     why: Ready for your control check
     confirmed_by:
@@ -164,6 +222,9 @@ steps:
     expect: MODE SELECTOR TO XPNDR
     controls:
       - xpndr
+    targets:
+      - at: "con/atc/MODE/1"
+        set: "XPNDR"
     quick: always
     note: Keeps the transponder active so airport surveillance can track you.
     why: Airport surveillance can track you
@@ -176,6 +237,19 @@ steps:
     expect: "HOLD, ALL 12 ANNUNCIATOR LIGHTS ON; RELEASE, ALL OUT"
     controls:
       - recall
+    targets:
+      - at: "gl/annl/FLT CONT/1"
+      - at: "gl/annl/IRS/1"
+      - at: "gl/annl/FUEL/1"
+      - at: "gl/annl/ELEC/1"
+      - at: "gl/annl/APU/1"
+      - at: "gl/annl/OVHT/DET/1"
+      - at: "gl/annr/ANTI-ICE/1"
+      - at: "gl/annr/HYD/1"
+      - at: "gl/annr/DOORS/1"
+      - at: "gl/annr/ENG/1"
+      - at: "gl/annr/OVERHEAD/1"
+      - at: "gl/annr/AIR COND/1"
     why: Shows any stored system alerts
     check: "No lights left on after release"
     how: recall

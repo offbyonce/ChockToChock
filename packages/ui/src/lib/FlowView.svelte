@@ -42,6 +42,8 @@ value on the right. The pilot confirms each step; the app never knows a switch p
   let entry = $derived(at >= 0 ? entries[at] : undefined);
   let step = $derived<Step | undefined>(entry ? index.step(entry.row.id) : undefined);
   let place = $derived(step ? index.place(step) : null);
+  /** Whether the step sets a control (its value names a position), or only checks something. */
+  let sets = $derived(entry?.row.targets.some((t) => t.position != null) ?? false);
   let next = $derived.by(() => {
     const e = entries.slice(at + 1).find((x) => x.row.state !== "done");
     return e ? index.step(e.row.id) : undefined;
@@ -51,8 +53,8 @@ value on the right. The pilot confirms each step; the app never knows a switch p
   /** 3.0's keys: Space confirms, Left arrow goes back, S skips. Ignored while typing or on a control. */
   function onKey(e: KeyboardEvent): void {
     if (!entry || !step || e.altKey || e.ctrlKey || e.metaKey) return;
-    const t = e.target as HTMLElement | null;
-    if (t?.closest("input, textarea, select, button, a, summary, [contenteditable]")) return;
+    const t = e.target;
+    if (t instanceof Element && t.closest("input, textarea, select, button, a, summary, [contenteditable]")) return;
     if (e.key === " ") {
       e.preventDefault();
       onConfirm(step.id);
@@ -84,7 +86,8 @@ value on the right. The pilot confirms each step; the app never knows a switch p
       <p class="state">
         {#if entry.row.state === "done"}<Icon name="check" /> Done. Confirm again to move on.
         {:else if entry.row.state === "skipped"}<Icon name="skip" /> Skipped, still open
-        {:else}Set it, check it, then confirm.{/if}
+        {:else if sets}Set it, check it, then confirm.
+        {:else}Check it, then confirm.{/if}
         {#if !entry.row.counts}<span class="ns">Not modeled in the simulator</span>{/if}
       </p>
     </section>
@@ -93,10 +96,12 @@ value on the right. The pilot confirms each step; the app never knows a switch p
       {#if showDetail}
         <div class="more">
           <StepDetail {index} {step} large />
-          <details class="inline-context">
-            <summary><Icon name="map-pin" /> Where is this?</summary>
-            <ContextPane {index} {step} targets={entry.row.targets} heading={false} details={false} />
-          </details>
+          {#if place}
+            <details class="inline-context">
+              <summary><Icon name="map-pin" /> Where is this?</summary>
+              <ContextPane {index} {step} targets={entry.row.targets} heading={false} details={false} />
+            </details>
+          {/if}
         </div>
       {/if}
       <button class="link" type="button" onclick={() => (showDetail = !showDetail)}>
@@ -169,10 +174,13 @@ value on the right. The pilot confirms each step; the app never knows a switch p
     color: var(--muted);
     font-size: 0.8125rem;
   }
+  /* The name and the value share a line when both fit; otherwise the value goes under the name,
+     as in 3.0, so the name is never squeezed onto more lines. */
   .box {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
+    display: flex;
+    flex-wrap: wrap;
     align-items: center;
+    justify-content: space-between;
     gap: 0.5rem 2rem;
     margin: 0.75rem 0 0.5rem;
     padding: 1.25rem 1.5rem;
@@ -204,15 +212,15 @@ value on the right. The pilot confirms each step; the app never knows a switch p
     line-height: 1.06;
     letter-spacing: -0.02em;
     text-wrap: balance;
+    max-width: 100%;
   }
   .value {
     margin: 0;
     color: var(--accent);
     font: clamp(1.15rem, 1.9vw, 1.7rem) / 1.25 var(--mono);
-    text-align: right;
   }
   .state {
-    grid-column: 1 / -1;
+    flex-basis: 100%;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -233,7 +241,6 @@ value on the right. The pilot confirms each step; the app never knows a switch p
     display: flex;
     flex-direction: column;
     gap: 0.625rem;
-    max-width: 46rem;
     margin-top: 0.5rem;
   }
   .more p {
@@ -335,13 +342,5 @@ value on the right. The pilot confirms each step; the app never knows a switch p
     background: var(--go-soft);
     color: var(--go);
     text-transform: uppercase;
-  }
-  @media (max-width: 700px) {
-    .box {
-      grid-template-columns: minmax(0, 1fr);
-    }
-    .value {
-      text-align: left;
-    }
   }
 </style>

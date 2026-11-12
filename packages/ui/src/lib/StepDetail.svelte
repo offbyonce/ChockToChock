@@ -43,7 +43,7 @@ Flow view and in the side panel. Each item shows once.
   {/if}
   {#if step.callout}<p class="line"><b>Say</b> · {step.callout}</p>{/if}
   {#if how?.length}
-    <details open={howOpen}>
+    <details open={howOpen || large}>
       <summary>How to do it <Icon name="chevron-down" /></summary>
       <ol>
         {#each how as line, i (i)}<li>{line}</li>{/each}
@@ -93,7 +93,7 @@ Flow view and in the side panel. Each item shows once.
     line-height: 1.3;
   }
   .cell.ck {
-    background: var(--accent-soft);
+    background: color-mix(in srgb, var(--accent) 16%, var(--surface));
   }
   .cell.ck small {
     color: var(--accent);

@@ -15,6 +15,9 @@ steps:
     expect: LNAV OR HDG SEL ABOVE 400 FT
     controls:
       - rollmode
+    targets:
+      - at: "gl/mcp/HDG SEL/1"
+      - at: "gl/mcp/LNAV/1"
     quick: always
     note: Select the lateral mode above 400 ft.
     why: LNAV follows the FMC route. HDG SEL flies a heading you set
@@ -32,6 +35,12 @@ steps:
     expect: CABIN ALTITUDE CLIMBING NORMALLY
     controls:
       - press
+    targets:
+      - at: "oh/cab/CABIN ALT/1"
+      - at: "oh/cab/CABIN CLIMB/1"
+      - at: "oh/press/FLT ALT/1"
+      - at: "oh/press/FLT ALT KNOB/1"
+      - at: "oh/press/MODE/1"
     why: Pressurization working
     check: Cabin altitude climbing normally
     panel_lights:
@@ -44,6 +53,9 @@ steps:
     expect: "VERIFY AT ABOUT 1,500 FT"
     controls:
       - engmon
+    targets:
+      - at: "mn/cd/INBOARD DU: ND AND ENGINES/1"
+      - at: "con/ed/ENG/1"
     note: Thrust reduces automatically to climb thrust. Check N1 agrees.
     why: Thrust reduces to climb automatically
     check: N1 matches the CLB N1 limit
@@ -56,6 +68,9 @@ steps:
     expect: "CMD A OR B"
     controls:
       - ap
+    targets:
+      - at: "gl/mcp/CMD A/1"
+      - at: "gl/mcp/CMD B/1"
     why: The autopilot then flies the modes shown on the FMA
     check: "CMD shown on the PFD"
     note: "The autopilot refuses to engage unless the airplane is trimmed and you are not pushing on the controls. There is a minimum height after takeoff below which the autopilot should not be engaged."
@@ -68,6 +83,9 @@ steps:
     expect: OFF AFTER FLAP RETRACTION
     controls:
       - abrake
+    targets:
+      - at: "con/ed/AUTO BRAKE/1"
+        set: "OFF"
     quick: always
     note: "RTO is for the takeoff roll only. Turn it OFF after takeoff. Left at RTO, autobrake will not work on landing."
     why: "Left at RTO, autobrake will not work on landing"
@@ -77,6 +95,9 @@ steps:
     expect: OFF OR CONT AS CONDITIONS REQUIRE
     controls:
       - starts
+    targets:
+      - at: "oh/start/ENGINE START 1/1"
+      - at: "oh/start/ENGINE START 2/1"
     why: "CONT in heavy rain, icing or severe turbulence. Otherwise OFF"
     panel_lights:
       starts:

@@ -10,7 +10,7 @@ basis:
   - regulator-docs
 memory: true
 when: You suspect one or more airspeed or Mach readings are wrong.
-why: "Simulator training only. Not for real-world use. A safe pitch and thrust setting keeps the airplane flying while you work out which indications to trust."
+why: "A safe pitch and thrust setting keeps the airplane flying while you work out which indications to trust."
 steps:
   - id: ifly-737-max8.memory.autopilot-if-engaged-airspeed-unreliable
     number: 1
@@ -18,6 +18,9 @@ steps:
     expect: DISENGAGE
     controls:
       - apdis
+      - apdisc
+    targets:
+      - at: "seat/yoke/A/P DISENGAGE/1"
     confirmed_by:
       - kind: vendor-docs
         date: 2026-11-10
@@ -27,6 +30,8 @@ steps:
     expect: DISENGAGE
     controls:
       - apdisc
+    targets:
+      - at: "con/st/A/T DISENGAGE/1"
     confirmed_by:
       - kind: vendor-docs
         date: 2026-11-10
@@ -36,6 +41,11 @@ steps:
     expect: "OFF"
     controls:
       - fd
+    targets:
+      - at: "gl/mcp/F/D L/1"
+        set: "OFF"
+      - at: "gl/mcp/F/D R/1"
+        set: "OFF"
     confirmed_by:
       - kind: vendor-docs
         date: 2026-11-10
@@ -45,6 +55,11 @@ steps:
     expect: "SET 10 DEGREES PITCH AND 80% N1"
     controls:
       - fltinst
+    targets:
+      - at: "mn/cd/OUTBOARD DU: PFD/1"
+      - at: "mn/cd/INBOARD DU: ND AND ENGINES/1"
+      - at: "mn/fd/INBOARD DU: ND/1"
+      - at: "mn/fd/OUTBOARD DU: PFD/1"
     confirmed_by:
       - kind: vendor-docs
         date: 2026-11-10
@@ -54,6 +69,11 @@ steps:
     expect: "SET 4 DEGREES PITCH AND 75% N1"
     controls:
       - fltinst
+    targets:
+      - at: "mn/cd/OUTBOARD DU: PFD/1"
+      - at: "mn/cd/INBOARD DU: ND AND ENGINES/1"
+      - at: "mn/fd/INBOARD DU: ND/1"
+      - at: "mn/fd/OUTBOARD DU: PFD/1"
     confirmed_by:
       - kind: vendor-docs
         date: 2026-11-10
@@ -63,6 +83,11 @@ steps:
     expect: "CHECK ON"
     controls:
       - pheat
+    targets:
+      - at: "oh/heat/PROBE A/1"
+        set: "ON"
+      - at: "oh/heat/PROBE B/1"
+        set: "ON"
     non_recall: true
     confirmed_by:
       - kind: vendor-docs
@@ -73,6 +98,11 @@ steps:
     expect: "ATTITUDE, N1, GROUND SPEED AND RADIO ALTITUDE"
     controls:
       - fltinst
+    targets:
+      - at: "mn/cd/OUTBOARD DU: PFD/1"
+      - at: "mn/cd/INBOARD DU: ND AND ENGINES/1"
+      - at: "mn/fd/INBOARD DU: ND/1"
+      - at: "mn/fd/OUTBOARD DU: PFD/1"
     non_recall: true
     note: "Stick shaker, overspeed and low airspeed alerts may sound falsely, even together."
     confirmed_by:
@@ -84,6 +114,11 @@ steps:
     expect: FIND A RELIABLE SOURCE AND USE IT
     controls:
       - fltinst
+    targets:
+      - at: "mn/cd/OUTBOARD DU: PFD/1"
+      - at: "mn/cd/INBOARD DU: ND AND ENGINES/1"
+      - at: "mn/fd/INBOARD DU: ND/1"
+      - at: "mn/fd/OUTBOARD DU: PFD/1"
     non_recall: true
     confirmed_by:
       - kind: vendor-docs
@@ -94,6 +129,13 @@ steps:
     expect: "NO AUTOPILOT, AUTOTHROTTLE OR FLIGHT DIRECTORS"
     controls:
       - isfdc
+      - mcpset
+      - fd
+    targets:
+      - at: "mn/ctr/STANDBY DISPLAY/1"
+      - at: "gl/mcp/A/T ARM/1"
+      - at: "gl/mcp/F/D L/1"
+      - at: "gl/mcp/F/D R/1"
     non_recall: true
     confirmed_by:
       - kind: vendor-docs
@@ -104,6 +146,14 @@ steps:
     expect: "USE THAT SIDE'S F/D AND AUTOPILOT IF NEEDED. KEEP AUTOTHROTTLE OFF"
     controls:
       - fd
+      - mcpset
+    targets:
+      - at: "gl/mcp/F/D L/1"
+        open: true
+      - at: "gl/mcp/F/D R/1"
+        open: true
+      - at: "gl/mcp/A/T ARM/1"
+        set: "OFF"
     non_recall: true
     confirmed_by:
       - kind: vendor-docs
@@ -114,6 +164,11 @@ steps:
     expect: PITCH AND THRUST FROM APPROVED TABLES
     controls:
       - fltinst
+    targets:
+      - at: "mn/cd/OUTBOARD DU: PFD/1"
+      - at: "mn/cd/INBOARD DU: ND AND ENGINES/1"
+      - at: "mn/fd/INBOARD DU: ND/1"
+      - at: "mn/fd/OUTBOARD DU: PFD/1"
     non_recall: true
     note: "Once trimmed and stable, compare each airspeed with the table. A gap above 20 knots or 0.03 Mach marks that indicator as unreliable."
     confirmed_by:
@@ -125,6 +180,11 @@ steps:
     expect: "USE THE RELIABLE SIDE WITH TRAFFIC ALERTS ONLY. ALTITUDE REPORTING OFF IF BOTH ARE UNRELIABLE"
     controls:
       - xpndr
+    targets:
+      - at: "con/atc/ALT SOURCE 1/1"
+      - at: "con/atc/XPNDR/1"
+      - at: "con/atc/MODE/1"
+      - at: "con/atc/ALT SOURCE 2/1"
     non_recall: true
     note: "The airplane may no longer meet RVSM requirements."
     confirmed_by:

@@ -9,7 +9,7 @@ kind: non-normal
 basis:
   - prior-release
 when: "On the captain's command. The FO reads and the captain does each step."
-why: "Simulator training only. Not for real-world use. Stop the airplane, shut down, depressurize the cabin and start the evacuation."
+why: "Stop the airplane, shut down, depressurize the cabin and start the evacuation."
 steps:
   - id: ifly-737-max8.quick-reference.parking-brake
     number: 1
@@ -17,24 +17,38 @@ steps:
     expect: SET
     controls:
       - pbrake
+    targets:
+      - at: "con/lo/PARKING BRAKE/1"
+        set: "SET"
+      - at: "con/lo/PARK BRAKE LIGHT/1"
+        light: on
   - id: ifly-737-max8.quick-reference.speed-brake-passenger-evacuation
     number: 2
     text: SPEED BRAKE
     expect: DOWN DETENT
     controls:
       - speedbrake
+    targets:
+      - at: "con/st/SPEEDBRAKE LEVER/1"
+        set: "DOWN"
   - id: ifly-737-max8.quick-reference.flap-lever
     number: 3
     text: FLAP LEVER
     expect: "40"
     controls:
       - flaplever
+    targets:
+      - at: "con/st/FLAP LEVER/1"
+        set: "40"
   - id: ifly-737-max8.quick-reference.pressurization-mode-selector
     number: 4
     text: PRESSURIZATION MODE SELECTOR
     expect: MAN
     controls:
       - press
+    targets:
+      - at: "oh/press/MODE/1"
+        set: "MAN"
     panel_lights:
       press:
         - MODE
@@ -44,39 +58,70 @@ steps:
     expect: HOLD IN OPEN UNTIL VALVE INDICATES FULLY OPEN
     controls:
       - outflow
+    targets:
+      - at: "oh/press/VALVE/1"
+      - at: "oh/press/OUTFLOW/1"
+        set: "OPEN"
   - id: ifly-737-max8.quick-reference.flaps
     number: 6
     text: FLAPS
     expect: "IF TIME ALLOWS, VERIFY 40 BEFORE START LEVERS GO TO CUTOFF"
     controls:
       - flaplever
+    targets:
+      - at: "con/st/FLAP LEVER/1"
+        set: "40"
   - id: ifly-737-max8.quick-reference.start-levers-both-passenger-evacuation
     number: 7
     text: START LEVERS (BOTH)
     expect: CUTOFF
     controls:
       - slever
+    targets:
+      - at: "con/lo/START LEVER 1/1"
+        set: "CUTOFF"
+      - at: "con/lo/START LEVER 2/1"
+        set: "CUTOFF"
   - id: ifly-737-max8.quick-reference.cabin
     number: 8
     text: CABIN
     expect: "ON THE PA ANNOUNCE: EVACUATE, EVACUATE"
     controls:
       - pa
+    targets:
+      - at: "con/a1/AUDIO PANEL 1/1"
+      - at: "con/a2/AUDIO PANEL 2/1"
   - id: ifly-737-max8.quick-reference.tower
     number: 9
     text: TOWER
     expect: ADVISE
     controls:
       - atcclr
+    targets:
+      - at: "con/r1/VHF RADIO 1/1"
   - id: ifly-737-max8.quick-reference.engine-and-apu-fire-switches-all
     number: 10
     text: ENGINE AND APU FIRE SWITCHES (ALL)
     expect: OVERRIDE AND PULL
     controls:
       - firesw
+      - apufire
+    targets:
+      - at: "con/fi/FIRE 1/1"
+        set: "PULL"
+      - at: "con/fi/FIRE 2/1"
+        set: "PULL"
+      - at: "con/fi/FIRE APU/1"
+        set: "PULL"
   - id: ifly-737-max8.quick-reference.if-a-fire-warning-is-observed-or-indicated
     number: 11
     text: IF A FIRE WARNING IS OBSERVED OR INDICATED
     expect: ROTATE ILLUMINATED SWITCH TO THE STOP AND HOLD 1 SECOND
     controls:
       - firesw
+      - apufire
+    targets:
+      - at: "con/fi/FIRE 1/1"
+      - at: "con/fi/FIRE 2/1"
+      - at: "con/fi/FIRE APU/1"
+        open: true

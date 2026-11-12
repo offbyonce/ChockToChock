@@ -9,7 +9,7 @@ kind: non-normal
 basis:
   - prior-release
 when: APU fire warning.
-why: "Simulator training only. Not for real-world use. The fire switch shuts down the APU and the bottle puts out the fire."
+why: "The fire switch shuts down the APU and the bottle puts out the fire."
 steps:
   - id: ifly-737-max8.quick-reference.apu-fire-switch
     number: 1
@@ -17,9 +17,14 @@ steps:
     expect: "CONFIRM, PULL AND ROTATE"
     controls:
       - apufire
+    targets:
+      - at: "con/fi/FIRE APU/1"
   - id: ifly-737-max8.quick-reference.apu-switch
     number: 2
     text: APU SWITCH
     expect: "OFF"
     controls:
       - apusw
+    targets:
+      - at: "oh/apu/APU/1"
+        set: "OFF"

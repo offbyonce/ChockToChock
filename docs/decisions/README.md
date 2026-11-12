@@ -24,5 +24,8 @@ Never rewrite an accepted record; add a new one that supersedes it.
 | [0013](0013-step-presentation-and-provenance.md) | Every step presented the same way; provenance kept as an internal record | Accepted |
 | [0014](0014-pack-format-3.md) | Pack format 3: option choices, map regions and target positions | Accepted |
 | [0015](0015-resting-positions.md) | Resting positions for controls a step does not use | Accepted |
+| [0016](0016-levers-handles-and-lit-lights.md) | Levers, handles, and lights a step expects on | Accepted |
+| [0017](0017-selector-dials.md) | Selector dials: every position named, at its real angle | Accepted |
+| [0018](0018-lights-and-switch-values.md) | Explicit step targets | Accepted |
 
 Template: Context, Decision, Consequences. Keep it under a page.

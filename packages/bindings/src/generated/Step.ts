@@ -5,6 +5,7 @@ import type { HintPart } from "./HintPart";
 import type { Quick } from "./Quick";
 import type { ShowIf } from "./ShowIf";
 import type { StepId } from "./StepId";
+import type { StepTarget } from "./StepTarget";
 import type { Timer } from "./Timer";
 import type { WalkaroundPoint } from "./WalkaroundPoint";
 
@@ -33,6 +34,11 @@ expect: string,
  * Ids from the pack's controls file.
  */
 controls?: Array<string>, 
+/**
+ * The panel items the step involves and the state it asks of each, which the control
+ * drawings show exactly (decision 0018). `pack check` holds them to the step's wording.
+ */
+targets?: Array<StepTarget>, 
 /**
  * One field per `___` in `expect`, in order.
  */
