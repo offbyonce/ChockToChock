@@ -194,9 +194,8 @@ sections:
         description: The right main gear is down and locked.
         width: 42
         height: 0
-      - kind: toggle_switch
+      - kind: lever
         label: LANDING GEAR LEVER
-        guarded: true
         x: 24
         "y": 266
         controls:

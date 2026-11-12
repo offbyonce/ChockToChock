@@ -128,15 +128,29 @@
     },
     "PanelItemKind": {
       "description": "What a panel item is, which decides how it is drawn.",
-      "type": "string",
-      "enum": [
-        "toggle_switch",
-        "selector",
-        "push_button",
-        "light",
-        "gauge",
-        "readout",
-        "display_unit"
+      "oneOf": [
+        {
+          "type": "string",
+          "enum": [
+            "toggle_switch",
+            "selector",
+            "push_button",
+            "light",
+            "gauge",
+            "readout",
+            "display_unit"
+          ]
+        },
+        {
+          "description": "A lever moved along a slot, such as the start, speedbrake, gear and flap levers.",
+          "type": "string",
+          "const": "lever"
+        },
+        {
+          "description": "A handle that is pulled, such as the parking brake and the fire handles.",
+          "type": "string",
+          "const": "handle"
+        }
       ]
     },
     "PanelSection": {

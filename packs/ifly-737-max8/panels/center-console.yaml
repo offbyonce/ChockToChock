@@ -165,9 +165,8 @@ sections:
         description: Shows and sets stabilizer trim.
         width: 48
         height: 190
-      - kind: toggle_switch
+      - kind: lever
         label: SPEEDBRAKE LEVER
-        guarded: true
         x: 150
         "y": 120
         controls:
@@ -198,9 +197,8 @@ sections:
         controls:
           - apdisc
         description: Disconnects the autothrottle.
-      - kind: toggle_switch
+      - kind: lever
         label: FLAP LEVER
-        guarded: true
         x: 532
         "y": 120
         controls:
@@ -225,9 +223,8 @@ sections:
     width: 680
     height: 110
     items:
-      - kind: toggle_switch
+      - kind: handle
         label: PARKING BRAKE
-        guarded: true
         x: 80
         "y": 50
         controls:
@@ -243,9 +240,8 @@ sections:
         controls:
           - pbrake
         description: The parking brake is holding the airplane.
-      - kind: toggle_switch
+      - kind: lever
         label: START LEVER 1
-        guarded: true
         x: 270
         "y": 50
         controls:
@@ -253,9 +249,8 @@ sections:
         positions: "IDLE, CUTOFF"
         rest: "CUTOFF"
         description: Fuel to engine 1.
-      - kind: toggle_switch
+      - kind: lever
         label: START LEVER 2
-        guarded: true
         x: 350
         "y": 50
         controls:
@@ -314,15 +309,13 @@ sections:
           - firetest
         positions: "FAULT/INOP, OVHT/FIRE"
         description: Tests the fire warnings.
-      - kind: toggle_switch
+      - kind: handle
         label: FIRE 1
-        guarded: true
         x: 130
         "y": 76
         controls:
           - firesw
         positions: "PULL, ROTATE L, R"
-        rest: "PULL"
         description: Engine 1 fire switch.
       - kind: light
         label: FAULT
@@ -347,15 +340,13 @@ sections:
         x: 310
         "y": 34
         description: Silences the fire warning bell.
-      - kind: toggle_switch
+      - kind: handle
         label: FIRE APU
-        guarded: true
         x: 310
         "y": 92
         controls:
           - apufire
         positions: "PULL, ROTATE"
-        rest: "PULL"
         description: APU fire switch.
       - kind: toggle_switch
         label: OVHT DET 2
@@ -370,15 +361,13 @@ sections:
         x: 394
         "y": 86
         description: "The detectors around engine 2 sense more heat than normal, but not a fire."
-      - kind: toggle_switch
+      - kind: handle
         label: FIRE 2
-        guarded: true
         x: 480
         "y": 76
         controls:
           - firesw
         positions: "PULL, ROTATE L, R"
-        rest: "PULL"
         description: Engine 2 fire switch.
       - kind: light
         label: L BOTTLE DISCHARGE

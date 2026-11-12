@@ -34,10 +34,28 @@ export function half(item: PanelItem): number {
       return 11;
     case "light":
       return 10;
+    case "lever":
+      return 18;
+    case "handle":
+      return 12;
     default:
       return (item.height ?? 30) / 2;
   }
 }
+
+/** Lines of a light's words, and its size in units so they fit at `px` (3.0's lights fit theirs). */
+export function lampSize(item: PanelItem, k: number, px: number): { lines: string[]; w: number; h: number } {
+  const words = lines(item.label, 9);
+  const longest = Math.max(...words.map((w) => w.length));
+  return {
+    lines: words,
+    w: Math.max(38, longest * 0.66 * (px / k) + 10),
+    h: Math.max(20, words.length * ((px * 1.1) / k) + 8),
+  };
+}
+
+/** A lever's knob position along its slot: first position at the top, last at the bottom. */
+export const slotY = (index: number, count: number) => (count < 2 ? 0 : -13 + (26 * index) / (count - 1));
 
 /** Long labels go on two lines, split near the middle. */
 export function lines(label: string, max = 12): string[] {
@@ -122,6 +140,10 @@ function halfWidth(item: PanelItem): number {
       return item.guarded ? 14 : 11;
     case "light":
       return 19;
+    case "lever":
+      return 8;
+    case "handle":
+      return 13;
     case "gauge":
       return 14;
     default:
@@ -198,8 +220,9 @@ function place(
   });
   const glyph = (i: number): Box => {
     const it = moved.items[i] as PanelItem;
-    const hw = halfWidth(it);
-    const h = half(it);
+    const lamp = it.kind === "light" ? lampSize(it, k, PX.lamp * scale) : null;
+    const hw = lamp ? lamp.w / 2 : halfWidth(it);
+    const h = lamp ? lamp.h / 2 : half(it);
     return { x0: it.x - hw, y0: it.y - h, x1: it.x + hw, y1: it.y + h };
   };
   for (const i of shown) placed.push(glyph(i));
@@ -221,7 +244,31 @@ function place(
       const x0 = l.anchor === "start" ? l.x : l.anchor === "end" ? l.x - w : l.x - w / 2;
       return { x0: it.x + x0, y0: it.y + l.y - posPx / k, x1: it.x + x0 + w, y1: it.y + l.y + 1.5 };
     };
-    if (it.kind === "toggle_switch" && pos.length <= 3) {
+    if (it.kind === "lever" || it.kind === "handle") {
+      // Right of the lever or handle, or left if that side is taken; a long lever labels its
+      // ends and its target or resting position.
+      const ns =
+        pos.length <= 4
+          ? pos.map((_, n) => n)
+          : labelledPositions(pos.length, on ? t : rest >= 0 ? rest : null);
+      const side = (right: boolean): PositionLabel[] =>
+        ns.map((n) => ({
+          n,
+          x: right ? halfWidth(it) + 4 : -halfWidth(it) - 4,
+          y: (it.kind === "lever" ? slotY(n, pos.length) : 0) + 3,
+          anchor: right ? "start" : "end",
+        }));
+      const right = side(true);
+      const left = side(false);
+      const chosen = right.every((l) => free(boxOf(l)))
+        ? right
+        : left.every((l) => free(boxOf(l)))
+          ? left
+          : right;
+      if (!chosen.every((l) => free(boxOf(l)))) clear = false;
+      for (const l of chosen) placed.push(boxOf(l));
+      layout.positions = chosen;
+    } else if (it.kind === "toggle_switch" && pos.length <= 3) {
       // Right of the switch, or left of it if that side is taken: every position keeps its label.
       const side = (right: boolean): PositionLabel[] =>
         pos.map((_, n) => {

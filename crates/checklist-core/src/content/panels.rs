@@ -15,6 +15,10 @@ data_types! {
         Gauge,
         Readout,
         DisplayUnit,
+        /// A lever moved along a slot, such as the start, speedbrake, gear and flap levers.
+        Lever,
+        /// A handle that is pulled, such as the parking brake and the fire handles.
+        Handle,
     }
 
     /// The color of a panel light.

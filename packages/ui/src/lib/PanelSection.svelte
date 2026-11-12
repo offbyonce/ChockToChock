@@ -13,7 +13,7 @@ however large the drawing is.
 -->
 <script lang="ts">
   import type { ItemTarget, PanelItem, PanelSection } from "@chocktochock/bindings";
-  import { angle, labelledPositions, labelled, layoutSection, leverY, lines, PX, positionsOf } from "./panel-layout";
+  import { angle, labelled, lampSize, layoutSection, leverY, PX, positionsOf, slotY } from "./panel-layout";
 
   let {
     section,
@@ -129,10 +129,35 @@ however large the drawing is.
         {/if}
         <rect class="body" class:pressed={on && t != null} x="-11" y="-11" width="22" height="22" rx="4" />
       {:else if item.kind === "light"}
-        {@const words = lines(item.label, 9)}
-        <rect class="body lamp" x="-19" y="-10" width="38" height="20" rx="2" />
-        {#each words as line, n (n)}
-          <text class="lamp-text" y={(n - (words.length - 1) / 2) * 7 + 2} style:font-size={lampFs(words, 38)}>{line}</text>
+        <!-- Sized to its words at 3.0's text size. Lights are drawn unlit until batch 3. -->
+        {@const lamp = lampSize(item, k, PX.lamp * layout.scale)}
+        <rect class="body lamp" x={-lamp.w / 2} y={-lamp.h / 2} width={lamp.w} height={lamp.h} rx="2.5" />
+        {#each lamp.lines as line, n (n)}
+          <text
+            class="lamp-text"
+            y={(n - (lamp.lines.length - 1) / 2) * ((PX.lamp * layout.scale * 1.1) / k) + (PX.lamp * layout.scale * 0.35) / k}
+            style:font-size={fs(PX.lamp * layout.scale)}>{line}</text
+          >
+        {/each}
+      {:else if item.kind === "lever"}
+        <!-- A slot and the lever's knob at the target or resting position. -->
+        <rect class="body slot" x="-3" y="-16" width="6" height="32" rx="3" />
+        {#if on && t != null}
+          <rect class="knob set" x="-8" y={slotY(t, positions.length) - 3} width="16" height="6" rx="2" />
+        {:else if r >= 0}
+          <rect class="knob rest" x="-8" y={slotY(r, positions.length) - 3} width="16" height="6" rx="2" />
+        {:else}
+          <rect class="knob unknown" x="-6" y="-2.5" width="12" height="5" rx="2" />
+        {/if}
+        {#each layout.items.get(i)?.positions ?? [] as l (l.n)}
+          <text class="pos" class:target={on && l.n === t} class:at-rest={l.n === r} x={l.x} y={l.y} text-anchor={l.anchor} style:font-size={fs(PX.pos * layout.scale)}>{positions[l.n]}</text>
+        {/each}
+      {:else if item.kind === "handle"}
+        <!-- A T-shaped pull handle on a short stem. -->
+        <rect class="body stem" x="-2" y="-2" width="4" height="12" rx="1" />
+        <rect class="body grip" class:pressed={on && t != null} x="-13" y="-11" width="26" height="10" rx="4" />
+        {#each layout.items.get(i)?.positions ?? [] as l (l.n)}
+          <text class="pos" class:target={on && l.n === t} class:at-rest={l.n === r} x={l.x} y={l.y} text-anchor={l.anchor} style:font-size={fs(PX.pos * layout.scale)}>{positions[l.n]}</text>
         {/each}
       {:else if item.kind === "gauge"}
         <circle class="body" r="14" />
@@ -203,6 +228,12 @@ however large the drawing is.
   .lamp,
   .screen {
     fill: var(--zone);
+  }
+  .knob.rest:is(rect) {
+    fill: none;
+  }
+  .on .grip.pressed {
+    fill: var(--accent-soft);
   }
   text {
     font-family: var(--sans);
