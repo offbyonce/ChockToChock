@@ -14,7 +14,7 @@ however large the drawing is.
 <script lang="ts">
   import type { ItemTarget, PanelItem, PanelSection } from "@chocktochock/bindings";
   import { em } from "./text-width";
-  import { angleOf, BUTTON, withinAcross, knobY, LAMP, TOGGLE, labelled, lampText, layoutSection, leverY, PX, positionsOf, slotY } from "./panel-layout";
+  import { angleOf, BUTTON, dialRadius, withinAcross, knobY, LAMP, TOGGLE, labelled, lampText, layoutSection, leverY, PX, positionsOf, slotY } from "./panel-layout";
 
   let {
     section,
@@ -123,14 +123,14 @@ however large the drawing is.
       {:else if item.kind === "selector"}
         <!-- A tick for each labelled position, so no tick is left without a name. -->
         {#each layout.items.get(i)?.positions.map((l) => l.n) ?? [] as n (n)}
-          <line class="tick" class:target={on && n === t} x1="0" y1="-12" x2="0" y2="-15.5" transform="rotate({angleOf(item, n)})" />
+          <line class="tick" class:target={on && n === t} x1="0" y1={-dialRadius(item) - 1.5} x2="0" y2={-dialRadius(item) - 5} transform="rotate({angleOf(item, n)})" />
         {/each}
-        <circle class="body" r="10.5" />
+        <circle class="body" r={dialRadius(item)} />
         {#if on && t != null}
-          <line class="pointer" x1="0" y1="0" x2="0" y2="-9" transform="rotate({angleOf(item, t)})" />
+          <line class="pointer" x1="0" y1="0" x2="0" y2={-dialRadius(item) + 1.5} transform="rotate({angleOf(item, t)})" />
           <circle class="knob set" r="2.4" />
         {:else if r >= 0}
-          <line class="pointer rest" x1="0" y1="0" x2="0" y2="-8" transform="rotate({angleOf(item, r)})" />
+          <line class="pointer rest" x1="0" y1="0" x2="0" y2={-dialRadius(item) + 2.5} transform="rotate({angleOf(item, r)})" />
           <circle class="knob-ring" r="2.2" />
         {:else}
           <circle class="knob-ring" r="4.5" />

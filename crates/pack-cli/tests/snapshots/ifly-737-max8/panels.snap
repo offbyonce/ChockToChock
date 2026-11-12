@@ -1,6 +1,5 @@
 ---
 source: crates/pack-cli/tests/snapshot.rs
-assertion_line: 38
 ---
 [
   {
@@ -3051,7 +3050,7 @@ assertion_line: 38
         "id": "oxy",
         "title": "Oxygen",
         "x": 570.0,
-        "y": 280.0,
+        "y": 304.0,
         "width": 226.0,
         "height": 114.0,
         "items": [
@@ -3171,7 +3170,7 @@ assertion_line: 38
         "id": "stall",
         "title": "Stall warning test",
         "x": 800.0,
-        "y": 280.0,
+        "y": 304.0,
         "width": 141.0,
         "height": 50.0,
         "items": [
@@ -3275,7 +3274,7 @@ assertion_line: 38
         "id": "gear",
         "title": "Gear lights",
         "x": 572.0,
-        "y": 400.0,
+        "y": 422.0,
         "width": 195.0,
         "height": 74.0,
         "items": [
@@ -4666,7 +4665,7 @@ assertion_line: 38
     "id": "con",
     "title": "Center console",
     "width": 838.0,
-    "height": 1276.0,
+    "height": 1287.0,
     "sections": [
       {
         "id": "cdul",
@@ -4697,14 +4696,14 @@ assertion_line: 38
         "title": "Engine display and autobrake",
         "x": 226.0,
         "y": 6.0,
-        "width": 299.0,
-        "height": 133.0,
+        "width": 324.0,
+        "height": 144.0,
         "items": [
           {
             "kind": "toggle_switch",
             "label": "FUEL FLOW",
-            "x": 34.0,
-            "y": 48.0,
+            "x": 38.0,
+            "y": 49.0,
             "controls": [
               "fuelflow"
             ],
@@ -4715,8 +4714,8 @@ assertion_line: 38
           {
             "kind": "selector",
             "label": "SELECTOR L",
-            "x": 34.0,
-            "y": 108.0,
+            "x": 38.0,
+            "y": 113.0,
             "controls": [
               "sel"
             ],
@@ -4728,7 +4727,7 @@ assertion_line: 38
             "kind": "light",
             "label": "AUTO BRAKE DISARM",
             "color": "amber",
-            "x": 107.0,
+            "x": 115.0,
             "y": 30.0,
             "controls": [
               "abrake"
@@ -4738,8 +4737,8 @@ assertion_line: 38
           {
             "kind": "selector",
             "label": "AUTO BRAKE",
-            "x": 107.0,
-            "y": 70.0,
+            "x": 115.0,
+            "y": 72.0,
             "controls": [
               "abrake"
             ],
@@ -4750,7 +4749,7 @@ assertion_line: 38
           {
             "kind": "push_button",
             "label": "ENG",
-            "x": 221.0,
+            "x": 236.0,
             "y": 30.0,
             "controls": [
               "engmon",
@@ -4761,7 +4760,7 @@ assertion_line: 38
           {
             "kind": "push_button",
             "label": "SYS",
-            "x": 269.0,
+            "x": 287.0,
             "y": 30.0,
             "controls": [
               "sysp"
@@ -4771,15 +4770,15 @@ assertion_line: 38
           {
             "kind": "push_button",
             "label": "INFO",
-            "x": 221.0,
-            "y": 68.0,
+            "x": 236.0,
+            "y": 70.0,
             "description": "Information display."
           },
           {
             "kind": "push_button",
             "label": "C/R",
-            "x": 269.0,
-            "y": 68.0,
+            "x": 287.0,
+            "y": 70.0,
             "controls": [
               "cr"
             ],
@@ -4789,8 +4788,8 @@ assertion_line: 38
           {
             "kind": "selector",
             "label": "SELECTOR R",
-            "x": 265.0,
-            "y": 112.0,
+            "x": 283.0,
+            "y": 117.0,
             "controls": [
               "sel"
             ],
@@ -4803,15 +4802,15 @@ assertion_line: 38
             "kind": "light",
             "label": "ANTISKID INOP",
             "color": "amber",
-            "x": 107.0,
-            "y": 116.0,
+            "x": 115.0,
+            "y": 121.0,
             "description": "Antiskid fault. Antiskid is off for one or more wheels."
           },
           {
             "kind": "light",
             "label": "BRAKE TEMP",
             "color": "amber",
-            "x": 165.0,
+            "x": 177.0,
             "y": 30.0,
             "description": "A brake is hot."
           },
@@ -4819,15 +4818,15 @@ assertion_line: 38
             "kind": "light",
             "label": "TIRE PRESS",
             "color": "amber",
-            "x": 165.0,
-            "y": 58.0,
+            "x": 177.0,
+            "y": 60.0,
             "description": "Tire pressure is low."
           },
           {
             "kind": "push_button",
             "label": "ENG TFR",
-            "x": 165.0,
-            "y": 98.0,
+            "x": 177.0,
+            "y": 102.0,
             "description": "Moves the engine display to the other screen."
           }
         ]
@@ -4835,7 +4834,7 @@ assertion_line: 38
       {
         "id": "cdur",
         "title": "Right CDU",
-        "x": 529.0,
+        "x": 554.0,
         "y": 6.0,
         "width": 210.0,
         "height": 120.0,
@@ -4860,7 +4859,7 @@ assertion_line: 38
         "id": "st",
         "title": "Control stand",
         "x": 10.0,
-        "y": 143.0,
+        "y": 154.0,
         "width": 680.0,
         "height": 250.0,
         "items": [
@@ -4952,7 +4951,7 @@ assertion_line: 38
         "id": "lo",
         "title": "Parking brake and start levers",
         "x": 10.0,
-        "y": 397.0,
+        "y": 408.0,
         "width": 725.0,
         "height": 122.0,
         "items": [
@@ -5041,7 +5040,7 @@ assertion_line: 38
         "id": "fi",
         "title": "Fire protection",
         "x": 10.0,
-        "y": 523.0,
+        "y": 534.0,
         "width": 818.0,
         "height": 150.0,
         "items": [
@@ -5217,7 +5216,7 @@ assertion_line: 38
         "id": "r1",
         "title": "Radio 1",
         "x": 10.0,
-        "y": 677.0,
+        "y": 688.0,
         "width": 222.0,
         "height": 112.0,
         "items": [
@@ -5241,7 +5240,7 @@ assertion_line: 38
         "id": "cf",
         "title": "Cargo fire",
         "x": 238.0,
-        "y": 677.0,
+        "y": 688.0,
         "width": 300.0,
         "height": 121.0,
         "items": [
@@ -5351,7 +5350,7 @@ assertion_line: 38
         "id": "r2",
         "title": "Radio 2",
         "x": 542.0,
-        "y": 677.0,
+        "y": 688.0,
         "width": 222.0,
         "height": 112.0,
         "items": [
@@ -5373,7 +5372,7 @@ assertion_line: 38
         "id": "n1",
         "title": "NAV 1",
         "x": 10.0,
-        "y": 793.0,
+        "y": 804.0,
         "width": 222.0,
         "height": 84.0,
         "items": [
@@ -5395,7 +5394,7 @@ assertion_line: 38
         "id": "wx",
         "title": "Weather radar",
         "x": 238.0,
-        "y": 802.0,
+        "y": 813.0,
         "width": 224.0,
         "height": 84.0,
         "items": [
@@ -5417,7 +5416,7 @@ assertion_line: 38
         "id": "n2",
         "title": "NAV 2",
         "x": 468.0,
-        "y": 802.0,
+        "y": 813.0,
         "width": 222.0,
         "height": 84.0,
         "items": [
@@ -5439,7 +5438,7 @@ assertion_line: 38
         "id": "a1",
         "title": "Audio 1",
         "x": 10.0,
-        "y": 881.0,
+        "y": 892.0,
         "width": 222.0,
         "height": 84.0,
         "items": [
@@ -5462,7 +5461,7 @@ assertion_line: 38
         "id": "atc",
         "title": "ATC/TCAS",
         "x": 238.0,
-        "y": 890.0,
+        "y": 901.0,
         "width": 265.0,
         "height": 131.0,
         "items": [
@@ -5532,7 +5531,7 @@ assertion_line: 38
         "id": "a2",
         "title": "Audio 2",
         "x": 507.0,
-        "y": 890.0,
+        "y": 901.0,
         "width": 222.0,
         "height": 84.0,
         "items": [
@@ -5555,7 +5554,7 @@ assertion_line: 38
         "id": "r3",
         "title": "Radio 3",
         "x": 10.0,
-        "y": 969.0,
+        "y": 980.0,
         "width": 222.0,
         "height": 60.0,
         "items": [
@@ -5574,7 +5573,7 @@ assertion_line: 38
         "id": "adf",
         "title": "ADF",
         "x": 238.0,
-        "y": 1025.0,
+        "y": 1036.0,
         "width": 454.0,
         "height": 96.0,
         "items": [
@@ -5660,7 +5659,7 @@ assertion_line: 38
         "id": "lp",
         "title": "Lighting",
         "x": 10.0,
-        "y": 1033.0,
+        "y": 1044.0,
         "width": 222.0,
         "height": 130.0,
         "items": [
@@ -5688,7 +5687,7 @@ assertion_line: 38
         "id": "tr",
         "title": "Trim",
         "x": 238.0,
-        "y": 1125.0,
+        "y": 1136.0,
         "width": 249.0,
         "height": 145.0,
         "items": [
@@ -5732,7 +5731,7 @@ assertion_line: 38
         "id": "dr",
         "title": "Stab override and door",
         "x": 491.0,
-        "y": 1125.0,
+        "y": 1136.0,
         "width": 222.0,
         "height": 130.0,
         "items": [

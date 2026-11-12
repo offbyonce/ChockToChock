@@ -7,7 +7,7 @@
 id: con
 title: Center console
 width: 838
-height: 1276
+height: 1287
 sections:
   - id: cdul
     title: Left CDU
@@ -31,13 +31,13 @@ sections:
     title: Engine display and autobrake
     x: 226
     "y": 6
-    width: 299
-    height: 133
+    width: 324
+    height: 144
     items:
       - kind: toggle_switch
         label: FUEL FLOW
-        x: 34
-        "y": 48
+        x: 38
+        "y": 49
         controls:
           - fuelflow
         positions: "RESET, RATE, USED"
@@ -45,8 +45,8 @@ sections:
         description: "RATE shows flow, USED shows fuel used, RESET zeroes the count."
       - kind: selector
         label: SELECTOR L
-        x: 34
-        "y": 108
+        x: 38
+        "y": 113
         controls:
           - sel
         positions: "L, C, R"
@@ -55,15 +55,15 @@ sections:
       - kind: light
         label: AUTO BRAKE DISARM
         color: amber
-        x: 107
+        x: 115
         "y": 30
         controls:
           - abrake
         description: Autobrake disarmed or faulty. Lights 1 to 2 seconds when RTO is selected.
       - kind: selector
         label: AUTO BRAKE
-        x: 107
-        "y": 70
+        x: 115
+        "y": 72
         controls:
           - abrake
         positions: "RTO, OFF, 1, 2, 3, MAX"
@@ -71,7 +71,7 @@ sections:
         description: Sets the autobrake.
       - kind: push_button
         label: ENG
-        x: 221
+        x: 236
         "y": 30
         controls:
           - engmon
@@ -79,28 +79,28 @@ sections:
         description: Shows secondary engine data.
       - kind: push_button
         label: SYS
-        x: 269
+        x: 287
         "y": 30
         controls:
           - sysp
         description: Shows system data.
       - kind: push_button
         label: INFO
-        x: 221
-        "y": 68
+        x: 236
+        "y": 70
         description: Information display.
       - kind: push_button
         label: C/R
-        x: 269
-        "y": 68
+        x: 287
+        "y": 70
         controls:
           - cr
         description: Cancel and recall alerts.
         height: 26
       - kind: selector
         label: SELECTOR R
-        x: 265
-        "y": 112
+        x: 283
+        "y": 117
         controls:
           - sel
         positions: "L, C, R"
@@ -110,29 +110,29 @@ sections:
       - kind: light
         label: ANTISKID INOP
         color: amber
-        x: 107
-        "y": 116
+        x: 115
+        "y": 121
         description: Antiskid fault. Antiskid is off for one or more wheels.
       - kind: light
         label: BRAKE TEMP
         color: amber
-        x: 165
+        x: 177
         "y": 30
         description: A brake is hot.
       - kind: light
         label: TIRE PRESS
         color: amber
-        x: 165
-        "y": 58
+        x: 177
+        "y": 60
         description: Tire pressure is low.
       - kind: push_button
         label: ENG TFR
-        x: 165
-        "y": 98
+        x: 177
+        "y": 102
         description: Moves the engine display to the other screen.
   - id: cdur
     title: Right CDU
-    x: 529
+    x: 554
     "y": 6
     width: 210
     height: 120
@@ -151,7 +151,7 @@ sections:
   - id: st
     title: Control stand
     x: 10
-    "y": 143
+    "y": 154
     width: 680
     height: 250
     items:
@@ -219,7 +219,7 @@ sections:
   - id: lo
     title: Parking brake and start levers
     x: 10
-    "y": 397
+    "y": 408
     width: 725
     height: 122
     items:
@@ -285,7 +285,7 @@ sections:
   - id: fi
     title: Fire protection
     x: 10
-    "y": 523
+    "y": 534
     width: 818
     height: 150
     items:
@@ -415,7 +415,7 @@ sections:
   - id: r1
     title: Radio 1
     x: 10
-    "y": 677
+    "y": 688
     width: 222
     height: 112
     items:
@@ -433,7 +433,7 @@ sections:
   - id: cf
     title: Cargo fire
     x: 238
-    "y": 677
+    "y": 688
     width: 300
     height: 121
     items:
@@ -518,7 +518,7 @@ sections:
   - id: r2
     title: Radio 2
     x: 542
-    "y": 677
+    "y": 688
     width: 222
     height: 112
     items:
@@ -534,7 +534,7 @@ sections:
   - id: n1
     title: NAV 1
     x: 10
-    "y": 793
+    "y": 804
     width: 222
     height: 84
     items:
@@ -550,7 +550,7 @@ sections:
   - id: wx
     title: Weather radar
     x: 238
-    "y": 802
+    "y": 813
     width: 224
     height: 84
     items:
@@ -566,7 +566,7 @@ sections:
   - id: n2
     title: NAV 2
     x: 468
-    "y": 802
+    "y": 813
     width: 222
     height: 84
     items:
@@ -582,7 +582,7 @@ sections:
   - id: a1
     title: Audio 1
     x: 10
-    "y": 881
+    "y": 892
     width: 222
     height: 84
     items:
@@ -599,7 +599,7 @@ sections:
   - id: atc
     title: ATC/TCAS
     x: 238
-    "y": 890
+    "y": 901
     width: 265
     height: 131
     items:
@@ -651,7 +651,7 @@ sections:
   - id: a2
     title: Audio 2
     x: 507
-    "y": 890
+    "y": 901
     width: 222
     height: 84
     items:
@@ -668,7 +668,7 @@ sections:
   - id: r3
     title: Radio 3
     x: 10
-    "y": 969
+    "y": 980
     width: 222
     height: 60
     items:
@@ -682,7 +682,7 @@ sections:
   - id: adf
     title: ADF
     x: 238
-    "y": 1025
+    "y": 1036
     width: 454
     height: 96
     items:
@@ -744,7 +744,7 @@ sections:
   - id: lp
     title: Lighting
     x: 10
-    "y": 1033
+    "y": 1044
     width: 222
     height: 130
     items:
@@ -765,7 +765,7 @@ sections:
   - id: tr
     title: Trim
     x: 238
-    "y": 1125
+    "y": 1136
     width: 249
     height: 145
     items:
@@ -797,7 +797,7 @@ sections:
   - id: dr
     title: Stab override and door
     x: 491
-    "y": 1125
+    "y": 1136
     width: 222
     height: 130
     items:

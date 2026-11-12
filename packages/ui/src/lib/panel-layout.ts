@@ -39,6 +39,7 @@ export function half(item: PanelItem): number {
     case "toggle_switch":
       return TOGGLE.h / 2 + (item.guarded ? TOGGLE.guard : 0);
     case "selector":
+      return dialRadius(item) + 4.5;
     case "gauge":
       return 15;
     case "push_button":
@@ -57,6 +58,17 @@ export function half(item: PanelItem): number {
 
 /** Every light is the same size, as in 3.0, so lights side by side line up. */
 export const LAMP = { w: 50, h: 20 } as const;
+/**
+ * A selector dial's radius: 10.5 for up to four positions, and larger for each position beyond,
+ * so a dial with many positions has room for every label at the standard size (text stays one
+ * size in every drawing; the dial grows instead). Its ticks reach 5 beyond the dial, its
+ * labels 7 beyond.
+ */
+export const dialRadius = (item: PanelItem) => {
+  const n = positionsOf(item).length;
+  return n > 4 ? 10.5 + 2.5 * (n - 4) : 10.5;
+};
+
 /** A push button, as 3.0 draws it: a key with its name inside and a line along its bottom. */
 export const BUTTON = { w: 42, h: 22 } as const;
 
@@ -179,7 +191,7 @@ export function halfWidth(item: PanelItem): number {
     case "toggle_switch":
       return toggleHalfWidth(!!item.guarded);
     case "selector":
-      return 15.5;
+      return dialRadius(item) + 5;
     case "push_button":
       return BUTTON.w / 2 + (item.guarded ? 2 : 0);
     case "light":
@@ -377,9 +389,9 @@ function place(
         const lift = anchor === "middle" ? (cs > 0 ? -0.55 : 0.55) : 0;
         const l: PositionLabel = {
           n,
-          x: sn * 17.5,
+          x: sn * (dialRadius(it) + 7),
           // The label's middle at its point; the baseline sits half a capital below.
-          y: -cs * 17.5 + lift * line + 0.36 * line,
+          y: -cs * (dialRadius(it) + 7) + lift * line + 0.36 * line,
           anchor,
         };
         if (!free(boxOf(l), i)) clear = false;

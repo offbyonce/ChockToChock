@@ -222,24 +222,25 @@ describe("selector angles", () => {
       title: "Electrical meters",
       x: 0,
       y: 0,
-      width: 225,
+      width: 248,
       height: 318,
       items: [
         {
-          ...item("selector", "DC METERS", 60, 206, "STBY PWR, BAT BUS, BAT, AUX BAT, TR1, TR2, TR3, TEST"),
+          ...item("selector", "DC METERS", 62, 206, "STBY PWR, BAT BUS, BAT, AUX BAT, TR1, TR2, TR3, TEST"),
           angles: [-135, -90, -45, 0, 45, 90, 135, 180],
         },
         {
-          ...item("selector", "AC METERS", 168, 206, "STBY PWR, GRD PWR, GEN1, APU GEN, GEN2, INV, TEST"),
+          ...item("selector", "AC METERS", 184, 206, "STBY PWR, GRD PWR, GEN1, APU GEN, GEN2, INV, TEST"),
           angles: [-135, -90, -45, 0, 45, 90, 135],
         },
-        { ...item("toggle_switch", "BATTERY", 60, 276, "OFF, ON"), guarded: true },
-        item("toggle_switch", "CAB/UTIL", 140, 276, "OFF, ON"),
-        item("toggle_switch", "IFE/PASS SEAT", 196, 276, "OFF, ON"),
+        { ...item("toggle_switch", "BATTERY", 62, 276, "OFF, ON"), guarded: true },
+        item("toggle_switch", "CAB/UTIL", 152, 276, "OFF, ON"),
+        item("toggle_switch", "IFE/PASS SEAT", 215, 276, "OFF, ON"),
       ],
     } as unknown as PanelSection;
     const target = (i: number) => (i === 2 ? { on: true, t: 1, rest: 0 } : { on: false, t: null, rest: 0 });
-    for (const k of [1.4, 1.8]) {
+    // Every drawing uses one fixed scale (K = 1.8).
+    for (const k of [1.8]) {
       const layout = layoutSection(meters, [0, 1, 2, 3, 4], target, k, 150);
       expect(layout.clear, `at ${k}`).toBe(true);
       expect(layout.items.get(0)?.positions).toHaveLength(8);
