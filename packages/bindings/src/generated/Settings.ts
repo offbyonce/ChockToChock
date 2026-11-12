@@ -2,13 +2,14 @@
 import type { Detail } from "./Detail";
 import type { EssentialsChanges } from "./EssentialsChanges";
 import type { ListView } from "./ListView";
+import type { TextSize } from "./TextSize";
 import type { Theme } from "./Theme";
 
 export type Settings = { format: number, theme: Theme, 
 /**
  * 0 (full brightness) to [`MAX_DIMMING`].
  */
-dimming: number, detail: Detail, listView: ListView, 
+dimming: number, textSize: TextSize, detail: Detail, listView: ListView, 
 /**
  * Essentials only, instead of every step.
  */

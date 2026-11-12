@@ -189,7 +189,7 @@ first. Tapping one part of the summary opens the pop-out on that part's field.
     position: relative;
     z-index: 5;
     min-width: 0;
-    margin-bottom: 0.625rem;
+    margin-bottom: var(--space-3);
     overflow: visible;
   }
   .fstrip.open {
@@ -198,99 +198,98 @@ first. Tapping one part of the summary opens the pop-out on that part's field.
   .fsline {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: var(--space-3);
     width: 100%;
     min-width: 0;
-    min-height: 2.75rem;
-    padding: 0.5rem 1rem;
+    min-height:  var(--size-touch-min);
+    padding: var(--space-2) var(--space-4);
     border: 0;
     border-radius: inherit;
     background: none;
-    color: var(--ink);
+    color: var(--color-text);
     font: inherit;
     text-align: left;
     cursor: pointer;
   }
   .fsline > b {
     flex: none;
-    font-weight: 600;
+    font-weight: var(--weight-semibold);
   }
   .fsum {
     flex: 1;
     min-width: 0;
-    color: var(--ink);
-    font: 500 0.875rem/1.5 var(--mono);
+    color: var(--color-text);
+    font: var(--weight-medium) var(--font-size-value-mono) / var(--leading-normal) var(--font-mono);
     overflow-wrap: anywhere;
   }
   .fsum i {
-    margin: 0 0.4rem;
-    color: var(--muted);
+    margin: 0 var(--space-2);
+    color: var(--color-text-muted);
     font-style: normal;
   }
   .fsum .e {
-    color: var(--muted);
-    font: 400 0.875rem var(--sans);
+    color: var(--color-text-muted);
+    font: var(--weight-regular) var(--font-size-secondary) var(--font-sans);
   }
   .fsnote {
     display: block;
-    margin-top: 0.15rem;
+    margin-top: var(--space-1);
     overflow: hidden;
-    color: var(--muted);
-    font: 400 0.8125rem/1.4 var(--sans);
+    color: var(--color-text-muted);
+    font: var(--weight-regular) var(--font-size-secondary) / var(--leading-snug) var(--font-sans);
     text-overflow: ellipsis;
     white-space: nowrap;
   }
   .fsed {
     flex: none;
-    color: var(--accent);
-    font-size: 0.875rem;
-    font-weight: 500;
+    color: var(--color-accent);
+    font-size: var(--font-size-secondary);
+    font-weight: var(--weight-medium);
   }
   .fsline:hover .fsed {
     text-decoration: underline;
   }
   #spop {
     position: absolute;
-    top: calc(100% + 0.375rem);
+    top: calc(100% + var(--space-2));
     left: 0;
     z-index: 40;
-    width: min(44rem, 100%);
+    width: min(var(--size-content-max), 100%);
     box-sizing: border-box;
-    padding: 1rem;
-    border: 1px solid var(--line);
-    border-radius: 0.75rem;
-    background: var(--surface);
-    box-shadow: 0 12px 32px rgb(0 0 0 / 18%);
+    padding: var(--space-4);
+    border: var(--border-thin) solid var(--color-border);
+    border-radius: var(--radius-panel);
+    background: var(--color-surface);
+    box-shadow: none;
   }
   .sphd {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 0.5rem;
+    margin-bottom: var(--space-2);
   }
   h2 {
     margin: 0;
-    font-size: 1rem;
+    font-size: var(--font-size-body);
   }
   .spg {
     display: block;
-    margin: 0.75rem 0 0.375rem;
-    color: var(--muted);
-    font: 600 0.6875rem var(--sans);
-    letter-spacing: 0.06em;
+    margin: var(--space-3) 0 var(--space-2);
+    color: var(--color-text-muted);
+    font: var(--weight-semibold) var(--font-size-caption) var(--font-sans);
     text-transform: uppercase;
   }
   .fsg {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 0.625rem 0.75rem;
+    gap: var(--space-3) var(--space-3);
   }
   .fsf {
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
-    color: var(--muted);
-    font-size: 0.8125rem;
+    gap: var(--space-1);
+    color: var(--color-text-muted);
+    font-size: var(--font-size-secondary);
   }
   .fsf span {
     overflow: hidden;
@@ -300,21 +299,21 @@ first. Tapping one part of the summary opens the pop-out on that part's field.
   .fsf input,
   textarea {
     min-width: 0;
-    height: 2.5rem;
+    height: var(--size-touch-min);
     box-sizing: border-box;
-    padding: 0 0.6rem;
-    border: 1px solid var(--line);
-    border-radius: 0.5rem;
-    background: var(--surface);
-    color: var(--ink);
-    font: 500 1rem var(--mono);
+    padding: 0 var(--space-2);
+    border: var(--border-thin) solid var(--color-border);
+    border-radius: var(--radius-control);
+    background: var(--color-surface);
+    color: var(--color-text);
+    font: var(--weight-medium) var(--font-size-value-mono) var(--font-mono);
     text-transform: uppercase;
   }
   textarea {
     width: 100%;
     height: auto;
-    padding: 0.5rem 0.6rem;
-    font: 400 0.9375rem/1.4 var(--sans);
+    padding: var(--space-2) var(--space-2);
+    font: var(--weight-regular) var(--font-size-body) / var(--leading-snug) var(--font-sans);
     text-transform: none;
     resize: vertical;
   }
@@ -322,40 +321,40 @@ first. Tapping one part of the summary opens the pop-out on that part's field.
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 1rem;
-    margin-top: 0.875rem;
+    gap: var(--space-4);
+    margin-top: var(--space-4);
   }
   .spft.ask {
     flex-wrap: wrap;
     align-items: flex-start;
-    padding: 0.75rem;
-    border-radius: 0.6rem;
-    background: color-mix(in srgb, var(--stop) 8%, transparent);
+    padding: var(--space-3);
+    border-radius: var(--radius-control);
+    background: color-mix(in srgb, var(--color-danger-text) 8%, transparent);
   }
   .spcq {
-    flex: 1 1 16rem;
-    color: var(--ink);
-    font-size: 0.875rem;
+    flex: 1 1 var(--size-column);
+    color: var(--color-text);
+    font-size: var(--font-size-secondary);
   }
   .spfr {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     justify-content: flex-end;
-    gap: 1rem;
+    gap: var(--space-4);
   }
   /* 3.0's quiet links: small, grey, darker on hover. */
   .link {
     display: inline-flex;
     align-items: center;
-    min-height: 2.75rem;
-    padding-inline: 0.5rem;
-    color: var(--muted);
-    font-size: 0.8125rem;
+    min-height:  var(--size-touch-min);
+    padding-inline: var(--space-2);
+    color: var(--color-text-muted);
+    font-size: var(--font-size-secondary);
     text-decoration: none;
   }
   .link:hover {
-    color: var(--ink);
+    color: var(--color-text);
   }
   /* As in 3.0, the way to Flight setup sits on the right with Clear flight and Done. */
   .to-setup {
@@ -363,13 +362,13 @@ first. Tapping one part of the summary opens the pop-out on that part's field.
   }
   .spclr {
     margin: 0;
-    color: var(--stop);
+    color: var(--color-danger-text);
   }
   .dangerb {
-    border-color: var(--stop);
-    color: var(--stop);
+    border-color: var(--color-danger-text);
+    color: var(--color-danger-text);
   }
-  @media (max-width: 760px) {
+  @media (max-width: 600px) {
     .fsum {
       overflow: hidden;
       text-overflow: ellipsis;
@@ -377,7 +376,7 @@ first. Tapping one part of the summary opens the pop-out on that part's field.
     }
     .fsg {
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 0.5rem;
+      gap: var(--space-2);
     }
     #spop {
       position: fixed;
@@ -388,9 +387,9 @@ first. Tapping one part of the summary opens the pop-out on that part's field.
       width: auto;
       max-height: 85vh;
       overflow: auto;
-      padding-bottom: max(1rem, env(safe-area-inset-bottom));
-      border-radius: 1rem 1rem 0 0;
-      box-shadow: 0 0 0 100vmax rgb(0 0 0 / 35%);
+      padding-bottom: max(var(--space-4), env(safe-area-inset-bottom));
+      border-radius: var(--radius-sheet) var(--radius-sheet) 0 0;
+      box-shadow: 0 0 0 100vmax var(--color-scrim);
     }
   }
 </style>

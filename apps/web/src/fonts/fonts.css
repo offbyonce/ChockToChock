@@ -6,8 +6,9 @@
  * LICENSES/OFL-1.1.txt). The font files are unmodified upstream releases and are served with the
  * site, so nothing loads from other servers (decision 0009).
  *
- * Geist, 3.0's interface face, in the four weights 3.0 uses; B612 Mono, the cockpit-display mono,
- * for values and counts.
+ * Geist for interface text in four weights, and Geist Mono for values and codes in three
+ * (decision 0021). Both come from the same upstream commit of vercel/geist-font
+ * (ef2597cfc42f4797676df105517ccc0a1cfa6569), from the webfonts folder of each family.
  */
 @font-face {
   font-family: "Geist";
@@ -42,9 +43,25 @@
 }
 
 @font-face {
-  font-family: "B612 Mono";
-  src: url("./B612Mono-Regular.ttf") format("truetype");
+  font-family: "Geist Mono";
+  src: url("./GeistMono-Regular.woff2") format("woff2");
   font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Geist Mono";
+  src: url("./GeistMono-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Geist Mono";
+  src: url("./GeistMono-SemiBold.woff2") format("woff2");
+  font-weight: 600;
   font-style: normal;
   font-display: swap;
 }

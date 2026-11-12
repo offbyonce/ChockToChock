@@ -148,93 +148,90 @@ the list on wide screens and inside the step on narrow ones.
   .context {
     display: flex;
     flex-direction: column;
-    gap: 0.625rem;
+    gap: var(--space-3);
   }
   h2 {
     margin: 0;
-    font-size: 1.0625rem;
-    font-weight: 600;
+    font-size: var(--font-size-body);
+    font-weight: var(--weight-semibold);
     line-height: 1.25;
-    letter-spacing: -0.01em;
   }
   .path {
-    margin: -0.5rem 0 0.25rem;
-    color: var(--muted);
-    font-size: 0.8125rem;
+    margin: calc(-1 * var(--space-2)) 0 var(--space-1);
+    color: var(--color-text-muted);
+    font-size: var(--font-size-secondary);
   }
   .label {
     margin: 0;
-    color: var(--muted);
-    font-size: 0.6875rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-caption);
+    font-weight: var(--weight-bold);
     text-transform: uppercase;
   }
   .where {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 0.25rem 0.5rem;
-    font-size: 0.8125rem;
+    gap: var(--space-1) var(--space-2);
+    font-size: var(--font-size-secondary);
   }
   .where b {
-    font-weight: 600;
+    font-weight: var(--weight-semibold);
   }
   .dot {
-    color: var(--muted);
+    color: var(--color-text-muted);
     white-space: pre;
   }
   .code {
-    color: var(--muted);
-    font: 0.75rem var(--mono);
+    color: var(--color-text-muted);
+    font: var(--weight-regular) var(--font-size-caption) var(--font-mono);
   }
   h3.label {
-    margin-top: 0.75rem;
-    padding-top: 1.25rem;
-    border-top: 1px solid var(--line);
+    margin-top: var(--space-3);
+    padding-top: var(--space-6);
+    border-top: var(--border-thin) solid var(--color-border);
   }
   figure {
     margin: 0;
   }
   figcaption {
-    padding: 0.625rem 0.75rem;
-    border-bottom: 1px solid var(--line);
-    font-size: 0.8125rem;
-    font-weight: 600;
+    padding: var(--space-3) var(--space-3);
+    border-bottom: var(--border-thin) solid var(--color-border);
+    font-size: var(--font-size-secondary);
+    font-weight: var(--weight-semibold);
   }
   /* The drawing takes the card's width; its own frame gives it a margin. */
   .pad {
-    padding: 0.25rem;
+    padding: var(--space-1);
   }
   /* The region's orientation captions around the panel, as 3.0 shows them. */
   .edge {
-    padding-top: 0.5rem;
-    color: var(--muted);
-    font-size: 0.6875rem;
-    font-weight: 600;
-    letter-spacing: 0.05em;
+    padding-top: var(--space-2);
+    color: var(--color-text-muted);
+    font-size: var(--font-size-caption);
+    font-weight: var(--weight-semibold);
     text-align: center;
   }
   .edge + .pad {
-    padding-top: 0.25rem;
+    padding-top: var(--space-1);
   }
   figure > .edge:last-child {
-    padding: 0 0 0.5rem;
+    padding: 0 0 var(--space-2);
   }
   .tiny {
     margin: 0;
-    color: var(--muted);
-    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-caption);
   }
   .lbl {
-    margin: 0.25rem 0 0.125rem;
-    color: var(--muted);
-    font-size: 0.75rem;
-    font-weight: 600;
+    margin: var(--space-1) 0 var(--space-1);
+    color: var(--color-text-muted);
+    font-size: var(--font-size-caption);
+    font-weight: var(--weight-semibold);
   }
   p {
     margin: 0;
-    font-size: 0.875rem;
+    font-size: var(--font-size-secondary);
   }
   .next {
     display: grid;
@@ -246,16 +243,16 @@ the list on wide screens and inside the step on narrow ones.
   .next li {
     display: grid;
     grid-template-columns: auto minmax(0, 1fr);
-    gap: 0.125rem 1rem;
-    padding: 0.5rem 0;
-    border-top: 1px solid var(--line);
-    font-size: 0.875rem;
+    gap: var(--space-1) var(--space-4);
+    padding: var(--space-2) 0;
+    border-top: var(--border-thin) solid var(--color-border);
+    font-size: var(--font-size-secondary);
   }
   .next li:first-child {
     border-top: 0;
   }
   .nm {
-    font-weight: 500;
+    font-weight: var(--weight-medium);
   }
   /* In the text face, as long values are in the list: the monospaced face makes "1,000" look like
      "1, 000" and its parentheses look like brackets. */
@@ -266,11 +263,11 @@ the list on wide screens and inside the step on narrow ones.
     text-align: left;
   }
   .next .mono {
-    color: var(--muted);
-    font: 0.8125rem/1.4 var(--sans);
+    color: var(--color-text-muted);
+    font: var(--weight-regular) var(--font-size-secondary) / var(--leading-snug) var(--font-sans);
     text-align: right;
   }
   .next li.done {
-    color: var(--muted);
+    color: var(--color-text-muted);
   }
 </style>

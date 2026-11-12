@@ -220,12 +220,12 @@ however large the drawing is.
 <style>
   .frame {
     fill: none;
-    stroke: var(--line);
+    stroke: var(--color-border);
   }
   .title {
     font-weight: 600;
     letter-spacing: 0.06em;
-    fill: var(--muted);
+    fill: var(--color-text-muted);
   }
   .body,
   .guard,
@@ -233,11 +233,11 @@ however large the drawing is.
   .scale,
   .tick {
     fill: none;
-    stroke: var(--muted);
+    stroke: var(--color-text-muted);
     stroke-width: 1.4;
   }
   .key-line {
-    stroke: var(--line);
+    stroke: var(--color-border);
     stroke-width: 1;
   }
   /* A toggle's slim track and guard take 3.0's thinner lines. */
@@ -245,7 +245,7 @@ however large the drawing is.
     stroke-width: 1.1;
   }
   .guard {
-    stroke: var(--stop);
+    stroke: var(--color-danger-text);
     stroke-width: 1;
     stroke-dasharray: 2.2 1.6;
   }
@@ -253,18 +253,18 @@ however large the drawing is.
      like the step's target (solid, in the accent color). */
   .knob.rest {
     fill: none;
-    stroke: var(--muted);
+    stroke: var(--color-text-muted);
     stroke-width: 1.4;
     opacity: 0.75;
   }
   .pointer.rest {
-    stroke: var(--muted);
+    stroke: var(--color-text-muted);
     stroke-width: 1.4;
     opacity: 0.75;
   }
   .unknown {
     fill: none;
-    stroke: var(--muted);
+    stroke: var(--color-text-muted);
     stroke-width: 1.2;
   }
   /* Unlit lights and push buttons the step does not use are quiet outlines of one weight, as in
@@ -279,10 +279,10 @@ however large the drawing is.
     opacity: 1;
   }
   .screen {
-    fill: var(--zone);
+    fill: var(--color-surface-2);
   }
   .on .lamp-text {
-    fill: var(--accent);
+    fill: var(--color-accent);
   }
   .knob.rest:is(rect) {
     fill: none;
@@ -292,48 +292,48 @@ however large the drawing is.
     stroke-width: 1.8;
   }
   .lamp.lit.amber {
-    fill: var(--warn-soft);
-    stroke: var(--warn);
+    fill: var(--color-open-bg);
+    stroke: var(--color-open-text);
   }
   .lamp.lit.red {
-    fill: var(--stop-soft);
-    stroke: var(--stop);
+    fill: var(--color-danger-soft);
+    stroke: var(--color-danger-text);
   }
   .lamp.lit.green {
-    fill: var(--go-soft);
-    stroke: var(--go);
+    fill: var(--color-surface-2);
+    stroke: var(--color-done);
   }
   .lamp.lit.blue {
-    fill: var(--accent-soft);
-    stroke: var(--accent);
+    fill: var(--color-accent-soft);
+    stroke: var(--color-accent);
   }
   .lamp-on.amber {
-    fill: var(--warn);
+    fill: var(--color-open-text);
   }
   .lamp-on.red {
-    fill: var(--stop);
+    fill: var(--color-danger-text);
   }
   .lamp-on.green {
-    fill: var(--go);
+    fill: var(--color-done);
   }
   .lamp-text.lit.amber {
-    fill: var(--warn);
+    fill: var(--color-open-text);
   }
   .lamp-text.lit.red {
-    fill: var(--stop);
+    fill: var(--color-danger-text);
   }
   .lamp-text.lit.green {
-    fill: var(--go);
+    fill: var(--color-done);
   }
   .lamp-text.lit.blue {
-    fill: var(--accent);
+    fill: var(--color-accent);
   }
   .on .grip.pressed {
-    fill: var(--accent-soft);
+    fill: var(--color-accent-soft);
   }
   text {
-    font-family: var(--sans);
-    fill: var(--zone-ink);
+    font-family: var(--font-sans);
+    fill: var(--color-text-secondary);
   }
   .label {
     font-weight: 600;
@@ -344,7 +344,7 @@ however large the drawing is.
     text-anchor: middle;
   }
   .pos {
-    fill: var(--muted);
+    fill: var(--color-text-muted);
   }
   /* As 3.0, color alone marks the controls the step uses: outlines keep their weight, nothing is
      boxed or bolded. Without color, the knob still tells them apart: only they show a position. */
@@ -352,27 +352,27 @@ however large the drawing is.
   .on .knob-ring,
   .on .scale,
   .on .tick.target {
-    stroke: var(--accent);
+    stroke: var(--color-accent);
   }
   .on .body.pressed {
     stroke-width: 2;
   }
   .pointer {
-    stroke: var(--accent);
+    stroke: var(--color-accent);
     stroke-width: 1.8;
     stroke-linecap: round;
   }
   .set {
-    fill: var(--accent);
+    fill: var(--color-accent);
   }
   .on .label,
   .pos.target {
-    fill: var(--accent);
+    fill: var(--color-accent);
   }
   .set-to {
     font-weight: 600;
     text-anchor: middle;
-    fill: var(--accent);
+    fill: var(--color-accent);
     letter-spacing: 0.02em;
   }
 </style>

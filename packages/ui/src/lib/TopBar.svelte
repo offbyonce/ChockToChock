@@ -69,71 +69,70 @@ red Emergency button. Stage tabs hide in narrow windows; the menu has them there
     z-index: 20;
     display: flex;
     align-items: center;
-    gap: 0.875rem;
-    height: var(--top-h);
-    padding: 0 1rem;
-    border-bottom: 1px solid var(--line);
-    background: var(--surface);
+    gap: var(--space-4);
+    height: var(--size-header);
+    padding: 0 var(--space-4);
+    border-bottom: var(--border-thin) solid var(--color-border);
+    background: var(--color-surface);
   }
   .menu {
     display: grid;
     place-items: center;
-    width: 2.75rem;
-    height: 2.75rem;
-    margin-left: -0.375rem;
-    border-radius: 0.5rem;
+    width:  var(--size-touch-min);
+    height:  var(--size-touch-min);
+    margin-left: calc(-1 * var(--space-2));
+    border-radius: var(--radius-control);
   }
   .brand {
-    font-weight: 600;
-    letter-spacing: -0.01em;
+    font-weight: var(--weight-semibold);
     line-height: 1.2;
     white-space: nowrap;
   }
   .brand small {
     display: block;
-    color: var(--muted);
-    font-size: 0.6875rem;
-    font-weight: 400;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-caption);
+    font-weight: var(--weight-regular);
   }
   .stages {
     display: flex;
-    gap: 0.2rem;
-    margin-left: 0.5rem;
+    gap: var(--space-1);
+    margin-left: var(--space-2);
   }
   .stages a {
     position: relative;
     display: flex;
     align-items: center;
-    height: 2.5rem;
-    padding: 0 0.8rem;
-    border-radius: 0.6rem;
-    color: var(--muted);
-    font-weight: 500;
+    height: var(--size-touch-min);
+    padding: 0 var(--space-3);
+    border-radius: var(--radius-control);
+    color: var(--color-text-muted);
+    font-weight: var(--weight-medium);
     text-decoration: none;
   }
   .stages a:hover {
-    color: var(--ink);
+    color: var(--color-text);
   }
   .stages a[aria-current="true"] {
-    background: var(--accent-soft);
-    color: var(--accent);
+    background: var(--color-accent-soft);
+    color: var(--color-accent);
   }
   .end {
     display: flex;
     align-items: center;
-    gap: 0.625rem;
+    gap: var(--space-3);
     margin-left: auto;
   }
   .tool {
     position: relative;
     display: inline-flex;
     align-items: center;
-    gap: 0.25rem;
-    padding: 0.3125rem 0.625rem;
-    border: 1px solid var(--line);
-    border-radius: 0.5rem;
-    font-size: 0.8125rem;
-    font-weight: 500;
+    gap: var(--space-1);
+    padding: var(--space-1) var(--space-3);
+    border: var(--border-thin) solid var(--color-border);
+    border-radius: var(--radius-control);
+    font-size: var(--font-size-secondary);
+    font-weight: var(--weight-medium);
     white-space: nowrap;
   }
   /* 3.0's sizes on screen, with the touch area grown to 44px (step 7). */
@@ -142,34 +141,35 @@ red Emergency button. Stage tabs hide in narrow windows; the menu has them there
   .emg::after {
     position: absolute;
     inset: 50% 0 auto;
-    height: 2.75rem;
+    height:  var(--size-touch-min);
     content: "";
     transform: translateY(-50%);
   }
   .tool:hover:not(:disabled) {
-    border-color: var(--muted);
+    border-color: var(--color-text-muted);
   }
   .find:disabled {
-    color: var(--muted);
+    color: var(--color-text-muted);
   }
   kbd {
-    color: var(--muted);
-    font: 0.6875rem var(--mono);
+    color: var(--color-text-muted);
+    font: var(--weight-regular) var(--font-size-caption) var(--font-mono);
   }
   .emg {
     position: relative;
     display: inline-flex;
     align-items: center;
-    height: 2.5rem;
-    padding: 0 1rem;
-    border-radius: 0.6rem;
-    background: var(--emergency);
-    color: var(--on-emergency);
-    font-weight: 600;
+    height: var(--size-touch-min);
+    padding: 0 var(--space-4);
+    border: var(--border-ring) solid var(--color-danger);
+    border-radius: var(--radius-control);
+    background: var(--color-danger-bg);
+    color: var(--color-danger-text);
+    font-weight: var(--weight-semibold);
     text-decoration: none;
     white-space: nowrap;
   }
-  @media (max-width: 1100px) {
+  @media (max-width: 1439px) {
     kbd {
       display: none;
     }
@@ -182,7 +182,7 @@ red Emergency button. Stage tabs hide in narrow windows; the menu has them there
       margin-right: auto;
     }
   }
-  @media (max-width: 560px) {
+  @media (max-width: 600px) {
     .brand {
       display: none;
     }

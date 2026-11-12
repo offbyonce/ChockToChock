@@ -56,7 +56,7 @@ outlined and the zone marked, and where to look from the seat, from the pack.
     gap: 0.375rem;
     margin-left: auto;
     padding: 0.375rem 0.75rem;
-    border: 1px solid var(--line);
+    border: 1px solid var(--color-border);
     border-radius: 99rem;
     font-size: 0.8125rem;
     font-weight: 600;
@@ -70,16 +70,16 @@ outlined and the zone marked, and where to look from the seat, from the pack.
     transform: translateY(-50%);
   }
   .where-btn:hover {
-    border-color: var(--muted);
+    border-color: var(--color-text-muted);
   }
   dialog {
     width: min(34rem, calc(100vw - 2rem));
     max-height: calc(100vh - 2rem);
     padding: 1rem 1.25rem;
-    border: 1px solid var(--line);
+    border: 1px solid var(--color-border);
     border-radius: 0.875rem;
-    background: var(--surface);
-    color: var(--ink);
+    background: var(--color-surface);
+    color: var(--color-text);
     box-shadow: 0 18px 44px rgb(0 0 0 / 35%);
   }
   dialog::backdrop {
@@ -96,8 +96,8 @@ outlined and the zone marked, and where to look from the seat, from the pack.
     font-weight: 600;
   }
   .code {
-    color: var(--muted);
-    font: 0.8125rem var(--mono);
+    color: var(--color-text-muted);
+    font: 0.8125rem var(--font-mono);
   }
   .close {
     display: grid;
@@ -106,14 +106,14 @@ outlined and the zone marked, and where to look from the seat, from the pack.
     height: 2.75rem;
     margin: -0.5rem -0.75rem -0.5rem auto;
     border-radius: 0.5rem;
-    color: var(--muted);
+    color: var(--color-text-muted);
   }
   p {
     margin: 0.5rem 0;
     font-size: 0.9375rem;
   }
   .zone {
-    color: var(--muted);
+    color: var(--color-text-muted);
     font-size: 0.875rem;
   }
   .deck {
@@ -123,36 +123,36 @@ outlined and the zone marked, and where to look from the seat, from the pack.
     margin: 0.5rem 0;
   }
   .area {
-    fill: var(--zone);
-    stroke: var(--line);
+    fill: var(--color-surface-2);
+    stroke: var(--color-border);
   }
   .area.on {
-    fill: var(--accent);
-    stroke: var(--accent);
+    fill: var(--color-accent);
+    stroke: var(--color-accent);
   }
   .region {
     fill: none;
-    stroke: var(--accent);
+    stroke: var(--color-accent);
     stroke-width: 2.5;
     stroke-dasharray: 6 4;
   }
   text {
-    font-family: var(--sans);
+    font-family: var(--font-sans);
     font-weight: 700;
   }
   .cap {
     font-size: 9px;
     letter-spacing: 0.06em;
-    fill: var(--muted);
+    fill: var(--color-text-muted);
   }
   .mark {
     font-size: 9px;
-    fill: var(--on-accent);
+    fill: var(--color-on-accent);
     text-anchor: middle;
     dominant-baseline: central;
   }
   .tiny {
-    color: var(--muted);
+    color: var(--color-text-muted);
     font-size: 0.75rem;
   }
 </style>

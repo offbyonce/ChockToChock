@@ -63,79 +63,79 @@ can be ticked here, and is marked Skipped or Missed in words. Shows nothing when
 <style>
   /* 3.0's open steps card, under the flight strip. */
   .opn {
-    margin-bottom: 0.625rem;
+    margin-bottom: var(--space-3);
   }
   .line {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: var(--space-3);
     width: 100%;
-    min-height: 2.75rem;
-    padding: 0.5rem 1rem;
+    min-height:  var(--size-touch-min);
+    padding: var(--space-2) var(--space-4);
     text-align: left;
   }
   .line b {
     display: inline-flex;
     flex: none;
     align-items: center;
-    gap: 0.5rem;
-    font-weight: 600;
+    gap: var(--space-2);
+    font-weight: var(--weight-semibold);
   }
   .dot {
-    width: 0.5rem;
-    height: 0.5rem;
+    width: var(--size-dot);
+    height: var(--size-dot);
     border-radius: 50%;
-    background: var(--warn);
+    background: var(--color-open-text);
   }
   .sum {
     flex: 1;
     min-width: 0;
-    color: var(--muted);
-    font-size: 0.875rem;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-secondary);
   }
   .sum i {
-    margin: 0 0.4rem;
+    margin: 0 var(--space-2);
     font-style: normal;
   }
   .ed {
     flex: none;
-    color: var(--accent);
-    font-size: 0.875rem;
-    font-weight: 500;
+    color: var(--color-accent);
+    font-size: var(--font-size-secondary);
+    font-weight: var(--weight-medium);
   }
   .list {
-    padding: 0.25rem 1rem 0.75rem;
-    border-top: 1px solid var(--line);
+    padding: var(--space-1) var(--space-4) var(--space-3);
+    border-top: var(--border-thin) solid var(--color-border);
   }
   .go {
     display: inline-flex;
     align-items: center;
-    gap: 0.25rem;
-    min-height: 2.75rem;
-    color: var(--accent);
-    font-size: 0.875rem;
-    font-weight: 500;
+    gap: var(--space-1);
+    min-height:  var(--size-touch-min);
+    color: var(--color-accent);
+    font-size: var(--font-size-secondary);
+    font-weight: var(--weight-medium);
     text-decoration: none;
   }
   .row {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
-    padding: 0.375rem 0;
-    border-top: 1px solid var(--line);
+    gap: var(--space-3);
+    padding: var(--space-2) 0;
+    border-top: var(--border-thin) solid var(--color-border);
   }
   .tick {
     display: grid;
     place-items: center;
-    width: 2.75rem;
-    height: 2.75rem;
+    width:  var(--size-touch-min);
+    height:  var(--size-touch-min);
     flex: none;
   }
   .tick span {
-    width: 1.375rem;
-    height: 1.375rem;
-    border: 1.5px solid var(--muted);
-    border-radius: 0.4375rem;
+    width: var(--size-status-icon);
+    height: var(--size-status-icon);
+    border: var(--border-ring) solid var(--color-text-muted);
+    border-radius: var(--radius-small);
   }
   .st {
     display: flex;
@@ -144,44 +144,44 @@ can be ticked here, and is marked Skipped or Missed in words. Shows nothing when
     min-width: 0;
   }
   .st b {
-    font-weight: 500;
+    font-weight: var(--weight-medium);
   }
   .st span {
-    color: var(--muted);
-    font: 0.8125rem var(--mono);
+    color: var(--color-text-muted);
+    font: var(--weight-regular) var(--font-size-value-mono) var(--font-mono);
   }
   .hd {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding-top: 0.5rem;
+    padding-top: var(--space-2);
   }
   .hd h2 {
     margin: 0;
-    font-size: 1rem;
-    font-weight: 600;
+    font-size: var(--font-size-body);
+    font-weight: var(--weight-semibold);
   }
   .close {
-    min-height: 2.75rem;
-    color: var(--muted);
-    font-size: 0.8125rem;
+    min-height:  var(--size-touch-min);
+    color: var(--color-text-muted);
+    font-size: var(--font-size-secondary);
   }
   .badge {
     flex: none;
-    padding: 0.0625rem 0.5625rem;
-    border: 1px solid var(--line);
-    border-radius: 99rem;
-    color: var(--muted);
-    font-size: 0.78rem;
-    font-weight: 600;
+    padding: var(--space-1) var(--space-2);
+    border: var(--border-thin) solid var(--color-border);
+    border-radius: var(--radius-pill);
+    color: var(--color-text-muted);
+    font-size: var(--font-size-caption);
+    font-weight: var(--weight-semibold);
   }
   .badge.sk {
-    border: 1px dashed var(--warn);
-    color: var(--warn);
+    border: var(--border-thin) dashed var(--color-open-text);
+    color: var(--color-open-text);
   }
   .ft {
     display: flex;
     justify-content: flex-end;
-    padding-top: 0.5rem;
+    padding-top: var(--space-2);
   }
 </style>

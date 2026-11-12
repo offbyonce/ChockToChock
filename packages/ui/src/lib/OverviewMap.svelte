@@ -145,27 +145,27 @@ from the pack, and the zone marked by a thicker outline, fill and bold label as 
     margin: 0 auto;
   }
   rect {
-    fill: var(--surface);
-    stroke: var(--muted);
+    fill: var(--color-surface);
+    stroke: var(--color-text-muted);
     stroke-width: 1;
   }
   text {
-    font-family: var(--sans);
+    font-family: var(--font-sans);
     font-weight: 600;
-    fill: var(--ink);
+    fill: var(--color-text);
     text-anchor: middle;
     dominant-baseline: central;
   }
   .edge {
     letter-spacing: 0.05em;
-    fill: var(--muted);
+    fill: var(--color-text-muted);
   }
   .on rect {
-    fill: var(--accent-soft);
-    stroke: var(--accent);
+    fill: var(--color-accent-soft);
+    stroke: var(--color-accent);
     stroke-width: 2.5;
   }
   .on text {
-    fill: var(--accent);
+    fill: var(--color-accent);
   }
 </style>

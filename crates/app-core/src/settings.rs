@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize};
 use ts_rs::TS;
 
 /// The saved format of [`Settings`]. Raise it, with a migration and tests, when the shape changes.
-pub const SETTINGS_FORMAT: u32 = 1;
+pub const SETTINGS_FORMAT: u32 = 2;
 
 /// The highest dimming step; 0 is full brightness.
 pub const MAX_DIMMING: u8 = 4;
@@ -24,6 +24,31 @@ pub enum Theme {
     System,
     Dark,
     Light,
+}
+
+/// Text and controls size, applied on top of the wide-screen scaling (decision 0021).
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default, Serialize, Deserialize, TS)]
+#[ts(export)]
+pub enum TextSize {
+    #[default]
+    #[serde(rename = "100")]
+    Standard,
+    #[serde(rename = "115")]
+    Larger,
+    #[serde(rename = "130")]
+    Largest,
+}
+
+impl TextSize {
+    /// The size as a percentage of the standard size.
+    #[must_use]
+    pub const fn percent(self) -> u16 {
+        match self {
+            Self::Standard => 100,
+            Self::Larger => 115,
+            Self::Largest => 130,
+        }
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Default, Serialize, Deserialize, TS)]
@@ -67,6 +92,7 @@ pub struct Settings {
     pub theme: Theme,
     /// 0 (full brightness) to [`MAX_DIMMING`].
     pub dimming: u8,
+    pub text_size: TextSize,
     pub detail: Detail,
     pub list_view: ListView,
     /// Essentials only, instead of every step.
@@ -85,6 +111,7 @@ impl Default for Settings {
             format: SETTINGS_FORMAT,
             theme: Theme::default(),
             dimming: 0,
+            text_size: TextSize::default(),
             detail: Detail::default(),
             list_view: ListView::default(),
             essentials: false,

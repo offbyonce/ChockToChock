@@ -69,64 +69,64 @@ two-way unit choice beside it, and a help line. Every change goes to the core as
   .sf {
     display: flex;
     flex-direction: column;
-    gap: 0.375rem;
+    gap: var(--space-2);
     min-width: 0;
   }
   .sf.wide {
     grid-column: 1 / -1;
   }
   label {
-    font-size: 0.9375rem;
-    font-weight: 500;
+    font-size: var(--font-size-body);
+    font-weight: var(--weight-medium);
   }
   .sfr {
     display: flex;
-    gap: 0.5rem;
+    gap: var(--space-2);
   }
   input,
   select {
     flex: 1;
     min-width: 0;
-    height: 2.875rem;
+    height: var(--size-touch-min);
     box-sizing: border-box;
-    padding: 0 0.6rem;
-    border: 1px solid var(--line);
-    border-radius: 0.5rem;
-    background: var(--surface);
-    color: var(--ink);
-    font: 500 1rem var(--mono);
+    padding: 0 var(--space-2);
+    border: var(--border-thin) solid var(--color-border);
+    border-radius: var(--radius-control);
+    background: var(--color-surface);
+    color: var(--color-text);
+    font: var(--weight-medium) var(--font-size-value-mono) var(--font-mono);
   }
   input:invalid {
-    border-color: var(--stop);
+    border-color: var(--color-danger-text);
   }
   .mode {
     display: grid;
     flex: none;
     grid-template-columns: auto auto;
-    gap: 2px;
-    height: 2.875rem;
+    gap: var(--space-1);
+    height: var(--size-touch-min);
     box-sizing: border-box;
-    padding: 3px;
-    border-radius: 9px;
-    background: var(--bg);
+    padding: var(--space-1);
+    border-radius: var(--radius-control);
+    background: var(--color-bg);
   }
   .mode button {
-    min-width: 3rem;
+    min-width: var(--size-touch-min);
     height: 100%;
-    padding: 0 0.5rem;
-    border-radius: 7px;
-    color: var(--muted);
-    font-size: 0.9375rem;
-    font-weight: 500;
+    padding: 0 var(--space-2);
+    border-radius: var(--radius-small);
+    color: var(--color-text-muted);
+    font-size: var(--font-size-body);
+    font-weight: var(--weight-medium);
   }
   .mode button[aria-checked="true"] {
-    background: var(--surface);
-    box-shadow: 0 1px 2px rgb(0 0 0 / 14%);
-    color: var(--ink);
+    background: var(--color-surface);
+    box-shadow: var(--color-segment-shadow);
+    color: var(--color-text);
   }
   small {
-    color: var(--muted);
-    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-secondary);
     line-height: 1.3;
   }
 </style>
