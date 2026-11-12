@@ -1,6 +1,8 @@
 /* SPDX-FileCopyrightText: 2026 offbyonce */
 /* SPDX-License-Identifier: MIT */
 
+@import "./theme/tokens.css";
+
 /* The look follows the 3.0 design. Color tokens are set by theme/tokens.ts for the chosen theme
    and dimming; these are the dark defaults until then. */
 :root {
@@ -27,9 +29,6 @@
      fallback. */
   --sans: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --mono: "B612 Mono", ui-monospace, Menlo, Consolas, monospace;
-  /* Heights of the sticky bars, for the panels that sit under them. */
-  --top-h: 3.5rem;
-  --rail-h: 3.25rem;
   color-scheme: dark;
   /* Scrollbars in the theme's colors, so none shows as a light bar in the dark theme. */
   scrollbar-color: var(--line) transparent;
