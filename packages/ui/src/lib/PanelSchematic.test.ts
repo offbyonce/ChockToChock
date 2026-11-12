@@ -304,6 +304,41 @@ describe("PanelSchematic", () => {
     expect(Math.abs(gripMid - (Number(set?.getAttribute("y")) - 3))).toBeLessThan(1);
   });
 
+  it("draws every selector dial the same size, however many positions it has", () => {
+    // The DC (8 positions) and AC (7) meters dials grew with their positions and looked oversized
+    // and unequal; only their labels may move out.
+    const dial = (label: string, x: number, positions: string) =>
+      ({ kind: "selector", label, x, y: 60, controls: ["c"], positions, description: "" }) as unknown;
+    const dials = {
+      id: "oh",
+      title: "Overhead",
+      width: 300,
+      height: 140,
+      sections: [
+        {
+          id: "meters",
+          title: "Meters",
+          x: 0,
+          y: 0,
+          width: 300,
+          height: 140,
+          items: [
+            dial("DC METERS", 60, "STBY PWR, BAT BUS, BAT, AUX BAT, TR1, TR2, TR3, TEST"),
+            dial("AC METERS", 160, "STBY PWR, GRD PWR, GEN1, APU GEN, GEN2, INV, TEST"),
+            dial("WIPER", 250, "PARK, INT, LOW, HIGH"),
+          ],
+        },
+      ],
+    } as unknown as Panel;
+    render(PanelSchematic, { panel: dials, focus: ["meters"], targets: [] });
+
+    const radii = [...screen.getByRole("img").querySelectorAll(".selector circle.body")].map((c) =>
+      c.getAttribute("r"),
+    );
+    expect(radii).toHaveLength(3);
+    expect(new Set(radii).size).toBe(1);
+  });
+
   it("cuts a tall section to the controls near the step's, as 3.0 does, keeping lights within reach", () => {
     // Placed as on the real panels: the electrical meters section (battery step) and the flight
     // control section (alternate flaps step). Round 2 cut off the lights 99 units below ALT FLAPS;
