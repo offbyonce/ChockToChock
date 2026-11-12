@@ -6,7 +6,7 @@ source: crates/pack-cli/tests/snapshot.rs
     "id": "oh",
     "title": "Forward overhead",
     "width": 1128.0,
-    "height": 1569.0,
+    "height": 1640.0,
     "sections": [
       {
         "id": "fctl",
@@ -314,7 +314,7 @@ source: crates/pack-cli/tests/snapshot.rs
         "x": 10.0,
         "y": 618.0,
         "width": 309.0,
-        "height": 392.0,
+        "height": 419.0,
         "items": [
           {
             "kind": "light",
@@ -332,7 +332,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "label": "SPAR VALVE CLOSED",
             "color": "blue",
             "x": 51.0,
-            "y": 63.0,
+            "y": 65.0,
             "controls": [
               "fuellts"
             ],
@@ -342,7 +342,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "kind": "gauge",
             "label": "FUEL TEMP",
             "x": 151.0,
-            "y": 59.0,
+            "y": 61.0,
             "description": "Fuel temperature gauge."
           },
           {
@@ -361,7 +361,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "label": "SPAR VALVE CLOSED",
             "color": "blue",
             "x": 250.0,
-            "y": 63.0,
+            "y": 65.0,
             "controls": [
               "fuellts"
             ],
@@ -372,7 +372,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "label": "FILTER BYPASS",
             "color": "amber",
             "x": 56.0,
-            "y": 118.0,
+            "y": 125.0,
             "controls": [
               "fuellts"
             ],
@@ -383,7 +383,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "label": "VALVE OPEN",
             "color": "blue",
             "x": 151.0,
-            "y": 118.0,
+            "y": 125.0,
             "controls": [
               "xfeed"
             ],
@@ -394,7 +394,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "label": "FILTER BYPASS",
             "color": "amber",
             "x": 245.0,
-            "y": 118.0,
+            "y": 125.0,
             "controls": [
               "fuellts"
             ],
@@ -404,7 +404,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "kind": "selector",
             "label": "CROSSFEED",
             "x": 151.0,
-            "y": 166.0,
+            "y": 175.0,
             "controls": [
               "xfeed"
             ],
@@ -417,7 +417,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "label": "LOW PRESSURE",
             "color": "amber",
             "x": 113.0,
-            "y": 211.0,
+            "y": 224.0,
             "controls": [
               "fuelpumps"
             ],
@@ -428,7 +428,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "label": "LOW PRESSURE",
             "color": "amber",
             "x": 188.0,
-            "y": 211.0,
+            "y": 224.0,
             "controls": [
               "fuelpumps"
             ],
@@ -438,7 +438,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "kind": "toggle_switch",
             "label": "CTR L",
             "x": 113.0,
-            "y": 249.0,
+            "y": 265.0,
             "controls": [
               "fuelpumps"
             ],
@@ -450,7 +450,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "kind": "toggle_switch",
             "label": "CTR R",
             "x": 188.0,
-            "y": 249.0,
+            "y": 265.0,
             "controls": [
               "fuelpumps"
             ],
@@ -463,7 +463,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "label": "LOW PRESSURE",
             "color": "amber",
             "x": 44.0,
-            "y": 290.0,
+            "y": 308.0,
             "controls": [
               "fuelpumps"
             ],
@@ -474,7 +474,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "label": "LOW PRESSURE",
             "color": "amber",
             "x": 111.0,
-            "y": 290.0,
+            "y": 308.0,
             "controls": [
               "fuelpumps"
             ],
@@ -485,7 +485,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "label": "LOW PRESSURE",
             "color": "amber",
             "x": 190.0,
-            "y": 290.0,
+            "y": 308.0,
             "controls": [
               "fuelpumps"
             ],
@@ -496,7 +496,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "label": "LOW PRESSURE",
             "color": "amber",
             "x": 257.0,
-            "y": 290.0,
+            "y": 308.0,
             "controls": [
               "fuelpumps"
             ],
@@ -506,7 +506,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "kind": "toggle_switch",
             "label": "AFT 1",
             "x": 44.0,
-            "y": 333.0,
+            "y": 354.0,
             "controls": [
               "fuelpumps"
             ],
@@ -518,7 +518,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "kind": "toggle_switch",
             "label": "FWD 1",
             "x": 111.0,
-            "y": 333.0,
+            "y": 354.0,
             "controls": [
               "fuelpumps"
             ],
@@ -530,7 +530,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "kind": "toggle_switch",
             "label": "FWD 2",
             "x": 190.0,
-            "y": 333.0,
+            "y": 354.0,
             "controls": [
               "fuelpumps"
             ],
@@ -542,7 +542,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "kind": "toggle_switch",
             "label": "AFT 2",
             "x": 257.0,
-            "y": 333.0,
+            "y": 354.0,
             "controls": [
               "fuelpumps"
             ],
@@ -783,9 +783,9 @@ source: crates/pack-cli/tests/snapshot.rs
         "id": "elecl",
         "title": "Ground power and generators",
         "x": 323.0,
-        "y": 1126.0,
+        "y": 1178.0,
         "width": 245.0,
-        "height": 255.0,
+        "height": 274.0,
         "items": [
           {
             "kind": "light",
@@ -802,7 +802,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "kind": "toggle_switch",
             "label": "GRD PWR",
             "x": 121.0,
-            "y": 64.0,
+            "y": 67.0,
             "controls": [
               "grdpwr",
               "grddisc"
@@ -816,7 +816,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "label": "BUS TRANS",
             "guarded": true,
             "x": 121.0,
-            "y": 108.0,
+            "y": 114.0,
             "controls": [
               "bustrans"
             ],
@@ -829,7 +829,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "label": "TRANSFER BUS OFF",
             "color": "amber",
             "x": 45.0,
-            "y": 108.0,
+            "y": 114.0,
             "controls": [
               "genbus"
             ],
@@ -840,7 +840,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "label": "SOURCE OFF",
             "color": "amber",
             "x": 45.0,
-            "y": 136.0,
+            "y": 145.0,
             "controls": [
               "genbus"
             ],
@@ -851,7 +851,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "label": "GEN OFF BUS",
             "color": "blue",
             "x": 45.0,
-            "y": 164.0,
+            "y": 175.0,
             "controls": [
               "genbus"
             ],
@@ -862,7 +862,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "label": "APU GEN OFF BUS",
             "color": "blue",
             "x": 121.0,
-            "y": 164.0,
+            "y": 175.0,
             "controls": [
               "genbus"
             ],
@@ -873,7 +873,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "label": "TRANSFER BUS OFF",
             "color": "amber",
             "x": 197.0,
-            "y": 108.0,
+            "y": 114.0,
             "controls": [
               "genbus"
             ],
@@ -884,7 +884,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "label": "SOURCE OFF",
             "color": "amber",
             "x": 197.0,
-            "y": 136.0,
+            "y": 145.0,
             "controls": [
               "genbus"
             ],
@@ -895,7 +895,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "label": "GEN OFF BUS",
             "color": "blue",
             "x": 197.0,
-            "y": 164.0,
+            "y": 175.0,
             "controls": [
               "genbus"
             ],
@@ -905,7 +905,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "kind": "toggle_switch",
             "label": "GEN 1",
             "x": 34.0,
-            "y": 214.0,
+            "y": 229.0,
             "controls": [
               "engen",
               "apub"
@@ -918,7 +918,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "kind": "toggle_switch",
             "label": "APU GEN",
             "x": 91.0,
-            "y": 214.0,
+            "y": 229.0,
             "controls": [
               "apugen",
               "apub"
@@ -931,7 +931,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "kind": "toggle_switch",
             "label": "APU GEN",
             "x": 151.0,
-            "y": 214.0,
+            "y": 229.0,
             "controls": [
               "apugen",
               "apub"
@@ -944,7 +944,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "kind": "toggle_switch",
             "label": "GEN 2",
             "x": 208.0,
-            "y": 214.0,
+            "y": 229.0,
             "controls": [
               "engen",
               "apub"
@@ -983,7 +983,7 @@ source: crates/pack-cli/tests/snapshot.rs
         "x": 504.0,
         "y": 442.0,
         "width": 142.0,
-        "height": 680.0,
+        "height": 732.0,
         "items": [
           {
             "kind": "selector",
@@ -998,7 +998,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "kind": "selector",
             "label": "PANEL",
             "x": 65.0,
-            "y": 120.0,
+            "y": 126.0,
             "positions": "OFF to BRIGHT",
             "rest": "OFF to BRIGHT",
             "description": "Overhead panel lights."
@@ -1008,7 +1008,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "label": "LAVATORY SMOKE",
             "color": "amber",
             "x": 65.0,
-            "y": 179.0,
+            "y": 190.0,
             "controls": [
               "lavsmoke"
             ],
@@ -1019,7 +1019,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "label": "EQUIP OFF",
             "color": "amber",
             "x": 37.0,
-            "y": 237.0,
+            "y": 252.0,
             "controls": [
               "equip"
             ],
@@ -1030,7 +1030,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "label": "EQUIP OFF",
             "color": "amber",
             "x": 96.0,
-            "y": 237.0,
+            "y": 252.0,
             "controls": [
               "equip"
             ],
@@ -1040,7 +1040,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "kind": "toggle_switch",
             "label": "SUPPLY",
             "x": 37.0,
-            "y": 275.0,
+            "y": 294.0,
             "controls": [
               "equip"
             ],
@@ -1052,7 +1052,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "kind": "toggle_switch",
             "label": "EXHAUST",
             "x": 96.0,
-            "y": 275.0,
+            "y": 294.0,
             "controls": [
               "equip"
             ],
@@ -1065,7 +1065,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "label": "EQUIP SMOKE",
             "color": "amber",
             "x": 65.0,
-            "y": 315.0,
+            "y": 337.0,
             "controls": [
               "equip"
             ],
@@ -1076,7 +1076,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "label": "NOT ARMED",
             "color": "amber",
             "x": 65.0,
-            "y": 389.0,
+            "y": 417.0,
             "controls": [
               "emerext"
             ],
@@ -1087,7 +1087,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "label": "EMER EXIT LIGHTS",
             "guarded": true,
             "x": 65.0,
-            "y": 434.0,
+            "y": 465.0,
             "controls": [
               "emerext"
             ],
@@ -1099,7 +1099,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "kind": "toggle_switch",
             "label": "NO SMOKING",
             "x": 37.0,
-            "y": 508.0,
+            "y": 546.0,
             "controls": [
               "signs"
             ],
@@ -1111,7 +1111,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "kind": "toggle_switch",
             "label": "FASTEN BELTS",
             "x": 96.0,
-            "y": 508.0,
+            "y": 546.0,
             "controls": [
               "sblts",
               "signs"
@@ -1124,14 +1124,14 @@ source: crates/pack-cli/tests/snapshot.rs
             "kind": "push_button",
             "label": "ATTEND",
             "x": 34.0,
-            "y": 599.0,
+            "y": 644.0,
             "description": "Calls the cabin crew."
           },
           {
             "kind": "push_button",
             "label": "GRD CALL",
             "x": 98.0,
-            "y": 599.0,
+            "y": 644.0,
             "description": "Calls the ground crew."
           }
         ]
@@ -1140,7 +1140,7 @@ source: crates/pack-cli/tests/snapshot.rs
         "id": "rwip",
         "title": "R wiper",
         "x": 482.0,
-        "y": 1385.0,
+        "y": 1456.0,
         "width": 110.0,
         "height": 84.0,
         "items": [
@@ -1428,7 +1428,7 @@ source: crates/pack-cli/tests/snapshot.rs
         "id": "aice",
         "title": "Anti-ice",
         "x": 650.0,
-        "y": 326.0,
+        "y": 332.0,
         "width": 267.0,
         "height": 150.0,
         "items": [
@@ -1573,7 +1573,7 @@ source: crates/pack-cli/tests/snapshot.rs
         "id": "hyd",
         "title": "Hydraulic pumps",
         "x": 650.0,
-        "y": 480.0,
+        "y": 486.0,
         "width": 241.0,
         "height": 134.0,
         "items": [
@@ -1697,7 +1697,7 @@ source: crates/pack-cli/tests/snapshot.rs
         "id": "door",
         "title": "Doors",
         "x": 596.0,
-        "y": 1126.0,
+        "y": 1178.0,
         "width": 232.0,
         "height": 112.0,
         "items": [
@@ -1840,7 +1840,7 @@ source: crates/pack-cli/tests/snapshot.rs
         "id": "cvr",
         "title": "Cockpit voice recorder microphone monitor",
         "x": 596.0,
-        "y": 1242.0,
+        "y": 1294.0,
         "width": 242.0,
         "height": 50.0,
         "items": [
@@ -1894,7 +1894,7 @@ source: crates/pack-cli/tests/snapshot.rs
         "id": "cab",
         "title": "Cabin altitude",
         "x": 596.0,
-        "y": 1296.0,
+        "y": 1348.0,
         "width": 210.0,
         "height": 164.0,
         "items": [
@@ -1955,7 +1955,7 @@ source: crates/pack-cli/tests/snapshot.rs
         "x": 849.0,
         "y": 72.0,
         "width": 184.0,
-        "height": 240.0,
+        "height": 256.0,
         "items": [
           {
             "kind": "gauge",
@@ -1983,7 +1983,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "kind": "toggle_switch",
             "label": "TRIM AIR",
             "x": 91.0,
-            "y": 122.0,
+            "y": 128.0,
             "controls": [
               "trimair"
             ],
@@ -1996,7 +1996,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "label": "ZONE TEMP",
             "color": "amber",
             "x": 36.0,
-            "y": 162.0,
+            "y": 171.0,
             "controls": [
               "tempsw"
             ],
@@ -2007,7 +2007,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "label": "ZONE TEMP",
             "color": "amber",
             "x": 91.0,
-            "y": 162.0,
+            "y": 171.0,
             "controls": [
               "tempsw"
             ],
@@ -2018,7 +2018,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "label": "ZONE TEMP",
             "color": "amber",
             "x": 146.0,
-            "y": 162.0,
+            "y": 171.0,
             "controls": [
               "tempsw"
             ],
@@ -2028,7 +2028,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "kind": "selector",
             "label": "CONT CAB",
             "x": 36.0,
-            "y": 206.0,
+            "y": 219.0,
             "controls": [
               "tempsw"
             ],
@@ -2040,7 +2040,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "kind": "selector",
             "label": "FWD CAB",
             "x": 91.0,
-            "y": 206.0,
+            "y": 219.0,
             "controls": [
               "tempsw"
             ],
@@ -2052,7 +2052,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "kind": "selector",
             "label": "AFT CAB",
             "x": 146.0,
-            "y": 206.0,
+            "y": 219.0,
             "controls": [
               "tempsw"
             ],
@@ -2066,7 +2066,7 @@ source: crates/pack-cli/tests/snapshot.rs
         "id": "bleed",
         "title": "Bleed air",
         "x": 921.0,
-        "y": 326.0,
+        "y": 332.0,
         "width": 197.0,
         "height": 394.0,
         "items": [
@@ -2470,7 +2470,7 @@ source: crates/pack-cli/tests/snapshot.rs
         "id": "apu",
         "title": "APU",
         "x": 314.0,
-        "y": 1461.0,
+        "y": 1532.0,
         "width": 84.0,
         "height": 90.0,
         "items": [
@@ -2492,7 +2492,7 @@ source: crates/pack-cli/tests/snapshot.rs
         "id": "start",
         "title": "Engine start",
         "x": 402.0,
-        "y": 1473.0,
+        "y": 1544.0,
         "width": 290.0,
         "height": 90.0,
         "items": [
@@ -2609,7 +2609,7 @@ source: crates/pack-cli/tests/snapshot.rs
         "id": "apul",
         "title": "APU lights",
         "x": 252.0,
-        "y": 1385.0,
+        "y": 1456.0,
         "width": 121.0,
         "height": 72.0,
         "items": [
@@ -3389,8 +3389,8 @@ source: crates/pack-cli/tests/snapshot.rs
             "controls": [
               "efispanel"
             ],
-            "positions": "ND range",
-            "rest": "ND range",
+            "positions": "ND RANGE",
+            "rest": "ND RANGE",
             "description": "ND range. TFC shows traffic."
           },
           {
@@ -3657,8 +3657,8 @@ source: crates/pack-cli/tests/snapshot.rs
               "hdgsel",
               "mcpset"
             ],
-            "positions": "Bank 10 to 30",
-            "rest": "Bank 10 to 30",
+            "positions": "BANK 10 TO 30",
+            "rest": "BANK 10 TO 30",
             "description": "Sets heading. The outer ring limits bank."
           },
           {
@@ -3969,8 +3969,8 @@ source: crates/pack-cli/tests/snapshot.rs
             "controls": [
               "efispanel"
             ],
-            "positions": "ND range",
-            "rest": "ND range",
+            "positions": "ND RANGE",
+            "rest": "ND RANGE",
             "description": "ND range. TFC shows traffic."
           },
           {
@@ -4048,7 +4048,7 @@ source: crates/pack-cli/tests/snapshot.rs
     "id": "mn",
     "title": "Main panel",
     "width": 2027.0,
-    "height": 606.0,
+    "height": 610.0,
     "sections": [
       {
         "id": "cl",
@@ -4534,7 +4534,7 @@ source: crates/pack-cli/tests/snapshot.rs
         "x": 582.0,
         "y": 486.0,
         "width": 619.0,
-        "height": 114.0,
+        "height": 118.0,
         "items": [
           {
             "kind": "light",
@@ -4551,7 +4551,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "kind": "push_button",
             "label": "SYS TEST",
             "x": 31.0,
-            "y": 60.0,
+            "y": 61.0,
             "controls": [
               "gpwssw"
             ],
@@ -4562,7 +4562,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "label": "FLAP INHIBIT",
             "guarded": true,
             "x": 91.0,
-            "y": 56.0,
+            "y": 57.0,
             "positions": "NORM",
             "rest": "NORM",
             "description": "Guarded at NORM. INHIBIT silences the flap, gear, terrain or runway alerts."
@@ -4572,7 +4572,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "label": "GEAR INHIBIT",
             "guarded": true,
             "x": 154.0,
-            "y": 56.0,
+            "y": 57.0,
             "positions": "NORM",
             "rest": "NORM",
             "description": "Guarded at NORM. INHIBIT silences the flap, gear, terrain or runway alerts."
@@ -4582,7 +4582,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "label": "TERR INHIBIT",
             "guarded": true,
             "x": 216.0,
-            "y": 56.0,
+            "y": 57.0,
             "positions": "NORM",
             "rest": "NORM",
             "description": "Guarded at NORM. INHIBIT silences the flap, gear, terrain or runway alerts."
@@ -4592,7 +4592,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "label": "RUNWAY INHIBIT",
             "guarded": true,
             "x": 279.0,
-            "y": 56.0,
+            "y": 57.0,
             "positions": "NORM",
             "rest": "NORM",
             "description": "Guarded at NORM. INHIBIT silences the flap, gear, terrain or runway alerts."
@@ -4626,35 +4626,35 @@ source: crates/pack-cli/tests/snapshot.rs
             "label": "RUNWAY INOP",
             "color": "amber",
             "x": 31.0,
-            "y": 92.0,
+            "y": 94.0,
             "description": "Runway awareness is inoperative."
           },
           {
             "kind": "selector",
             "label": "INBD DU",
             "x": 355.0,
-            "y": 88.0,
+            "y": 90.0,
             "description": "Inboard display brightness and contrast."
           },
           {
             "kind": "selector",
             "label": "OUTBD DU",
             "x": 452.0,
-            "y": 88.0,
+            "y": 90.0,
             "description": "Outboard display brightness and contrast."
           },
           {
             "kind": "push_button",
             "label": "WINDSHIELD AIR",
             "x": 529.0,
-            "y": 62.0,
+            "y": 63.0,
             "description": "Pull for windshield air."
           },
           {
             "kind": "push_button",
             "label": "FOOT AIR",
             "x": 586.0,
-            "y": 62.0,
+            "y": 63.0,
             "description": "Pull for foot air."
           }
         ]
@@ -4665,7 +4665,7 @@ source: crates/pack-cli/tests/snapshot.rs
     "id": "con",
     "title": "Center console",
     "width": 838.0,
-    "height": 1287.0,
+    "height": 1301.0,
     "sections": [
       {
         "id": "cdul",
@@ -4953,7 +4953,7 @@ source: crates/pack-cli/tests/snapshot.rs
         "x": 10.0,
         "y": 408.0,
         "width": 725.0,
-        "height": 122.0,
+        "height": 125.0,
         "items": [
           {
             "kind": "handle",
@@ -5007,7 +5007,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "kind": "push_button",
             "label": "HORN CUTOUT",
             "x": 328.0,
-            "y": 99.0,
+            "y": 101.0,
             "description": "Silences the gear horn."
           },
           {
@@ -5042,13 +5042,13 @@ source: crates/pack-cli/tests/snapshot.rs
         "x": 10.0,
         "y": 534.0,
         "width": 818.0,
-        "height": 150.0,
+        "height": 160.0,
         "items": [
           {
             "kind": "toggle_switch",
             "label": "OVHT DET 1",
             "x": 44.0,
-            "y": 46.0,
+            "y": 47.0,
             "controls": [
               "ovhtdet"
             ],
@@ -5061,14 +5061,14 @@ source: crates/pack-cli/tests/snapshot.rs
             "label": "ENG 1 OVERHEAT",
             "color": "amber",
             "x": 44.0,
-            "y": 86.0,
+            "y": 90.0,
             "description": "The detectors around engine 1 sense more heat than normal, but not a fire."
           },
           {
             "kind": "toggle_switch",
             "label": "FIRE TEST",
             "x": 44.0,
-            "y": 128.0,
+            "y": 136.0,
             "controls": [
               "firetest"
             ],
@@ -5079,7 +5079,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "kind": "handle",
             "label": "FIRE 1",
             "x": 149.0,
-            "y": 76.0,
+            "y": 79.0,
             "controls": [
               "firesw"
             ],
@@ -5099,7 +5099,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "label": "APU DET INOP",
             "color": "amber",
             "x": 261.0,
-            "y": 76.0,
+            "y": 79.0,
             "description": "The APU fire detector loop has failed, so an APU fire may not be detected."
           },
           {
@@ -5107,7 +5107,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "label": "APU BOTTLE DISCHARGE",
             "color": "amber",
             "x": 261.0,
-            "y": 112.0,
+            "y": 118.0,
             "description": "The APU fire bottle is empty or has lost pressure."
           },
           {
@@ -5121,7 +5121,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "kind": "handle",
             "label": "FIRE APU",
             "x": 368.0,
-            "y": 92.0,
+            "y": 97.0,
             "controls": [
               "apufire"
             ],
@@ -5132,7 +5132,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "kind": "toggle_switch",
             "label": "OVHT DET 2",
             "x": 470.0,
-            "y": 46.0,
+            "y": 47.0,
             "controls": [
               "ovhtdet"
             ],
@@ -5145,14 +5145,14 @@ source: crates/pack-cli/tests/snapshot.rs
             "label": "ENG 2 OVERHEAT",
             "color": "amber",
             "x": 470.0,
-            "y": 86.0,
+            "y": 90.0,
             "description": "The detectors around engine 2 sense more heat than normal, but not a fire."
           },
           {
             "kind": "handle",
             "label": "FIRE 2",
             "x": 574.0,
-            "y": 76.0,
+            "y": 79.0,
             "controls": [
               "firesw"
             ],
@@ -5179,7 +5179,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "kind": "toggle_switch",
             "label": "EXT TEST",
             "x": 713.0,
-            "y": 78.0,
+            "y": 82.0,
             "controls": [
               "exttest"
             ],
@@ -5191,7 +5191,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "label": "L",
             "color": "amber",
             "x": 657.0,
-            "y": 122.0,
+            "y": 129.0,
             "description": "Green during the extinguisher test."
           },
           {
@@ -5199,7 +5199,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "label": "R",
             "color": "amber",
             "x": 713.0,
-            "y": 122.0,
+            "y": 129.0,
             "description": "Green during the extinguisher test."
           },
           {
@@ -5207,7 +5207,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "label": "APU",
             "color": "amber",
             "x": 769.0,
-            "y": 122.0,
+            "y": 129.0,
             "description": "Green during the extinguisher test."
           }
         ]
@@ -5216,7 +5216,7 @@ source: crates/pack-cli/tests/snapshot.rs
         "id": "r1",
         "title": "Radio 1",
         "x": 10.0,
-        "y": 688.0,
+        "y": 698.0,
         "width": 222.0,
         "height": 112.0,
         "items": [
@@ -5240,9 +5240,9 @@ source: crates/pack-cli/tests/snapshot.rs
         "id": "cf",
         "title": "Cargo fire",
         "x": 238.0,
-        "y": 688.0,
+        "y": 698.0,
         "width": 300.0,
-        "height": 121.0,
+        "height": 125.0,
         "items": [
           {
             "kind": "light",
@@ -5300,7 +5300,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "kind": "push_button",
             "label": "TEST",
             "x": 39.0,
-            "y": 84.0,
+            "y": 86.0,
             "controls": [
               "cargofire"
             ],
@@ -5312,7 +5312,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "kind": "push_button",
             "label": "ARM FWD",
             "x": 116.0,
-            "y": 84.0,
+            "y": 86.0,
             "controls": [
               "cargofire"
             ],
@@ -5324,7 +5324,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "kind": "push_button",
             "label": "ARM AFT",
             "x": 183.0,
-            "y": 84.0,
+            "y": 86.0,
             "controls": [
               "cargofire"
             ],
@@ -5336,7 +5336,7 @@ source: crates/pack-cli/tests/snapshot.rs
             "kind": "push_button",
             "label": "DISCH",
             "x": 258.0,
-            "y": 84.0,
+            "y": 86.0,
             "controls": [
               "cargofire"
             ],
@@ -5350,7 +5350,7 @@ source: crates/pack-cli/tests/snapshot.rs
         "id": "r2",
         "title": "Radio 2",
         "x": 542.0,
-        "y": 688.0,
+        "y": 698.0,
         "width": 222.0,
         "height": 112.0,
         "items": [
@@ -5372,7 +5372,7 @@ source: crates/pack-cli/tests/snapshot.rs
         "id": "n1",
         "title": "NAV 1",
         "x": 10.0,
-        "y": 804.0,
+        "y": 814.0,
         "width": 222.0,
         "height": 84.0,
         "items": [
@@ -5394,7 +5394,7 @@ source: crates/pack-cli/tests/snapshot.rs
         "id": "wx",
         "title": "Weather radar",
         "x": 238.0,
-        "y": 813.0,
+        "y": 827.0,
         "width": 224.0,
         "height": 84.0,
         "items": [
@@ -5416,7 +5416,7 @@ source: crates/pack-cli/tests/snapshot.rs
         "id": "n2",
         "title": "NAV 2",
         "x": 468.0,
-        "y": 813.0,
+        "y": 827.0,
         "width": 222.0,
         "height": 84.0,
         "items": [
@@ -5438,7 +5438,7 @@ source: crates/pack-cli/tests/snapshot.rs
         "id": "a1",
         "title": "Audio 1",
         "x": 10.0,
-        "y": 892.0,
+        "y": 902.0,
         "width": 222.0,
         "height": 84.0,
         "items": [
@@ -5461,7 +5461,7 @@ source: crates/pack-cli/tests/snapshot.rs
         "id": "atc",
         "title": "ATC/TCAS",
         "x": 238.0,
-        "y": 901.0,
+        "y": 915.0,
         "width": 265.0,
         "height": 131.0,
         "items": [
@@ -5531,7 +5531,7 @@ source: crates/pack-cli/tests/snapshot.rs
         "id": "a2",
         "title": "Audio 2",
         "x": 507.0,
-        "y": 901.0,
+        "y": 915.0,
         "width": 222.0,
         "height": 84.0,
         "items": [
@@ -5554,7 +5554,7 @@ source: crates/pack-cli/tests/snapshot.rs
         "id": "r3",
         "title": "Radio 3",
         "x": 10.0,
-        "y": 980.0,
+        "y": 990.0,
         "width": 222.0,
         "height": 60.0,
         "items": [
@@ -5573,7 +5573,7 @@ source: crates/pack-cli/tests/snapshot.rs
         "id": "adf",
         "title": "ADF",
         "x": 238.0,
-        "y": 1036.0,
+        "y": 1050.0,
         "width": 454.0,
         "height": 96.0,
         "items": [
@@ -5659,7 +5659,7 @@ source: crates/pack-cli/tests/snapshot.rs
         "id": "lp",
         "title": "Lighting",
         "x": 10.0,
-        "y": 1044.0,
+        "y": 1054.0,
         "width": 222.0,
         "height": 130.0,
         "items": [
@@ -5687,7 +5687,7 @@ source: crates/pack-cli/tests/snapshot.rs
         "id": "tr",
         "title": "Trim",
         "x": 238.0,
-        "y": 1136.0,
+        "y": 1150.0,
         "width": 249.0,
         "height": 145.0,
         "items": [
@@ -5731,7 +5731,7 @@ source: crates/pack-cli/tests/snapshot.rs
         "id": "dr",
         "title": "Stab override and door",
         "x": 491.0,
-        "y": 1136.0,
+        "y": 1150.0,
         "width": 222.0,
         "height": 130.0,
         "items": [

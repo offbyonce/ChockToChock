@@ -7,7 +7,7 @@
 id: mn
 title: Main panel
 width: 2027
-height: 606
+height: 610
 sections:
   - id: cl
     title: Captain lights
@@ -373,7 +373,7 @@ sections:
     x: 582
     "y": 486
     width: 619
-    height: 114
+    height: 118
     items:
       - kind: light
         label: GND PROX INOP
@@ -386,7 +386,7 @@ sections:
       - kind: push_button
         label: SYS TEST
         x: 31
-        "y": 60
+        "y": 61
         controls:
           - gpwssw
         description: Runs the GPWS test.
@@ -394,7 +394,7 @@ sections:
         label: FLAP INHIBIT
         guarded: true
         x: 91
-        "y": 56
+        "y": 57
         positions: NORM
         rest: "NORM"
         description: "Guarded at NORM. INHIBIT silences the flap, gear, terrain or runway alerts."
@@ -402,7 +402,7 @@ sections:
         label: GEAR INHIBIT
         guarded: true
         x: 154
-        "y": 56
+        "y": 57
         positions: NORM
         rest: "NORM"
         description: "Guarded at NORM. INHIBIT silences the flap, gear, terrain or runway alerts."
@@ -410,7 +410,7 @@ sections:
         label: TERR INHIBIT
         guarded: true
         x: 216
-        "y": 56
+        "y": 57
         positions: NORM
         rest: "NORM"
         description: "Guarded at NORM. INHIBIT silences the flap, gear, terrain or runway alerts."
@@ -418,7 +418,7 @@ sections:
         label: RUNWAY INHIBIT
         guarded: true
         x: 279
-        "y": 56
+        "y": 57
         positions: NORM
         rest: "NORM"
         description: "Guarded at NORM. INHIBIT silences the flap, gear, terrain or runway alerts."
@@ -444,25 +444,25 @@ sections:
         label: RUNWAY INOP
         color: amber
         x: 31
-        "y": 92
+        "y": 94
         description: Runway awareness is inoperative.
       - kind: selector
         label: INBD DU
         x: 355
-        "y": 88
+        "y": 90
         description: Inboard display brightness and contrast.
       - kind: selector
         label: OUTBD DU
         x: 452
-        "y": 88
+        "y": 90
         description: Outboard display brightness and contrast.
       - kind: push_button
         label: WINDSHIELD AIR
         x: 529
-        "y": 62
+        "y": 63
         description: Pull for windshield air.
       - kind: push_button
         label: FOOT AIR
         x: 586
-        "y": 62
+        "y": 63
         description: Pull for foot air.

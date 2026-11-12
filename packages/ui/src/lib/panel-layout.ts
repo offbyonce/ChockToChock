@@ -64,6 +64,8 @@ export function half(item: PanelItem): number {
 export const KEY = { w: 50, h: 20 } as const;
 /** A light: a key. */
 export const LAMP = KEY;
+/** Room kept below a caption ("SET TO ON", "SEE STEP"), so the item below never crowds it. */
+export const CAPTION_ROOM = 3;
 /** Every selector dial's body radius: one size for every dial, however many positions it has. */
 export const DIAL = 10.5;
 /**
@@ -425,7 +427,12 @@ function place(
       const boxFor = (dy: number): Box => {
         const w = Math.max(widest(fit.lines) * px, em(setTo ?? "") * PX.setTo * scale) / k;
         const top = it.y + half(it) + 3 + dy * line;
-        return { x0: it.x - w / 2, y0: top, x1: it.x + w / 2, y1: top + (fit.lines.length + extra) * line };
+        return {
+          x0: it.x - w / 2,
+          y0: top,
+          x1: it.x + w / 2,
+          y1: top + (fit.lines.length + extra) * line + (extra ? CAPTION_ROOM : 0),
+        };
       };
       const rowTop = rowTops?.get(Math.round(it.y));
       const base = rowTop === undefined ? 0 : Math.max(0, (rowTop - (it.y + half(it) + 3)) / line);

@@ -61,8 +61,8 @@ sections:
         "y": 120
         controls:
           - efispanel
-        positions: ND range
-        rest: "ND range"
+        positions: ND RANGE
+        rest: "ND RANGE"
         description: ND range. TFC shows traffic.
       - kind: push_button
         label: VSD
@@ -256,8 +256,8 @@ sections:
         controls:
           - hdgsel
           - mcpset
-        positions: Bank 10 to 30
-        rest: "Bank 10 to 30"
+        positions: BANK 10 TO 30
+        rest: "BANK 10 TO 30"
         description: Sets heading. The outer ring limits bank.
       - kind: push_button
         label: HDG SEL
@@ -485,8 +485,8 @@ sections:
         "y": 120
         controls:
           - efispanel
-        positions: ND range
-        rest: "ND range"
+        positions: ND RANGE
+        rest: "ND RANGE"
         description: ND range. TFC shows traffic.
       - kind: push_button
         label: VSD
