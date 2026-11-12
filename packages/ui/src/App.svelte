@@ -35,6 +35,7 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
   import PhasePage from "./pages/PhasePage.svelte";
   import ReferencePage from "./pages/ReferencePage.svelte";
   import SettingsPage from "./pages/SettingsPage.svelte";
+  import SetupPage from "./pages/SetupPage.svelte";
   import { currentRoute } from "./route.svelte";
   import { applyPalette } from "./theme/tokens";
 
@@ -178,14 +179,18 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
         total: 0,
       }),
   );
-  let stage = $derived(view?.stage ?? null);
+  // Flight setup sits before the first stage, as in 3.0: that stage's tab and chips show, with no
+  // chip current.
+  let stage = $derived(screen === "setup" ? (rail?.stages[0]?.title ?? null) : (view?.stage ?? null));
   let stagePhases = $derived(
-    screen === "phase" || screen === "start" ? (rail?.stages.find((s) => s.title === stage)?.phases ?? []) : [],
+    screen === "phase" || screen === "start" || screen === "setup"
+      ? (rail?.stages.find((s) => s.title === stage)?.phases ?? [])
+      : [],
   );
   let current = $derived(view?.lists.find((l) => l.current)?.current ?? null);
   /** The step the context panel shows, its row, and the steps after it. */
   let pane = $derived.by(() => {
-    if (!index || !view || screen === "settings" || screen === "open") return null;
+    if (!index || !view || screen === "settings" || screen === "setup" || screen === "open") return null;
     const id = flow ? (cursor ?? current) : (selected ?? (screen === "reference" ? null : current));
     const rows = view.lists.flatMap((l) => l.steps);
     const at = rows.findIndex((r) => r.id === id);
@@ -254,7 +259,7 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
   };
 </script>
 
-<div class="shell" data-app-ready={rail && (view || screen === "settings" || screen === "open") ? "" : undefined}>
+<div class="shell" data-app-ready={rail && (view || screen === "settings" || screen === "setup" || screen === "open") ? "" : undefined}>
   <TopBar
     aircraft={index?.name ?? ""}
     {rail}
@@ -281,7 +286,7 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
       version={info?.version ?? null}
       onClose={() => (menuOpen = false)}
     />
-    <div class="app" class:nopane={!pane} class:flow={flow && screen !== "settings"}>
+    <div class="app" class:nopane={!pane} class:flow={flow && screen !== "settings" && screen !== "setup"}>
       <main>
         <div class="inner">
           {#each kept as k (k.what)}
@@ -289,6 +294,13 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
           {/each}
           {#if screen === "settings"}
             <SettingsPage {settings} onChange={(s) => void changeSettings(s)} />
+          {:else if screen === "setup"}
+            <SetupPage
+              {flight}
+              first={rail.stages[0]?.phases[0] ?? null}
+              onSet={(field, value) => act({ type: "setValue", field, value })}
+              onOption={(option, value) => act({ type: "setOption", option, value })}
+            />
           {:else if screen === "open"}
             <OpenStepsPage
               {index}

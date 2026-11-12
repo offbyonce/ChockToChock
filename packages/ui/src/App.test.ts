@@ -136,7 +136,12 @@ function host(overrides: Partial<Host> = {}): Host {
     packs: async () => [{ id: "demo", name: "Demo", version: "0.1.0", kind: "aircraft" }],
     loadPack: async () => pack,
     newFlight: async () =>
-      ({ pack: "demo", options: { power: "gpu" }, session: { done: {}, skipped: {} } }) as unknown as Flight,
+      ({
+        pack: "demo",
+        options: { power: "gpu" },
+        session: { done: {}, skipped: {} },
+        values: {},
+      }) as unknown as Flight,
     apply: async (_pack, flight) => flight,
     rail: async () => rail,
     phaseView: async () => view(["skipped", "current"]),
@@ -233,6 +238,39 @@ describe("App", () => {
     expect(
       (await screen.findByRole("button", { name: /No ground power/ })).getAttribute("aria-pressed"),
     ).toBe("true");
+  });
+
+  it("keeps flight values in Flight setup and leads there from the first phase", async () => {
+    const actions: Action[] = [];
+    const h = host({
+      apply: async (_pack, flight, action) => {
+        actions.push(action);
+        if (action.type === "setValue")
+          return { ...flight, values: { ...flight.values, [action.field]: action.value } };
+        if (action.type === "setOption")
+          return { ...flight, options: { ...flight.options, [action.option]: action.value } };
+        return flight;
+      },
+    });
+    render(App, { context: hostContext(h) });
+
+    const back = await screen.findByRole("link", { name: "Flight setup" });
+    expect(back.getAttribute("href")).toBe("#/setup");
+    window.location.hash = "#/setup";
+    window.dispatchEvent(new HashChangeEvent("hashchange"));
+    expect(await screen.findByRole("heading", { level: 1, name: "Flight setup" })).toBeTruthy();
+    await fireEvent.input(screen.getByLabelText("Runway"), { target: { value: "16L" } });
+    expect(actions.at(-1)).toEqual({ type: "setValue", field: "runway", value: "16L" });
+    expect((screen.getByLabelText("Runway") as HTMLInputElement).value).toBe("16L");
+    // A unit choice is a flight value too, and relabels its field's range.
+    await fireEvent.click(screen.getByRole("radio", { name: "hPa" }));
+    expect(actions.at(-1)).toEqual({ type: "setValue", field: "qnh_unit", value: "hPa" });
+    expect(await screen.findByText("948 to 1050 hPa")).toBeTruthy();
+    await fireEvent.click(screen.getByRole("radio", { name: "Turnaround" }));
+    expect(actions.at(-1)).toEqual({ type: "setOption", option: "start", value: "turn" });
+    expect(screen.getByRole("link", { name: "Start at Power up →" }).getAttribute("href")).toBe(
+      "#/phase/power-up",
+    );
   });
 
   it("shows what a control does on a step without a Why, where the side panel is hidden", async () => {

@@ -101,6 +101,8 @@ const SHOTS = [
     base: { hash: "#memory", before: [click("details summary", 0), click(".it .chev", 0)] },
   },
   { name: "settings", app: { hash: "#/settings" }, base: { hash: "#settings" } },
+  // Flight setup, empty on both sides.
+  { name: "setup", app: { hash: "#/setup" }, base: { hash: "#setup" } },
   {
     // Before start: MCP (glareshield). The app lists Landing gear pins first, so its rows run one ahead.
     // Both sides show the step opened.

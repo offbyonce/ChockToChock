@@ -14,6 +14,7 @@ export type { Control } from "./generated/Control";
 export type { ControlsFile } from "./generated/ControlsFile";
 export type { Detail } from "./generated/Detail";
 export type { ExplainNote } from "./generated/ExplainNote";
+export type { FillField } from "./generated/FillField";
 export type { FlatPack } from "./generated/FlatPack";
 export type { Flight } from "./generated/Flight";
 export type { ItemTarget } from "./generated/ItemTarget";

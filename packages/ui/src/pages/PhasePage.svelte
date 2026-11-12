@@ -113,7 +113,8 @@ a time (lib/FlowView.svelte).
   {#if view.previous}
     <a class="btn" href={phaseHref(view.previous.id)}><Icon name="arrow-left" /> {view.previous.title}</a>
   {:else}
-    <span></span>
+    <!-- The first phase leads back to Flight setup, as in 3.0. -->
+    <a class="btn" href="#/setup"><Icon name="arrow-left" /> Flight setup</a>
   {/if}
   {#if view.next}
     <a class="btn primary" href={phaseHref(view.next.id)}>{view.next.title} <Icon name="arrow-right" /></a>

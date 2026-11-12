@@ -2,7 +2,8 @@
 // SPDX-License-Identifier: MIT
 
 // Screens have their own address after `#`, so Back works and a screen can be bookmarked,
-// offline too. `#/phase/<id>`, `#/reference` (optionally `/<phase id>`), `#/settings`, `#/open`
+// offline too. `#/phase/<id>`, `#/reference` (optionally `/<phase id>`), `#/settings`, `#/setup`
+// (Flight setup), `#/open`
 // (open steps); anything
 // else is the start.
 
@@ -11,6 +12,7 @@ export type Route =
   | { screen: "phase"; id: string }
   | { screen: "reference"; id: string | null }
   | { screen: "settings" }
+  | { screen: "setup" }
   | { screen: "open" };
 
 export function parseRoute(hash: string): Route {
@@ -18,6 +20,7 @@ export function parseRoute(hash: string): Route {
   if (parts[0] === "phase" && parts[1]) return { screen: "phase", id: parts[1] };
   if (parts[0] === "reference") return { screen: "reference", id: parts[1] ?? null };
   if (parts[0] === "settings") return { screen: "settings" };
+  if (parts[0] === "setup") return { screen: "setup" };
   if (parts[0] === "open") return { screen: "open" };
   return { screen: "start" };
 }

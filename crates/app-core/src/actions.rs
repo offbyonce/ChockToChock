@@ -72,20 +72,21 @@ fn set_value(flight: &mut Flight, field: FillField, value: &str) -> Result<(), A
     if matches!(field, FillField::Manual | FillField::RouteLeg) {
         return Err(invalid(format!("`{field:?}` is not a flight value")));
     }
-    let value = value.trim().to_owned();
-    if value.is_empty() {
+    // Kept as typed: the interface saves on every keystroke, so a space typed between words must
+    // stay. A blank value removes the entry.
+    if value.trim().is_empty() {
         flight.values.remove(&field);
         return Ok(());
     }
     if let Some(ok) = allowed(field)
-        && !ok.contains(&value.as_str())
+        && !ok.contains(&value)
     {
         return Err(invalid(format!(
             "`{value}` is not one of {}",
             ok.join(", ")
         )));
     }
-    flight.values.insert(field, value);
+    flight.values.insert(field, value.to_owned());
     Ok(())
 }
 
@@ -130,8 +131,7 @@ fn set_blank(
         return Err(invalid(format!("step `{step}` has no blank {index}")));
     }
     let key = blank_key(found, index);
-    let value = value.trim();
-    if value.is_empty() {
+    if value.trim().is_empty() {
         flight.blanks.remove(&key);
     } else {
         flight.blanks.insert(key, value.to_owned());

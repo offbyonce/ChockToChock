@@ -93,7 +93,7 @@ mod tests {
             Action::SetBlank {
                 step: StepId::new("ifly-737-max8.before-start.mcp-check"),
                 index: 0,
-                value: " 147 ".into(),
+                value: "147".into(),
             },
         )
         .unwrap();
@@ -143,8 +143,11 @@ mod tests {
                 "{field:?} {bad}"
             );
         }
-        let cleared = set(&pack, flight, FillField::QnhUnit, "");
+        let cleared = set(&pack, flight, FillField::QnhUnit, " ");
         assert!(!cleared.values.contains_key(&FillField::QnhUnit));
+        // A space typed between words stays: the interface saves on every keystroke.
+        let route = set(&pack, cleared, FillField::Route, "SUMMA2 ");
+        assert_eq!(route.values[&FillField::Route], "SUMMA2 ");
     }
 
     #[test]
