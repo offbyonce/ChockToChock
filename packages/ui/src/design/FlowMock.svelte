@@ -25,8 +25,18 @@ confirm button within thumb reach: pinned to the bottom on phones, under the ste
   <p class="rest">ARM A/T, ARM LNAV AND VNAV FOR AN RNAV DEPARTURE</p>
   <Callout caption="Check" title="A/T ARM switch at ARM, green light on" detail="FMA shows ARM" />
   <p class="why"><b>Why</b> · Departure speed, heading and altitude</p>
+  <details class="how">
+    <summary>How to do it</summary>
+    <ol>
+      <li>Set A/T ARM to ARM.</li>
+      <li>Set V2 in the IAS/MACH window, from the CDU TAKEOFF REF page.</li>
+      <li>Set the runway heading and the cleared initial altitude.</li>
+      <li>RNAV departure: press LNAV and VNAV. Otherwise press HDG SEL.</li>
+    </ol>
+  </details>
   <div class="acts">
     <Button variant="primary" icon="check">Confirm, next step</Button>
+    <Button icon="arrow-left">Back</Button>
     <Button icon="skip">Skip</Button>
     <span class="keys">Space: confirm · Left arrow: back · S: skip</span>
   </div>
@@ -72,6 +82,20 @@ confirm button within thumb reach: pinned to the bottom on phones, under the ste
   .next b {
     font-weight: var(--weight-bold);
   }
+  .how {
+    font-size: var(--text-sm);
+  }
+  .how summary {
+    min-height: var(--control-h);
+    color: var(--accent);
+    font-weight: var(--weight-bold);
+    line-height: var(--control-h);
+    cursor: pointer;
+  }
+  .how ol {
+    margin: 0;
+    padding-left: var(--space-6);
+  }
   .acts {
     display: flex;
     flex-wrap: wrap;
@@ -104,7 +128,7 @@ confirm button within thumb reach: pinned to the bottom on phones, under the ste
       left: 0;
       z-index: 30;
       display: grid;
-      grid-template-columns: 1fr auto;
+      grid-template-columns: 1fr auto auto;
       padding: var(--space-3) var(--gutter) max(var(--space-3), env(safe-area-inset-bottom));
       border-top: var(--border-thin) solid var(--line);
       background: var(--surface);

@@ -32,6 +32,17 @@ rows, an opened step with its CHECK and IF NOT callouts, and the way on.
   </Card>
 </div>
 
+<div class="open">
+  <Card>
+    <div class="fs">
+      <span class="odot" aria-hidden="true"></span>
+      <b>Open steps</b>
+      <span class="muted">2 from earlier pages · APU start 2</span>
+      <Button variant="link" compact>Show</Button>
+    </div>
+  </Card>
+</div>
+
 <Card kind="Procedure" title="Before start procedure" flush>
   {#snippet actions()}
     <span class="count">1 / 6</span>
@@ -79,8 +90,20 @@ rows, an opened step with its CHECK and IF NOT callouts, and the way on.
 </nav>
 
 <style>
-  .strip {
+  .strip,
+  .open {
     margin-bottom: var(--space-4);
+  }
+  .odot {
+    width: var(--space-2);
+    height: var(--space-2);
+    border-radius: var(--radius-full);
+    background: var(--warn);
+  }
+  .muted {
+    flex: 1;
+    color: var(--muted);
+    font-size: var(--text-sm);
   }
   .fs {
     display: flex;

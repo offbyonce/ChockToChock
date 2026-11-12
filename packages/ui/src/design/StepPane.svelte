@@ -80,9 +80,13 @@ phones), and what the control does.
       {/if}
     </div>
     {#if shown && panel}
-      {#if region?.top}<p class="edge">↑ {region.top}</p>{/if}
-      <PanelSchematic {panel} focus={["fuel"]} {targets} />
-      {#if region?.bottom}<p class="edge">↓ {region.bottom}</p>{/if}
+      <figure class="card">
+        <figcaption>Fuel panel</figcaption>
+        {#if region?.top}<p class="edge">↑ {region.top}</p>{/if}
+        <PanelSchematic {panel} focus={["fuel"]} {targets} />
+        {#if region?.bottom}<p class="edge">↓ {region.bottom}</p>{/if}
+      </figure>
+      <p class="note">Schematic, not to scale.</p>
     {/if}
   </section>
   <section>
@@ -135,6 +139,23 @@ phones), and what the control does.
   }
   .area b {
     font-weight: var(--weight-bold);
+  }
+  .card {
+    margin: 0;
+    padding-bottom: var(--space-3);
+    border: var(--border-thin) solid var(--line);
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+  }
+  figcaption {
+    padding: var(--space-3) var(--space-4);
+    border-bottom: var(--border-thin) solid var(--line);
+    font: var(--weight-bold) var(--text-sm) / var(--leading-tight) var(--sans);
+  }
+  .note {
+    margin: var(--space-2) 0 0;
+    color: var(--muted);
+    font-size: var(--text-xs);
   }
   .edge {
     margin: var(--space-1) 0;

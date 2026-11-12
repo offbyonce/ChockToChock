@@ -22,6 +22,7 @@ current phase filled; the detail level and progress on the right from tablet up.
 <span class="meta">
   <Chip>Full · Detailed</Chip>
   <span class="count">12 / 356</span>
+  <span class="count">Saved 10:12 PM</span>
 </span>
 
 <style>

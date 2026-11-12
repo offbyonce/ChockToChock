@@ -85,6 +85,7 @@ export const FUEL_STEP = {
       "Normal if the center tank has less than 1,000 LB (about 450 KG) and its pumps are OFF. Otherwise check the center pumps are ON.",
   },
   why: "Feeds fuel to the engines under pressure",
-  location: "On the forward overhead, below the fuel temperature gauge.",
-  does: "Turns on the fuel boost pumps.",
+  location:
+    "Fuel panel, left side of the forward overhead, below the navigation switches. Six switches: L and R forward and aft, plus two center tank switches.",
+  does: "Each tank has pumps feeding the engines. Low pressure lights sit beside each switch.",
 };
