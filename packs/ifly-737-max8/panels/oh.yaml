@@ -6,20 +6,20 @@
 # 3.0's measured cold and dark panel state.
 id: oh
 title: Forward overhead
-width: 1344
-height: 1682
+width: 1121
+height: 1491
 sections:
   - id: fctl
     title: Flight control
     x: 10
     "y": 6
-    width: 263
-    height: 348
+    width: 235
+    height: 346
     items:
       - kind: toggle_switch
         label: FLT CONTROL A
         guarded: true
-        x: 54
+        x: 46
         "y": 64
         controls:
           - fltctrl
@@ -29,7 +29,7 @@ sections:
       - kind: toggle_switch
         label: FLT CONTROL B
         guarded: true
-        x: 124
+        x: 112
         "y": 64
         controls:
           - fltctrl
@@ -39,7 +39,7 @@ sections:
       - kind: light
         label: LOW QUANTITY
         color: amber
-        x: 212
+        x: 195
         "y": 34
         controls:
           - stbyhyd
@@ -47,7 +47,7 @@ sections:
       - kind: light
         label: LOW PRESSURE
         color: amber
-        x: 212
+        x: 195
         "y": 62
         controls:
           - stbyhyd
@@ -55,32 +55,32 @@ sections:
       - kind: light
         label: STBY RUD ON
         color: amber
-        x: 212
-        "y": 89
+        x: 195
+        "y": 90
         controls:
           - stbyhyd
         description: "The standby hydraulic system is powering the rudder, because a flight control switch is at STBY RUD or it switched on by itself."
       - kind: light
         label: LOW PRESSURE
         color: amber
-        x: 52
-        "y": 129
+        x: 44
+        "y": 131
         controls:
           - fctllts
         description: System A flight control pressure is low.
       - kind: light
         label: LOW PRESSURE
         color: amber
-        x: 116
-        "y": 129
+        x: 104
+        "y": 131
         controls:
           - fctllts
         description: System B flight control pressure is low.
       - kind: toggle_switch
         label: ALT FLAPS MASTER
         guarded: true
-        x: 164
-        "y": 138
+        x: 150
+        "y": 140
         controls:
           - altflap
         positions: "OFF, ARM"
@@ -88,8 +88,8 @@ sections:
         description: Arms alternate flap operation. Red guard.
       - kind: toggle_switch
         label: ALT FLAPS
-        x: 223
-        "y": 140
+        x: 205
+        "y": 142
         controls:
           - altflap
         positions: "UP, OFF, DOWN"
@@ -98,8 +98,8 @@ sections:
       - kind: toggle_switch
         label: SPOILER A
         guarded: true
-        x: 54
-        "y": 199
+        x: 46
+        "y": 203
         controls:
           - spoilsw
         positions: "OFF, ON"
@@ -108,8 +108,8 @@ sections:
       - kind: toggle_switch
         label: SPOILER B
         guarded: true
-        x: 124
-        "y": 199
+        x: 112
+        "y": 203
         controls:
           - spoilsw
         positions: "OFF, ON"
@@ -118,55 +118,55 @@ sections:
       - kind: light
         label: FEEL DIFF PRESS
         color: amber
-        x: 212
-        "y": 193
+        x: 195
+        "y": 196
         controls:
           - fctllts
         description: "The elevator feel computer senses too big a pressure difference between its two hydraulic inputs, so the column feel may be wrong."
       - kind: light
         label: SPEED TRIM FAIL
         color: amber
-        x: 212
-        "y": 220
+        x: 195
+        "y": 222
         controls:
           - fctllts
         description: "The speed trim system has failed. On the MAX this covers both speed trim and MCAS: if one fails, the other is switched off too."
       - kind: light
         label: MACH TRIM FAIL
         color: amber
-        x: 212
-        "y": 246
+        x: 195
+        "y": 248
         controls:
           - fctllts
         description: "Mach trim, which stops the nose tucking down at high Mach, is not working."
       - kind: light
         label: AUTO SLAT FAIL
         color: amber
-        x: 212
-        "y": 273
+        x: 195
+        "y": 274
         controls:
           - fctllts
         description: The system that moves the slats to full extend near the stall is not working.
       - kind: light
         label: SPOILERS
         color: amber
-        x: 212
-        "y": 299
+        x: 195
+        "y": 300
         controls:
           - fctllts
         description: "A fault in spoiler control, so some spoilers may not move."
       - kind: light
         label: YAW DAMPER
         color: amber
-        x: 84
-        "y": 279
+        x: 74
+        "y": 281
         controls:
           - yawd
         description: "Nothing is damping Dutch roll, because the yaw damper is not engaged."
       - kind: toggle_switch
         label: YAW DAMPER
-        x: 84
-        "y": 318
+        x: 74
+        "y": 320
         controls:
           - yawd
         positions: "OFF, ON"
@@ -175,7 +175,7 @@ sections:
   - id: nav
     title: Navigation
     x: 10
-    "y": 354
+    "y": 356
     width: 235
     height: 136
     items:
@@ -209,7 +209,7 @@ sections:
   - id: disp
     title: Displays
     x: 10
-    "y": 494
+    "y": 496
     width: 235
     height: 118
     items:
@@ -234,14 +234,14 @@ sections:
   - id: fuel
     title: Fuel
     x: 10
-    "y": 616
-    width: 351
-    height: 445
+    "y": 618
+    width: 309
+    height: 392
     items:
       - kind: light
         label: ENG VALVE CLOSED
         color: blue
-        x: 60
+        x: 51
         "y": 30
         controls:
           - fuellts
@@ -249,20 +249,20 @@ sections:
       - kind: light
         label: SPAR VALVE CLOSED
         color: blue
-        x: 60
-        "y": 67
+        x: 51
+        "y": 63
         controls:
           - fuellts
         description: "Engine 1 spar valve. Out: open. Dim: closed. Bright: moving or disagrees with the start lever."
       - kind: gauge
         label: FUEL TEMP
-        x: 167
-        "y": 62
+        x: 151
+        "y": 59
         description: Fuel temperature gauge.
       - kind: light
         label: ENG VALVE CLOSED
         color: blue
-        x: 274
+        x: 250
         "y": 30
         controls:
           - fuellts
@@ -270,39 +270,39 @@ sections:
       - kind: light
         label: SPAR VALVE CLOSED
         color: blue
-        x: 274
-        "y": 67
+        x: 250
+        "y": 63
         controls:
           - fuellts
         description: "Engine 2 spar valve. Out: open. Dim: closed. Bright: moving or disagrees with the start lever."
       - kind: light
         label: FILTER BYPASS
         color: amber
-        x: 65
-        "y": 129
+        x: 56
+        "y": 118
         controls:
           - fuellts
         description: "Fuel filter clogged, about to bypass or bypassing."
       - kind: light
         label: VALVE OPEN
         color: blue
-        x: 167
-        "y": 129
+        x: 151
+        "y": 118
         controls:
           - xfeed
         description: "Dim: crossfeed open. Bright: moving or disagrees with the selector."
       - kind: light
         label: FILTER BYPASS
         color: amber
-        x: 269
-        "y": 129
+        x: 245
+        "y": 118
         controls:
           - fuellts
         description: "Fuel filter clogged, about to bypass or bypassing."
       - kind: selector
         label: CROSSFEED
-        x: 167
-        "y": 183
+        x: 151
+        "y": 166
         controls:
           - xfeed
         positions: "Closed, open"
@@ -311,23 +311,23 @@ sections:
       - kind: light
         label: LOW PRESSURE
         color: amber
-        x: 127
-        "y": 233
+        x: 113
+        "y": 211
         controls:
           - fuelpumps
         description: Center pump pressure low with the switch ON. Both on means the center tank is empty.
       - kind: light
         label: LOW PRESSURE
         color: amber
-        x: 207
-        "y": 233
+        x: 188
+        "y": 211
         controls:
           - fuelpumps
         description: Center pump pressure low with the switch ON. Both on means the center tank is empty.
       - kind: toggle_switch
         label: CTR L
-        x: 127
-        "y": 276
+        x: 113
+        "y": 249
         controls:
           - fuelpumps
         positions: "OFF, ON"
@@ -335,8 +335,8 @@ sections:
         description: Center tank left pump.
       - kind: toggle_switch
         label: CTR R
-        x: 207
-        "y": 276
+        x: 188
+        "y": 249
         controls:
           - fuelpumps
         positions: "OFF, ON"
@@ -345,39 +345,39 @@ sections:
       - kind: light
         label: LOW PRESSURE
         color: amber
-        x: 52
-        "y": 322
+        x: 44
+        "y": 290
         controls:
           - fuelpumps
         description: "Low pressure from this pump, or the pump is OFF."
       - kind: light
         label: LOW PRESSURE
         color: amber
-        x: 126
-        "y": 322
+        x: 111
+        "y": 290
         controls:
           - fuelpumps
         description: "Low pressure from this pump, or the pump is OFF."
       - kind: light
         label: LOW PRESSURE
         color: amber
-        x: 211
-        "y": 322
+        x: 190
+        "y": 290
         controls:
           - fuelpumps
         description: "Low pressure from this pump, or the pump is OFF."
       - kind: light
         label: LOW PRESSURE
         color: amber
-        x: 285
-        "y": 322
+        x: 257
+        "y": 290
         controls:
           - fuelpumps
         description: "Low pressure from this pump, or the pump is OFF."
       - kind: toggle_switch
         label: AFT 1
-        x: 52
-        "y": 370
+        x: 44
+        "y": 333
         controls:
           - fuelpumps
         positions: "OFF, ON"
@@ -385,8 +385,8 @@ sections:
         description: "Aft pump, tank 1."
       - kind: toggle_switch
         label: FWD 1
-        x: 124
-        "y": 370
+        x: 111
+        "y": 333
         controls:
           - fuelpumps
         positions: "OFF, ON"
@@ -394,8 +394,8 @@ sections:
         description: "Forward pump, tank 1."
       - kind: toggle_switch
         label: FWD 2
-        x: 210
-        "y": 370
+        x: 190
+        "y": 333
         controls:
           - fuelpumps
         positions: "OFF, ON"
@@ -403,8 +403,8 @@ sections:
         description: "Forward pump, tank 2."
       - kind: toggle_switch
         label: AFT 2
-        x: 282
-        "y": 370
+        x: 257
+        "y": 333
         controls:
           - fuelpumps
         positions: "OFF, ON"
@@ -412,14 +412,14 @@ sections:
         description: "Aft pump, tank 2."
   - id: elecu
     title: Electrical meters
-    x: 277
+    x: 252
     "y": 120
-    width: 231
+    width: 248
     height: 318
     items:
       - kind: readout
         label: METER DISPLAY
-        x: 112
+        x: 121
         "y": 70
         controls:
           - eleclts
@@ -437,7 +437,7 @@ sections:
       - kind: light
         label: TR UNIT
         color: amber
-        x: 98
+        x: 105
         "y": 148
         controls:
           - eleclts
@@ -445,21 +445,21 @@ sections:
       - kind: light
         label: ELEC
         color: amber
-        x: 153
+        x: 166
         "y": 148
         controls:
           - eleclts
         description: "A DC or standby power fault, on the ground only."
       - kind: push_button
         label: MAINT
-        x: 204
+        x: 217
         "y": 148
         controls:
           - eleclts
         description: Maintenance test button.
       - kind: selector
         label: DC METERS
-        x: 60
+        x: 62
         "y": 206
         controls:
           - eleclts
@@ -469,7 +469,7 @@ sections:
         description: Chooses what the DC meters show.
       - kind: selector
         label: AC METERS
-        x: 168
+        x: 184
         "y": 206
         controls:
           - eleclts
@@ -480,7 +480,7 @@ sections:
       - kind: toggle_switch
         label: BATTERY
         guarded: true
-        x: 60
+        x: 62
         "y": 276
         controls:
           - bat
@@ -489,7 +489,7 @@ sections:
         description: Connects the battery. Guarded.
       - kind: toggle_switch
         label: CAB/UTIL
-        x: 140
+        x: 152
         "y": 276
         controls:
           - cabutil
@@ -498,7 +498,7 @@ sections:
         description: Power to the galleys and cabin utilities.
       - kind: toggle_switch
         label: IFE/PASS SEAT
-        x: 196
+        x: 215
         "y": 276
         controls:
           - cabutil
@@ -509,13 +509,13 @@ sections:
     title: Generator drive and standby
     x: 252
     "y": 442
-    width: 245
-    height: 170
+    width: 225
+    height: 158
     items:
       - kind: light
         label: DRIVE 1
         color: amber
-        x: 46
+        x: 42
         "y": 30
         controls:
           - gendrive
@@ -523,7 +523,7 @@ sections:
       - kind: light
         label: STANDBY PWR OFF
         color: amber
-        x: 120
+        x: 112
         "y": 30
         controls:
           - stby
@@ -531,7 +531,7 @@ sections:
       - kind: light
         label: DRIVE 2
         color: amber
-        x: 194
+        x: 182
         "y": 30
         controls:
           - gendrive
@@ -539,8 +539,8 @@ sections:
       - kind: toggle_switch
         label: DISCONNECT 1
         guarded: true
-        x: 46
-        "y": 104
+        x: 42
+        "y": 100
         controls:
           - gendrive
         positions: Guarded
@@ -549,8 +549,8 @@ sections:
       - kind: toggle_switch
         label: STANDBY POWER
         guarded: true
-        x: 120
-        "y": 87
+        x: 112
+        "y": 84
         controls:
           - stby
         positions: "BAT, OFF, AUTO"
@@ -559,8 +559,8 @@ sections:
       - kind: toggle_switch
         label: DISCONNECT 2
         guarded: true
-        x: 194
-        "y": 104
+        x: 182
+        "y": 100
         controls:
           - gendrive
         positions: Guarded
@@ -568,23 +568,23 @@ sections:
         description: Disconnects generator drive 2. Not reset in flight.
   - id: elecl
     title: Ground power and generators
-    x: 252
-    "y": 1213
-    width: 273
-    height: 281
+    x: 323
+    "y": 1010
+    width: 245
+    height: 255
     items:
       - kind: light
         label: GRD POWER AVAILABLE
         color: blue
-        x: 133
+        x: 121
         "y": 30
         controls:
           - grdpwr
         description: Ground power is connected and good.
       - kind: toggle_switch
         label: GRD PWR
-        x: 133
-        "y": 67
+        x: 121
+        "y": 64
         controls:
           - grdpwr
           - grddisc
@@ -594,8 +594,8 @@ sections:
       - kind: toggle_switch
         label: BUS TRANS
         guarded: true
-        x: 133
-        "y": 115
+        x: 121
+        "y": 108
         controls:
           - bustrans
         positions: "OFF, AUTO"
@@ -604,63 +604,63 @@ sections:
       - kind: light
         label: TRANSFER BUS OFF
         color: amber
-        x: 49
-        "y": 115
+        x: 45
+        "y": 108
         controls:
           - genbus
         description: "Transfer bus 1 has no power, so the systems on it are off."
       - kind: light
         label: SOURCE OFF
         color: amber
-        x: 49
-        "y": 145
+        x: 45
+        "y": 136
         controls:
           - genbus
         description: No source selected for transfer bus 1.
       - kind: light
         label: GEN OFF BUS
         color: blue
-        x: 49
-        "y": 176
+        x: 45
+        "y": 164
         controls:
           - genbus
         description: The engine 1 generator is not powering its transfer bus.
       - kind: light
         label: APU GEN OFF BUS
         color: blue
-        x: 133
-        "y": 176
+        x: 121
+        "y": 164
         controls:
           - genbus
         description: "APU running and ready, but not powering a bus."
       - kind: light
         label: TRANSFER BUS OFF
         color: amber
-        x: 216
-        "y": 115
+        x: 197
+        "y": 108
         controls:
           - genbus
         description: "Transfer bus 2 has no power, so the systems on it are off."
       - kind: light
         label: SOURCE OFF
         color: amber
-        x: 216
-        "y": 145
+        x: 197
+        "y": 136
         controls:
           - genbus
         description: No source selected for transfer bus 2.
       - kind: light
         label: GEN OFF BUS
         color: blue
-        x: 216
-        "y": 176
+        x: 197
+        "y": 164
         controls:
           - genbus
         description: The engine 2 generator is not powering its transfer bus.
       - kind: toggle_switch
         label: GEN 1
-        x: 38
-        "y": 232
+        x: 34
+        "y": 214
         controls:
           - engen
           - apub
@@ -669,8 +669,8 @@ sections:
         description: Spring-loaded. Puts generator 1 on the bus.
       - kind: toggle_switch
         label: APU GEN
-        x: 101
-        "y": 232
+        x: 91
+        "y": 214
         controls:
           - apugen
           - apub
@@ -679,8 +679,8 @@ sections:
         description: Spring-loaded. Puts the APU on the left bus.
       - kind: toggle_switch
         label: APU GEN
-        x: 166
-        "y": 232
+        x: 151
+        "y": 214
         controls:
           - apugen
           - apub
@@ -689,8 +689,8 @@ sections:
         description: Spring-loaded. Puts the APU on the right bus.
       - kind: toggle_switch
         label: GEN 2
-        x: 228
-        "y": 232
+        x: 208
+        "y": 214
         controls:
           - engen
           - apub
@@ -700,7 +700,7 @@ sections:
   - id: wipe
     title: L wiper
     x: 380
-    "y": 826
+    "y": 863
     width: 97
     height: 84
     items:
@@ -715,53 +715,53 @@ sections:
         description: Left windshield wiper.
   - id: col
     title: Lights and service
-    x: 498
-    "y": 442
-    width: 161
-    height: 767
+    x: 504
+    "y": 326
+    width: 142
+    height: 680
     items:
       - kind: selector
         label: CIRCUIT BREAKER
-        x: 71
+        x: 65
         "y": 48
         positions: OFF to BRIGHT
         rest: "OFF to BRIGHT"
         description: Circuit breaker panel lights.
       - kind: selector
         label: PANEL
-        x: 71
-        "y": 129
+        x: 65
+        "y": 120
         positions: OFF to BRIGHT
         rest: "OFF to BRIGHT"
         description: Overhead panel lights.
       - kind: light
         label: LAVATORY SMOKE
         color: amber
-        x: 71
-        "y": 196
+        x: 65
+        "y": 179
         controls:
           - lavsmoke
         description: A smoke detector in a lavatory has gone off.
       - kind: light
         label: EQUIP OFF
         color: amber
-        x: 44
-        "y": 260
+        x: 37
+        "y": 237
         controls:
           - equip
         description: Supply cooling fan has failed.
       - kind: light
         label: EQUIP OFF
         color: amber
-        x: 110
-        "y": 260
+        x: 96
+        "y": 237
         controls:
           - equip
         description: Exhaust cooling fan has failed.
       - kind: toggle_switch
         label: SUPPLY
-        x: 44
-        "y": 303
+        x: 37
+        "y": 275
         controls:
           - equip
         positions: "NORM, ALTN"
@@ -769,8 +769,8 @@ sections:
         description: Equipment cooling supply fan.
       - kind: toggle_switch
         label: EXHAUST
-        x: 99
-        "y": 303
+        x: 96
+        "y": 275
         controls:
           - equip
         positions: "NORM, ALTN"
@@ -779,24 +779,24 @@ sections:
       - kind: light
         label: EQUIP SMOKE
         color: amber
-        x: 71
-        "y": 348
+        x: 65
+        "y": 315
         controls:
           - equip
         description: Smoke has been detected in the electronics bay.
       - kind: light
         label: NOT ARMED
         color: amber
-        x: 71
-        "y": 432
+        x: 65
+        "y": 389
         controls:
           - emerext
         description: Emergency lights are not armed.
       - kind: toggle_switch
         label: EMER EXIT LIGHTS
         guarded: true
-        x: 71
-        "y": 482
+        x: 65
+        "y": 434
         controls:
           - emerext
         positions: "OFF, ARMED, ON"
@@ -804,8 +804,8 @@ sections:
         description: Normally ARMED. Guarded.
       - kind: toggle_switch
         label: NO SMOKING
-        x: 44
-        "y": 565
+        x: 37
+        "y": 508
         controls:
           - signs
         positions: "OFF, AUTO, ON"
@@ -813,8 +813,8 @@ sections:
         description: Cabin no smoking sign.
       - kind: toggle_switch
         label: FASTEN BELTS
-        x: 99
-        "y": 565
+        x: 96
+        "y": 508
         controls:
           - sblts
           - signs
@@ -823,18 +823,18 @@ sections:
         description: Cabin seat belt sign.
       - kind: push_button
         label: ATTEND
-        x: 42
-        "y": 667
+        x: 34
+        "y": 599
         description: Calls the cabin crew.
       - kind: push_button
         label: GRD CALL
-        x: 102
-        "y": 667
+        x: 98
+        "y": 599
         description: Calls the ground crew.
   - id: rwip
     title: R wiper
     x: 482
-    "y": 1498
+    "y": 1269
     width: 110
     height: 84
     items:
@@ -851,13 +851,13 @@ sections:
     title: Window and probe heat
     x: 596
     "y": 6
-    width: 293
-    height: 385
+    width: 249
+    height: 316
     items:
       - kind: light
         label: OVERHEAT
         color: amber
-        x: 46
+        x: 34
         "y": 30
         controls:
           - wheat
@@ -865,7 +865,7 @@ sections:
       - kind: light
         label: OVERHEAT
         color: amber
-        x: 112
+        x: 90
         "y": 30
         controls:
           - wheat
@@ -873,7 +873,7 @@ sections:
       - kind: light
         label: OVERHEAT
         color: amber
-        x: 177
+        x: 151
         "y": 30
         controls:
           - wheat
@@ -881,7 +881,7 @@ sections:
       - kind: light
         label: OVERHEAT
         color: amber
-        x: 243
+        x: 207
         "y": 30
         controls:
           - wheat
@@ -889,39 +889,39 @@ sections:
       - kind: light
         label: "ON"
         color: green
-        x: 46
-        "y": 61
+        x: 34
+        "y": 56
         controls:
           - wheat
         description: Heat being applied. Goes out when the window is warm.
       - kind: light
         label: "ON"
         color: green
-        x: 112
-        "y": 61
+        x: 90
+        "y": 56
         controls:
           - wheat
         description: Heat being applied. Goes out when the window is warm.
       - kind: light
         label: "ON"
         color: green
-        x: 177
-        "y": 61
+        x: 151
+        "y": 56
         controls:
           - wheat
         description: Heat being applied. Goes out when the window is warm.
       - kind: light
         label: "ON"
         color: green
-        x: 243
-        "y": 61
+        x: 207
+        "y": 56
         controls:
           - wheat
         description: Heat being applied. Goes out when the window is warm.
       - kind: toggle_switch
         label: L SIDE
-        x: 46
-        "y": 128
+        x: 34
+        "y": 112
         controls:
           - wheat
         positions: "OFF, ON"
@@ -929,8 +929,8 @@ sections:
         description: Left side window heat.
       - kind: toggle_switch
         label: L FWD
-        x: 101
-        "y": 128
+        x: 90
+        "y": 112
         controls:
           - wheat
         positions: "OFF, ON"
@@ -938,14 +938,14 @@ sections:
         description: Left forward window heat.
       - kind: toggle_switch
         label: OVHT TEST
-        x: 131
-        "y": 185
+        x: 120
+        "y": 160
         positions: "OVHT, PWR TEST"
         description: OVHT simulates an overheat. PWR TEST checks the heat circuits.
       - kind: toggle_switch
         label: R FWD
-        x: 160
-        "y": 128
+        x: 151
+        "y": 112
         controls:
           - wheat
         positions: "OFF, ON"
@@ -953,8 +953,8 @@ sections:
         description: Right forward window heat.
       - kind: toggle_switch
         label: R SIDE
-        x: 215
-        "y": 128
+        x: 207
+        "y": 112
         controls:
           - wheat
         positions: "OFF, ON"
@@ -963,71 +963,71 @@ sections:
       - kind: light
         label: CAPT PITOT
         color: amber
-        x: 46
-        "y": 197
+        x: 34
+        "y": 170
         controls:
           - pheat
         description: "The captain's pitot probe is not heated, so its airspeed could go wrong in icing."
       - kind: light
         label: L ELEV PITOT
         color: amber
-        x: 46
-        "y": 232
+        x: 34
+        "y": 200
         controls:
           - pheat
         description: "The left elevator feel pitot probe is not heated, so ice could upset the column feel."
       - kind: light
         label: L ALPHA VANE
         color: amber
-        x: 46
-        "y": 268
+        x: 34
+        "y": 230
         controls:
           - pheat
         description: "The left angle of attack vane is not heated, so ice could make its readings wrong."
       - kind: light
         label: TEMP PROBE
         color: amber
-        x: 46
-        "y": 304
+        x: 34
+        "y": 260
         controls:
           - pheat
         description: The outside air temperature probe is not heated.
       - kind: light
         label: F/O PITOT
         color: amber
-        x: 215
-        "y": 197
+        x: 207
+        "y": 170
         controls:
           - pheat
         description: "The first officer's pitot probe is not heated, so its airspeed could go wrong in icing."
       - kind: light
         label: R ELEV PITOT
         color: amber
-        x: 215
-        "y": 232
+        x: 207
+        "y": 200
         controls:
           - pheat
         description: "The right elevator feel pitot probe is not heated, so ice could upset the column feel."
       - kind: light
         label: R ALPHA VANE
         color: amber
-        x: 215
-        "y": 268
+        x: 207
+        "y": 230
         controls:
           - pheat
         description: "The right angle of attack vane is not heated, so ice could make its readings wrong."
       - kind: light
         label: AUX PITOT
         color: amber
-        x: 215
-        "y": 304
+        x: 207
+        "y": 260
         controls:
           - pheat
         description: "The auxiliary pitot probe, used by the standby instruments, is not heated."
       - kind: toggle_switch
         label: PROBE A
-        x: 101
-        "y": 247
+        x: 90
+        "y": 212
         controls:
           - pheat
         positions: "AUTO, ON"
@@ -1035,8 +1035,8 @@ sections:
         description: Probe heat system A.
       - kind: toggle_switch
         label: PROBE B
-        x: 160
-        "y": 247
+        x: 151
+        "y": 212
         controls:
           - pheat
         positions: "AUTO, ON"
@@ -1044,16 +1044,16 @@ sections:
         description: Probe heat system B.
   - id: aice
     title: Anti-ice
-    x: 663
-    "y": 395
-    width: 222
-    height: 163
+    x: 650
+    "y": 326
+    width: 267
+    height: 150
     items:
       - kind: light
         label: ICE DETECTOR
         color: amber
-        x: 64
-        "y": 30
+        x: 74
+        "y": 31
         controls:
           - aice
         description: "The ice detector has failed, so it cannot warn you about icing."
@@ -1061,22 +1061,22 @@ sections:
         label: L VALVE
         color: amber
         x: 32
-        "y": 73
+        "y": 65
         controls:
           - aice
         description: "Valve in transit, or disagrees with the switch."
       - kind: light
         label: R VALVE
         color: amber
-        x: 94
-        "y": 73
+        x: 114
+        "y": 65
         controls:
           - aice
         description: "Valve in transit, or disagrees with the switch."
       - kind: light
         label: ENG 1 ANTI-ICE
         color: amber
-        x: 136
+        x: 169
         "y": 22
         controls:
           - aice
@@ -1084,7 +1084,7 @@ sections:
       - kind: light
         label: ENG 2 ANTI-ICE
         color: amber
-        x: 191
+        x: 232
         "y": 22
         controls:
           - aice
@@ -1092,39 +1092,39 @@ sections:
       - kind: light
         label: COWL ANTI-ICE
         color: amber
-        x: 136
-        "y": 48
+        x: 169
+        "y": 50
         controls:
           - aice
         description: "Too much pressure in the engine 1 cowl anti-ice duct, downstream of the valve."
       - kind: light
         label: COWL ANTI-ICE
         color: amber
-        x: 191
-        "y": 48
+        x: 232
+        "y": 50
         controls:
           - aice
         description: "Too much pressure in the engine 2 cowl anti-ice duct, downstream of the valve."
       - kind: light
         label: COWL VALVE
         color: amber
-        x: 136
-        "y": 110
+        x: 169
+        "y": 78
         controls:
           - aice
         description: "Valve in transit, or disagrees with the switch."
       - kind: light
         label: COWL VALVE
         color: amber
-        x: 184
-        "y": 85
+        x: 232
+        "y": 78
         controls:
           - aice
         description: "Valve in transit, or disagrees with the switch."
       - kind: toggle_switch
         label: WING ANTI-ICE
-        x: 60
-        "y": 146
+        x: 69
+        "y": 117
         controls:
           - aice
         positions: "OFF, ON"
@@ -1132,8 +1132,8 @@ sections:
         description: Bleed air to the wing leading edge.
       - kind: toggle_switch
         label: ENG 1
-        x: 136
-        "y": 146
+        x: 169
+        "y": 117
         controls:
           - aice
         positions: "OFF, ON"
@@ -1141,8 +1141,8 @@ sections:
         description: Bleed air to the engine 1 inlet.
       - kind: toggle_switch
         label: ENG 2
-        x: 184
-        "y": 146
+        x: 232
+        "y": 117
         controls:
           - aice
         positions: "OFF, ON"
@@ -1150,15 +1150,15 @@ sections:
         description: Bleed air to the engine 2 inlet.
   - id: hyd
     title: Hydraulic pumps
-    x: 1106
-    "y": 562
-    width: 228
+    x: 650
+    "y": 480
+    width: 241
     height: 134
     items:
       - kind: light
         label: OVERHEAT
         color: amber
-        x: 80
+        x: 88
         "y": 30
         controls:
           - hydpumps
@@ -1166,7 +1166,7 @@ sections:
       - kind: light
         label: OVERHEAT
         color: amber
-        x: 135
+        x: 147
         "y": 30
         controls:
           - hydpumps
@@ -1182,7 +1182,7 @@ sections:
       - kind: light
         label: LOW PRESSURE
         color: amber
-        x: 87
+        x: 88
         "y": 56
         controls:
           - hydpumps
@@ -1190,7 +1190,7 @@ sections:
       - kind: light
         label: LOW PRESSURE
         color: amber
-        x: 142
+        x: 147
         "y": 56
         controls:
           - hydpumps
@@ -1198,7 +1198,7 @@ sections:
       - kind: light
         label: LOW PRESSURE
         color: amber
-        x: 197
+        x: 203
         "y": 56
         controls:
           - hydpumps
@@ -1214,7 +1214,7 @@ sections:
         description: "Engine 1 pump, system A."
       - kind: toggle_switch
         label: ELEC 2
-        x: 80
+        x: 88
         "y": 104
         controls:
           - elechyd
@@ -1223,7 +1223,7 @@ sections:
         description: "Electric pump, system A."
       - kind: toggle_switch
         label: ELEC 1
-        x: 130
+        x: 147
         "y": 104
         controls:
           - elechyd
@@ -1232,7 +1232,7 @@ sections:
         description: "Electric pump, system B."
       - kind: toggle_switch
         label: ENG 2
-        x: 178
+        x: 203
         "y": 104
         controls:
           - hydpumps
@@ -1242,9 +1242,9 @@ sections:
   - id: door
     title: Doors
     x: 596
-    "y": 1213
-    width: 227
-    height: 116
+    "y": 1010
+    width: 242
+    height: 117
     items:
       - kind: light
         label: EQUIP
@@ -1257,7 +1257,7 @@ sections:
       - kind: light
         label: FWD ENTRY
         color: amber
-        x: 79
+        x: 87
         "y": 16
         controls:
           - doorsp
@@ -1266,8 +1266,8 @@ sections:
       - kind: light
         label: LEFT FWD OVERWING
         color: amber
-        x: 86
-        "y": 45
+        x: 87
+        "y": 44
         controls:
           - doorsp
         description: The left front overwing exit is open or not fully latched.
@@ -1275,8 +1275,8 @@ sections:
       - kind: light
         label: LEFT AFT OVERWING
         color: amber
-        x: 79
-        "y": 74
+        x: 87
+        "y": 72
         controls:
           - doorsp
         description: The left rear overwing exit is open or not fully latched.
@@ -1284,7 +1284,7 @@ sections:
       - kind: light
         label: AFT ENTRY
         color: amber
-        x: 79
+        x: 87
         "y": 100
         controls:
           - doorsp
@@ -1293,7 +1293,7 @@ sections:
       - kind: light
         label: FWD SERVICE
         color: amber
-        x: 134
+        x: 143
         "y": 16
         controls:
           - doorsp
@@ -1302,7 +1302,7 @@ sections:
       - kind: light
         label: RIGHT FWD OVERWING
         color: amber
-        x: 141
+        x: 143
         "y": 44
         controls:
           - doorsp
@@ -1311,8 +1311,8 @@ sections:
       - kind: light
         label: RIGHT AFT OVERWING
         color: amber
-        x: 134
-        "y": 73
+        x: 143
+        "y": 72
         controls:
           - doorsp
         description: The right rear overwing exit is open or not fully latched.
@@ -1320,8 +1320,8 @@ sections:
       - kind: light
         label: AFT SERVICE
         color: amber
-        x: 134
-        "y": 99
+        x: 143
+        "y": 100
         controls:
           - doorsp
         description: The rear galley service door is open or not fully latched.
@@ -1329,8 +1329,8 @@ sections:
       - kind: light
         label: FWD CARGO
         color: amber
-        x: 196
-        "y": 41
+        x: 206
+        "y": 42
         controls:
           - doorsp
         description: The forward hold door is open or not fully latched.
@@ -1339,8 +1339,8 @@ sections:
       - kind: light
         label: AFT CARGO
         color: amber
-        x: 189
-        "y": 69
+        x: 206
+        "y": 67
         controls:
           - doorsp
         description: The rear hold door is open or not fully latched.
@@ -1349,13 +1349,13 @@ sections:
   - id: cvr
     title: Cockpit voice recorder microphone monitor
     x: 596
-    "y": 1333
-    width: 211
+    "y": 1131
+    width: 232
     height: 63
     items:
       - kind: push_button
         label: ERASE
-        x: 85
+        x: 88
         "y": 31
         controls:
           - cvrpanel
@@ -1371,7 +1371,7 @@ sections:
         width: 40
       - kind: push_button
         label: TEST
-        x: 132
+        x: 135
         "y": 31
         controls:
           - cvrpanel
@@ -1379,7 +1379,7 @@ sections:
         width: 40
       - kind: push_button
         label: HEADPHONE
-        x: 184
+        x: 194
         "y": 31
         controls:
           - cvrpanel
@@ -1388,32 +1388,32 @@ sections:
   - id: cab
     title: Cabin altitude
     x: 596
-    "y": 1400
-    width: 218
-    height: 168
+    "y": 1198
+    width: 210
+    height: 164
     items:
       - kind: gauge
         label: CABIN ALT
-        x: 86
+        x: 82
         "y": 62
         controls:
           - press
         description: Cabin altitude and differential pressure.
       - kind: gauge
         label: CABIN CLIMB
-        x: 86
+        x: 82
         "y": 142
         controls:
           - press
         description: Cabin rate of climb.
       - kind: push_button
         label: ALT HORN CUTOUT
-        x: 180
+        x: 176
         "y": 44
         description: Silences the cabin altitude horn.
   - id: vrec
     title: Voice recorder
-    x: 893
+    x: 849
     "y": 6
     width: 178
     height: 62
@@ -1429,22 +1429,22 @@ sections:
         description: AUTO runs the recorder automatically.
   - id: air
     title: Air temperature
-    x: 893
+    x: 849
     "y": 72
-    width: 213
-    height: 273
+    width: 184
+    height: 240
     items:
       - kind: gauge
         label: TEMP
-        x: 57
+        x: 48
         "y": 50
         controls:
           - tempsw
         description: Shows the temperature at the point chosen on SOURCE.
       - kind: selector
         label: SOURCE
-        x: 150
-        "y": 57
+        x: 134
+        "y": 56
         controls:
           - tempsw
         positions: "Supply duct, passenger cabin, pack"
@@ -1452,8 +1452,8 @@ sections:
         description: Chooses what the gauge reads.
       - kind: toggle_switch
         label: TRIM AIR
-        x: 104
-        "y": 131
+        x: 91
+        "y": 122
         controls:
           - trimair
         positions: "OFF, ON"
@@ -1462,31 +1462,31 @@ sections:
       - kind: light
         label: ZONE TEMP
         color: amber
-        x: 44
-        "y": 176
+        x: 36
+        "y": 162
         controls:
           - tempsw
         description: "The duct air going to the flight deck has overheated, or that zone's temperature control has failed."
       - kind: light
         label: ZONE TEMP
         color: amber
-        x: 106
-        "y": 176
+        x: 91
+        "y": 162
         controls:
           - tempsw
         description: "The duct air going to the forward cabin has overheated, or that zone's temperature control has failed."
       - kind: light
         label: ZONE TEMP
         color: amber
-        x: 168
-        "y": 176
+        x: 146
+        "y": 162
         controls:
           - tempsw
         description: "The duct air going to the rear cabin has overheated, or that zone's temperature control has failed."
       - kind: selector
         label: CONT CAB
-        x: 44
-        "y": 225
+        x: 36
+        "y": 206
         controls:
           - tempsw
         positions: "OFF, C, AUTO, W"
@@ -1494,8 +1494,8 @@ sections:
         description: Control cabin temperature.
       - kind: selector
         label: FWD CAB
-        x: 104
-        "y": 225
+        x: 91
+        "y": 206
         controls:
           - tempsw
         positions: "OFF, C, AUTO, W"
@@ -1503,8 +1503,8 @@ sections:
         description: Forward cabin temperature.
       - kind: selector
         label: AFT CAB
-        x: 163
-        "y": 225
+        x: 146
+        "y": 206
         controls:
           - tempsw
         positions: "OFF, C, AUTO, W"
@@ -1512,23 +1512,23 @@ sections:
         description: Aft cabin temperature.
   - id: bleed
     title: Bleed air
-    x: 889
-    "y": 395
-    width: 213
-    height: 432
+    x: 921
+    "y": 326
+    width: 190
+    height: 394
     items:
       - kind: light
         label: DUAL BLEED
         color: amber
-        x: 71
+        x: 62
         "y": 30
         controls:
           - packlts
         description: "APU bleed valve open with an engine bleed on. Normal during start, keep thrust low."
       - kind: toggle_switch
         label: L RECIRC FAN
-        x: 40
-        "y": 75
+        x: 32
+        "y": 72
         controls:
           - recirc
         positions: "OFF, AUTO"
@@ -1536,8 +1536,8 @@ sections:
         description: Left recirculation fan.
       - kind: toggle_switch
         label: R RECIRC FAN
-        x: 168
-        "y": 75
+        x: 155
+        "y": 72
         controls:
           - recirc
         positions: "OFF, AUTO"
@@ -1545,18 +1545,18 @@ sections:
         description: Right recirculation fan.
       - kind: gauge
         label: DUCT PRESS
-        x: 104
-        "y": 106
+        x: 94
+        "y": 101
         description: Left and right bleed duct pressure.
       - kind: push_button
         label: OVHT TEST
-        x: 173
-        "y": 131
+        x: 160
+        "y": 124
         description: Tests duct and wing overheat.
       - kind: toggle_switch
         label: L PACK
-        x: 40
-        "y": 192
+        x: 32
+        "y": 180
         controls:
           - packs
         positions: "OFF, AUTO, HIGH"
@@ -1564,8 +1564,8 @@ sections:
         description: Left air conditioning pack.
       - kind: toggle_switch
         label: ISOLATION VALVE
-        x: 104
-        "y": 212
+        x: 94
+        "y": 198
         controls:
           - iso
         positions: "CLOSE, AUTO, OPEN"
@@ -1573,8 +1573,8 @@ sections:
         description: Joins or separates the bleed ducts.
       - kind: toggle_switch
         label: R PACK
-        x: 168
-        "y": 192
+        x: 155
+        "y": 180
         controls:
           - packs
         positions: "OFF, AUTO, HIGH"
@@ -1583,60 +1583,60 @@ sections:
       - kind: light
         label: PACK
         color: amber
-        x: 49
-        "y": 259
+        x: 41
+        "y": 242
         controls:
           - packlts
         description: Pack has tripped off or failed.
       - kind: light
         label: WING-BODY OVERHEAT
         color: amber
-        x: 49
-        "y": 288
+        x: 41
+        "y": 269
         controls:
           - packlts
         description: "Hot bleed air is leaking from a duct in the wing, body or APU area."
       - kind: light
         label: BLEED
         color: amber
-        x: 49
-        "y": 318
+        x: 41
+        "y": 296
         controls:
           - packlts
         description: Engine bleed shut off for temperature or pressure. May reset with TRIP RESET.
       - kind: push_button
         label: TRIP RESET
-        x: 104
-        "y": 291
+        x: 94
+        "y": 271
         description: "Resets BLEED, PACK and ZONE TEMP trips once the fault clears."
       - kind: light
         label: PACK
         color: amber
-        x: 159
-        "y": 259
+        x: 147
+        "y": 242
         controls:
           - packlts
         description: Pack has tripped off or failed.
       - kind: light
         label: WING-BODY OVERHEAT
         color: amber
-        x: 159
-        "y": 288
+        x: 147
+        "y": 269
         controls:
           - packlts
         description: "Hot bleed air is leaking from a duct in the wing, body or APU area."
       - kind: light
         label: BLEED
         color: amber
-        x: 159
-        "y": 318
+        x: 147
+        "y": 296
         controls:
           - packlts
         description: Engine bleed shut off for temperature or pressure. May reset with TRIP RESET.
       - kind: toggle_switch
         label: ENG BLEED 1
-        x: 40
-        "y": 383
+        x: 32
+        "y": 357
         controls:
           - engbleed
         positions: "OFF, ON"
@@ -1644,8 +1644,8 @@ sections:
         description: Engine 1 bleed air.
       - kind: toggle_switch
         label: APU BLEED
-        x: 104
-        "y": 383
+        x: 94
+        "y": 357
         controls:
           - apubleed
         positions: "OFF, ON"
@@ -1653,8 +1653,8 @@ sections:
         description: APU bleed air.
       - kind: toggle_switch
         label: ENG BLEED 2
-        x: 168
-        "y": 383
+        x: 155
+        "y": 357
         controls:
           - engbleed
         positions: "OFF, ON"
@@ -1662,15 +1662,15 @@ sections:
         description: Engine 2 bleed air.
   - id: press
     title: Cabin pressure
-    x: 812
-    "y": 831
-    width: 250
-    height: 314
+    x: 832
+    "y": 1131
+    width: 203
+    height: 354
     items:
       - kind: light
         label: AUTO FAIL
         color: amber
-        x: 52
+        x: 36
         "y": 30
         controls:
           - press
@@ -1678,7 +1678,7 @@ sections:
       - kind: light
         label: OFF SCHED DESCENT
         color: amber
-        x: 121
+        x: 92
         "y": 30
         controls:
           - press
@@ -1686,8 +1686,8 @@ sections:
       - kind: light
         label: ALTN
         color: green
-        x: 52
-        "y": 63
+        x: 36
+        "y": 67
         controls:
           - press
         description: "The standby pressure controller is in use, after a fault or because you selected it."
@@ -1695,51 +1695,51 @@ sections:
       - kind: light
         label: MANUAL
         color: green
-        x: 121
-        "y": 62
+        x: 92
+        "y": 67
         controls:
           - press
         description: "Pressurization is in manual mode, so you move the outflow valve yourself."
         width: 40
       - kind: readout
         label: FLT ALT
-        x: 75
-        "y": 107
+        x: 57
+        "y": 98
         controls:
           - press
         description: Cruise altitude.
       - kind: selector
         label: FLT ALT KNOB
-        x: 75
-        "y": 151
+        x: 57
+        "y": 150
         controls:
           - press
         description: Sets the cruise altitude.
       - kind: readout
         label: LAND ALT
-        x: 75
-        "y": 204
+        x: 57
+        "y": 215
         controls:
           - ldgalt
         description: Landing altitude.
       - kind: selector
         label: LAND ALT KNOB
-        x: 75
-        "y": 252
+        x: 57
+        "y": 273
         controls:
           - ldgalt
         description: Sets the destination elevation.
       - kind: gauge
         label: VALVE
-        x: 173
-        "y": 99
+        x: 148
+        "y": 104
         controls:
           - outflow
         description: Outflow valve position.
       - kind: toggle_switch
         label: OUTFLOW
-        x: 173
-        "y": 174
+        x: 148
+        "y": 178
         controls:
           - outflow
         positions: "CLOSE, OPEN"
@@ -1747,8 +1747,8 @@ sections:
         description: Spring-loaded. Used in MAN.
       - kind: selector
         label: MODE
-        x: 173
-        "y": 252
+        x: 148
+        "y": 273
         controls:
           - press
         positions: "AUTO, ALTN, MAN"
@@ -1757,7 +1757,7 @@ sections:
   - id: ltl
     title: Landing and taxi lights
     x: 10
-    "y": 1498
+    "y": 1102
     width: 300
     height: 90
     items:
@@ -1809,7 +1809,7 @@ sections:
   - id: apu
     title: APU
     x: 314
-    "y": 1498
+    "y": 1357
     width: 84
     height: 90
     items:
@@ -1825,7 +1825,7 @@ sections:
   - id: start
     title: Engine start
     x: 402
-    "y": 1586
+    "y": 1366
     width: 290
     height: 90
     items:
@@ -1859,7 +1859,7 @@ sections:
   - id: lte
     title: Exterior lights
     x: 696
-    "y": 1572
+    "y": 914
     width: 294
     height: 90
     items:
@@ -1912,7 +1912,7 @@ sections:
   - id: apul
     title: APU lights
     x: 252
-    "y": 1065
+    "y": 1269
     width: 124
     height: 84
     items:

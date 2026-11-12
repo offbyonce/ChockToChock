@@ -360,12 +360,12 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
 <style>
   .app {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) clamp(26rem, 36vw, 44rem);
+    grid-template-columns: minmax(0, 1fr) clamp(26rem, 42vw, 50rem);
     align-items: start;
   }
   /* Flow view gives the map and drawing a wider column, as 3.0's does. */
   .app.flow {
-    grid-template-columns: minmax(0, 1fr) minmax(26rem, 38%);
+    grid-template-columns: minmax(0, 1fr) minmax(26rem, 42%);
   }
   .app.nopane {
     grid-template-columns: minmax(0, 1fr);

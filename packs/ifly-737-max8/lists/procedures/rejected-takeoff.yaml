@@ -8,7 +8,6 @@ title: Rejected takeoff
 kind: non-normal
 basis:
   - prior-release
-why: "Simulator training only. Not for real-world use."
 steps:
   - id: ifly-737-max8.procedures.below-80-knots
     number: 1

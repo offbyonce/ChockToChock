@@ -9,7 +9,7 @@ kind: non-normal
 basis:
   - prior-release
 when: Wheel well fire warning.
-why: "Simulator training only. Not for real-world use. There is no extinguisher in the wheel well. Lowering the gear moves hot wheels into the airstream to cool them."
+why: "There is no extinguisher in the wheel well. Lowering the gear moves hot wheels into the airstream to cool them."
 steps:
   - id: ifly-737-max8.quick-reference.airspeed-wheel-well-fire
     number: 1

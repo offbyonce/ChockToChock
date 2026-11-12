@@ -8,7 +8,6 @@ title: "AOA, IAS and ALT disagree"
 kind: non-normal
 basis:
   - regulator-docs
-why: "Simulator training only. Not for real-world use."
 steps:
   - id: ifly-737-max8.procedures.aoa-disagree
     number: 1

@@ -9,7 +9,7 @@ kind: non-normal
 basis:
   - prior-release
 when: "Engine fire warning, severe damage or engine separation."
-why: "Simulator training only. Not for real-world use. Stop fuel and isolate the engine, then use the fire bottle if needed."
+why: "Stop fuel and isolate the engine, then use the fire bottle if needed."
 steps:
   - id: ifly-737-max8.quick-reference.autothrottle-if-engaged
     number: 1

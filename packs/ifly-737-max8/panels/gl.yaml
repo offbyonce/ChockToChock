@@ -6,20 +6,20 @@
 # 3.0's measured cold and dark panel state.
 id: gl
 title: Glareshield
-width: 1701
-height: 332
+width: 1418
+height: 240
 sections:
   - id: efisl
     title: Captain EFIS
     x: 10
     "y": 6
-    width: 325
-    height: 320
+    width: 220
+    height: 228
     items:
       - kind: selector
         label: MINS
-        x: 73
-        "y": 57
+        x: 50
+        "y": 50
         controls:
           - mins
           - efispanel
@@ -28,8 +28,8 @@ sections:
         description: Outer ring selects RADIO or BARO. Inner knob sets minimums. Center button is RST.
       - kind: selector
         label: BARO
-        x: 234
-        "y": 57
+        x: 170
+        "y": 50
         controls:
           - baro
           - efispanel
@@ -38,18 +38,18 @@ sections:
         description: Inner knob sets the altimeter. Outer ring selects IN or HPA. Center button is STD.
       - kind: push_button
         label: FPV
-        x: 154
+        x: 110
         "y": 28
         description: Shows the flight path symbol on the PFD.
       - kind: push_button
         label: MTRS
-        x: 154
-        "y": 73
+        x: 110
+        "y": 62
         description: Shows altitude in meters.
       - kind: selector
         label: MODE
-        x: 73
-        "y": 151
+        x: 50
+        "y": 120
         controls:
           - efispanel
         positions: "APP, VOR, MAP, PLN"
@@ -57,8 +57,8 @@ sections:
         description: ND mode. CTR centers it.
       - kind: selector
         label: RANGE
-        x: 234
-        "y": 151
+        x: 170
+        "y": 120
         controls:
           - efispanel
         positions: ND range
@@ -66,62 +66,62 @@ sections:
         description: ND range. TFC shows traffic.
       - kind: push_button
         label: VSD
-        x: 154
-        "y": 151
+        x: 110
+        "y": 120
         description: Shows the vertical profile below the ND.
       - kind: push_button
         label: WXR
-        x: 60
-        "y": 218
+        x: 40
+        "y": 170
         controls:
           - efispanel
         description: Shows weather on the ND.
       - kind: push_button
         label: TERR
-        x: 154
-        "y": 218
+        x: 110
+        "y": 170
         controls:
           - efispanel
         description: Shows terrain on the ND.
       - kind: push_button
         label: POS
-        x: 247
-        "y": 218
+        x: 180
+        "y": 170
         controls:
           - efispanel
         description: Shows position data.
       - kind: push_button
         label: STA
-        x: 60
-        "y": 266
+        x: 40
+        "y": 206
         controls:
           - efispanel
         description: Shows navaids on the map.
       - kind: push_button
         label: WPT
-        x: 154
-        "y": 266
+        x: 110
+        "y": 206
         controls:
           - efispanel
         description: Shows waypoints.
       - kind: push_button
         label: ARPT
-        x: 247
-        "y": 266
+        x: 180
+        "y": 206
         controls:
           - efispanel
         description: Shows airports.
   - id: annl
     title: Left annunciators
-    x: 339
+    x: 236
     "y": 6
-    width: 166
-    height: 243
+    width: 160
+    height: 228
     items:
       - kind: push_button
         label: FLT CONT
-        x: 34
-        "y": 145
+        x: 30
+        "y": 140
         controls:
           - recall
         description: Lights with MASTER CAUTION for a FLT CONT caution. Press to recall stored cautions.
@@ -129,8 +129,8 @@ sections:
         height: 24
       - kind: push_button
         label: IRS
-        x: 82
-        "y": 145
+        x: 79
+        "y": 140
         controls:
           - recall
         description: Lights with MASTER CAUTION for a IRS caution. Press to recall stored cautions.
@@ -138,8 +138,8 @@ sections:
         height: 24
       - kind: push_button
         label: FUEL
-        x: 129
-        "y": 145
+        x: 127
+        "y": 140
         controls:
           - recall
         description: Lights with MASTER CAUTION for a FUEL caution. Press to recall stored cautions.
@@ -147,8 +147,8 @@ sections:
         height: 24
       - kind: push_button
         label: ELEC
-        x: 34
-        "y": 191
+        x: 30
+        "y": 184
         controls:
           - recall
         description: Lights with MASTER CAUTION for a ELEC caution. Press to recall stored cautions.
@@ -156,8 +156,8 @@ sections:
         height: 24
       - kind: push_button
         label: APU
-        x: 82
-        "y": 191
+        x: 79
+        "y": 184
         controls:
           - recall
         description: Lights with MASTER CAUTION for a APU caution. Press to recall stored cautions.
@@ -165,8 +165,8 @@ sections:
         height: 24
       - kind: push_button
         label: OVHT/DET
-        x: 129
-        "y": 191
+        x: 127
+        "y": 184
         controls:
           - recall
         description: Lights with MASTER CAUTION for a OVHT/DET caution. Press to recall stored cautions.
@@ -174,85 +174,85 @@ sections:
         height: 24
       - kind: push_button
         label: FIRE WARN
-        x: 47
+        x: 43
         "y": 64
         description: Fire warning. Push to silence the bell and reset.
         width: 54
         height: 34
       - kind: push_button
         label: MASTER CAUTION
-        x: 117
+        x: 114
         "y": 64
         description: "Master caution. Push to reset; the six-pack shows which system."
         width: 54
         height: 34
   - id: mcp
     title: Mode control panel
-    x: 509
+    x: 400
     "y": 6
-    width: 683
-    height: 249
+    width: 620
+    height: 228
     items:
       - kind: selector
         label: COURSE
-        x: 34
-        "y": 61
+        x: 30
+        "y": 60
         controls:
           - crs
         description: Sets the left course.
       - kind: toggle_switch
         label: F/D L
-        x: 34
-        "y": 138
+        x: 30
+        "y": 130
         controls:
           - fd
-        positions: "OFF, ON"
+        positions: "ON, OFF"
         rest: "OFF"
         description: Left flight director.
       - kind: toggle_switch
         label: A/T ARM
-        x: 95
-        "y": 61
+        x: 86
+        "y": 60
         controls:
           - mcpset
-        positions: "OFF, ARM"
+        positions: "ARM, OFF"
         rest: "OFF"
         description: Arms the autothrottle.
       - kind: push_button
         label: N1
-        x: 95
-        "y": 138
+        x: 86
+        "y": 130
         description: Autothrottle N1 mode.
       - kind: selector
         label: IAS/MACH
-        x: 157
-        "y": 61
+        x: 142
+        "y": 60
         controls:
           - mcpset
         description: Sets speed.
       - kind: push_button
         label: SPEED
-        x: 157
-        "y": 138
+        x: 142
+        "y": 130
         description: Autothrottle speed mode.
       - kind: push_button
         label: VNAV
-        x: 217
-        "y": 61
+        x: 198
+        "y": 60
         controls:
           - pitchmode
         description: Vertical navigation.
       - kind: push_button
         label: LVL CHG
-        x: 217
-        "y": 138
+        x: 198
+        "y": 130
         controls:
           - pitchmode
         description: Climbs or descends to the MCP altitude at the MCP speed.
       - kind: selector
         label: HEADING
-        x: 283
-        "y": 61
+        x: 258
+        "y": 60
         controls:
           - hdgsel
           - mcpset
@@ -261,91 +261,91 @@ sections:
         description: Sets heading. The outer ring limits bank.
       - kind: push_button
         label: HDG SEL
-        x: 283
-        "y": 138
+        x: 258
+        "y": 130
         controls:
           - rollmode
         description: Heading select.
       - kind: push_button
         label: LNAV
-        x: 348
+        x: 318
         "y": 50
         controls:
           - rollmode
         description: Lateral navigation.
       - kind: push_button
         label: VOR LOC
-        x: 348
-        "y": 96
+        x: 318
+        "y": 92
         controls:
           - rollmode
         description: Tracks a VOR or localizer.
       - kind: push_button
         label: APP
-        x: 348
-        "y": 142
+        x: 318
+        "y": 134
         controls:
           - appmode
           - rollmode
         description: Approach mode.
       - kind: selector
         label: ALTITUDE
-        x: 414
-        "y": 61
+        x: 378
+        "y": 60
         controls:
           - mcpalt
           - mcpset
         description: Sets the cleared altitude.
       - kind: push_button
         label: ALT HLD
-        x: 414
-        "y": 138
+        x: 378
+        "y": 130
         controls:
           - mcpalt
         description: Holds altitude.
       - kind: push_button
         label: V/S
-        x: 471
-        "y": 138
+        x: 430
+        "y": 130
         description: Holds the vertical speed set in the V/S window.
       - kind: push_button
         label: CMD A
-        x: 514
+        x: 470
         "y": 50
         controls:
           - ap
         description: Engages autopilot A.
       - kind: push_button
         label: CMD B
-        x: 572
+        x: 522
         "y": 50
         controls:
           - ap
         description: Engages autopilot B.
       - kind: push_button
         label: CWS A
-        x: 514
-        "y": 96
+        x: 470
+        "y": 92
         description: Autopilot holds the attitude you set with the control wheel.
       - kind: push_button
         label: CWS B
-        x: 572
-        "y": 96
+        x: 522
+        "y": 92
         description: Autopilot holds the attitude you set with the control wheel.
       - kind: toggle_switch
         label: F/D R
-        x: 634
-        "y": 138
+        x: 580
+        "y": 130
         controls:
           - fd
-        positions: "OFF, ON"
+        positions: "ON, OFF"
         rest: "OFF"
         description: Right flight director.
       - kind: toggle_switch
         label: DISENGAGE
         guarded: true
-        x: 543
-        "y": 142
+        x: 496
+        "y": 134
         controls:
           - apdis
         positions: "UP, DOWN"
@@ -353,22 +353,22 @@ sections:
         description: Autopilot disengage bar.
       - kind: selector
         label: COURSE
-        x: 634
-        "y": 61
+        x: 580
+        "y": 60
         controls:
           - crs
         description: Sets the right course.
   - id: annr
     title: Right annunciators
-    x: 1196
+    x: 1024
     "y": 6
-    width: 166
-    height: 243
+    width: 160
+    height: 228
     items:
       - kind: push_button
         label: ANTI-ICE
-        x: 34
-        "y": 145
+        x: 30
+        "y": 140
         controls:
           - recall
         description: Lights with MASTER CAUTION for a ANTI-ICE caution. Press to recall stored cautions.
@@ -376,8 +376,8 @@ sections:
         height: 24
       - kind: push_button
         label: HYD
-        x: 82
-        "y": 145
+        x: 79
+        "y": 140
         controls:
           - recall
         description: Lights with MASTER CAUTION for a HYD caution. Press to recall stored cautions.
@@ -385,8 +385,8 @@ sections:
         height: 24
       - kind: push_button
         label: DOORS
-        x: 129
-        "y": 145
+        x: 127
+        "y": 140
         controls:
           - recall
         description: Lights with MASTER CAUTION for a DOORS caution. Press to recall stored cautions.
@@ -394,8 +394,8 @@ sections:
         height: 24
       - kind: push_button
         label: ENG
-        x: 34
-        "y": 191
+        x: 30
+        "y": 184
         controls:
           - recall
         description: Lights with MASTER CAUTION for a ENG caution. Press to recall stored cautions.
@@ -403,8 +403,8 @@ sections:
         height: 24
       - kind: push_button
         label: OVERHEAD
-        x: 82
-        "y": 191
+        x: 79
+        "y": 184
         controls:
           - recall
         description: Lights with MASTER CAUTION for a OVERHEAD caution. Press to recall stored cautions.
@@ -412,8 +412,8 @@ sections:
         height: 24
       - kind: push_button
         label: AIR COND
-        x: 129
-        "y": 191
+        x: 127
+        "y": 184
         controls:
           - recall
         description: Lights with MASTER CAUTION for a AIR COND caution. Press to recall stored cautions.
@@ -421,29 +421,29 @@ sections:
         height: 24
       - kind: push_button
         label: FIRE WARN
-        x: 117
+        x: 114
         "y": 64
         description: Fire warning. Push to silence the bell and reset.
         width: 54
         height: 34
       - kind: push_button
         label: MASTER CAUTION
-        x: 47
+        x: 43
         "y": 64
         description: "Master caution. Push to reset; the six-pack shows which system."
         width: 54
         height: 34
   - id: efisr
     title: First officer EFIS
-    x: 1366
+    x: 1188
     "y": 6
-    width: 325
-    height: 320
+    width: 220
+    height: 228
     items:
       - kind: selector
         label: MINS
-        x: 73
-        "y": 57
+        x: 50
+        "y": 50
         controls:
           - mins
           - efispanel
@@ -452,8 +452,8 @@ sections:
         description: Outer ring selects RADIO or BARO. Inner knob sets minimums. Center button is RST.
       - kind: selector
         label: BARO
-        x: 234
-        "y": 57
+        x: 170
+        "y": 50
         controls:
           - baro
           - efispanel
@@ -462,18 +462,18 @@ sections:
         description: Inner knob sets the altimeter. Outer ring selects IN or HPA. Center button is STD.
       - kind: push_button
         label: FPV
-        x: 154
+        x: 110
         "y": 28
         description: Shows the flight path symbol on the PFD.
       - kind: push_button
         label: MTRS
-        x: 154
-        "y": 73
+        x: 110
+        "y": 62
         description: Shows altitude in meters.
       - kind: selector
         label: MODE
-        x: 73
-        "y": 151
+        x: 50
+        "y": 120
         controls:
           - efispanel
         positions: "APP, VOR, MAP, PLN"
@@ -481,8 +481,8 @@ sections:
         description: ND mode. CTR centers it.
       - kind: selector
         label: RANGE
-        x: 234
-        "y": 151
+        x: 170
+        "y": 120
         controls:
           - efispanel
         positions: ND range
@@ -490,48 +490,48 @@ sections:
         description: ND range. TFC shows traffic.
       - kind: push_button
         label: VSD
-        x: 154
-        "y": 151
+        x: 110
+        "y": 120
         description: Shows the vertical profile below the ND.
       - kind: push_button
         label: WXR
-        x: 60
-        "y": 218
+        x: 40
+        "y": 170
         controls:
           - efispanel
         description: Shows weather on the ND.
       - kind: push_button
         label: TERR
-        x: 154
-        "y": 218
+        x: 110
+        "y": 170
         controls:
           - efispanel
         description: Shows terrain on the ND.
       - kind: push_button
         label: POS
-        x: 247
-        "y": 218
+        x: 180
+        "y": 170
         controls:
           - efispanel
         description: Shows position data.
       - kind: push_button
         label: STA
-        x: 60
-        "y": 266
+        x: 40
+        "y": 206
         controls:
           - efispanel
         description: Shows navaids on the map.
       - kind: push_button
         label: WPT
-        x: 154
-        "y": 266
+        x: 110
+        "y": 206
         controls:
           - efispanel
         description: Shows waypoints.
       - kind: push_button
         label: ARPT
-        x: 247
-        "y": 266
+        x: 180
+        "y": 206
         controls:
           - efispanel
         description: Shows airports.

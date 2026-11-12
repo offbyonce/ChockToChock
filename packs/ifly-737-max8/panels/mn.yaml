@@ -6,37 +6,37 @@
 # 3.0's measured cold and dark panel state.
 id: mn
 title: Main panel
-width: 1442
-height: 648
+width: 2027
+height: 538
 sections:
   - id: cl
     title: Captain lights
     x: 10
     "y": 6
-    width: 561
-    height: 135
+    width: 918
+    height: 109
     items:
       - kind: light
         label: BELOW G/S
         color: amber
-        x: 43
+        x: 31
         "y": 43
         description: The airplane has gone well below the glideslope on the approach.
       - kind: light
         label: TAKEOFF CONFIG
         color: red
-        x: 109
+        x: 136
         "y": 43
         description: "When thrust went up for takeoff, an item such as the flaps, speedbrake, stabilizer trim or parking brake was not set for takeoff."
       - kind: light
         label: CABIN ALTITUDE
         color: red
-        x: 174
+        x: 241
         "y": 43
         description: "The cabin altitude has climbed above about 10,000 ft."
       - kind: toggle_switch
         label: A/P A/T TEST
-        x: 274
+        x: 456
         "y": 22
         controls:
           - ltest
@@ -44,7 +44,7 @@ sections:
         description: Tests the disengage lights.
       - kind: toggle_switch
         label: LIGHTS
-        x: 434
+        x: 750
         "y": 27
         controls:
           - ltest
@@ -54,47 +54,47 @@ sections:
       - kind: light
         label: SPEED BRAKE DO NOT ARM
         color: amber
-        x: 379
-        "y": 72
+        x: 649
+        "y": 71
         description: Automatic speedbrake fault. Arm only by hand after landing.
       - kind: light
         label: STAB OUT OF TRIM
         color: amber
-        x: 444
-        "y": 72
+        x: 750
+        "y": 71
         controls:
           - stabout
         description: The autopilot is not trimming correctly.
       - kind: light
         label: SPEED BRAKE ARMED
         color: green
-        x: 510
-        "y": 72
+        x: 850
+        "y": 71
         controls:
           - speedbrake
         description: The speedbrake is armed and will deploy by itself on touchdown.
       - kind: light
         label: A/P
         color: amber
-        x: 243
-        "y": 102
+        x: 399
+        "y": 88
         description: "Autopilot, autothrottle and FMC alert light."
       - kind: light
         label: A/T
         color: amber
-        x: 374
-        "y": 102
+        x: 456
+        "y": 88
         description: "Autopilot, autothrottle and FMC alert light."
       - kind: light
         label: FMC
         color: amber
-        x: 309
-        "y": 89
+        x: 513
+        "y": 88
         description: "Autopilot, autothrottle and FMC alert light."
   - id: cd
     title: Captain displays
     x: 10
-    "y": 145
+    "y": 119
     width: 434
     height: 226
     items:
@@ -126,14 +126,14 @@ sections:
         height: 170
   - id: ctr
     title: Standby and gear
-    x: 575
+    x: 932
     "y": 6
-    width: 189
-    height: 434
+    width: 174
+    height: 408
     items:
       - kind: display_unit
         label: STANDBY DISPLAY
-        x: 76
+        x: 87
         "y": 58
         controls:
           - isfdc
@@ -143,32 +143,32 @@ sections:
       - kind: light
         label: LEFT GEAR
         color: red
-        x: 35
-        "y": 143
+        x: 31
+        "y": 138
         description: "The left main gear is moving or not where the gear lever says, or it is not down and locked with a thrust lever at idle below 800 ft."
         width: 42
         height: 0
       - kind: light
         label: NOSE GEAR
         color: red
-        x: 76
-        "y": 115
+        x: 87
+        "y": 112
         description: "The nose gear is moving or not where the gear lever says, or it is not down and locked with a thrust lever at idle below 800 ft."
         width: 42
         height: 0
       - kind: light
         label: RIGHT GEAR
         color: red
-        x: 152
-        "y": 143
+        x: 142
+        "y": 138
         description: "The right main gear is moving or not where the gear lever says, or it is not down and locked with a thrust lever at idle below 800 ft."
         width: 42
         height: 0
       - kind: light
         label: LEFT GEAR
         color: green
-        x: 35
-        "y": 170
+        x: 31
+        "y": 164
         controls:
           - gearlever
         description: The left main gear is down and locked.
@@ -177,8 +177,8 @@ sections:
       - kind: light
         label: NOSE GEAR
         color: green
-        x: 93
-        "y": 143
+        x: 87
+        "y": 138
         controls:
           - gearlever
         description: The nose gear is down and locked.
@@ -187,8 +187,8 @@ sections:
       - kind: light
         label: RIGHT GEAR
         color: green
-        x: 118
-        "y": 170
+        x: 142
+        "y": 164
         controls:
           - gearlever
         description: The right main gear is down and locked.
@@ -197,7 +197,7 @@ sections:
       - kind: lever
         label: LANDING GEAR LEVER
         x: 47
-        "y": 283
+        "y": 270
         controls:
           - gearlever
           - gearup
@@ -206,14 +206,14 @@ sections:
         description: Raises and lowers the gear.
       - kind: push_button
         label: LOCK OVRD
-        x: 81
-        "y": 251
+        x: 92
+        "y": 240
         description: Lets the gear lever go UP when the ground lock holds it.
       - kind: toggle_switch
         label: NOSE WHEEL STEER ALT
         guarded: true
-        x: 115
-        "y": 285
+        x: 138
+        "y": 272
         controls:
           - nws
         positions: NORM
@@ -221,20 +221,20 @@ sections:
         description: "Guarded at NORM, which steers with system A. ALT uses system B."
   - id: fl
     title: First officer lights
-    x: 768
+    x: 1110
     "y": 6
-    width: 448
-    height: 96
+    width: 907
+    height: 109
     items:
       - kind: light
         label: SPEEDBRAKES EXTENDED
         color: amber
         x: 31
-        "y": 40
+        "y": 43
         description: Speedbrakes are out at the wrong time.
       - kind: toggle_switch
         label: A/P A/T TEST
-        x: 157
+        x: 307
         "y": 22
         controls:
           - ltest
@@ -243,43 +243,43 @@ sections:
       - kind: light
         label: CABIN ALTITUDE
         color: red
-        x: 307
-        "y": 40
+        x: 636
+        "y": 43
         description: "The cabin altitude has climbed above about 10,000 ft."
       - kind: light
         label: TAKEOFF CONFIG
         color: red
-        x: 362
-        "y": 40
+        x: 741
+        "y": 43
         description: "When thrust went up for takeoff, an item such as the flaps, speedbrake, stabilizer trim or parking brake was not set for takeoff."
       - kind: light
         label: BELOW G/S
         color: amber
-        x: 417
-        "y": 40
+        x: 846
+        "y": 43
         description: The airplane has gone well below the glideslope on the approach.
       - kind: light
         label: A/P
         color: amber
-        x: 131
-        "y": 78
+        x: 250
+        "y": 88
         description: "Autopilot, autothrottle and FMC alert light."
       - kind: light
         label: A/T
         color: amber
-        x: 241
-        "y": 78
+        x: 307
+        "y": 88
         description: "Autopilot, autothrottle and FMC alert light."
       - kind: light
         label: FMC
         color: amber
-        x: 186
-        "y": 78
+        x: 364
+        "y": 88
         description: "Autopilot, autothrottle and FMC alert light."
   - id: fd
     title: First officer displays
-    x: 768
-    "y": 145
+    x: 1110
+    "y": 119
     width: 430
     height: 226
     items:
@@ -304,13 +304,13 @@ sections:
   - id: clt
     title: Captain display select and lighting
     x: 10
-    "y": 444
-    width: 756
-    height: 198
+    "y": 349
+    width: 568
+    height: 133
     items:
       - kind: selector
         label: MAIN PANEL
-        x: 209
+        x: 165
         "y": 34
         controls:
           - panellts
@@ -319,7 +319,7 @@ sections:
         description: Panel brightness.
       - kind: selector
         label: PFD/MFD
-        x: 321
+        x: 254
         "y": 34
         controls:
           - dsel
@@ -328,8 +328,8 @@ sections:
         description: Moves the displays.
       - kind: selector
         label: BACKGROUND
-        x: 439
-        "y": 72
+        x: 347
+        "y": 61
         controls:
           - panellts
         positions: OFF to BRIGHT
@@ -337,8 +337,8 @@ sections:
         description: Background brightness.
       - kind: selector
         label: AFDS FLOOD
-        x: 573
-        "y": 72
+        x: 454
+        "y": 61
         controls:
           - panellts
         positions: OFF to BRIGHT
@@ -346,82 +346,82 @@ sections:
         description: Glareshield flood light.
       - kind: push_button
         label: FOOT AIR
-        x: 50
-        "y": 72
+        x: 39
+        "y": 61
         description: Pull for foot air.
       - kind: push_button
         label: WINDSHIELD AIR
-        x: 117
-        "y": 72
+        x: 92
+        "y": 61
         description: Pull for windshield air.
       - kind: selector
         label: OUTBD DU
-        x: 209
-        "y": 114
+        x: 165
+        "y": 90
         description: Outboard display brightness.
       - kind: selector
         label: INBD DU
-        x: 321
-        "y": 114
+        x: 254
+        "y": 90
         description: Inboard display brightness.
   - id: gp
     title: "Ground proximity, display select and air"
-    x: 770
-    "y": 444
-    width: 662
-    height: 179
+    x: 582
+    "y": 418
+    width: 533
+    height: 114
     items:
       - kind: light
         label: GND PROX INOP
         color: amber
-        x: 55
+        x: 31
         "y": 30
         controls:
           - gpwssw
         description: "The ground proximity warning system has a fault, so terrain warnings may not work."
       - kind: push_button
         label: SYS TEST
-        x: 55
-        "y": 73
+        x: 31
+        "y": 60
         controls:
           - gpwssw
         description: Runs the GPWS test.
       - kind: toggle_switch
         label: FLAP INHIBIT
         guarded: true
-        x: 115
-        "y": 67
+        x: 82
+        "y": 56
         positions: NORM
         rest: "NORM"
         description: "Guarded at NORM. INHIBIT silences the flap, gear, terrain or runway alerts."
       - kind: toggle_switch
         label: GEAR INHIBIT
         guarded: true
-        x: 177
-        "y": 67
+        x: 136
+        "y": 56
         positions: NORM
         rest: "NORM"
         description: "Guarded at NORM. INHIBIT silences the flap, gear, terrain or runway alerts."
       - kind: toggle_switch
         label: TERR INHIBIT
         guarded: true
-        x: 239
-        "y": 67
+        x: 189
+        "y": 56
         positions: NORM
         rest: "NORM"
         description: "Guarded at NORM. INHIBIT silences the flap, gear, terrain or runway alerts."
       - kind: toggle_switch
         label: RUNWAY INHIBIT
         guarded: true
-        x: 302
-        "y": 67
+        x: 243
+        "y": 56
         positions: NORM
         rest: "NORM"
         description: "Guarded at NORM. INHIBIT silences the flap, gear, terrain or runway alerts."
       - kind: selector
         label: PFD/MFD
-        x: 378
-        "y": 41
+        x: 308
+        "y": 38
         controls:
           - dsel
         positions: "INBD, NORM, OUTBD"
@@ -429,8 +429,8 @@ sections:
         description: Moves the displays.
       - kind: selector
         label: MAIN PANEL
-        x: 475
-        "y": 41
+        x: 391
+        "y": 38
         controls:
           - panellts
         positions: OFF to BRIGHT
@@ -439,26 +439,26 @@ sections:
       - kind: light
         label: RUNWAY INOP
         color: amber
-        x: 55
-        "y": 118
+        x: 31
+        "y": 92
         description: Runway awareness is inoperative.
       - kind: selector
         label: INBD DU
-        x: 378
-        "y": 112
+        x: 308
+        "y": 88
         description: Inboard display brightness and contrast.
       - kind: selector
         label: OUTBD DU
-        x: 475
-        "y": 112
+        x: 391
+        "y": 88
         description: Outboard display brightness and contrast.
       - kind: push_button
         label: WINDSHIELD AIR
-        x: 551
-        "y": 75
+        x: 457
+        "y": 62
         description: Pull for windshield air.
       - kind: push_button
         label: FOOT AIR
-        x: 608
-        "y": 75
+        x: 505
+        "y": 62
         description: Pull for foot air.

@@ -89,6 +89,21 @@ pub fn step_targets(pack: &FlatPack, step: &Step) -> Vec<ItemTarget> {
             }
         }
     }
+    // A step that names some of its controls (TERR on the EFIS panel) targets only those, as 3.0
+    // picks them out, and the lights it expects on.
+    let label = |t: &ItemTarget| {
+        pack.content
+            .panels
+            .iter()
+            .flat_map(|p| &p.sections)
+            .find(|s| s.id == t.section)
+            .and_then(|s| s.items.get(t.item))
+            .map(|i| i.label.as_str())
+            .unwrap_or_default()
+    };
+    if out.iter().any(|t| names(&step.text, label(t))) {
+        out.retain(|t| t.lit || names(&step.text, label(t)));
+    }
     out
 }
 
@@ -147,6 +162,35 @@ mod tests {
             .unwrap();
         assert!(!handle.lit);
         assert!(handle.position.is_some(), "SET is the handle's target");
+    }
+
+    #[test]
+    fn a_step_naming_one_control_targets_only_it() {
+        // TERR's control is the whole EFIS panel; only the TERR button is the step's.
+        let pack = ifly_pack();
+        let step = pack
+            .lists
+            .iter()
+            .flat_map(|l| &l.steps)
+            .find(|s| s.text.starts_with("TERR ("))
+            .unwrap();
+        let targets = step_targets(&pack, step);
+        let labels: Vec<&str> = targets
+            .iter()
+            .map(|t| {
+                pack.content
+                    .panels
+                    .iter()
+                    .flat_map(|p| &p.sections)
+                    .find(|s| s.id == t.section)
+                    .map(|s| s.items[t.item].label.as_str())
+                    .unwrap()
+            })
+            .collect();
+        assert!(
+            !labels.is_empty() && labels.iter().all(|l| *l == "TERR"),
+            "{labels:?}"
+        );
     }
 
     #[test]

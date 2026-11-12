@@ -8,7 +8,6 @@ title: Stabilizer trim inoperative
 kind: non-normal
 basis:
   - regulator-docs
-why: "Simulator training only. Not for real-world use."
 steps:
   - id: ifly-737-max8.procedures.stab-trim-cutout-switches-both
     number: 1

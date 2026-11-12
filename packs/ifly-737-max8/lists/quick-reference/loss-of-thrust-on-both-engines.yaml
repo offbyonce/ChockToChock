@@ -9,7 +9,7 @@ kind: non-normal
 basis:
   - prior-release
 when: Both engines lose thrust.
-why: "Simulator training only. Not for real-world use. Set airspeed for a restart and use the ignition and restart sequence. Start the APU for power."
+why: "Set airspeed for a restart and use the ignition and restart sequence. Start the APU for power."
 steps:
   - id: ifly-737-max8.quick-reference.airspeed
     number: 1

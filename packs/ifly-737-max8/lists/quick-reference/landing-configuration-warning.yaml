@@ -9,7 +9,7 @@ kind: non-normal
 basis:
   - prior-release
 when: "In flight, the steady warning horn sounds."
-why: "Simulator training only. Not for real-world use. The airplane is not configured to land."
+why: "The airplane is not configured to land."
 steps:
   - id: ifly-737-max8.quick-reference.configuration
     number: 1

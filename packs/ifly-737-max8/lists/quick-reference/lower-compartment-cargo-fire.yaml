@@ -9,7 +9,7 @@ kind: non-normal
 basis:
   - prior-release
 when: FWD or AFT cargo fire warning.
-why: "Simulator training only. Not for real-world use. Discharge the bottle into the affected compartment, and turn off recirculation fans to limit smoke."
+why: "Discharge the bottle into the affected compartment, and turn off recirculation fans to limit smoke."
 steps:
   - id: ifly-737-max8.quick-reference.cargo-fire-armed-switch-affected-compartment
     number: 1

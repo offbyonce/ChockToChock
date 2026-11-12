@@ -10,7 +10,7 @@ basis:
   - regulator-docs
 memory: true
 when: Uncommanded stabilizer movement that is continuous or not appropriate for flight conditions.
-why: "Simulator training only. Not for real-world use. An uncontrolled trim runaway makes the airplane harder to control. Controlling the airplane comes first, then trim cutout stops the input."
+why: "An uncontrolled trim runaway makes the airplane harder to control. Controlling the airplane comes first, then trim cutout stops the input."
 steps:
   - id: ifly-737-max8.memory.control-column
     number: 1

@@ -87,6 +87,17 @@ pub(super) fn check_list(list: &Checklist, idx: &Index, issues: &mut Vec<Issue>)
     if list.basis.is_empty() {
         issues.push(error(&list.id, "list has no `basis`"));
     }
+    // The app shows the training notice itself; a copy in a list's text reads as part of it.
+    if list
+        .why
+        .as_deref()
+        .is_some_and(|w| w.contains("Simulator training only"))
+    {
+        issues.push(error(
+            &list.id,
+            "the list's `why` repeats the training notice",
+        ));
+    }
     for tag in &list.basis {
         if !idx.tags.contains(tag.as_str()) {
             issues.push(error(
@@ -147,6 +158,16 @@ mod tests {
     };
 
     use super::super::test_support::{assert_flags, messages, pack, step};
+
+    #[test]
+    fn a_list_why_does_not_repeat_the_training_notice() {
+        let mut p = pack(vec![step("ifly-737-max8.preflight.a")], vec![]);
+        p.checklists[0].why =
+            Some("Simulator training only. Not for real-world use. Fly first.".into());
+        assert_flags(&p, "repeats the training notice");
+        p.checklists[0].why = Some("Fly first.".into());
+        assert!(!messages(&p).contains("training notice"));
+    }
 
     #[test]
     fn a_note_must_not_repeat_its_how_to_steps() {

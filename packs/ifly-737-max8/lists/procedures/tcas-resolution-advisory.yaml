@@ -8,7 +8,6 @@ title: TCAS resolution advisory
 kind: non-normal
 basis:
   - prior-release
-why: "Simulator training only. Not for real-world use."
 steps:
   - id: ifly-737-max8.procedures.autopilot-and-autothrottle-tcas-resolution
     number: 1

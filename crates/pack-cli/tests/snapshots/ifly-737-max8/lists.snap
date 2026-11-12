@@ -6881,7 +6881,7 @@ assertion_line: 34
     ],
     "memory": true,
     "when": "Uncommanded stabilizer movement that is continuous or not appropriate for flight conditions.",
-    "why": "Simulator training only. Not for real-world use. An uncontrolled trim runaway makes the airplane harder to control. Controlling the airplane comes first, then trim cutout stops the input.",
+    "why": "An uncontrolled trim runaway makes the airplane harder to control. Controlling the airplane comes first, then trim cutout stops the input.",
     "steps": [
       {
         "id": "ifly-737-max8.memory.control-column",
@@ -7064,7 +7064,7 @@ assertion_line: 34
     ],
     "memory": true,
     "when": "You suspect one or more airspeed or Mach readings are wrong.",
-    "why": "Simulator training only. Not for real-world use. A safe pitch and thrust setting keeps the airplane flying while you work out which indications to trust.",
+    "why": "A safe pitch and thrust setting keeps the airplane flying while you work out which indications to trust.",
     "steps": [
       {
         "id": "ifly-737-max8.memory.autopilot-if-engaged-airspeed-unreliable",
@@ -7279,7 +7279,7 @@ assertion_line: 34
     ],
     "memory": true,
     "when": "A cabin altitude warning horn or light above 10,000 ft, or a cabin altitude exceedance.",
-    "why": "Simulator training only. Not for real-world use. Oxygen comes first, because you have limited time before hypoxia affects you.",
+    "why": "Oxygen comes first, because you have limited time before hypoxia affects you.",
     "steps": [
       {
         "id": "ifly-737-max8.memory.oxygen-masks-and-regulators",
@@ -7365,7 +7365,7 @@ assertion_line: 34
     ],
     "memory": true,
     "when": "Smoke, fire or fumes in the passenger cabin or flight deck.",
-    "why": "Simulator training only. Not for real-world use. Protect yourself first, then communicate and remove the source. A diversion may be needed.",
+    "why": "Protect yourself first, then communicate and remove the source. A diversion may be needed.",
     "steps": [
       {
         "id": "ifly-737-max8.memory.oxygen-masks-and-regulators-if-required",
@@ -7415,7 +7415,7 @@ assertion_line: 34
       "prior-release"
     ],
     "when": "A start must be stopped, such as no EGT rise or EGT nearing the limit.",
-    "why": "Simulator training only. Not for real-world use. Stopping the start or the fuel prevents engine damage.",
+    "why": "Stopping the start or the fuel prevents engine damage.",
     "steps": [
       {
         "id": "ifly-737-max8.quick-reference.before-start-lever-is-raised-to-idle",
@@ -7451,7 +7451,7 @@ assertion_line: 34
       "prior-release"
     ],
     "when": "Engine fire warning, severe damage or engine separation.",
-    "why": "Simulator training only. Not for real-world use. Stop fuel and isolate the engine, then use the fire bottle if needed.",
+    "why": "Stop fuel and isolate the engine, then use the fire bottle if needed.",
     "steps": [
       {
         "id": "ifly-737-max8.quick-reference.autothrottle-if-engaged",
@@ -7518,7 +7518,7 @@ assertion_line: 34
       "prior-release"
     ],
     "when": "Engine indications exceed limits, or the engine surges or stalls.",
-    "why": "Simulator training only. Not for real-world use. Less thrust often brings the engine back within limits.",
+    "why": "Less thrust often brings the engine back within limits.",
     "steps": [
       {
         "id": "ifly-737-max8.quick-reference.autothrottle-if-engaged-engine-limit-surge",
@@ -7548,7 +7548,7 @@ assertion_line: 34
       "prior-release"
     ],
     "when": "ENG OVERHEAT light.",
-    "why": "Simulator training only. Not for real-world use. Reducing thrust may clear the overheat. If not, treat it as an engine fire.",
+    "why": "Reducing thrust may clear the overheat. If not, treat it as an engine fire.",
     "steps": [
       {
         "id": "ifly-737-max8.quick-reference.autothrottle-if-engaged-engine-overheat",
@@ -7587,7 +7587,7 @@ assertion_line: 34
       "prior-release"
     ],
     "when": "Both engines lose thrust.",
-    "why": "Simulator training only. Not for real-world use. Set airspeed for a restart and use the ignition and restart sequence. Start the APU for power.",
+    "why": "Set airspeed for a restart and use the ignition and restart sequence. Start the APU for power.",
     "steps": [
       {
         "id": "ifly-737-max8.quick-reference.airspeed",
@@ -7668,7 +7668,7 @@ assertion_line: 34
       "prior-release"
     ],
     "when": "APU fire warning.",
-    "why": "Simulator training only. Not for real-world use. The fire switch shuts down the APU and the bottle puts out the fire.",
+    "why": "The fire switch shuts down the APU and the bottle puts out the fire.",
     "steps": [
       {
         "id": "ifly-737-max8.quick-reference.apu-fire-switch",
@@ -7698,7 +7698,7 @@ assertion_line: 34
       "prior-release"
     ],
     "when": "Cabin altitude cannot be controlled above 14,000 ft, or a rapid descent is needed.",
-    "why": "Simulator training only. Not for real-world use. Get down to breathable air as quickly as is safe.",
+    "why": "Get down to breathable air as quickly as is safe.",
     "steps": [
       {
         "id": "ifly-737-max8.quick-reference.emergency-descent",
@@ -7808,7 +7808,7 @@ assertion_line: 34
       "prior-release"
     ],
     "when": "The clacker sounds above VMO or MMO.",
-    "why": "Simulator training only. Not for real-world use. Reduce speed to protect the structure.",
+    "why": "Reduce speed to protect the structure.",
     "steps": [
       {
         "id": "ifly-737-max8.quick-reference.airspeed-overspeed",
@@ -7829,7 +7829,7 @@ assertion_line: 34
       "prior-release"
     ],
     "when": "Fire in the engine tailpipe on the ground, with no engine fire warning.",
-    "why": "Simulator training only. Not for real-world use. Stop fuel to the engine.",
+    "why": "Stop fuel to the engine.",
     "steps": [
       {
         "id": "ifly-737-max8.quick-reference.start-lever-affected-engine-engine-tailpipe-fire",
@@ -7850,7 +7850,7 @@ assertion_line: 34
       "prior-release"
     ],
     "when": "FWD or AFT cargo fire warning.",
-    "why": "Simulator training only. Not for real-world use. Discharge the bottle into the affected compartment, and turn off recirculation fans to limit smoke.",
+    "why": "Discharge the bottle into the affected compartment, and turn off recirculation fans to limit smoke.",
     "steps": [
       {
         "id": "ifly-737-max8.quick-reference.cargo-fire-armed-switch-affected-compartment",
@@ -7900,7 +7900,7 @@ assertion_line: 34
       "prior-release"
     ],
     "when": "Wheel well fire warning.",
-    "why": "Simulator training only. Not for real-world use. There is no extinguisher in the wheel well. Lowering the gear moves hot wheels into the airstream to cool them.",
+    "why": "There is no extinguisher in the wheel well. Lowering the gear moves hot wheels into the airstream to cool them.",
     "steps": [
       {
         "id": "ifly-737-max8.quick-reference.airspeed-wheel-well-fire",
@@ -7930,7 +7930,7 @@ assertion_line: 34
       "prior-release"
     ],
     "when": "In flight, the steady warning horn sounds.",
-    "why": "Simulator training only. Not for real-world use. The airplane is not configured to land.",
+    "why": "The airplane is not configured to land.",
     "steps": [
       {
         "id": "ifly-737-max8.quick-reference.configuration",
@@ -7951,7 +7951,7 @@ assertion_line: 34
       "prior-release"
     ],
     "when": "On the captain's command. The FO reads and the captain does each step.",
-    "why": "Simulator training only. Not for real-world use. Stop the airplane, shut down, depressurize the cabin and start the evacuation.",
+    "why": "Stop the airplane, shut down, depressurize the cabin and start the evacuation.",
     "steps": [
       {
         "id": "ifly-737-max8.quick-reference.parking-brake",
@@ -8066,7 +8066,6 @@ assertion_line: 34
     "basis": [
       "regulator-docs"
     ],
-    "why": "Simulator training only. Not for real-world use.",
     "steps": [
       {
         "id": "ifly-737-max8.procedures.stab-trim-cutout-switches-both",
@@ -8169,7 +8168,6 @@ assertion_line: 34
     "basis": [
       "regulator-docs"
     ],
-    "why": "Simulator training only. Not for real-world use.",
     "steps": [
       {
         "id": "ifly-737-max8.procedures.stab-out-of-trim-light-on-the-ground",
@@ -8270,7 +8268,6 @@ assertion_line: 34
     "basis": [
       "regulator-docs"
     ],
-    "why": "Simulator training only. Not for real-world use.",
     "steps": [
       {
         "id": "ifly-737-max8.procedures.speed-trim-and-mcas",
@@ -8321,7 +8318,6 @@ assertion_line: 34
     "basis": [
       "regulator-docs"
     ],
-    "why": "Simulator training only. Not for real-world use.",
     "steps": [
       {
         "id": "ifly-737-max8.procedures.aoa-disagree",
@@ -8392,7 +8388,6 @@ assertion_line: 34
     "basis": [
       "prior-release"
     ],
-    "why": "Simulator training only. Not for real-world use.",
     "steps": [
       {
         "id": "ifly-737-max8.procedures.below-80-knots",
@@ -8493,7 +8488,6 @@ assertion_line: 34
     "basis": [
       "prior-release"
     ],
-    "why": "Simulator training only. Not for real-world use.",
     "steps": [
       {
         "id": "ifly-737-max8.procedures.autopilot-and-to-ga",
@@ -8567,7 +8561,6 @@ assertion_line: 34
     "basis": [
       "prior-release"
     ],
-    "why": "Simulator training only. Not for real-world use.",
     "steps": [
       {
         "id": "ifly-737-max8.procedures.autopilot-and-autothrottle",
@@ -8642,7 +8635,6 @@ assertion_line: 34
     "basis": [
       "regulator-docs"
     ],
-    "why": "Simulator training only. Not for real-world use.",
     "steps": [
       {
         "id": "ifly-737-max8.procedures.autopilot-and-autothrottle-stall-recovery",
@@ -8743,7 +8735,6 @@ assertion_line: 34
     "basis": [
       "prior-release"
     ],
-    "why": "Simulator training only. Not for real-world use.",
     "steps": [
       {
         "id": "ifly-737-max8.procedures.if-stalled",
@@ -8791,7 +8782,6 @@ assertion_line: 34
     "basis": [
       "prior-release"
     ],
-    "why": "Simulator training only. Not for real-world use.",
     "steps": [
       {
         "id": "ifly-737-max8.procedures.autopilot-and-autothrottle-tcas-resolution",
@@ -8857,7 +8847,6 @@ assertion_line: 34
     "basis": [
       "prior-release"
     ],
-    "why": "Simulator training only. Not for real-world use.",
     "steps": [
       {
         "id": "ifly-737-max8.procedures.to-ga",

@@ -10,7 +10,7 @@ basis:
   - regulator-docs
 memory: true
 when: You suspect one or more airspeed or Mach readings are wrong.
-why: "Simulator training only. Not for real-world use. A safe pitch and thrust setting keeps the airplane flying while you work out which indications to trust."
+why: "A safe pitch and thrust setting keeps the airplane flying while you work out which indications to trust."
 steps:
   - id: ifly-737-max8.memory.autopilot-if-engaged-airspeed-unreliable
     number: 1

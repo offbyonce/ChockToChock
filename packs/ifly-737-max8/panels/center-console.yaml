@@ -6,8 +6,8 @@
 # 3.0's measured cold and dark panel state.
 id: con
 title: Center console
-width: 898
-height: 1475
+width: 838
+height: 1276
 sections:
   - id: cdul
     title: Left CDU
@@ -31,13 +31,13 @@ sections:
     title: Engine display and autobrake
     x: 226
     "y": 6
-    width: 448
-    height: 206
+    width: 299
+    height: 133
     items:
       - kind: toggle_switch
         label: FUEL FLOW
-        x: 58
-        "y": 56
+        x: 34
+        "y": 48
         controls:
           - fuelflow
         positions: "RESET, RATE, USED"
@@ -45,8 +45,8 @@ sections:
         description: "RATE shows flow, USED shows fuel used, RESET zeroes the count."
       - kind: selector
         label: SELECTOR L
-        x: 58
-        "y": 141
+        x: 34
+        "y": 108
         controls:
           - sel
         positions: "L, C, R"
@@ -55,15 +55,15 @@ sections:
       - kind: light
         label: AUTO BRAKE DISARM
         color: amber
-        x: 157
+        x: 107
         "y": 30
         controls:
           - abrake
         description: Autobrake disarmed or faulty. Lights 1 to 2 seconds when RTO is selected.
       - kind: selector
         label: AUTO BRAKE
-        x: 157
-        "y": 87
+        x: 107
+        "y": 70
         controls:
           - abrake
         positions: "RTO, OFF, 1, 2, 3, MAX"
@@ -71,7 +71,7 @@ sections:
         description: Sets the autobrake.
       - kind: push_button
         label: ENG
-        x: 313
+        x: 221
         "y": 30
         controls:
           - engmon
@@ -79,28 +79,28 @@ sections:
         description: Shows secondary engine data.
       - kind: push_button
         label: SYS
-        x: 379
+        x: 269
         "y": 30
         controls:
           - sysp
         description: Shows system data.
       - kind: push_button
         label: INFO
-        x: 313
-        "y": 84
+        x: 221
+        "y": 68
         description: Information display.
       - kind: push_button
         label: C/R
-        x: 379
-        "y": 84
+        x: 269
+        "y": 68
         controls:
           - cr
         description: Cancel and recall alerts.
         height: 26
       - kind: selector
         label: SELECTOR R
-        x: 373
-        "y": 146
+        x: 265
+        "y": 112
         controls:
           - sel
         positions: "L, C, R"
@@ -110,29 +110,29 @@ sections:
       - kind: light
         label: ANTISKID INOP
         color: amber
-        x: 157
-        "y": 152
+        x: 107
+        "y": 116
         description: Antiskid fault. Antiskid is off for one or more wheels.
       - kind: light
         label: BRAKE TEMP
         color: amber
-        x: 237
+        x: 165
         "y": 30
         description: A brake is hot.
       - kind: light
         label: TIRE PRESS
         color: amber
-        x: 237
-        "y": 70
+        x: 165
+        "y": 58
         description: Tire pressure is low.
       - kind: push_button
         label: ENG TFR
-        x: 237
-        "y": 126
+        x: 165
+        "y": 98
         description: Moves the engine display to the other screen.
   - id: cdur
     title: Right CDU
-    x: 678
+    x: 529
     "y": 6
     width: 210
     height: 120
@@ -151,7 +151,7 @@ sections:
   - id: st
     title: Control stand
     x: 10
-    "y": 216
+    "y": 143
     width: 680
     height: 250
     items:
@@ -219,13 +219,13 @@ sections:
   - id: lo
     title: Parking brake and start levers
     x: 10
-    "y": 470
-    width: 771
-    height: 130
+    "y": 397
+    width: 725
+    height: 122
     items:
       - kind: handle
         label: PARKING BRAKE
-        x: 88
+        x: 84
         "y": 50
         controls:
           - pbrake
@@ -235,7 +235,7 @@ sections:
       - kind: light
         label: PARK BRAKE LIGHT
         color: red
-        x: 189
+        x: 179
         "y": 52
         controls:
           - pbrake
@@ -243,7 +243,7 @@ sections:
         description: The parking brake is holding the airplane.
       - kind: lever
         label: START LEVER 1
-        x: 301
+        x: 285
         "y": 50
         controls:
           - slever
@@ -252,7 +252,7 @@ sections:
         description: Fuel to engine 1.
       - kind: lever
         label: START LEVER 2
-        x: 391
+        x: 370
         "y": 50
         controls:
           - slever
@@ -261,12 +261,12 @@ sections:
         description: Fuel to engine 2.
       - kind: push_button
         label: HORN CUTOUT
-        x: 346
-        "y": 102
+        x: 328
+        "y": 99
         description: Silences the gear horn.
       - kind: toggle_switch
         label: STAB TRIM PRI
-        x: 605
+        x: 572
         "y": 50
         controls:
           - stabcut
@@ -275,7 +275,7 @@ sections:
         description: Either switch cuts all electric stabilizer trim.
       - kind: toggle_switch
         label: STAB TRIM B/U
-        x: 684
+        x: 646
         "y": 50
         controls:
           - stabcut
@@ -285,27 +285,27 @@ sections:
   - id: fi
     title: Fire protection
     x: 10
-    "y": 604
-    width: 786
-    height: 174
+    "y": 523
+    width: 818
+    height: 150
     items:
       - kind: toggle_switch
         label: OVHT DET 1
-        x: 52
-        "y": 47
+        x: 44
+        "y": 46
         positions: "A, NORMAL, B"
         rest: "NORMAL"
         description: "Selects loop A, B, or both (NORMAL) for engine 1."
       - kind: light
         label: ENG 1 OVERHEAT
         color: amber
-        x: 52
-        "y": 92
+        x: 44
+        "y": 86
         description: "The detectors around engine 1 sense more heat than normal, but not a fire."
       - kind: toggle_switch
         label: FIRE TEST
-        x: 52
-        "y": 140
+        x: 44
+        "y": 128
         controls:
           - firetest
         positions: "FAULT/INOP, OVHT/FIRE"
@@ -313,7 +313,7 @@ sections:
       - kind: handle
         label: FIRE 1
         x: 149
-        "y": 81
+        "y": 76
         controls:
           - firesw
         positions: "PULL, ROTATE L, R"
@@ -321,51 +321,51 @@ sections:
       - kind: light
         label: FAULT
         color: amber
-        x: 252
-        "y": 41
+        x: 261
+        "y": 40
         description: Both detector loops of an engine have failed.
       - kind: light
         label: APU DET INOP
         color: amber
-        x: 252
-        "y": 81
+        x: 261
+        "y": 76
         description: "The APU fire detector loop has failed, so an APU fire may not be detected."
       - kind: light
         label: APU BOTTLE DISCHARGE
         color: amber
-        x: 252
-        "y": 122
+        x: 261
+        "y": 112
         description: The APU fire bottle is empty or has lost pressure.
       - kind: push_button
         label: BELL CUTOUT
-        x: 351
+        x: 368
         "y": 34
         description: Silences the fire warning bell.
       - kind: handle
         label: FIRE APU
-        x: 351
-        "y": 99
+        x: 368
+        "y": 92
         controls:
           - apufire
         positions: "PULL, ROTATE"
         description: APU fire switch.
       - kind: toggle_switch
         label: OVHT DET 2
-        x: 445
-        "y": 47
+        x: 470
+        "y": 46
         positions: "A, NORMAL, B"
         rest: "NORMAL"
         description: "Selects loop A, B, or both (NORMAL) for engine 2."
       - kind: light
         label: ENG 2 OVERHEAT
         color: amber
-        x: 445
-        "y": 92
+        x: 470
+        "y": 86
         description: "The detectors around engine 2 sense more heat than normal, but not a fire."
       - kind: handle
         label: FIRE 2
-        x: 542
-        "y": 81
+        x: 574
+        "y": 76
         controls:
           - firesw
         positions: "PULL, ROTATE L, R"
@@ -373,19 +373,19 @@ sections:
       - kind: light
         label: L BOTTLE DISCHARGE
         color: amber
-        x: 632
+        x: 672
         "y": 34
         description: The left engine fire bottle has been fired or has lost pressure.
       - kind: light
         label: R BOTTLE DISCHARGE
         color: amber
-        x: 708
+        x: 755
         "y": 34
         description: The right engine fire bottle has been fired or has lost pressure.
       - kind: toggle_switch
         label: EXT TEST
-        x: 670
-        "y": 83
+        x: 713
+        "y": 78
         controls:
           - exttest
         positions: "1, 2"
@@ -393,25 +393,25 @@ sections:
       - kind: light
         label: L
         color: amber
-        x: 618
-        "y": 133
+        x: 657
+        "y": 122
         description: Green during the extinguisher test.
       - kind: light
         label: R
         color: amber
-        x: 680
-        "y": 133
+        x: 713
+        "y": 122
         description: Green during the extinguisher test.
       - kind: light
         label: APU
         color: amber
-        x: 742
-        "y": 133
+        x: 769
+        "y": 122
         description: Green during the extinguisher test.
   - id: r1
     title: Radio 1
     x: 10
-    "y": 782
+    "y": 677
     width: 222
     height: 112
     items:
@@ -429,14 +429,14 @@ sections:
   - id: cf
     title: Cargo fire
     x: 238
-    "y": 782
-    width: 339
-    height: 149
+    "y": 677
+    width: 300
+    height: 121
     items:
       - kind: light
         label: EXT FWD
         color: amber
-        x: 47
+        x: 35
         "y": 42
         description: Green during the cargo fire test.
         width: 38
@@ -444,14 +444,14 @@ sections:
       - kind: light
         label: EXT AFT
         color: amber
-        x: 116
+        x: 94
         "y": 42
         description: Green during the cargo fire test.
         width: 38
         height: 26
       - kind: toggle_switch
         label: DET FWD
-        x: 175
+        x: 154
         "y": 42
         positions: "A, NORM, B"
         rest: "NORM"
@@ -460,7 +460,7 @@ sections:
         height: 26
       - kind: toggle_switch
         label: DET AFT
-        x: 222
+        x: 203
         "y": 42
         positions: "A, NORM, B"
         rest: "NORM"
@@ -470,15 +470,15 @@ sections:
       - kind: light
         label: DETECTOR FAULT
         color: amber
-        x: 281
+        x: 262
         "y": 42
         description: "One or more selected detection loops in a hold has failed, so detection there may be reduced."
         width: 42
         height: 26
       - kind: push_button
         label: TEST
-        x: 51
-        "y": 92
+        x: 39
+        "y": 84
         controls:
           - cargofire
         description: Tests the cargo fire system.
@@ -486,8 +486,8 @@ sections:
         height: 28
       - kind: push_button
         label: ARM FWD
-        x: 127
-        "y": 92
+        x: 116
+        "y": 84
         controls:
           - cargofire
         description: Arms the forward compartment.
@@ -495,8 +495,8 @@ sections:
         height: 28
       - kind: push_button
         label: ARM AFT
-        x: 192
-        "y": 92
+        x: 183
+        "y": 84
         controls:
           - cargofire
         description: Arms the aft compartment.
@@ -504,8 +504,8 @@ sections:
         height: 28
       - kind: push_button
         label: DISCH
-        x: 265
-        "y": 92
+        x: 258
+        "y": 84
         controls:
           - cargofire
         description: Discharges the bottle into the armed compartment.
@@ -513,8 +513,8 @@ sections:
         height: 28
   - id: r2
     title: Radio 2
-    x: 581
-    "y": 782
+    x: 542
+    "y": 677
     width: 222
     height: 112
     items:
@@ -530,7 +530,7 @@ sections:
   - id: n1
     title: NAV 1
     x: 10
-    "y": 898
+    "y": 793
     width: 222
     height: 84
     items:
@@ -546,7 +546,7 @@ sections:
   - id: wx
     title: Weather radar
     x: 238
-    "y": 935
+    "y": 802
     width: 224
     height: 84
     items:
@@ -562,7 +562,7 @@ sections:
   - id: n2
     title: NAV 2
     x: 468
-    "y": 935
+    "y": 802
     width: 222
     height: 84
     items:
@@ -578,7 +578,7 @@ sections:
   - id: a1
     title: Audio 1
     x: 10
-    "y": 986
+    "y": 881
     width: 222
     height: 84
     items:
@@ -595,13 +595,13 @@ sections:
   - id: atc
     title: ATC/TCAS
     x: 238
-    "y": 1023
-    width: 310
-    height: 151
+    "y": 890
+    width: 265
+    height: 131
     items:
       - kind: selector
         label: ALT SOURCE 1
-        x: 46
+        x: 38
         "y": 35
         controls:
           - xpndr
@@ -610,8 +610,8 @@ sections:
         description: Chooses which air data source sends altitude to the transponder.
       - kind: toggle_switch
         label: XPNDR
-        x: 112
-        "y": 68
+        x: 96
+        "y": 64
         controls:
           - xpndr
         positions: "STBY, AUTO"
@@ -619,8 +619,8 @@ sections:
         description: Transponder.
       - kind: display_unit
         label: CODE
-        x: 177
-        "y": 68
+        x: 155
+        "y": 64
         controls:
           - xpndr
         description: Squawk code.
@@ -628,8 +628,8 @@ sections:
         height: 30
       - kind: selector
         label: MODE
-        x: 253
-        "y": 68
+        x: 222
+        "y": 64
         controls:
           - xpndr
         positions: "ALT OFF, XPNDR, TA ONLY, TA/RA"
@@ -637,8 +637,8 @@ sections:
         description: TCAS and transponder mode.
       - kind: selector
         label: ALT SOURCE 2
-        x: 46
-        "y": 106
+        x: 38
+        "y": 98
         controls:
           - xpndr
         positions: "1, 2"
@@ -646,8 +646,8 @@ sections:
         description: Second altitude source selector.
   - id: a2
     title: Audio 2
-    x: 552
-    "y": 1023
+    x: 507
+    "y": 890
     width: 222
     height: 84
     items:
@@ -664,7 +664,7 @@ sections:
   - id: r3
     title: Radio 3
     x: 10
-    "y": 1074
+    "y": 969
     width: 222
     height: 60
     items:
@@ -678,7 +678,7 @@ sections:
   - id: adf
     title: ADF
     x: 238
-    "y": 1178
+    "y": 1025
     width: 454
     height: 96
     items:
@@ -740,7 +740,7 @@ sections:
   - id: lp
     title: Lighting
     x: 10
-    "y": 1138
+    "y": 1033
     width: 222
     height: 130
     items:
@@ -761,37 +761,37 @@ sections:
   - id: tr
     title: Trim
     x: 238
-    "y": 1278
-    width: 325
-    height: 191
+    "y": 1125
+    width: 249
+    height: 145
     items:
       - kind: readout
         label: RUDDER TRIM
-        x: 150
+        x: 121
         "y": 22
         description: "Rudder trim position indicator, in units nose left or right."
         width: 110
         height: 18
       - kind: toggle_switch
         label: AILERON
-        x: 78
-        "y": 116
+        x: 62
+        "y": 98
         controls:
           - trimp
         positions: "LEFT, RIGHT WING DOWN"
         description: Aileron trim.
       - kind: selector
         label: RUDDER
-        x: 223
-        "y": 116
+        x: 179
+        "y": 98
         controls:
           - trimp
         positions: "NOSE LEFT, NOSE RIGHT"
         description: Rudder trim.
   - id: dr
     title: Stab override and door
-    x: 567
-    "y": 1278
+    x: 491
+    "y": 1125
     width: 222
     height: 130
     items:

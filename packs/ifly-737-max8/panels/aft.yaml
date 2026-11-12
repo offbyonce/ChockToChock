@@ -6,8 +6,8 @@
 # 3.0's measured cold and dark panel state.
 id: aft
 title: Aft overhead
-width: 1175
-height: 495
+width: 1221
+height: 520
 sections:
   - id: elt
     title: ELT
@@ -57,58 +57,58 @@ sections:
     title: IRS
     x: 238
     "y": 70
-    width: 243
-    height: 333
+    width: 273
+    height: 358
     items:
       - kind: display_unit
         label: IRS DISPLAY
-        x: 115
+        x: 132
         "y": 31
         description: Shows the data chosen on DSPL SEL.
         width: 210
         height: 22
       - kind: selector
         label: DSPL SEL
-        x: 58
-        "y": 89
+        x: 63
+        "y": 94
         positions: "TEST, TK/GS, PPOS, WIND, HDG/STS"
         rest: "TEST"
         description: Chooses what the IRS display shows.
       - kind: selector
         label: SYS DSPL
-        x: 58
-        "y": 147
+        x: 63
+        "y": 156
         positions: "L, R"
         rest: "L"
         description: Chooses the left or right IRS.
       - kind: display_unit
         label: KEYPAD
-        x: 165
-        "y": 117
+        x: 193
+        "y": 124
         description: Enters position and heading.
         width: 80
         height: 80
       - kind: light
         label: GPS
         color: amber
-        x: 50
-        "y": 197
+        x: 53
+        "y": 211
         controls:
           - gpslts
         description: Both GPS receivers have failed. A failure of only one shows only on MASTER CAUTION recall.
       - kind: light
         label: ILS
         color: amber
-        x: 115
-        "y": 197
+        x: 132
+        "y": 211
         controls:
           - gpslts
         description: "Both ILS receivers have failed, so the localizer and glideslope are not usable. A failure of only one shows only on MASTER CAUTION recall."
       - kind: light
         label: GLS
         color: amber
-        x: 180
-        "y": 197
+        x: 211
+        "y": 211
         controls:
           - gpslts
         description: "Both GLS receivers have failed, so satellite based landing guidance is not available. A single failure shows only on recall."
@@ -116,15 +116,15 @@ sections:
         label: ALIGN
         color: amber
         x: 36
-        "y": 227
+        "y": 243
         controls:
           - irs
         description: "The left IRS is still finding its position and heading, so the airplane must stay still."
       - kind: light
         label: ON DC
         color: amber
-        x: 91
-        "y": 227
+        x: 92
+        "y": 243
         controls:
           - irs
         description: "Left IRS is on DC power. Running on the battery, it drains if left on."
@@ -132,54 +132,54 @@ sections:
         label: FAULT
         color: amber
         x: 36
-        "y": 255
+        "y": 269
         controls:
           - irs
         description: The left IRS has a fault and its attitude or navigation data may be lost.
       - kind: light
         label: DC FAIL
         color: amber
-        x: 91
-        "y": 254
+        x: 92
+        "y": 269
         controls:
           - irs
         description: The left IRS has lost its battery backup.
       - kind: light
         label: ALIGN
         color: amber
-        x: 157
-        "y": 227
+        x: 172
+        "y": 243
         controls:
           - irs
         description: "The right IRS is still finding its position and heading, so the airplane must stay still."
       - kind: light
         label: ON DC
         color: amber
-        x: 212
-        "y": 227
+        x: 228
+        "y": 243
         controls:
           - irs
         description: "Right IRS is on DC power. Running on the battery, it drains if left on."
       - kind: light
         label: FAULT
         color: amber
-        x: 157
-        "y": 253
+        x: 172
+        "y": 269
         controls:
           - irs
         description: The right IRS has a fault and its attitude or navigation data may be lost.
       - kind: light
         label: DC FAIL
         color: amber
-        x: 212
-        "y": 252
+        x: 228
+        "y": 269
         controls:
           - irs
         description: The right IRS has lost its battery backup.
       - kind: selector
         label: IRS L
-        x: 60
-        "y": 305
+        x: 65
+        "y": 323
         controls:
           - irs
         positions: "OFF, ALIGN, NAV, ATT"
@@ -187,8 +187,8 @@ sections:
         description: Left IRS mode.
       - kind: selector
         label: IRS R
-        x: 170
-        "y": 305
+        x: 199
+        "y": 323
         controls:
           - irs
         positions: "OFF, ALIGN, NAV, ATT"
@@ -196,7 +196,7 @@ sections:
         description: Right IRS mode.
   - id: svc
     title: Service interphone
-    x: 1069
+    x: 1115
     "y": 220
     width: 96
     height: 90
@@ -226,19 +226,19 @@ sections:
     title: Engine
     x: 570
     "y": 182
-    width: 232
+    width: 254
     height: 94
     items:
       - kind: light
         label: REVERSER COMMAND
         color: amber
-        x: 93
+        x: 101
         "y": 20
         description: "In flight, a reverse thrust lever is not fully down."
       - kind: light
         label: REVERSER AIR/GRD
         color: amber
-        x: 148
+        x: 157
         "y": 20
         description: The air/ground logic used by the thrust reversers has failed.
       - kind: light
@@ -260,7 +260,7 @@ sections:
       - kind: light
         label: REVERSER LIMITED
         color: amber
-        x: 201
+        x: 222
         "y": 48
         controls:
           - eec
@@ -268,14 +268,14 @@ sections:
       - kind: light
         label: ENGINE CONTROL
         color: amber
-        x: 201
+        x: 222
         "y": 76
         controls:
           - eec
         description: "Engine control fault, not dispatchable. Only shows with the engine running on the ground."
       - kind: push_button
         label: EEC 1
-        x: 93
+        x: 101
         "y": 62
         controls:
           - eec
@@ -285,7 +285,7 @@ sections:
         width: 40
       - kind: push_button
         label: EEC 2
-        x: 143
+        x: 157
         "y": 62
         controls:
           - eec
@@ -341,15 +341,15 @@ sections:
         description: Cabin broadband power.
   - id: rec
     title: Flight recorder and Mach test
-    x: 806
+    x: 828
     "y": 182
-    width: 259
-    height: 110
+    width: 283
+    height: 94
     items:
       - kind: toggle_switch
         label: FLIGHT RECORDER
         guarded: true
-        x: 52
+        x: 44
         "y": 42
         controls:
           - fltrec
@@ -359,23 +359,23 @@ sections:
       - kind: light
         label: "OFF"
         color: amber
-        x: 119
-        "y": 82
+        x: 140
+        "y": 66
         controls:
           - fltrec
         description: The flight data recorder is not recording.
       - kind: push_button
         label: MACH TEST 1
-        x: 167
-        "y": 53
+        x: 207
+        "y": 52
         controls:
           - mach
         description: Tests the overspeed clacker.
         height: 24
       - kind: push_button
         label: MACH TEST 2
-        x: 219
-        "y": 53
+        x: 255
+        "y": 52
         controls:
           - mach
         description: Tests the overspeed clacker.
@@ -383,7 +383,7 @@ sections:
   - id: stall
     title: Stall warning test
     x: 800
-    "y": 296
+    "y": 280
     width: 192
     height: 61
     items:
@@ -429,7 +429,7 @@ sections:
   - id: mnt
     title: Maintenance
     x: 218
-    "y": 407
+    "y": 432
     width: 250
     height: 82
     items:
@@ -444,7 +444,7 @@ sections:
   - id: dome
     title: Dome light
     x: 472
-    "y": 407
+    "y": 432
     width: 96
     height: 82
     items:
@@ -459,7 +459,7 @@ sections:
     title: Gear lights
     x: 572
     "y": 400
-    width: 220
+    width: 234
     height: 86
     items:
       - kind: light
@@ -473,7 +473,7 @@ sections:
       - kind: light
         label: RIGHT GEAR
         color: green
-        x: 105
+        x: 106
         "y": 30
         controls:
           - gearovhd
@@ -481,7 +481,7 @@ sections:
       - kind: light
         label: NOSE GEAR
         color: green
-        x: 76
+        x: 78
         "y": 62
         controls:
           - gearovhd
