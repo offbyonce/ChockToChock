@@ -102,6 +102,7 @@ the card; text keeps 3.0's sizes.
           on: !!on(i),
           t: on(i)?.position ?? null,
           rest: !on(i) && item.rest ? positionsOf(item).indexOf(item.rest) : -1,
+          lit: on(i)?.lit ?? false,
         };
       },
       k,

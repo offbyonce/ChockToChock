@@ -229,8 +229,8 @@ sections:
         "y": 50
         controls:
           - pbrake
-        positions: PULL
-        rest: "PULL"
+        positions: "RELEASED, SET"
+        rest: "SET"
         description: Red handle.
       - kind: light
         label: PARK BRAKE LIGHT
@@ -239,6 +239,7 @@ sections:
         "y": 52
         controls:
           - pbrake
+        lit_at: SET
         description: The parking brake is holding the airplane.
       - kind: lever
         label: START LEVER 1

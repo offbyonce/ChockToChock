@@ -51,9 +51,14 @@ data_types! {
         #[serde(default, skip_serializing_if = "Option::is_none")]
         pub positions: Option<String>,
         /// Where it rests when the airplane is cold and dark: one of `positions`. Drawings show it,
-        /// dimmed, on controls a step does not use (decision 0014).
+        /// dimmed, on controls a step does not use (decision 0015).
         #[serde(default, skip_serializing_if = "Option::is_none")]
         pub rest: Option<String>,
+        /// Only on a light: the position, on another item it shares a control with, that turns
+        /// it on, e.g. the parking brake at SET. Drawings show the light on, as expected, when a
+        /// step asks for that position.
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        pub lit_at: Option<String>,
         pub description: String,
         #[serde(default, skip_serializing_if = "Option::is_none")]
         pub width: Option<f64>,

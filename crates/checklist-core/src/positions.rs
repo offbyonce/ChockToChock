@@ -6,7 +6,7 @@
 //! state (decision 0006).
 
 /// Whether `word` appears in `text` as a whole word or phrase (case-insensitive).
-fn names(text: &str, word: &str) -> bool {
+pub fn names(text: &str, word: &str) -> bool {
     let (text, word) = (text.to_uppercase(), word.to_uppercase());
     if word.is_empty() {
         return false;

@@ -15,4 +15,9 @@ item: number,
 /**
  * The index of the target position in the item's `positions`, when the step names one.
  */
-position: number | null, };
+position: number | null, 
+/**
+ * A light the step expects on: its `lit_at` position is the step's target on an item it
+ * shares a control with, or (with no `lit_at`) the step's value says it is on, as 3.0 read it.
+ */
+lit: boolean, };

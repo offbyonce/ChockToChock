@@ -13,7 +13,7 @@ however large the drawing is.
 -->
 <script lang="ts">
   import type { ItemTarget, PanelItem, PanelSection } from "@chocktochock/bindings";
-  import { angle, labelled, lampSize, layoutSection, leverY, PX, positionsOf, slotY } from "./panel-layout";
+  import { angle, LAMP, labelled, lampText, layoutSection, leverY, PX, positionsOf, slotY } from "./panel-layout";
 
   let {
     section,
@@ -67,6 +67,7 @@ however large the drawing is.
           on,
           t: byItem.get(i)?.position ?? null,
           rest: !on && item.rest ? positionsOf(item).indexOf(item.rest) : -1,
+          lit: byItem.get(i)?.lit ?? false,
         };
       },
       k,
@@ -129,16 +130,22 @@ however large the drawing is.
         {/if}
         <rect class="body" class:pressed={on && t != null} x="-11" y="-11" width="22" height="22" rx="4" />
       {:else if item.kind === "light"}
-        <!-- Sized to its words at 3.0's text size. Lights are drawn unlit until batch 3. -->
-        {@const lamp = lampSize(item, k, PX.lamp * layout.scale)}
-        <rect class="body lamp" x={-lamp.w / 2} y={-lamp.h / 2} width={lamp.w} height={lamp.h} rx="2.5" />
-        {#each lamp.lines as line, n (n)}
+        <!-- Every light the same size, its words wrapped inside, as in 3.0. A light the step
+             expects on is filled in its color and says so; it is never the simulator's state. -->
+        {@const words = lampText(item, k, PX.lamp * layout.scale)}
+        {@const lit = byItem.get(i)?.lit ?? false}
+        <rect class="body lamp {item.color ?? ''}" class:lit x={-LAMP.w / 2} y={-LAMP.h / 2} width={LAMP.w} height={LAMP.h} rx="2.6" />
+        {#each words.lines as line, n (n)}
           <text
-            class="lamp-text"
-            y={(n - (lamp.lines.length - 1) / 2) * ((PX.lamp * layout.scale * 1.1) / k) + (PX.lamp * layout.scale * 0.35) / k}
-            style:font-size={fs(PX.lamp * layout.scale)}>{line}</text
+            class="lamp-text {item.color ?? ''}"
+            class:lit
+            y={(n - (words.lines.length - 1) / 2) * ((words.px * 1.12) / k) + (words.px * 0.35) / k}
+            style:font-size={fs(words.px)}>{line}</text
           >
         {/each}
+        {#if lit}
+          <text class="set-to lamp-on {item.color ?? ''}" y={LAMP.h / 2 + (PX.setTo * layout.scale * 1.1) / k} style:font-size={fs(PX.setTo * layout.scale)}>EXPECTED ON</text>
+        {/if}
       {:else if item.kind === "lever"}
         <!-- A slot and the lever's knob at the target or resting position. -->
         <rect class="body slot" x="-3" y="-16" width="6" height="32" rx="3" />
@@ -175,7 +182,7 @@ however large the drawing is.
             <text class="label" y={name.y + (n * name.px * 1.15) / k} style:font-size={fs(name.px)}>{line}</text>
           {/each}
           {#if on && target}
-            <text class="set-to" y={name.y + (name.lines.length * name.px * 1.15) / k} style:font-size={fs(PX.setTo * layout.scale)}>SET TO {target}</text>
+            <text class="set-to" y={name.y + (name.lines.length * name.px * 1.15) / k} style:font-size={fs(PX.setTo * layout.scale)}>{target === "SET" ? "SET" : `SET TO ${target}`}</text>
           {/if}
         {/if}
       {/if}
@@ -231,6 +238,47 @@ however large the drawing is.
   }
   .knob.rest:is(rect) {
     fill: none;
+  }
+  /* A light the step expects on: filled in its color, with its words in that color. */
+  .lamp.lit {
+    stroke-width: 1.8;
+  }
+  .lamp.lit.amber {
+    fill: var(--warn-soft);
+    stroke: var(--warn);
+  }
+  .lamp.lit.red {
+    fill: var(--stop-soft);
+    stroke: var(--stop);
+  }
+  .lamp.lit.green {
+    fill: var(--go-soft);
+    stroke: var(--go);
+  }
+  .lamp.lit.blue {
+    fill: var(--accent-soft);
+    stroke: var(--accent);
+  }
+  .lamp-on.amber {
+    fill: var(--warn);
+  }
+  .lamp-on.red {
+    fill: var(--stop);
+  }
+  .lamp-on.green {
+    fill: var(--go);
+  }
+  .lamp-text.lit.amber {
+    fill: var(--warn);
+  }
+  .lamp-text.lit.red {
+    fill: var(--stop);
+  }
+  .lamp-text.lit.green {
+    fill: var(--go);
+  }
+  .lamp-text.lit.blue {
+    fill: var(--accent);
   }
   .on .grip.pressed {
     fill: var(--accent-soft);

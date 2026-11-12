@@ -5,7 +5,7 @@
 //! step's target, read from its expected value; it is never the simulator's state, which the app
 //! does not know (decision 0006).
 
-use checklist_core::{Step, named_position};
+use checklist_core::{Step, named_position, names};
 use pack::FlatPack;
 use serde::Serialize;
 use ts_rs::TS;
@@ -21,24 +21,63 @@ pub struct ItemTarget {
     pub item: usize,
     /// The index of the target position in the item's `positions`, when the step names one.
     pub position: Option<usize>,
+    /// A light the step expects on: its `lit_at` position is the step's target on an item it
+    /// shares a control with, or (with no `lit_at`) the step's value says it is on, as 3.0 read it.
+    pub lit: bool,
 }
 
-/// The panel items a step uses, with the position it asks for.
+/// Whether a value says a light is on, as 3.0 read it: ON, LIT, ILLUMINATED and the like, and
+/// not OUT, OFF or DARK.
+fn says_on(text: &str) -> bool {
+    let words = ["ON", "ILLUMINATED", "LIT", "COMES ON"];
+    let out = ["OUT", "OFF", "EXTINGUISHED", "DARK"];
+    words.iter().any(|w| names(text, w)) && !out.iter().any(|w| names(text, w))
+}
+
+/// The panel items a step uses, with the position it asks for and the lights it expects on.
 pub fn step_targets(pack: &FlatPack, step: &Step) -> Vec<ItemTarget> {
     let mut out = vec![];
+    let used: Vec<(&checklist_core::PanelItem, Option<usize>)> = pack
+        .content
+        .panels
+        .iter()
+        .flat_map(|p| &p.sections)
+        .flat_map(|s| &s.items)
+        .filter(|e| e.controls.iter().any(|c| step.controls.contains(c)))
+        .map(|e| {
+            (
+                e,
+                e.positions
+                    .as_deref()
+                    .and_then(|p| named_position(&step.expect, p)),
+            )
+        })
+        .collect();
     for panel in &pack.content.panels {
         for section in &panel.sections {
             for (item, entry) in section.items.iter().enumerate() {
-                if entry.controls.iter().any(|c| step.controls.contains(c)) {
-                    out.push(ItemTarget {
-                        section: section.id.clone(),
-                        item,
-                        position: entry
-                            .positions
-                            .as_deref()
-                            .and_then(|p| named_position(&step.expect, p)),
-                    });
+                if !entry.controls.iter().any(|c| step.controls.contains(c)) {
+                    continue;
                 }
+                let position = entry
+                    .positions
+                    .as_deref()
+                    .and_then(|p| named_position(&step.expect, p));
+                let lit = entry.kind == checklist_core::PanelItemKind::Light
+                    && match &entry.lit_at {
+                        Some(at) => used.iter().any(|(o, t)| {
+                            o.controls.iter().any(|c| entry.controls.contains(c))
+                                && t.and_then(|t| o.positions.as_deref()?.split(',').nth(t))
+                                    .is_some_and(|p| p.trim() == at)
+                        }),
+                        None => says_on(&step.expect),
+                    };
+                out.push(ItemTarget {
+                    section: section.id.clone(),
+                    item,
+                    position,
+                    lit,
+                });
             }
         }
     }
@@ -70,6 +109,44 @@ mod tests {
         );
         assert_eq!(named_position("CHECK", "OFF, ON"), None);
         assert_eq!(named_position("ON", ""), None);
+    }
+
+    #[test]
+    fn setting_the_parking_brake_lights_its_light() {
+        let pack = ifly_pack();
+        let step = pack
+            .lists
+            .iter()
+            .flat_map(|l| &l.steps)
+            .find(|s| s.controls.iter().any(|c| c == "pbrake") && s.expect == "SET")
+            .unwrap();
+        let targets = step_targets(&pack, step);
+        let section = pack
+            .content
+            .panels
+            .iter()
+            .flat_map(|p| &p.sections)
+            .find(|s| s.id == "lo")
+            .unwrap();
+        let light = targets
+            .iter()
+            .find(|t| t.section == "lo" && section.items[t.item].label == "PARK BRAKE LIGHT")
+            .unwrap();
+        assert!(light.lit, "the light shows on when the step sets the brake");
+        let handle = targets
+            .iter()
+            .find(|t| t.section == "lo" && section.items[t.item].label == "PARKING BRAKE")
+            .unwrap();
+        assert!(!handle.lit);
+        assert!(handle.position.is_some(), "SET is the handle's target");
+    }
+
+    #[test]
+    fn a_value_saying_on_lights_a_light_without_lit_at() {
+        assert!(says_on("ILLUMINATED"));
+        assert!(says_on("COMES ON"));
+        assert!(!says_on("OUT"));
+        assert!(!says_on("ON THEN OFF"));
     }
 
     #[test]

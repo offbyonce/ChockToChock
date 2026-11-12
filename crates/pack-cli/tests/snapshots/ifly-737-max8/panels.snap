@@ -4934,8 +4934,8 @@ assertion_line: 38
             "controls": [
               "pbrake"
             ],
-            "positions": "PULL",
-            "rest": "PULL",
+            "positions": "RELEASED, SET",
+            "rest": "SET",
             "description": "Red handle."
           },
           {
@@ -4947,6 +4947,7 @@ assertion_line: 38
             "controls": [
               "pbrake"
             ],
+            "lit_at": "SET",
             "description": "The parking brake is holding the airplane."
           },
           {

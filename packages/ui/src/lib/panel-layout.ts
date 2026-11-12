@@ -43,15 +43,27 @@ export function half(item: PanelItem): number {
   }
 }
 
-/** Lines of a light's words, and its size in units so they fit at `px` (3.0's lights fit theirs). */
-export function lampSize(item: PanelItem, k: number, px: number): { lines: string[]; w: number; h: number } {
-  const words = lines(item.label, 9);
+/** Every light is the same size, as in 3.0, so lights side by side line up. */
+export const LAMP = { w: 50, h: 20 } as const;
+
+/**
+ * A light's words wrapped to its fixed width, up to three lines as 3.0 does, and their size in
+ * pixels: 3.0's size, smaller only when a single word would not fit across the light.
+ */
+export function lampText(item: PanelItem, k: number, px: number): { lines: string[]; px: number } {
+  const room = (LAMP.w - 4) * k;
+  const cap = (n: number, size: number) => n * 0.66 * size;
+  const words = item.label.split(" ");
   const longest = Math.max(...words.map((w) => w.length));
-  return {
-    lines: words,
-    w: Math.max(38, longest * 0.66 * (px / k) + 10),
-    h: Math.max(20, words.length * ((px * 1.1) / k) + 8),
-  };
+  const size = Math.min(px, room / (longest * 0.66));
+  const out: string[] = [];
+  for (const w of words) {
+    const last = out[out.length - 1];
+    if (last !== undefined && cap(last.length + 1 + w.length, size) <= room)
+      out[out.length - 1] = `${last} ${w}`;
+    else out.push(w);
+  }
+  return { lines: out.slice(0, 3), px: size };
 }
 
 /** A lever's knob position along its slot: first position at the top, last at the bottom. */
@@ -184,7 +196,7 @@ const MIN_SCALE = 0.62;
 export function layoutSection(
   section: PanelSection,
   shown: number[],
-  target: (i: number) => { on: boolean; t: number | null; rest: number },
+  target: (i: number) => { on: boolean; t: number | null; rest: number; lit?: boolean },
   k: number,
   titleTop: number,
   /** The part of the section drawn across (a wide section is cropped around the step). */
@@ -202,7 +214,7 @@ export function layoutSection(
 function place(
   section: PanelSection,
   shown: number[],
-  target: (i: number) => { on: boolean; t: number | null; rest: number },
+  target: (i: number) => { on: boolean; t: number | null; rest: number; lit?: boolean },
   k: number,
   titleTop: number,
   scale: number,
@@ -220,9 +232,9 @@ function place(
   });
   const glyph = (i: number): Box => {
     const it = moved.items[i] as PanelItem;
-    const lamp = it.kind === "light" ? lampSize(it, k, PX.lamp * scale) : null;
-    const hw = lamp ? lamp.w / 2 : halfWidth(it);
-    const h = lamp ? lamp.h / 2 : half(it);
+    const lamp = it.kind === "light";
+    const hw = lamp ? LAMP.w / 2 : halfWidth(it);
+    const h = lamp ? LAMP.h / 2 : half(it);
     return { x0: it.x - hw, y0: it.y - h, x1: it.x + hw, y1: it.y + h };
   };
   for (const i of shown) placed.push(glyph(i));
@@ -236,8 +248,19 @@ function place(
   const items = new Map<number, ItemLayout>();
   for (const i of order) {
     const it = moved.items[i] as PanelItem;
-    const { on, t, rest } = target(i);
+    const { on, t, rest, lit } = target(i);
     const layout: ItemLayout = { name: null, positions: [] };
+    if (it.kind === "light" && lit) {
+      // "EXPECTED ON" under a light the step expects on.
+      const px = PX.setTo * scale;
+      const w = 11 * CAP * (px / k);
+      placed.push({
+        x0: it.x - w / 2,
+        y0: it.y + LAMP.h / 2 + 1,
+        x1: it.x + w / 2,
+        y1: it.y + LAMP.h / 2 + 2 + (px * 1.2) / k,
+      });
+    }
     const pos = positionsOf(it);
     const boxOf = (l: PositionLabel): Box => {
       const w = (pos[l.n] ?? "").length * CAP * (posPx / k);
@@ -255,7 +278,7 @@ function place(
         ns.map((n) => ({
           n,
           x: right ? halfWidth(it) + 4 : -halfWidth(it) - 4,
-          y: (it.kind === "lever" ? slotY(n, pos.length) : 0) + 3,
+          y: (it.kind === "lever" ? slotY(n, pos.length) : leverY(n, pos.length)) + 3,
           anchor: right ? "start" : "end",
         }));
       const right = side(true);

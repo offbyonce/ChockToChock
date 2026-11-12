@@ -87,6 +87,13 @@
         "label": {
           "type": "string"
         },
+        "lit_at": {
+          "description": "Only on a light: the position, on another item it shares a control with, that turns\nit on, e.g. the parking brake at SET. Drawings show the light on, as expected, when a\nstep asks for that position.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
         "positions": {
           "description": "The positions it can be set to, as text.",
           "type": [
@@ -95,7 +102,7 @@
           ]
         },
         "rest": {
-          "description": "Where it rests when the airplane is cold and dark: one of `positions`. Drawings show it,\ndimmed, on controls a step does not use (decision 0014).",
+          "description": "Where it rests when the airplane is cold and dark: one of `positions`. Drawings show it,\ndimmed, on controls a step does not use (decision 0015).",
           "type": [
             "string",
             "null"

@@ -77,6 +77,7 @@ pub(super) fn check_panels_and_lights(pack: &Pack, idx: &Index, issues: &mut Vec
         }
     }
     check_rest_against_cold_start(pack, issues);
+    check_lit_at(pack, issues);
     let Some(file) = &c.lights else {
         return;
     };
@@ -179,6 +180,43 @@ fn check_rest_against_cold_start(pack: &Pack, issues: &mut Vec<Issue>) {
     }
 }
 
+/// `lit_at` is only on a light, and names a position of another item it shares a control with.
+fn check_lit_at(pack: &Pack, issues: &mut Vec<Issue>) {
+    let items: Vec<(&str, &PanelItem)> = pack
+        .content
+        .panels
+        .iter()
+        .flat_map(|p| &p.sections)
+        .flat_map(|s| s.items.iter().map(move |i| (s.id.as_str(), i)))
+        .collect();
+    for (at, item) in &items {
+        let Some(lit_at) = &item.lit_at else { continue };
+        if item.kind != PanelItemKind::Light {
+            issues.push(error(
+                *at,
+                format!("`{}`: only a light has `lit_at`", item.label),
+            ));
+            continue;
+        }
+        let named = items.iter().any(|(_, o)| {
+            o.kind != PanelItemKind::Light
+                && o.controls.iter().any(|c| item.controls.contains(c))
+                && o.positions
+                    .as_deref()
+                    .is_some_and(|p| p.split(',').any(|x| x.trim() == lit_at))
+        });
+        if !named {
+            issues.push(error(
+                *at,
+                format!(
+                    "`{}`: no item sharing its control has the position `{lit_at}`",
+                    item.label
+                ),
+            ));
+        }
+    }
+}
+
 /// `<panel>/<section>/<label>/<n>`. Labels can contain slashes, so split from both ends.
 fn locator_resolves(locator: &str, labels: &BTreeMap<(&str, &str, &str), usize>) -> bool {
     let mut front = locator.splitn(3, '/');
@@ -243,6 +281,7 @@ mod tests {
                     controls: vec!["bat".into()],
                     positions: None,
                     rest: None,
+                    lit_at: None,
                     description: "Low".into(),
                     width: None,
                     height: None,
@@ -276,6 +315,24 @@ mod tests {
             }],
         });
         p
+    }
+
+    #[test]
+    fn lit_at_names_a_position_of_an_item_on_the_same_control() {
+        let mut p = rest_pack("OFF");
+        let mut light = p.content.panels[0].sections[0].items[0].clone();
+        light.kind = PanelItemKind::Light;
+        light.color = Some(LightColor::Amber);
+        light.positions = None;
+        light.rest = None;
+        light.label = "BAT LIGHT".into();
+        light.lit_at = Some("ON".into());
+        p.content.panels[0].sections[0].items.push(light);
+        assert!(!messages(&p).contains("lit_at"));
+        p.content.panels[0].sections[0].items[1].lit_at = Some("HALF".into());
+        assert_flags(&p, "no item sharing its control has the position `HALF`");
+        p.content.panels[0].sections[0].items[0].lit_at = Some("ON".into());
+        assert_flags(&p, "only a light has `lit_at`");
     }
 
     #[test]

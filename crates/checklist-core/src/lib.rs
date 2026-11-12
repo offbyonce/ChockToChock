@@ -38,5 +38,5 @@ pub use model::{
     AutoStart, AutoStartPick, Checklist, Confirmation, ConfirmationKind, FillField, HintPart,
     ListKind, MAX_ROUTE_LEG, OptionTest, Quick, ShowIf, Step, StepId, Timer, WalkaroundPoint,
 };
-pub use positions::named_position;
+pub use positions::{named_position, names};
 pub use session::{Millis, Progress, Session, SessionError, StepState, counts};

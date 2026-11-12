@@ -88,7 +88,7 @@ describe("PanelSchematic", () => {
     render(PanelSchematic, {
       panel,
       focus: ["elec"],
-      targets: [{ section: "elec", item: 0, position: 1 }],
+      targets: [{ section: "elec", item: 0, position: 1, lit: false }],
       guardClosed: true,
     });
 
@@ -104,7 +104,7 @@ describe("PanelSchematic", () => {
     render(PanelSchematic, {
       panel,
       focus: ["elec"],
-      targets: [{ section: "elec", item: 0, position: null }],
+      targets: [{ section: "elec", item: 0, position: null, lit: false }],
     });
 
     expect(screen.queryByText(/SET TO/)).toBeNull();
@@ -115,8 +115,8 @@ describe("PanelSchematic", () => {
 
   it("draws neighboring small sections together in one drawing", () => {
     const targets = [
-      { section: "lwip", item: 0, position: 1 },
-      { section: "rwip", item: 0, position: 1 },
+      { section: "lwip", item: 0, position: 1, lit: false },
+      { section: "rwip", item: 0, position: 1, lit: false },
     ];
     render(PanelSchematic, { panel, focus: ["lwip", "rwip"], targets });
 
@@ -134,7 +134,7 @@ describe("PanelSchematic", () => {
     render(PanelSchematic, {
       panel: wiperPanel,
       focus: ["lwip"],
-      targets: [{ section: "lwip", item: 0, position: 0 }],
+      targets: [{ section: "lwip", item: 0, position: 0, lit: false }],
     });
 
     const svg = screen.getByRole("img");
@@ -150,7 +150,7 @@ describe("PanelSchematic", () => {
     render(PanelSchematic, {
       panel: wiperPanel,
       focus: ["lwip"],
-      targets: [{ section: "lwip", item: 0, position: 0 }],
+      targets: [{ section: "lwip", item: 0, position: 0, lit: false }],
     });
 
     const frame = screen.getByRole("img").querySelector(".frame");
@@ -167,7 +167,7 @@ describe("PanelSchematic", () => {
     render(PanelSchematic, {
       panel: rested,
       focus: ["elec"],
-      targets: [{ section: "elec", item: 0, position: 1 }],
+      targets: [{ section: "elec", item: 0, position: 1, lit: false }],
     });
 
     const svg = screen.getByRole("img");
@@ -176,5 +176,55 @@ describe("PanelSchematic", () => {
     expect(svg.querySelectorAll(".knob.rest")).toHaveLength(1);
     const restLabels = [...svg.querySelectorAll(".pos.at-rest")].map((t) => t.textContent);
     expect(restLabels).toEqual(["OFF"]);
+  });
+
+  it("draws every light the same size, and a light the step expects on as lit", () => {
+    const lights = {
+      id: "con",
+      title: "Console",
+      width: 300,
+      height: 100,
+      sections: [
+        {
+          id: "lo",
+          title: "Parking brake",
+          x: 0,
+          y: 0,
+          width: 300,
+          height: 100,
+          items: [
+            {
+              kind: "light",
+              label: "PARK BRAKE LIGHT",
+              color: "amber",
+              x: 80,
+              y: 50,
+              controls: ["pbrake"],
+              description: "",
+            },
+            {
+              kind: "light",
+              label: "ELEC",
+              color: "amber",
+              x: 200,
+              y: 50,
+              controls: ["other"],
+              description: "",
+            },
+          ],
+        },
+      ],
+    } as unknown as Panel;
+    render(PanelSchematic, {
+      panel: lights,
+      focus: ["lo"],
+      targets: [{ section: "lo", item: 0, position: null, lit: true }],
+    });
+
+    const lamps = [...screen.getByRole("img").querySelectorAll("rect.lamp")];
+    expect(lamps.map((r) => r.getAttribute("width"))).toEqual(["50", "50"]);
+    expect(lamps[0]?.classList.contains("lit")).toBe(true);
+    expect(lamps[1]?.classList.contains("lit")).toBe(false);
+    expect(screen.getByText("EXPECTED ON")).toBeTruthy();
   });
 });
