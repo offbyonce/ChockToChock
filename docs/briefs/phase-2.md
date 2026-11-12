@@ -141,9 +141,14 @@ every change to `.github/workflows/`. For those, prepare what the step needs and
    1. Lists: phase screen, Checklist and Flow, item states, current-item box, quick and expanded,
       item detail, completion call, open items, options, Full and Essentials, keyboard, and
       saving progress on the device (brought forward from step 8).
-   2. Flight data: flight setup, flight strip, values in steps, SimBrief plan loading.
+   2. Flight data: flight setup, flight strip, values in steps, SimBrief plan loading. Also the
+      drawing leftovers from batch 1's review: the "ND range" and "Bank 10 to 30" captions in the
+      same upper-case style as other labels, one clear title for the two EFIS panels, and more
+      room between a "SEE STEP" caption and the item below it.
    3. Panel states, timers and briefings in the flow. Control drawings show each control at its
       expected position for the start state and the steps already confirmed (decision 0015).
+      Captions for lights expected out and for buttons and dials whose step sets no single
+      position (batch 1's review left these here).
    4. CDU walkthrough.
    5. Flight deck: overview map, panel views with our own glyphs, light meanings, exterior
       inspection on our own airplane outline.
