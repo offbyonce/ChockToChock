@@ -29,18 +29,18 @@
   --weight-medium: 500;
   --weight-semibold: 600;
   --weight-bold: 700;
-  --leading-tight: 1.2; /* proposed */
-  --leading-snug: 1.45; /* proposed */
-  --leading-normal: 1.5; /* proposed */
+  --leading-tight: 1.2;
+  --leading-snug: 1.45;
+  --leading-normal: 1.5;
   --radius-small: 0.375rem; /* 6 */
   --radius-control: 0.625rem; /* 10 */
   --radius-segment: 0.75rem; /* 12 */
   --radius-panel: 0.75rem; /* 12 */
   --radius-sheet: 1rem; /* 16 */
   --radius-pill: 999px; /* 999 */
-  --border-thin: 1px; /* proposed */
-  --border-thick: 2px; /* proposed */
-  --border-bar: 4px; /* proposed */
+  --border-thin: 1px;
+  --border-thick: 2px;
+  --border-bar: 4px;
   --size-touch-min: 2.75rem; /* 44 */
   --size-header: 3.75rem; /* 60 */
   --size-phase-row: 3.75rem; /* 60 */
@@ -49,18 +49,18 @@
   --size-flight-section-nav: 14.5rem; /* 232 */
   --size-row-padding-y: 0.75rem; /* 12 */
   --size-content-max: 65rem; /* 1040 */
+  --size-icon: 1.25rem; /* 20 */
+  --size-icon-small: 1rem; /* 16 */
+  --size-side-pane-tablet: 27.5rem; /* 440 */
+  --size-drawer: 22.5rem; /* 360 */
+  --size-dot: 0.4375rem; /* 7 */
+  --size-status-icon: 1.375rem; /* 22 */
+  --size-progress-bar: 0.1875rem; /* 3 */
+  --size-flow-button: 3.5rem; /* 56 */
   --size-toggle-width: 3.25rem; /* 52 */
   --size-toggle-height: 1.875rem; /* 30 */
   --size-toggle-knob: 1.5rem; /* 24 */
   --size-focus-ring: 1.5px;
-  --size-icon: 1.25rem; /* 20, proposed */
-  --size-icon-small: 1rem; /* 16, proposed */
-  --size-side-pane-tablet: 27.5rem; /* 440, proposed */
-  --size-drawer: 22.5rem; /* 360, proposed */
-  --size-dot: 0.4375rem; /* 7, proposed */
-  --size-status-icon: 1.375rem; /* 22, proposed */
-  --size-progress-bar: 0.1875rem; /* 3, proposed */
-  --size-flow-button: 3.5rem; /* 56, proposed */
   --gutter: 1rem; /* 16, phone */
   --side-pane: 27.5rem; /* tablet landscape; desktop below */
 }

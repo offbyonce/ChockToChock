@@ -153,21 +153,37 @@ every change to `.github/workflows/`. For those, prepare what the step needs and
       drawings win where they are better (owner's addendum in docs/design/README.md). Templates
       for displays, gauges, readouts, levers, handles and continuous knobs. Decision 0022's
       conditional and resolved drawing.
+      Carried from batch 1's review: the "SET TO" caption (10 px, under the 11 px label rule)
+      gives way to the changed-state drawing, and the orientation caption sits with its drawing,
+      not below the "See the whole panel larger" button.
    3. Core components and the desktop checklist: header, stage and phase tracks with open-step
       dots, flight strip, step rows (to do, current, done, skipped, decision), row menu with Add
       to and Remove from Essentials, Check, If not, Why with How to do it and Terms, side pane
       order, map hidden state, the open-steps list across all stages, the Where is this?
       pop-over, wide scaling.
+      Carried from batch 1's review: step rows are at least 44 px tap targets, with the whole row
+      (title, value and location line) as the target, never titles below 44 px; the controls
+      drawing takes the side pane's remaining height so a whole panel no longer pushes the
+      step's switches below the fold (the fuel pump switches today); term definitions and the
+      Add to / Remove from Essentials action on the row.
    4. Flight strip panel and Flight pages: clearance, frequencies, notes, Import latest from
       SimBrief, Reset flight plan, All flight data; Flight sections with field descriptions,
       destination chips and the Descriptions toggle; Weather with Find it in your OFP and a plain
       link to SimBrief that sends no user data; SimBrief and the offline OFP file (the SimBrief
-      requirements above); Start options, including the panel-state picker; Approach. Aircraft
-      wording (field descriptions, destination chips, option titles) comes from the pack.
+      requirements above); Start options, including the panel-state picker; Approach.
+      Aircraft wording (field descriptions, destination chips, option titles) comes from the
+      pack. Carried from batch 1's review: SimBrief username and Import latest in the strip.
    5. Tablet and phone layouts and overlays, per screens.md.
+      Carried from batch 1's review: the phone stage and phase picker (today one cut-off chip,
+      a bare dot in Essentials), the progress bar on tablet and phone, and the inline controls
+      drawing in an expanded step on tablet portrait and phone.
    6. The other views: Flow, Emergency reference, step timers, CDU walkthrough, briefings,
       exterior inspection on our own airplane outline, Flight deck reference, menu, Flight log,
       Settings.
+      Carried from batch 1's review: Settings rows for Start, Map in steps, Your Essentials and
+      Keep screen awake; the step timer chip (IRS); "Used in" links to the steps that use a
+      control; every menu item in coverage.md (Flight deck, Practice, Glossary, Flight log,
+      Tour, References, How procedures work). The coverage.md rows added for review apply.
    7. Content: the center tank decision step (the pilot answers until the pack has a sourced
       wing-tank capacity; then the app may suggest an answer for the pilot to confirm) and every
       mockup wording in content-to-validate.md, sourced and validated under decision 0007 before

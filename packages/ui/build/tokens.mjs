@@ -14,18 +14,6 @@ const root = path.resolve(import.meta.dirname, "../../..");
 const source = path.join(root, "docs/design/tokens.json");
 const out = path.join(root, "packages/ui/src/theme");
 const tokens = JSON.parse(fs.readFileSync(source, "utf8"));
-// Additions waiting for the owner's OK, kept apart from the source of truth (each names its
-// source). Merged here so the interface builds; the generated CSS marks them "proposed".
-const proposed = JSON.parse(fs.readFileSync(path.join(root, "docs/design/tokens-proposed.json"), "utf8"));
-const proposedNames = new Set();
-for (const [group, values] of Object.entries(proposed).filter(([k]) => !k.startsWith("$"))) {
-  tokens[group] ??= {};
-  for (const [name, { value }] of Object.entries(values)) {
-    if (name in tokens[group]) throw new Error(`${group}.${name} is already in tokens.json`);
-    tokens[group][name] = value;
-    proposedNames.add(`${group}.${name}`);
-  }
-}
 
 /** Drops "$comment"-style keys. */
 const entries = (o) => Object.entries(o).filter(([k]) => !k.startsWith("$"));
@@ -44,23 +32,14 @@ const header = [
 ];
 
 const vars = [];
-let group = "";
-const add = (name, value, note) => {
-  const key = `${group}.${name.slice(name.indexOf("-") + 1)}`;
-  const mark = [note, proposedNames.has(key) ? "proposed" : ""].filter(Boolean).join(", ");
-  vars.push(`  --${name}: ${value};${mark ? ` /* ${mark} */` : ""}`);
-};
+const add = (name, value, note) => vars.push(`  --${name}: ${value};${note ? ` /* ${note} */` : ""}`);
 for (const [k, v] of entries(tokens.space)) add(`space-${k}`, rem(v), `${v}`);
 for (const [k, v] of entries(tokens.font.family)) add(`font-${k}`, v);
 for (const [k, v] of entries(tokens.font.size)) add(`font-size-${k}`, rem(v), `${v}`);
 for (const [k, v] of entries(tokens.font.weight)) add(`weight-${k}`, v);
-group = "line-height";
 for (const [k, v] of entries(tokens["line-height"])) add(`leading-${k}`, v);
-group = "radius";
 for (const [k, v] of entries(tokens.radius)) add(`radius-${k}`, k === "pill" ? `${v}px` : rem(v), `${v}`);
-group = "border";
 for (const [k, v] of entries(tokens.border)) add(`border-${k}`, `${v}px`);
-group = "size";
 for (const [k, v] of entries(tokens.size)) {
   if (typeof v === "object") {
     for (const [k2, v2] of entries(v)) add(`size-${k}-${k2}`, rem(v2), `${v2}`);

@@ -59,9 +59,9 @@ result.
 - **Open my OFP on SimBrief** is a plain link to SimBrief that sends no user data.
 - **Qualification:** the wider list in decision 0021 gates any claim of tablet and phone support.
 
-### Proposed token additions
+### Token additions
 
-`tokens.json` stays exactly as delivered. Values the interface needs that it lacks are proposed in
-[tokens-proposed.json](tokens-proposed.json), each with the board or design line it comes from,
-and wait for the owner's OK. The generator reads them so the interface builds, and marks them
-"proposed" in the generated CSS; any the owner declines are replaced.
+`tokens.json` is the delivered file plus additions the owner approved on 2026-11-12: border
+widths, line heights and eight sizes (icons, the tablet side pane, the drawer, the open-step dot,
+status icons, the progress bar and the Flow button). Each names its source board in a `$sources`
+entry. New tokens are proposed to the owner with their source first, never added on their own.
