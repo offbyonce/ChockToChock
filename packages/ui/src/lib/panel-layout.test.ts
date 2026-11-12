@@ -244,6 +244,9 @@ describe("selector angles", () => {
       expect(layout.clear, `at ${k}`).toBe(true);
       expect(layout.items.get(0)?.positions).toHaveLength(8);
       expect(layout.items.get(1)?.positions).toHaveLength(7);
+      // The DC dial's bottom label pushed its name lower than the AC dial's; a row's names line up.
+      const nameAt = (i: number) => (meters.items[i] as PanelItem).y + (layout.items.get(i)?.name?.y ?? 0);
+      expect(nameAt(0)).toBeCloseTo(nameAt(1), 3);
     }
   });
 });

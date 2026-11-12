@@ -245,8 +245,20 @@ export function layoutSection(
   /** The part of the section drawn across (a wide section is cropped around the step). */
   bounds: { x0: number; x1: number } = { x0: 0, x1: section.width },
 ): SectionLayout {
-  const attempt = place(section, shown, target, k, titleTop, 1, bounds);
-  return { ...attempt.layout, clear: attempt.clear };
+  const first = place(section, shown, target, k, titleTop, 1, bounds);
+  // Names of controls in one row line up: a second pass starts each at the lowest of its row.
+  const rowTops = new Map<number, number>();
+  for (const [i, top] of first.tops) {
+    const key = Math.round((section.items[i] as PanelItem).y);
+    rowTops.set(key, Math.max(rowTops.get(key) ?? top, top));
+  }
+  const level = [...first.tops].every(
+    ([i, top]) => top === rowTops.get(Math.round((section.items[i] as PanelItem).y)),
+  );
+  if (level) return { ...first.layout, clear: first.clear };
+  const second = place(section, shown, target, k, titleTop, 1, bounds, rowTops);
+  const best = second.clear || !first.clear ? second : first;
+  return { ...best.layout, clear: best.clear };
 }
 
 function place(
@@ -257,7 +269,10 @@ function place(
   titleTop: number,
   scale: number,
   bounds: { x0: number; x1: number },
-): { layout: Omit<SectionLayout, "clear">; clear: boolean } {
+  /** Where each row's names start, so they line up (from a first pass). */
+  rowTops?: Map<number, number>,
+): { layout: Omit<SectionLayout, "clear">; clear: boolean; tops: Map<number, number> } {
+  const tops = new Map<number, number>();
   const placed: (Box & { owner?: number })[] = [];
   let clear = true;
   const posPx = PX.pos * scale;
@@ -383,13 +398,16 @@ function place(
         const top = it.y + half(it) + 3 + dy * line;
         return { x0: it.x - w / 2, y0: top, x1: it.x + w / 2, y1: top + (fit.lines.length + extra) * line };
       };
-      let dy = [0, 1, 2].find((d) => free(boxFor(d)));
+      const rowTop = rowTops?.get(Math.round(it.y));
+      const base = rowTop === undefined ? 0 : Math.max(0, (rowTop - (it.y + half(it) + 3)) / line);
+      let dy = [base, base + 1, base + 2].find((d) => free(boxFor(d)));
       if (dy === undefined) {
         clear = false;
-        dy = 0;
+        dy = base;
       }
       layout.name = { lines: fit.lines, px, y: half(it) + 3 + dy * line + line * 0.82 };
       placed.push(boxFor(dy));
+      tops.set(i, boxFor(dy).y0);
     }
     items.set(i, layout);
   }
@@ -400,5 +418,5 @@ function place(
     x1: Math.max(...drawn.map((b) => b.x1)),
     y1: Math.max(...drawn.map((b) => b.y1)),
   };
-  return { layout: { items, scale, bottom: Math.max(...placed.map((b) => b.y1)) + 4, extent }, clear };
+  return { layout: { items, scale, bottom: Math.max(...placed.map((b) => b.y1)) + 4, extent }, clear, tops };
 }
