@@ -138,7 +138,12 @@ data_types! {
         IsaDeviation,
         TransitionAltitude,
         TransitionLevel,
+        /// `LB` or `KG`, for fuel and weights.
         WeightUnit,
+        /// `inHg` or `hPa`, for the QNH.
+        QnhUnit,
+        /// `BARO` or `RADIO`, for the minimums.
+        MinimumsType,
         /// Fuel in thousands, rounded up to the next tenth (calculated).
         FuelThousands,
         /// Fuel plus zero fuel weight, in thousands (calculated).

@@ -20,6 +20,8 @@ function site() {
     "dist/app/index.html": "app",
     "dist/app/manifest.webmanifest": "{}",
     "dist/assets/app-1.js": "code",
+    "dist/design/index.html": "design page",
+    "dist/assets/design-1.js": "design code",
     "dist/packs/demo.json": "{}",
   };
   for (const [file, text] of Object.entries(files)) {

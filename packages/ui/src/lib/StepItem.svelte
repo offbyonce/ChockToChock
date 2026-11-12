@@ -14,6 +14,7 @@ with the words "Skipped, still open". The quick level shows the item and value o
   import ContextPane from "./ContextPane.svelte";
   import Icon from "./Icon.svelte";
   import StepDetail from "./StepDetail.svelte";
+  import BlankFields from "./BlankFields.svelte";
   import { fillParts } from "./value-parts";
 
   let {
@@ -29,6 +30,7 @@ with the words "Skipped, still open". The quick level shows the item and value o
     onTick,
     onSkip,
     onUnskip,
+    onBlank,
     onSelect,
   }: {
     index: PackIndex;
@@ -44,6 +46,8 @@ with the words "Skipped, still open". The quick level shows the item and value o
     onTick: () => void;
     onSkip: () => void;
     onUnskip: () => void;
+    /** What the pilot typed into the step's n-th blank. */
+    onBlank: (index: number, value: string) => void;
     onSelect: () => void;
   } = $props();
 
@@ -83,17 +87,16 @@ with the words "Skipped, still open". The quick level shows the item and value o
         {#if row.state === "done"}<span class="tag done" aria-hidden="true">Done {time}</span>{/if}
         {#if !row.counts}<span class="tag ns" aria-hidden="true">Not modeled in the simulator</span>{/if}
       </span>
-      {#if step.expect && fill}
-        <!-- As 3.0: the parts to fill in on one line in the monospaced face with long blanks, the
-             rest of the instruction on its own muted line. -->
-        <span class="val long fill">
-          {#each fill.blanks.split("___") as part, n (n)}{#if n > 0}<span class="blank" aria-label="blank"></span>{/if}{part}{/each}
-          {#if fill.rest}<span class="rest">{fill.rest}</span>{/if}
-        </span>
-      {:else if step.expect}
-        <span class="val" class:long>{step.expect}</span>
+      {#if step.expect && !fill}
+        <span class="val" class:long>{step.expect}{#if row.hint}<small class="vh">{row.hint}</small>{/if}</span>
       {/if}
     </button>
+    {#if step.expect && fill}
+      <!-- As 3.0: each blank is a field with the words before it, the parts to fill in on one line
+           in the monospaced face, and the rest of the instruction on its own muted line. A blank
+           shows the flight value (decision 0019) until the pilot types over it. -->
+      <BlankFields name={step.text} blanks={fill.blanks} rest={fill.rest} values={row.values} {onBlank} />
+    {/if}
     {#if detail === "expanded"}
       {#if place}
         <div class="loc">{place.zone.area} · {place.zone.title}{#if more > 0}{" "}<span class="more">+{more}</span>{/if}</div>
@@ -228,21 +231,11 @@ with the words "Skipped, still open". The quick level shows the item and value o
     font: 400 0.9rem/1.45 var(--sans);
     text-align: left;
   }
-  .val.fill {
-    font: 0.8438rem/1.6 var(--mono);
-  }
-  .rest {
+  /* A hint from flight values under the step's value ("GND 121.700"), as 3.0 showed it. */
+  .vh {
     display: block;
-    color: var(--muted);
-    font: 400 0.875rem/1.45 var(--sans);
-  }
-  .blank {
-    display: inline-block;
-    width: 5em;
-    height: 1em;
-    margin: 0 0.25em;
-    border-bottom: 1.5px solid var(--muted);
-    vertical-align: -0.15em;
+    color: var(--accent);
+    font-size: 0.8125rem;
   }
   .more {
     color: var(--muted);

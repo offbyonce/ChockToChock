@@ -34,6 +34,31 @@ const stepNamed = (title, part) =>
 /** Scrolls the side pane `pane` so its controls drawing starts at the top. */
 const paneToControls = (pane) =>
   `(() => { const p = document.querySelector(${JSON.stringify(pane)}); const h = [...p.querySelectorAll("*")].find((e) => e.children.length === 0 && e.textContent.trim().toUpperCase() === "THE CONTROLS"); p.scrollTop += h.getBoundingClientRect().top - p.getBoundingClientRect().top; })(); true`;
+/** Types `value` into the input `selector`, as the pilot would. */
+const typeInto = (selector, value) =>
+  `(() => { const el = document.querySelector(${JSON.stringify(selector)}); el.value = ${JSON.stringify(value)}; el.dispatchEvent(new Event("input", { bubbles: true })); el.dispatchEvent(new Event("change", { bubbles: true })); })(); true`;
+/** The same takeoff data typed into Flight setup, with each app's field ids. */
+const TAKEOFF = [
+  ["runway", "rwy", "16L"],
+  ["takeoff_flaps", "toflaps", "5"],
+  ["v2", "v2", "152"],
+  ["takeoff_trim", "trim", "5.25"],
+];
+/** The same arrival data typed into the Arrival data box, with each app's field ids. */
+const ARRIVAL = [
+  ["landing_altitude", "landalt", "13"],
+  ["vref", "vref", "142"],
+  ["autobrake", "ab", "2"],
+  ["minimums", "mins", "213"],
+];
+/** The same clearance typed into Flight setup, with each app's field ids. */
+const CLEARANCE = [
+  ["runway", "rwy", "16L"],
+  ["sid", "sid", "SUMMA2"],
+  ["transition", "trans", "SEA"],
+  ["initial_altitude", "alt", "5000"],
+  ["squawk", "sq", "4521"],
+];
 const pressText = (text) =>
   `[...document.querySelectorAll("button")].find((b) => b.textContent.trim() === ${JSON.stringify(text)}).click(); true`;
 const go = (hash) => `location.hash = ${JSON.stringify(hash)}; true`;
@@ -101,6 +126,39 @@ const SHOTS = [
     base: { hash: "#memory", before: [click("details summary", 0), click(".it .chev", 0)] },
   },
   { name: "settings", app: { hash: "#/settings" }, base: { hash: "#settings" } },
+  // Flight setup, empty on both sides.
+  { name: "setup", app: { hash: "#/setup" }, base: { hash: "#setup" } },
+  {
+    // Before takeoff with takeoff data from Flight setup: the blanks filled in on both sides.
+    name: "values",
+    app: {
+      hash: "#/setup",
+      before: [...TAKEOFF.map(([ours, , v]) => typeInto(`#s-${ours}`, v)), go("#/phase/before-takeoff")],
+    },
+    base: {
+      hash: "#setup",
+      before: [...TAKEOFF.map(([, theirs, v]) => typeInto(`#s-${theirs}`, v)), go("#before-takeoff")],
+    },
+  },
+  {
+    // Descent with the same arrival data typed into the Arrival data box on both sides.
+    name: "arrival",
+    only: "desktop",
+    app: { hash: "#/phase/descent", before: ARRIVAL.map(([ours, , v]) => typeInto(`#a-${ours}`, v)) },
+    base: { hash: "#descent", before: ARRIVAL.map(([, theirs, v]) => typeInto(`#s-${theirs}`, v)) },
+  },
+  {
+    // The flight strip with a clearance from Flight setup, its pop-out open on both sides.
+    name: "strip",
+    app: {
+      hash: "#/setup",
+      before: [...CLEARANCE.map(([ours, , v]) => typeInto(`#s-${ours}`, v)), go("#/phase/cold-dark"), click(".fsline")],
+    },
+    base: {
+      hash: "#setup",
+      before: [...CLEARANCE.map(([, theirs, v]) => typeInto(`#s-${theirs}`, v)), go("#cold-dark"), click("#fsbtn")],
+    },
+  },
   {
     // Before start: MCP (glareshield). The app lists Landing gear pins first, so its rows run one ahead.
     // Both sides show the step opened.

@@ -157,6 +157,12 @@ pub fn parse_plan(text: &str) -> String {
     reply(app_core::parse_plan(text))
 }
 
+/// The flight values a plan fills in (decision 0019).
+#[wasm_bindgen]
+pub fn plan_values(plan: &str) -> String {
+    reply((|| app_core::plan_values(&read("plan", plan)?))())
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -189,8 +195,13 @@ mod tests {
         assert_eq!(
             json(&parse_plan(
                 "<OFP><origin><icao_code>EGLL</icao_code></origin></OFP>"
-            ))["ok"]["origin"],
+            ))["ok"]["origin"]["icao"],
             "EGLL"
+        );
+        assert_eq!(
+            json(&plan_values(r#"{"origin":{"icao":"EGLL"}}"#))["error"]["kind"],
+            "FlightPlan",
+            "a plan with no destination fills nothing"
         );
     }
 

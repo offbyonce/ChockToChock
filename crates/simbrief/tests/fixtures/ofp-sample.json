@@ -1,22 +1,167 @@
 {
-  "fetch": { "status": "Success" },
-  "params": { "units": "kgs", "airac": "2406" },
+  "fetch": {
+    "userid": "123456",
+    "status": "Success"
+  },
+  "params": {
+    "request_id": "10001",
+    "sequence_id": "a1b2c3",
+    "user_id": "123456",
+    "time_generated": "1700000000",
+    "units": "kgs",
+    "airac": "2406"
+  },
   "general": {
     "icao_airline": "TSTX",
     "flight_number": "4567",
     "initial_altitude": "37000",
     "route": "SUMMA2 SUMMA J1 BTG",
-    "costindex": "35"
+    "costindex": "35",
+    "sid_ident": "SUMMA2",
+    "sid_trans": {},
+    "star_ident": "BTG1A",
+    "star_trans": {},
+    "avg_wind_dir": "265",
+    "avg_wind_spd": "42",
+    "avg_temp_dev": "-3",
+    "air_distance": "212",
+    "route_distance": "205"
   },
-  "origin": { "icao_code": "EGLL", "plan_rwy": "09R", "elevation": "83", "trans_alt": "6000" },
-  "destination": { "icao_code": "LFPG", "plan_rwy": {}, "elevation": "392", "trans_level": "7000" },
-  "fuel": { "plan_ramp": "6400", "reserve": "1200" },
-  "weights": { "est_zfw": "52300" },
-  "aircraft": { "reg": {} },
+  "origin": {
+    "icao_code": "EGLL",
+    "iata_code": "LHR",
+    "name": "Test Origin",
+    "elevation": "83",
+    "pos_lat": "51.4775",
+    "pos_long": "-0.461389",
+    "plan_rwy": "09R",
+    "trans_alt": "6000",
+    "trans_level": "7000",
+    "metar": "EGLL 010850Z 24010KT 9999 FEW030 15/08 Q1015",
+    "taf": "TAF EGLL 010500Z 0106/0212 24012KT 9999 SCT035"
+  },
+  "destination": {
+    "icao_code": "LFPG",
+    "iata_code": "CDG",
+    "name": "Test Destination",
+    "elevation": "392",
+    "pos_lat": "49.009722",
+    "pos_long": "2.547778",
+    "plan_rwy": {},
+    "trans_alt": "5000",
+    "trans_level": "7000",
+    "metar": "LFPG 010900Z 26008KT CAVOK 16/07 Q1016",
+    "taf": {}
+  },
+  "alternate": {
+    "icao_code": "LFPO",
+    "iata_code": "ORY",
+    "name": "Test Alternate",
+    "elevation": "291",
+    "pos_lat": "48.723333",
+    "pos_long": "2.379444",
+    "plan_rwy": "06",
+    "trans_alt": "5000",
+    "trans_level": "7000"
+  },
+  "weather": {
+    "altn_metar": "LFPO 010900Z 25009KT CAVOK 16/06 Q1016",
+    "altn_taf": "TAF LFPO 010500Z 0106/0212 25010KT CAVOK"
+  },
   "navlog": {
     "fix": [
-      { "ident": "SUMMA", "via_airway": "SUMMA2", "is_sid_star": "1", "stage": "CLB" },
-      { "ident": "BTG", "via_airway": "J1", "is_sid_star": "0", "stage": "CRZ" }
+      {
+        "ident": "SUMMA",
+        "type": "wpt",
+        "via_airway": "SUMMA2",
+        "is_sid_star": "1",
+        "stage": "CLB",
+        "pos_lat": "51.2",
+        "pos_long": "0.1",
+        "altitude_feet": "18000",
+        "distance": "38",
+        "wind_dir": "250",
+        "wind_spd": "30",
+        "oat": "-21",
+        "fuel_plan_onboard": "5600",
+        "time_total": "540"
+      },
+      {
+        "ident": "BTG",
+        "type": "vor",
+        "via_airway": "J1",
+        "is_sid_star": "0",
+        "stage": "CRZ",
+        "pos_lat": "50.1",
+        "pos_long": "1.6",
+        "altitude_feet": "37000",
+        "distance": "95",
+        "wind_dir": "265",
+        "wind_spd": "48",
+        "oat": "-56",
+        "fuel_plan_onboard": "4300",
+        "time_total": "1980"
+      }
     ]
+  },
+  "alternate_navlog": {
+    "fix": {
+      "ident": "LFPO",
+      "type": "apt",
+      "via_airway": "DCT",
+      "is_sid_star": "0",
+      "stage": "DSC",
+      "altitude_feet": "291",
+      "distance": "21",
+      "fuel_plan_onboard": "2400",
+      "time_total": "600"
+    }
+  },
+  "fuel": {
+    "taxi": "200",
+    "enroute_burn": "3100",
+    "contingency": "160",
+    "alternate_burn": "700",
+    "reserve": "1200",
+    "etops": "0",
+    "extra": "1040",
+    "min_takeoff": "5160",
+    "plan_takeoff": "6200",
+    "plan_ramp": "6400",
+    "plan_landing": "3100"
+  },
+  "weights": {
+    "oew": "45000",
+    "pax_count": "150",
+    "cargo": "2100",
+    "payload": "16300",
+    "est_zfw": "52300",
+    "max_zfw": "62700",
+    "est_tow": "58500",
+    "max_tow": "82200",
+    "est_ldw": "55400",
+    "max_ldw": "69300"
+  },
+  "times": {
+    "sched_out": "1700003600",
+    "sched_off": "1700004300",
+    "sched_on": "1700008200",
+    "sched_in": "1700008500",
+    "est_time_enroute": "3900",
+    "est_block": "4900",
+    "taxi_out": "700",
+    "taxi_in": "300"
+  },
+  "aircraft": {
+    "icaocode": "B38M",
+    "reg": {}
+  },
+  "crew": {
+    "cpt": "Pilot",
+    "pilot_id": "123456"
+  },
+  "api_params": {
+    "orig": "EGLL",
+    "dest": "LFPG"
   }
 }

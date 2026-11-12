@@ -63,6 +63,7 @@ batches add flight setup, the flight log, practice and the rest here.
     {/each}
   </div>
   <p class="grp">Flight</p>
+  <a class="ref" href="#/setup" onclick={onClose}>Flight setup</a>
   <a class="ref" href="#/open" onclick={onClose}>Open steps <span>{openCount}</span></a>
   <p class="grp">Reference</p>
   <a class="ref" href="#/reference" onclick={onClose}>Emergency</a>

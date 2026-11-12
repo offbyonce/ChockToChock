@@ -15,6 +15,7 @@ use crate::flight::Flight;
 use crate::rail::rail;
 use crate::settings::Settings;
 use crate::targets::{ItemTarget, step_targets};
+use crate::values::{StripPart, asks_arrival, blank_values, hint, last_note, strip};
 use crate::visibility::{Shown, in_essentials, shown_steps};
 
 /// One step in a list, as shown.
@@ -34,6 +35,11 @@ pub struct StepRow {
     pub targets: Vec<ItemTarget>,
     /// In Essentials (the pack's list, with the pilot's changes).
     pub essential: bool,
+    /// The text for each of the step's blanks, in order; empty where nothing is known yet
+    /// (decision 0019).
+    pub values: Vec<String>,
+    /// The step's hint from flight values ("GND 121.700 · DEP 125.600"), or empty.
+    pub hint: String,
 }
 
 /// One list in a phase.
@@ -81,12 +87,37 @@ pub struct PhaseView {
     pub lists: Vec<PhaseList>,
     pub progress: Progress,
     pub complete: bool,
+    /// The flight strip's summary (decision 0019); empty when nothing is known yet.
+    pub strip: Vec<StripPart>,
+    /// The last line of the flight's notes, shown under the strip, or empty.
+    pub note: String,
+    /// The phase shows the Arrival data box (decision 0019).
+    pub arrival: bool,
 }
 
 /// The phase `id` for this flight.
 ///
 /// # Errors
 /// `InvalidAction` if the pack has no phase with that id.
+/// A step's row apart from its id, number and state.
+fn step_row(
+    pack: &FlatPack,
+    flight: &Flight,
+    shown: &Shown,
+    step: &checklist_core::Step,
+) -> StepRow {
+    StepRow {
+        id: step.id.clone(),
+        number: 0,
+        state: StepState::ToDo,
+        counts: counts(step),
+        targets: step_targets(pack, step),
+        essential: in_essentials(step, &flight.options, shown),
+        values: blank_values(flight, step),
+        hint: hint(flight, step),
+    }
+}
+
 pub fn phase_view(
     pack: &FlatPack,
     flight: &Flight,
@@ -118,9 +149,7 @@ pub fn phase_view(
                     id: id.clone(),
                     number: i + 1,
                     state,
-                    counts: counts(step),
-                    targets: step_targets(pack, step),
-                    essential: in_essentials(step, &flight.options, &shown),
+                    ..step_row(pack, flight, &shown, step)
                 })
                 .collect();
             let progress = flight.session.progress(visible.iter().copied());
@@ -196,6 +225,9 @@ pub fn phase_view(
         lists,
         complete: progress.complete(),
         progress,
+        strip: strip(flight),
+        note: last_note(flight),
+        arrival: asks_arrival(pack, order.iter().map(|(_, p, _)| *p), &phase.id),
     })
 }
 
@@ -213,6 +245,32 @@ mod tests {
             .take(n)
             .map(|s| s.id.clone())
             .collect()
+    }
+
+    #[test]
+    fn a_step_row_carries_its_blank_values_and_hint() {
+        let pack = ifly_pack();
+        let mut flight = new_flight(&pack);
+        for (field, value) in [
+            (checklist_core::FillField::V2, "145"),
+            (checklist_core::FillField::Heading, "163"),
+            (checklist_core::FillField::InitialAltitude, "5000"),
+        ] {
+            let action = Action::SetValue {
+                field,
+                value: value.into(),
+            };
+            flight = apply(&pack, flight, action).unwrap();
+        }
+        let view = phase_view(&pack, &flight, &Settings::default(), "before-start").unwrap();
+        let row = view
+            .lists
+            .iter()
+            .flat_map(|l| &l.steps)
+            .find(|s| s.id.as_str() == "ifly-737-max8.before-start.mcp-check")
+            .unwrap();
+        assert_eq!(row.values, ["145", "163", "5000"]);
+        assert_eq!(row.hint, "");
     }
 
     #[test]

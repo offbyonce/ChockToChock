@@ -3,36 +3,145 @@ source: crates/simbrief/src/lib.rs
 expression: "parse_ofp_json(&fixture(\"ofp-sample.json\")).unwrap()"
 ---
 {
-  "airline": "TSTX",
-  "flightNumber": "4567",
-  "origin": "EGLL",
-  "originRunway": "09R",
-  "originElevationFt": 83,
-  "transitionAltitudeFt": 6000,
-  "destination": "LFPG",
-  "destinationElevationFt": 392,
-  "transitionLevelFt": 7000,
-  "cruiseAltitudeFt": 37000,
-  "route": "SUMMA2 SUMMA J1 BTG",
-  "costIndex": 35,
+  "requestId": "10001",
+  "sequenceId": "a1b2c3",
+  "generatedAt": 1700000000,
   "units": "kg",
-  "rampFuel": 6400,
-  "reserveFuel": 1200,
-  "zeroFuelWeight": 52300,
-  "airac": "2406",
-  "registration": null,
+  "general": {
+    "airline": "TSTX",
+    "flightNumber": "4567",
+    "aircraft": "B38M",
+    "cruiseAltitudeFt": 37000,
+    "costIndex": 35,
+    "route": "SUMMA2 SUMMA J1 BTG",
+    "sid": "SUMMA2",
+    "star": "BTG1A",
+    "avgWindDir": 265,
+    "avgWindSpeed": 42,
+    "avgIsaDeviation": -3,
+    "airDistanceNm": 212,
+    "routeDistanceNm": 205,
+    "airac": "2406"
+  },
+  "origin": {
+    "icao": "EGLL",
+    "iata": "LHR",
+    "name": "Test Origin",
+    "elevationFt": 83,
+    "lat": 51.4775,
+    "lon": -0.461389,
+    "runway": "09R",
+    "transitionAltitudeFt": 6000,
+    "transitionLevelFt": 7000,
+    "metar": "EGLL 010850Z 24010KT 9999 FEW030 15/08 Q1015",
+    "taf": "TAF EGLL 010500Z 0106/0212 24012KT 9999 SCT035"
+  },
+  "destination": {
+    "icao": "LFPG",
+    "iata": "CDG",
+    "name": "Test Destination",
+    "elevationFt": 392,
+    "lat": 49.009722,
+    "lon": 2.547778,
+    "transitionAltitudeFt": 5000,
+    "transitionLevelFt": 7000,
+    "metar": "LFPG 010900Z 26008KT CAVOK 16/07 Q1016"
+  },
+  "alternates": [
+    {
+      "icao": "LFPO",
+      "iata": "ORY",
+      "name": "Test Alternate",
+      "elevationFt": 291,
+      "lat": 48.723333,
+      "lon": 2.379444,
+      "runway": "06",
+      "transitionAltitudeFt": 5000,
+      "transitionLevelFt": 7000,
+      "metar": "LFPO 010900Z 25009KT CAVOK 16/06 Q1016",
+      "taf": "TAF LFPO 010500Z 0106/0212 25010KT CAVOK"
+    }
+  ],
   "fixes": [
     {
       "ident": "SUMMA",
+      "kind": "wpt",
       "via": "SUMMA2",
-      "sid_star": true,
-      "stage": "CLB"
+      "sidStar": true,
+      "stage": "CLB",
+      "lat": 51.2,
+      "lon": 0.1,
+      "altitudeFt": 18000,
+      "distanceNm": 38,
+      "windDir": 250,
+      "windSpeed": 30,
+      "oat": -21,
+      "fuelOnBoard": 5600,
+      "elapsedS": 540
     },
     {
       "ident": "BTG",
+      "kind": "vor",
       "via": "J1",
-      "sid_star": false,
-      "stage": "CRZ"
+      "sidStar": false,
+      "stage": "CRZ",
+      "lat": 50.1,
+      "lon": 1.6,
+      "altitudeFt": 37000,
+      "distanceNm": 95,
+      "windDir": 265,
+      "windSpeed": 48,
+      "oat": -56,
+      "fuelOnBoard": 4300,
+      "elapsedS": 1980
     }
-  ]
+  ],
+  "alternateFixes": [
+    {
+      "ident": "LFPO",
+      "kind": "apt",
+      "via": "DCT",
+      "sidStar": false,
+      "stage": "DSC",
+      "altitudeFt": 291,
+      "distanceNm": 21,
+      "fuelOnBoard": 2400,
+      "elapsedS": 600
+    }
+  ],
+  "fuel": {
+    "taxi": 200,
+    "trip": 3100,
+    "contingency": 160,
+    "alternate": 700,
+    "reserve": 1200,
+    "etops": 0,
+    "extra": 1040,
+    "minTakeoff": 5160,
+    "planTakeoff": 6200,
+    "planRamp": 6400,
+    "planLanding": 3100
+  },
+  "weights": {
+    "oew": 45000,
+    "passengers": 150,
+    "cargo": 2100,
+    "payload": 16300,
+    "zfw": 52300,
+    "maxZfw": 62700,
+    "takeoff": 58500,
+    "maxTakeoff": 82200,
+    "landing": 55400,
+    "maxLanding": 69300
+  },
+  "times": {
+    "schedOut": 1700003600,
+    "schedOff": 1700004300,
+    "schedOn": 1700008200,
+    "schedIn": 1700008500,
+    "enrouteS": 3900,
+    "blockS": 4900,
+    "taxiOutS": 700,
+    "taxiInS": 300
+  }
 }

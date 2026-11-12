@@ -7,9 +7,10 @@ lists as cards, and buttons to the phases either side. Flow view shows the same 
 a time (lib/FlowView.svelte).
 -->
 <script lang="ts">
-  import type { Checklist, Detail, Flight, PhaseView } from "@chocktochock/bindings";
+  import type { Checklist, Detail, FillField, Flight, PhaseView } from "@chocktochock/bindings";
   import Icon from "../lib/Icon.svelte";
   import ListCard from "../lib/ListCard.svelte";
+  import ArrivalData from "../lib/ArrivalData.svelte";
   import OptionChoices from "../lib/OptionChoices.svelte";
   import type { PackIndex } from "../pack-index";
   import { phaseHref } from "../route.svelte";
@@ -24,11 +25,13 @@ a time (lib/FlowView.svelte).
     onTick,
     onSkip,
     onUnskip,
+    onBlank,
     onSelect,
     onClear,
     full = true,
     fullView = null,
     onOption,
+    onValue,
   }: {
     index: PackIndex;
     view: PhaseView;
@@ -39,12 +42,15 @@ a time (lib/FlowView.svelte).
     onTick: (id: string, done: boolean) => void;
     onSkip: (id: string) => void;
     onUnskip: (id: string) => void;
+    onBlank: (id: string, index: number, value: string) => void;
     onSelect: (id: string) => void;
     onClear: (list: string) => void;
     full?: boolean;
     /** In Essentials, this phase in Full. */
     fullView?: PhaseView | null;
     onOption: (option: string, value: string) => void;
+    /** A flight value typed in a box on the page, such as Arrival data. */
+    onValue: (field: FillField, value: string) => void;
   } = $props();
 
   let asked = $derived(index.options.filter((o) => (o.ask_in ?? []).includes(view.id)));
@@ -90,6 +96,10 @@ a time (lib/FlowView.svelte).
   />
 {/each}
 
+{#if view.arrival}
+  <ArrivalData values={flight.values} onSet={onValue} />
+{/if}
+
 {#each view.lists as list (list.id)}
   <ListCard
     {index}
@@ -104,6 +114,7 @@ a time (lib/FlowView.svelte).
     {onTick}
     {onSkip}
     {onUnskip}
+    {onBlank}
     {onSelect}
     {onClear}
   />
@@ -113,7 +124,8 @@ a time (lib/FlowView.svelte).
   {#if view.previous}
     <a class="btn" href={phaseHref(view.previous.id)}><Icon name="arrow-left" /> {view.previous.title}</a>
   {:else}
-    <span></span>
+    <!-- The first phase leads back to Flight setup, as in 3.0. -->
+    <a class="btn" href="#/setup"><Icon name="arrow-left" /> Flight setup</a>
   {/if}
   {#if view.next}
     <a class="btn primary" href={phaseHref(view.next.id)}>{view.next.title} <Icon name="arrow-right" /></a>

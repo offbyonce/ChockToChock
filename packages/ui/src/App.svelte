@@ -35,6 +35,7 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
   import PhasePage from "./pages/PhasePage.svelte";
   import ReferencePage from "./pages/ReferencePage.svelte";
   import SettingsPage from "./pages/SettingsPage.svelte";
+  import SetupPage from "./pages/SetupPage.svelte";
   import { currentRoute } from "./route.svelte";
   import { applyPalette } from "./theme/tokens";
 
@@ -178,14 +179,18 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
         total: 0,
       }),
   );
-  let stage = $derived(view?.stage ?? null);
+  // Flight setup sits before the first stage, as in 3.0: that stage's tab and chips show, with no
+  // chip current.
+  let stage = $derived(screen === "setup" ? (rail?.stages[0]?.title ?? null) : (view?.stage ?? null));
   let stagePhases = $derived(
-    screen === "phase" || screen === "start" ? (rail?.stages.find((s) => s.title === stage)?.phases ?? []) : [],
+    screen === "phase" || screen === "start" || screen === "setup"
+      ? (rail?.stages.find((s) => s.title === stage)?.phases ?? [])
+      : [],
   );
   let current = $derived(view?.lists.find((l) => l.current)?.current ?? null);
   /** The step the context panel shows, its row, and the steps after it. */
   let pane = $derived.by(() => {
-    if (!index || !view || screen === "settings" || screen === "open") return null;
+    if (!index || !view || screen === "settings" || screen === "setup" || screen === "open") return null;
     const id = flow ? (cursor ?? current) : (selected ?? (screen === "reference" ? null : current));
     const rows = view.lists.flatMap((l) => l.steps);
     const at = rows.findIndex((r) => r.id === id);
@@ -224,6 +229,33 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
     }
   }
 
+  /** A change the pilot can take back for a short while: the flight before it, and what it did. */
+  let undo = $state<{ text: string; before: Flight } | null>(null);
+  let undoTimer: ReturnType<typeof setTimeout> | undefined;
+  function offerUndo(text: string, before: Flight): void {
+    undo = { text, before };
+    clearTimeout(undoTimer);
+    undoTimer = setTimeout(() => (undo = null), 10000);
+  }
+  async function takeBack(): Promise<void> {
+    if (!undo) return;
+    flight = undo.before;
+    undo = null;
+    clearTimeout(undoTimer);
+    try {
+      await refresh();
+      await persist("flight");
+    } catch (e) {
+      fail(e);
+    }
+  }
+  async function clearFlight(): Promise<void> {
+    if (!flight) return;
+    const before = flight;
+    await act({ type: "clear" });
+    offerUndo("Flight cleared.", before);
+  }
+
   async function changeSettings(next: Settings): Promise<void> {
     settings = next;
     try {
@@ -254,7 +286,7 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
   };
 </script>
 
-<div class="shell" data-app-ready={rail && (view || screen === "settings" || screen === "open") ? "" : undefined}>
+<div class="shell" data-app-ready={rail && (view || screen === "settings" || screen === "setup" || screen === "open") ? "" : undefined}>
   <TopBar
     aircraft={index?.name ?? ""}
     {rail}
@@ -281,7 +313,7 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
       version={info?.version ?? null}
       onClose={() => (menuOpen = false)}
     />
-    <div class="app" class:nopane={!pane} class:flow={flow && screen !== "settings"}>
+    <div class="app" class:nopane={!pane} class:flow={flow && screen !== "settings" && screen !== "setup"}>
       <main>
         <div class="inner">
           {#each kept as k (k.what)}
@@ -289,6 +321,13 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
           {/each}
           {#if screen === "settings"}
             <SettingsPage {settings} onChange={(s) => void changeSettings(s)} />
+          {:else if screen === "setup"}
+            <SetupPage
+              {flight}
+              first={rail.stages[0]?.phases[0] ?? null}
+              onSet={(field, value) => act({ type: "setValue", field, value })}
+              onOption={(option, value) => act({ type: "setOption", option, value })}
+            />
           {:else if screen === "open"}
             <OpenStepsPage
               {index}
@@ -309,16 +348,25 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
               onTick={tick}
               onSkip={skip}
               onUnskip={(id) => act({ type: "unskip", step: id })}
+              onBlank={(step, index, value) => act({ type: "setBlank", step, index, value })}
               onSelect={(id) => (selected = id)}
               onClear={(list) => act({ type: "clearList", list })}
             />
           {:else if view}
-            <FlightStrip />
+            <FlightStrip
+              parts={view.strip}
+              note={view.note}
+              values={flight.values}
+              notes={flight.notes}
+              onSet={(field, value) => act({ type: "setValue", field, value })}
+              onNotes={(notes) => act({ type: "setNotes", notes })}
+              onClear={clearFlight}
+            />
             {#if !flow}
               <OpenStepsCard {index} open={behind} onTick={(id) => act({ type: "tick", step: id, at: Date.now() })} />
             {/if}
             {#if flow}
-              <FlowView {index} {view} {cursor} {detail} onConfirm={confirm} onSkip={skip} onMove={(id) => (cursor = id)} />
+              <FlowView {index} {view} {cursor} {detail} onConfirm={confirm} onSkip={skip} onMove={(id) => (cursor = id)} onBlank={(step, index, value) => act({ type: "setBlank", step, index, value })} />
             {:else}
               <PhasePage
                 {index}
@@ -330,15 +378,23 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
                 onTick={tick}
                 onSkip={skip}
                 onUnskip={(id) => act({ type: "unskip", step: id })}
+                onBlank={(step, index, value) => act({ type: "setBlank", step, index, value })}
                 onSelect={(id) => (selected = id)}
                 onClear={(list) => act({ type: "clearList", list })}
                 full={!settings.essentials}
                 {fullView}
                 onOption={(option, value) => act({ type: "setOption", option, value })}
+                onValue={(field, value) => act({ type: "setValue", field, value })}
               />
             {/if}
           {:else}
             <p class="msg">That phase is not in this flight.</p>
+          {/if}
+          {#if undo}
+            <div class="toast" role="status">
+              <span>{undo.text}</span>
+              <button type="button" onclick={() => void takeBack()}>Undo</button>
+            </div>
           {/if}
           <p class="legal">
             Simulator training only. Not for real-world use. A study aid for flight simulation, not
@@ -392,6 +448,33 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
     overflow-y: auto;
     border-left: 1px solid var(--line);
     background: var(--surface);
+  }
+  /* 3.0's toast: dark on light (light on dark), centered at the bottom. */
+  .toast {
+    position: fixed;
+    bottom: 1.25rem;
+    left: 50%;
+    z-index: 70;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    width: max-content;
+    max-width: calc(100vw - 2rem);
+    box-sizing: border-box;
+    padding: 0.6rem 0.9rem;
+    border-radius: 0.6rem;
+    background: var(--ink);
+    box-shadow: 0 6px 24px rgb(0 0 0 / 28%);
+    color: var(--bg);
+    font-size: 0.9rem;
+    transform: translateX(-50%);
+  }
+  .toast button {
+    flex: none;
+    margin-left: 0.75rem;
+    color: inherit;
+    font-weight: 600;
+    text-decoration: underline;
   }
   .msg {
     padding: 1.5rem;

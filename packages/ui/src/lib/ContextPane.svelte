@@ -15,6 +15,7 @@ the list on wide screens and inside the step on narrow ones.
   import Locator from "./Locator.svelte";
   import OverviewMap from "./OverviewMap.svelte";
   import PanelSchematic from "./PanelSchematic.svelte";
+  import { panelCaption } from "./panel-name";
 
   let {
     index,
@@ -40,8 +41,6 @@ the list on wide screens and inside the step on narrow ones.
   const sentence = (text: string) =>
     text === text.toUpperCase() ? text.charAt(0) + text.slice(1).toLowerCase() : text;
 
-  /** A panel section's title as a panel's name, as in 3.0: "Electrical meters panel". */
-  const panelName = (title: string) => (/panel$/i.test(title) ? title : `${title} panel`);
 
   let place = $derived(index.place(step));
   let region = $derived(place ? (index.region(place.zone)?.region ?? null) : null);
@@ -69,8 +68,7 @@ the list on wide screens and inside the step on narrow ones.
     }
     return [...byPanel.values()].slice(0, 3);
   });
-  const cardTitle = (focus: string[]) =>
-    panelName(focus.map((id) => index.section(id)?.title ?? id).join(" and "));
+  const cardTitle = (focus: string[]) => panelCaption(focus.map((id) => index.section(id)?.title ?? id));
   let guardClosed = $derived(/\bGUARDS? CLOSED\b/i.test(step.expect));
   let setTo = $derived(
     targets

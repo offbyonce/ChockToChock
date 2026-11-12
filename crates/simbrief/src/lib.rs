@@ -13,9 +13,13 @@
 
 use std::fmt::Write as _;
 
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use ts_rs::TS;
+
+mod plan;
+
+pub use plan::{Airport, Fix, Fuel, General, Plan, Times, Weights};
 
 const FETCH_BASE: &str = "https://www.simbrief.com/api/xml.fetcher.php";
 
@@ -32,50 +36,12 @@ pub enum OfpError {
 }
 
 /// Weight units the plan uses. Fuel and weights are in these units.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, TS)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, TS)]
 #[serde(rename_all = "lowercase")]
 #[ts(export)]
 pub enum Units {
     Kg,
     Lb,
-}
-
-/// One navlog fix.
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, TS)]
-#[ts(export)]
-pub struct Fix {
-    pub ident: String,
-    pub via: Option<String>,
-    /// True when the fix is part of a SID or STAR rather than the en-route legs.
-    pub sid_star: bool,
-    pub stage: Option<String>,
-}
-
-/// The fields the checklist and CDU walkthrough use. Every field is optional because
-/// SimBrief omits what the dispatcher did not plan.
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, TS)]
-#[serde(rename_all = "camelCase")]
-#[ts(export)]
-pub struct Ofp {
-    pub airline: Option<String>,
-    pub flight_number: Option<String>,
-    pub origin: Option<String>,
-    pub origin_runway: Option<String>,
-    pub origin_elevation_ft: Option<i32>,
-    pub transition_altitude_ft: Option<i32>,
-    pub destination: Option<String>,
-    pub destination_elevation_ft: Option<i32>,
-    pub transition_level_ft: Option<i32>,
-    pub cruise_altitude_ft: Option<i32>,
-    pub route: Option<String>,
-    pub cost_index: Option<i32>,
-    pub units: Option<Units>,
-    pub ramp_fuel: Option<i32>,
-    pub reserve_fuel: Option<i32>,
-    pub zero_fuel_weight: Option<i32>,
-    pub airac: Option<String>,
-    pub registration: Option<String>,
-    pub fixes: Vec<Fix>,
 }
 
 /// The URL for the latest OFP. All digits means a Pilot ID; anything else is a username.
@@ -118,6 +84,24 @@ fn text(root: &Value, path: &[&str]) -> Option<String> {
     }
 }
 
+/// A decimal number at `path`, if it is one.
+fn num(root: &Value, path: &[&str]) -> Option<f64> {
+    text(root, path)?
+        .parse::<f64>()
+        .ok()
+        .filter(|v| v.is_finite())
+}
+
+/// The items at a place SimBrief may hold a list: an array, one object, or nothing.
+fn list(v: Option<&Value>) -> impl Iterator<Item = &Value> {
+    let items: &[Value] = match v {
+        Some(Value::Array(items)) => items,
+        Some(one @ Value::Object(_)) => std::slice::from_ref(one),
+        _ => &[],
+    };
+    items.iter()
+}
+
 fn int(root: &Value, path: &[&str]) -> Option<i32> {
     text(root, path)?
         .parse::<f64>()
@@ -132,7 +116,7 @@ fn int(root: &Value, path: &[&str]) -> Option<i32> {
 }
 
 /// Parse a SimBrief plan in either form: XML when it starts with `<`, JSON otherwise.
-pub fn parse_ofp(body: &str) -> Result<Ofp, OfpError> {
+pub fn parse_ofp(body: &str) -> Result<Plan, OfpError> {
     let body = body.trim_start_matches('\u{feff}').trim_start();
     if body.starts_with('<') {
         parse_ofp_xml(body)
@@ -142,15 +126,15 @@ pub fn parse_ofp(body: &str) -> Result<Ofp, OfpError> {
 }
 
 /// Parse the JSON text of a SimBrief fetch (`&json=1`).
-pub fn parse_ofp_json(body: &str) -> Result<Ofp, OfpError> {
+pub fn parse_ofp_json(body: &str) -> Result<Plan, OfpError> {
     let root: Value = serde_json::from_str(body).map_err(|e| OfpError::NotJson(e.to_string()))?;
-    ofp_from_value(&root)
+    plan::plan_from_value(&root)
 }
 
 /// Parse a saved SimBrief XML plan. It is turned into the JSON shape, then read the same way.
-pub fn parse_ofp_xml(body: &str) -> Result<Ofp, OfpError> {
+pub fn parse_ofp_xml(body: &str) -> Result<Plan, OfpError> {
     let doc = roxmltree::Document::parse(body).map_err(|e| OfpError::NotXml(e.to_string()))?;
-    ofp_from_value(&xml_to_value(doc.root_element()))
+    plan::plan_from_value(&xml_to_value(doc.root_element()))
 }
 
 /// An element as SimBrief's JSON would hold it: text when it has no child elements,
@@ -178,58 +162,6 @@ fn xml_to_value(node: roxmltree::Node<'_, '_>) -> Value {
     Value::Object(fields)
 }
 
-fn ofp_from_value(root: &Value) -> Result<Ofp, OfpError> {
-    if let Some(status) = text(root, &["fetch", "status"])
-        && !status.eq_ignore_ascii_case("success")
-    {
-        return Err(OfpError::Fetch(status));
-    }
-
-    let units =
-        text(root, &["params", "units"]).and_then(|u| match u.to_ascii_lowercase().as_str() {
-            "kgs" | "kg" => Some(Units::Kg),
-            "lbs" | "lb" => Some(Units::Lb),
-            _ => None,
-        });
-
-    let fixes = match root.pointer("/navlog/fix") {
-        Some(Value::Array(items)) => items.iter().filter_map(fix).collect(),
-        Some(obj @ Value::Object(_)) => fix(obj).into_iter().collect(),
-        _ => Vec::new(),
-    };
-
-    Ok(Ofp {
-        airline: text(root, &["general", "icao_airline"]),
-        flight_number: text(root, &["general", "flight_number"]),
-        origin: text(root, &["origin", "icao_code"]),
-        origin_runway: text(root, &["origin", "plan_rwy"]),
-        origin_elevation_ft: int(root, &["origin", "elevation"]),
-        transition_altitude_ft: int(root, &["origin", "trans_alt"]),
-        destination: text(root, &["destination", "icao_code"]),
-        destination_elevation_ft: int(root, &["destination", "elevation"]),
-        transition_level_ft: int(root, &["destination", "trans_level"]),
-        cruise_altitude_ft: int(root, &["general", "initial_altitude"]),
-        route: text(root, &["general", "route"]),
-        cost_index: int(root, &["general", "costindex"]),
-        units,
-        ramp_fuel: int(root, &["fuel", "plan_ramp"]),
-        reserve_fuel: int(root, &["fuel", "reserve"]),
-        zero_fuel_weight: int(root, &["weights", "est_zfw"]),
-        airac: text(root, &["params", "airac"]),
-        registration: text(root, &["aircraft", "reg"]),
-        fixes,
-    })
-}
-
-fn fix(v: &Value) -> Option<Fix> {
-    Some(Fix {
-        ident: text(v, &["ident"])?,
-        via: text(v, &["via_airway"]),
-        sid_star: text(v, &["is_sid_star"]).is_some_and(|s| s == "1"),
-        stage: text(v, &["stage"]),
-    })
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -247,8 +179,72 @@ mod tests {
     #[test]
     fn placeholders_become_missing() {
         let ofp = parse_ofp_json(&fixture("ofp-sample.json")).unwrap();
-        assert_eq!(ofp.registration, None, "`{{}}` is SimBrief's empty value");
-        assert_eq!(ofp.origin_runway.as_deref(), Some("09R"));
+        assert_eq!(
+            ofp.general.registration, None,
+            "`{{}}` is SimBrief's empty value"
+        );
+        assert_eq!(ofp.origin.and_then(|o| o.runway).as_deref(), Some("09R"));
+    }
+
+    #[test]
+    fn the_plan_never_reads_personal_fields() {
+        // The fixture's pilot is "Pilot" with the ID 123456, in crew, fetch, params and api_params.
+        let saved =
+            serde_json::to_string(&parse_ofp(&fixture("ofp-sample.json")).unwrap()).unwrap();
+        assert!(!saved.contains("123456"), "{saved}");
+        assert!(!saved.contains("\"Pilot\""), "{saved}");
+    }
+
+    #[test]
+    fn a_saved_plan_reads_back_the_same_and_leaves_out_what_is_missing() {
+        let plan = parse_ofp(&fixture("ofp-sample.json")).unwrap();
+        let saved = serde_json::to_string(&plan).unwrap();
+        assert!(
+            !saved.contains("null"),
+            "missing values are left out: {saved}"
+        );
+        let back: Plan = serde_json::from_str(&saved).unwrap();
+        assert_eq!(back, plan);
+        assert_eq!(plan.alternates.len(), 1);
+        assert_eq!(
+            plan.alternates[0].metar.as_deref(),
+            Some("LFPO 010900Z 25009KT CAVOK 16/06 Q1016"),
+            "the alternate's weather comes from the weather section"
+        );
+        assert_eq!(
+            plan.alternate_fixes.len(),
+            1,
+            "one fix arrives as an object"
+        );
+    }
+
+    /// Reads a real plan the maintainer keeps outside the repository and reports the compact
+    /// plan's size: `CHOCKTOCHOCK_PLAN=<file> cargo test -p simbrief -- --ignored --nocapture`.
+    #[test]
+    #[ignore = "needs a real SimBrief plan file outside the repository"]
+    fn measures_a_real_plan() {
+        let path = std::env::var("CHOCKTOCHOCK_PLAN").expect("CHOCKTOCHOCK_PLAN");
+        let raw = std::fs::read_to_string(path).unwrap();
+        let plan = parse_ofp(&raw).unwrap();
+        let saved = serde_json::to_string(&plan).unwrap();
+        let fixes = plan.fixes.len() + plan.alternate_fixes.len();
+        let fix_bytes: usize = plan
+            .fixes
+            .iter()
+            .chain(&plan.alternate_fixes)
+            .map(|f| serde_json::to_string(f).unwrap().len() + 1)
+            .sum();
+        println!(
+            "raw {} bytes; compact {} bytes ({} fixes, {} bytes each on average)",
+            raw.len(),
+            saved.len(),
+            fixes,
+            fix_bytes / fixes.max(1)
+        );
+        assert_eq!(serde_json::from_str::<Plan>(&saved).unwrap(), plan);
+        if let Ok(out) = std::env::var("CHOCKTOCHOCK_PLAN_OUT") {
+            std::fs::write(out, &saved).unwrap();
+        }
     }
 
     #[test]
@@ -258,6 +254,7 @@ mod tests {
         )
         .unwrap();
         assert_eq!(ofp.fixes.len(), 1);
+        assert_eq!(ofp.fixes[0].sid_star, Some(false));
     }
 
     #[test]

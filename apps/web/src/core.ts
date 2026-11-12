@@ -12,9 +12,10 @@ import type {
   FlatPack,
   Flight,
   Loaded,
-  Ofp,
   OpenStep,
   PhaseView,
+  Plan,
+  PlanValues,
   Rail,
   Reply,
   Settings,
@@ -112,7 +113,13 @@ export async function planUrl(user: string): Promise<string> {
 }
 
 /** Reads a SimBrief plan: fetched JSON, or a saved JSON or XML file. */
-export async function parsePlan(text: string): Promise<Ofp> {
+export async function parsePlan(text: string): Promise<Plan> {
   await load();
-  return unwrap<Ofp>(wasm.parse_plan(text));
+  return unwrap<Plan>(wasm.parse_plan(text));
+}
+
+/** The flight values a plan fills in (decision 0019). */
+export async function planValues(plan: Plan): Promise<PlanValues> {
+  await load();
+  return unwrap<PlanValues>(wasm.plan_values(JSON.stringify(plan)));
 }

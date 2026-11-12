@@ -26,6 +26,7 @@ so instead.
     onTick,
     onSkip,
     onUnskip,
+    onBlank,
     onSelect,
     onClear,
   }: {
@@ -43,6 +44,7 @@ so instead.
     onTick: (id: string, done: boolean) => void;
     onSkip: (id: string) => void;
     onUnskip: (id: string) => void;
+    onBlank: (id: string, index: number, value: string) => void;
     onSelect: (id: string) => void;
     onClear: (list: string) => void;
   } = $props();
@@ -102,6 +104,7 @@ so instead.
           onTick={() => onTick(row.id, row.state === "done")}
           onSkip={() => onSkip(row.id)}
           onUnskip={() => onUnskip(row.id)}
+          onBlank={(n, v) => onBlank(row.id, n, v)}
           onSelect={() => onSelect(row.id)}
         />
       {/if}

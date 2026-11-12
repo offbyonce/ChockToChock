@@ -2,6 +2,7 @@
 import type { PhaseLink } from "./PhaseLink";
 import type { PhaseList } from "./PhaseList";
 import type { Progress } from "./Progress";
+import type { StripPart } from "./StripPart";
 
 /**
  * One phase, ready to show.
@@ -14,4 +15,16 @@ stage: string | null,
 /**
  * 1-based position in that stage, and how many phases the stage shows.
  */
-position: [number, number] | null, previous: PhaseLink | null, next: PhaseLink | null, lists: Array<PhaseList>, progress: Progress, complete: boolean, };
+position: [number, number] | null, previous: PhaseLink | null, next: PhaseLink | null, lists: Array<PhaseList>, progress: Progress, complete: boolean, 
+/**
+ * The flight strip's summary (decision 0019); empty when nothing is known yet.
+ */
+strip: Array<StripPart>, 
+/**
+ * The last line of the flight's notes, shown under the strip, or empty.
+ */
+note: string, 
+/**
+ * The phase shows the Arrival data box (decision 0019).
+ */
+arrival: boolean, };

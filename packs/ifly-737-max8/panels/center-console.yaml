@@ -7,7 +7,7 @@
 id: con
 title: Center console
 width: 838
-height: 1287
+height: 1301
 sections:
   - id: cdul
     title: Left CDU
@@ -31,7 +31,7 @@ sections:
     title: Engine display and autobrake
     x: 226
     "y": 6
-    width: 324
+    width: 348
     height: 144
     items:
       - kind: toggle_switch
@@ -55,14 +55,14 @@ sections:
       - kind: light
         label: AUTO BRAKE DISARM
         color: amber
-        x: 115
+        x: 121
         "y": 30
         controls:
           - abrake
         description: Autobrake disarmed or faulty. Lights 1 to 2 seconds when RTO is selected.
       - kind: selector
         label: AUTO BRAKE
-        x: 115
+        x: 121
         "y": 72
         controls:
           - abrake
@@ -71,7 +71,7 @@ sections:
         description: Sets the autobrake.
       - kind: push_button
         label: ENG
-        x: 236
+        x: 252
         "y": 30
         controls:
           - engmon
@@ -79,60 +79,58 @@ sections:
         description: Shows secondary engine data.
       - kind: push_button
         label: SYS
-        x: 287
+        x: 307
         "y": 30
         controls:
           - sysp
         description: Shows system data.
       - kind: push_button
         label: INFO
-        x: 236
+        x: 252
         "y": 70
         description: Information display.
       - kind: push_button
         label: C/R
-        x: 287
+        x: 307
         "y": 70
         controls:
           - cr
         description: Cancel and recall alerts.
-        height: 26
       - kind: selector
         label: SELECTOR R
-        x: 283
+        x: 303
         "y": 117
         controls:
           - sel
         positions: "L, C, R"
         rest: "L"
         description: Right display selector.
-        height: 26
       - kind: light
         label: ANTISKID INOP
         color: amber
-        x: 115
+        x: 121
         "y": 121
         description: Antiskid fault. Antiskid is off for one or more wheels.
       - kind: light
         label: BRAKE TEMP
         color: amber
-        x: 177
+        x: 188
         "y": 30
         description: A brake is hot.
       - kind: light
         label: TIRE PRESS
         color: amber
-        x: 177
+        x: 188
         "y": 60
         description: Tire pressure is low.
       - kind: push_button
         label: ENG TFR
-        x: 177
+        x: 188
         "y": 102
         description: Moves the engine display to the other screen.
   - id: cdur
     title: Right CDU
-    x: 554
+    x: 578
     "y": 6
     width: 210
     height: 120
@@ -221,7 +219,7 @@ sections:
     x: 10
     "y": 408
     width: 725
-    height: 122
+    height: 125
     items:
       - kind: handle
         label: PARKING BRAKE
@@ -262,7 +260,7 @@ sections:
       - kind: push_button
         label: HORN CUTOUT
         x: 328
-        "y": 99
+        "y": 101
         description: Silences the gear horn.
       - kind: toggle_switch
         label: STAB TRIM PRI
@@ -287,12 +285,12 @@ sections:
     x: 10
     "y": 534
     width: 818
-    height: 150
+    height: 160
     items:
       - kind: toggle_switch
         label: OVHT DET 1
         x: 44
-        "y": 46
+        "y": 47
         controls:
           - ovhtdet
         positions: "A, NORMAL, B"
@@ -302,12 +300,12 @@ sections:
         label: ENG 1 OVERHEAT
         color: amber
         x: 44
-        "y": 86
+        "y": 90
         description: "The detectors around engine 1 sense more heat than normal, but not a fire."
       - kind: toggle_switch
         label: FIRE TEST
         x: 44
-        "y": 128
+        "y": 136
         controls:
           - firetest
         positions: "FAULT/INOP, OVHT/FIRE"
@@ -315,7 +313,7 @@ sections:
       - kind: handle
         label: FIRE 1
         x: 149
-        "y": 76
+        "y": 79
         controls:
           - firesw
         positions: "PULL, ROTATE L, R"
@@ -330,13 +328,13 @@ sections:
         label: APU DET INOP
         color: amber
         x: 261
-        "y": 76
+        "y": 79
         description: "The APU fire detector loop has failed, so an APU fire may not be detected."
       - kind: light
         label: APU BOTTLE DISCHARGE
         color: amber
         x: 261
-        "y": 112
+        "y": 118
         description: The APU fire bottle is empty or has lost pressure.
       - kind: push_button
         label: BELL CUTOUT
@@ -346,7 +344,7 @@ sections:
       - kind: handle
         label: FIRE APU
         x: 368
-        "y": 92
+        "y": 97
         controls:
           - apufire
         positions: "PULL, ROTATE"
@@ -354,7 +352,7 @@ sections:
       - kind: toggle_switch
         label: OVHT DET 2
         x: 470
-        "y": 46
+        "y": 47
         controls:
           - ovhtdet
         positions: "A, NORMAL, B"
@@ -364,12 +362,12 @@ sections:
         label: ENG 2 OVERHEAT
         color: amber
         x: 470
-        "y": 86
+        "y": 90
         description: "The detectors around engine 2 sense more heat than normal, but not a fire."
       - kind: handle
         label: FIRE 2
         x: 574
-        "y": 76
+        "y": 79
         controls:
           - firesw
         positions: "PULL, ROTATE L, R"
@@ -389,7 +387,7 @@ sections:
       - kind: toggle_switch
         label: EXT TEST
         x: 713
-        "y": 78
+        "y": 82
         controls:
           - exttest
         positions: "1, 2"
@@ -398,24 +396,24 @@ sections:
         label: L
         color: amber
         x: 657
-        "y": 122
+        "y": 129
         description: Green during the extinguisher test.
       - kind: light
         label: R
         color: amber
         x: 713
-        "y": 122
+        "y": 129
         description: Green during the extinguisher test.
       - kind: light
         label: APU
         color: amber
         x: 769
-        "y": 122
+        "y": 129
         description: Green during the extinguisher test.
   - id: r1
     title: Radio 1
     x: 10
-    "y": 688
+    "y": 698
     width: 222
     height: 112
     items:
@@ -433,9 +431,9 @@ sections:
   - id: cf
     title: Cargo fire
     x: 238
-    "y": 688
+    "y": 698
     width: 300
-    height: 121
+    height: 125
     items:
       - kind: light
         label: EXT FWD
@@ -443,16 +441,12 @@ sections:
         x: 35
         "y": 42
         description: Green during the cargo fire test.
-        width: 38
-        height: 26
       - kind: light
         label: EXT AFT
         color: amber
         x: 94
         "y": 42
         description: Green during the cargo fire test.
-        width: 38
-        height: 26
       - kind: toggle_switch
         label: DET FWD
         x: 154
@@ -460,8 +454,6 @@ sections:
         positions: "A, NORM, B"
         rest: "NORM"
         description: Forward detector select.
-        width: 38
-        height: 26
       - kind: toggle_switch
         label: DET AFT
         x: 203
@@ -469,56 +461,44 @@ sections:
         positions: "A, NORM, B"
         rest: "NORM"
         description: Aft detector select.
-        width: 38
-        height: 26
       - kind: light
         label: DETECTOR FAULT
         color: amber
         x: 262
         "y": 42
         description: "One or more selected detection loops in a hold has failed, so detection there may be reduced."
-        width: 42
-        height: 26
       - kind: push_button
         label: TEST
         x: 39
-        "y": 84
+        "y": 86
         controls:
           - cargofire
         description: Tests the cargo fire system.
-        width: 40
-        height: 28
       - kind: push_button
         label: ARM FWD
         x: 116
-        "y": 84
+        "y": 86
         controls:
           - cargofire
         description: Arms the forward compartment.
-        width: 46
-        height: 28
       - kind: push_button
         label: ARM AFT
         x: 183
-        "y": 84
+        "y": 86
         controls:
           - cargofire
         description: Arms the aft compartment.
-        width: 46
-        height: 28
       - kind: push_button
         label: DISCH
         x: 258
-        "y": 84
+        "y": 86
         controls:
           - cargofire
         description: Discharges the bottle into the armed compartment.
-        width: 46
-        height: 28
   - id: r2
     title: Radio 2
     x: 542
-    "y": 688
+    "y": 698
     width: 222
     height: 112
     items:
@@ -534,7 +514,7 @@ sections:
   - id: n1
     title: NAV 1
     x: 10
-    "y": 804
+    "y": 814
     width: 222
     height: 84
     items:
@@ -550,7 +530,7 @@ sections:
   - id: wx
     title: Weather radar
     x: 238
-    "y": 813
+    "y": 827
     width: 224
     height: 84
     items:
@@ -566,7 +546,7 @@ sections:
   - id: n2
     title: NAV 2
     x: 468
-    "y": 813
+    "y": 827
     width: 222
     height: 84
     items:
@@ -582,7 +562,7 @@ sections:
   - id: a1
     title: Audio 1
     x: 10
-    "y": 892
+    "y": 902
     width: 222
     height: 84
     items:
@@ -599,7 +579,7 @@ sections:
   - id: atc
     title: ATC/TCAS
     x: 238
-    "y": 901
+    "y": 915
     width: 265
     height: 131
     items:
@@ -651,7 +631,7 @@ sections:
   - id: a2
     title: Audio 2
     x: 507
-    "y": 901
+    "y": 915
     width: 222
     height: 84
     items:
@@ -668,7 +648,7 @@ sections:
   - id: r3
     title: Radio 3
     x: 10
-    "y": 980
+    "y": 990
     width: 222
     height: 60
     items:
@@ -682,7 +662,7 @@ sections:
   - id: adf
     title: ADF
     x: 238
-    "y": 1036
+    "y": 1050
     width: 454
     height: 96
     items:
@@ -744,7 +724,7 @@ sections:
   - id: lp
     title: Lighting
     x: 10
-    "y": 1044
+    "y": 1054
     width: 222
     height: 130
     items:
@@ -765,7 +745,7 @@ sections:
   - id: tr
     title: Trim
     x: 238
-    "y": 1136
+    "y": 1150
     width: 249
     height: 145
     items:
@@ -797,7 +777,7 @@ sections:
   - id: dr
     title: Stab override and door
     x: 491
-    "y": 1136
+    "y": 1150
     width: 222
     height: 130
     items:

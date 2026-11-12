@@ -35,8 +35,10 @@ test("the flattened iFly pack loads", () => {
 });
 
 test("SimBrief plans read in both forms, and errors arrive tagged", () => {
-  assert.equal(ok(wasm.parse_plan(fixture("ofp-sample.json"))).route, "SUMMA2 SUMMA J1 BTG");
-  assert.equal(ok(wasm.parse_plan(fixture("ofp-sample.xml"))).origin, "EGLL");
+  const plan = ok(wasm.parse_plan(fixture("ofp-sample.json")));
+  assert.equal(plan.general.route, "SUMMA2 SUMMA J1 BTG");
+  assert.equal(ok(wasm.parse_plan(fixture("ofp-sample.xml"))).origin.icao, "EGLL");
+  assert.equal(ok(wasm.plan_values(JSON.stringify(plan))).values.runway, "09R");
   assert.deepEqual(JSON.parse(wasm.parse_plan(fixture("ofp-error.json"))), {
     error: { kind: "FlightPlan", message: "SimBrief says: Error: Unknown UserID" },
   });

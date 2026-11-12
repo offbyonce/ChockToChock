@@ -14,6 +14,8 @@ export const WORKER = "app/sw.js";
 
 /** Built pages outside the app that the worker does not precache. */
 const OUTSIDE_APP = new Set(["index.html", "simbrief-probe.html"]);
+/** The design system's review page and its script: never part of the app a pilot installs. */
+const DESIGN = (file) => file.startsWith("design/") || /^assets\/design-[^/]*$/.test(file);
 
 function filesIn(dir, base = dir) {
   return fs.readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
@@ -25,7 +27,7 @@ function filesIn(dir, base = dir) {
 /** The files to precache (relative to the site) and the version they give. */
 export function precacheList(dist) {
   const files = filesIn(dist)
-    .filter((file) => file !== WORKER && !OUTSIDE_APP.has(file))
+    .filter((file) => file !== WORKER && !OUTSIDE_APP.has(file) && !DESIGN(file))
     .sort();
   const hash = createHash("sha256");
   for (const file of files) {
