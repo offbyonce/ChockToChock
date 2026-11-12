@@ -5,8 +5,75 @@
 //! and the values a unit choice may take.
 
 use checklist_core::{FillField, Step};
+use serde::Serialize;
+use ts_rs::TS;
 
 use crate::flight::Flight;
+
+/// One part of the flight strip's summary ("RWY 16L"), and the field its pop-out focuses.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, TS)]
+#[serde(rename_all = "camelCase")]
+#[ts(export)]
+pub struct StripPart {
+    pub field: FillField,
+    pub text: String,
+}
+
+/// The flight strip's summary, as 3.0 built it: the route, runway, departure with its
+/// transition, initial altitude, squawk and frequencies, each only when known.
+pub fn strip(flight: &Flight) -> Vec<StripPart> {
+    let v = |f: FillField| {
+        flight
+            .values
+            .get(&f)
+            .map(|s| s.trim())
+            .filter(|s| !s.is_empty())
+    };
+    let mut out = vec![];
+    let mut push = |field, text: String| out.push(StripPart { field, text });
+    let route: Vec<&str> = [FillField::Origin, FillField::Destination]
+        .into_iter()
+        .filter_map(v)
+        .collect();
+    if !route.is_empty() {
+        push(FillField::Origin, route.join(" → "));
+    }
+    if let Some(r) = v(FillField::Runway) {
+        push(FillField::Runway, format!("RWY {r}"));
+    }
+    if let Some(sid) = v(FillField::Sid) {
+        let text = match v(FillField::Transition) {
+            Some(t) => format!("{sid}.{t}"),
+            None => sid.to_owned(),
+        };
+        push(FillField::Sid, text);
+    }
+    if let Some(a) = v(FillField::InitialAltitude) {
+        push(FillField::InitialAltitude, format!("{a} FT"));
+    }
+    if let Some(sq) = v(FillField::Squawk) {
+        push(FillField::Squawk, format!("SQK {sq}"));
+    }
+    if let Some(g) = v(FillField::GroundFrequency) {
+        push(FillField::GroundFrequency, format!("GND {g}"));
+    }
+    if let Some(d) = v(FillField::DepartureFrequency) {
+        push(FillField::DepartureFrequency, format!("DEP {d}"));
+    }
+    out
+}
+
+/// The last line of the flight's notes, for the strip, or empty.
+pub fn last_note(flight: &Flight) -> String {
+    flight
+        .notes
+        .trim()
+        .lines()
+        .last()
+        .unwrap_or_default()
+        .trim()
+        .to_owned()
+}
 
 /// The key of a step's n-th blank (from 0) in [`Flight::blanks`].
 pub fn blank_key(step: &Step, n: usize) -> String {
@@ -122,6 +189,32 @@ mod tests {
         assert_eq!(hint(&flight, radios), "DEP 125.600");
         let flight = set(&pack, flight, FillField::GroundFrequency, "121.700");
         assert_eq!(hint(&flight, radios), "GND 121.700 · DEP 125.600");
+    }
+
+    #[test]
+    fn the_strip_sums_up_the_clearance_as_3_0_did() {
+        let pack = ifly_pack();
+        let flight = new_flight(&pack);
+        assert_eq!(strip(&flight), []);
+        let mut flight = flight;
+        for (f, v) in [
+            (FillField::Destination, "KSFO"),
+            (FillField::Runway, "16L"),
+            (FillField::Sid, "SUMMA2"),
+            (FillField::Transition, "SEA"),
+            (FillField::Squawk, "4521"),
+        ] {
+            flight = set(&pack, flight, f, v);
+        }
+        let texts: Vec<String> = strip(&flight).into_iter().map(|p| p.text).collect();
+        assert_eq!(texts, ["KSFO", "RWY 16L", "SUMMA2.SEA", "SQK 4521"]);
+        let flight = set(&pack, flight, FillField::Origin, "KSEA");
+        assert_eq!(strip(&flight)[0].text, "KSEA → KSFO");
+        let notes = Action::SetNotes {
+            notes: "Taxi via A\nClimb 7000 \n\n".into(),
+        };
+        let flight = apply(&pack, flight, notes).unwrap();
+        assert_eq!(last_note(&flight), "Climb 7000");
     }
 
     #[test]

@@ -44,6 +44,7 @@ export type { Step } from "./generated/Step";
 export type { StepId } from "./generated/StepId";
 export type { StepRow } from "./generated/StepRow";
 export type { StepState } from "./generated/StepState";
+export type { StripPart } from "./generated/StripPart";
 export type { Theme } from "./generated/Theme";
 export type { UserOption } from "./generated/UserOption";
 export type { Zone } from "./generated/Zone";

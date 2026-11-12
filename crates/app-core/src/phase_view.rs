@@ -15,7 +15,7 @@ use crate::flight::Flight;
 use crate::rail::rail;
 use crate::settings::Settings;
 use crate::targets::{ItemTarget, step_targets};
-use crate::values::{blank_values, hint};
+use crate::values::{StripPart, blank_values, hint, last_note, strip};
 use crate::visibility::{Shown, in_essentials, shown_steps};
 
 /// One step in a list, as shown.
@@ -87,6 +87,10 @@ pub struct PhaseView {
     pub lists: Vec<PhaseList>,
     pub progress: Progress,
     pub complete: bool,
+    /// The flight strip's summary (decision 0019); empty when nothing is known yet.
+    pub strip: Vec<StripPart>,
+    /// The last line of the flight's notes, shown under the strip, or empty.
+    pub note: String,
 }
 
 /// The phase `id` for this flight.
@@ -219,6 +223,8 @@ pub fn phase_view(
         lists,
         complete: progress.complete(),
         progress,
+        strip: strip(flight),
+        note: last_note(flight),
     })
 }
 

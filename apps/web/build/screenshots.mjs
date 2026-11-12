@@ -34,6 +34,17 @@ const stepNamed = (title, part) =>
 /** Scrolls the side pane `pane` so its controls drawing starts at the top. */
 const paneToControls = (pane) =>
   `(() => { const p = document.querySelector(${JSON.stringify(pane)}); const h = [...p.querySelectorAll("*")].find((e) => e.children.length === 0 && e.textContent.trim().toUpperCase() === "THE CONTROLS"); p.scrollTop += h.getBoundingClientRect().top - p.getBoundingClientRect().top; })(); true`;
+/** Types `value` into the input `selector`, as the pilot would. */
+const typeInto = (selector, value) =>
+  `(() => { const el = document.querySelector(${JSON.stringify(selector)}); el.value = ${JSON.stringify(value)}; el.dispatchEvent(new Event("input", { bubbles: true })); el.dispatchEvent(new Event("change", { bubbles: true })); })(); true`;
+/** The same clearance typed into Flight setup, with each app's field ids. */
+const CLEARANCE = [
+  ["runway", "rwy", "16L"],
+  ["sid", "sid", "SUMMA2"],
+  ["transition", "trans", "SEA"],
+  ["initial_altitude", "alt", "5000"],
+  ["squawk", "sq", "4521"],
+];
 const pressText = (text) =>
   `[...document.querySelectorAll("button")].find((b) => b.textContent.trim() === ${JSON.stringify(text)}).click(); true`;
 const go = (hash) => `location.hash = ${JSON.stringify(hash)}; true`;
@@ -103,6 +114,18 @@ const SHOTS = [
   { name: "settings", app: { hash: "#/settings" }, base: { hash: "#settings" } },
   // Flight setup, empty on both sides.
   { name: "setup", app: { hash: "#/setup" }, base: { hash: "#setup" } },
+  {
+    // The flight strip with a clearance from Flight setup, its pop-out open on both sides.
+    name: "strip",
+    app: {
+      hash: "#/setup",
+      before: [...CLEARANCE.map(([ours, , v]) => typeInto(`#s-${ours}`, v)), go("#/phase/cold-dark"), click(".fsline")],
+    },
+    base: {
+      hash: "#setup",
+      before: [...CLEARANCE.map(([, theirs, v]) => typeInto(`#s-${theirs}`, v)), go("#cold-dark"), click("#fsbtn")],
+    },
+  },
   {
     // Before start: MCP (glareshield). The app lists Landing gear pins first, so its rows run one ahead.
     // Both sides show the step opened.

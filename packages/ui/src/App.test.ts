@@ -127,6 +127,8 @@ function view(states: [StepState, StepState]): PhaseView {
     ],
     progress,
     complete: done === 2,
+    strip: [],
+    note: "",
   };
 }
 
@@ -271,6 +273,45 @@ describe("App", () => {
     expect(screen.getByRole("link", { name: "Start at Power up →" }).getAttribute("href")).toBe(
       "#/phase/power-up",
     );
+  });
+
+  it("sums up the clearance in the flight strip, edits it in the pop-out, and clears with Undo", async () => {
+    const actions: Action[] = [];
+    const h = host({
+      apply: async (_pack, flight, action) => {
+        actions.push(action);
+        if (action.type === "setValue")
+          return { ...flight, values: { ...flight.values, [action.field]: action.value } };
+        if (action.type === "clear") return { ...flight, values: {} };
+        return flight;
+      },
+      phaseView: async () => ({
+        ...view(["skipped", "current"]),
+        strip: [
+          { field: "runway", text: "RWY 16L" },
+          { field: "squawk", text: "SQK 4521" },
+        ],
+        note: "Climb 7000",
+      }),
+    });
+    render(App, { context: hostContext(h) });
+
+    expect(await screen.findByText("RWY 16L")).toBeTruthy();
+    expect(screen.getByText("Notes: Climb 7000")).toBeTruthy();
+    // Tapping one part opens the pop-out on that part's field.
+    await fireEvent.click(screen.getByText("SQK 4521"));
+    expect(screen.getByRole("dialog", { name: "Flight details" })).toBeTruthy();
+    await fireEvent.input(screen.getByLabelText("Squawk"), { target: { value: "7000" } });
+    expect(actions.at(-1)).toEqual({ type: "setValue", field: "squawk", value: "7000" });
+    // Clear flight asks first, then offers Undo, which brings the flight back.
+    await fireEvent.click(screen.getByRole("button", { name: "Clear flight" }));
+    expect(screen.getByText("Clear the whole flight?")).toBeTruthy();
+    expect(actions.at(-1)?.type).toBe("setValue");
+    await fireEvent.click(screen.getByRole("button", { name: "Clear flight" }));
+    expect(actions.at(-1)).toEqual({ type: "clear" });
+    await fireEvent.click(await screen.findByRole("button", { name: "Undo" }));
+    await fireEvent.click(screen.getByText("SQK 4521"));
+    expect((screen.getByLabelText("Squawk") as HTMLInputElement).value).toBe("7000");
   });
 
   it("shows what a control does on a step without a Why, where the side panel is hidden", async () => {

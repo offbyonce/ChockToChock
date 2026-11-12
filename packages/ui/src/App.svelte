@@ -229,6 +229,33 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
     }
   }
 
+  /** A change the pilot can take back for a short while: the flight before it, and what it did. */
+  let undo = $state<{ text: string; before: Flight } | null>(null);
+  let undoTimer: ReturnType<typeof setTimeout> | undefined;
+  function offerUndo(text: string, before: Flight): void {
+    undo = { text, before };
+    clearTimeout(undoTimer);
+    undoTimer = setTimeout(() => (undo = null), 10000);
+  }
+  async function takeBack(): Promise<void> {
+    if (!undo) return;
+    flight = undo.before;
+    undo = null;
+    clearTimeout(undoTimer);
+    try {
+      await refresh();
+      await persist("flight");
+    } catch (e) {
+      fail(e);
+    }
+  }
+  async function clearFlight(): Promise<void> {
+    if (!flight) return;
+    const before = flight;
+    await act({ type: "clear" });
+    offerUndo("Flight cleared.", before);
+  }
+
   async function changeSettings(next: Settings): Promise<void> {
     settings = next;
     try {
@@ -325,7 +352,15 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
               onClear={(list) => act({ type: "clearList", list })}
             />
           {:else if view}
-            <FlightStrip />
+            <FlightStrip
+              parts={view.strip}
+              note={view.note}
+              values={flight.values}
+              notes={flight.notes}
+              onSet={(field, value) => act({ type: "setValue", field, value })}
+              onNotes={(notes) => act({ type: "setNotes", notes })}
+              onClear={clearFlight}
+            />
             {#if !flow}
               <OpenStepsCard {index} open={behind} onTick={(id) => act({ type: "tick", step: id, at: Date.now() })} />
             {/if}
@@ -351,6 +386,12 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
             {/if}
           {:else}
             <p class="msg">That phase is not in this flight.</p>
+          {/if}
+          {#if undo}
+            <div class="toast" role="status">
+              <span>{undo.text}</span>
+              <button type="button" onclick={() => void takeBack()}>Undo</button>
+            </div>
           {/if}
           <p class="legal">
             Simulator training only. Not for real-world use. A study aid for flight simulation, not
@@ -404,6 +445,33 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
     overflow-y: auto;
     border-left: 1px solid var(--line);
     background: var(--surface);
+  }
+  /* 3.0's toast: dark on light (light on dark), centered at the bottom. */
+  .toast {
+    position: fixed;
+    bottom: 1.25rem;
+    left: 50%;
+    z-index: 70;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    width: max-content;
+    max-width: calc(100vw - 2rem);
+    box-sizing: border-box;
+    padding: 0.6rem 0.9rem;
+    border-radius: 0.6rem;
+    background: var(--ink);
+    box-shadow: 0 6px 24px rgb(0 0 0 / 28%);
+    color: var(--bg);
+    font-size: 0.9rem;
+    transform: translateX(-50%);
+  }
+  .toast button {
+    flex: none;
+    margin-left: 0.75rem;
+    color: inherit;
+    font-weight: 600;
+    text-decoration: underline;
   }
   .msg {
     padding: 1.5rem;
