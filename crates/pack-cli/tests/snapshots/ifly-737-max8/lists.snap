@@ -1046,7 +1046,7 @@ assertion_line: 34
         "number": 13,
         "section": "Overhead panel",
         "text": "FLIGHT CONTROL SWITCHES",
-        "expect": "ON, GUARDS CLOSED",
+        "expect": "A ON, B ON, GUARDS CLOSED",
         "controls": [
           "fltctrl"
         ],

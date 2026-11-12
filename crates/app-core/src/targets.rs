@@ -142,6 +142,39 @@ mod tests {
     }
 
     #[test]
+    fn the_flight_control_step_targets_each_switch_by_its_own_name() {
+        // The switches read A ON and B ON, as on the panel; one value names both.
+        let pack = ifly_pack();
+        let step = pack
+            .lists
+            .iter()
+            .flat_map(|l| &l.steps)
+            .find(|s| s.id.as_str() == "ifly-737-max8.preflight.flight-control-switches")
+            .unwrap();
+        let section = pack
+            .content
+            .panels
+            .iter()
+            .flat_map(|p| &p.sections)
+            .find(|s| s.id == "fctl")
+            .unwrap();
+        for (label, name) in [("FLT CONTROL A", "A ON"), ("FLT CONTROL B", "B ON")] {
+            let item = section.items.iter().position(|i| i.label == label).unwrap();
+            let target = step_targets(&pack, step)
+                .into_iter()
+                .find(|t| t.section == "fctl" && t.item == item)
+                .unwrap();
+            let positions: Vec<&str> = section.items[item]
+                .positions
+                .as_deref()
+                .unwrap()
+                .split(", ")
+                .collect();
+            assert_eq!(target.position.map(|p| positions[p]), Some(name), "{label}");
+        }
+    }
+
+    #[test]
     fn a_value_saying_on_lights_a_light_without_lit_at() {
         assert!(says_on("ILLUMINATED"));
         assert!(says_on("COMES ON"));

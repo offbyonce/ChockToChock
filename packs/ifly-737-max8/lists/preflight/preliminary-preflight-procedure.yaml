@@ -180,7 +180,7 @@ steps:
     number: 13
     section: Overhead panel
     text: FLIGHT CONTROL SWITCHES
-    expect: "ON, GUARDS CLOSED"
+    expect: "A ON, B ON, GUARDS CLOSED"
     controls:
       - fltctrl
     note: These give hydraulic power to the flight controls. Both must be on for flight.

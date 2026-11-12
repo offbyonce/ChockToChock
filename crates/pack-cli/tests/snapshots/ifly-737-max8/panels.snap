@@ -26,7 +26,7 @@ assertion_line: 38
             "controls": [
               "fltctrl"
             ],
-            "positions": "STBY RUD, OFF, ON",
+            "positions": "STBY RUD, OFF, A ON",
             "rest": "STBY RUD",
             "description": "Gives hydraulic system A to the ailerons, elevator and rudder."
           },
@@ -39,7 +39,7 @@ assertion_line: 38
             "controls": [
               "fltctrl"
             ],
-            "positions": "STBY RUD, OFF, ON",
+            "positions": "STBY RUD, OFF, B ON",
             "rest": "STBY RUD",
             "description": "Gives hydraulic system B to the ailerons, elevator and rudder."
           },
