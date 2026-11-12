@@ -7,19 +7,19 @@
 id: oh
 title: Forward overhead
 width: 1344
-height: 1635
+height: 1682
 sections:
   - id: fctl
     title: Flight control
     x: 10
     "y": 6
-    width: 255
-    height: 344
+    width: 263
+    height: 348
     items:
       - kind: toggle_switch
         label: FLT CONTROL A
         guarded: true
-        x: 50
+        x: 54
         "y": 64
         controls:
           - fltctrl
@@ -29,7 +29,7 @@ sections:
       - kind: toggle_switch
         label: FLT CONTROL B
         guarded: true
-        x: 120
+        x: 124
         "y": 64
         controls:
           - fltctrl
@@ -39,7 +39,7 @@ sections:
       - kind: light
         label: LOW QUANTITY
         color: amber
-        x: 208
+        x: 212
         "y": 34
         controls:
           - stbyhyd
@@ -47,7 +47,7 @@ sections:
       - kind: light
         label: LOW PRESSURE
         color: amber
-        x: 208
+        x: 212
         "y": 62
         controls:
           - stbyhyd
@@ -55,7 +55,7 @@ sections:
       - kind: light
         label: STBY RUD ON
         color: amber
-        x: 208
+        x: 212
         "y": 89
         controls:
           - stbyhyd
@@ -63,7 +63,7 @@ sections:
       - kind: light
         label: LOW PRESSURE
         color: amber
-        x: 48
+        x: 52
         "y": 129
         controls:
           - fctllts
@@ -71,7 +71,7 @@ sections:
       - kind: light
         label: LOW PRESSURE
         color: amber
-        x: 112
+        x: 116
         "y": 129
         controls:
           - fctllts
@@ -79,7 +79,7 @@ sections:
       - kind: toggle_switch
         label: ALT FLAPS MASTER
         guarded: true
-        x: 160
+        x: 164
         "y": 138
         controls:
           - altflap
@@ -88,7 +88,7 @@ sections:
         description: Arms alternate flap operation. Red guard.
       - kind: toggle_switch
         label: ALT FLAPS
-        x: 219
+        x: 223
         "y": 140
         controls:
           - altflap
@@ -98,7 +98,7 @@ sections:
       - kind: toggle_switch
         label: SPOILER A
         guarded: true
-        x: 50
+        x: 54
         "y": 199
         controls:
           - spoilsw
@@ -108,7 +108,7 @@ sections:
       - kind: toggle_switch
         label: SPOILER B
         guarded: true
-        x: 120
+        x: 124
         "y": 199
         controls:
           - spoilsw
@@ -118,7 +118,7 @@ sections:
       - kind: light
         label: FEEL DIFF PRESS
         color: amber
-        x: 208
+        x: 212
         "y": 193
         controls:
           - fctllts
@@ -126,7 +126,7 @@ sections:
       - kind: light
         label: SPEED TRIM FAIL
         color: amber
-        x: 208
+        x: 212
         "y": 220
         controls:
           - fctllts
@@ -134,7 +134,7 @@ sections:
       - kind: light
         label: MACH TRIM FAIL
         color: amber
-        x: 208
+        x: 212
         "y": 246
         controls:
           - fctllts
@@ -142,7 +142,7 @@ sections:
       - kind: light
         label: AUTO SLAT FAIL
         color: amber
-        x: 208
+        x: 212
         "y": 273
         controls:
           - fctllts
@@ -150,7 +150,7 @@ sections:
       - kind: light
         label: SPOILERS
         color: amber
-        x: 208
+        x: 212
         "y": 299
         controls:
           - fctllts
@@ -158,14 +158,14 @@ sections:
       - kind: light
         label: YAW DAMPER
         color: amber
-        x: 80
+        x: 84
         "y": 279
         controls:
           - yawd
         description: "Nothing is damping Dutch roll, because the yaw damper is not engaged."
       - kind: toggle_switch
         label: YAW DAMPER
-        x: 80
+        x: 84
         "y": 318
         controls:
           - yawd
@@ -244,7 +244,7 @@ sections:
         x: 60
         "y": 30
         controls:
-          - fuelpumps
+          - fuellts
         description: "Engine 1 fuel valve. Out: open. Dim: closed. Bright: moving or disagrees with the start lever."
       - kind: light
         label: SPAR VALVE CLOSED
@@ -252,7 +252,7 @@ sections:
         x: 60
         "y": 67
         controls:
-          - fuelpumps
+          - fuellts
         description: "Engine 1 spar valve. Out: open. Dim: closed. Bright: moving or disagrees with the start lever."
       - kind: gauge
         label: FUEL TEMP
@@ -265,7 +265,7 @@ sections:
         x: 274
         "y": 30
         controls:
-          - fuelpumps
+          - fuellts
         description: "Engine 2 fuel valve. Out: open. Dim: closed. Bright: moving or disagrees with the start lever."
       - kind: light
         label: SPAR VALVE CLOSED
@@ -273,7 +273,7 @@ sections:
         x: 274
         "y": 67
         controls:
-          - fuelpumps
+          - fuellts
         description: "Engine 2 spar valve. Out: open. Dim: closed. Bright: moving or disagrees with the start lever."
       - kind: light
         label: FILTER BYPASS
@@ -281,7 +281,7 @@ sections:
         x: 65
         "y": 129
         controls:
-          - fuelpumps
+          - fuellts
         description: "Fuel filter clogged, about to bypass or bypassing."
       - kind: light
         label: VALVE OPEN
@@ -297,7 +297,7 @@ sections:
         x: 269
         "y": 129
         controls:
-          - fuelpumps
+          - fuellts
         description: "Fuel filter clogged, about to bypass or bypassing."
       - kind: selector
         label: CROSSFEED
@@ -412,9 +412,9 @@ sections:
         description: "Aft pump, tank 2."
   - id: elecu
     title: Electrical meters
-    x: 269
+    x: 277
     "y": 120
-    width: 225
+    width: 231
     height: 318
     items:
       - kind: readout
@@ -452,7 +452,7 @@ sections:
         description: "A DC or standby power fault, on the ground only."
       - kind: push_button
         label: MAINT
-        x: 199
+        x: 204
         "y": 148
         controls:
           - eleclts
@@ -569,7 +569,7 @@ sections:
   - id: elecl
     title: Ground power and generators
     x: 252
-    "y": 1166
+    "y": 1213
     width: 273
     height: 281
     items:
@@ -716,7 +716,7 @@ sections:
   - id: col
     title: Lights and service
     x: 498
-    "y": 395
+    "y": 442
     width: 161
     height: 767
     items:
@@ -834,7 +834,7 @@ sections:
   - id: rwip
     title: R wiper
     x: 482
-    "y": 1451
+    "y": 1498
     width: 110
     height: 84
     items:
@@ -1242,7 +1242,7 @@ sections:
   - id: door
     title: Doors
     x: 596
-    "y": 1166
+    "y": 1213
     width: 227
     height: 116
     items:
@@ -1349,13 +1349,13 @@ sections:
   - id: cvr
     title: Cockpit voice recorder microphone monitor
     x: 596
-    "y": 1286
-    width: 210
+    "y": 1333
+    width: 211
     height: 63
     items:
       - kind: push_button
         label: ERASE
-        x: 82
+        x: 85
         "y": 31
         controls:
           - cvrpanel
@@ -1371,7 +1371,7 @@ sections:
         width: 40
       - kind: push_button
         label: TEST
-        x: 124
+        x: 132
         "y": 31
         controls:
           - cvrpanel
@@ -1379,7 +1379,7 @@ sections:
         width: 40
       - kind: push_button
         label: HEADPHONE
-        x: 176
+        x: 184
         "y": 31
         controls:
           - cvrpanel
@@ -1388,7 +1388,7 @@ sections:
   - id: cab
     title: Cabin altitude
     x: 596
-    "y": 1353
+    "y": 1400
     width: 218
     height: 168
     items:
@@ -1757,7 +1757,7 @@ sections:
   - id: ltl
     title: Landing and taxi lights
     x: 10
-    "y": 1451
+    "y": 1498
     width: 300
     height: 90
     items:
@@ -1809,7 +1809,7 @@ sections:
   - id: apu
     title: APU
     x: 314
-    "y": 1451
+    "y": 1498
     width: 84
     height: 90
     items:
@@ -1825,7 +1825,7 @@ sections:
   - id: start
     title: Engine start
     x: 402
-    "y": 1539
+    "y": 1586
     width: 290
     height: 90
     items:
@@ -1859,7 +1859,7 @@ sections:
   - id: lte
     title: Exterior lights
     x: 696
-    "y": 1525
+    "y": 1572
     width: 294
     height: 90
     items:

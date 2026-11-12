@@ -2,7 +2,8 @@
 // SPDX-License-Identifier: MIT
 
 // Every section of every panel in the bundled packs lays out cleanly: no control's shape runs
-// into the section's title, another control or the frame, and all text keeps 3.0's size. Reads
+// into the section's title, another control or the frame, and every label finds a clear place at
+// 3.0's size, the one size all drawings use. Reads
 // the flattened packs that `just web-packs` writes (`just test` runs it first).
 
 import type { Panel, PanelItem, PanelSection } from "@chocktochock/bindings";
@@ -45,11 +46,11 @@ function problems(s: PanelSection, k: number): string[] {
   });
   const all = s.items.map((_, i) => i);
   const none = layoutSection(s, all, () => ({ on: false, t: null, rest: -1 }), k, 0);
-  if (none.scale < 0.999) out.push(`text shrinks to ${none.scale.toFixed(2)}`);
+  if (!none.clear) out.push("labels collide");
   s.items.forEach((item, i) => {
     const target = (j: number) => (j === i ? { on: true, t: 0, rest: -1 } : { on: false, t: null, rest: -1 });
     const one = layoutSection(s, all, target, k, 0);
-    if (one.scale < 0.999) out.push(`text shrinks to ${one.scale.toFixed(2)} with ${item.label} targeted`);
+    if (!one.clear) out.push(`labels collide with ${item.label} targeted`);
   });
   return [...new Set(out)];
 }
@@ -67,7 +68,8 @@ describe("bundled pack panels", () => {
     for (const panel of panels) {
       for (const section of panel.sections) {
         it(`${file} ${panel.id}/${section.id} lays out cleanly`, () => {
-          const found = [1.4, 1.8].flatMap((k) => problems(section, k).map((p) => `at ${k}: ${p}`));
+          // Every drawing is drawn at 1.8 pixels per unit.
+          const found = problems(section, 1.8);
           expect(found).toEqual([]);
         });
       }

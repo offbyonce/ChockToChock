@@ -14,13 +14,14 @@ however large the drawing is.
 <script lang="ts">
   import type { ItemTarget, PanelItem, PanelSection } from "@chocktochock/bindings";
   import { em } from "./text-width";
-  import { angleOf, knobY, LAMP, TOGGLE, labelled, lampText, layoutSection, leverY, PX, positionsOf, slotY } from "./panel-layout";
+  import { angleOf, BUTTON, withinAcross, knobY, LAMP, TOGGLE, labelled, lampText, layoutSection, leverY, PX, positionsOf, slotY } from "./panel-layout";
 
   let {
     section,
     targets,
     guardClosed,
     band,
+    frame,
     k,
   }: {
     section: PanelSection;
@@ -28,6 +29,8 @@ however large the drawing is.
     guardClosed: boolean;
     /** The part to draw, in section units: rows and, for a wide section, a span across. */
     band: { y0: number; y1: number; x0: number; x1: number };
+    /** The outline drawn around the controls, fitted to them; by default the band and labels. */
+    frame?: { y0: number; y1: number; x0: number; x1: number } | undefined;
     /** Screen pixels per drawing unit, for the fixed text sizes. */
     k: number;
   } = $props();
@@ -51,13 +54,13 @@ however large the drawing is.
   };
 
 
-  let top = $derived(band.y0 === 0 ? 0 : band.y0 - TITLE);
+  let top = $derived(frame ? frame.y0 : band.y0 === 0 ? 0 : band.y0 - TITLE);
   const shownItems = () =>
     section.items
       .map((item, i) => ({ item, i }))
       .filter(
         ({ item }) =>
-          item.y >= band.y0 + 10 && item.y <= band.y1 - 10 && item.x >= band.x0 + 4 && item.x <= band.x1 - 4,
+          item.y >= band.y0 + 10 && item.y <= band.y1 - 10 && withinAcross(item, band),
       );
   let shown = $derived(shownItems());
   /** Every label placed clear of the controls and of each other (panel-layout.ts). */
@@ -77,16 +80,19 @@ however large the drawing is.
       },
       k,
       top,
-      { x0: band.x0, x1: band.x1 },
+      // Labels may reach past a crop's edge; the frame fits them, so check them against the section.
+      { x0: 0, x1: section.width },
     ),
   );
   /** The frame reaches past the lowest label, so no text crosses its edge. */
-  let frameBottom = $derived(Math.max(band.y1, layout.bottom));
+  let frameBottom = $derived(frame ? frame.y1 : Math.max(band.y1, layout.bottom));
+  let left = $derived(frame?.x0 ?? band.x0);
+  let right = $derived(frame?.x1 ?? band.x1);
 </script>
 
 <g transform="translate({section.x} {section.y})">
-  <rect class="frame" x={band.x0} y={top} width={band.x1 - band.x0} height={frameBottom - top} rx="3" />
-  <text class="title" x={band.x0 + 8} y={top + 13} style:font-size={fs(PX.title * layout.scale)}>{section.title.toUpperCase()}</text>
+  <rect class="frame" x={left} y={top} width={right - left} height={frameBottom - top} rx="3" />
+  <text class="title" x={left + 8} y={top + 13} style:font-size={fs(PX.title * layout.scale)}>{section.title.toUpperCase()}</text>
   {#each shown as { item, i } (i)}
     {@const on = byItem.has(i)}
     {@const target = targetOf(i, item)}
@@ -130,10 +136,20 @@ however large the drawing is.
           <text class="pos" class:target={on && l.n === t} class:at-rest={l.n === r} x={l.x} y={l.y} text-anchor={l.anchor} style:font-size={fs(PX.pos * layout.scale)}>{positions[l.n]}</text>
         {/each}
       {:else if item.kind === "push_button"}
+        <!-- As 3.0 draws a push button: a key with its name inside and a line along its bottom. -->
+        {@const words = lampText(item, k, PX.lamp * layout.scale, BUTTON.w)}
         {#if item.guarded}
-          <rect class="guard" class:closed={on && guardClosed} x="-14" y="-14" width="28" height="28" rx="6" />
+          <rect class="guard" class:closed={on && guardClosed} x={-BUTTON.w / 2 - 2} y={-BUTTON.h / 2 - 2} width={BUTTON.w + 4} height={BUTTON.h + 4} rx="4" />
         {/if}
-        <rect class="body" class:pressed={on && t != null} x="-11" y="-11" width="22" height="22" rx="4" />
+        <rect class="body" class:pressed={on && t != null} x={-BUTTON.w / 2} y={-BUTTON.h / 2} width={BUTTON.w} height={BUTTON.h} rx="3" />
+        <line class="key-line" x1={-BUTTON.w / 2 + 2} x2={BUTTON.w / 2 - 2} y1={BUTTON.h / 2 - 1.3} y2={BUTTON.h / 2 - 1.3} />
+        {#each words.lines as line, n (n)}
+          <text
+            class="lamp-text"
+            y={(n - (words.lines.length - 1) / 2) * ((words.px * 1.12) / k) + (words.px * 0.35) / k - 0.6}
+            style:font-size={fs(words.px)}>{line}</text
+          >
+        {/each}
       {:else if item.kind === "light"}
         <!-- Every light the same size, its words wrapped inside, as in 3.0. A light the step
              expects on is filled in its color and says so; it is never the simulator's state. -->
@@ -217,6 +233,10 @@ however large the drawing is.
     fill: none;
     stroke: var(--muted);
     stroke-width: 1.4;
+  }
+  .key-line {
+    stroke: var(--line);
+    stroke-width: 1;
   }
   /* A toggle's slim track and guard take 3.0's thinner lines. */
   .track {

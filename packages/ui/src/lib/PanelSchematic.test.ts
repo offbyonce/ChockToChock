@@ -362,8 +362,8 @@ describe("PanelSchematic", () => {
       targets: [{ section: "cap", item: 0, position: null, lit: false }],
     });
     const label = screen.getByText("INBOARD DU: ND AND ENGINES") as unknown as SVGTextElement;
-    // jsdom lays nothing out, so the drawing uses its default 1.6 pixels per unit.
-    expect(Number.parseFloat(label.style.fontSize) * 1.6).toBeCloseTo(12.6, 1);
+    // Every drawing uses one scale, 1.8 pixels per unit.
+    expect(Number.parseFloat(label.style.fontSize) * 1.8).toBeCloseTo(12.6, 1);
   });
 
   it("keeps full-size text when a tall section is cut above a dial with labels on top", () => {
@@ -405,7 +405,44 @@ describe("PanelSchematic", () => {
       targets: [{ section: "elecu", item: 3, position: 1, lit: false }],
     });
     const aux = screen.getByText("AUX BAT") as unknown as SVGTextElement;
-    // jsdom lays nothing out, so the drawing uses its default 1.6 pixels per unit.
-    expect(Number.parseFloat(aux.style.fontSize) * 1.6).toBeCloseTo(10.8, 1);
+    // Every drawing uses one scale, 1.8 pixels per unit.
+    expect(Number.parseFloat(aux.style.fontSize) * 1.8).toBeCloseTo(10.8, 1);
+  });
+
+  it("draws every panel at one scale, so controls and text are the same size in every drawing", () => {
+    // Drawings used to scale to fit their card, so the same button came out larger in one panel
+    // than in another.
+    const panel = (width: number) =>
+      ({
+        id: "p",
+        title: "P",
+        width: width + 20,
+        height: 100,
+        sections: [
+          {
+            id: "s",
+            title: "S",
+            x: 0,
+            y: 0,
+            width,
+            height: 80,
+            items: [{ kind: "push_button", label: "VNAV", x: 40, y: 50, controls: ["c"], description: "" }],
+          },
+        ],
+      }) as unknown as Panel;
+    const sizeOf = (width: number) => {
+      const { container, unmount } = render(PanelSchematic, {
+        panel: panel(width),
+        focus: ["s"],
+        targets: [{ section: "s", item: 0, position: null, lit: false }],
+      });
+      const svg = container.querySelector("svg") as SVGSVGElement;
+      const [, , w] = (svg.getAttribute("viewBox") ?? "").split(" ").map(Number);
+      const px = Number.parseFloat(svg.style.width) / (w ?? 1);
+      unmount();
+      return px;
+    };
+    expect(sizeOf(120)).toBeCloseTo(1.8, 2);
+    expect(sizeOf(300)).toBeCloseTo(1.8, 2);
   });
 });

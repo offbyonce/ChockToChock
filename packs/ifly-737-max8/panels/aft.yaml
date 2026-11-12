@@ -6,7 +6,7 @@
 # 3.0's measured cold and dark panel state.
 id: aft
 title: Aft overhead
-width: 1109
+width: 1175
 height: 495
 sections:
   - id: elt
@@ -196,7 +196,7 @@ sections:
         description: Right IRS mode.
   - id: svc
     title: Service interphone
-    x: 1003
+    x: 1069
     "y": 220
     width: 96
     height: 90
@@ -343,13 +343,13 @@ sections:
     title: Flight recorder and Mach test
     x: 806
     "y": 182
-    width: 193
-    height: 94
+    width: 259
+    height: 110
     items:
       - kind: toggle_switch
         label: FLIGHT RECORDER
         guarded: true
-        x: 44
+        x: 52
         "y": 42
         controls:
           - fltrec
@@ -359,23 +359,23 @@ sections:
       - kind: light
         label: "OFF"
         color: amber
-        x: 104
-        "y": 66
+        x: 119
+        "y": 82
         controls:
           - fltrec
         description: The flight data recorder is not recording.
       - kind: push_button
         label: MACH TEST 1
-        x: 146
-        "y": 52
+        x: 167
+        "y": 53
         controls:
           - mach
         description: Tests the overspeed clacker.
         height: 24
       - kind: push_button
         label: MACH TEST 2
-        x: 176
-        "y": 52
+        x: 219
+        "y": 53
         controls:
           - mach
         description: Tests the overspeed clacker.
@@ -383,7 +383,7 @@ sections:
   - id: stall
     title: Stall warning test
     x: 800
-    "y": 280
+    "y": 296
     width: 192
     height: 61
     items:

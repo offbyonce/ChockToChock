@@ -10,7 +10,8 @@ the card; text keeps 3.0's sizes.
 -->
 <script lang="ts">
   import type { ItemTarget, Panel, PanelSection as Section } from "@chocktochock/bindings";
-  import { layoutSection, positionsOf } from "./panel-layout";
+  import { layoutSection, PX, positionsOf, withinAcross } from "./panel-layout";
+  import { em } from "./text-width";
   import PanelSection from "./PanelSection.svelte";
 
   let {
@@ -29,15 +30,13 @@ the card; text keeps 3.0's sizes.
     guardClosed?: boolean;
   } = $props();
 
-  /** Fill the card's width, up to 2.6 times the pack's size. */
-  const SCALE = 2.6;
   /**
-   * Text keeps 3.0's pixel sizes up to this many pixels per unit, then grows with the drawing, as
-   * 3.0's text does (it is sized in drawing units), so a large drawing never has small text.
+   * Every drawing is drawn at one scale, pixels per unit, so every control and every label is the
+   * same size in every panel, with text at 3.0's sizes. What does not fit the card is split into
+   * crops, one under the other, and a crop still too wide scrolls sideways inside the card.
    */
-  const TEXT_K = 1.8;
-  /** A section wider than this is cropped across to SPAN around the step's controls, as 3.0 does. */
-  const WIDE = 320;
+  const K = 1.8;
+  /** Units across a crop shows before the card is measured. */
   const SPAN = 240;
   /** How far beside the step's sections a neighbor may sit and still be drawn. */
   const NEAR = 120;
@@ -59,55 +58,70 @@ the card; text keeps 3.0's sizes.
   const TALL = 280;
   const REACH = 100;
 
-  /**
-   * The part of a section to draw, as 3.0 frames its panel cards, so the step's controls show in
-   * first view and the drawing stays as large as 3.0's. A tall section keeps the controls whose
-   * centers lie within REACH of the step's (more if the step's own controls spread further), and a
-   * wide one is cut across to the controls around the step's. Sections drawn together show whole.
-   */
-  function bandOf(s: Section) {
-    const mine = s.items.filter((_, i) => targets.some((t) => t.section === s.id && t.item === i));
-    const whole = { y0: 0, y1: s.height, x0: 0, x1: s.width };
-    if (!mine.length || drawn.length > 1) return whole;
-    const xs = mine.map((it) => it.x);
-    const ys = mine.map((it) => it.y);
-    let rows = {};
-    if (s.height > TALL) {
-      const c = (Math.min(...ys) + Math.max(...ys)) / 2;
-      const reach = Math.max(REACH, (Math.max(...ys) - Math.min(...ys)) / 2 + 30);
-      const kept = s.items.map((it) => it.y).filter((y) => Math.abs(y - c) <= reach);
-      // Room above the kept controls for their shapes and a line of labels over them (a dial's
-      // top position); below, the section grows to hold its labels.
-      rows = { y0: Math.max(0, Math.min(...kept) - 34), y1: Math.min(s.height, Math.max(...kept) + 20) };
-    }
-    let across = {};
-    if (s.width > WIDE) {
-      const c = (Math.min(...xs) + Math.max(...xs)) / 2;
-      const half = Math.max(SPAN / 2, (Math.max(...xs) - Math.min(...xs)) / 2 + 60);
-      const x0 = Math.max(0, Math.min(c - half, s.width - 2 * half));
-      across = { x0, x1: Math.min(s.width, x0 + 2 * half) };
-    }
-    return { ...whole, ...rows, ...across };
-  }
-  let bands = $derived(new Map(drawn.map((s) => [s.id, bandOf(s)])));
-  const top = (s: Section) => s.y + Math.max(0, (bands.get(s.id)?.y0 ?? 0) - ((bands.get(s.id)?.y0 ?? 0) > 0 ? 18 : 0));
-  let x0 = $derived(Math.min(...drawn.map((s) => s.x + (bands.get(s.id)?.x0 ?? 0))) - 2);
-  let w = $derived(Math.max(...drawn.map((s) => s.x + (bands.get(s.id)?.x1 ?? s.width))) + 2 - x0);
+  type Band = { y0: number; y1: number; x0: number; x1: number };
+  const wholeOf = (s: Section): Band => ({ y0: 0, y1: s.height, x0: 0, x1: s.width });
 
   let width = $state(0);
-  // The drawing is as wide as its box, but never more than SCALE times the pack's size.
-  let k = $derived(width > 0 ? Math.min(width, w * SCALE) / w : 1.6);
-  /** Pixels per unit for text: the drawing's, but no more than TEXT_K. */
-  let kText = $derived(Math.min(k, TEXT_K));
+  /**
+   * How many units across the card can show with text at 3.0's size, as 3.0 narrows its crops so
+   * no label is drawn small: a wider section is cut to that, and the step's controls spread
+   * further apart are drawn in more than one crop, one under the other. 240 until measured.
+   */
+  let room = $derived(width > 0 ? Math.max(160, width / K - 6) : SPAN);
 
-  /** A section's lowest point: its band, or past its lowest label (as PanelSection lays it out). */
-  const bottom = (s: Section) => {
-    const band = bands.get(s.id) ?? { y0: 0, y1: s.height, x0: 0, x1: s.width };
+  /** The rows of a tall section kept around some of its controls. */
+  function rowsAround(s: Section, ys: number[]): Partial<Band> {
+    if (s.height <= TALL || !ys.length) return {};
+    const c = (Math.min(...ys) + Math.max(...ys)) / 2;
+    const reach = Math.max(REACH, (Math.max(...ys) - Math.min(...ys)) / 2 + 30);
+    const kept = s.items.map((it) => it.y).filter((y) => Math.abs(y - c) <= reach);
+    // Room above the kept controls for their shapes and a line of labels over them (a dial's top
+    // position); below, the section grows to hold its labels.
+    return { y0: Math.max(0, Math.min(...kept) - 34), y1: Math.min(s.height, Math.max(...kept) + 20) };
+  }
+
+  /**
+   * The crops to draw, each a band for every drawn section. Sections drawn together show whole,
+   * and so does a section drawn alone that is at most half as wide again as the card can show (it
+   * scrolls sideways to the step's controls). A wider one is divided across into parts that do not
+   * overlap, and the parts that hold the step's controls are drawn one under the other.
+   */
+  /**
+   * Sections drawn together. The step's sections far apart on the panel (the two EFIS panels at
+   * either end of the glareshield) are drawn each on its own, one under the other.
+   */
+  let groups = $derived.by((): Section[][] => {
+    if (focused.length < 2) return [drawn];
+    const spread = Math.max(...focused.map((s) => s.x + s.width)) - Math.min(...focused.map((s) => s.x));
+    return spread > room * 1.5 ? focused.map((s) => [s]) : [drawn];
+  });
+
+  let crops = $derived(groups.flatMap((g) => cropsOf(g).map((bands) => ({ group: g, bands }))));
+
+  function cropsOf(group: Section[]): Map<string, Band>[] {
+    const only = group.length === 1 ? group[0] : undefined;
+    const mine = only ? only.items.filter((_, i) => targets.some((t) => t.section === only.id && t.item === i)) : [];
+    if (!only || !mine.length) return [new Map(group.map((s) => [s.id, wholeOf(s)]))];
+    const rows = (ys: number[]) => ({ ...wholeOf(only), ...rowsAround(only, ys) });
+    if (only.width <= room * 1.5) return [new Map([[only.id, rows(mine.map((it) => it.y))]])];
+    const parts = Math.ceil(only.width / room);
+    const step = only.width / parts;
+    const out: Map<string, Band>[] = [];
+    for (let n = 0; n < parts; n++) {
+      const [x0, x1] = [n * step, (n + 1) * step];
+      const here = mine.filter((it) => it.x >= x0 && it.x < x1);
+      if (here.length) out.push(new Map([[only.id, { ...rows(here.map((it) => it.y)), x0, x1 }]]));
+    }
+    return out;
+  }
+
+  /** How a section's labels lay out in a band at `kText` pixels per unit, title at `titleTop`. */
+  function layoutFor(s: Section, band: Band, kText: number, titleTop: number) {
     const shown = s.items.flatMap((item, i) =>
-      item.y >= band.y0 + 10 && item.y <= band.y1 - 10 && item.x >= band.x0 + 4 && item.x <= band.x1 - 4 ? [i] : [],
+      item.y >= band.y0 + 10 && item.y <= band.y1 - 10 && withinAcross(item, band) ? [i] : [],
     );
     const on = (i: number) => targets.find((t) => t.section === s.id && t.item === i);
-    const layout = layoutSection(
+    return layoutSection(
       s,
       shown,
       (i) => {
@@ -120,16 +134,58 @@ the card; text keeps 3.0's sizes.
         };
       },
       kText,
-      top(s) - s.y,
-      { x0: band.x0, x1: band.x1 },
+      titleTop,
+      // Labels may reach past a crop's edge; the frame fits them, so check them against the section.
+      { x0: 0, x1: s.width },
     );
-    return s.y + Math.max(band.y1, layout.bottom);
-  };
-  let box = $derived.by(() => {
-    const y = Math.min(...drawn.map(top)) - 2;
-    const h = Math.max(...drawn.map(bottom)) + 2 - y;
-    return { x: x0, y, w, h };
+  }
+
+  const topOf = (s: Section, band: Band) => s.y + Math.max(0, band.y0 > 0 ? band.y0 - 18 : 0);
+
+  /**
+   * One crop's frames, box and the scale that fits the card. A section drawn alone is framed to
+   * what it shows (its controls and labels, with room for its title), so the drawing fills the
+   * card instead of the section's empty corners.
+   */
+  function sizeAt(group: Section[], bands: Map<string, Band>, kText: number) {
+    const frames = new Map<string, Band | undefined>();
+    let box: { x: number; y: number; w: number; h: number };
+    const only = group.length === 1 ? group[0] : undefined;
+    if (only) {
+      const band = bands.get(only.id) ?? wholeOf(only);
+      const e = layoutFor(only, band, kText, -1000).extent;
+      // Fitted to what is drawn, even where a control at the crop's edge reaches past it.
+      const x0 = e.x0 - 8;
+      const titleW = 16 + em(only.title.toUpperCase()) * (PX.title / kText);
+      const f = { x0, x1: Math.max(e.x1 + 8, x0 + titleW), y0: e.y0 - 22, y1: e.y1 + 6 };
+      frames.set(only.id, f);
+      box = { x: only.x + f.x0 - 2, y: only.y + f.y0 - 2, w: f.x1 - f.x0 + 4, h: f.y1 - f.y0 + 4 };
+    } else {
+      const band = (s: Section) => bands.get(s.id) ?? wholeOf(s);
+      const x = Math.min(...group.map((s) => s.x + band(s).x0)) - 2;
+      const y = Math.min(...group.map((s) => topOf(s, band(s)))) - 2;
+      const right = Math.max(...group.map((s) => s.x + band(s).x1)) + 2;
+      const low = Math.max(
+        ...group.map((s) => s.y + Math.max(band(s).y1, layoutFor(s, band(s), kText, topOf(s, band(s)) - s.y).bottom)),
+      );
+      box = { x, y, w: right - x, h: low + 2 - y };
+    }
+    return { bands, frames, box, k: K };
+  }
+  let views = $derived(crops.map((c) => ({ ...sizeAt(c.group, c.bands, K), group: c.group })));
+
+  /** A drawing wider than the card starts scrolled to the step's controls. */
+  let wrap = $state<HTMLDivElement | null>(null);
+  $effect(() => {
+    const v = views[0];
+    const only = v && v.group.length === 1 ? v.group[0] : undefined;
+    if (!wrap || !only || !v || wrap.scrollWidth <= wrap.clientWidth) return;
+    const xs = only.items.filter((_, i) => targets.some((t) => t.section === only.id && t.item === i)).map((it) => it.x);
+    if (!xs.length) return;
+    const mid = only.x + (Math.min(...xs) + Math.max(...xs)) / 2;
+    wrap.scrollLeft = (mid - v.box.x) * v.k - wrap.clientWidth / 2;
   });
+  const kText = K;
 
   let described = $derived(
     targets
@@ -144,27 +200,36 @@ the card; text keeps 3.0's sizes.
   let title = $derived(focused.map((s) => s.title).join(" and "));
 </script>
 
-<div class="wrap" bind:clientWidth={width}>
-  <svg
-    class="schematic"
-    viewBox="{box.x} {box.y} {box.w} {box.h}"
-    style:width="min(100%, {Math.round(box.w * SCALE)}px)"
-    role="img"
-    aria-label="{title} panel, schematic.{described ? ` This step: ${described}.` : ''}"
-  >
-    {#each drawn as s (s.id)}
-      <PanelSection section={s} {targets} {guardClosed} band={bands.get(s.id) ?? { y0: 0, y1: s.height, x0: 0, x1: s.width }} k={kText} />
-    {/each}
-  </svg>
+<div class="wrap" bind:clientWidth={width} bind:this={wrap}>
+  {#each views as v, n (n)}
+    <svg
+      class="schematic"
+      viewBox="{v.box.x} {v.box.y} {v.box.w} {v.box.h}"
+      style:width="{v.box.w * v.k}px"
+      role="img"
+      aria-label="{title} panel, schematic{views.length > 1 ? `, part ${n + 1} of ${views.length}` : ''}.{described ? ` This step: ${described}.` : ''}"
+    >
+      {#each v.group as s (s.id)}
+        <PanelSection section={s} {targets} {guardClosed} band={v.bands.get(s.id) ?? wholeOf(s)} frame={v.frames.get(s.id)} k={kText} />
+      {/each}
+    </svg>
+  {/each}
 </div>
 
 <style>
   .wrap {
     width: 100%;
+    overflow-x: auto;
   }
   .schematic {
     display: block;
     height: auto;
     margin: 0 auto;
+  }
+  /* A drawing split in two: the second part starts below a rule, as in 3.0. */
+  .schematic + .schematic {
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
+    border-top: 1px dashed var(--line);
   }
 </style>

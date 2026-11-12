@@ -86,6 +86,34 @@ const SHOTS = [
   },
   { name: "settings", app: { hash: "#/settings" }, base: { hash: "#settings" } },
   {
+    // Before start: MCP (glareshield). The app lists Landing gear pins first, so its rows run one ahead.
+    name: "panel-mcp",
+    only: "desktop",
+    app: { hash: "#/phase/before-start", before: [click(".it .row", 2)] },
+    base: { hash: "#before-start", before: [click(".it .chev", 1)] },
+  },
+  {
+    // Before start: door lights (overhead). The app lists Landing gear pins first, so its rows run one ahead.
+    name: "panel-doors",
+    only: "desktop",
+    app: { hash: "#/phase/before-start", before: [click(".it .row", 3)] },
+    base: { hash: "#before-start", before: [click(".it .chev", 2)] },
+  },
+  {
+    // Before start: TERR (main panel). The app lists Landing gear pins first, so its rows run one ahead.
+    name: "panel-terr",
+    only: "desktop",
+    app: { hash: "#/phase/before-start", before: [click(".it .row", 4)] },
+    base: { hash: "#before-start", before: [click(".it .chev", 3)] },
+  },
+  {
+    // Before start: fuel pumps (overhead). The app lists Landing gear pins first, so its rows run one ahead.
+    name: "panel-fuel",
+    only: "desktop",
+    app: { hash: "#/phase/before-start", before: [click(".it .row", 5)] },
+    base: { hash: "#before-start", before: [click(".it .chev", 4)] },
+  },
+  {
     name: "menu",
     only: "tablet",
     app: { hash: "", before: [click('[aria-controls="drawer"]')] },

@@ -25,10 +25,11 @@ export const positionsOf = (item: PanelItem): string[] =>
     .filter(Boolean);
 
 /**
- * A toggle switch in 3.0's proportions: a slim track `w` wide and `h` tall with round ends, a red
- * guard `guard` outside it, and position labels `gap` beyond the guard or track.
+ * A toggle switch near 3.0's proportions: a slim track `w` wide and `h` tall with round ends, a red
+ * guard `guard` outside it, and position labels `gap` beyond the guard or track. The knob leaves a
+ * clear ring of track around it, so it never crowds the outline.
  */
-export const TOGGLE = { w: 7, h: 22, guard: 2.8, gap: 3.6, knob: 2.3 } as const;
+export const TOGGLE = { w: 8, h: 22, guard: 2.8, gap: 3.6, knob: 2 } as const;
 /** How far a toggle reaches either side of its center, guard included. */
 const toggleHalfWidth = (guarded: boolean) => TOGGLE.w / 2 + (guarded ? TOGGLE.guard : 0);
 
@@ -41,7 +42,7 @@ export function half(item: PanelItem): number {
     case "gauge":
       return 15;
     case "push_button":
-      return 11;
+      return BUTTON.h / 2 + (item.guarded ? 2 : 0);
     case "light":
       return 10;
     case "lever":
@@ -55,13 +56,20 @@ export function half(item: PanelItem): number {
 
 /** Every light is the same size, as in 3.0, so lights side by side line up. */
 export const LAMP = { w: 50, h: 20 } as const;
+/** A push button, as 3.0 draws it: a key with its name inside and a line along its bottom. */
+export const BUTTON = { w: 42, h: 22 } as const;
 
 /**
  * A light's words wrapped to its fixed width, up to three lines as 3.0 does, and their size in
  * pixels: 3.0's size, smaller only when a single word would not fit across the light.
  */
-export function lampText(item: PanelItem, k: number, px: number): { lines: string[]; px: number } {
-  const room = (LAMP.w - 4) * k;
+export function lampText(
+  item: PanelItem,
+  k: number,
+  px: number,
+  width: number = LAMP.w,
+): { lines: string[]; px: number } {
+  const room = (width - 5) * k;
   const words = item.label.split(" ");
   const size = Math.min(px, room / widest(words));
   const out: string[] = [];
@@ -92,7 +100,10 @@ export function lines(label: string, max = 12): string[] {
 
 /** Whether a control has its name written under it (lights and screens carry it inside). */
 export const labelled = (item: PanelItem) =>
-  item.kind !== "light" && item.kind !== "readout" && item.kind !== "display_unit";
+  item.kind !== "light" &&
+  item.kind !== "readout" &&
+  item.kind !== "display_unit" &&
+  item.kind !== "push_button";
 
 /** The smallest a name may shrink to, in pixels, when its neighbors leave little room. */
 const MIN_NAME = 8.5;
@@ -143,6 +154,10 @@ const ANGLES: Record<number, number[]> = {
 export const angle = (index: number, count: number) =>
   count < 2 ? 0 : (ANGLES[count]?.[index] ?? -125 + (250 * index) / (count - 1));
 
+/** Whether a control belongs to a part of a section drawn across: its center lies in it. */
+export const withinAcross = (item: PanelItem, band: { x0: number; x1: number }) =>
+  item.x >= band.x0 && item.x < band.x1;
+
 /** A selector position's angle: the pack's, as on the panel, or else spread over the top. */
 export const angleOf = (item: PanelItem, index: number) =>
   item.angles?.[index] ?? angle(index, positionsOf(item).length);
@@ -165,9 +180,9 @@ export function halfWidth(item: PanelItem): number {
     case "selector":
       return 15.5;
     case "push_button":
-      return item.guarded ? 14 : 11;
+      return BUTTON.w / 2 + (item.guarded ? 2 : 0);
     case "light":
-      return 19;
+      return LAMP.w / 2;
     case "lever":
       return 8;
     case "handle":
@@ -204,19 +219,20 @@ export type SectionLayout = {
   /** The share of 3.0's text sizes this section uses: 1, or less where controls sit close. */
   scale: number;
   bottom: number;
+  /** Everything drawn (shapes and labels, not the title), so a frame can fit its contents. */
+  extent: { x0: number; y0: number; x1: number; y1: number };
+  /** Every label found a place clear of everything else. The pack's panels are tested for it. */
+  clear: boolean;
 };
-
-/** The smallest share of 3.0's text sizes a crowded section may use, as 3.0 also shrank. */
-const MIN_SCALE = 0.62;
 
 /**
  * Places every label in a section so none overlaps a control or another label, keeping all of
  * them, as 3.0 did (Phase 2 brief, step 7). Controls stay where the pack puts them and are
  * placed first. Then, the step's controls
  * first and the rest from left to right: a switch's position labels go on its right, or its left
- * if the right is taken; a name goes under its control, or a line or more lower. If anything
- * still collides, the section's text shrinks a step and the placing starts again, down to
- * MIN_SCALE of 3.0's sizes, so a roomy panel keeps full size and a crowded one stays readable.
+ * if the right is taken; a name goes under its control, or a line or more lower. Text never
+ * shrinks: every label in every panel is the same size, so the pack's layout must leave room
+ * (`clear` says whether it did, and a test checks every bundled panel).
  * `target(i)` gives whether item `i` is one of the step's controls, its target and its rest.
  */
 export function layoutSection(
@@ -228,13 +244,8 @@ export function layoutSection(
   /** The part of the section drawn across (a wide section is cropped around the step). */
   bounds: { x0: number; x1: number } = { x0: 0, x1: section.width },
 ): SectionLayout {
-  let last: SectionLayout | null = null;
-  for (let scale = 1; scale >= MIN_SCALE - 0.001; scale -= 0.04) {
-    const attempt = place(section, shown, target, k, titleTop, scale, bounds);
-    last = attempt.layout;
-    if (attempt.clear) return attempt.layout;
-  }
-  return last as SectionLayout;
+  const attempt = place(section, shown, target, k, titleTop, 1, bounds);
+  return { ...attempt.layout, clear: attempt.clear };
 }
 
 function place(
@@ -245,7 +256,7 @@ function place(
   titleTop: number,
   scale: number,
   bounds: { x0: number; x1: number },
-): { layout: SectionLayout; clear: boolean } {
+): { layout: Omit<SectionLayout, "clear">; clear: boolean } {
   const placed: (Box & { owner?: number })[] = [];
   let clear = true;
   const posPx = PX.pos * scale;
@@ -381,5 +392,12 @@ function place(
     }
     items.set(i, layout);
   }
-  return { layout: { items, scale, bottom: Math.max(...placed.map((b) => b.y1)) + 4 }, clear };
+  const drawn = placed.slice(1);
+  const extent = {
+    x0: Math.min(...drawn.map((b) => b.x0)),
+    y0: Math.min(...drawn.map((b) => b.y0)),
+    x1: Math.max(...drawn.map((b) => b.x1)),
+    y1: Math.max(...drawn.map((b) => b.y1)),
+  };
+  return { layout: { items, scale, bottom: Math.max(...placed.map((b) => b.y1)) + 4, extent }, clear };
 }

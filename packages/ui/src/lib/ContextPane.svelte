@@ -200,8 +200,9 @@ the list on wide screens and inside the step on narrow ones.
     font-size: 0.8125rem;
     font-weight: 600;
   }
+  /* The drawing takes the card's width; its own frame gives it a margin. */
   .pad {
-    padding: 0.5rem 0.75rem;
+    padding: 0.25rem;
   }
   /* The region's orientation captions around the panel, as 3.0 shows them. */
   .edge {

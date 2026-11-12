@@ -1196,7 +1196,7 @@ assertion_line: 34
         "text": "ENG VALVE CLOSED, SPAR VALVE CLOSED AND FILTER BYPASS LIGHTS",
         "expect": "VALVE LIGHTS ON, FILTER BYPASS OUT",
         "controls": [
-          "fuelpumps"
+          "fuellts"
         ],
         "why": "With the start levers in CUTOFF, both fuel valves should be shut.",
         "confirmed_by": [

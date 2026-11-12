@@ -7,21 +7,21 @@ assertion_line: 38
     "id": "oh",
     "title": "Forward overhead",
     "width": 1344.0,
-    "height": 1635.0,
+    "height": 1682.0,
     "sections": [
       {
         "id": "fctl",
         "title": "Flight control",
         "x": 10.0,
         "y": 6.0,
-        "width": 255.0,
-        "height": 344.0,
+        "width": 263.0,
+        "height": 348.0,
         "items": [
           {
             "kind": "toggle_switch",
             "label": "FLT CONTROL A",
             "guarded": true,
-            "x": 50.0,
+            "x": 54.0,
             "y": 64.0,
             "controls": [
               "fltctrl"
@@ -34,7 +34,7 @@ assertion_line: 38
             "kind": "toggle_switch",
             "label": "FLT CONTROL B",
             "guarded": true,
-            "x": 120.0,
+            "x": 124.0,
             "y": 64.0,
             "controls": [
               "fltctrl"
@@ -47,7 +47,7 @@ assertion_line: 38
             "kind": "light",
             "label": "LOW QUANTITY",
             "color": "amber",
-            "x": 208.0,
+            "x": 212.0,
             "y": 34.0,
             "controls": [
               "stbyhyd"
@@ -58,7 +58,7 @@ assertion_line: 38
             "kind": "light",
             "label": "LOW PRESSURE",
             "color": "amber",
-            "x": 208.0,
+            "x": 212.0,
             "y": 62.0,
             "controls": [
               "stbyhyd"
@@ -69,7 +69,7 @@ assertion_line: 38
             "kind": "light",
             "label": "STBY RUD ON",
             "color": "amber",
-            "x": 208.0,
+            "x": 212.0,
             "y": 89.0,
             "controls": [
               "stbyhyd"
@@ -80,7 +80,7 @@ assertion_line: 38
             "kind": "light",
             "label": "LOW PRESSURE",
             "color": "amber",
-            "x": 48.0,
+            "x": 52.0,
             "y": 129.0,
             "controls": [
               "fctllts"
@@ -91,7 +91,7 @@ assertion_line: 38
             "kind": "light",
             "label": "LOW PRESSURE",
             "color": "amber",
-            "x": 112.0,
+            "x": 116.0,
             "y": 129.0,
             "controls": [
               "fctllts"
@@ -102,7 +102,7 @@ assertion_line: 38
             "kind": "toggle_switch",
             "label": "ALT FLAPS MASTER",
             "guarded": true,
-            "x": 160.0,
+            "x": 164.0,
             "y": 138.0,
             "controls": [
               "altflap"
@@ -114,7 +114,7 @@ assertion_line: 38
           {
             "kind": "toggle_switch",
             "label": "ALT FLAPS",
-            "x": 219.0,
+            "x": 223.0,
             "y": 140.0,
             "controls": [
               "altflap"
@@ -127,7 +127,7 @@ assertion_line: 38
             "kind": "toggle_switch",
             "label": "SPOILER A",
             "guarded": true,
-            "x": 50.0,
+            "x": 54.0,
             "y": 199.0,
             "controls": [
               "spoilsw"
@@ -140,7 +140,7 @@ assertion_line: 38
             "kind": "toggle_switch",
             "label": "SPOILER B",
             "guarded": true,
-            "x": 120.0,
+            "x": 124.0,
             "y": 199.0,
             "controls": [
               "spoilsw"
@@ -153,7 +153,7 @@ assertion_line: 38
             "kind": "light",
             "label": "FEEL DIFF PRESS",
             "color": "amber",
-            "x": 208.0,
+            "x": 212.0,
             "y": 193.0,
             "controls": [
               "fctllts"
@@ -164,7 +164,7 @@ assertion_line: 38
             "kind": "light",
             "label": "SPEED TRIM FAIL",
             "color": "amber",
-            "x": 208.0,
+            "x": 212.0,
             "y": 220.0,
             "controls": [
               "fctllts"
@@ -175,7 +175,7 @@ assertion_line: 38
             "kind": "light",
             "label": "MACH TRIM FAIL",
             "color": "amber",
-            "x": 208.0,
+            "x": 212.0,
             "y": 246.0,
             "controls": [
               "fctllts"
@@ -186,7 +186,7 @@ assertion_line: 38
             "kind": "light",
             "label": "AUTO SLAT FAIL",
             "color": "amber",
-            "x": 208.0,
+            "x": 212.0,
             "y": 273.0,
             "controls": [
               "fctllts"
@@ -197,7 +197,7 @@ assertion_line: 38
             "kind": "light",
             "label": "SPOILERS",
             "color": "amber",
-            "x": 208.0,
+            "x": 212.0,
             "y": 299.0,
             "controls": [
               "fctllts"
@@ -208,7 +208,7 @@ assertion_line: 38
             "kind": "light",
             "label": "YAW DAMPER",
             "color": "amber",
-            "x": 80.0,
+            "x": 84.0,
             "y": 279.0,
             "controls": [
               "yawd"
@@ -218,7 +218,7 @@ assertion_line: 38
           {
             "kind": "toggle_switch",
             "label": "YAW DAMPER",
-            "x": 80.0,
+            "x": 84.0,
             "y": 318.0,
             "controls": [
               "yawd"
@@ -324,7 +324,7 @@ assertion_line: 38
             "x": 60.0,
             "y": 30.0,
             "controls": [
-              "fuelpumps"
+              "fuellts"
             ],
             "description": "Engine 1 fuel valve. Out: open. Dim: closed. Bright: moving or disagrees with the start lever."
           },
@@ -335,7 +335,7 @@ assertion_line: 38
             "x": 60.0,
             "y": 67.0,
             "controls": [
-              "fuelpumps"
+              "fuellts"
             ],
             "description": "Engine 1 spar valve. Out: open. Dim: closed. Bright: moving or disagrees with the start lever."
           },
@@ -353,7 +353,7 @@ assertion_line: 38
             "x": 274.0,
             "y": 30.0,
             "controls": [
-              "fuelpumps"
+              "fuellts"
             ],
             "description": "Engine 2 fuel valve. Out: open. Dim: closed. Bright: moving or disagrees with the start lever."
           },
@@ -364,7 +364,7 @@ assertion_line: 38
             "x": 274.0,
             "y": 67.0,
             "controls": [
-              "fuelpumps"
+              "fuellts"
             ],
             "description": "Engine 2 spar valve. Out: open. Dim: closed. Bright: moving or disagrees with the start lever."
           },
@@ -375,7 +375,7 @@ assertion_line: 38
             "x": 65.0,
             "y": 129.0,
             "controls": [
-              "fuelpumps"
+              "fuellts"
             ],
             "description": "Fuel filter clogged, about to bypass or bypassing."
           },
@@ -397,7 +397,7 @@ assertion_line: 38
             "x": 269.0,
             "y": 129.0,
             "controls": [
-              "fuelpumps"
+              "fuellts"
             ],
             "description": "Fuel filter clogged, about to bypass or bypassing."
           },
@@ -556,9 +556,9 @@ assertion_line: 38
       {
         "id": "elecu",
         "title": "Electrical meters",
-        "x": 269.0,
+        "x": 277.0,
         "y": 120.0,
-        "width": 225.0,
+        "width": 231.0,
         "height": 318.0,
         "items": [
           {
@@ -609,7 +609,7 @@ assertion_line: 38
           {
             "kind": "push_button",
             "label": "MAINT",
-            "x": 199.0,
+            "x": 204.0,
             "y": 148.0,
             "controls": [
               "eleclts"
@@ -784,7 +784,7 @@ assertion_line: 38
         "id": "elecl",
         "title": "Ground power and generators",
         "x": 252.0,
-        "y": 1166.0,
+        "y": 1213.0,
         "width": 273.0,
         "height": 281.0,
         "items": [
@@ -982,7 +982,7 @@ assertion_line: 38
         "id": "col",
         "title": "Lights and service",
         "x": 498.0,
-        "y": 395.0,
+        "y": 442.0,
         "width": 161.0,
         "height": 767.0,
         "items": [
@@ -1141,7 +1141,7 @@ assertion_line: 38
         "id": "rwip",
         "title": "R wiper",
         "x": 482.0,
-        "y": 1451.0,
+        "y": 1498.0,
         "width": 110.0,
         "height": 84.0,
         "items": [
@@ -1698,7 +1698,7 @@ assertion_line: 38
         "id": "door",
         "title": "Doors",
         "x": 596.0,
-        "y": 1166.0,
+        "y": 1213.0,
         "width": 227.0,
         "height": 116.0,
         "items": [
@@ -1841,14 +1841,14 @@ assertion_line: 38
         "id": "cvr",
         "title": "Cockpit voice recorder microphone monitor",
         "x": 596.0,
-        "y": 1286.0,
-        "width": 210.0,
+        "y": 1333.0,
+        "width": 211.0,
         "height": 63.0,
         "items": [
           {
             "kind": "push_button",
             "label": "ERASE",
-            "x": 82.0,
+            "x": 85.0,
             "y": 31.0,
             "controls": [
               "cvrpanel"
@@ -1870,7 +1870,7 @@ assertion_line: 38
           {
             "kind": "push_button",
             "label": "TEST",
-            "x": 124.0,
+            "x": 132.0,
             "y": 31.0,
             "controls": [
               "cvrpanel"
@@ -1881,7 +1881,7 @@ assertion_line: 38
           {
             "kind": "push_button",
             "label": "HEADPHONE",
-            "x": 176.0,
+            "x": 184.0,
             "y": 31.0,
             "controls": [
               "cvrpanel"
@@ -1895,7 +1895,7 @@ assertion_line: 38
         "id": "cab",
         "title": "Cabin altitude",
         "x": 596.0,
-        "y": 1353.0,
+        "y": 1400.0,
         "width": 218.0,
         "height": 168.0,
         "items": [
@@ -2401,7 +2401,7 @@ assertion_line: 38
         "id": "ltl",
         "title": "Landing and taxi lights",
         "x": 10.0,
-        "y": 1451.0,
+        "y": 1498.0,
         "width": 300.0,
         "height": 90.0,
         "items": [
@@ -2471,7 +2471,7 @@ assertion_line: 38
         "id": "apu",
         "title": "APU",
         "x": 314.0,
-        "y": 1451.0,
+        "y": 1498.0,
         "width": 84.0,
         "height": 90.0,
         "items": [
@@ -2493,7 +2493,7 @@ assertion_line: 38
         "id": "start",
         "title": "Engine start",
         "x": 402.0,
-        "y": 1539.0,
+        "y": 1586.0,
         "width": 290.0,
         "height": 90.0,
         "items": [
@@ -2539,7 +2539,7 @@ assertion_line: 38
         "id": "lte",
         "title": "Exterior lights",
         "x": 696.0,
-        "y": 1525.0,
+        "y": 1572.0,
         "width": 294.0,
         "height": 90.0,
         "items": [
@@ -2653,7 +2653,7 @@ assertion_line: 38
   {
     "id": "aft",
     "title": "Aft overhead",
-    "width": 1109.0,
+    "width": 1175.0,
     "height": 495.0,
     "sections": [
       {
@@ -2910,7 +2910,7 @@ assertion_line: 38
       {
         "id": "svc",
         "title": "Service interphone",
-        "x": 1003.0,
+        "x": 1069.0,
         "y": 220.0,
         "width": 96.0,
         "height": 90.0,
@@ -3109,14 +3109,14 @@ assertion_line: 38
         "title": "Flight recorder and Mach test",
         "x": 806.0,
         "y": 182.0,
-        "width": 193.0,
-        "height": 94.0,
+        "width": 259.0,
+        "height": 110.0,
         "items": [
           {
             "kind": "toggle_switch",
             "label": "FLIGHT RECORDER",
             "guarded": true,
-            "x": 44.0,
+            "x": 52.0,
             "y": 42.0,
             "controls": [
               "fltrec"
@@ -3129,8 +3129,8 @@ assertion_line: 38
             "kind": "light",
             "label": "OFF",
             "color": "amber",
-            "x": 104.0,
-            "y": 66.0,
+            "x": 119.0,
+            "y": 82.0,
             "controls": [
               "fltrec"
             ],
@@ -3139,8 +3139,8 @@ assertion_line: 38
           {
             "kind": "push_button",
             "label": "MACH TEST 1",
-            "x": 146.0,
-            "y": 52.0,
+            "x": 167.0,
+            "y": 53.0,
             "controls": [
               "mach"
             ],
@@ -3150,8 +3150,8 @@ assertion_line: 38
           {
             "kind": "push_button",
             "label": "MACH TEST 2",
-            "x": 176.0,
-            "y": 52.0,
+            "x": 219.0,
+            "y": 53.0,
             "controls": [
               "mach"
             ],
@@ -3164,7 +3164,7 @@ assertion_line: 38
         "id": "stall",
         "title": "Stall warning test",
         "x": 800.0,
-        "y": 280.0,
+        "y": 296.0,
         "width": 192.0,
         "height": 61.0,
         "items": [

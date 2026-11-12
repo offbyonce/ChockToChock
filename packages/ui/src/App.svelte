@@ -360,7 +360,7 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
 <style>
   .app {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) clamp(24rem, 33vw, 40rem);
+    grid-template-columns: minmax(0, 1fr) clamp(26rem, 36vw, 44rem);
     align-items: start;
   }
   /* Flow view gives the map and drawing a wider column, as 3.0's does. */
@@ -388,7 +388,7 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
     position: sticky;
     top: calc(var(--top-h) + var(--rail-h));
     height: calc(100vh - var(--top-h) - var(--rail-h));
-    padding: 1.375rem 1.25rem;
+    padding: 1.375rem 1rem;
     overflow-y: auto;
     border-left: 1px solid var(--line);
     background: var(--surface);

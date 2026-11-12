@@ -26,5 +26,6 @@ Never rewrite an accepted record; add a new one that supersedes it.
 | [0015](0015-resting-positions.md) | Resting positions for controls a step does not use | Accepted |
 | [0016](0016-levers-handles-and-lit-lights.md) | Levers, handles, and lights a step expects on | Accepted |
 | [0017](0017-selector-dials.md) | Selector dials: every position named, at its real angle | Proposed |
+| [0018](0018-lights-and-switch-values.md) | A value about a switch does not light its lights | Proposed |
 
 Template: Context, Decision, Consequences. Keep it under a page.

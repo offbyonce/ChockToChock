@@ -22,7 +22,8 @@ pub struct ItemTarget {
     /// The index of the target position in the item's `positions`, when the step names one.
     pub position: Option<usize>,
     /// A light the step expects on: its `lit_at` position is the step's target on an item it
-    /// shares a control with, or (with no `lit_at`) the step's value says it is on, as 3.0 read it.
+    /// shares a control with, or (with no `lit_at`) the step's value says it is on, as 3.0 read it,
+    /// unless that value names a position of a switch the step uses (decision 0018).
     pub lit: bool,
 }
 
@@ -70,7 +71,14 @@ pub fn step_targets(pack: &FlatPack, step: &Step) -> Vec<ItemTarget> {
                                 && t.and_then(|t| o.positions.as_deref()?.split(',').nth(t))
                                     .is_some_and(|p| p.trim() == at)
                         }),
-                        None => says_on(&step.expect),
+                        // A value naming a switch's position (pumps ON) is about the switch, not
+                        // its lights, which may well go out (decision 0018).
+                        None => {
+                            says_on(&step.expect)
+                                && !used.iter().any(|(o, t)| {
+                                    o.kind != checklist_core::PanelItemKind::Light && t.is_some()
+                                })
+                        }
                     };
                 out.push(ItemTarget {
                     section: section.id.clone(),
@@ -139,6 +147,24 @@ mod tests {
             .unwrap();
         assert!(!handle.lit);
         assert!(handle.position.is_some(), "SET is the handle's target");
+    }
+
+    #[test]
+    fn switching_the_fuel_pumps_on_does_not_light_their_low_pressure_lights() {
+        // "ALL ON" names the pump switches' position; their LOW PRESSURE lights go out.
+        let pack = ifly_pack();
+        let step = pack
+            .lists
+            .iter()
+            .flat_map(|l| &l.steps)
+            .find(|s| s.id.as_str() == "ifly-737-max8.before-start.fuel-pump-switches")
+            .unwrap();
+        let targets = step_targets(&pack, step);
+        assert!(
+            targets.iter().any(|t| t.position.is_some()),
+            "the switches are set ON"
+        );
+        assert!(targets.iter().all(|t| !t.lit), "no light is expected on");
     }
 
     #[test]
