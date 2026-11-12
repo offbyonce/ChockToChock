@@ -7,12 +7,15 @@ the header, the CHECK and IF NOT callouts, where it is, the controls drawing (co
 phones), and what the control does.
 -->
 <script lang="ts">
-  import type { ItemTarget, Panel } from "@chocktochock/bindings";
+  import type { ItemTarget, Panel, Step } from "@chocktochock/bindings";
   import Button from "../ds/Button.svelte";
   import Callout from "../ds/Callout.svelte";
   import PaneHeader from "../ds/PaneHeader.svelte";
   import SectionTitle from "../ds/SectionTitle.svelte";
+  import Locator from "../lib/Locator.svelte";
+  import OverviewMap from "../lib/OverviewMap.svelte";
   import PanelSchematic from "../lib/PanelSchematic.svelte";
+  import { type PackIndex, splitArea } from "../pack-index";
   import { FUEL_STEP } from "./data";
 
   let {
@@ -20,7 +23,24 @@ phones), and what the control does.
     targets,
     collapsible = false,
     heading = true,
-  }: { panel: Panel | null; targets: ItemTarget[]; collapsible?: boolean; heading?: boolean } = $props();
+    index = null,
+    step = null,
+    details = false,
+  }: {
+    panel: Panel | null;
+    targets: ItemTarget[];
+    collapsible?: boolean;
+    heading?: boolean;
+    index?: PackIndex | null;
+    step?: Step | null;
+    /** Show the step's own CHECK, IF NOT and Why: in the sheet, where the list is hidden; the side
+     * pane leaves them to the list, as now. */
+    details?: boolean;
+  } = $props();
+  let place = $derived(index && step ? index.place(step) : null);
+  let region = $derived(index && place ? (index.region(place.zone)?.region ?? null) : null);
+  /** "Forward overhead · P5", as the side pane names it. */
+  let area = $derived(place ? splitArea(place.zone.area) : null);
   let drawing = $state(false);
   let shown = $derived(!collapsible || drawing);
 </script>
@@ -32,14 +52,26 @@ phones), and what the control does.
     <p class="where">{FUEL_STEP.where}</p>
   {/if}
   <p class="value">{FUEL_STEP.value}</p>
-  <div class="cells">
-    <Callout caption="Check" title={FUEL_STEP.check.title} detail={FUEL_STEP.check.detail} />
-    <Callout tone="warn" caption="If not" title={FUEL_STEP.ifNot.title} detail={FUEL_STEP.ifNot.detail} />
-  </div>
-  <section>
-    <SectionTitle>Why</SectionTitle>
-    <p>{FUEL_STEP.why}</p>
-  </section>
+  {#if details}
+    <div class="cells">
+      <Callout caption="Check" title={FUEL_STEP.check.title} detail={FUEL_STEP.check.detail} />
+      <Callout tone="warn" caption="If not" title={FUEL_STEP.ifNot.title} detail={FUEL_STEP.ifNot.detail} />
+    </div>
+    <section>
+      <SectionTitle>Why</SectionTitle>
+      <p>{FUEL_STEP.why}</p>
+    </section>
+  {/if}
+  {#if index && place && area}
+    <section>
+      <div class="ctl">
+        <SectionTitle>Where it is</SectionTitle>
+        <span class="area"><b>{region?.name ?? area[0]}</b>{#if region?.code ?? area[1]}{" · "}{region?.code ?? area[1]}{/if}</span>
+      </div>
+      <Locator {index} zone={place.zone} />
+      <OverviewMap {index} zone={place.zone} />
+    </section>
+  {/if}
   <section>
     <div class="ctl">
       <SectionTitle>The controls</SectionTitle>
@@ -48,7 +80,9 @@ phones), and what the control does.
       {/if}
     </div>
     {#if shown && panel}
+      {#if region?.top}<p class="edge">↑ {region.top}</p>{/if}
       <PanelSchematic {panel} focus={["fuel"]} {targets} />
+      {#if region?.bottom}<p class="edge">↓ {region.bottom}</p>{/if}
     {/if}
   </section>
   <section>
@@ -91,7 +125,23 @@ phones), and what the control does.
   }
   .ctl {
     display: flex;
+    flex-wrap: wrap;
     align-items: baseline;
     justify-content: space-between;
+    gap: var(--space-2);
+  }
+  .area {
+    font-size: var(--text-sm);
+  }
+  .area b {
+    font-weight: var(--weight-bold);
+  }
+  .edge {
+    margin: var(--space-1) 0;
+    color: var(--muted);
+    font: var(--weight-bold) var(--text-xs) / var(--leading-normal) var(--sans);
+    letter-spacing: var(--tracking-caps);
+    text-align: center;
+    text-transform: uppercase;
   }
 </style>

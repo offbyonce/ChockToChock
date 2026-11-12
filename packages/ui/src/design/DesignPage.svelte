@@ -7,7 +7,8 @@ the address, `?view=gallery|phase|step|flow|setup&theme=dark|light`. Mockups sho
 layouts at whatever size the window is.
 -->
 <script lang="ts">
-  import type { ItemTarget, Panel } from "@chocktochock/bindings";
+  import type { FlatPack, ItemTarget, Panel, Step } from "@chocktochock/bindings";
+  import { indexPack, type PackIndex } from "../pack-index";
   import AppShell from "../ds/AppShell.svelte";
   import Sheet from "../ds/Sheet.svelte";
   import { applyPalette } from "../theme/tokens";
@@ -28,6 +29,8 @@ layouts at whatever size the window is.
   document.documentElement.style.colorScheme = dark ? "dark" : "light";
 
   let panel = $state<Panel | null>(null);
+  let index = $state<PackIndex | null>(null);
+  let step = $state<Step | null>(null);
   let targets = $state<ItemTarget[]>([]);
   let narrow = $state(window.innerWidth < 900);
   let sheet = $state(view === "step" && window.innerWidth < 900);
@@ -35,7 +38,9 @@ layouts at whatever size the window is.
   $effect(() => {
     void fetch(packUrl)
       .then((r) => r.json())
-      .then((pack: { content: { panels: Panel[] } }) => {
+      .then((pack: FlatPack) => {
+        index = indexPack(pack);
+        step = index.step("ifly-737-max8.before-start.fuel-pump-switches") ?? null;
         const oh = pack.content.panels.find((p) => p.id === "oh") ?? null;
         const fuel = oh?.sections.find((s) => s.id === "fuel");
         panel = oh;
@@ -56,7 +61,7 @@ layouts at whatever size the window is.
   {#if view === "gallery"}
     <div class="pad"><Gallery /></div>
   {:else}
-    {#snippet paneContent()}<StepPane {panel} {targets} />{/snippet}
+    {#snippet paneContent()}<StepPane {panel} {targets} {index} {step} />{/snippet}
     <AppShell pane={view === "phase" || view === "step" ? paneContent : undefined}>
       {#snippet top()}<MockTop view={view === "flow" ? "flow" : "checklist"} title={view === "setup" ? "Flight setup" : "Before start"} />{/snippet}
       {#snippet rail()}<MockRail />{/snippet}
@@ -69,7 +74,7 @@ layouts at whatever size the window is.
       {/if}
     </AppShell>
     <Sheet open={sheet} title="Fuel pump switches" onClose={() => (sheet = false)}>
-      <StepPane {panel} {targets} collapsible heading={false} />
+      <StepPane {panel} {targets} {index} {step} collapsible heading={false} details />
     </Sheet>
   {/if}
 </div>

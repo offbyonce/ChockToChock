@@ -78,12 +78,13 @@ tints) dim with the screen; text and signals (`--ink`, `--muted`, `--accent`, `-
 | --- | --- | --- | --- | --- | --- |
 | Phone | under 600 | 1 | 16 | full width | step details open as a bottom sheet; drawings collapsible |
 | Tablet portrait | 600 to 899 | 1 | 24 | full width, up to 832 | as phone, the sheet centered |
-| Tablet landscape | 900 to 1199 | 2 | 24 | up to 832 | beside the screen, 360 |
-| Laptop | 1200 to 1439 | 2 | 32 | up to 832 | 400 |
-| Desktop | 1440 to 1919 | 2 | 32 | up to 832 | 440 |
-| Large and ultrawide | 1920 and up | 2 | 32 | up to 832 | 480; content centered, at most 1680 wide |
+| Tablet landscape | 900 to 1199 | 2 | 24 | up to 832 | beside the screen, 416 |
+| Laptop | 1200 to 1439 | 2 | 32 | up to 832 | 504 |
+| Desktop | 1440 to 1919 | 2 | 32 | up to 832 | 600 |
+| Large and ultrawide | 1920 and up | 2 | 32 | up to 832 | 800; content centered, at most 1680 wide |
 
-Media queries use only 600, 900, 1200, 1440 and 1920 px (and one pixel under each for max-width).
+The pane is as wide as the app's pane today (42 % of the window, 416 to 800 px), so panel drawings
+stay whole at their fixed scale. Media queries use only 600, 900, 1200, 1440 and 1920 px (and one pixel under each for max-width).
 The top bar and phase rail stick; the pane sticks under them and scrolls on its own. Text runs at
 most 72 characters wide (`--measure`). The app respects the safe areas (notches, home indicator)
 on every edge.

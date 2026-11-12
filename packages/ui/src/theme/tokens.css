@@ -63,7 +63,7 @@
   --main-max: 52rem; /* 832: the list and form column */
   --dialog-w: 44rem; /* 704: pop-outs and dialogs */
   --dialog-max-h: 50rem; /* 800 */
-  --pane-w: 25rem; /* 400 */
+  --pane-w: 26rem; /* 416; set per class below */
   --top-h: 3.5rem;
   --rail-h: 3.25rem;
 }
@@ -75,24 +75,26 @@
     --gutter: var(--space-6);
   }
 }
+/* Side pane widths keep panel drawings whole at their fixed scale, as wide as the app's pane is
+   today (42 % of the window, 416 to 800 px). */
 @media (min-width: 900px) {
   :root {
-    --pane-w: 22.5rem; /* 360 */
+    --pane-w: 26rem; /* 416 */
   }
 }
 @media (min-width: 1200px) {
   :root {
     --gutter: var(--space-8);
-    --pane-w: 25rem; /* 400 */
+    --pane-w: 31.5rem; /* 504 */
   }
 }
 @media (min-width: 1440px) {
   :root {
-    --pane-w: 27.5rem; /* 440 */
+    --pane-w: 37.5rem; /* 600 */
   }
 }
 @media (min-width: 1920px) {
   :root {
-    --pane-w: 30rem; /* 480 */
+    --pane-w: 50rem; /* 800 */
   }
 }
