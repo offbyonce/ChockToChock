@@ -11,9 +11,10 @@ import { em, widest } from "./text-width";
 
 /**
  * 3.0's rendered text sizes, in pixels: names and titles 11.8, positions and light words 10.8.
- * "SET TO …" sits under the name, a little smaller so the name reads first.
+ * "SET TO …" sits under the name, a little smaller so the name reads first. A screen's label is
+ * 3.0's measured 12.6, its name size at the scale 3.0 draws a screen in the step pane.
  */
-export const PX = { name: 11.8, title: 11.8, pos: 10.8, lamp: 10.8, setTo: 9.5 } as const;
+export const PX = { name: 11.8, title: 11.8, pos: 10.8, lamp: 10.8, setTo: 9.5, screen: 12.6 } as const;
 /** Line height for labels under a control, as a multiple of the text size. */
 const LINE = 1.15;
 
@@ -129,10 +130,18 @@ export function bottomOf(item: PanelItem, section: PanelSection, hasTarget: bool
 }
 
 /**
- * A selector's tick angle, in degrees from straight up, clockwise: positions spread across the
- * top from left (first) to right (last), as a rotary selector is read.
+ * A selector's tick angle, in degrees from straight up, clockwise, from left (first) to right
+ * (last), as a rotary selector is read. 3.0's angles: two to five positions at set places, more
+ * spread over 250 degrees, so the end positions sit low at the sides, close to the knob.
  */
-export const angle = (index: number, count: number) => (count < 2 ? 0 : -90 + (180 * index) / (count - 1));
+const ANGLES: Record<number, number[]> = {
+  2: [-90, 90],
+  3: [-60, 0, 60],
+  4: [-100, -35, 35, 100],
+  5: [-110, -55, 0, 55, 110],
+};
+export const angle = (index: number, count: number) =>
+  count < 2 ? 0 : (ANGLES[count]?.[index] ?? -125 + (250 * index) / (count - 1));
 
 /** Which selector positions get a label: all of up to four; otherwise the ends and the target. */
 export const labelledPositions = (count: number, target: number | null): number[] =>

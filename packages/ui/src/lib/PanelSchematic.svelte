@@ -29,8 +29,13 @@ the card; text keeps 3.0's sizes.
     guardClosed?: boolean;
   } = $props();
 
-  /** Fill the card's width, up to 1.8 times the pack's size. */
-  const SCALE = 1.8;
+  /** Fill the card's width, up to 2.6 times the pack's size. */
+  const SCALE = 2.6;
+  /**
+   * Text keeps 3.0's pixel sizes up to this many pixels per unit, then grows with the drawing, as
+   * 3.0's text does (it is sized in drawing units), so a large drawing never has small text.
+   */
+  const TEXT_K = 1.8;
   /** A section wider than this is cropped across to SPAN around the step's controls, as 3.0 does. */
   const WIDE = 320;
   const SPAN = 240;
@@ -91,6 +96,8 @@ the card; text keeps 3.0's sizes.
   let width = $state(0);
   // The drawing is as wide as its box, but never more than SCALE times the pack's size.
   let k = $derived(width > 0 ? Math.min(width, w * SCALE) / w : 1.6);
+  /** Pixels per unit for text: the drawing's, but no more than TEXT_K. */
+  let kText = $derived(Math.min(k, TEXT_K));
 
   /** A section's lowest point: its band, or past its lowest label (as PanelSection lays it out). */
   const bottom = (s: Section) => {
@@ -111,7 +118,7 @@ the card; text keeps 3.0's sizes.
           lit: on(i)?.lit ?? false,
         };
       },
-      k,
+      kText,
       top(s) - s.y,
       { x0: band.x0, x1: band.x1 },
     );
@@ -145,7 +152,7 @@ the card; text keeps 3.0's sizes.
     aria-label="{title} panel, schematic.{described ? ` This step: ${described}.` : ''}"
   >
     {#each drawn as s (s.id)}
-      <PanelSection section={s} {targets} {guardClosed} band={bands.get(s.id) ?? { y0: 0, y1: s.height, x0: 0, x1: s.width }} {k} />
+      <PanelSection section={s} {targets} {guardClosed} band={bands.get(s.id) ?? { y0: 0, y1: s.height, x0: 0, x1: s.width }} k={kText} />
     {/each}
   </svg>
 </div>

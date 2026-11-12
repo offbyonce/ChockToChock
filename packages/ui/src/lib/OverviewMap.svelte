@@ -48,12 +48,13 @@ from the pack, and the zone marked by a thicker outline, fill and bold label as 
       : [];
   });
   let sides = $derived(!!(region?.left || region?.right));
-  // Room around the areas for the captions, as 3.0 lays them out.
+  // Room around the areas for the captions, as 3.0 lays them out (its 20 + 2 at the sides and
+  // 22 + 2 at the top and bottom), so the areas fill as much of the map as in 3.0.
   let pad = $derived({
-    top: region?.top || (sides && short) ? 28 : 6,
-    bottom: region?.bottom ? 28 : 6,
-    left: (sides && !short ? 26 : 6) + (groups.length ? 62 : 0),
-    right: sides && !short ? 26 : 6,
+    top: region?.top || (sides && short) ? 24 : 6,
+    bottom: region?.bottom ? 24 : 6,
+    left: (sides && !short ? 22 : 6) + (groups.length ? 62 : 0),
+    right: sides && !short ? 22 : 6,
   });
   let box = $derived({
     x: bounds.x0 - pad.left,
@@ -109,7 +110,7 @@ from the pack, and the zone marked by a thicker outline, fill and bold label as 
       {#each g.lines as line, n (n)}
         <text
           class="edge group"
-          x={bounds.x0 - (sides && !short ? 28 : 8)}
+          x={bounds.x0 - (sides && !short ? 23 : 8)}
           y={(g.y0 + g.y1) / 2 + (n - (g.lines.length - 1) / 2) * ((PX.edge * 1.15) / k)}
           style:text-anchor="end"
           style:font-size="{PX.edge / k}px">{line}</text
@@ -126,8 +127,8 @@ from the pack, and the zone marked by a thicker outline, fill and bold label as 
       {#if region?.left}<text class="edge" x={bounds.x0} y={bounds.y0 - 13} style:text-anchor="start" style:font-size="{PX.edge / k}px">{region.left}</text>{/if}
       {#if region?.right}<text class="edge" x={bounds.x1} y={bounds.y0 - 13} style:text-anchor="end" style:font-size="{PX.edge / k}px">{region.right}</text>{/if}
     {:else if sides}
-      {#if region?.left}<text class="edge" transform="translate({bounds.x0 - 14} {cy}) rotate(-90)" style:font-size="{PX.edge / k}px">{region.left}</text>{/if}
-      {#if region?.right}<text class="edge" transform="translate({bounds.x1 + 14} {cy}) rotate(90)" style:font-size="{PX.edge / k}px">{region.right}</text>{/if}
+      {#if region?.left}<text class="edge" transform="translate({bounds.x0 - 10} {cy}) rotate(-90)" style:font-size="{PX.edge / k}px">{region.left}</text>{/if}
+      {#if region?.right}<text class="edge" transform="translate({bounds.x1 + 10} {cy}) rotate(90)" style:font-size="{PX.edge / k}px">{region.right}</text>{/if}
     {/if}
   </svg>
   </div>

@@ -142,7 +142,8 @@ describe("PanelSchematic", () => {
     // PARK is the first position: far left, where the pointer points.
     expect(Number(screen.getByText("PARK").getAttribute("x"))).toBeLessThan(0);
     expect(Number(screen.getByText("HIGH").getAttribute("x"))).toBeGreaterThan(0);
-    expect(svg.querySelector(".pointer")?.getAttribute("transform")).toBe("rotate(-90)");
+    // 3.0's angle for the first of four positions.
+    expect(svg.querySelector(".pointer")?.getAttribute("transform")).toBe("rotate(-100)");
     expect(screen.getByText("PARK").classList.contains("target")).toBe(true);
   });
 
@@ -323,5 +324,45 @@ describe("PanelSchematic", () => {
       targets: [{ section: "fctl", item: 0, position: 1, lit: false }],
     });
     expect(screen.getByText(/MACH/)).toBeTruthy();
+  });
+
+  it("labels a screen at 3.0's size, 12.6px, when the label fits across it", () => {
+    // Screen labels were drawn at the light-text size, smaller than 3.0's.
+    const panel = {
+      id: "mn",
+      title: "Main panel",
+      width: 300,
+      height: 200,
+      sections: [
+        {
+          id: "cap",
+          title: "Captain displays",
+          x: 0,
+          y: 0,
+          width: 240,
+          height: 160,
+          items: [
+            {
+              kind: "display_unit",
+              label: "INBOARD DU: ND AND ENGINES",
+              x: 120,
+              y: 80,
+              width: 180,
+              height: 110,
+              controls: ["du"],
+              description: "",
+            },
+          ],
+        },
+      ],
+    } as unknown as Panel;
+    render(PanelSchematic, {
+      panel,
+      focus: ["cap"],
+      targets: [{ section: "cap", item: 0, position: null, lit: false }],
+    });
+    const label = screen.getByText("INBOARD DU: ND AND ENGINES") as unknown as SVGTextElement;
+    // jsdom lays nothing out, so the drawing uses its default 1.6 pixels per unit.
+    expect(Number.parseFloat(label.style.fontSize) * 1.6).toBeCloseTo(12.6, 1);
   });
 });

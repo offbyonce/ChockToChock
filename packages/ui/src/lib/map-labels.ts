@@ -1,6 +1,8 @@
 // SPDX-FileCopyrightText: 2026 offbyonce
 // SPDX-License-Identifier: MIT
 
+import { widest } from "./text-width";
+
 // How a flight deck map's area label fits its box. Sizes are in map units; `full` is 3.0's label
 // size in those units.
 
@@ -9,11 +11,7 @@
  * the size in height, and each further line 1.2, so a short box keeps 3.0's larger one-line text.
  */
 export const fitSize = (text: string[], width: number, height: number, full: number): number =>
-  Math.min(
-    full,
-    (width - 7) / (Math.max(...text.map((t) => t.length)) * 0.62),
-    (height - 2) / (0.9 + (text.length - 1) * 1.2),
-  );
+  Math.min(full, (width - 7) / widest(text), (height - 2) / (0.9 + (text.length - 1) * 1.2));
 
 /**
  * A label's lines: one line at full size if it fits; otherwise one line or two (split at " / " or

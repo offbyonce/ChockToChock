@@ -208,3 +208,29 @@ describe("knobY", () => {
     expect(TOGGLE.knob + stroke).toBeLessThan(TOGGLE.w / 2 - 0.5);
   });
 });
+
+describe("selector angles", () => {
+  it("keeps the meters row at full text size: end positions sit low at the sides, as in 3.0", () => {
+    // The electrical meters section as the pack places it. Straight-out end labels pushed
+    // STBY PWR past the frame, so the whole section's text shrank.
+    const item = (kind: string, label: string, x: number, y: number, positions: string) =>
+      ({ kind, label, x, y, controls: [], positions, description: "" }) as unknown as PanelItem;
+    const meters = {
+      id: "elecu",
+      title: "Electrical meters",
+      x: 0,
+      y: 0,
+      width: 225,
+      height: 318,
+      items: [
+        item("selector", "DC METERS", 60, 206, "STBY PWR, BAT BUS, BAT, AUX BAT, TR1, TR2, TR3, TEST"),
+        item("selector", "AC METERS", 168, 206, "STBY PWR, GRD PWR, GEN 1, APU GEN, GEN 2, INV, TEST"),
+        { ...item("toggle_switch", "BATTERY", 60, 276, "OFF, ON"), guarded: true },
+        item("toggle_switch", "CAB/UTIL", 140, 276, "OFF, ON"),
+        item("toggle_switch", "IFE/PASS SEAT", 196, 276, "OFF, ON"),
+      ],
+    } as unknown as PanelSection;
+    const target = (i: number) => (i === 2 ? { on: true, t: 1, rest: 0 } : { on: false, t: null, rest: 0 });
+    expect(layoutSection(meters, [0, 1, 2, 3, 4], target, 1.4, 150).scale).toBe(1);
+  });
+});

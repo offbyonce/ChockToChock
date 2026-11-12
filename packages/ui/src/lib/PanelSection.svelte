@@ -13,6 +13,7 @@ however large the drawing is.
 -->
 <script lang="ts">
   import type { ItemTarget, PanelItem, PanelSection } from "@chocktochock/bindings";
+  import { em } from "./text-width";
   import { angle, knobY, LAMP, TOGGLE, labelled, lampText, layoutSection, leverY, PX, positionsOf, slotY } from "./panel-layout";
 
   let {
@@ -38,8 +39,9 @@ however large the drawing is.
   const gw = TOGGLE.w / 2 + TOGGLE.guard;
   const gh = TOGGLE.h / 2 + TOGGLE.guard;
   /** Light words shrink only if they would not fit inside the light. */
-  const lampFs = (words: string[], boxWidth: number) =>
-    `${Math.min(PX.lamp / k, (boxWidth - 3) / (Math.max(...words.map((w) => w.length)) * 0.62)).toFixed(2)}px`;
+  /** A screen's label: 3.0's size, smaller only if it would not fit across the screen. */
+  const screenFs = (label: string, boxWidth: number) =>
+    `${Math.min(PX.screen / k, (boxWidth - 6) / em(label)).toFixed(2)}px`;
 
   let byItem = $derived(new Map(targets.filter((t) => t.section === section.id).map((t) => [t.item, t])));
   /** The target position's name, if the step names one. */
@@ -180,7 +182,7 @@ however large the drawing is.
         {@const w = item.width ?? 60}
         {@const hh = item.height ?? 30}
         <rect class="body screen" x={-w / 2} y={-hh / 2} width={w} height={hh} rx="3" />
-        <text class="lamp-text" y="2" style:font-size={lampFs([item.label], w)}>{item.label}</text>
+        <text class="lamp-text" y="2" style:font-size={screenFs(item.label, w)}>{item.label}</text>
       {/if}
       {#if labelled(item)}
         {@const name = layout.items.get(i)?.name}
