@@ -116,6 +116,8 @@ function view(states: [StepState, StepState]): PhaseView {
           counts: true,
           targets: [],
           essential: i === 0,
+          values: [],
+          hint: "",
         })),
         hidden: 0,
         progress,

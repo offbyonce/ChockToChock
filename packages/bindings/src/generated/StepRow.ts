@@ -24,4 +24,13 @@ targets: Array<ItemTarget>,
 /**
  * In Essentials (the pack's list, with the pilot's changes).
  */
-essential: boolean, };
+essential: boolean, 
+/**
+ * The text for each of the step's blanks, in order; empty where nothing is known yet
+ * (decision 0019).
+ */
+values: Array<string>, 
+/**
+ * The step's hint from flight values ("GND 121.700 · DEP 125.600"), or empty.
+ */
+hint: string, };

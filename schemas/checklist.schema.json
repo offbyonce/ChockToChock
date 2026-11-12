@@ -161,7 +161,6 @@
             "isa_deviation",
             "transition_altitude",
             "transition_level",
-            "weight_unit",
             "utc_time",
             "utc_date"
           ]
@@ -170,6 +169,21 @@
           "description": "A blank the pilot types in, with no linked value. Only valid in a step's `fill`.",
           "type": "string",
           "const": "manual"
+        },
+        {
+          "description": "`LB` or `KG`, for fuel and weights.",
+          "type": "string",
+          "const": "weight_unit"
+        },
+        {
+          "description": "`inHg` or `hPa`, for the QNH.",
+          "type": "string",
+          "const": "qnh_unit"
+        },
+        {
+          "description": "`BARO` or `RADIO`, for the minimums.",
+          "type": "string",
+          "const": "minimums_type"
         },
         {
           "description": "Fuel in thousands, rounded up to the next tenth (calculated).",

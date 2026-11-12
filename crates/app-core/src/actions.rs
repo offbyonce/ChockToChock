@@ -2,15 +2,16 @@
 // SPDX-License-Identifier: MIT
 
 //! The only way the interface changes a flight (decision 0012). More actions arrive with the
-//! batches that need them (panel states, values, plans, timers).
+//! batches that need them (panel states, plans, timers).
 
-use checklist_core::{Millis, StepId};
+use checklist_core::{FillField, Millis, StepId};
 use pack::FlatPack;
 use serde::Deserialize;
 use ts_rs::TS;
 
 use crate::AppError;
 use crate::flight::Flight;
+use crate::values::{allowed, blank_key};
 
 #[derive(Debug, Clone, PartialEq, Eq, Deserialize, TS)]
 #[serde(tag = "type", rename_all = "camelCase", deny_unknown_fields)]
@@ -43,12 +44,99 @@ pub enum Action {
         option: String,
         value: String,
     },
+    /// A flight value, typed by the pilot. An empty value removes it (decision 0019).
+    SetValue {
+        field: FillField,
+        value: String,
+    },
+    /// What the pilot typed into a step's blank (`index` from 0). Empty removes the entry, so the
+    /// blank shows the linked flight value again.
+    SetBlank {
+        step: StepId,
+        index: usize,
+        value: String,
+    },
+    /// The clearance and other notes from the flight strip.
+    SetNotes {
+        notes: String,
+    },
     /// A new flight: ticks, values, notes and timers are cleared; option choices are kept.
     Clear,
 }
 
 fn invalid(message: impl Into<String>) -> AppError {
     AppError::InvalidAction(message.into())
+}
+
+fn set_value(flight: &mut Flight, field: FillField, value: &str) -> Result<(), AppError> {
+    if matches!(field, FillField::Manual | FillField::RouteLeg) {
+        return Err(invalid(format!("`{field:?}` is not a flight value")));
+    }
+    let value = value.trim().to_owned();
+    if value.is_empty() {
+        flight.values.remove(&field);
+        return Ok(());
+    }
+    if let Some(ok) = allowed(field)
+        && !ok.contains(&value.as_str())
+    {
+        return Err(invalid(format!(
+            "`{value}` is not one of {}",
+            ok.join(", ")
+        )));
+    }
+    flight.values.insert(field, value);
+    Ok(())
+}
+
+fn set_option(
+    pack: &FlatPack,
+    flight: &mut Flight,
+    option: String,
+    value: String,
+) -> Result<(), AppError> {
+    let known = pack
+        .content
+        .phases
+        .iter()
+        .flat_map(|p| &p.options)
+        .find(|o| o.id == option);
+    match known {
+        None => Err(invalid(format!("unknown option `{option}`"))),
+        Some(o) if !o.values.contains(&value) => {
+            Err(invalid(format!("option `{option}` has no value `{value}`")))
+        }
+        Some(_) => {
+            flight.options.insert(option, value);
+            Ok(())
+        }
+    }
+}
+
+fn set_blank(
+    pack: &FlatPack,
+    flight: &mut Flight,
+    step: &StepId,
+    index: usize,
+    value: &str,
+) -> Result<(), AppError> {
+    let found = pack
+        .lists
+        .iter()
+        .flat_map(|l| &l.steps)
+        .find(|s| &s.id == step)
+        .ok_or_else(|| invalid(format!("unknown step `{step}`")))?;
+    if index >= found.fill.len() {
+        return Err(invalid(format!("step `{step}` has no blank {index}")));
+    }
+    let key = blank_key(found, index);
+    let value = value.trim();
+    if value.is_empty() {
+        flight.blanks.remove(&key);
+    } else {
+        flight.blanks.insert(key, value.to_owned());
+    }
+    Ok(())
 }
 
 /// Apply an action and return the changed flight.
@@ -102,23 +190,12 @@ pub fn apply(pack: &FlatPack, mut flight: Flight, action: Action) -> Result<Flig
                 .ok_or_else(|| invalid(format!("unknown list `{list}`")))?;
             flight.session.clear_list(list);
         }
-        Action::SetOption { option, value } => {
-            let known = pack
-                .content
-                .phases
-                .iter()
-                .flat_map(|p| &p.options)
-                .find(|o| o.id == option);
-            match known {
-                None => return Err(invalid(format!("unknown option `{option}`"))),
-                Some(o) if !o.values.contains(&value) => {
-                    return Err(invalid(format!("option `{option}` has no value `{value}`")));
-                }
-                Some(_) => {
-                    flight.options.insert(option, value);
-                }
-            }
+        Action::SetOption { option, value } => set_option(pack, &mut flight, option, value)?,
+        Action::SetValue { field, value } => set_value(&mut flight, field, &value)?,
+        Action::SetBlank { step, index, value } => {
+            set_blank(pack, &mut flight, &step, index, &value)?;
         }
+        Action::SetNotes { notes } => flight.notes = notes,
         Action::Clear => {
             flight.start_state = None;
             flight.session.clear();
