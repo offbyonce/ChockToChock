@@ -19,4 +19,9 @@ position: number | null,
 /**
  * A light the step expects on.
  */
-lit: boolean, };
+lit: boolean, 
+/**
+ * The step's wording names a position but leaves it to a condition ("CENTER PUMPS ON IF MORE
+ * THAN 1,000 LB"), so the drawing shows the item at rest and says to see the step.
+ */
+open: boolean, };

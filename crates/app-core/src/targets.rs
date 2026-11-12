@@ -23,6 +23,9 @@ pub struct ItemTarget {
     pub position: Option<usize>,
     /// A light the step expects on.
     pub lit: bool,
+    /// The step's wording names a position but leaves it to a condition ("CENTER PUMPS ON IF MORE
+    /// THAN 1,000 LB"), so the drawing shows the item at rest and says to see the step.
+    pub open: bool,
 }
 
 /// The panel items a step involves, from its targets in the pack.
@@ -44,6 +47,7 @@ pub fn step_targets(pack: &FlatPack, step: &Step) -> Vec<ItemTarget> {
                 item,
                 position,
                 lit: t.light == Some(LightState::On),
+                open: t.open,
             })
         })
         .collect()
@@ -105,6 +109,39 @@ mod tests {
             .unwrap();
         assert!(!handle.lit);
         assert!(handle.position.is_some(), "SET is the handle's target");
+    }
+
+    #[test]
+    fn a_position_left_to_a_condition_reaches_the_drawing_as_open() {
+        // The center fuel pumps are ON only with enough center fuel; the drawing must say so
+        // rather than show them at rest like a control the step does not set.
+        let pack = ifly_pack();
+        let step = pack
+            .lists
+            .iter()
+            .flat_map(|l| &l.steps)
+            .find(|s| s.id.as_str() == "ifly-737-max8.before-start.fuel-pump-switches")
+            .unwrap();
+        let targets = step_targets(&pack, step);
+        let section = pack
+            .content
+            .panels
+            .iter()
+            .flat_map(|p| &p.sections)
+            .find(|s| s.id == targets[0].section)
+            .unwrap();
+        let center: Vec<&ItemTarget> = targets
+            .iter()
+            .filter(|t| section.items[t.item].label.starts_with("CTR"))
+            .collect();
+        assert_eq!(center.len(), 2);
+        assert!(center.iter().all(|t| t.open && t.position.is_none()));
+        assert!(
+            targets
+                .iter()
+                .filter(|t| t.position.is_some())
+                .all(|t| !t.open)
+        );
     }
 
     #[test]

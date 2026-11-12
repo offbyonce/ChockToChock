@@ -239,6 +239,15 @@ export type SectionLayout = {
 };
 
 /**
+ * The caption under a step's control: the position it is set to, or, when the step leaves the
+ * position to a condition, a pointer to the step's wording.
+ */
+export const caption = (positions: string[], t: number | null, open: boolean): string | null => {
+  if (t != null) return positions[t] === "SET" ? "SET" : `SET TO ${positions[t] ?? ""}`;
+  return open ? "SEE STEP" : null;
+};
+
+/**
  * Places every label in a section so none overlaps a control or another label, keeping all of
  * them, as 3.0 did (Phase 2 brief, step 7). Controls stay where the pack puts them and are
  * placed first. Then, the step's controls
@@ -251,7 +260,7 @@ export type SectionLayout = {
 export function layoutSection(
   section: PanelSection,
   shown: number[],
-  target: (i: number) => { on: boolean; t: number | null; rest: number; lit?: boolean },
+  target: (i: number) => { on: boolean; t: number | null; rest: number; lit?: boolean; open?: boolean },
   k: number,
   titleTop: number,
   /** The part of the section drawn across (a wide section is cropped around the step). */
@@ -276,7 +285,7 @@ export function layoutSection(
 function place(
   section: PanelSection,
   shown: number[],
-  target: (i: number) => { on: boolean; t: number | null; rest: number; lit?: boolean },
+  target: (i: number) => { on: boolean; t: number | null; rest: number; lit?: boolean; open?: boolean },
   k: number,
   titleTop: number,
   scale: number,
@@ -315,7 +324,7 @@ function place(
   const items = new Map<number, ItemLayout>();
   for (const i of order) {
     const it = moved.items[i] as PanelItem;
-    const { on, t, rest, lit } = target(i);
+    const { on, t, rest, lit, open } = target(i);
     const layout: ItemLayout = { name: null, positions: [] };
     if (it.kind === "light" && lit) {
       // "EXPECTED ON" under a light the step expects on.
@@ -402,11 +411,11 @@ function place(
     if (labelled(it)) {
       const fit = nameFit(it, moved, k);
       const px = fit.px * scale;
-      const extra = on && t != null ? 1 : 0;
+      const setTo = on ? caption(pos, t, open ?? false) : null;
+      const extra = setTo ? 1 : 0;
       const line = (px * LINE) / k;
       const boxFor = (dy: number): Box => {
-        const setTo = extra ? (pos[t as number] === "SET" ? "SET" : `SET TO ${pos[t as number] ?? ""}`) : "";
-        const w = Math.max(widest(fit.lines) * px, em(setTo) * PX.setTo * scale) / k;
+        const w = Math.max(widest(fit.lines) * px, em(setTo ?? "") * PX.setTo * scale) / k;
         const top = it.y + half(it) + 3 + dy * line;
         return { x0: it.x - w / 2, y0: top, x1: it.x + w / 2, y1: top + (fit.lines.length + extra) * line };
       };

@@ -14,7 +14,7 @@ however large the drawing is.
 <script lang="ts">
   import type { ItemTarget, PanelItem, PanelSection } from "@chocktochock/bindings";
   import { em } from "./text-width";
-  import { angleOf, BUTTON, dialRadius, withinAcross, knobY, LAMP, TOGGLE, labelled, lampText, layoutSection, leverY, PX, positionsOf, slotY } from "./panel-layout";
+  import { angleOf, BUTTON, caption, dialRadius, withinAcross, knobY, LAMP, TOGGLE, labelled, lampText, layoutSection, leverY, PX, positionsOf, slotY } from "./panel-layout";
 
   let {
     section,
@@ -50,11 +50,6 @@ however large the drawing is.
     `${Math.min(PX.screen / k, (boxWidth - 6) / em(label)).toFixed(2)}px`;
 
   let byItem = $derived(new Map(targets.filter((t) => t.section === section.id).map((t) => [t.item, t])));
-  /** The target position's name, if the step names one. */
-  const targetOf = (i: number, item: PanelItem) => {
-    const t = byItem.get(i);
-    return t?.position != null ? (positionsOf(item)[t.position] ?? null) : null;
-  };
 
 
   let top = $derived(frame ? frame.y0 : band.y0 === 0 ? 0 : band.y0 - TITLE);
@@ -79,6 +74,7 @@ however large the drawing is.
           t: byItem.get(i)?.position ?? null,
           rest: !on && item.rest ? positionsOf(item).indexOf(item.rest) : -1,
           lit: byItem.get(i)?.lit ?? false,
+          open: byItem.get(i)?.open ?? false,
         };
       },
       k,
@@ -98,7 +94,6 @@ however large the drawing is.
   {#if titled}<text class="title" x={left + 8} y={top + 13} style:font-size={fs(PX.title * layout.scale)}>{section.title.toUpperCase()}</text>{/if}
   {#each shown as { item, i } (i)}
     {@const on = byItem.has(i)}
-    {@const target = targetOf(i, item)}
     {@const positions = positionsOf(item)}
     {@const t = byItem.get(i)?.position ?? null}
     <!-- A control the step does not use rests where the pack says, drawn dimmed. -->
@@ -210,8 +205,9 @@ however large the drawing is.
           {#each name.lines as line, n (n)}
             <text class="label" y={name.y + (n * name.px * 1.15) / k} style:font-size={fs(name.px)}>{line}</text>
           {/each}
-          {#if on && target}
-            <text class="set-to" y={name.y + (name.lines.length * name.px * 1.15) / k} style:font-size={fs(PX.setTo * layout.scale)}>{target === "SET" ? "SET" : `SET TO ${target}`}</text>
+          {@const set = on ? caption(positions, t, byItem.get(i)?.open ?? false) : null}
+          {#if set}
+            <text class="set-to" y={name.y + (name.lines.length * name.px * 1.15) / k} style:font-size={fs(PX.setTo * layout.scale)}>{set}</text>
           {/if}
         {/if}
       {/if}
