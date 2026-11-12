@@ -166,8 +166,9 @@ every change to `.github/workflows/`. For those, prepare what the step needs and
 10. **Notices.** The notice "Simulator training only. Not for real-world use." once at first
     launch, covering the whole app. Every step is presented the same way, with no status or
     verification marker (decision 0013).
-    A short privacy note in the app that says what is stored (progress, settings and the SimBrief
-    username), where (in this browser, on this device), that nothing is sent to us, that SimBrief
+    A short privacy note in the app that says what is stored (progress, settings, the remembered
+    SimBrief username and the compact flight plan, with no pilot name or ID; decision 0019), where
+    (in this browser, on this device only), that nothing is sent to us, that SimBrief
     is contacted directly from the browser, and that GitHub Pages logs visitor addresses under
     GitHub's privacy statement. When the app is ready for users (here or in step 11, as the
     maintainer decides), it replaces the placeholder as the front page (`index.html`), and the

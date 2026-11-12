@@ -22,10 +22,16 @@ import does to values the pilot typed.
 - **Values are resolved in Rust.** Each step row in the phase view carries the text for each of
   its blanks (the pilot's entry for that blank, else the linked flight value, else empty) and its
   hint, built as 3.0 built it: parts with no value are left out, the rest joined with " · ".
-- **The saved plan** keeps three things, under its own storage key and format number: the parsed
-  plan (the fields the app uses, as a Rust type), SimBrief's raw plan file as fetched or loaded,
-  and the plan's printable OFP document, for reading offline. With them go the time SimBrief made
-  the plan and the time it was loaded, for its age.
+- **The saved plan is compact and structured,** built in Rust from SimBrief's data under its own
+  storage key and format number. It keeps the fields the app uses now and the sections a future
+  flight plan view needs: the route, the navlog fixes (with airway, altitude, wind and fuel), the
+  fuel blocks, weights, times, alternates, and METAR and TAF. It keeps the plan's identity, the
+  time SimBrief made it and the time it was loaded (for its age). Personal fields (pilot name,
+  pilot ID) are left out. SimBrief's raw file and its printable OFP document are neither stored
+  nor shown. A plan file the pilot drops is parsed the same way and then discarded. Its size is
+  measured with a real long-haul plan and kept compact.
+- **A later flight plan view** (phase 3's flight plan module) rebuilds the plan in our own layout
+  from this data, with training insights, and works offline.
 - **Importing a plan overwrites** the flight values the plan covers, as 3.0 did. A notice says
   how many were filled and asks the pilot to check the runway and departure against the clearance,
   with Undo.
@@ -33,5 +39,5 @@ import does to values the pilot typed.
 
 ## Consequences
 - The flight's saved format does not change: the new fields are new keys in `values`.
-- The saved plan can be large (the raw file and the OFP document); it lives apart from the flight,
-  so a flight never depends on it.
+- The saved plan lives apart from the flight, so a flight never depends on it, and holds no
+  personal fields and none of SimBrief's own text.
