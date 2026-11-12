@@ -23,6 +23,7 @@ with the words "Skipped, still open". The quick level shows the item and value o
     doneAt,
     detail,
     selected,
+    marked,
     large = false,
     full = true,
     onTick,
@@ -36,6 +37,8 @@ with the words "Skipped, still open". The quick level shows the item and value o
     doneAt: number | undefined;
     detail: Detail;
     selected: boolean;
+    /** Carries the blue bar: the step the side pane shows. */
+    marked: boolean;
     large?: boolean;
     full?: boolean;
     onTick: () => void;
@@ -62,7 +65,7 @@ with the words "Skipped, still open". The quick level shows the item and value o
   );
 </script>
 
-<li class="it {row.state}" class:sel={selected} class:large>
+<li class="it {row.state}" class:sel={selected} class:marked class:large>
   <button class="tick" type="button" aria-label={tickLabel} aria-pressed={row.state === "done"} onclick={onTick}>
     <span class="box">
       {#if row.state === "done"}<Icon name="check" />{:else if row.state === "skipped"}<Icon name="skip" />{/if}
@@ -112,10 +115,10 @@ with the words "Skipped, still open". The quick level shows the item and value o
           <StepDetail {index} {step} />
           {#if place?.control}
             <p class="narrow where"><b>Where</b> · {place.control.location}</p>
-            <!-- What the side panel tells on wide screens; 3.0 showed it as the step's Why. -->
-            {#if !step.why && place.control.function}
-              <p class="narrow where"><b>What it does</b> · {place.control.function}</p>
-            {/if}
+          {/if}
+          <!-- A step with no Why says what its control does, in the step on every width, as 3.0 did. -->
+          {#if !step.why && place?.control?.function}
+            <p class="where"><b>What it does</b> · {place.control.function}</p>
           {/if}
           {#if place}
             <button class="btn quiet narrow" type="button" aria-expanded={mapOpen} onclick={() => (mapOpen = !mapOpen)}>
@@ -153,7 +156,7 @@ with the words "Skipped, still open". The quick level shows the item and value o
   .it:first-child {
     border-top: 0;
   }
-  .it.current {
+  .it.marked {
     box-shadow: inset 0.1875rem 0 0 var(--accent);
   }
   .it.sel {

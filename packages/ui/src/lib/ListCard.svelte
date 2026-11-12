@@ -8,6 +8,7 @@ so instead.
 -->
 <script lang="ts">
   import type { Checklist, Detail, Flight, PhaseList } from "@chocktochock/bindings";
+  import { marksStep } from "./marked-step";
   import type { PackIndex } from "../pack-index";
   import Icon from "./Icon.svelte";
   import StepItem from "./StepItem.svelte";
@@ -97,6 +98,7 @@ so instead.
           full={full || more}
           doneAt={flight.session.done[row.id]}
           selected={selected === row.id}
+          marked={marksStep(selected, row.id, row.state)}
           onTick={() => onTick(row.id, row.state === "done")}
           onSkip={() => onSkip(row.id)}
           onUnskip={() => onUnskip(row.id)}

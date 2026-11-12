@@ -1,6 +1,5 @@
 ---
 source: crates/pack-cli/tests/snapshot.rs
-assertion_line: 36
 ---
 {
   "zones": [
@@ -1317,7 +1316,7 @@ assertion_line: 36
       "id": "column",
       "name": "Control column",
       "zone": "yoke",
-      "location": "In front of each pilot.",
+      "location": "In front of each pilot. The main electric trim switches are on the control wheel.",
       "function": "Hold the column firmly, and use main electric trim to reduce forces."
     },
     {
