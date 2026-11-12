@@ -57,7 +57,7 @@ layouts at whatever size the window is.
     <div class="pad"><Gallery /></div>
   {:else}
     {#snippet paneContent()}<StepPane {panel} {targets} />{/snippet}
-    <AppShell pane={view === "setup" ? undefined : paneContent}>
+    <AppShell pane={view === "phase" || view === "step" ? paneContent : undefined}>
       {#snippet top()}<MockTop view={view === "flow" ? "flow" : "checklist"} title={view === "setup" ? "Flight setup" : "Before start"} />{/snippet}
       {#snippet rail()}<MockRail />{/snippet}
       {#if view === "flow"}
