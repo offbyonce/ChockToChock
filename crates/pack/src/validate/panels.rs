@@ -116,6 +116,19 @@ fn check_panel_item(at: &str, item: &PanelItem, issues: &mut Vec<Issue>) {
         }
     }
     check_selector(at, item, issues);
+    // Every other kind is drawn at its one standard size (decision 0020); a size of its own would
+    // be ignored, and misleading.
+    if (item.width.is_some() || item.height.is_some())
+        && !matches!(
+            item.kind,
+            PanelItemKind::DisplayUnit | PanelItemKind::Readout
+        )
+    {
+        issues.push(error(
+            at,
+            format!("`{label}`: only a display unit or readout has a `width` or `height`; every other control is drawn at its standard size"),
+        ));
+    }
     if item.guarded
         && !matches!(
             item.kind,
@@ -392,6 +405,22 @@ pub(super) mod tests {
         item.kind = PanelItemKind::ToggleSwitch;
         item.angles = Some(vec![-135.0, 0.0, 135.0]);
         assert_flags(&p, "only a selector has `angles`");
+    }
+
+    #[test]
+    fn only_screens_have_a_size_of_their_own() {
+        // 51 lights, keys and switches kept sizes from the 3.0 import that drawings ignore.
+        let mut p = rest_pack("OFF");
+        p.content.panels[0].sections[0].items[0].width = Some(48.0);
+        assert_flags(
+            &p,
+            "only a display unit or readout has a `width` or `height`",
+        );
+        let item = &mut p.content.panels[0].sections[0].items[0];
+        item.kind = PanelItemKind::DisplayUnit;
+        item.positions = None;
+        item.rest = None;
+        assert!(!messages(&p).contains("standard size"), "{}", messages(&p));
     }
 
     #[test]

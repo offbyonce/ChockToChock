@@ -286,7 +286,6 @@ sections:
         positions: "ON, ALTN"
         rest: "ON"
         description: Engine 1 control. ON is normal. ALTN shows alternate mode.
-        width: 40
       - kind: push_button
         label: EEC 2
         x: 143
@@ -296,7 +295,6 @@ sections:
         positions: "ON, ALTN"
         rest: "ON"
         description: Engine 2 control. ON is normal. ALTN shows alternate mode.
-        width: 40
   - id: oxy
     title: Oxygen
     x: 570
@@ -376,7 +374,6 @@ sections:
         controls:
           - mach
         description: Tests the overspeed clacker.
-        height: 24
       - kind: push_button
         label: MACH TEST 2
         x: 291
@@ -384,7 +381,6 @@ sections:
         controls:
           - mach
         description: Tests the overspeed clacker.
-        height: 24
   - id: stall
     title: Stall warning test
     x: 800

@@ -1262,7 +1262,6 @@ sections:
         controls:
           - doorsp
         description: The forward passenger door is open or not fully latched.
-        width: 48
       - kind: light
         label: LEFT FWD OVERWING
         color: amber
@@ -1271,7 +1270,6 @@ sections:
         controls:
           - doorsp
         description: The left front overwing exit is open or not fully latched.
-        width: 48
       - kind: light
         label: LEFT AFT OVERWING
         color: amber
@@ -1280,7 +1278,6 @@ sections:
         controls:
           - doorsp
         description: The left rear overwing exit is open or not fully latched.
-        width: 48
       - kind: light
         label: AFT ENTRY
         color: amber
@@ -1289,7 +1286,6 @@ sections:
         controls:
           - doorsp
         description: The rear passenger door is open or not fully latched.
-        width: 48
       - kind: light
         label: FWD SERVICE
         color: amber
@@ -1298,7 +1294,6 @@ sections:
         controls:
           - doorsp
         description: The forward galley service door is open or not fully latched.
-        width: 48
       - kind: light
         label: RIGHT FWD OVERWING
         color: amber
@@ -1307,7 +1302,6 @@ sections:
         controls:
           - doorsp
         description: The right front overwing exit is open or not fully latched.
-        width: 48
       - kind: light
         label: RIGHT AFT OVERWING
         color: amber
@@ -1316,7 +1310,6 @@ sections:
         controls:
           - doorsp
         description: The right rear overwing exit is open or not fully latched.
-        width: 48
       - kind: light
         label: AFT SERVICE
         color: amber
@@ -1325,7 +1318,6 @@ sections:
         controls:
           - doorsp
         description: The rear galley service door is open or not fully latched.
-        width: 48
       - kind: light
         label: FWD CARGO
         color: amber
@@ -1334,8 +1326,6 @@ sections:
         controls:
           - doorsp
         description: The forward hold door is open or not fully latched.
-        width: 48
-        height: 17
       - kind: light
         label: AFT CARGO
         color: amber
@@ -1344,8 +1334,6 @@ sections:
         controls:
           - doorsp
         description: The rear hold door is open or not fully latched.
-        width: 48
-        height: 17
   - id: cvr
     title: Cockpit voice recorder microphone monitor
     x: 596
@@ -1368,7 +1356,6 @@ sections:
         controls:
           - cvrpanel
         description: Recorder status.
-        width: 40
       - kind: push_button
         label: TEST
         x: 151
@@ -1376,7 +1363,6 @@ sections:
         controls:
           - cvrpanel
         description: Tests the recorder.
-        width: 40
       - kind: push_button
         label: HEADPHONE
         x: 207
@@ -1384,7 +1370,6 @@ sections:
         controls:
           - cvrpanel
         description: Headphone jack.
-        width: 40
   - id: cab
     title: Cabin altitude
     x: 596
@@ -1691,7 +1676,6 @@ sections:
         controls:
           - press
         description: "The standby pressure controller is in use, after a fault or because you selected it."
-        width: 40
       - kind: light
         label: MANUAL
         color: green
@@ -1700,7 +1684,6 @@ sections:
         controls:
           - press
         description: "Pressurization is in manual mode, so you move the outflow valve yourself."
-        width: 40
       - kind: readout
         label: FLT ALT
         x: 57

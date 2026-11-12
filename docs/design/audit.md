@@ -99,8 +99,9 @@ and need their own treatment, now or in batch 3:
   APU choices, anti-ice, the MINS selectors, one-engine memory items and others. Drawn with no
   position and "SEE STEP"; the condition itself is only in the step's wording.
 - **Lights that may cycle.** The window heat ON lights get no light state (decision 0018).
-- **Pack data the drawings ignore (51 items).** Lights and push buttons that still carry their
+- **Pack data the drawings ignore (52 items; removed in this batch).** Lights and push buttons that still carry their
   own width or height from the 3.0 import (door lights 48 wide, annunciator keys 42 by 24 and 54
   by 34, gear lights 42 by 0, cargo fire keys 38 to 46 wide). Every key is drawn at the standard
-  size, so these values are dead and misleading; `pack check` should reject a size on a light or
-  push button, and the values should go.
+  size, so these values were dead and misleading. `pack check` now rejects a size on anything but a
+  display unit or readout, and the values are gone (one more turned up than this audit first
+  counted: 52).

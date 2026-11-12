@@ -125,8 +125,6 @@ sections:
         controls:
           - recall
         description: Lights with MASTER CAUTION for a FLT CONT caution. Press to recall stored cautions.
-        width: 42
-        height: 24
       - kind: push_button
         label: IRS
         x: 87
@@ -134,8 +132,6 @@ sections:
         controls:
           - recall
         description: Lights with MASTER CAUTION for a IRS caution. Press to recall stored cautions.
-        width: 42
-        height: 24
       - kind: push_button
         label: FUEL
         x: 143
@@ -143,8 +139,6 @@ sections:
         controls:
           - recall
         description: Lights with MASTER CAUTION for a FUEL caution. Press to recall stored cautions.
-        width: 42
-        height: 24
       - kind: push_button
         label: ELEC
         x: 31
@@ -152,8 +146,6 @@ sections:
         controls:
           - recall
         description: Lights with MASTER CAUTION for a ELEC caution. Press to recall stored cautions.
-        width: 42
-        height: 24
       - kind: push_button
         label: APU
         x: 87
@@ -161,8 +153,6 @@ sections:
         controls:
           - recall
         description: Lights with MASTER CAUTION for a APU caution. Press to recall stored cautions.
-        width: 42
-        height: 24
       - kind: push_button
         label: OVHT/DET
         x: 143
@@ -170,22 +160,16 @@ sections:
         controls:
           - recall
         description: Lights with MASTER CAUTION for a OVHT/DET caution. Press to recall stored cautions.
-        width: 42
-        height: 24
       - kind: push_button
         label: FIRE WARN
         x: 31
         "y": 64
         description: Fire warning. Push to silence the bell and reset.
-        width: 54
-        height: 34
       - kind: push_button
         label: MASTER CAUTION
         x: 143
         "y": 64
         description: "Master caution. Push to reset; the six-pack shows which system."
-        width: 54
-        height: 34
   - id: mcp
     title: Mode control panel
     x: 417
@@ -372,8 +356,6 @@ sections:
         controls:
           - recall
         description: Lights with MASTER CAUTION for a ANTI-ICE caution. Press to recall stored cautions.
-        width: 42
-        height: 24
       - kind: push_button
         label: HYD
         x: 87
@@ -381,8 +363,6 @@ sections:
         controls:
           - recall
         description: Lights with MASTER CAUTION for a HYD caution. Press to recall stored cautions.
-        width: 42
-        height: 24
       - kind: push_button
         label: DOORS
         x: 143
@@ -390,8 +370,6 @@ sections:
         controls:
           - recall
         description: Lights with MASTER CAUTION for a DOORS caution. Press to recall stored cautions.
-        width: 42
-        height: 24
       - kind: push_button
         label: ENG
         x: 31
@@ -399,8 +377,6 @@ sections:
         controls:
           - recall
         description: Lights with MASTER CAUTION for a ENG caution. Press to recall stored cautions.
-        width: 42
-        height: 24
       - kind: push_button
         label: OVERHEAD
         x: 87
@@ -408,8 +384,6 @@ sections:
         controls:
           - recall
         description: Lights with MASTER CAUTION for a OVERHEAD caution. Press to recall stored cautions.
-        width: 42
-        height: 24
       - kind: push_button
         label: AIR COND
         x: 143
@@ -417,22 +391,16 @@ sections:
         controls:
           - recall
         description: Lights with MASTER CAUTION for a AIR COND caution. Press to recall stored cautions.
-        width: 42
-        height: 24
       - kind: push_button
         label: FIRE WARN
         x: 143
         "y": 64
         description: Fire warning. Push to silence the bell and reset.
-        width: 54
-        height: 34
       - kind: push_button
         label: MASTER CAUTION
         x: 31
         "y": 64
         description: "Master caution. Push to reset; the six-pack shows which system."
-        width: 54
-        height: 34
   - id: efisr
     title: First officer EFIS
     x: 1271

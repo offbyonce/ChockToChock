@@ -147,24 +147,18 @@ sections:
         x: 31
         "y": 138
         description: "The left main gear is moving or not where the gear lever says, or it is not down and locked with a thrust lever at idle below 800 ft."
-        width: 42
-        height: 0
       - kind: light
         label: NOSE GEAR
         color: red
         x: 87
         "y": 112
         description: "The nose gear is moving or not where the gear lever says, or it is not down and locked with a thrust lever at idle below 800 ft."
-        width: 42
-        height: 0
       - kind: light
         label: RIGHT GEAR
         color: red
         x: 142
         "y": 138
         description: "The right main gear is moving or not where the gear lever says, or it is not down and locked with a thrust lever at idle below 800 ft."
-        width: 42
-        height: 0
       - kind: light
         label: LEFT GEAR
         color: green
@@ -174,8 +168,6 @@ sections:
           - gearlever
         lit_at: "DN"
         description: The left main gear is down and locked.
-        width: 42
-        height: 0
       - kind: light
         label: NOSE GEAR
         color: green
@@ -185,8 +177,6 @@ sections:
           - gearlever
         lit_at: "DN"
         description: The nose gear is down and locked.
-        width: 42
-        height: 0
       - kind: light
         label: RIGHT GEAR
         color: green
@@ -196,8 +186,6 @@ sections:
           - gearlever
         lit_at: "DN"
         description: The right main gear is down and locked.
-        width: 42
-        height: 0
       - kind: lever
         label: LANDING GEAR LEVER
         x: 47

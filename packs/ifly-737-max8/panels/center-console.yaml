@@ -96,7 +96,6 @@ sections:
         controls:
           - cr
         description: Cancel and recall alerts.
-        height: 26
       - kind: selector
         label: SELECTOR R
         x: 303
@@ -106,7 +105,6 @@ sections:
         positions: "L, C, R"
         rest: "L"
         description: Right display selector.
-        height: 26
       - kind: light
         label: ANTISKID INOP
         color: amber
@@ -443,16 +441,12 @@ sections:
         x: 35
         "y": 42
         description: Green during the cargo fire test.
-        width: 38
-        height: 26
       - kind: light
         label: EXT AFT
         color: amber
         x: 94
         "y": 42
         description: Green during the cargo fire test.
-        width: 38
-        height: 26
       - kind: toggle_switch
         label: DET FWD
         x: 154
@@ -460,8 +454,6 @@ sections:
         positions: "A, NORM, B"
         rest: "NORM"
         description: Forward detector select.
-        width: 38
-        height: 26
       - kind: toggle_switch
         label: DET AFT
         x: 203
@@ -469,16 +461,12 @@ sections:
         positions: "A, NORM, B"
         rest: "NORM"
         description: Aft detector select.
-        width: 38
-        height: 26
       - kind: light
         label: DETECTOR FAULT
         color: amber
         x: 262
         "y": 42
         description: "One or more selected detection loops in a hold has failed, so detection there may be reduced."
-        width: 42
-        height: 26
       - kind: push_button
         label: TEST
         x: 39
@@ -486,8 +474,6 @@ sections:
         controls:
           - cargofire
         description: Tests the cargo fire system.
-        width: 40
-        height: 28
       - kind: push_button
         label: ARM FWD
         x: 116
@@ -495,8 +481,6 @@ sections:
         controls:
           - cargofire
         description: Arms the forward compartment.
-        width: 46
-        height: 28
       - kind: push_button
         label: ARM AFT
         x: 183
@@ -504,8 +488,6 @@ sections:
         controls:
           - cargofire
         description: Arms the aft compartment.
-        width: 46
-        height: 28
       - kind: push_button
         label: DISCH
         x: 258
@@ -513,8 +495,6 @@ sections:
         controls:
           - cargofire
         description: Discharges the bottle into the armed compartment.
-        width: 46
-        height: 28
   - id: r2
     title: Radio 2
     x: 542
