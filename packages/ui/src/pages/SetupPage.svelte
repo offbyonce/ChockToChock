@@ -79,7 +79,7 @@ state picker comes with panel states in batch 3 (decision 0019).
   }
   .set {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) var(--size-column);
+    grid-template-columns: minmax(0, 1fr) auto;
     align-items: center;
     gap: var(--space-4) var(--space-8);
     padding: var(--space-4);

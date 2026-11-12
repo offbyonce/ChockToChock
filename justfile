@@ -65,7 +65,7 @@ site: wasm web-packs
 update-test: site
     node apps/web/build/update-test.mjs
 
-# Screenshots of the built app for review (desktop and tablet, dark and light), written to a
+# Screenshots of the built app for review (phone, both tablets, 1440 and 2560, dark and light), to a
 # folder outside the repo. Needs Firefox; not part of `just ci`.
 screenshots out: site
     node apps/web/build/screenshots.mjs {{out}}

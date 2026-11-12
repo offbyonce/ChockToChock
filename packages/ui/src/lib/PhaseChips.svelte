@@ -132,7 +132,7 @@ started, a filled circle with a check when complete, and a dashed ring when a st
   }
   .dot.skipped {
     background: none;
-    border: var(--border-ring) dashed var(--color-open-text);
+    border: var(--size-focus-ring) dashed var(--color-open-text);
   }
   /* A row of chips wider than the screen fades at its edge, so more is clearly there. */
   @media (max-width: 1439px) {

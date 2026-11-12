@@ -3,7 +3,21 @@
 
 import type { PanelItem, PanelSection } from "@chocktochock/bindings";
 import { describe, expect, it } from "vitest";
-import { half, knobY, layoutSection, leverY, nameFit, TOGGLE } from "./panel-layout";
+import {
+  drawingScale,
+  half,
+  K,
+  knobY,
+  LABEL_MIN,
+  LEGEND_MIN,
+  layoutSection,
+  leverY,
+  MAX_SCALE,
+  MIN_SCALE,
+  nameFit,
+  PX,
+  TOGGLE,
+} from "./panel-layout";
 import { em, widest } from "./text-width";
 
 const lever = (label: string, x: number) =>
@@ -266,5 +280,29 @@ describe("handle", () => {
     } as unknown as PanelItem;
     const gripBottom = leverY(1, 2) + 5;
     expect(half(handle) + 3 - gripBottom).toBeGreaterThanOrEqual(2);
+  });
+});
+
+describe("drawingScale", () => {
+  it("fits a drawing to its room, keeping its proportions", () => {
+    // 300 units in 600 px: 2 pixels per unit, no scrolling.
+    expect(drawingScale(600, 300)).toEqual({ k: 2, overflow: false });
+  });
+
+  it("never draws labels under their minimum: it scrolls instead, and says so", () => {
+    const { k, overflow } = drawingScale(400, 600);
+    expect(k).toBeCloseTo(MIN_SCALE, 6);
+    expect(overflow).toBe(true);
+    // At that scale the smallest label is 11 px and light legends 10 px or more.
+    expect(Math.min(PX.name, PX.title, PX.pos) * (k / K)).toBeGreaterThanOrEqual(LABEL_MIN - 1e-9);
+    expect(PX.lamp * (k / K)).toBeGreaterThanOrEqual(LEGEND_MIN - 1e-9);
+  });
+
+  it("does not blow a small drawing up past twice its layout size", () => {
+    expect(drawingScale(1000, 50)).toEqual({ k: MAX_SCALE, overflow: false });
+  });
+
+  it("draws at the layout scale until the room is measured", () => {
+    expect(drawingScale(0, 300)).toEqual({ k: K, overflow: false });
   });
 });

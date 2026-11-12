@@ -63,7 +63,7 @@ types over it.
     width: 7ch;
     padding: var(--space-1) var(--space-1);
     border: 0;
-    border-bottom: var(--border-ring) solid var(--color-text-muted);
+    border-bottom: var(--size-focus-ring) solid var(--color-text-muted);
     border-radius: 0;
     background: transparent;
     color: var(--color-text);

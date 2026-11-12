@@ -377,10 +377,9 @@ describe("PanelSchematic", () => {
     expect(new Set(radii).size).toBe(1);
   });
 
-  it("cuts a tall section to the controls near the step's, as 3.0 does, keeping lights within reach", () => {
-    // Placed as on the real panels: the electrical meters section (battery step) and the flight
-    // control section (alternate flaps step). Round 2 cut off the lights 99 units below ALT FLAPS;
-    // drawing sections whole then pushed the battery switch out of first view.
+  it("draws a tall section whole, never cut to the rows around the step", () => {
+    // A drawing is one piece (decision 0021): the meters display and the flight control lights
+    // were cut off when tall sections were cropped to the step's rows.
     const item = (kind: string, label: string, x: number, y: number) =>
       ({ kind, label, x, y, controls: ["c"], positions: "OFF, ON", description: "" }) as unknown;
     const tall = {
@@ -421,8 +420,8 @@ describe("PanelSchematic", () => {
     });
     expect(screen.getByText("BATTERY")).toBeTruthy();
     expect(screen.getByText("DC METERS")).toBeTruthy();
-    expect(screen.queryByText("METER DISPLAY")).toBeNull();
-    expect(screen.queryByText("BAT")).toBeNull();
+    expect(screen.getByText("METER DISPLAY")).toBeTruthy();
+    expect(screen.getByText(/DISCHARGE/)).toBeTruthy();
     meters.unmount();
 
     render(PanelSchematic, {
@@ -473,9 +472,9 @@ describe("PanelSchematic", () => {
     expect(Number.parseFloat(label.style.fontSize) * 1.8).toBeCloseTo(12.6, 1);
   });
 
-  it("keeps full-size text when a tall section is cut above a dial with labels on top", () => {
-    // The electrical meters section cut to the battery step: the dials' top labels (AUX BAT,
-    // APU GEN) ran into the section title, so the whole section's text shrank to its minimum.
+  it("keeps position labels at 11 px above a dial in a tall section", () => {
+    // The dials' top labels (AUX BAT, APU GEN) ran into the section title, so the whole section's
+    // text shrank; position labels are now at the 11 px minimum (decision 0021).
     const it = (kind: string, label: string, x: number, y: number, positions: string, extra = {}) =>
       ({ kind, label, x, y, controls: ["c"], positions, description: "", ...extra }) as unknown;
     const panel = {
@@ -512,8 +511,8 @@ describe("PanelSchematic", () => {
       targets: [{ section: "elecu", item: 3, position: 1, lit: false, open: false }],
     });
     const aux = screen.getByText("AUX BAT") as unknown as SVGTextElement;
-    // Every drawing uses one scale, 1.8 pixels per unit.
-    expect(Number.parseFloat(aux.style.fontSize) * 1.8).toBeCloseTo(10.8, 1);
+    // Laid out at 1.8 pixels per unit.
+    expect(Number.parseFloat(aux.style.fontSize) * 1.8).toBeCloseTo(11, 1);
   });
 
   it("draws every panel at one scale, so controls and text are the same size in every drawing", () => {
@@ -553,7 +552,8 @@ describe("PanelSchematic", () => {
     expect(sizeOf(300)).toBeCloseTo(1.8, 2);
   });
 
-  it("draws a wide section's parts lined up, titled once by the card's caption", () => {
+  it("draws a wide section in one piece, never split into parts", () => {
+    // The MCP was cut into three parts drawn one under another, which changed the panel layout.
     const item = (label: string, x: number) =>
       ({ kind: "push_button", label, x, y: 40, controls: ["c"], description: "" }) as unknown;
     const panel = {
@@ -582,12 +582,11 @@ describe("PanelSchematic", () => {
       ],
     });
     const svgs = [...container.querySelectorAll("svg.schematic")];
-    // Every part is drawn (660 units across, 240 to a part, so three).
-    expect(svgs).toHaveLength(3);
-    // The card's caption names a lone section, so no part repeats its title.
-    expect(svgs.map((s) => s.querySelectorAll(".title").length)).toEqual([0, 0, 0]);
-    const widths = svgs.map((s) => Number((s.getAttribute("viewBox") ?? "").split(" ")[2]));
-    expect(Math.max(...widths) - Math.min(...widths)).toBeLessThan(1);
+    expect(svgs).toHaveLength(1);
+    // The card's caption names a lone section, so the drawing repeats no title.
+    expect(svgs[0]?.querySelectorAll(".title")).toHaveLength(0);
+    expect(svgs[0]?.textContent).toContain("VNAV");
+    expect(svgs[0]?.textContent).toContain("APP");
   });
 
   it("rests a step's switch where the pack says when the step leaves its position open", () => {
@@ -630,7 +629,7 @@ describe("PanelSchematic", () => {
     expect(container.querySelector(".knob.unknown")).toBeNull();
   });
 
-  it("draws every part of a divided section, not only the parts with the step's controls", () => {
+  it("draws the whole section, not only the controls the step uses", () => {
     // V/S, CMD A, CWS A and the disengage bar vanished from the MCP when the step used none.
     const item = (label: string, x: number) =>
       ({ kind: "push_button", label, x, y: 40, controls: ["c"], description: "" }) as unknown;
@@ -659,7 +658,7 @@ describe("PanelSchematic", () => {
     expect(screen.getByText("V/S")).toBeTruthy();
   });
 
-  it("puts the part with the step's control first, so it is in first view", () => {
+  it("draws a wide section's far control in the same piece", () => {
     // The captain displays' inboard display fell below the outboard one when every part was drawn.
     const item = (label: string, x: number) =>
       ({ kind: "push_button", label, x, y: 40, controls: ["c"], description: "" }) as unknown;

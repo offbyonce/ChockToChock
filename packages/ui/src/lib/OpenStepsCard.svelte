@@ -134,7 +134,7 @@ can be ticked here, and is marked Skipped or Missed in words. Shows nothing when
   .tick span {
     width: var(--size-status-icon);
     height: var(--size-status-icon);
-    border: var(--border-ring) solid var(--color-text-muted);
+    border: var(--size-focus-ring) solid var(--color-text-muted);
     border-radius: var(--radius-small);
   }
   .st {

@@ -116,7 +116,7 @@ saves them on the device, and batch 7 adds the rest.
   }
   .set {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) var(--size-column);
+    grid-template-columns: minmax(0, 1fr) auto;
     align-items: center;
     gap: var(--space-4) var(--space-8);
     padding: var(--space-4);

@@ -332,7 +332,7 @@ first. Tapping one part of the summary opens the pop-out on that part's field.
     background: color-mix(in srgb, var(--color-danger-text) 8%, transparent);
   }
   .spcq {
-    flex: 1 1 var(--size-column);
+    flex: 1 1 auto;
     color: var(--color-text);
     font-size: var(--font-size-secondary);
   }

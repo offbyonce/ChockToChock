@@ -161,7 +161,7 @@ red Emergency button. Stage tabs hide in narrow windows; the menu has them there
     align-items: center;
     height: var(--size-touch-min);
     padding: 0 var(--space-4);
-    border: var(--border-ring) solid var(--color-danger);
+    border: var(--size-focus-ring) solid var(--color-danger);
     border-radius: var(--radius-control);
     background: var(--color-danger-bg);
     color: var(--color-danger-text);

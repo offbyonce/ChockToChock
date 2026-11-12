@@ -102,7 +102,7 @@ just test      # Rust and interface tests
 just packs     # validate every pack
 just site      # build the web site into apps/web/dist (WebAssembly, packs, app)
 just update-test  # service worker update test in headless Firefox (local; needs Firefox)
-just screenshots <dir>  # review screenshots (desktop and tablet, dark and light) into <dir>;
+just screenshots <dir>  # review screenshots (five sizes, dark and light) into <dir>;
                         # with CHOCKTOCHOCK_BASELINE=<local 3.0 HTML file>, also 3.0 side by side in <dir>/compare
 just ci        # everything; must pass before a push
 just overlap   # compare packs with private references (CHOCKTOCHOCK_OVERLAP_REFS)

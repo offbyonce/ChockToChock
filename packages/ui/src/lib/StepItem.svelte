@@ -176,7 +176,7 @@ with the words "Skipped, still open". The quick level shows the item and value o
     place-items: center;
     width: var(--size-status-icon);
     height: var(--size-status-icon);
-    border: var(--border-ring) solid var(--color-text-muted);
+    border: var(--size-focus-ring) solid var(--color-text-muted);
     border-radius: var(--radius-small);
     background: var(--color-surface);
     font-size: var(--font-size-caption);

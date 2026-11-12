@@ -1,8 +1,8 @@
 // SPDX-FileCopyrightText: 2026 offbyonce
 // SPDX-License-Identifier: MIT
 
-// Screenshots of the built app for review, at desktop and tablet sizes, in the dark and light
-// themes: `just screenshots <out-dir>` after `just site`. The theme comes from a Firefox
+// Screenshots of the built app for review, at the five review sizes (phone, tablet portrait,
+// tablet landscape, 1440 and 2560 by 1440; decision 0021), in the dark and light themes: `just screenshots <out-dir>` after `just site`. The theme comes from a Firefox
 // preference, so the app needs no test hook. Writes PNG files to <out-dir>, which should be
 // outside the repo. Needs Firefox on the PATH (or FIREFOX=/path/to/firefox).
 //
@@ -21,8 +21,11 @@ const work = path.resolve(web, "../../target/screenshots");
 const BIDI = 9234;
 
 const VIEWPORTS = {
-  desktop: { width: 1440, height: 900 },
+  phone: { width: 390, height: 844 },
   tablet: { width: 820, height: 1180 },
+  "tablet-landscape": { width: 1180, height: 820 },
+  desktop: { width: 1440, height: 900 },
+  wide: { width: 2560, height: 1440 },
 };
 // layout.css.prefers-color-scheme.content-override: 0 dark, 1 light.
 const THEMES = { dark: 0, light: 1 };
@@ -163,7 +166,7 @@ const SHOTS = [
     // Before start: MCP (glareshield). The app lists Landing gear pins first, so its rows run one ahead.
     // Both sides show the step opened.
     name: "panel-mcp",
-    only: "desktop",
+    only: ["desktop", "wide"],
     app: { hash: "#/phase/before-start", before: [click(".it .row", 2), click(".it .chev", 2)] },
     base: { hash: "#before-start", before: [click(".it .chev", 1)] },
   },
@@ -187,7 +190,7 @@ const SHOTS = [
     // Before start: fuel pumps (overhead). The app lists Landing gear pins first, so its rows run one ahead.
     // Both sides show the step opened.
     name: "panel-fuel",
-    only: "desktop",
+    only: ["desktop", "wide"],
     app: { hash: "#/phase/before-start", before: [click(".it .row", 5), click(".it .chev", 5)] },
     base: { hash: "#before-start", before: [click(".it .chev", 4)] },
   },
@@ -206,6 +209,20 @@ const SHOTS = [
     base: { hash: "#preflight", before: [stepNamed("BAT DISCHARGE, TR UNIT", ".chev"), paneToControls("#pane")] },
   },
   {
+    // The widest sections in the pack: the captain's lights (main panel, 918 units across) and the
+    // parking brake and start levers (control stand, 725).
+    name: "panel-lights",
+    only: ["desktop", "wide"],
+    app: { hash: "#/phase/preflight", before: [stepNamed("STAB OUT OF TRIM LIGHT", ".row"), stepNamed("STAB OUT OF TRIM LIGHT", ".chev"), paneToControls("aside.pane")] },
+    base: { hash: "#preflight", before: [stepNamed("STAB OUT OF TRIM LIGHT", ".chev"), paneToControls("#pane")] },
+  },
+  {
+    name: "panel-brake",
+    only: ["desktop", "wide"],
+    app: { hash: "#/phase/gpu-power", before: [stepNamed("PARKING BRAKE", ".row"), stepNamed("PARKING BRAKE", ".chev"), paneToControls("aside.pane")] },
+    base: { hash: "#gpu-power", before: [stepNamed("PARKING BRAKE", ".chev"), paneToControls("#pane")] },
+  },
+  {
     name: "menu",
     only: "tablet",
     app: { hash: "", before: [click('[aria-controls="drawer"]')] },
@@ -213,22 +230,23 @@ const SHOTS = [
   },
 ];
 
-/** Starts Firefox with its viewport at exactly `viewport` (the window adds some frame). */
-async function openAt(profile, prefs, viewport) {
-  let firefox = await startFirefox(profile, BIDI, prefs, viewport);
+/**
+ * Starts Firefox and sets the page's viewport to exactly `viewport` with WebDriver BiDi's
+ * setViewport, since a window cannot get narrower than 500 px and phones are narrower. That command
+ * needs `-remote-allow-system-access`, acceptable here: a local, headless browser with a throwaway
+ * profile, opening only the pages served for these screenshots. The start page is privileged, so
+ * `firstUrl` (one of those pages) is opened before the viewport is set.
+ */
+async function openAt(profile, prefs, viewport, firstUrl) {
+  const window = { width: Math.max(viewport.width, 800), height: viewport.height + 100 };
+  const firefox = await startFirefox(profile, BIDI, prefs, window, ["-remote-allow-system-access"]);
   try {
-    let browser = await session(BIDI);
-    // Scripts cannot run in the browser's own start page, so open a blank page first.
-    await browser.send("browsingContext.navigate", { context: browser.context, url: "about:blank", wait: "complete" });
-    const [w, h] = (await browser.js("[innerWidth, innerHeight].join(',')")).split(",").map(Number);
-    if (w !== viewport.width || h !== viewport.height) {
-      firefox.kill();
-      await sleep(800);
-      firefox = await startFirefox(profile, BIDI, prefs, {
-        width: 2 * viewport.width - w,
-        height: 2 * viewport.height - h,
-      });
-      browser = await session(BIDI);
+    const browser = await session(BIDI);
+    await browser.send("browsingContext.navigate", { context: browser.context, url: firstUrl, wait: "complete" });
+    await browser.send("browsingContext.setViewport", { context: browser.context, viewport });
+    const got = await browser.js("[innerWidth, innerHeight].join('x')");
+    if (got !== `${viewport.width}x${viewport.height}`) {
+      throw new Error(`viewport ${got}, wanted ${viewport.width}x${viewport.height}`);
     }
     return { firefox, browser };
   } catch (e) {
@@ -264,6 +282,7 @@ async function compose(out, keys) {
   fs.rmSync(dir, { recursive: true, force: true });
   fs.mkdirSync(dir, { recursive: true });
   fs.mkdirSync(path.join(out, "compare"), { recursive: true });
+  fs.writeFileSync(path.join(dir, "index.html"), "<!doctype html><title>compose</title>");
   const server = await serve(dir, 8774);
   const written = [];
   try {
@@ -271,7 +290,7 @@ async function compose(out, keys) {
       const mine = keys.filter((k) => k.includes(`-${size}-`));
       if (!mine.length) continue;
       const canvas = { width: 2 * width + 16, height: height + 28 };
-      const { firefox, browser } = await openAt(path.join(work, `profile-compose-${size}`), {}, canvas);
+      const { firefox, browser } = await openAt(path.join(work, `profile-compose-${size}`), {}, canvas, "http://localhost:8774/");
       try {
         for (const key of mine) {
           fs.copyFileSync(path.join(out, "baseline", `${key}.png`), path.join(dir, `${key}-3.0.png`));
@@ -345,10 +364,11 @@ async function main() {
           const prefs = { "layout.css.prefers-color-scheme.content-override": override };
           const only = (process.env.SCREENSHOTS_ONLY ?? "").split(",").filter(Boolean);
           const wanted = (key) => !only.length || only.some((o) => key.startsWith(o) || `${theme}-${size}`.endsWith(o));
-          const shots = SHOTS.filter((s) => (!s.only || s.only === size) && wanted(`${s.name}-${size}-${theme}`));
+          const fits = (s) => !s.only || [s.only].flat().includes(size);
+          const shots = SHOTS.filter((s) => fits(s) && wanted(`${s.name}-${size}-${theme}`));
           if (!shots.length) continue;
           const profile = path.join(work, `profile-${target.side}-${theme}-${size}`);
-          const { firefox, browser } = await openAt(profile, prefs, viewport);
+          const { firefox, browser } = await openAt(profile, prefs, viewport, target.url(""));
           try {
             for (const shot of shots) {
               const { hash, before } = shot[target.side];

@@ -14,7 +14,31 @@ import { em, widest } from "./text-width";
  * "SET TO …" sits under the name, a little smaller so the name reads first. A screen's label is
  * 3.0's measured 12.6, its name size at the scale 3.0 draws a screen in the step pane.
  */
-export const PX = { name: 11.8, title: 11.8, pos: 10.8, lamp: 10.8, setTo: 9.5, screen: 12.6 } as const;
+export const PX = { name: 11.8, title: 11.8, pos: 11, lamp: 10.8, setTo: 10, screen: 12.6 } as const;
+/** Pixels per unit a drawing is laid out for: its text is drawn at the PX sizes at this scale. */
+export const K = 1.8;
+/** The smallest rendered sizes (decision 0021): labels 11 px, light legends 10 px. The "SET TO"
+ * caption is not counted yet; batch 2 replaces it with the changed-state drawing. */
+export const LABEL_MIN = 11;
+export const LEGEND_MIN = 10;
+/** The smallest scale that keeps every label and legend at its minimum. */
+export const MIN_SCALE = K * Math.max(LABEL_MIN / Math.min(PX.name, PX.title, PX.pos), LEGEND_MIN / PX.lamp);
+/** The largest scale a drawing grows to, so a single switch does not fill the pane. */
+export const MAX_SCALE = 2 * K;
+
+/**
+ * The scale for a drawing `boxWidth` units wide in `room` pixels: as wide as the room, keeping its
+ * proportions, but never so small that a label drops under its minimum. `overflow` says the
+ * drawing is then wider than the room (it scrolls, and a larger view is offered). Unmeasured
+ * room (0) draws at the layout scale.
+ */
+export function drawingScale(room: number, boxWidth: number): { k: number; overflow: boolean } {
+  if (room <= 0 || boxWidth <= 0) return { k: K, overflow: false };
+  const fit = room / boxWidth;
+  const k = Math.min(MAX_SCALE, Math.max(MIN_SCALE, fit));
+  return { k, overflow: k > fit + 1e-6 };
+}
+
 /** Line height for labels under a control, as a multiple of the text size. */
 const LINE = 1.15;
 

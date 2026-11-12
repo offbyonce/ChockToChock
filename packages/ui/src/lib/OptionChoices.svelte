@@ -72,11 +72,11 @@ applies the option in Rust, which decides what shows.
   }
   .cards button[aria-pressed="true"] {
     border-color: var(--color-accent);
-    box-shadow: 0 0 0 var(--border-ring) var(--color-accent);
+    box-shadow: 0 0 0 var(--size-focus-ring) var(--color-accent);
   }
   .row {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) var(--size-column);
+    grid-template-columns: minmax(0, 1fr) auto;
     align-items: center;
     gap: var(--space-4) var(--space-8);
     padding: var(--space-4);

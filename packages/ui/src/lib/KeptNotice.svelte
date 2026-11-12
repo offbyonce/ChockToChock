@@ -47,7 +47,7 @@ this device instead of deleting it. Nothing is saved over it until then.
     background: var(--color-open-bg);
   }
   p {
-    flex: 1 1 var(--size-column);
+    flex: 1 1 auto;
     margin: 0;
     font-size: var(--font-size-secondary);
   }
