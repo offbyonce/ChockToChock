@@ -235,7 +235,6 @@ value on the right. The pilot confirms each step; the app never knows a switch p
     display: flex;
     flex-direction: column;
     gap: 0.625rem;
-    max-width: 46rem;
     margin-top: 0.5rem;
   }
   .more p {

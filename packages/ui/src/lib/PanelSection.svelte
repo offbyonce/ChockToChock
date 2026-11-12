@@ -13,7 +13,7 @@ however large the drawing is.
 -->
 <script lang="ts">
   import type { ItemTarget, PanelItem, PanelSection } from "@chocktochock/bindings";
-  import { angle, LAMP, labelled, lampText, layoutSection, leverY, PX, positionsOf, slotY } from "./panel-layout";
+  import { angle, knobY, LAMP, TOGGLE, labelled, lampText, layoutSection, leverY, PX, positionsOf, slotY } from "./panel-layout";
 
   let {
     section,
@@ -34,6 +34,9 @@ however large the drawing is.
   /** Room above a cut-down section for its title, so it never overlaps the top row. */
   const TITLE = 18;
   const fs = (px: number) => `${(px / k).toFixed(2)}px`;
+  /** Half the guard's width and height around a toggle's track. */
+  const gw = TOGGLE.w / 2 + TOGGLE.guard;
+  const gh = TOGGLE.h / 2 + TOGGLE.guard;
   /** Light words shrink only if they would not fit inside the light. */
   const lampFs = (words: string[], boxWidth: number) =>
     `${Math.min(PX.lamp / k, (boxWidth - 3) / (Math.max(...words.map((w) => w.length)) * 0.62)).toFixed(2)}px`;
@@ -92,15 +95,15 @@ however large the drawing is.
     <g class="item {item.kind}" class:on transform="translate({item.x} {item.y})">
       {#if item.kind === "toggle_switch"}
         {#if item.guarded}
-          <rect class="guard" class:closed={on && guardClosed} x="-11" y="-19" width="22" height="38" rx="5" />
+          <rect class="guard" class:closed={on && guardClosed} x={-gw} y={-gh} width={2 * gw} height={2 * gh} rx="4" />
         {/if}
-        <rect class="body" x="-6" y="-14" width="12" height="28" rx="6" />
+        <rect class="body track" x={-TOGGLE.w / 2} y={-TOGGLE.h / 2} width={TOGGLE.w} height={TOGGLE.h} rx={TOGGLE.w / 2} />
         {#if on && t != null}
-          <circle class="knob set" cy={leverY(t, positions.length)} r="3.4" />
+          <circle class="knob set" cy={knobY(t, positions.length)} r={TOGGLE.knob} />
         {:else if r >= 0}
-          <circle class="knob rest" cy={leverY(r, positions.length)} r="2.8" />
+          <circle class="knob rest" cy={knobY(r, positions.length)} r={TOGGLE.knob - 0.5} />
         {:else}
-          <circle class="knob unknown" r="2.6" />
+          <circle class="knob unknown" r={TOGGLE.knob - 0.7} />
         {/if}
         {#each layout.items.get(i)?.positions ?? [] as l (l.n)}
           <text class="pos" class:target={on && l.n === t} class:at-rest={l.n === r} x={l.x} y={l.y} text-anchor={l.anchor} style:font-size={fs(PX.pos * layout.scale)}>{positions[l.n]}</text>
@@ -213,10 +216,14 @@ however large the drawing is.
     stroke: var(--muted);
     stroke-width: 1.4;
   }
+  /* A toggle's slim track and guard take 3.0's thinner lines. */
+  .track {
+    stroke-width: 1.1;
+  }
   .guard {
     stroke: var(--stop);
-    stroke-width: 1.2;
-    stroke-dasharray: 2.5 2;
+    stroke-width: 1;
+    stroke-dasharray: 2.2 1.6;
   }
   /* Resting positions of controls the step does not use: hollow and muted, so they never look
      like the step's target (solid, in the accent color). */
@@ -236,9 +243,20 @@ however large the drawing is.
     stroke: var(--muted);
     stroke-width: 1.2;
   }
-  .lamp,
+  /* Unlit lights are quiet outlines, as in 3.0, so the step's controls stand out. */
+  .lamp {
+    fill: none;
+    stroke-width: 1;
+    opacity: 0.8;
+  }
+  .lamp.lit {
+    opacity: 1;
+  }
   .screen {
     fill: var(--zone);
+  }
+  .on .lamp-text {
+    fill: var(--accent);
   }
   .knob.rest:is(rect) {
     fill: none;

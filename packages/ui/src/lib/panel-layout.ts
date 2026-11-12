@@ -7,6 +7,7 @@
 // on `k`, the screen pixels per unit.
 
 import type { PanelItem, PanelSection } from "@chocktochock/bindings";
+import { em, widest } from "./text-width";
 
 /**
  * 3.0's rendered text sizes, in pixels: names and titles 11.8, positions and light words 10.8.
@@ -22,11 +23,19 @@ export const positionsOf = (item: PanelItem): string[] =>
     .map((p) => p.trim())
     .filter(Boolean);
 
+/**
+ * A toggle switch in 3.0's proportions: a slim track `w` wide and `h` tall with round ends, a red
+ * guard `guard` outside it, and position labels `gap` beyond the guard or track.
+ */
+export const TOGGLE = { w: 7, h: 22, guard: 2.8, gap: 3.6, knob: 2.3 } as const;
+/** How far a toggle reaches either side of its center, guard included. */
+const toggleHalfWidth = (guarded: boolean) => TOGGLE.w / 2 + (guarded ? TOGGLE.guard : 0);
+
 /** Half the height a glyph takes, so its label sits under it. */
 export function half(item: PanelItem): number {
   switch (item.kind) {
     case "toggle_switch":
-      return item.guarded ? 19 : 15;
+      return TOGGLE.h / 2 + (item.guarded ? TOGGLE.guard : 0);
     case "selector":
     case "gauge":
       return 15;
@@ -52,15 +61,12 @@ export const LAMP = { w: 50, h: 20 } as const;
  */
 export function lampText(item: PanelItem, k: number, px: number): { lines: string[]; px: number } {
   const room = (LAMP.w - 4) * k;
-  const cap = (n: number, size: number) => n * 0.66 * size;
   const words = item.label.split(" ");
-  const longest = Math.max(...words.map((w) => w.length));
-  const size = Math.min(px, room / (longest * 0.66));
+  const size = Math.min(px, room / widest(words));
   const out: string[] = [];
   for (const w of words) {
     const last = out[out.length - 1];
-    if (last !== undefined && cap(last.length + 1 + w.length, size) <= room)
-      out[out.length - 1] = `${last} ${w}`;
+    if (last !== undefined && em(`${last} ${w}`) * size <= room) out[out.length - 1] = `${last} ${w}`;
     else out.push(w);
   }
   return { lines: out.slice(0, 3), px: size };
@@ -87,8 +93,6 @@ export function lines(label: string, max = 12): string[] {
 export const labelled = (item: PanelItem) =>
   item.kind !== "light" && item.kind !== "readout" && item.kind !== "display_unit";
 
-/** Average width of a capital in the label face, as a share of the text size. */
-const CAP = 0.64;
 /** The smallest a name may shrink to, in pixels, when its neighbors leave little room. */
 const MIN_NAME = 8.5;
 
@@ -104,13 +108,12 @@ export function nameFit(item: PanelItem, section: PanelSection, k: number): { li
     2 * Math.min(item.x, section.width - item.x),
   );
   const room = Math.max(10, gap - 4) * k;
-  const width = (text: string[], px: number) => Math.max(...text.map((t) => t.length)) * CAP * px;
+  const width = (text: string[], px: number) => widest(text) * px;
   const one = [item.label];
   if (width(one, PX.name) <= room) return { lines: one, px: PX.name };
   const two = lines(item.label, 1);
   const best = width(two, PX.name) < width(one, PX.name) ? two : one;
-  const longest = Math.max(...best.map((t) => t.length));
-  return { lines: best, px: Math.max(MIN_NAME, Math.min(PX.name, room / (longest * CAP))) };
+  return { lines: best, px: Math.max(MIN_NAME, Math.min(PX.name, room / widest(best))) };
 }
 
 /** The baseline of label line `n` (0 is the name's first line) under a control, in units. */
@@ -145,7 +148,7 @@ const overlaps = (a: Box, b: Box) => a.x0 < b.x1 && b.x0 < a.x1 && a.y0 < b.y1 &
 function halfWidth(item: PanelItem): number {
   switch (item.kind) {
     case "toggle_switch":
-      return item.guarded ? 11 : 6;
+      return toggleHalfWidth(!!item.guarded);
     case "selector":
       return 15.5;
     case "push_button":
@@ -163,8 +166,18 @@ function halfWidth(item: PanelItem): number {
   }
 }
 
-/** A toggle's lever position: first position at the top, last at the bottom. */
-export const leverY = (index: number, count: number) => (count < 2 ? 0 : -8 + (16 * index) / (count - 1));
+/**
+ * Where a toggle's knob sits, first position at the top: on the centers of the track's round
+ * ends and evenly between, as 3.0 draws it, so the knob never touches the outline. Each position's
+ * label is level with it.
+ */
+export const knobY = (index: number, count: number) => {
+  const end = TOGGLE.h / 2 - TOGGLE.w / 2;
+  return count < 2 ? 0 : -end + (2 * end * index) / (count - 1);
+};
+
+/** A pull handle's grip position and its labels: in at the top, pulled out at the bottom. */
+export const leverY = (index: number, count: number) => (count < 2 ? 0 : -9.5 + (19 * index) / (count - 1));
 
 export type PositionLabel = { n: number; x: number; y: number; anchor: "start" | "middle" | "end" };
 export type ItemLayout = {
@@ -227,7 +240,7 @@ function place(
   placed.push({
     x0: bounds.x0 + 6,
     y0: titleTop + 2,
-    x1: bounds.x0 + 8 + section.title.length * CAP * ((PX.title * scale) / k),
+    x1: bounds.x0 + 8 + em(section.title.toUpperCase()) * ((PX.title * scale) / k),
     y1: titleTop + 16,
   });
   const glyph = (i: number): Box => {
@@ -243,7 +256,7 @@ function place(
     if (ta !== tb) return ta ? -1 : 1;
     return (section.items[a]?.x ?? 0) - (section.items[b]?.x ?? 0);
   });
-  const inside = (b: Box) => b.x0 >= bounds.x0 + 1 && b.x1 <= bounds.x1 - 1;
+  const inside = (b: Box) => b.x0 >= bounds.x0 + 4 && b.x1 <= bounds.x1 - 4;
   /** Clear of everything placed; a control's own shape does not block its own position labels. */
   const free = (b: Box, own?: number) =>
     inside(b) && !placed.some((p) => (own === undefined || p.owner !== own) && overlaps(p, b));
@@ -255,7 +268,7 @@ function place(
     if (it.kind === "light" && lit) {
       // "EXPECTED ON" under a light the step expects on.
       const px = PX.setTo * scale;
-      const w = 11 * CAP * (px / k);
+      const w = em("EXPECTED ON") * (px / k);
       placed.push({
         x0: it.x - w / 2,
         y0: it.y + LAMP.h / 2 + 1,
@@ -265,7 +278,7 @@ function place(
     }
     const pos = positionsOf(it);
     const boxOf = (l: PositionLabel): Box => {
-      const w = (pos[l.n] ?? "").length * CAP * (posPx / k);
+      const w = em(pos[l.n] ?? "") * (posPx / k);
       const x0 = l.anchor === "start" ? l.x : l.anchor === "end" ? l.x - w : l.x - w / 2;
       return { x0: it.x + x0, y0: it.y + l.y - posPx / k, x1: it.x + x0 + w, y1: it.y + l.y + 1.5 };
     };
@@ -297,8 +310,10 @@ function place(
       // Right of the switch, or left of it if that side is taken: every position keeps its label.
       const side = (right: boolean): PositionLabel[] =>
         pos.map((_, n) => {
-          const dx = it.guarded ? 14 : 10;
-          return { n, x: right ? dx : -dx, y: leverY(n, pos.length) + 2.5, anchor: right ? "start" : "end" };
+          const dx = toggleHalfWidth(!!it.guarded) + TOGGLE.gap;
+          // Level with the knob: the baseline sits half a capital below the knob's center.
+          const y = knobY(n, pos.length) + (0.36 * posPx) / k;
+          return { n, x: right ? dx : -dx, y, anchor: right ? "start" : "end" };
         });
       const right = side(true);
       const left = side(false);
@@ -331,7 +346,8 @@ function place(
       const extra = on && t != null ? 1 : 0;
       const line = (px * LINE) / k;
       const boxFor = (dy: number): Box => {
-        const w = Math.max(...fit.lines.map((l) => l.length)) * CAP * (px / k);
+        const setTo = extra ? (pos[t as number] === "SET" ? "SET" : `SET TO ${pos[t as number] ?? ""}`) : "";
+        const w = Math.max(widest(fit.lines) * px, em(setTo) * PX.setTo * scale) / k;
         const top = it.y + half(it) + 3 + dy * line;
         return { x0: it.x - w / 2, y0: top, x1: it.x + w / 2, y1: top + (fit.lines.length + extra) * line };
       };

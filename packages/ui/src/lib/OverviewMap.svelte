@@ -66,22 +66,22 @@ from the pack, and the zone marked by a thicker outline, fill and bold label as 
    */
   const PX = { label: 9.5, edge: 9.3 };
   let width = $state(0);
-  // The map is as wide as its box unless its height cap (20rem) makes it narrower.
-  let k = $derived(width > 0 ? Math.min(width, (320 * box.w) / box.h) / box.w : 0.75);
+  // The map is as wide as its box unless its height cap (30rem) makes it narrower.
+  let k = $derived(width > 0 ? Math.min(width, (480 * box.w) / box.h) / box.w : 0.75);
   let LABEL = $derived(PX.label / k);
   let cx = $derived((bounds.x0 + bounds.x1) / 2);
   let cy = $derived((bounds.y0 + bounds.y1) / 2);
 
   /** A label that fits its box: one line, or two split at " / " or near the middle. */
   function lines(label: string, width: number): string[] {
-    // One line if it fits, even at the smallest size; split only when it cannot.
-    if (label.length * (7.5 / k) * 0.62 <= width - 7) return [label];
+    // One line at full size if it fits; otherwise two lines, as 3.0 wraps them, before shrinking.
+    if (label.length * LABEL * 0.62 <= width - 7) return [label];
+    if (!label.includes(" ")) return [label];
     const slash = label.indexOf(" / ");
     if (slash > 0) return [`${label.slice(0, slash)} /`, label.slice(slash + 3)];
     const mid = label.lastIndexOf(" ", Math.ceil(label.length / 2));
     return mid > 0 ? [label.slice(0, mid), label.slice(mid + 1)] : [label];
   }
-  /** Shrinks a label that still does not fit, so it never spills out of its box. */
   /** Labels shrink to stay inside their boxes, as 3.0's do, never below 6.5px. */
   const size = (text: string[], width: number, height: number) =>
     Math.max(
@@ -151,7 +151,7 @@ from the pack, and the zone marked by a thicker outline, fill and bold label as 
     display: block;
     width: 100%;
     height: auto;
-    max-height: 20rem;
+    max-height: 30rem;
     margin: 0 auto;
   }
   rect {

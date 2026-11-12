@@ -51,7 +51,7 @@ started, a filled circle with a check when complete, and a dashed ring when a st
     <div class="bar" aria-hidden="true">
       <i style:width={total.done ? `max(0.375rem, ${(100 * total.done) / total.total}%)` : "0"}></i>
     </div>
-    <span class="count mono" aria-label="{total.done} of {total.total} steps done">{#if essentials}<span class="mode">Essentials</span> {/if}{total.done}/{total.total}</span>
+    <span class="count mono" aria-label="{total.done} of {total.total} steps done">{#if essentials}Essentials{" "}{/if}{total.done}/{total.total}</span>
     {#if saved}<span class="saved" role="status">Saved {saved}</span>{/if}
   </div>
 </div>
@@ -176,9 +176,6 @@ started, a filled circle with a check when complete, and a dashed ring when a st
     color: var(--muted);
     font-size: 0.7812rem;
     white-space: nowrap;
-  }
-  .mode {
-    font-family: var(--sans);
   }
   .count {
     color: var(--muted);

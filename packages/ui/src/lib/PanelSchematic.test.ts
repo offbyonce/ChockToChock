@@ -268,4 +268,50 @@ describe("PanelSchematic", () => {
     // The label's baseline sits about 3 units below the position it names.
     expect(Math.abs(gripMid - (Number(set?.getAttribute("y")) - 3))).toBeLessThan(1);
   });
+
+  it("draws a tall section whole, as 3.0 does, so controls near its bottom are not cut off", () => {
+    const tall = {
+      id: "oh",
+      title: "Overhead",
+      width: 300,
+      height: 400,
+      sections: [
+        {
+          id: "fctl",
+          title: "Flight control",
+          x: 0,
+          y: 0,
+          width: 240,
+          height: 320,
+          items: [
+            {
+              kind: "toggle_switch",
+              label: "ALT FLAPS",
+              x: 60,
+              y: 60,
+              controls: ["altflap"],
+              positions: "UP, OFF, DOWN",
+              description: "",
+            },
+            {
+              kind: "light",
+              label: "MACH TRIM FAIL",
+              color: "amber",
+              x: 180,
+              y: 280,
+              controls: ["lights"],
+              description: "",
+            },
+          ],
+        },
+      ],
+    } as unknown as Panel;
+    render(PanelSchematic, {
+      panel: tall,
+      focus: ["fctl"],
+      targets: [{ section: "fctl", item: 0, position: 1, lit: false }],
+    });
+
+    expect(screen.getByText(/MACH/)).toBeTruthy();
+  });
 });

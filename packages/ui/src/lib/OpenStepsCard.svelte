@@ -37,6 +37,10 @@ can be ticked here, and is marked Skipped or Missed in words. Shows nothing when
     </button>
     {#if shown}
       <div id="open-list" class="list">
+        <div class="hd">
+          <h2>Open steps</h2>
+          <button class="close" type="button" onclick={() => (shown = false)}>Close</button>
+        </div>
         {#each groups as g (g.phase)}
           <a class="go" href={phaseHref(g.phase)}>{g.title} <Icon name="arrow-right" /></a>
           {#each g.steps as o (o.step)}
@@ -146,13 +150,29 @@ can be ticked here, and is marked Skipped or Missed in words. Shows nothing when
     color: var(--muted);
     font: 0.8125rem var(--mono);
   }
+  .hd {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 0.5rem;
+  }
+  .hd h2 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+  .close {
+    min-height: 2.75rem;
+    color: var(--muted);
+    font-size: 0.8125rem;
+  }
   .badge {
     flex: none;
-    padding: 0 0.5rem;
+    padding: 0.0625rem 0.5625rem;
     border: 1px solid var(--line);
     border-radius: 99rem;
     color: var(--muted);
-    font-size: 0.72rem;
+    font-size: 0.78rem;
     font-weight: 600;
   }
   .badge.sk {

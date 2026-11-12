@@ -3,7 +3,8 @@
 
 import type { PanelItem, PanelSection } from "@chocktochock/bindings";
 import { describe, expect, it } from "vitest";
-import { layoutSection, nameFit } from "./panel-layout";
+import { knobY, layoutSection, nameFit, TOGGLE } from "./panel-layout";
+import { em, widest } from "./text-width";
 
 const lever = (label: string, x: number) =>
   ({
@@ -39,11 +40,9 @@ describe("nameFit", () => {
         const others = section.items.filter((o) => o !== item).map((o) => Math.abs(o.x - item.x));
         const room = (Math.min(...others) - 4) * k;
         const fit = nameFit(item, section, k);
-        const longest = Math.max(...fit.lines.map((l) => l.length));
+        const longest = widest(fit.lines);
         // At the smallest size a very long word may still need more room; it then shrinks to it.
-        expect(longest * 0.64 * fit.px, `${item.label} at ${k}`).toBeLessThanOrEqual(
-          Math.max(room, longest * 0.64 * 8.5),
-        );
+        expect(longest * fit.px, `${item.label} at ${k}`).toBeLessThanOrEqual(Math.max(room, longest * 8.5));
       }
     }
   });
@@ -139,5 +138,73 @@ describe("nameFit", () => {
     const out = layoutSection(wiper, [0], () => ({ on: true, t: 0, rest: -1 }), 1.75, 0);
     expect(out.scale).toBe(1);
     expect(out.items.get(0)?.positions.map((l) => l.n)).toEqual([0, 1, 2, 3]);
+  });
+});
+
+describe("text width", () => {
+  it("counts wide capitals as wide, so DOWN takes more room than ARM by its real share", () => {
+    // Measured from the bundled Geist SemiBold: a flat 0.64 per letter made DOWN 2.56 ems.
+    expect(em("DOWN")).toBeGreaterThan(3.1);
+    expect(em("I")).toBeLessThan(0.3);
+  });
+
+  it("keeps a switch's position labels clear of its neighbor's, as with ARM beside DOWN", () => {
+    const toggle = (label: string, x: number, y: number, positions: string, guarded = false) =>
+      ({
+        kind: "toggle_switch",
+        label,
+        x,
+        y,
+        guarded,
+        controls: [],
+        positions,
+        description: "",
+      }) as PanelItem;
+    // The alternate flaps master switch and the alternate flaps switch where the pack puts them,
+    // near the right edge of the flight control section: DOWN goes left, beside ARM.
+    const flaps = {
+      id: "af",
+      title: "Flight control",
+      x: 0,
+      y: 0,
+      width: 235,
+      height: 322,
+      items: [
+        toggle("ALT FLAPS MASTER", 150, 132, "OFF, ARM", true),
+        toggle("ALT FLAPS", 205, 134, "UP, OFF, DOWN"),
+      ],
+    } as unknown as PanelSection;
+    for (const k of [1.6, 2, 2.4]) {
+      const layout = layoutSection(flaps, [0, 1], () => ({ on: true, t: 0, rest: 0 }), k, 0);
+      const boxes = [0, 1].flatMap((i) => {
+        const it = flaps.items[i] as PanelItem;
+        const pos = (it.positions ?? "").split(", ");
+        return (layout.items.get(i)?.positions ?? []).map((l) => {
+          const w = (em(pos[l.n] ?? "") * 10.8 * layout.scale) / k;
+          const x0 = it.x + (l.anchor === "start" ? l.x : l.anchor === "end" ? l.x - w : l.x - w / 2);
+          const h = (10.8 * layout.scale) / k;
+          return { i, x0, x1: x0 + w, y0: it.y + l.y - h, y1: it.y + l.y };
+        });
+      });
+      for (const a of boxes)
+        for (const b of boxes)
+          if (a.i < b.i)
+            expect(a.x0 < b.x1 && b.x0 < a.x1 && a.y0 < b.y1 && b.y0 < a.y1, `labels overlap at ${k}`).toBe(
+              false,
+            );
+    }
+  });
+});
+
+describe("knobY", () => {
+  it("sits a toggle's knob on its track's round ends, clear of the outline, as 3.0 does", () => {
+    // At the old 9.5 the knob ran into the outline; 3.0 centers it on the end's curve.
+    const end = TOGGLE.h / 2 - TOGGLE.w / 2;
+    const stroke = 1.1 / 2;
+    for (const n of [2, 3]) {
+      expect(knobY(0, n)).toBeCloseTo(-end);
+      expect(knobY(n - 1, n)).toBeCloseTo(end);
+    }
+    expect(TOGGLE.knob + stroke).toBeLessThan(TOGGLE.w / 2 - 0.5);
   });
 });

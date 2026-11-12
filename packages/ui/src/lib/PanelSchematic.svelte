@@ -52,17 +52,17 @@ the card; text keeps 3.0's sizes.
 
   /** The rows of a section to draw: a tall one is cut to the rows around the step's controls. */
   /**
-   * The part of a section to draw. As 3.0 frames its panel cards: a tall section is cut to the
-   * rows around the step's controls, and a wide one to the controls around them across, so the
-   * drawing stays as large as 3.0's. Sections drawn together are shown whole.
+   * The part of a section to draw. As 3.0 frames its panel cards: a section shows whole down, and
+   * a wide one is cut across to the controls around the step's, so the drawing stays as large as
+   * 3.0's. Sections drawn together are shown whole.
    */
   function bandOf(s: Section) {
     const mine = s.items.filter((_, i) => targets.some((t) => t.section === s.id && t.item === i));
     const whole = { y0: 0, y1: s.height, x0: 0, x1: s.width };
     if (!mine.length || drawn.length > 1) return whole;
-    const ys = mine.map((it) => it.y);
     const xs = mine.map((it) => it.x);
-    const rows = s.height > 200 ? { y0: Math.max(0, Math.min(...ys) - 95), y1: Math.min(s.height, Math.max(...ys) + 72) } : {};
+    // Down, the whole section shows, as in 3.0; the panel scrolls.
+    const rows = {};
     let across = {};
     if (s.width > WIDE) {
       const c = (Math.min(...xs) + Math.max(...xs)) / 2;
@@ -77,14 +77,9 @@ the card; text keeps 3.0's sizes.
   let x0 = $derived(Math.min(...drawn.map((s) => s.x + (bands.get(s.id)?.x0 ?? 0))) - 2);
   let w = $derived(Math.max(...drawn.map((s) => s.x + (bands.get(s.id)?.x1 ?? s.width))) + 2 - x0);
 
-  /** The height before labels, for the scale (labels depend on the scale, so not used for it). */
-  let boxH = $derived(
-    Math.max(...drawn.map((s) => s.y + (bands.get(s.id)?.y1 ?? s.height))) - Math.min(...drawn.map(top)) + 30,
-  );
   let width = $state(0);
   // The drawing is as wide as its box, but never more than SCALE times the pack's size.
-  // Its height cap (21rem) can make it narrower still; text sizes follow the size drawn.
-  let k = $derived(width > 0 ? Math.min(width, w * SCALE, (336 * w) / Math.max(1, boxH)) / w : 1.6);
+  let k = $derived(width > 0 ? Math.min(width, w * SCALE) / w : 1.6);
 
   /** A section's lowest point: its band, or past its lowest label (as PanelSection lays it out). */
   const bottom = (s: Section) => {
@@ -151,7 +146,6 @@ the card; text keeps 3.0's sizes.
   .schematic {
     display: block;
     height: auto;
-    max-height: 21rem;
     margin: 0 auto;
   }
 </style>
