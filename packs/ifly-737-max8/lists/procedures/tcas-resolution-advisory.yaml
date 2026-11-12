@@ -16,33 +16,53 @@ steps:
     controls:
       - apdisc
       - apdis
+    targets:
+      - at: "gl/mcp/DISENGAGE/1"
+      - at: "con/st/A/T DISENGAGE/1"
   - id: ifly-737-max8.procedures.pitch-tcas-resolution
     number: 2
     text: PITCH
     expect: ADJUST SMOOTHLY TO SATISFY THE RA
     controls:
       - column
+    targets:
+      - at: "seat/yoke/STAB TRIM/1"
+      - at: "seat/yoke/A/P DISENGAGE/1"
   - id: ifly-737-max8.procedures.lateral-path
     number: 3
     text: LATERAL PATH
     expect: FOLLOW THE PLANNED PATH UNLESS VISUAL CONTACT REQUIRES OTHERWISE
     controls:
       - fltinst
+    targets:
+      - at: "mn/cd/OUTBOARD DU: PFD/1"
+      - at: "mn/cd/INBOARD DU: ND AND ENGINES/1"
+      - at: "mn/fd/INBOARD DU: ND/1"
+      - at: "mn/fd/OUTBOARD DU: PFD/1"
   - id: ifly-737-max8.procedures.climb-ra-in-landing-configuration
     number: 4
     text: CLIMB RA IN LANDING CONFIGURATION
     expect: "MAXIMUM THRUST, FLAPS 15, GEAR UP AFTER POSITIVE RATE"
     controls:
       - thrust
+    targets:
+      - at: "con/st/THRUST LEVERS 1 AND 2/1"
   - id: ifly-737-max8.procedures.near-the-ground
     number: 5
     text: NEAR THE GROUND
     expect: "NO DESCEND RA BELOW ABOUT 1,100 FT AGL, NO RA AT ALL BELOW ABOUT 1,000 FT AGL"
     controls:
       - fltinst
+    targets:
+      - at: "mn/cd/OUTBOARD DU: PFD/1"
+      - at: "mn/cd/INBOARD DU: ND AND ENGINES/1"
+      - at: "mn/fd/INBOARD DU: ND/1"
+      - at: "mn/fd/OUTBOARD DU: PFD/1"
   - id: ifly-737-max8.procedures.atc
     number: 6
     text: ATC
     expect: YOU MAY DEVIATE FROM THE CLEARANCE TO COMPLY WITH THE RA. TELL ATC
     controls:
       - atcclr
+    targets:
+      - at: "con/r1/VHF RADIO 1/1"

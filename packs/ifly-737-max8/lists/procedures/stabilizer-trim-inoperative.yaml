@@ -15,6 +15,9 @@ steps:
     expect: CUTOUT
     controls:
       - stabcut
+    targets:
+      - at: "con/lo/STAB TRIM PRI/1"
+      - at: "con/lo/STAB TRIM B/U/1"
     confirmed_by:
       - kind: vendor-docs
         date: 2026-11-10
@@ -24,6 +27,8 @@ steps:
     expect: DO NOT USE (NOT AVAILABLE)
     controls:
       - apdis
+    targets:
+      - at: "gl/mcp/DISENGAGE/1"
     confirmed_by:
       - kind: vendor-docs
         date: 2026-11-10
@@ -33,6 +38,9 @@ steps:
     expect: TRIM MANUALLY. TWO-PILOT EFFORT MAY BE USED
     controls:
       - stabwheel
+    targets:
+      - at: "con/st/STAB TRIM WHEEL/1"
+      - at: "con/st/STAB TRIM WHEEL/2"
     note: "If ice could be the cause, descend to warmer air and try again."
     confirmed_by:
       - kind: vendor-docs
@@ -43,6 +51,8 @@ steps:
     expect: LOWER SPEED EASES MANUAL TRIM
     controls:
       - speedt
+    targets:
+      - at: "mn/cd/OUTBOARD DU: PFD/1"
     confirmed_by:
       - kind: vendor-docs
         date: 2026-11-10
@@ -52,6 +62,8 @@ steps:
     expect: "PLAN FLAPS 15 AND VREF 15 + 10 KT, ESTABLISH CONFIGURATION EARLY"
     controls:
       - flaplever
+    targets:
+      - at: "con/st/FLAP LEVER/1"
     note: "Keep any wind additive to 5 knots or less, and check the landing distance in an approved source."
     confirmed_by:
       - kind: vendor-docs
@@ -62,6 +74,8 @@ steps:
     expect: ADVANCE THRUST SLOWLY
     controls:
       - thrust
+    targets:
+      - at: "con/st/THRUST LEVERS 1 AND 2/1"
     confirmed_by:
       - kind: vendor-docs
         date: 2026-11-10

@@ -14,6 +14,27 @@ steps:
     expect: "OFF"
     controls:
       - efispanel
+    targets:
+      - at: "gl/efisl/MINS/1"
+      - at: "gl/efisl/BARO/1"
+      - at: "gl/efisl/MODE/1"
+      - at: "gl/efisl/RANGE/1"
+      - at: "gl/efisl/WXR/1"
+      - at: "gl/efisl/TERR/1"
+      - at: "gl/efisl/POS/1"
+      - at: "gl/efisl/STA/1"
+      - at: "gl/efisl/WPT/1"
+      - at: "gl/efisl/ARPT/1"
+      - at: "gl/efisr/MINS/1"
+      - at: "gl/efisr/BARO/1"
+      - at: "gl/efisr/MODE/1"
+      - at: "gl/efisr/RANGE/1"
+      - at: "gl/efisr/WXR/1"
+      - at: "gl/efisr/TERR/1"
+      - at: "gl/efisr/POS/1"
+      - at: "gl/efisr/STA/1"
+      - at: "gl/efisr/WPT/1"
+      - at: "gl/efisr/ARPT/1"
     why: A transmitting radar is a hazard to ground crew and during fueling
     panel_lights:
       efispanel:
@@ -27,6 +48,9 @@ steps:
     expect: "OFF"
     controls:
       - abrake
+    targets:
+      - at: "con/ed/AUTO BRAKE/1"
+        set: "OFF"
     why: Taxi on the toe brakes
     confirmed_by:
       - kind: vendor-docs
@@ -36,6 +60,9 @@ steps:
     expect: UP
     controls:
       - flaplever
+    targets:
+      - at: "con/st/FLAP LEVER/1"
+        set: "UP"
     note: Retract once you are clear of the runway.
     why: Flaps are not needed for taxi
     check: Flaps UP
@@ -47,6 +74,9 @@ steps:
     expect: DOWN DETENT
     controls:
       - speedbrake
+    targets:
+      - at: "con/st/SPEEDBRAKE LEVER/1"
+        set: "DOWN"
     why: Keeps the spoilers stowed on the ground
     check: Lever in DOWN detent
     confirmed_by:
@@ -57,6 +87,19 @@ steps:
     expect: ON UNTIL SECURE CHECKLIST
     controls:
       - wheat
+    targets:
+      - at: "oh/heat/ON/1"
+        light: on
+      - at: "oh/heat/ON/2"
+        light: on
+      - at: "oh/heat/ON/3"
+        light: on
+      - at: "oh/heat/ON/4"
+        light: on
+      - at: "oh/heat/L SIDE/1"
+      - at: "oh/heat/L FWD/1"
+      - at: "oh/heat/R FWD/1"
+      - at: "oh/heat/R SIDE/1"
     why: Keeps the windows warm and clear until the airplane is secured
     confirmed_by:
       - kind: vendor-docs
@@ -66,6 +109,11 @@ steps:
     expect: AUTO
     controls:
       - pheat
+    targets:
+      - at: "oh/heat/PROBE A/1"
+        set: "AUTO"
+      - at: "oh/heat/PROBE B/1"
+        set: "AUTO"
     note: "AUTO keeps probe heat on while an engine runs, then off after shutdown."
     why: Probe heat stops by itself after shutdown
     confirmed_by:
@@ -76,6 +124,12 @@ steps:
     expect: "OFF"
     controls:
       - starts
+    targets:
+      - at: "oh/start/ENGINE START 1/1"
+        set: "OFF"
+      - at: "oh/start/IGNITION/1"
+      - at: "oh/start/ENGINE START 2/1"
+        set: "OFF"
     why: Ignition not needed for taxi
     panel_lights:
       starts:
@@ -89,4 +143,6 @@ steps:
     expect: "START, THEN RELEASE TO ON"
     controls:
       - apusw
+    targets:
+      - at: "oh/apu/APU/1"
     why: Starts the APU for power and air

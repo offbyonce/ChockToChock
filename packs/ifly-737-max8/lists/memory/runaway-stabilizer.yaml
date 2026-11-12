@@ -18,6 +18,9 @@ steps:
     expect: HOLD FIRMLY
     controls:
       - column
+    targets:
+      - at: "seat/yoke/STAB TRIM/1"
+      - at: "seat/yoke/A/P DISENGAGE/1"
     confirmed_by:
       - kind: vendor-docs
         date: 2026-11-10
@@ -27,6 +30,8 @@ steps:
     expect: DISENGAGE
     controls:
       - apdis
+    targets:
+      - at: "gl/mcp/DISENGAGE/1"
     confirmed_by:
       - kind: vendor-docs
         date: 2026-11-10
@@ -36,6 +41,8 @@ steps:
     expect: DISENGAGE
     controls:
       - apdisc
+    targets:
+      - at: "con/st/A/T DISENGAGE/1"
     confirmed_by:
       - kind: vendor-docs
         date: 2026-11-10
@@ -45,6 +52,9 @@ steps:
     expect: CONTROL PITCH ATTITUDE AND AIRSPEED
     controls:
       - column
+    targets:
+      - at: "seat/yoke/STAB TRIM/1"
+      - at: "seat/yoke/A/P DISENGAGE/1"
     confirmed_by:
       - kind: vendor-docs
         date: 2026-11-10
@@ -54,6 +64,9 @@ steps:
     expect: USE TO REDUCE COLUMN FORCES
     controls:
       - column
+    targets:
+      - at: "seat/yoke/STAB TRIM/1"
+      - at: "seat/yoke/A/P DISENGAGE/1"
     confirmed_by:
       - kind: vendor-docs
         date: 2026-11-10
@@ -63,6 +76,8 @@ steps:
     expect: DO NOT RE-ENGAGE AUTOPILOT OR AUTOTHROTTLE. END OF PROCEDURE
     controls:
       - apdis
+    targets:
+      - at: "gl/mcp/DISENGAGE/1"
     confirmed_by:
       - kind: vendor-docs
         date: 2026-11-10
@@ -72,6 +87,9 @@ steps:
     expect: BOTH STAB TRIM CUTOUT SWITCHES TO CUTOUT
     controls:
       - stabcut
+    targets:
+      - at: "con/lo/STAB TRIM PRI/1"
+      - at: "con/lo/STAB TRIM B/U/1"
     confirmed_by:
       - kind: vendor-docs
         date: 2026-11-10
@@ -81,6 +99,9 @@ steps:
     expect: GRASP AND HOLD THE STABILIZER TRIM WHEEL
     controls:
       - stabwheel
+    targets:
+      - at: "con/st/STAB TRIM WHEEL/1"
+      - at: "con/st/STAB TRIM WHEEL/2"
     confirmed_by:
       - kind: vendor-docs
         date: 2026-11-10
@@ -90,6 +111,9 @@ steps:
     expect: TRIM MANUALLY
     controls:
       - stabwheel
+    targets:
+      - at: "con/st/STAB TRIM WHEEL/1"
+      - at: "con/st/STAB TRIM WHEEL/2"
     non_recall: true
     how: trim
     confirmed_by:
@@ -101,6 +125,9 @@ steps:
     expect: TWO-PILOT EFFORT MAY BE USED. LOWER AIRSPEED EASES THE LOAD
     controls:
       - stabwheel
+    targets:
+      - at: "con/st/STAB TRIM WHEEL/1"
+      - at: "con/st/STAB TRIM WHEEL/2"
     non_recall: true
     note: "Anticipate trim changes, and keep the autopilot and autothrottle off."
     confirmed_by:
@@ -112,6 +139,9 @@ steps:
     expect: ESTABLISH LANDING CONFIGURATION AND IN-TRIM CONDITION EARLY
     controls:
       - stabind
+    targets:
+      - at: "con/st/STAB TRIM WHEEL/1"
+      - at: "con/st/STAB TRIM WHEEL/2"
     non_recall: true
     confirmed_by:
       - kind: vendor-docs

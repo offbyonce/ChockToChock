@@ -15,6 +15,8 @@ steps:
     expect: OBTAIN
     controls:
       - atcclr
+    targets:
+      - at: "con/r1/VHF RADIO 1/1"
     why: Request it and read it back
   - id: ifly-737-max8.taxi-in.engine-cool-down
     number: 2
@@ -22,6 +24,9 @@ steps:
     expect: AT OR NEAR IDLE 3 MINUTES BEFORE SHUTDOWN
     controls:
       - engmon
+    targets:
+      - at: "mn/cd/INBOARD DU: ND AND ENGINES/1"
+      - at: "con/ed/ENG/1"
     note: "Run the engines at or near idle before cutting them off, so they cool evenly."
     why: So the engines cool evenly
     timer:

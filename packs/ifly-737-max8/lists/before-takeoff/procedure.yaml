@@ -15,6 +15,9 @@ steps:
     expect: AT LEAST 31C
     controls:
       - oil
+    targets:
+      - at: "mn/cd/INBOARD DU: ND AND ENGINES/1"
+      - at: "con/ed/ENG/1"
     why: Needed before takeoff thrust
     check: Oil at least 31C
     confirmed_by:
@@ -26,6 +29,27 @@ steps:
     expect: "TERRAIN DISPLAY AS DESIRED"
     controls:
       - efispanel
+    targets:
+      - at: "gl/efisl/MINS/1"
+      - at: "gl/efisl/BARO/1"
+      - at: "gl/efisl/MODE/1"
+      - at: "gl/efisl/RANGE/1"
+      - at: "gl/efisl/WXR/1"
+      - at: "gl/efisl/TERR/1"
+      - at: "gl/efisl/POS/1"
+      - at: "gl/efisl/STA/1"
+      - at: "gl/efisl/WPT/1"
+      - at: "gl/efisl/ARPT/1"
+      - at: "gl/efisr/MINS/1"
+      - at: "gl/efisr/BARO/1"
+      - at: "gl/efisr/MODE/1"
+      - at: "gl/efisr/RANGE/1"
+      - at: "gl/efisr/WXR/1"
+      - at: "gl/efisr/TERR/1"
+      - at: "gl/efisr/POS/1"
+      - at: "gl/efisr/STA/1"
+      - at: "gl/efisr/WPT/1"
+      - at: "gl/efisr/ARPT/1"
     why: "Weather or terrain on the ND for the departure. Weather radar is not simulated in the iFly, so use TERR"
     panel_lights:
       efispanel:
@@ -39,6 +63,9 @@ steps:
     expect: AUTO OR OFF PER PERFORMANCE DATA
     controls:
       - packs
+    targets:
+      - at: "oh/bleed/L PACK/1"
+      - at: "oh/bleed/R PACK/1"
     why: The pack setting must match the one used in your preflight performance calculations
     check: Both PACK switches set for takeoff
     check_detail: "AUTO is normal. OFF when conditions warrant, to align with preflight performance calculations"

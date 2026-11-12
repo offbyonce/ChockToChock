@@ -4,7 +4,7 @@ SPDX-License-Identifier: MIT
 -->
 # 0017: Selector dials: every position named, at its real angle
 
-Date: 2026-11-11. Status: proposed. Extends [0014](0014-pack-format-3.md).
+Date: 2026-11-11. Status: accepted. Extends [0014](0014-pack-format-3.md).
 
 ## Context
 Drawings labeled only the ends and the target of a selector with more than four positions, so

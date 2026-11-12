@@ -17,24 +17,39 @@ steps:
     expect: "TELL THE CREW, THEN WARN THE CABIN ON THE PA"
     controls:
       - pa
+    targets:
+      - at: "con/a1/AUDIO PANEL 1/1"
+      - at: "con/a2/AUDIO PANEL 2/1"
   - id: ifly-737-max8.quick-reference.fasten-belts
     number: 2
     text: FASTEN BELTS
     expect: "ON"
     controls:
       - sblts
+    targets:
+      - at: "oh/col/FASTEN BELTS/1"
+        set: "ON"
   - id: ifly-737-max8.quick-reference.descent
     number: 3
     text: DESCENT
     expect: "NOW, TO THE GREATER OF 10,000 FT AND MINIMUM SAFE ALTITUDE"
     controls:
       - mcpalt
+    targets:
+      - at: "gl/mcp/ALTITUDE/1"
+      - at: "gl/mcp/ALT HLD/1"
   - id: ifly-737-max8.quick-reference.start-switches
     number: 4
     text: START SWITCHES
     expect: CONT
     controls:
       - starts
+    targets:
+      - at: "oh/start/ENGINE START 1/1"
+        set: "CONT"
+      - at: "oh/start/IGNITION/1"
+      - at: "oh/start/ENGINE START 2/1"
+        set: "CONT"
     panel_lights:
       starts:
         - ENGINE START 1
@@ -45,30 +60,46 @@ steps:
     expect: "CLOSE, OR AS FAR AS ANTI-ICE ALLOWS"
     controls:
       - thrust
+    targets:
+      - at: "con/st/THRUST LEVERS 1 AND 2/1"
   - id: ifly-737-max8.quick-reference.speed-brake
     number: 6
     text: SPEED BRAKE
     expect: FLIGHT DETENT
     controls:
       - speedbrake
+    targets:
+      - at: "con/st/SPEEDBRAKE LEVER/1"
+        set: "FLIGHT"
   - id: ifly-737-max8.quick-reference.target-speed
     number: 7
     text: TARGET SPEED
     expect: "MMO/VMO (MAXIMUM OPERATING SPEED). IF STRUCTURE IS IN DOUBT, LIMIT SPEED AND AVOID HIGH MANEUVERING LOADS"
     controls:
       - speedt
+    targets:
+      - at: "mn/cd/OUTBOARD DU: PFD/1"
   - id: ifly-737-max8.quick-reference.atc
     number: 8
     text: ATC
     expect: ADVISE. SQUAWK 7700 IF UNABLE TO COMMUNICATE AT ONCE
     controls:
       - xpndr
+    targets:
+      - at: "con/atc/ALT SOURCE 1/1"
+      - at: "con/atc/XPNDR/1"
+      - at: "con/atc/CODE/1"
+      - at: "con/atc/MODE/1"
+      - at: "con/atc/ALT SOURCE 2/1"
   - id: ifly-737-max8.quick-reference.approaching-level-off
     number: 9
     text: APPROACHING LEVEL OFF
     expect: "SMOOTHLY LOWER SPEED BRAKE TO DOWN DETENT, ADD THRUST"
     controls:
       - speedbrake
+    targets:
+      - at: "con/st/SPEEDBRAKE LEVER/1"
+        set: "DOWN"
     non_recall: true
   - id: ifly-737-max8.quick-reference.crew-oxygen-regulators
     number: 10
@@ -76,4 +107,10 @@ steps:
     expect: "NORMAL. USE OXYGEN WHEN CABIN IS ABOVE 10,000 FT"
     controls:
       - mask
+    targets:
+      - at: "seat/side/MASK STOWAGE/1"
+      - at: "seat/side/RESET/TEST/1"
+      - at: "seat/side/EMERGENCY/TEST/1"
+      - at: "seat/side/NORMAL/100%/1"
+        set: "NORMAL"
     non_recall: true

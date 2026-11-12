@@ -1,16 +1,16 @@
 // SPDX-FileCopyrightText: 2026 offbyonce
 // SPDX-License-Identifier: MIT
 
-//! What a step asks each of its panel items to be set to, for the control drawings. This is the
-//! step's target, read from its expected value; it is never the simulator's state, which the app
-//! does not know (decision 0006).
+//! What a step asks each of its panel items to be, for the control drawings: exactly the targets
+//! the pack states for the step (decision 0018). Nothing here reads a step's wording, and none of
+//! it is the simulator's state, which the app does not know (decision 0006).
 
-use checklist_core::{Step, named_position, names};
+use checklist_core::{LightState, Step, locate};
 use pack::FlatPack;
 use serde::Serialize;
 use ts_rs::TS;
 
-/// One panel item a step uses, and the position the step asks for, if its value names exactly one.
+/// One panel item a step involves, as the pack states it.
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, TS)]
 #[serde(rename_all = "camelCase")]
 #[ts(export)]
@@ -19,144 +19,41 @@ pub struct ItemTarget {
     pub section: String,
     /// The item's index in that section.
     pub item: usize,
-    /// The index of the target position in the item's `positions`, when the step names one.
+    /// The index of the position the step sets the item to, in the item's `positions`.
     pub position: Option<usize>,
-    /// A light the step expects on: its `lit_at` position is the step's target on an item it
-    /// shares a control with, or (with no `lit_at`) the step's value says it is on, as 3.0 read it,
-    /// unless that value names a position of a switch the step uses (decision 0018).
+    /// A light the step expects on.
     pub lit: bool,
 }
 
-/// Whether a value says a light is on, as 3.0 read it: ON, LIT, ILLUMINATED and the like, and
-/// not OUT, OFF or DARK.
-fn says_on(text: &str) -> bool {
-    let words = ["ON", "ILLUMINATED", "LIT", "COMES ON"];
-    let out = ["OUT", "OFF", "EXTINGUISHED", "DARK"];
-    words.iter().any(|w| names(text, w)) && !out.iter().any(|w| names(text, w))
-}
-
-/// Whether a value says this light is on. A value about several lights ("VALVE LIGHTS ON,
-/// FILTER BYPASS OUT") is read clause by clause: the clause naming the light (or a word of its
-/// name), else the whole value.
-fn says_light_on(expect: &str, label: &str) -> bool {
-    let clauses: Vec<&str> = expect.split([',', ';']).map(str::trim).collect();
-    let words: Vec<&str> = label.split_whitespace().filter(|w| w.len() > 3).collect();
-    let clause = clauses
-        .iter()
-        .find(|c| names(c, label))
-        .or_else(|| clauses.iter().find(|c| words.iter().any(|w| names(c, w))));
-    says_on(clause.copied().unwrap_or(expect))
-}
-
-/// Whether a step is about its lights: it says LIGHT or LIGHTS, or names the light.
-fn mentions_light(step: &Step, label: &str) -> bool {
-    let text = format!("{} {}", step.text, step.expect);
-    ["LIGHT", "LIGHTS", "LT", "LTS"]
-        .iter()
-        .any(|w| names(&text, w))
-        || names(&text, label)
-}
-
-/// The panel items a step uses, with the position it asks for and the lights it expects on.
+/// The panel items a step involves, from its targets in the pack.
 pub fn step_targets(pack: &FlatPack, step: &Step) -> Vec<ItemTarget> {
-    let mut out = vec![];
-    // The value with the names of the step's lights taken out, so "PASS OXY ON LIGHT OUT" does
-    // not read as the switch at ON: a switch's position is read from what is left.
-    let mut switch_value = step.expect.clone();
-    for item in pack
-        .content
-        .panels
+    step.targets
         .iter()
-        .flat_map(|p| &p.sections)
-        .flat_map(|s| &s.items)
-        .filter(|i| i.kind == checklist_core::PanelItemKind::Light)
-        .filter(|i| i.controls.iter().any(|c| step.controls.contains(c)))
-    {
-        switch_value = switch_value.replace(&item.label, " ");
-    }
-    let used: Vec<(&checklist_core::PanelItem, Option<usize>)> = pack
-        .content
-        .panels
-        .iter()
-        .flat_map(|p| &p.sections)
-        .flat_map(|s| &s.items)
-        .filter(|e| e.controls.iter().any(|c| step.controls.contains(c)))
-        .map(|e| {
-            (
-                e,
-                e.positions
-                    .as_deref()
-                    .and_then(|p| named_position(&switch_value, p)),
-            )
-        })
-        .collect();
-    for panel in &pack.content.panels {
-        for section in &panel.sections {
-            for (item, entry) in section.items.iter().enumerate() {
-                if !entry.controls.iter().any(|c| step.controls.contains(c)) {
-                    continue;
-                }
-                let position = entry
+        .filter_map(|t| {
+            let (section, item) = locate(&pack.content.panels, &t.at)?;
+            let entry = section.items.get(item)?;
+            let position = t.set.as_deref().and_then(|set| {
+                entry
                     .positions
-                    .as_deref()
-                    .and_then(|p| named_position(&switch_value, p));
-                let lit = entry.kind == checklist_core::PanelItemKind::Light
-                    && match &entry.lit_at {
-                        Some(at) => used.iter().any(|(o, t)| {
-                            o.controls.iter().any(|c| entry.controls.contains(c))
-                                && t.and_then(|t| o.positions.as_deref()?.split(',').nth(t))
-                                    .is_some_and(|p| p.trim() == at)
-                        }),
-                        // A value naming a switch's position (pumps ON) is about the switch, not
-                        // its lights, which may well go out (decision 0018).
-                        None => {
-                            says_light_on(&step.expect, &entry.label)
-                                && !used.iter().any(|(o, t)| {
-                                    o.kind != checklist_core::PanelItemKind::Light && t.is_some()
-                                })
-                        }
-                    };
-                out.push(ItemTarget {
-                    section: section.id.clone(),
-                    item,
-                    position,
-                    lit,
-                });
-            }
-        }
-    }
-    let item_of = |t: &ItemTarget| {
-        pack.content
-            .panels
-            .iter()
-            .flat_map(|p| &p.sections)
-            .find(|s| s.id == t.section)
-            .and_then(|s| s.items.get(t.item))
-    };
-    let label = |t: &ItemTarget| item_of(t).map(|i| i.label.as_str()).unwrap_or_default();
-    let is_light =
-        |t: &ItemTarget| item_of(t).is_some_and(|i| i.kind == checklist_core::PanelItemKind::Light);
-    // A light filed with the switches a step sets is the step's only when the step expects it on
-    // or speaks of its lights: setting the fuel pumps ON does not point at their LOW PRESSURE
-    // lights, which go out (decision 0018). A step about lights alone keeps them all.
-    if out.iter().any(|t| !is_light(t)) {
-        out.retain(|t| !is_light(t) || t.lit || mentions_light(step, label(t)));
-    }
-    // A step that names some of its controls (TERR on the EFIS panel) targets only those, as 3.0
-    // picks them out, and the lights it expects on.
-    if out.iter().any(|t| names(&step.text, label(t))) {
-        out.retain(|t| {
-            t.lit || names(&step.text, label(t)) || (is_light(t) && mentions_light(step, label(t)))
-        });
-    }
-    out
+                    .as_deref()?
+                    .split(',')
+                    .position(|p| p.trim() == set)
+            });
+            Some(ItemTarget {
+                section: section.id.clone(),
+                item,
+                position,
+                lit: t.light == Some(LightState::On),
+            })
+        })
+        .collect()
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
     use crate::test_support::ifly_pack;
-    use checklist_core::PanelItemKind;
+    use checklist_core::{PanelItemKind, named_position, names, says_on};
 
     #[test]
     fn a_value_names_one_position_as_a_whole_word() {

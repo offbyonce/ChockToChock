@@ -2,32 +2,36 @@
 SPDX-FileCopyrightText: 2026 offbyonce
 SPDX-License-Identifier: MIT
 -->
-# 0018: Which lights a step points at, and when they show on
+# 0018: Explicit step targets
 
-Date: 2026-11-11. Status: proposed. Amends [0016](0016-levers-handles-and-lit-lights.md).
+Date: 2026-11-11. Status: proposed. Extends [0014](0014-pack-format-3.md); replaces the wording
+rules of [0016](0016-levers-handles-and-lit-lights.md) for drawings.
 
 ## Context
-Decision 0016 shows a light without `lit_at` on when the step's value says ON. A step that sets
-switches ON, such as the fuel pumps, then showed the pumps' LOW PRESSURE lights as expected on,
-though those lights go out when the pumps run.
+Drawings worked out what a step asks of each panel item by reading the step's wording, and each
+new rule patched the last guess. One misread showed the passenger oxygen switch at ON (which
+drops the cabin masks) because the light it names, PASS OXY ON, contains the word ON.
 
 ## Decision
-- A light filed under the same entry as the switches a step sets is part of that step only when
-  the step speaks of lights (LIGHT, LIGHTS, or the light's name) or expects it on. Setting the
-  fuel pumps ON points at the pump switches, not their LOW PRESSURE lights; "ELT SWITCH: GUARD
-  CLOSED, LIGHT OUT" keeps the ELT light. A step about lights alone keeps them all.
-- A light without `lit_at` shows on from the step's value only when that value names no position
-  of a switch the step uses, and a value about several lights is read clause by clause: "VALVE
-  LIGHTS ON, FILTER BYPASS OUT" shows the valve lights on and FILTER BYPASS out.
-- A switch's position is read from the value with its lights' names taken out, so "PASS OXY ON
-  LIGHT OUT" does not read as the passenger oxygen switch at ON.
-- A step that names some of its controls (TERR on the EFIS panel) points at those only, and the
-  lights it speaks of or expects on.
-- `lit_at` names exactly which position lights a light. The iFly pack gives it to the three green
-  gear lights (gear lever DN), SPEED BRAKE ARMED (speedbrake ARMED) and PASS OXY ON (passenger
-  oxygen ON). The window heat ON lights get none: they can cycle off when the window is warm.
+- A step may list `targets`: each names one panel item by its locator, `panel/section/LABEL/n`
+  (the n-th item with that label in the section, as light notes name them), with `set: <position>`
+  for a switch, selector, lever or handle, or `light: on | out` for a light. A target with neither
+  only highlights the item (a screen, a button, a switch whose position the step leaves open).
+- Drawings show exactly these targets. Nothing reads a step's wording at render time.
+- A light that may cycle (the window heat ON lights, which go out when the window is warm) gets
+  no `light` state, so a drawing never claims a state the light may not be in.
+- `pack check` holds targets to the pack: each names a real item on one of the step's controls,
+  `set` is one of its positions and only on a non-light, `light` only on a light, no target twice,
+  and a step whose controls are drawn has targets. It also holds them to the step's wording: a
+  `set` position the wording does not name, a position the wording names that the target lacks, a
+  light expected on that the wording says is out, or out that the wording says is on, are errors.
+  Light names are taken out of the wording before positions are read.
+- `pack suggest-targets <pack-dir>` drafts targets from wording, with every place its reading was
+  not certain, for an author to check and keep. It is how the iFly pack's targets were first
+  written; the drafts leave a state out wherever the reading was unsure.
+- Pack format 3; the field is optional, so no version change.
 
 ## Consequences
-- Drawings highlight what a step acts on or checks, and never show a light on that the step's
-  switches turn off or that the step says is out. Tests check every step in the pack for both.
-- A light that a switch turns on needs `lit_at` to show on.
+- What a drawing shows is data an author can see, check and correct step by step.
+- Steps and their targets cannot drift apart unnoticed.
+- `lit_at` remains as the suggester's hint for lights a switch turns on.

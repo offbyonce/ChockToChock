@@ -15,6 +15,8 @@ steps:
     expect: VERIFY LEVEL AND MODES
     controls:
       - fma
+    targets:
+      - at: "mn/cd/OUTBOARD DU: PFD/1"
     note: "Confirm the airplane has leveled, and read the FMA."
     why: Confirms the capture
     check: Level at cruise
@@ -25,6 +27,8 @@ steps:
     expect: "CONFIRM ENOUGH TO REACH THE DESTINATION"
     controls:
       - fuelq
+    targets:
+      - at: "mn/cd/INBOARD DU: ND AND ENGINES/1"
     note: "Compare fuel used with your plan, and check the tanks stay balanced."
     why: Catches a problem early
     check: "PROGRESS page fuel at the destination above reserves"
@@ -38,6 +42,25 @@ steps:
     expect: OFF WHEN BOTH LOW PRESSURE LIGHTS COME ON
     controls:
       - fuelpumps
+    targets:
+      - at: "oh/fuel/LOW PRESSURE/1"
+        light: out
+      - at: "oh/fuel/LOW PRESSURE/2"
+        light: out
+      - at: "oh/fuel/CTR L/1"
+      - at: "oh/fuel/CTR R/1"
+      - at: "oh/fuel/LOW PRESSURE/3"
+        light: out
+      - at: "oh/fuel/LOW PRESSURE/4"
+        light: out
+      - at: "oh/fuel/LOW PRESSURE/5"
+        light: out
+      - at: "oh/fuel/LOW PRESSURE/6"
+        light: out
+      - at: "oh/fuel/AFT 1/1"
+      - at: "oh/fuel/FWD 1/1"
+      - at: "oh/fuel/FWD 2/1"
+      - at: "oh/fuel/AFT 2/1"
     quick: always
     note: Switch them off when the center tank is empty. Running them dry is a safety risk.
     why: Running pumps dry is a safety risk
@@ -53,6 +76,13 @@ steps:
     expect: "AS REQUIRED, OFF PROMPTLY AFTER ICING, NOT IN DRY AIR"
     controls:
       - aice
+    targets:
+      - at: "oh/aice/WING ANTI-ICE/1"
+        set: "OFF"
+      - at: "oh/aice/ENG 1/1"
+        set: "OFF"
+      - at: "oh/aice/ENG 2/1"
+        set: "OFF"
     quick: always
     note: Engine anti-ice ON in icing conditions (TAT 10C or below with visible moisture). Turn it off once you are clear of icing.
     why: Long use in dry air can overheat the inlet
@@ -62,6 +92,27 @@ steps:
     expect: "MONITOR, IF SHOWN ON ND"
     controls:
       - efispanel
+    targets:
+      - at: "gl/efisl/MINS/1"
+      - at: "gl/efisl/BARO/1"
+      - at: "gl/efisl/MODE/1"
+      - at: "gl/efisl/RANGE/1"
+      - at: "gl/efisl/WXR/1"
+      - at: "gl/efisl/TERR/1"
+      - at: "gl/efisl/POS/1"
+      - at: "gl/efisl/STA/1"
+      - at: "gl/efisl/WPT/1"
+      - at: "gl/efisl/ARPT/1"
+      - at: "gl/efisr/MINS/1"
+      - at: "gl/efisr/BARO/1"
+      - at: "gl/efisr/MODE/1"
+      - at: "gl/efisr/RANGE/1"
+      - at: "gl/efisr/WXR/1"
+      - at: "gl/efisr/TERR/1"
+      - at: "gl/efisr/POS/1"
+      - at: "gl/efisr/STA/1"
+      - at: "gl/efisr/WPT/1"
+      - at: "gl/efisr/ARPT/1"
     note: "Look ahead for weather on the ND, and plan any deviation early."
     why: Plan any deviation early
     panel_lights:
@@ -80,6 +131,9 @@ steps:
     expect: ENTER IN CDU
     controls:
       - fmc
+    targets:
+      - at: "con/cdul/CDU/1"
+      - at: "con/cdur/CDU/1"
     quick: always
     why: The FMC needs the arrival to plan the descent
     confirmed_by:
@@ -91,6 +145,8 @@ steps:
     expect: "SET THE CLEARED ALTITUDE WHEN CLEARED TO DESCEND"
     controls:
       - mcpalt
+    targets:
+      - at: "gl/mcp/ALTITUDE/1"
     quick: always
     why: VNAV will not descend below the MCP altitude
     confirmed_by:

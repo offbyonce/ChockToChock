@@ -17,6 +17,12 @@ steps:
     expect: START SWITCH OFF
     controls:
       - starts
+    targets:
+      - at: "oh/start/ENGINE START 1/1"
+        set: "OFF"
+      - at: "oh/start/IGNITION/1"
+      - at: "oh/start/ENGINE START 2/1"
+        set: "OFF"
     panel_lights:
       starts:
         - ENGINE START 1
@@ -27,3 +33,8 @@ steps:
     expect: START LEVER CUTOFF
     controls:
       - slever
+    targets:
+      - at: "con/lo/START LEVER 1/1"
+        set: "CUTOFF"
+      - at: "con/lo/START LEVER 2/1"
+        set: "CUTOFF"

@@ -17,3 +17,5 @@ steps:
     expect: "REDUCE BELOW VMO/MMO WITH THRUST, AND ATTITUDE IF REQUIRED"
     controls:
       - thrust
+    targets:
+      - at: "con/st/THRUST LEVERS 1 AND 2/1"

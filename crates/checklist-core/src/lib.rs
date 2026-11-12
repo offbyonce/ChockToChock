@@ -36,7 +36,8 @@ pub use content::{
 };
 pub use model::{
     AutoStart, AutoStartPick, Checklist, Confirmation, ConfirmationKind, FillField, HintPart,
-    ListKind, MAX_ROUTE_LEG, OptionTest, Quick, ShowIf, Step, StepId, Timer, WalkaroundPoint,
+    LightState, ListKind, MAX_ROUTE_LEG, OptionTest, Quick, ShowIf, Step, StepId, StepTarget,
+    Timer, WalkaroundPoint,
 };
-pub use positions::{named_position, names};
+pub use positions::{locate, locator, named_position, names, says_light_on, says_on, switch_value};
 pub use session::{Millis, Progress, Session, SessionError, StepState, counts};

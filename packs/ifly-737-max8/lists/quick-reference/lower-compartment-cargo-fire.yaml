@@ -17,6 +17,11 @@ steps:
     expect: "PUSH, CONFIRM ARMED"
     controls:
       - cargofire
+    targets:
+      - at: "con/cf/TEST/1"
+      - at: "con/cf/ARM FWD/1"
+      - at: "con/cf/ARM AFT/1"
+      - at: "con/cf/DISCH/1"
     panel_lights:
       cargofire:
         - ARM FWD
@@ -27,6 +32,8 @@ steps:
     expect: PUSH AND HOLD FOR 1 SECOND
     controls:
       - cargofire
+    targets:
+      - at: "con/cf/DISCH/1"
     panel_lights:
       cargofire:
         - DISCH
@@ -36,3 +43,8 @@ steps:
     expect: "OFF"
     controls:
       - recirc
+    targets:
+      - at: "oh/bleed/L RECIRC FAN/1"
+        set: "OFF"
+      - at: "oh/bleed/R RECIRC FAN/1"
+        set: "OFF"

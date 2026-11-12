@@ -14,6 +14,11 @@ steps:
     expect: AS NEEDED
     controls:
       - panellts
+    targets:
+      - at: "mn/clt/MAIN PANEL/1"
+      - at: "mn/clt/BACKGROUND/1"
+      - at: "mn/clt/AFDS FLOOD/1"
+      - at: "mn/gp/MAIN PANEL/1"
     why: "Comfortable lighting for the rest of the preflight, especially at night"
     check: Panels readable and lights not glaring
   - id: ifly-737-max8.preflight.irs
@@ -22,6 +27,11 @@ steps:
     expect: BOTH NAV
     controls:
       - irs
+    targets:
+      - at: "aft/irs/IRS L/1"
+        set: "NAV"
+      - at: "aft/irs/IRS R/1"
+        set: "NAV"
     quick: always
     why: Must align while the airplane is still
     how: irs
@@ -39,6 +49,10 @@ steps:
     expect: "GUARD CLOSED, LIGHT OUT"
     controls:
       - elt
+    targets:
+      - at: "aft/elt/ELT/1"
+        light: out
+      - at: "aft/elt/ELT SWITCH/1"
     note: "The iFly does not simulate the ELT. The switch and light only respond to clicks."
     why: Stops an accidental distress signal
     check: Guard closed
@@ -53,6 +67,10 @@ steps:
     expect: "GUARD CLOSED, LIGHTS OUT"
     controls:
       - elevjam
+    targets:
+      - at: "aft/jam/ASSIST ON/1"
+        light: out
+      - at: "aft/jam/ELEV JAM LANDING ASSIST/1"
     why: Not simulated in the iFly. Just confirm the guard is closed and the lights are out
     not_simulated: true
     confirmed_by:
@@ -64,6 +82,15 @@ steps:
     expect: OUT
     controls:
       - gpslts
+    targets:
+      - at: "aft/irs/GPS/1"
+        light: out
+      - at: "aft/irs/ILS/1"
+        light: out
+      - at: "aft/irs/GLS/1"
+        light: out
+      - at: "aft/mnt/MAINT/1"
+        light: out
     why: "A lit light means a GPS, ILS, GLS or maintenance fault"
     check: "GPS, ILS, GLS and MAINT OUT"
     confirmed_by:
@@ -75,6 +102,19 @@ steps:
     expect: "ON, ENGINE CONTROL, REVERSER LIMITED, REVERSER COMMAND AND REVERSER AIR/GRD LIGHTS OUT"
     controls:
       - eec
+    targets:
+      - at: "aft/eng/REVERSER LIMITED/1"
+        light: out
+      - at: "aft/eng/ENGINE CONTROL/1"
+        light: out
+      - at: "aft/eng/REVERSER LIMITED/2"
+        light: out
+      - at: "aft/eng/ENGINE CONTROL/2"
+        light: out
+      - at: "aft/eng/EEC 1/1"
+        set: "ON"
+      - at: "aft/eng/EEC 2/1"
+        set: "ON"
     note: "The electronic engine control protects the engine limits. Check that both show ON, with no ALTN light."
     why: Protects the engine limits
     check: Both EEC buttons show ON
@@ -88,6 +128,10 @@ steps:
     expect: "GUARD CLOSED, PASS OXY ON LIGHT OUT"
     controls:
       - paxoxy
+    targets:
+      - at: "aft/oxy/PASS OXYGEN/1"
+      - at: "aft/oxy/PASS OXY ON/1"
+        light: out
     note: Check that the guard is closed so the cabin masks cannot be dropped by accident.
     why: Stops cabin masks dropping by accident
     check: Guard closed
@@ -101,6 +145,8 @@ steps:
     expect: SUFFICIENT FOR THE FLIGHT
     controls:
       - crewoxy
+    targets:
+      - at: "aft/oxy/CREW OXYGEN/1"
     why: Needed at once in a decompression or smoke
     check: Crew oxygen pressure read on the gauge
     check_detail: Enough for the flight
@@ -113,6 +159,10 @@ steps:
     expect: "3 GREEN"
     controls:
       - gearovhd
+    targets:
+      - at: "aft/gear/LEFT GEAR/1"
+      - at: "aft/gear/RIGHT GEAR/1"
+      - at: "aft/gear/NOSE GEAR/1"
     why: "Second set of lights, green is down and locked"
     check: "3 green lights"
     confirmed_by:
@@ -124,6 +174,8 @@ steps:
     expect: GUARD CLOSED
     controls:
       - fltrec
+    targets:
+      - at: "aft/rec/FLIGHT RECORDER/1"
     why: Recorder runs automatically
     check: Guard closed
     confirmed_by:
@@ -135,6 +187,9 @@ steps:
     expect: "TEST EACH, CLACKER SOUNDS"
     controls:
       - mach
+    targets:
+      - at: "aft/rec/MACH TEST 1/1"
+      - at: "aft/rec/MACH TEST 2/1"
     why: The clacker warns when you exceed the maximum operating speed (VMO/MMO)
     check: Clacker sounds
     check_detail: For each switch
@@ -148,6 +203,9 @@ steps:
     expect: "TEST EACH, COLUMN SHAKES"
     controls:
       - stalltest
+    targets:
+      - at: "aft/stall/STALL TEST 1/1"
+      - at: "aft/stall/STALL TEST 2/1"
     why: Stick shaker warns of an approaching stall
     how: stall
     explain: stall
@@ -168,6 +226,9 @@ steps:
     expect: PROGRAM FOR FLIGHT
     controls:
       - cdu
+    targets:
+      - at: "con/cdul/CDU/1"
+      - at: "con/cdur/CDU/1"
     opens: preflight-setup
     quick: always
     why: "Route, performance, N1 limit and takeoff reference"
@@ -183,6 +244,11 @@ steps:
     expect: "A ON, B ON, GUARDS CLOSED"
     controls:
       - fltctrl
+    targets:
+      - at: "oh/fctl/FLT CONTROL A/1"
+        set: "A ON"
+      - at: "oh/fctl/FLT CONTROL B/1"
+        set: "B ON"
     note: These give hydraulic power to the flight controls. Both must be on for flight.
     why: Hydraulic power to the flight controls
     check: LOW PRESSURE lights ON
@@ -196,6 +262,11 @@ steps:
     expect: "ON, GUARDS CLOSED"
     controls:
       - spoilsw
+    targets:
+      - at: "oh/fctl/SPOILER A/1"
+        set: "ON"
+      - at: "oh/fctl/SPOILER B/1"
+        set: "ON"
     why: Hydraulic power to the flight spoilers
     confirmed_by:
       - kind: vendor-docs
@@ -206,6 +277,11 @@ steps:
     expect: "ON, LIGHT OUT"
     controls:
       - yawd
+    targets:
+      - at: "oh/fctl/YAW DAMPER/1"
+        light: out
+      - at: "oh/fctl/YAW DAMPER/2"
+        set: "ON"
     quick: always
     note: Check that the amber YAW DAMPER light goes out. The yaw damper engages only with the B FLT CONTROL switch ON.
     why: Must be on for flight
@@ -221,6 +297,13 @@ steps:
     expect: OUT
     controls:
       - stbyhyd
+    targets:
+      - at: "oh/fctl/LOW QUANTITY/1"
+        light: out
+      - at: "oh/fctl/LOW PRESSURE/1"
+        light: out
+      - at: "oh/fctl/STBY RUD ON/1"
+        light: out
     why: A lit light means a standby hydraulic fault
     check: "LOW QUANTITY, LOW PRESSURE and STBY RUD ON OUT"
     confirmed_by:
@@ -232,6 +315,11 @@ steps:
     expect: "MASTER OFF, GUARD CLOSED, POSITION OFF"
     controls:
       - altflap
+    targets:
+      - at: "oh/fctl/ALT FLAPS MASTER/1"
+        set: "OFF"
+      - at: "oh/fctl/ALT FLAPS/1"
+        set: "OFF"
     why: "Electric flap backup, off in normal use"
     confirmed_by:
       - kind: vendor-docs
@@ -242,6 +330,21 @@ steps:
     expect: OUT
     controls:
       - fctllts
+    targets:
+      - at: "oh/fctl/LOW PRESSURE/2"
+        light: out
+      - at: "oh/fctl/LOW PRESSURE/3"
+        light: out
+      - at: "oh/fctl/FEEL DIFF PRESS/1"
+        light: out
+      - at: "oh/fctl/SPEED TRIM FAIL/1"
+        light: out
+      - at: "oh/fctl/MACH TRIM FAIL/1"
+        light: out
+      - at: "oh/fctl/AUTO SLAT FAIL/1"
+        light: out
+      - at: "oh/fctl/SPOILERS/1"
+        light: out
     why: A lit light is a flight control fault to sort out before flight
     check: All five lights OUT
     panel_lights:
@@ -262,6 +365,13 @@ steps:
     expect: "VHF NAV, IRS AND FMC NORMAL"
     controls:
       - navsw
+    targets:
+      - at: "oh/nav/VHF NAV/1"
+        set: "NORMAL"
+      - at: "oh/nav/IRS/1"
+        set: "NORMAL"
+      - at: "oh/nav/FMC/1"
+        set: "NORMAL"
     why: Each side uses its own navigation source
     confirmed_by:
       - kind: vendor-docs
@@ -272,6 +382,9 @@ steps:
     expect: "SOURCE AUTO, CONTROL PANEL NORMAL"
     controls:
       - dispsw
+    targets:
+      - at: "oh/disp/SOURCE/1"
+        set: "AUTO"
     why: "Each side's displays run from their own computer"
     confirmed_by:
       - kind: vendor-docs
@@ -281,6 +394,19 @@ steps:
     expect: "VALVE LIGHTS ON, FILTER BYPASS OUT"
     controls:
       - fuellts
+    targets:
+      - at: "oh/fuel/ENG VALVE CLOSED/1"
+        light: on
+      - at: "oh/fuel/SPAR VALVE CLOSED/1"
+        light: on
+      - at: "oh/fuel/ENG VALVE CLOSED/2"
+        light: on
+      - at: "oh/fuel/SPAR VALVE CLOSED/2"
+        light: on
+      - at: "oh/fuel/FILTER BYPASS/1"
+        light: out
+      - at: "oh/fuel/FILTER BYPASS/2"
+        light: out
     why: "With the start levers in CUTOFF, both fuel valves should be shut."
     confirmed_by:
       - kind: vendor-docs
@@ -291,6 +417,11 @@ steps:
     expect: "CLOSED, VALVE OPEN LIGHT OUT"
     controls:
       - xfeed
+    targets:
+      - at: "oh/fuel/VALVE OPEN/1"
+        light: out
+      - at: "oh/fuel/CROSSFEED/1"
+        set: "Closed"
     quick: turnaround
     why: Keeps the fuel sides separate
     check: VALVE OPEN light OUT
@@ -303,6 +434,19 @@ steps:
     expect: ALL OFF
     controls:
       - fuelpumps
+    targets:
+      - at: "oh/fuel/CTR L/1"
+        set: "OFF"
+      - at: "oh/fuel/CTR R/1"
+        set: "OFF"
+      - at: "oh/fuel/AFT 1/1"
+        set: "OFF"
+      - at: "oh/fuel/FWD 1/1"
+        set: "OFF"
+      - at: "oh/fuel/FWD 2/1"
+        set: "OFF"
+      - at: "oh/fuel/AFT 2/1"
+        set: "OFF"
     show_if:
       any_of:
         - option: power
@@ -319,6 +463,13 @@ steps:
     expect: "ONE LEFT PUMP MAY BE ON FOR THE APU (OPTIONAL), OTHERS OFF"
     controls:
       - fuelpumps
+    targets:
+      - at: "oh/fuel/CTR L/1"
+      - at: "oh/fuel/CTR R/1"
+      - at: "oh/fuel/AFT 1/1"
+      - at: "oh/fuel/FWD 1/1"
+      - at: "oh/fuel/FWD 2/1"
+      - at: "oh/fuel/AFT 2/1"
     show_if:
       all_of:
         - option: power
@@ -337,6 +488,11 @@ steps:
     expect: "ON"
     controls:
       - cabutil
+    targets:
+      - at: "oh/elecu/CAB/UTIL/1"
+        set: "ON"
+      - at: "oh/elecu/IFE/PASS SEAT/1"
+        set: "ON"
     quick: always
     why: Power to galleys and seat equipment
     note: "In the iFly, only the cabin light function of CAB/UTIL is simulated."
@@ -350,6 +506,13 @@ steps:
     expect: OUT
     controls:
       - eleclts
+    targets:
+      - at: "oh/elecu/BAT DISCHARGE/1"
+        light: out
+      - at: "oh/elecu/TR UNIT/1"
+        light: out
+      - at: "oh/elecu/ELEC/1"
+        light: out
     why: A lit light is an electrical fault
     check: "BAT DISCHARGE, TR UNIT and ELEC OUT"
     panel_lights:
@@ -366,6 +529,13 @@ steps:
     expect: "GUARDS CLOSED, DRIVE LIGHTS ON BEFORE START"
     controls:
       - gendrive
+    targets:
+      - at: "oh/elecm/DRIVE 1/1"
+        light: on
+      - at: "oh/elecm/DRIVE 2/1"
+        light: on
+      - at: "oh/elecm/DISCONNECT 1/1"
+      - at: "oh/elecm/DISCONNECT 2/1"
     note: Check that the guards are closed. The amber DRIVE lights are normal before start because the engines are not turning.
     why: The DRIVE lights are normal before start because the engines are not turning
     check: Guards closed
@@ -378,6 +548,9 @@ steps:
     expect: "AUTO, GUARD CLOSED"
     controls:
       - bustrans
+    targets:
+      - at: "oh/elecl/BUS TRANS/1"
+        set: "AUTO"
     why: Transfer buses can switch source automatically
   - id: ifly-737-max8.preflight.engine-gen-off-bus-lights
     number: 26
@@ -385,6 +558,21 @@ steps:
     expect: "ON"
     controls:
       - genbus
+    targets:
+      - at: "oh/elecl/TRANSFER BUS OFF/1"
+        light: on
+      - at: "oh/elecl/SOURCE OFF/1"
+        light: on
+      - at: "oh/elecl/GEN OFF BUS/1"
+        light: on
+      - at: "oh/elecl/APU GEN OFF BUS/1"
+        light: on
+      - at: "oh/elecl/TRANSFER BUS OFF/2"
+        light: on
+      - at: "oh/elecl/SOURCE OFF/2"
+        light: on
+      - at: "oh/elecl/GEN OFF BUS/2"
+        light: on
     note: "Confirm these blue lights are on. The engines are not running, so their generators cannot be powering the buses."
     why: "Engines not running, so no generator power"
     check: Blue lights ON
@@ -400,6 +588,9 @@ steps:
     expect: OUT
     controls:
       - lavsmoke
+    targets:
+      - at: "oh/col/LAVATORY SMOKE/1"
+        light: out
     why: Lit means a smoke detector has gone off
     check: Light OUT
     note: "The iFly does not simulate this light."
@@ -413,6 +604,17 @@ steps:
     expect: "NORM, OFF LIGHTS OUT"
     controls:
       - equip
+    targets:
+      - at: "oh/col/EQUIP OFF/1"
+        light: out
+      - at: "oh/col/EQUIP OFF/2"
+        light: out
+      - at: "oh/col/SUPPLY/1"
+        set: "NORM"
+      - at: "oh/col/EXHAUST/1"
+        set: "NORM"
+      - at: "oh/col/EQUIP SMOKE/1"
+        light: out
     why: Avionics overheat without the fans
     check: OFF lights OUT
     confirmed_by:
@@ -424,6 +626,10 @@ steps:
     expect: "ARMED, GUARD CLOSED"
     controls:
       - emerext
+    targets:
+      - at: "oh/col/NOT ARMED/1"
+      - at: "oh/col/EMER EXIT LIGHTS/1"
+        set: "ARMED"
     quick: always
     note: "The iFly does not simulate the exit lights themselves."
     why: Cabin exit lights come on if power is lost
@@ -438,6 +644,9 @@ steps:
     expect: "NO SMOKING AND FASTEN BELTS AUTO OR ON"
     controls:
       - signs
+    targets:
+      - at: "oh/col/NO SMOKING/1"
+      - at: "oh/col/FASTEN BELTS/1"
     quick: always
     why: "Keeps the cabin signs working for the flight."
     confirmed_by:
@@ -449,6 +658,19 @@ steps:
     expect: "ON"
     controls:
       - wheat
+    targets:
+      - at: "oh/heat/ON/1"
+        light: on
+      - at: "oh/heat/ON/2"
+        light: on
+      - at: "oh/heat/ON/3"
+        light: on
+      - at: "oh/heat/ON/4"
+        light: on
+      - at: "oh/heat/L SIDE/1"
+      - at: "oh/heat/L FWD/1"
+      - at: "oh/heat/R FWD/1"
+      - at: "oh/heat/R SIDE/1"
     quick: always
     why: "Heats the windshields. A green ON light shows the heating is working."
     check: Green ON lights
@@ -464,6 +686,11 @@ steps:
     expect: AUTO
     controls:
       - pheat
+    targets:
+      - at: "oh/heat/PROBE A/1"
+        set: "AUTO"
+      - at: "oh/heat/PROBE B/1"
+        set: "AUTO"
     quick: always
     why: AUTO heats the probes when the engines run
     check: Amber probe lights stay on
@@ -477,6 +704,9 @@ steps:
     expect: "OFF"
     controls:
       - aice
+    targets:
+      - at: "oh/aice/WING ANTI-ICE/1"
+        set: "OFF"
     why: "Uses bleed air, only needed in icing"
     confirmed_by:
       - kind: vendor-docs
@@ -487,6 +717,9 @@ steps:
     expect: "ENG 1 AND 2 ON, ELEC 1 AND 2 OFF"
     controls:
       - elechyd
+    targets:
+      - at: "oh/hyd/ELEC 2/1"
+      - at: "oh/hyd/ELEC 1/1"
     why: "The engine pumps start with the engines. The electric pumps stay off until Before start."
     check: "Four LOW PRESSURE lights ON, two OVERHEAT lights OUT"
     confirmed_by:
@@ -506,6 +739,9 @@ steps:
     expect: AUTO
     controls:
       - vrec
+    targets:
+      - at: "oh/vrec/VOICE RECORDER/1"
+        set: "AUTO"
     why: Records the flight deck without a crew action
   - id: ifly-737-max8.preflight.trim-air-switch
     number: 37
@@ -513,6 +749,9 @@ steps:
     expect: "ON"
     controls:
       - trimair
+    targets:
+      - at: "oh/air/TRIM AIR/1"
+        set: "ON"
     why: Fine-tunes each zone temperature
     confirmed_by:
       - kind: vendor-docs
@@ -523,6 +762,15 @@ steps:
     expect: AUTO
     controls:
       - tempsw
+    targets:
+      - at: "oh/air/TEMP/1"
+      - at: "oh/air/SOURCE/1"
+      - at: "oh/air/CONT CAB/1"
+        set: "AUTO"
+      - at: "oh/air/FWD CAB/1"
+        set: "AUTO"
+      - at: "oh/air/AFT CAB/1"
+        set: "AUTO"
     why: Automatic cabin temperature control
     confirmed_by:
       - kind: vendor-docs
@@ -533,6 +781,11 @@ steps:
     expect: AUTO
     controls:
       - recirc
+    targets:
+      - at: "oh/bleed/L RECIRC FAN/1"
+        set: "AUTO"
+      - at: "oh/bleed/R RECIRC FAN/1"
+        set: "AUTO"
     why: Reuses cabin air to reduce pack load
     confirmed_by:
       - kind: vendor-docs
@@ -543,6 +796,9 @@ steps:
     expect: AUTO OR HIGH
     controls:
       - packs
+    targets:
+      - at: "oh/bleed/L PACK/1"
+      - at: "oh/bleed/R PACK/1"
     quick: always
     show_if:
       all_of:
@@ -561,6 +817,9 @@ steps:
     expect: OPEN
     controls:
       - iso
+    targets:
+      - at: "oh/bleed/ISOLATION VALVE/1"
+        set: "OPEN"
     show_if:
       all_of:
         - option: power
@@ -577,6 +836,9 @@ steps:
     expect: "ON"
     controls:
       - apubleed
+    targets:
+      - at: "oh/bleed/APU BLEED/1"
+        set: "ON"
     quick: always
     show_if:
       all_of:
@@ -593,6 +855,11 @@ steps:
     expect: "ON"
     controls:
       - engbleed
+    targets:
+      - at: "oh/bleed/ENG BLEED 1/1"
+        set: "ON"
+      - at: "oh/bleed/ENG BLEED 2/1"
+        set: "ON"
     quick: always
     note: Lets the engines feed the bleed system once they are running.
     why: Ready to feed the bleed system once engines run
@@ -607,6 +874,21 @@ steps:
     expect: OUT
     controls:
       - packlts
+    targets:
+      - at: "oh/bleed/DUAL BLEED/1"
+        light: out
+      - at: "oh/bleed/PACK/1"
+        light: out
+      - at: "oh/bleed/WING-BODY OVERHEAT/1"
+        light: out
+      - at: "oh/bleed/BLEED/1"
+        light: out
+      - at: "oh/bleed/PACK/2"
+        light: out
+      - at: "oh/bleed/WING-BODY OVERHEAT/2"
+        light: out
+      - at: "oh/bleed/BLEED/2"
+        light: out
     show_if:
       all_of:
         - option: power
@@ -624,6 +906,13 @@ steps:
     expect: "FLT ALT AND LAND ALT SET, MODE AUTO"
     controls:
       - press
+    targets:
+      - at: "oh/cab/CABIN ALT/1"
+      - at: "oh/cab/CABIN CLIMB/1"
+      - at: "oh/press/FLT ALT/1"
+      - at: "oh/press/FLT ALT KNOB/1"
+      - at: "oh/press/MODE/1"
+        set: "AUTO"
     hint:
       - prefix: CRUISE FL
         field: cruise_level
@@ -646,6 +935,9 @@ steps:
       - landlt
       - turnoff
       - lldg
+    targets:
+      - at: "oh/ltl/TAXI/1"
+        set: "OFF"
     why: Not needed while parked
     confirmed_by:
       - kind: vendor-docs
@@ -656,6 +948,13 @@ steps:
     expect: "START SWITCHES OFF, IGNITION SELECTOR BOTH"
     controls:
       - starts
+    targets:
+      - at: "oh/start/ENGINE START 1/1"
+        set: "OFF"
+      - at: "oh/start/IGNITION/1"
+        set: "BOTH"
+      - at: "oh/start/ENGINE START 2/1"
+        set: "OFF"
     note: "Leave both start switches OFF and turn the ignition selector to BOTH."
     why: Igniter choice is set before start
     confirmed_by:
@@ -667,6 +966,9 @@ steps:
     expect: "ON"
     controls:
       - logo
+    targets:
+      - at: "oh/lte/LOGO/1"
+        set: "ON"
     why: Makes the airplane easier to see at night
   - id: ifly-737-max8.preflight.position-light
     number: 48
@@ -674,6 +976,9 @@ steps:
     expect: STEADY
     controls:
       - poslt
+    targets:
+      - at: "oh/lte/POSITION/1"
+        set: "STEADY"
     quick: always
     why: Shows the airplane is powered
   - id: ifly-737-max8.preflight.anti-collision-light-wing-light-and-wheel-well
@@ -683,6 +988,11 @@ steps:
     controls:
       - beacon
       - wingww
+    targets:
+      - at: "oh/lte/WING/1"
+        set: "OFF"
+      - at: "oh/lte/WHEEL WELL/1"
+        set: "OFF"
     why: The beacon comes on just before engine start. Wing and wheel well lights are not needed at the gate
   - id: ifly-737-max8.preflight.flight-director-switches
     number: 50
@@ -691,6 +1001,11 @@ steps:
     expect: "LEFT ON, THEN RIGHT ON"
     controls:
       - fd
+    targets:
+      - at: "gl/mcp/F/D L/1"
+        set: "ON"
+      - at: "gl/mcp/F/D R/1"
+        set: "ON"
     quick: always
     why: "Left first, so it becomes the master"
     check: MA light on the left side
@@ -703,6 +1018,8 @@ steps:
     expect: "25 DEGREES"
     controls:
       - hdgsel
+    targets:
+      - at: "gl/mcp/HEADING/1"
     note: Limits bank in HDG SEL and VOR modes. 25 degrees is a common choice.
     why: Limits bank in HDG SEL and VOR modes
     confirmed_by:
@@ -714,6 +1031,9 @@ steps:
     expect: UP
     controls:
       - apdis
+    targets:
+      - at: "gl/mcp/DISENGAGE/1"
+        set: "UP"
     why: DOWN stops the autopilot engaging
     confirmed_by:
       - kind: vendor-docs
@@ -724,6 +1044,31 @@ steps:
     expect: "BARO, MINIMUMS AND MAP OPTIONS SET"
     controls:
       - efispanel
+    targets:
+      - at: "gl/efisl/MINS/1"
+        set: "BARO"
+      - at: "gl/efisl/BARO/1"
+      - at: "gl/efisl/MODE/1"
+        set: "MAP"
+      - at: "gl/efisl/RANGE/1"
+      - at: "gl/efisl/WXR/1"
+      - at: "gl/efisl/TERR/1"
+      - at: "gl/efisl/POS/1"
+      - at: "gl/efisl/STA/1"
+      - at: "gl/efisl/WPT/1"
+      - at: "gl/efisl/ARPT/1"
+      - at: "gl/efisr/MINS/1"
+        set: "BARO"
+      - at: "gl/efisr/BARO/1"
+      - at: "gl/efisr/MODE/1"
+        set: "MAP"
+      - at: "gl/efisr/RANGE/1"
+      - at: "gl/efisr/WXR/1"
+      - at: "gl/efisr/TERR/1"
+      - at: "gl/efisr/POS/1"
+      - at: "gl/efisr/STA/1"
+      - at: "gl/efisr/WPT/1"
+      - at: "gl/efisr/ARPT/1"
     quick: always
     why: Altimeter must read local QNH for departure
     check: Both altimeters show field elevation
@@ -744,6 +1089,8 @@ steps:
     expect: COMPLETE
     controls:
       - ltest
+    targets:
+      - at: "mn/cl/LIGHTS/1"
     why: Proves the lights work
     check: Tested lights come on
     how: ltest
@@ -756,6 +1103,9 @@ steps:
     expect: OUT
     controls:
       - stabout
+    targets:
+      - at: "mn/cl/STAB OUT OF TRIM/1"
+        light: out
     why: "On the ground it points to a partial flight control computer failure. In flight, the autopilot could not set the trim it needed."
     check: Light OUT
     confirmed_by:
@@ -767,6 +1117,11 @@ steps:
     expect: "NO FLAGS, HEADING AND ALTITUDE CORRECT"
     controls:
       - fltinst
+    targets:
+      - at: "mn/cd/OUTBOARD DU: PFD/1"
+      - at: "mn/cd/INBOARD DU: ND AND ENGINES/1"
+      - at: "mn/fd/INBOARD DU: ND/1"
+      - at: "mn/fd/OUTBOARD DU: PFD/1"
     why: Confirms the displays are good
     check: No flags
     check_detail: Heading and altitude correct
@@ -778,6 +1133,11 @@ steps:
     expect: NORM
     controls:
       - dsel
+    targets:
+      - at: "mn/clt/PFD/MFD/1"
+        set: "NORM"
+      - at: "mn/gp/PFD/MFD/1"
+        set: "NORM"
     why: NORM shows the PFD and MFD in their normal positions
     confirmed_by:
       - kind: vendor-docs
@@ -795,6 +1155,8 @@ steps:
     expect: COMPLETE
     controls:
       - gpwssw
+    targets:
+      - at: "mn/gp/SYS TEST/1"
     why: Warns of terrain and windshear
     check: "BELOW G/S light, PULL UP and WINDSHEAR alerts shown"
     check_detail: "Terrain test pattern on the ND, and the aural alerts sound"
@@ -806,6 +1168,8 @@ steps:
     expect: "BARO SET, INDICATIONS NORMAL"
     controls:
       - isfdc
+    targets:
+      - at: "mn/ctr/STANDBY DISPLAY/1"
     quick: always
     why: Backup if both main displays fail
     check: Standby baro matches QNH
@@ -818,6 +1182,15 @@ steps:
     expect: "DN"
     controls:
       - gearlever
+    targets:
+      - at: "mn/ctr/LEFT GEAR/2"
+        light: on
+      - at: "mn/ctr/NOSE GEAR/2"
+        light: on
+      - at: "mn/ctr/RIGHT GEAR/2"
+        light: on
+      - at: "mn/ctr/LANDING GEAR LEVER/1"
+        set: "DN"
     why: Gear down and locked
     check: "Lever DN, 3 green lights, no red"
     confirmed_by:
@@ -828,6 +1201,8 @@ steps:
     expect: GUARD CLOSED
     controls:
       - nws
+    targets:
+      - at: "mn/ctr/NOSE WHEEL STEER ALT/1"
     why: Normal steering source
     check: Guard closed
     confirmed_by:
@@ -846,6 +1221,8 @@ steps:
     expect: "RESET, THEN RELEASE TO RATE"
     controls:
       - fuelflow
+    targets:
+      - at: "con/ed/FUEL FLOW/1"
     why: Resets the used fuel counter
     check: Returns to RATE
     how: fuelflow
@@ -858,6 +1235,9 @@ steps:
     expect: RTO
     controls:
       - abrake
+    targets:
+      - at: "con/ed/AUTO BRAKE/1"
+        set: "RTO"
     quick: always
     why: Maximum braking if you reject at high speed
     explain: aut
@@ -870,6 +1250,8 @@ steps:
     expect: "PRESS, THEN CHECK THAT NO AUTOLAND FAULT SHOWS"
     controls:
       - cr
+    targets:
+      - at: "con/ed/C/R/1"
     why: Shows any stored autoland faults
     check: No autoland fault messages
     confirmed_by:
@@ -881,6 +1263,11 @@ steps:
     expect: BOTH C
     controls:
       - sel
+    targets:
+      - at: "con/ed/SELECTOR L/1"
+        set: "C"
+      - at: "con/ed/SELECTOR R/1"
+        set: "C"
     note: "The iFly does not simulate what these selectors do."
     why: "C is the normal setting."
     simulator_model: true
@@ -893,6 +1280,9 @@ steps:
     expect: DOWN DETENT
     controls:
       - speedbrake
+    targets:
+      - at: "con/st/SPEEDBRAKE LEVER/1"
+        set: "DOWN"
     quick: turnaround
     note: Down keeps the spoilers stowed on the ground.
     why: Keeps the spoilers stowed on the ground
@@ -906,6 +1296,8 @@ steps:
     expect: "CLOSED, REVERSE LEVERS DOWN"
     controls:
       - thrust
+    targets:
+      - at: "con/st/THRUST LEVERS 1 AND 2/1"
     quick: turnaround
     note: Check that the levers are closed and the reverse levers are down.
     why: Engines start at idle with reversers stowed
@@ -920,6 +1312,9 @@ steps:
     expect: "UP, INDICATION AGREES"
     controls:
       - flaplever
+    targets:
+      - at: "con/st/FLAP LEVER/1"
+        set: "UP"
     quick: turnaround
     note: Compare the lever with the flap indication on the display.
     why: Lever and indication must match
@@ -934,6 +1329,11 @@ steps:
     expect: SET
     controls:
       - pbrake
+    targets:
+      - at: "con/lo/PARKING BRAKE/1"
+        set: "SET"
+      - at: "con/lo/PARK BRAKE LIGHT/1"
+        light: on
     quick: turnaround
     why: Holds the airplane while parked
     check: Parking brake light ON
@@ -946,6 +1346,11 @@ steps:
     expect: CUTOFF
     controls:
       - slever
+    targets:
+      - at: "con/lo/START LEVER 1/1"
+        set: "CUTOFF"
+      - at: "con/lo/START LEVER 2/1"
+        set: "CUTOFF"
     quick: always
     note: Cutoff stops fuel to the engines until you are ready to start.
     why: No fuel until you are ready to start
@@ -958,6 +1363,11 @@ steps:
     expect: "NORMAL, GUARDS CLOSED"
     controls:
       - stabcut
+    targets:
+      - at: "con/lo/STAB TRIM PRI/1"
+        set: "NORMAL"
+      - at: "con/lo/STAB TRIM B/U/1"
+        set: "NORMAL"
     quick: turnaround
     why: NORMAL keeps electric trim working
     check: NORMAL
@@ -971,6 +1381,11 @@ steps:
     expect: TEST COMPLETE
     controls:
       - cargofire
+    targets:
+      - at: "con/cf/TEST/1"
+      - at: "con/cf/ARM FWD/1"
+      - at: "con/cf/ARM AFT/1"
+      - at: "con/cf/DISCH/1"
     why: "The cargo holds cannot be reached in flight, so detection and extinguishing must work"
     check: Bell and fire warning lights
     check_detail: Green extinguisher lights
@@ -985,6 +1400,9 @@ steps:
     expect: ACTIVE AND STANDBY FREQUENCIES SET
     controls:
       - radios
+    targets:
+      - at: "con/r1/VHF RADIO 1/1"
+      - at: "con/r2/VHF RADIO 2/1"
     hint:
       - prefix: "GND "
         field: ground_frequency
@@ -999,6 +1417,9 @@ steps:
     expect: RADIOS AND SPEAKER SET
     controls:
       - audio
+    targets:
+      - at: "con/a1/AUDIO PANEL 1/1"
+      - at: "con/a2/AUDIO PANEL 2/1"
     why: Selects what you hear
     note: "Most audio panel functions are not modeled in the iFly."
     simulator_model: true
@@ -1011,6 +1432,9 @@ steps:
     expect: ILS FREQUENCY AND COURSE FOR THE DEPARTURE RUNWAY
     controls:
       - mmr
+    targets:
+      - at: "con/n1/NAV 1/1"
+      - at: "con/n2/NAV 2/1"
     why: Guidance back to this runway if you must return
     confirmed_by:
       - kind: vendor-docs
@@ -1021,6 +1445,14 @@ steps:
     expect: SET IF NEEDED
     controls:
       - adf
+    targets:
+      - at: "con/adf/ADF 1/1"
+      - at: "con/adf/ADF 2/1"
+      - at: "con/adf/ADF 1 TUNE/1"
+      - at: "con/adf/ADF 2 TUNE/1"
+      - at: "con/adf/TONE/1"
+      - at: "con/adf/ADF 1 MODE/1"
+      - at: "con/adf/ADF 2 MODE/1"
     why: Only for NDB procedures
     confirmed_by:
       - kind: vendor-docs
@@ -1031,6 +1463,8 @@ steps:
     expect: NORMAL
     controls:
       - wxrp
+    targets:
+      - at: "con/wx/WXR PANEL/1"
     why: Not simulated in the iFly. Leave it in its normal position
     not_simulated: true
     confirmed_by:
@@ -1042,6 +1476,12 @@ steps:
     expect: SQUAWK CODE SET
     controls:
       - xpndr
+    targets:
+      - at: "con/atc/ALT SOURCE 1/1"
+      - at: "con/atc/XPNDR/1"
+      - at: "con/atc/CODE/1"
+      - at: "con/atc/MODE/1"
+      - at: "con/atc/ALT SOURCE 2/1"
     hint:
       - prefix: "SQUAWK "
         field: squawk
@@ -1057,6 +1497,9 @@ steps:
     expect: "NORM, GUARD CLOSED"
     controls:
       - staboverride
+    targets:
+      - at: "con/dr/STAB TRIM OVRD/1"
+        set: "NORM"
     why: "NORM keeps the column cutout working, so pulling against a nose-down trim stops it"
     confirmed_by:
       - kind: vendor-docs

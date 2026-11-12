@@ -194,6 +194,29 @@ data_types! {
         pub auto_start: Option<AutoStart>,
     }
 
+    /// The state a step expects a light in.
+    #[derive(Copy, Eq)]
+    #[serde(rename_all = "snake_case")]
+    pub enum LightState {
+        On,
+        Out,
+    }
+
+    /// One panel item a step involves, and what the step asks of it (decision 0018).
+    pub struct StepTarget {
+        /// The item, as `panel/section/LABEL/n`: the n-th item (from 1) with that label in the
+        /// section, as light notes name them.
+        pub at: String,
+        /// The position the step sets a switch, selector, lever or handle to: one of its
+        /// `positions`.
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        pub set: Option<String>,
+        /// The state the step expects a light in. Leave it out for a light that may cycle (window
+        /// heat ON lights), so a drawing never claims a state the light may not be in.
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        pub light: Option<LightState>,
+    }
+
     /// One challenge and response line.
     // These flags are independent facts from pack data; a step can have any mix of them.
     #[allow(clippy::struct_excessive_bools)]
@@ -213,6 +236,10 @@ data_types! {
         /// Ids from the pack's controls file.
         #[serde(default, skip_serializing_if = "Vec::is_empty")]
         pub controls: Vec<String>,
+        /// The panel items the step involves and the state it asks of each, which the control
+        /// drawings show exactly (decision 0018). `pack check` holds them to the step's wording.
+        #[serde(default, skip_serializing_if = "Vec::is_empty")]
+        pub targets: Vec<StepTarget>,
         /// One field per `___` in `expect`, in order.
         #[serde(default, skip_serializing_if = "Vec::is_empty")]
         pub fill: Vec<FillField>,
@@ -308,6 +335,7 @@ impl Step {
             text: text.into(),
             expect: expect.into(),
             controls: Vec::new(),
+            targets: Vec::new(),
             fill: Vec::new(),
             hint: Vec::new(),
             opens: None,

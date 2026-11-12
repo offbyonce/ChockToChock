@@ -16,6 +16,9 @@ steps:
     expect: "ON, GUARD CLOSED"
     controls:
       - bat
+    targets:
+      - at: "oh/elecu/BATTERY/1"
+        set: "ON"
     quick: always
     note: "In the iFly the guard closes by itself about a second after the switch reaches ON, and it will not close with the switch OFF."
     why: "Brings the battery onto the electrical system for first power. The hot battery bus stays live regardless of this switch."
@@ -29,6 +32,9 @@ steps:
     expect: "AUTO, GUARD CLOSED"
     controls:
       - stby
+    targets:
+      - at: "oh/elecm/STANDBY POWER/1"
+        set: "AUTO"
     quick: always
     note: "In the iFly the guard closes by itself about a second after the switch reaches AUTO, and it will not close in BAT or OFF."
     why: AUTO keeps backup power available from the battery and the transformer rectifier.
@@ -42,6 +48,11 @@ steps:
     expect: "OFF, GUARD CLOSED"
     controls:
       - altflap
+    targets:
+      - at: "oh/fctl/ALT FLAPS MASTER/1"
+        set: "OFF"
+      - at: "oh/fctl/ALT FLAPS/1"
+        set: "OFF"
     note: The position switch beside it is checked in the preliminary preflight.
     why: "The backup flap drive is electric, so it must be off before normal power comes on."
     confirmed_by:
@@ -53,6 +64,11 @@ steps:
     expect: PARK
     controls:
       - wiper
+    targets:
+      - at: "oh/wipe/L WIPER/1"
+        set: "PARK"
+      - at: "oh/rwip/R WIPER/1"
+        set: "PARK"
     why: "Left on, the wipers start moving as soon as power arrives."
     confirmed_by:
       - kind: vendor-docs
@@ -63,6 +79,11 @@ steps:
     expect: "OFF"
     controls:
       - elechyd
+    targets:
+      - at: "oh/hyd/ELEC 2/1"
+        set: "OFF"
+      - at: "oh/hyd/ELEC 1/1"
+        set: "OFF"
     note: They are the two inner switches on the hydraulic panel.
     why: "These pumps run from the AC bus, so with the switches on they would start as soon as ground or APU power arrives, which pressurizes the hydraulic systems and can move flight controls with people near the airplane."
     check: ELEC 1 and ELEC 2 OFF
@@ -75,6 +96,15 @@ steps:
     expect: DN
     controls:
       - gearlever
+    targets:
+      - at: "mn/ctr/LEFT GEAR/2"
+        light: on
+      - at: "mn/ctr/NOSE GEAR/2"
+        light: on
+      - at: "mn/ctr/RIGHT GEAR/2"
+        light: on
+      - at: "mn/ctr/LANDING GEAR LEVER/1"
+        set: "DN"
     quick: always
     why: "Green means the gear is down and locked. Red means a gear is unlocked or disagrees with the lever."
     check: "3 green gear lights, no red"

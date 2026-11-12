@@ -15,57 +15,82 @@ steps:
     expect: "STOP FOR ANY OF THE ABOVE, OR: MASTER CAUTION, A SYSTEM FAILURE, ODD NOISE OR SHAKING, A BLOWN TIRE, SLUGGISH ACCELERATION, A CONFIG WARNING, OR A WINDOW COMING OPEN"
     controls:
       - speedt
+    targets:
+      - at: "mn/cd/OUTBOARD DU: PFD/1"
   - id: ifly-737-max8.procedures.80-knots-to-v1
     number: 2
     text: "80 KNOTS TO V1"
     expect: "STOP ONLY FOR: ENGINE FAILURE, A FIRE OR ITS WARNING, A WINDSHEAR ALERT, OR AN AIRPLANE THAT CANNOT FLY SAFELY"
     controls:
       - speedt
+    targets:
+      - at: "mn/cd/OUTBOARD DU: PFD/1"
   - id: ifly-737-max8.procedures.v1
     number: 3
     text: V1
     expect: DECISION MUST ALLOW THE REJECT TO START BY V1
     controls:
       - speedt
+    targets:
+      - at: "mn/cd/OUTBOARD DU: PFD/1"
   - id: ifly-737-max8.procedures.thrust-levers-and-brakes
     number: 4
     text: THRUST LEVERS AND BRAKES
     expect: "CLOSE THRUST LEVERS, DISENGAGE A/T, MAX MANUAL BRAKES OR VERIFY RTO AUTOBRAKE"
     controls:
       - thrust
+    targets:
+      - at: "con/st/THRUST LEVERS 1 AND 2/1"
   - id: ifly-737-max8.procedures.speedbrake
     number: 5
     text: SPEEDBRAKE
     expect: "RAISE LEVER, VERIFY UP"
     controls:
       - speedbrake
+    targets:
+      - at: "con/st/SPEEDBRAKE LEVER/1"
+        set: "UP"
   - id: ifly-737-max8.procedures.reverse-thrust
     number: 6
     text: REVERSE THRUST
     expect: MAXIMUM CONSISTENT WITH CONDITIONS
     controls:
       - thrust
+    targets:
+      - at: "con/st/THRUST LEVERS 1 AND 2/1"
   - id: ifly-737-max8.procedures.braking
     number: 7
     text: BRAKING
     expect: CONTINUE UNTIL CERTAIN OF STOPPING ON THE RUNWAY
     controls:
       - column
+    targets:
+      - at: "seat/yoke/STAB TRIM/1"
+      - at: "seat/yoke/A/P DISENGAGE/1"
   - id: ifly-737-max8.procedures.reverse-levers
     number: 8
     text: REVERSE LEVERS
     expect: "IDLE BEFORE TAXI SPEED, THEN FULL DOWN"
     controls:
       - thrust
+    targets:
+      - at: "con/st/THRUST LEVERS 1 AND 2/1"
   - id: ifly-737-max8.procedures.tower-and-cabin
     number: 9
     text: TOWER AND CABIN
     expect: NOTIFY AS SOON AS PRACTICAL
     controls:
       - atcclr
+    targets:
+      - at: "con/r1/VHF RADIO 1/1"
   - id: ifly-737-max8.procedures.brakes
     number: 10
     text: BRAKES
     expect: CONSIDER BRAKE COOLING. HOT BRAKES CAN MELT THE WHEEL FUSE PLUGS
     controls:
       - fltinst
+    targets:
+      - at: "mn/cd/OUTBOARD DU: PFD/1"
+      - at: "mn/cd/INBOARD DU: ND AND ENGINES/1"
+      - at: "mn/fd/INBOARD DU: ND/1"
+      - at: "mn/fd/OUTBOARD DU: PFD/1"

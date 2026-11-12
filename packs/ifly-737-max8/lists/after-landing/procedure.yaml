@@ -15,6 +15,9 @@ steps:
     expect: "OFF"
     controls:
       - abrake
+    targets:
+      - at: "con/ed/AUTO BRAKE/1"
+        set: "OFF"
     quick: always
     why: Taxi on the toe brakes
     confirmed_by:
@@ -26,6 +29,9 @@ steps:
     expect: DOWN DETENT
     controls:
       - speedbrake
+    targets:
+      - at: "con/st/SPEEDBRAKE LEVER/1"
+        set: "DOWN"
     quick: always
     why: Keeps the spoilers stowed on the ground
     check: Lever in DOWN detent
@@ -38,6 +44,11 @@ steps:
     expect: AUTO
     controls:
       - pheat
+    targets:
+      - at: "oh/heat/PROBE A/1"
+        set: "AUTO"
+      - at: "oh/heat/PROBE B/1"
+        set: "AUTO"
     quick: always
     note: "AUTO keeps probe heat on while an engine runs, then off after shutdown."
     why: Probe heat stops by itself after shutdown
@@ -50,6 +61,9 @@ steps:
     expect: STEADY
     controls:
       - poslt
+    targets:
+      - at: "oh/lte/POSITION/1"
+        set: "STEADY"
     quick: always
     why: Strobes off on the ground
     confirmed_by:
@@ -63,6 +77,9 @@ steps:
       - winglt
       - landlt
       - turnoff
+    targets:
+      - at: "oh/lte/WING/1"
+        set: "OFF"
     quick: always
     why: Not needed for taxi
   - id: ifly-737-max8.after-landing.engine-start-switches
@@ -71,6 +88,12 @@ steps:
     expect: "OFF"
     controls:
       - starts
+    targets:
+      - at: "oh/start/ENGINE START 1/1"
+        set: "OFF"
+      - at: "oh/start/IGNITION/1"
+      - at: "oh/start/ENGINE START 2/1"
+        set: "OFF"
     quick: always
     why: Ignition not needed for taxi
     panel_lights:
@@ -86,6 +109,8 @@ steps:
     expect: RETRACT
     controls:
       - flaplever
+    targets:
+      - at: "con/st/FLAP LEVER/1"
     quick: always
     note: Retract once you are clear of the runway.
     why: Flaps are not needed for taxi
@@ -106,6 +131,27 @@ steps:
     expect: WXR AND TERR OFF
     controls:
       - efispanel
+    targets:
+      - at: "gl/efisl/MINS/1"
+      - at: "gl/efisl/BARO/1"
+      - at: "gl/efisl/MODE/1"
+      - at: "gl/efisl/RANGE/1"
+      - at: "gl/efisl/WXR/1"
+      - at: "gl/efisl/TERR/1"
+      - at: "gl/efisl/POS/1"
+      - at: "gl/efisl/STA/1"
+      - at: "gl/efisl/WPT/1"
+      - at: "gl/efisl/ARPT/1"
+      - at: "gl/efisr/MINS/1"
+      - at: "gl/efisr/BARO/1"
+      - at: "gl/efisr/MODE/1"
+      - at: "gl/efisr/RANGE/1"
+      - at: "gl/efisr/WXR/1"
+      - at: "gl/efisr/TERR/1"
+      - at: "gl/efisr/POS/1"
+      - at: "gl/efisr/STA/1"
+      - at: "gl/efisr/WPT/1"
+      - at: "gl/efisr/ARPT/1"
     why: Display not needed for taxi
     panel_lights:
       efispanel:
@@ -120,6 +166,8 @@ steps:
     expect: "START, THEN RELEASE TO ON"
     controls:
       - apusw
+    targets:
+      - at: "oh/apu/APU/1"
     quick: always
     why: Starts the APU for power and air
     how: apuland

@@ -13,6 +13,9 @@ steps:
     text: Battery switch
     expect: 'ON'
     controls: [battery]
+    targets:
+      - at: "overhead/electrical/BATTERY/1"
+        set: "ON"
     quick: always
     why: Gives the aircraft its first electrical power.
     check: Voltage shown on the gauge

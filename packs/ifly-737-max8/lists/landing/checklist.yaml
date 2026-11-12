@@ -14,6 +14,12 @@ steps:
     expect: CONT
     controls:
       - starts
+    targets:
+      - at: "oh/start/ENGINE START 1/1"
+        set: "CONT"
+      - at: "oh/start/IGNITION/1"
+      - at: "oh/start/ENGINE START 2/1"
+        set: "CONT"
     why: Ignition on for approach and landing
     panel_lights:
       starts:
@@ -27,6 +33,11 @@ steps:
     expect: ARMED
     controls:
       - speedbrake
+    targets:
+      - at: "mn/cl/SPEED BRAKE ARMED/1"
+        light: on
+      - at: "con/st/SPEEDBRAKE LEVER/1"
+        set: "ARMED"
     why: Spoilers deploy on landing
     check: Green SPEED BRAKE ARMED light
     confirmed_by:
@@ -37,6 +48,8 @@ steps:
     expect: "DOWN, 3 GREEN"
     controls:
       - gearlever
+    targets:
+      - at: "mn/ctr/LANDING GEAR LEVER/1"
     why: Gear down and locked
     check: "3 green lights"
     confirmed_by:
@@ -47,6 +60,8 @@ steps:
     expect: "___, GREEN LIGHT"
     controls:
       - flaplever
+    targets:
+      - at: "con/st/FLAP LEVER/1"
     fill:
       - landing_flaps
     why: Final landing configuration
@@ -60,6 +75,8 @@ steps:
     expect: OBTAINED
     controls:
       - clear
+    targets:
+      - at: "con/r1/VHF RADIO 1/1"
     note: Confirm you are cleared to land on this runway.
     why: Cleared to land on this runway
     check: Clearance received

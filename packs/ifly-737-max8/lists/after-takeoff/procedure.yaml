@@ -15,6 +15,9 @@ steps:
     expect: UP
     controls:
       - gearup
+    targets:
+      - at: "mn/ctr/LANDING GEAR LEVER/1"
+        set: "UP"
     quick: always
     why: Gear up and locked
     check: Red and green gear lights OUT
@@ -30,6 +33,8 @@ steps:
     controls:
       - flaplever
       - speedt
+    targets:
+      - at: "con/st/FLAP LEVER/1"
     quick: always
     why: "Retract one step at a time, at or above each flap mark on the speed tape. Retracting early loses lift"
     how: flapup
@@ -42,6 +47,11 @@ steps:
     expect: VERIFY AUTO
     controls:
       - packs
+    targets:
+      - at: "oh/bleed/L PACK/1"
+        set: "AUTO"
+      - at: "oh/bleed/R PACK/1"
+        set: "AUTO"
     why: "If the packs were off for takeoff, set them back to AUTO now so the cabin pressurizes"
     check: "Both PACK switches at AUTO, PACK lights OUT"
     confirmed_by:

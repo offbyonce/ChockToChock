@@ -14,6 +14,11 @@ steps:
     expect: "OFF"
     controls:
       - elechyd
+    targets:
+      - at: "oh/hyd/ELEC 2/1"
+        set: "OFF"
+      - at: "oh/hyd/ELEC 1/1"
+        set: "OFF"
     why: Not needed when secured
     confirmed_by:
       - kind: vendor-docs
@@ -23,6 +28,11 @@ steps:
     expect: "OFF"
     controls:
       - irs
+    targets:
+      - at: "aft/irs/IRS L/1"
+        set: "OFF"
+      - at: "aft/irs/IRS R/1"
+        set: "OFF"
     note: Stops the navigation system. It must realign before the next flight.
     why: Must realign before the next flight
     confirmed_by:
@@ -33,6 +43,15 @@ steps:
     expect: "OFF"
     controls:
       - wheat
+    targets:
+      - at: "oh/heat/L SIDE/1"
+        set: "OFF"
+      - at: "oh/heat/L FWD/1"
+        set: "OFF"
+      - at: "oh/heat/R FWD/1"
+        set: "OFF"
+      - at: "oh/heat/R SIDE/1"
+        set: "OFF"
     why: Not needed when secured
     confirmed_by:
       - kind: vendor-docs
@@ -42,6 +61,10 @@ steps:
     expect: "OFF"
     controls:
       - emerext
+    targets:
+      - at: "oh/col/NOT ARMED/1"
+      - at: "oh/col/EMER EXIT LIGHTS/1"
+        set: "OFF"
     why: ARMED would light the exit lights when power goes off
     confirmed_by:
       - kind: vendor-docs
@@ -51,6 +74,11 @@ steps:
     expect: "OFF"
     controls:
       - packs
+    targets:
+      - at: "oh/bleed/L PACK/1"
+        set: "OFF"
+      - at: "oh/bleed/R PACK/1"
+        set: "OFF"
     why: Stops the packs before the air source goes off
     confirmed_by:
       - kind: vendor-docs
@@ -60,6 +88,15 @@ steps:
     expect: "OFF"
     controls:
       - apub
+    targets:
+      - at: "oh/elecl/GEN 1/1"
+        set: "OFF"
+      - at: "oh/elecl/APU GEN/1"
+        set: "OFF"
+      - at: "oh/elecl/APU GEN/2"
+        set: "OFF"
+      - at: "oh/elecl/GEN 2/1"
+        set: "OFF"
     note: Do this just before the battery goes off.
     why: Removes AC power from the airplane
     panel_lights:
@@ -73,6 +110,9 @@ steps:
     expect: "OFF"
     controls:
       - bat
+    targets:
+      - at: "oh/elecu/BATTERY/1"
+        set: "OFF"
     note: The last switch.
     why: Stops battery drain
     confirmed_by:

@@ -17,3 +17,8 @@ steps:
     expect: CUTOFF
     controls:
       - slever
+    targets:
+      - at: "con/lo/START LEVER 1/1"
+        set: "CUTOFF"
+      - at: "con/lo/START LEVER 2/1"
+        set: "CUTOFF"

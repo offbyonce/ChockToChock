@@ -17,9 +17,20 @@ steps:
     expect: "270 KT/.82M MAXIMUM"
     controls:
       - speedt
+    targets:
+      - at: "mn/cd/OUTBOARD DU: PFD/1"
   - id: ifly-737-max8.quick-reference.landing-gear-lever
     number: 2
     text: LANDING GEAR LEVER
     expect: DN
     controls:
       - gearlever
+    targets:
+      - at: "mn/ctr/LEFT GEAR/2"
+        light: on
+      - at: "mn/ctr/NOSE GEAR/2"
+        light: on
+      - at: "mn/ctr/RIGHT GEAR/2"
+        light: on
+      - at: "mn/ctr/LANDING GEAR LEVER/1"
+        set: "DN"

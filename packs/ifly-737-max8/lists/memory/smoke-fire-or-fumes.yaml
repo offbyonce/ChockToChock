@@ -18,18 +18,34 @@ steps:
     expect: "ON, 100%"
     controls:
       - mask
+    targets:
+      - at: "seat/side/MASK STOWAGE/1"
+      - at: "seat/side/RESET/TEST/1"
+      - at: "seat/side/EMERGENCY/TEST/1"
+      - at: "seat/side/NORMAL/100%/1"
+        set: "100%"
   - id: ifly-737-max8.memory.smoke-goggles-if-required
     number: 2
     text: SMOKE GOGGLES (IF REQUIRED)
     expect: "ON"
     controls:
       - mask
+    targets:
+      - at: "seat/side/MASK STOWAGE/1"
+      - at: "seat/side/RESET/TEST/1"
+      - at: "seat/side/EMERGENCY/TEST/1"
+      - at: "seat/side/NORMAL/100%/1"
   - id: ifly-737-max8.memory.crew-communications-smoke-fire-or-fumes
     number: 3
     text: CREW COMMUNICATIONS
     expect: ESTABLISH
     controls:
       - mask
+    targets:
+      - at: "seat/side/MASK STOWAGE/1"
+      - at: "seat/side/RESET/TEST/1"
+      - at: "seat/side/EMERGENCY/TEST/1"
+      - at: "seat/side/NORMAL/100%/1"
     non_recall: true
   - id: ifly-737-max8.memory.recirc-fan-switches-both
     number: 4
@@ -37,4 +53,9 @@ steps:
     expect: "OFF"
     controls:
       - recirc
+    targets:
+      - at: "oh/bleed/L RECIRC FAN/1"
+        set: "OFF"
+      - at: "oh/bleed/R RECIRC FAN/1"
+        set: "OFF"
     non_recall: true

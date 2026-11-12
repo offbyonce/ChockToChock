@@ -17,12 +17,20 @@ steps:
     expect: "AT OR ABOVE FL270 SET 275 KT, BELOW FL270 SET 300 KT"
     controls:
       - speedt
+    targets:
+      - at: "mn/cd/OUTBOARD DU: PFD/1"
   - id: ifly-737-max8.quick-reference.start-switches-both
     number: 2
     text: START SWITCHES (BOTH)
     expect: FLT
     controls:
       - starts
+    targets:
+      - at: "oh/start/ENGINE START 1/1"
+        set: "FLT"
+      - at: "oh/start/IGNITION/1"
+      - at: "oh/start/ENGINE START 2/1"
+        set: "FLT"
     panel_lights:
       starts:
         - ENGINE START 1
@@ -33,27 +41,45 @@ steps:
     expect: CUTOFF
     controls:
       - slever
+    targets:
+      - at: "con/lo/START LEVER 1/1"
+        set: "CUTOFF"
+      - at: "con/lo/START LEVER 2/1"
+        set: "CUTOFF"
   - id: ifly-737-max8.quick-reference.when-egt-decreases
     number: 4
     text: "ONCE EGT STARTS FALLING"
     expect: "BOTH START LEVERS TO IDLE"
     controls:
       - slever
+    targets:
+      - at: "con/lo/START LEVER 1/1"
+        set: "IDLE"
+      - at: "con/lo/START LEVER 2/1"
+        set: "IDLE"
   - id: ifly-737-max8.quick-reference.if-egt-reaches-a-redline-or-does-not-rise-in-30
     number: 5
     text: "EGT AT REDLINE, OR FLAT FOR 30 SECONDS"
     expect: "THAT START LEVER TO CUTOFF, THEN BACK TO IDLE. REPEAT IF NEEDED"
     controls:
       - engmon
+    targets:
+      - at: "mn/cd/INBOARD DU: ND AND ENGINES/1"
+      - at: "con/ed/ENG/1"
   - id: ifly-737-max8.quick-reference.engine-acceleration
     number: 6
     text: ENGINE ACCELERATION
     expect: "MAY BE VERY SLOW. LEAVE THE START ALONE WHILE N2 CLIMBS AND EGT STAYS IN LIMITS"
     controls:
       - engmon
+    targets:
+      - at: "mn/cd/INBOARD DU: ND AND ENGINES/1"
+      - at: "con/ed/ENG/1"
   - id: ifly-737-max8.quick-reference.apu-if-available
     number: 7
     text: APU (IF AVAILABLE)
     expect: START AND PUT ON BUSES. DO NOT WAIT FOR ENGINE START
     controls:
       - apusw
+    targets:
+      - at: "oh/apu/APU/1"

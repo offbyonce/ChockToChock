@@ -15,39 +15,60 @@ steps:
     expect: "DISENGAGE A/P, PUSH TO/GA"
     controls:
       - toga
+    targets:
+      - at: "con/st/TO/GA/1"
   - id: ifly-737-max8.procedures.thrust
     number: 2
     text: THRUST
     expect: "MAXIMUM, DISENGAGE A/T"
     controls:
       - thrust
+    targets:
+      - at: "con/st/THRUST LEVERS 1 AND 2/1"
   - id: ifly-737-max8.procedures.attitude
     number: 3
     text: ATTITUDE
     expect: "LEVEL THE WINGS AND PITCH TOWARD 15 DEGREES"
     controls:
       - column
+    targets:
+      - at: "seat/yoke/STAB TRIM/1"
+      - at: "seat/yoke/A/P DISENGAGE/1"
   - id: ifly-737-max8.procedures.speedbrakes
     number: 4
     text: SPEEDBRAKES
     expect: RETRACT
     controls:
       - speedbrake
+    targets:
+      - at: "con/st/SPEEDBRAKE LEVER/1"
   - id: ifly-737-max8.procedures.flight-director
     number: 5
     text: FLIGHT DIRECTOR
     expect: FOLLOW TO/GA GUIDANCE IF AVAILABLE
     controls:
       - fltinst
+    targets:
+      - at: "mn/cd/OUTBOARD DU: PFD/1"
+      - at: "mn/cd/INBOARD DU: ND AND ENGINES/1"
+      - at: "mn/fd/INBOARD DU: ND/1"
+      - at: "mn/fd/OUTBOARD DU: PFD/1"
   - id: ifly-737-max8.procedures.flaps-and-gear
     number: 6
     text: FLAPS AND GEAR
     expect: "LEAVE THEM UNTIL THE WINDSHEAR HAS PASSED"
     controls:
       - flaplever
+    targets:
+      - at: "con/st/FLAP LEVER/1"
   - id: ifly-737-max8.procedures.vertical-speed-and-altitude
     number: 7
     text: VERTICAL SPEED AND ALTITUDE
     expect: MONITOR. CALL OUT ANY TREND TOWARD THE TERRAIN
     controls:
       - fltinst
+    targets:
+      - at: "mn/cd/OUTBOARD DU: PFD/1"
+      - at: "mn/cd/INBOARD DU: ND AND ENGINES/1"
+      - at: "mn/fd/INBOARD DU: ND/1"
+      - at: "mn/fd/OUTBOARD DU: PFD/1"

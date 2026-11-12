@@ -23,6 +23,17 @@ steps:
     controls:
       - navsw
       - dispsw
+    targets:
+      - at: "oh/nav/VHF NAV/1"
+        set: "NORMAL"
+      - at: "oh/nav/IRS/1"
+        set: "NORMAL"
+      - at: "oh/nav/FMC/1"
+        set: "NORMAL"
+      - at: "oh/disp/SOURCE/1"
+        set: "AUTO"
+      - at: "oh/disp/CONTROL PANEL/1"
+        set: "NORMAL"
     why: Each side uses its own source
     check: All NORMAL
     check_detail: SOURCE AUTO
@@ -34,6 +45,19 @@ steps:
     expect: "ON"
     controls:
       - wheat
+    targets:
+      - at: "oh/heat/ON/1"
+        light: on
+      - at: "oh/heat/ON/2"
+        light: on
+      - at: "oh/heat/ON/3"
+        light: on
+      - at: "oh/heat/ON/4"
+        light: on
+      - at: "oh/heat/L SIDE/1"
+      - at: "oh/heat/L FWD/1"
+      - at: "oh/heat/R FWD/1"
+      - at: "oh/heat/R SIDE/1"
     why: "Heated windows resist ice and fogging, and warm windshield panels are more resistant to bird strikes."
     confirmed_by:
       - kind: vendor-docs
@@ -43,6 +67,9 @@ steps:
     expect: AUTO
     controls:
       - press
+    targets:
+      - at: "oh/press/MODE/1"
+        set: "AUTO"
     why: Cabin pressure follows FLT ALT and LAND ALT
     panel_lights:
       press:
@@ -55,6 +82,11 @@ steps:
     expect: HEADING ___ ALTIMETER ___
     controls:
       - fltinst
+    targets:
+      - at: "mn/cd/OUTBOARD DU: PFD/1"
+      - at: "mn/cd/INBOARD DU: ND AND ENGINES/1"
+      - at: "mn/fd/INBOARD DU: ND/1"
+      - at: "mn/fd/OUTBOARD DU: PFD/1"
     fill:
       - heading
       - qnh
@@ -68,6 +100,11 @@ steps:
     expect: SET
     controls:
       - pbrake
+    targets:
+      - at: "con/lo/PARKING BRAKE/1"
+        set: "SET"
+      - at: "con/lo/PARK BRAKE LIGHT/1"
+        light: on
     why: Holds the airplane while parked
     check: Parking brake light ON
     confirmed_by:
@@ -78,6 +115,11 @@ steps:
     expect: CUTOFF
     controls:
       - slever
+    targets:
+      - at: "con/lo/START LEVER 1/1"
+        set: "CUTOFF"
+      - at: "con/lo/START LEVER 2/1"
+        set: "CUTOFF"
     note: Cutoff stops fuel to the engines until you are ready to start.
     why: No fuel until you are ready to start
     confirmed_by:

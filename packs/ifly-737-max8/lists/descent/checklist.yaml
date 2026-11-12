@@ -14,6 +14,9 @@ steps:
     expect: LAND ALT ___
     controls:
       - ldgalt
+    targets:
+      - at: "oh/press/LAND ALT/1"
+      - at: "oh/press/LAND ALT KNOB/1"
     fill:
       - landing_altitude
     why: Brings the cabin down to airport elevation
@@ -26,6 +29,19 @@ steps:
     expect: CHECKED
     controls:
       - recall
+    targets:
+      - at: "gl/annl/FLT CONT/1"
+      - at: "gl/annl/IRS/1"
+      - at: "gl/annl/FUEL/1"
+      - at: "gl/annl/ELEC/1"
+      - at: "gl/annl/APU/1"
+      - at: "gl/annl/OVHT/DET/1"
+      - at: "gl/annr/ANTI-ICE/1"
+      - at: "gl/annr/HYD/1"
+      - at: "gl/annr/DOORS/1"
+      - at: "gl/annr/ENG/1"
+      - at: "gl/annr/OVERHEAD/1"
+      - at: "gl/annr/AIR COND/1"
     why: Shows any stored system alerts
     check: No unexpected alerts
     confirmed_by:
@@ -36,6 +52,8 @@ steps:
     expect: "___"
     controls:
       - abrake
+    targets:
+      - at: "con/ed/AUTO BRAKE/1"
     fill:
       - autobrake
     why: "Pick by runway length and surface: lower settings on long dry runways, higher on short or wet ones"
@@ -48,6 +66,11 @@ steps:
     controls:
       - vref
       - mins
+    targets:
+      - at: "gl/efisl/MINS/1"
+      - at: "gl/efisr/MINS/1"
+      - at: "con/cdul/CDU/1"
+      - at: "con/cdur/CDU/1"
     fill:
       - vref
       - minimums

@@ -14,6 +14,9 @@ steps:
     expect: SET QNH AT TRANSITION
     controls:
       - baro
+    targets:
+      - at: "gl/efisl/BARO/1"
+      - at: "gl/efisr/BARO/1"
     hint:
       - prefix: TRANS LEVEL FL
         field: transition_level
@@ -32,6 +35,11 @@ steps:
       - landlt
       - winglt
       - logo
+    targets:
+      - at: "oh/lte/LOGO/1"
+        set: "ON"
+      - at: "oh/lte/WING/1"
+        set: "ON"
     quick: always
     why: "See and be seen below 10,000 ft"
   - id: ifly-737-max8.approach.fasten-belts-selector
@@ -40,6 +48,8 @@ steps:
     expect: "AUTO OR ON"
     controls:
       - sblts
+    targets:
+      - at: "oh/col/FASTEN BELTS/1"
     note: Tells the cabin to sit down for landing.
     why: Cabin seated for landing
     confirmed_by:
@@ -51,6 +61,9 @@ steps:
     expect: TUNE THE ILS FOR THE LANDING RUNWAY
     controls:
       - mmr
+    targets:
+      - at: "con/n1/NAV 1/1"
+      - at: "con/n2/NAV 2/1"
     quick: always
     show_if:
       option: approach
@@ -67,6 +80,9 @@ steps:
     expect: CORRECT APPROACH ON THE LEGS PAGE
     controls:
       - fmc
+    targets:
+      - at: "con/cdul/CDU/1"
+      - at: "con/cdur/CDU/1"
     quick: always
     show_if:
       option: approach
@@ -80,6 +96,9 @@ steps:
     expect: FINAL APPROACH COURSE SET
     controls:
       - crs
+    targets:
+      - at: "gl/mcp/COURSE/1"
+      - at: "gl/mcp/COURSE/2"
     quick: always
     why: "Both course selectors on the published final approach course, so the localizer can be compared with it"
     check: Course shows on the ND
@@ -91,6 +110,8 @@ steps:
     expect: "ARM, VOR/LOC AND G/S ARMED ON THE FMA"
     controls:
       - appmode
+    targets:
+      - at: "gl/mcp/APP/1"
     quick: always
     show_if:
       option: approach

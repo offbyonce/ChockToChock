@@ -9,6 +9,7 @@
 pub mod load;
 pub mod manifest;
 pub mod schema;
+pub mod suggest;
 pub mod validate;
 
 pub use load::{LoadError, load_pack_dir, parse_checklist_yaml, parse_yaml};

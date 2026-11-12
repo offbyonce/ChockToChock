@@ -17,3 +17,5 @@ steps:
     expect: "GEAR DOWN AND LOCKED, FLAPS AND SPEEDBRAKE SET FOR LANDING"
     controls:
       - gearlever
+    targets:
+      - at: "mn/ctr/LANDING GEAR LEVER/1"

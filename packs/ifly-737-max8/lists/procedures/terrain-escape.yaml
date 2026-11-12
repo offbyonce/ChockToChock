@@ -16,39 +16,59 @@ steps:
     controls:
       - apdisc
       - apdis
+    targets:
+      - at: "gl/mcp/DISENGAGE/1"
+      - at: "con/st/A/T DISENGAGE/1"
   - id: ifly-737-max8.procedures.thrust-terrain-escape
     number: 2
     text: THRUST
     expect: MAXIMUM
     controls:
       - thrust
+    targets:
+      - at: "con/st/THRUST LEVERS 1 AND 2/1"
   - id: ifly-737-max8.procedures.attitude-terrain-escape
     number: 3
     text: ATTITUDE
     expect: "LEVEL THE WINGS, THEN PITCH UP TO 20 DEGREES TO START"
     controls:
       - column
+    targets:
+      - at: "seat/yoke/STAB TRIM/1"
+      - at: "seat/yoke/A/P DISENGAGE/1"
   - id: ifly-737-max8.procedures.speedbrakes-terrain-escape
     number: 4
     text: SPEEDBRAKES
     expect: RETRACT
     controls:
       - speedbrake
+    targets:
+      - at: "con/st/SPEEDBRAKE LEVER/1"
   - id: ifly-737-max8.procedures.if-terrain-remains-a-threat
     number: 5
     text: IF TERRAIN REMAINS A THREAT
     expect: "ROTATE TO PITCH LIMIT, STICK SHAKER OR INITIAL BUFFET"
     controls:
       - column
+    targets:
+      - at: "seat/yoke/STAB TRIM/1"
+      - at: "seat/yoke/A/P DISENGAGE/1"
   - id: ifly-737-max8.procedures.gear-and-flaps
     number: 6
     text: GEAR AND FLAPS
     expect: NO CHANGE UNTIL TERRAIN SEPARATION IS ASSURED
     controls:
       - flaplever
+    targets:
+      - at: "con/st/FLAP LEVER/1"
   - id: ifly-737-max8.procedures.flight-director-terrain-escape
     number: 7
     text: FLIGHT DIRECTOR
     expect: DO NOT USE ITS COMMANDS
     controls:
       - fltinst
+    targets:
+      - at: "mn/cd/OUTBOARD DU: PFD/1"
+      - at: "mn/cd/INBOARD DU: ND AND ENGINES/1"
+      - at: "mn/fd/INBOARD DU: ND/1"
+      - at: "mn/fd/OUTBOARD DU: PFD/1"

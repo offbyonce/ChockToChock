@@ -14,6 +14,8 @@ steps:
     expect: CLOSED AND LOCKED
     controls:
       - fdd
+    targets:
+      - at: "con/dr/FLT DK DOOR/1"
     why: Closed before departure
     check: Door closed and locked
   - id: ifly-737-max8.before-start.fuel
@@ -22,6 +24,20 @@ steps:
     controls:
       - fuelq
       - fuelpumps
+    targets:
+      - at: "oh/fuel/CTR L/1"
+        set: "ON"
+      - at: "oh/fuel/CTR R/1"
+        set: "ON"
+      - at: "oh/fuel/AFT 1/1"
+        set: "ON"
+      - at: "oh/fuel/FWD 1/1"
+        set: "ON"
+      - at: "oh/fuel/FWD 2/1"
+        set: "ON"
+      - at: "oh/fuel/AFT 2/1"
+        set: "ON"
+      - at: "mn/cd/INBOARD DU: ND AND ENGINES/1"
     fill:
       - minimum_takeoff_fuel
       - fuel
@@ -33,6 +49,9 @@ steps:
     expect: "NO SMOKING AND FASTEN BELTS AUTO OR ON"
     controls:
       - signs
+    targets:
+      - at: "oh/col/NO SMOKING/1"
+      - at: "oh/col/FASTEN BELTS/1"
     why: "Keeps the cabin signs working for the flight."
     confirmed_by:
       - kind: vendor-docs
@@ -49,6 +68,11 @@ steps:
     expect: "V2 ___, HEADING ___, ALTITUDE ___"
     controls:
       - mcpset
+    targets:
+      - at: "gl/mcp/A/T ARM/1"
+      - at: "gl/mcp/IAS/MACH/1"
+      - at: "gl/mcp/HEADING/1"
+      - at: "gl/mcp/ALTITUDE/1"
     fill:
       - v2
       - heading
@@ -63,6 +87,9 @@ steps:
     expect: "V1, VR AND V2 SET AND CHECKED"
     controls:
       - cdu
+    targets:
+      - at: "con/cdul/CDU/1"
+      - at: "con/cdur/CDU/1"
     why: Speeds match the takeoff data
     check: "V1, VR and V2 shown on the speed tape"
     confirmed_by:
@@ -73,6 +100,9 @@ steps:
     expect: COMPLETE
     controls:
       - cdu
+    targets:
+      - at: "con/cdul/CDU/1"
+      - at: "con/cdur/CDU/1"
     why: "Route, performance and takeoff reference in"
     check: Preflight pages complete
     confirmed_by:
@@ -83,6 +113,9 @@ steps:
     expect: "FREE, AT ZERO"
     controls:
       - trimp
+    targets:
+      - at: "con/tr/AILERON/1"
+      - at: "con/tr/RUDDER/1"
     quick: turnaround
     why: No trim left in for takeoff
     check: Both trims at zero
@@ -101,6 +134,9 @@ steps:
     expect: "ON"
     controls:
       - beacon
+    targets:
+      - at: "oh/lte/ANTI COLLISION/1"
+        set: "ON"
     why: Warns people that engines are about to start
     explain: beacon
     confirmed_by:

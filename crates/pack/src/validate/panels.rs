@@ -288,7 +288,7 @@ fn locator_resolves(locator: &str, labels: &BTreeMap<(&str, &str, &str), usize>)
 }
 
 #[cfg(test)]
-mod tests {
+pub(super) mod tests {
     use checklist_core::{
         Control, ControlsFile, LightColor, LightNote, LightsFile, Overview, OverviewArea,
         OverviewRegion, Panel, PanelItem, PanelItemKind, PanelSection, StartState, StartStatesFile,
@@ -297,7 +297,7 @@ mod tests {
     use super::super::test_support::{alias_pack, assert_flags, messages, pack, step};
     use crate::Pack;
 
-    fn panel_pack() -> Pack {
+    pub(in crate::validate) fn panel_pack() -> Pack {
         let mut p = pack(vec![step("a")], vec![]);
         p.content.controls = Some(ControlsFile {
             zones: vec![],

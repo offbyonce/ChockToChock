@@ -18,18 +18,32 @@ steps:
     expect: "ON, 100%"
     controls:
       - mask
+    targets:
+      - at: "seat/side/MASK STOWAGE/1"
+      - at: "seat/side/RESET/TEST/1"
+      - at: "seat/side/EMERGENCY/TEST/1"
+      - at: "seat/side/NORMAL/100%/1"
+        set: "100%"
   - id: ifly-737-max8.memory.crew-communications
     number: 2
     text: CREW COMMUNICATIONS
     expect: ESTABLISH
     controls:
       - mask
+    targets:
+      - at: "seat/side/MASK STOWAGE/1"
+      - at: "seat/side/RESET/TEST/1"
+      - at: "seat/side/EMERGENCY/TEST/1"
+      - at: "seat/side/NORMAL/100%/1"
   - id: ifly-737-max8.memory.pressurization-mode-selector
     number: 3
     text: PRESSURIZATION MODE SELECTOR
     expect: MAN
     controls:
       - press
+    targets:
+      - at: "oh/press/MODE/1"
+        set: "MAN"
     non_recall: true
     panel_lights:
       press:
@@ -40,6 +54,10 @@ steps:
     expect: HOLD TO CLOSE UNTIL THE INDICATOR SHOWS FULLY SHUT
     controls:
       - outflow
+    targets:
+      - at: "oh/press/VALVE/1"
+      - at: "oh/press/OUTFLOW/1"
+        set: "CLOSE"
     non_recall: true
   - id: ifly-737-max8.memory.if-cabin-altitude-is-uncontrollable
     number: 5
@@ -47,6 +65,9 @@ steps:
     expect: FASTEN BELTS ON
     controls:
       - sblts
+    targets:
+      - at: "oh/col/FASTEN BELTS/1"
+        set: "ON"
     non_recall: true
   - id: ifly-737-max8.memory.if-cabin-altitude-is-above-or-expected-to-go
     number: 6
@@ -54,6 +75,11 @@ steps:
     expect: "PASS OXYGEN ON, GO TO EMERGENCY DESCENT"
     controls:
       - paxoxy
+    targets:
+      - at: "aft/oxy/PASS OXYGEN/1"
+        set: "ON"
+      - at: "aft/oxy/PASS OXY ON/1"
+        light: on
     non_recall: true
   - id: ifly-737-max8.memory.if-cabin-altitude-is-controllable
     number: 7
@@ -61,4 +87,12 @@ steps:
     expect: "STAY IN MANUAL. MASKS CAN COME OFF ONCE THE CABIN IS 10,000 FT OR LOWER"
     controls:
       - press
+    targets:
+      - at: "oh/cab/CABIN ALT/1"
+      - at: "oh/cab/CABIN CLIMB/1"
+      - at: "oh/press/MANUAL/1"
+        light: out
+      - at: "oh/press/FLT ALT/1"
+      - at: "oh/press/FLT ALT KNOB/1"
+      - at: "oh/press/MODE/1"
     non_recall: true

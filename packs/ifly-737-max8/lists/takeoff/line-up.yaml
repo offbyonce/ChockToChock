@@ -15,6 +15,9 @@ steps:
     expect: "MINIMUM 3 MINUTES AT IDLE, OIL AT LEAST 31C BEFORE TAKEOFF THRUST"
     controls:
       - engmon
+    targets:
+      - at: "mn/cd/INBOARD DU: ND AND ENGINES/1"
+      - at: "con/ed/ENG/1"
     note: Cold engines need time at idle before takeoff thrust.
     why: Cold engines need time at idle
     check: "3 minutes at idle"
@@ -34,6 +37,12 @@ steps:
     expect: CONT
     controls:
       - starts
+    targets:
+      - at: "oh/start/ENGINE START 1/1"
+        set: "CONT"
+      - at: "oh/start/IGNITION/1"
+      - at: "oh/start/ENGINE START 2/1"
+        set: "CONT"
     why: Igniters ready against a flameout on takeoff
     panel_lights:
       starts:
@@ -45,6 +54,8 @@ steps:
     expect: "STROBE & STEADY"
     controls:
       - poslt
+    targets:
+      - at: "oh/lte/POSITION/1"
     quick: always
     why: Strobes on for takeoff and flight
     confirmed_by:
@@ -56,6 +67,8 @@ steps:
     expect: OBTAIN
     controls:
       - atcclr
+    targets:
+      - at: "con/r1/VHF RADIO 1/1"
     why: Request it and read it back
     confirmed_by:
       - kind: vendor-docs
@@ -66,6 +79,11 @@ steps:
     expect: "ON"
     controls:
       - landlt
+    targets:
+      - at: "oh/ltl/LANDING L/1"
+        set: "ON"
+      - at: "oh/ltl/LANDING R/1"
+        set: "ON"
     quick: always
     note: Turning on the landing lights shows others you are about to roll.
     why: Shows others you are about to roll
@@ -78,6 +96,13 @@ steps:
     expect: MODE SELECTOR TA/RA
     controls:
       - xpndr
+    targets:
+      - at: "con/atc/ALT SOURCE 1/1"
+      - at: "con/atc/XPNDR/1"
+      - at: "con/atc/CODE/1"
+      - at: "con/atc/MODE/1"
+        set: "TA/RA"
+      - at: "con/atc/ALT SOURCE 2/1"
     quick: always
     note: TA/RA gives you full TCAS alerts in the air.
     why: Full TCAS alerts in the air
@@ -90,6 +115,8 @@ steps:
     expect: AGREES WITH THE RUNWAY
     controls:
       - pfdhdg
+    targets:
+      - at: "mn/cd/OUTBOARD DU: PFD/1"
     why: Last check of the runway
     check: Heading matches the runway
     confirmed_by:
@@ -101,6 +128,8 @@ steps:
     expect: CORRECT RUNWAY AND ENTRY
     controls:
       - pfdhdg
+    targets:
+      - at: "mn/cd/OUTBOARD DU: PFD/1"
     hint:
       - prefix: "RWY "
         field: runway
