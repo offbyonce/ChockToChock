@@ -179,7 +179,9 @@ the card; text keeps 3.0's sizes.
   // Only the first part of a divided section carries its title; the rest continue it.
   let views = $derived.by(() => {
     const vs = crops.map((c, n) => {
-      const titled = n === 0 || crops[n - 1]?.group !== c.group;
+      // The card's caption names a lone section, so its frame needs no title of its own; sections
+      // drawn apart keep theirs, on their first part, so they can be told apart.
+      const titled = (groups.length > 1 || c.group.length > 1) && (n === 0 || crops[n - 1]?.group !== c.group);
       return { ...sizeAt(c.group, c.bands, K, titled), group: c.group, titled };
     });
     // The parts of a divided section share one width, so they line up one under another.

@@ -446,7 +446,7 @@ describe("PanelSchematic", () => {
     expect(sizeOf(300)).toBeCloseTo(1.8, 2);
   });
 
-  it("draws a wide section's parts lined up, with the title only on the first", () => {
+  it("draws a wide section's parts lined up, titled once by the card's caption", () => {
     const item = (label: string, x: number) =>
       ({ kind: "push_button", label, x, y: 40, controls: ["c"], description: "" }) as unknown;
     const panel = {
@@ -476,7 +476,8 @@ describe("PanelSchematic", () => {
     });
     const svgs = [...container.querySelectorAll("svg.schematic")];
     expect(svgs).toHaveLength(2);
-    expect(svgs.map((s) => s.querySelectorAll(".title").length)).toEqual([1, 0]);
+    // The card's caption names a lone section, so neither part repeats its title.
+    expect(svgs.map((s) => s.querySelectorAll(".title").length)).toEqual([0, 0]);
     const widths = svgs.map((s) => Number((s.getAttribute("viewBox") ?? "").split(" ")[2]));
     expect(Math.abs((widths[0] ?? 0) - (widths[1] ?? 0))).toBeLessThan(1);
   });
