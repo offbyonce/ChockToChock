@@ -9,6 +9,7 @@ from the pack, and the zone marked by a thicker outline, fill and bold label as 
 <script lang="ts">
   import type { Zone } from "@chocktochock/bindings";
   import { type PackIndex, splitArea } from "../pack-index";
+  import { fitSize, labelLines } from "./map-labels";
 
   let { index, zone }: { index: PackIndex; zone: Zone } = $props();
 
@@ -72,22 +73,8 @@ from the pack, and the zone marked by a thicker outline, fill and bold label as 
   let cx = $derived((bounds.x0 + bounds.x1) / 2);
   let cy = $derived((bounds.y0 + bounds.y1) / 2);
 
-  /** A label that fits its box: one line, or two split at " / " or near the middle. */
-  function lines(label: string, width: number): string[] {
-    // One line at full size if it fits; otherwise two lines, as 3.0 wraps them, before shrinking.
-    if (label.length * LABEL * 0.62 <= width - 7) return [label];
-    if (!label.includes(" ")) return [label];
-    const slash = label.indexOf(" / ");
-    if (slash > 0) return [`${label.slice(0, slash)} /`, label.slice(slash + 3)];
-    const mid = label.lastIndexOf(" ", Math.ceil(label.length / 2));
-    return mid > 0 ? [label.slice(0, mid), label.slice(mid + 1)] : [label];
-  }
   /** Labels shrink to stay inside their boxes, as 3.0's do, never below 6.5px. */
-  const size = (text: string[], width: number, height: number) =>
-    Math.max(
-      6.5 / k,
-      Math.min(LABEL, (width - 7) / (Math.max(...text.map((t) => t.length)) * 0.62), (height - 3) / (text.length * 1.2)),
-    );
+  const size = (text: string[], width: number, height: number) => Math.max(6.5 / k, fitSize(text, width, height, LABEL));
 </script>
 
 {#if map && map.areas.length}
@@ -102,7 +89,7 @@ from the pack, and the zone marked by a thicker outline, fill and bold label as 
     {#each map.areas as area (area.zone + area.x + area.y)}
       {@const z = byId.get(area.zone)}
       {@const on = area.zone === zone.id}
-      {@const text = lines(area.label ?? z?.short_title ?? "", area.width)}
+      {@const text = labelLines(area.label ?? z?.short_title ?? "", area.width, area.height, LABEL)}
       {@const fs = size(text, area.width, area.height)}
       <g class:on>
         <rect x={area.x} y={area.y} width={area.width} height={area.height} rx="3" />

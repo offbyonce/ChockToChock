@@ -171,10 +171,13 @@ value on the right. The pilot confirms each step; the app never knows a switch p
     color: var(--muted);
     font-size: 0.8125rem;
   }
+  /* The name and the value share a line when both fit; otherwise the value goes under the name,
+     as in 3.0, so the name is never squeezed onto more lines. */
   .box {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
+    display: flex;
+    flex-wrap: wrap;
     align-items: center;
+    justify-content: space-between;
     gap: 0.5rem 2rem;
     margin: 0.75rem 0 0.5rem;
     padding: 1.25rem 1.5rem;
@@ -206,15 +209,15 @@ value on the right. The pilot confirms each step; the app never knows a switch p
     line-height: 1.06;
     letter-spacing: -0.02em;
     text-wrap: balance;
+    max-width: 100%;
   }
   .value {
     margin: 0;
     color: var(--accent);
     font: clamp(1.15rem, 1.9vw, 1.7rem) / 1.25 var(--mono);
-    text-align: right;
   }
   .state {
-    grid-column: 1 / -1;
+    flex-basis: 100%;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -336,13 +339,5 @@ value on the right. The pilot confirms each step; the app never knows a switch p
     background: var(--go-soft);
     color: var(--go);
     text-transform: uppercase;
-  }
-  @media (max-width: 700px) {
-    .box {
-      grid-template-columns: minmax(0, 1fr);
-    }
-    .value {
-      text-align: left;
-    }
   }
 </style>

@@ -50,19 +50,30 @@ the card; text keeps 3.0's sizes.
     );
   });
 
-  /** The rows of a section to draw: a tall one is cut to the rows around the step's controls. */
+  /** A section taller than this is cut down to the controls within REACH of the step's, as 3.0 does. */
+  const TALL = 280;
+  const REACH = 100;
+
   /**
-   * The part of a section to draw. As 3.0 frames its panel cards: a section shows whole down, and
-   * a wide one is cut across to the controls around the step's, so the drawing stays as large as
-   * 3.0's. Sections drawn together are shown whole.
+   * The part of a section to draw, as 3.0 frames its panel cards, so the step's controls show in
+   * first view and the drawing stays as large as 3.0's. A tall section keeps the controls whose
+   * centers lie within REACH of the step's (more if the step's own controls spread further), and a
+   * wide one is cut across to the controls around the step's. Sections drawn together show whole.
    */
   function bandOf(s: Section) {
     const mine = s.items.filter((_, i) => targets.some((t) => t.section === s.id && t.item === i));
     const whole = { y0: 0, y1: s.height, x0: 0, x1: s.width };
     if (!mine.length || drawn.length > 1) return whole;
     const xs = mine.map((it) => it.x);
-    // Down, the whole section shows, as in 3.0; the panel scrolls.
-    const rows = {};
+    const ys = mine.map((it) => it.y);
+    let rows = {};
+    if (s.height > TALL) {
+      const c = (Math.min(...ys) + Math.max(...ys)) / 2;
+      const reach = Math.max(REACH, (Math.max(...ys) - Math.min(...ys)) / 2 + 30);
+      const kept = s.items.map((it) => it.y).filter((y) => Math.abs(y - c) <= reach);
+      // Room above and below the kept controls for their shapes; sections draw the items inside.
+      rows = { y0: Math.max(0, Math.min(...kept) - 20), y1: Math.min(s.height, Math.max(...kept) + 20) };
+    }
     let across = {};
     if (s.width > WIDE) {
       const c = (Math.min(...xs) + Math.max(...xs)) / 2;

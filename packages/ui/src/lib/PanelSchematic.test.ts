@@ -269,7 +269,12 @@ describe("PanelSchematic", () => {
     expect(Math.abs(gripMid - (Number(set?.getAttribute("y")) - 3))).toBeLessThan(1);
   });
 
-  it("draws a tall section whole, as 3.0 does, so controls near its bottom are not cut off", () => {
+  it("cuts a tall section to the controls near the step's, as 3.0 does, keeping lights within reach", () => {
+    // Placed as on the real panels: the electrical meters section (battery step) and the flight
+    // control section (alternate flaps step). Round 2 cut off the lights 99 units below ALT FLAPS;
+    // drawing sections whole then pushed the battery switch out of first view.
+    const item = (kind: string, label: string, x: number, y: number) =>
+      ({ kind, label, x, y, controls: ["c"], positions: "OFF, ON", description: "" }) as unknown;
     const tall = {
       id: "oh",
       title: "Overhead",
@@ -277,41 +282,46 @@ describe("PanelSchematic", () => {
       height: 400,
       sections: [
         {
+          id: "meters",
+          title: "Electrical meters",
+          x: 0,
+          y: 0,
+          width: 225,
+          height: 318,
+          items: [
+            item("display_unit", "METER DISPLAY", 112, 74),
+            item("light", "BAT DISCHARGE", 42, 148),
+            item("selector", "DC METERS", 60, 206),
+            item("toggle_switch", "BATTERY", 60, 276),
+          ],
+        },
+        {
           id: "fctl",
           title: "Flight control",
           x: 0,
           y: 0,
-          width: 240,
-          height: 320,
-          items: [
-            {
-              kind: "toggle_switch",
-              label: "ALT FLAPS",
-              x: 60,
-              y: 60,
-              controls: ["altflap"],
-              positions: "UP, OFF, DOWN",
-              description: "",
-            },
-            {
-              kind: "light",
-              label: "MACH TRIM FAIL",
-              color: "amber",
-              x: 180,
-              y: 280,
-              controls: ["lights"],
-              description: "",
-            },
-          ],
+          width: 235,
+          height: 322,
+          items: [item("toggle_switch", "ALT FLAPS", 205, 134), item("light", "MACH TRIM FAIL", 195, 232)],
         },
       ],
     } as unknown as Panel;
+    const meters = render(PanelSchematic, {
+      panel: tall,
+      focus: ["meters"],
+      targets: [{ section: "meters", item: 3, position: 1, lit: false }],
+    });
+    expect(screen.getByText("BATTERY")).toBeTruthy();
+    expect(screen.getByText("DC METERS")).toBeTruthy();
+    expect(screen.queryByText("METER DISPLAY")).toBeNull();
+    expect(screen.queryByText("BAT")).toBeNull();
+    meters.unmount();
+
     render(PanelSchematic, {
       panel: tall,
       focus: ["fctl"],
       targets: [{ section: "fctl", item: 0, position: 1, lit: false }],
     });
-
     expect(screen.getByText(/MACH/)).toBeTruthy();
   });
 });

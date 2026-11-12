@@ -363,6 +363,10 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
     grid-template-columns: minmax(0, 1fr) clamp(24rem, 33vw, 40rem);
     align-items: start;
   }
+  /* Flow view gives the map and drawing a wider column, as 3.0's does. */
+  .app.flow {
+    grid-template-columns: minmax(0, 1fr) minmax(26rem, 38%);
+  }
   .app.nopane {
     grid-template-columns: minmax(0, 1fr);
   }
@@ -399,7 +403,8 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
   }
   /* Narrow screens show the context inside the step instead. */
   @media (max-width: 1023px) {
-    .app {
+    .app,
+    .app.flow {
       grid-template-columns: minmax(0, 1fr);
     }
     .pane {
