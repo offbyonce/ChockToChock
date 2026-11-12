@@ -18,8 +18,9 @@ steps:
     expect: DISENGAGE
     controls:
       - apdis
+      - apdisc
     targets:
-      - at: "gl/mcp/DISENGAGE/1"
+      - at: "seat/yoke/A/P DISENGAGE/1"
     confirmed_by:
       - kind: vendor-docs
         date: 2026-11-10
@@ -128,8 +129,13 @@ steps:
     expect: "NO AUTOPILOT, AUTOTHROTTLE OR FLIGHT DIRECTORS"
     controls:
       - isfdc
+      - mcpset
+      - fd
     targets:
       - at: "mn/ctr/STANDBY DISPLAY/1"
+      - at: "gl/mcp/A/T ARM/1"
+      - at: "gl/mcp/F/D L/1"
+      - at: "gl/mcp/F/D R/1"
     non_recall: true
     confirmed_by:
       - kind: vendor-docs
@@ -140,11 +146,14 @@ steps:
     expect: "USE THAT SIDE'S F/D AND AUTOPILOT IF NEEDED. KEEP AUTOTHROTTLE OFF"
     controls:
       - fd
+      - mcpset
     targets:
       - at: "gl/mcp/F/D L/1"
         open: true
       - at: "gl/mcp/F/D R/1"
         open: true
+      - at: "gl/mcp/A/T ARM/1"
+        set: "OFF"
     non_recall: true
     confirmed_by:
       - kind: vendor-docs

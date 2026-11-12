@@ -80,9 +80,8 @@ steps:
       - pbrake
     targets:
       - at: "con/lo/PARKING BRAKE/1"
-        set: "SET"
+        open: true
       - at: "con/lo/PARK BRAKE LIGHT/1"
-        light: on
     why: Holds the airplane while parked
     check: "Set, or released with chocks in place"
     confirmed_by:

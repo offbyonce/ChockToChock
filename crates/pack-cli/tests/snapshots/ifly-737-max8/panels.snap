@@ -5697,6 +5697,9 @@ assertion_line: 38
             "label": "RUDDER TRIM",
             "x": 121.0,
             "y": 22.0,
+            "controls": [
+              "trimp"
+            ],
             "description": "Rudder trim position indicator, in units nose left or right.",
             "width": 110.0,
             "height": 18.0

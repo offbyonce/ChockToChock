@@ -114,6 +114,7 @@ steps:
     targets:
       - at: "con/tr/AILERON/1"
       - at: "con/tr/RUDDER/1"
+      - at: "con/tr/RUDDER TRIM/1"
     quick: turnaround
     why: No trim left in for takeoff
     check: Both trims at zero

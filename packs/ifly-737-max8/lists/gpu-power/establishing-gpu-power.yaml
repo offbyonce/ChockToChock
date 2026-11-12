@@ -35,6 +35,10 @@ steps:
     expect: CONNECT
     controls:
       - efbelec
+      - grdpwr
+    targets:
+      - at: "oh/elecl/GRD POWER AVAILABLE/1"
+        light: on
     quick: always
     why: Ground power has to reach the airplane before its switch can do anything.
     check: GRD POWER AVAILABLE light ON
@@ -52,7 +56,7 @@ steps:
       - grdpwr
     targets:
       - at: "oh/elecl/GRD PWR/1"
-        set: "ON"
+        open: true
     quick: always
     why: Connects ground power to the AC transfer buses.
     check: "TRANSFER BUS OFF, STANDBY PWR OFF and SOURCE OFF lights OUT"

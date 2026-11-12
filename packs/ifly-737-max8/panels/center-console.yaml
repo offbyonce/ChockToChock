@@ -773,6 +773,8 @@ sections:
         label: RUDDER TRIM
         x: 121
         "y": 22
+        controls:
+          - trimp
         description: "Rudder trim position indicator, in units nose left or right."
         width: 110
         height: 18

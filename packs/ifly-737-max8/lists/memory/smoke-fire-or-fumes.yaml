@@ -29,9 +29,7 @@ steps:
       - mask
     targets:
       - at: "seat/side/MASK STOWAGE/1"
-      - at: "seat/side/RESET/TEST/1"
       - at: "seat/side/EMERGENCY/TEST/1"
-      - at: "seat/side/NORMAL/100%/1"
   - id: ifly-737-max8.memory.crew-communications-smoke-fire-or-fumes
     number: 3
     text: CREW COMMUNICATIONS

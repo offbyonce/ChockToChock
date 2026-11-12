@@ -87,6 +87,8 @@ steps:
     controls:
       - fuelpumps
     targets:
+      - at: "oh/fuel/AFT 1/1"
+        open: true
       - at: "oh/fuel/FWD 1/1"
         open: true
     show_if:
@@ -144,6 +146,8 @@ steps:
     controls:
       - fuelpumps
     targets:
+      - at: "oh/fuel/AFT 1/1"
+        open: true
       - at: "oh/fuel/FWD 1/1"
         open: true
     show_if:
@@ -166,8 +170,10 @@ steps:
     expect: DISCONNECT
     controls:
       - grddisc
+      - grdpwr
     targets:
-      - at: "oh/elecl/GRD PWR/1"
+      - at: "oh/elecl/GRD POWER AVAILABLE/1"
+        light: out
     quick: always
     show_if:
       any_of:

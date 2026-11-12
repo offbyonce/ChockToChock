@@ -277,7 +277,7 @@ steps:
       - at: "oh/elecl/GRD PWR/1"
         open: true
       - at: "oh/apu/APU/1"
-        set: "OFF"
+        open: true
     why: Takes over before the APU goes off
     check: Ground power on the buses
     check_detail: "GRD POWER switch ON once the AVAILABLE light is on, then the APU switch OFF"

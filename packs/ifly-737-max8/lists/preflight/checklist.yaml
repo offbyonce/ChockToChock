@@ -14,6 +14,12 @@ steps:
     expect: "TESTED, 100%"
     controls:
       - oxym
+      - mask
+    targets:
+      - at: "seat/side/MASK STOWAGE/1"
+      - at: "seat/side/RESET/TEST/1"
+      - at: "seat/side/NORMAL/100%/1"
+        set: "100%"
     why: Needed at once in a decompression or smoke
     how: crew
     explain: crew

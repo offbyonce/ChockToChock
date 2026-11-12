@@ -222,7 +222,14 @@ assertion_line: 34
         "text": "GROUND POWER CART (EFB)",
         "expect": "CONNECT",
         "controls": [
-          "efbelec"
+          "efbelec",
+          "grdpwr"
+        ],
+        "targets": [
+          {
+            "at": "oh/elecl/GRD POWER AVAILABLE/1",
+            "light": "on"
+          }
         ],
         "quick": "always",
         "note": "The iFly has no ground crew, so the EFB stands in for them. On a real airplane the crew connects the cart.",
@@ -248,7 +255,7 @@ assertion_line: 34
         "targets": [
           {
             "at": "oh/elecl/GRD PWR/1",
-            "set": "ON"
+            "open": true
           }
         ],
         "quick": "always",
@@ -395,6 +402,10 @@ assertion_line: 34
         ],
         "targets": [
           {
+            "at": "oh/fuel/AFT 1/1",
+            "open": true
+          },
+          {
             "at": "oh/fuel/FWD 1/1",
             "open": true
           }
@@ -487,6 +498,10 @@ assertion_line: 34
         ],
         "targets": [
           {
+            "at": "oh/fuel/AFT 1/1",
+            "open": true
+          },
+          {
             "at": "oh/fuel/FWD 1/1",
             "open": true
           }
@@ -521,11 +536,13 @@ assertion_line: 34
         "text": "GROUND POWER CART (EFB)",
         "expect": "DISCONNECT",
         "controls": [
-          "grddisc"
+          "grddisc",
+          "grdpwr"
         ],
         "targets": [
           {
-            "at": "oh/elecl/GRD PWR/1"
+            "at": "oh/elecl/GRD POWER AVAILABLE/1",
+            "light": "out"
           }
         ],
         "quick": "always",
@@ -2734,7 +2751,7 @@ assertion_line: 34
         "targets": [
           {
             "at": "gl/efisl/MINS/1",
-            "set": "BARO"
+            "open": true
           },
           {
             "at": "gl/efisl/BARO/1"
@@ -2745,7 +2762,7 @@ assertion_line: 34
           },
           {
             "at": "gl/efisr/MINS/1",
-            "set": "BARO"
+            "open": true
           },
           {
             "at": "gl/efisr/BARO/1"
@@ -2813,6 +2830,12 @@ assertion_line: 34
         "targets": [
           {
             "at": "mn/cl/LIGHTS/1"
+          },
+          {
+            "at": "mn/cl/A/P A/T TEST/1"
+          },
+          {
+            "at": "mn/fl/A/P A/T TEST/1"
           }
         ],
         "why": "Proves the lights work",
@@ -3530,7 +3553,20 @@ assertion_line: 34
         "text": "OXYGEN",
         "expect": "TESTED, 100%",
         "controls": [
-          "oxym"
+          "oxym",
+          "mask"
+        ],
+        "targets": [
+          {
+            "at": "seat/side/MASK STOWAGE/1"
+          },
+          {
+            "at": "seat/side/RESET/TEST/1"
+          },
+          {
+            "at": "seat/side/NORMAL/100%/1",
+            "set": "100%"
+          }
         ],
         "why": "Needed at once in a decompression or smoke",
         "how": "crew",
@@ -4213,6 +4249,9 @@ assertion_line: 34
           },
           {
             "at": "con/tr/RUDDER/1"
+          },
+          {
+            "at": "con/tr/RUDDER TRIM/1"
           }
         ],
         "quick": "turnaround",
@@ -9487,7 +9526,7 @@ assertion_line: 34
           },
           {
             "at": "oh/apu/APU/1",
-            "set": "OFF"
+            "open": true
           }
         ],
         "why": "Takes over before the APU goes off",
@@ -9646,11 +9685,10 @@ assertion_line: 34
         "targets": [
           {
             "at": "con/lo/PARKING BRAKE/1",
-            "set": "SET"
+            "open": true
           },
           {
-            "at": "con/lo/PARK BRAKE LIGHT/1",
-            "light": "on"
+            "at": "con/lo/PARK BRAKE LIGHT/1"
           }
         ],
         "why": "Holds the airplane while parked",
@@ -9914,7 +9952,7 @@ assertion_line: 34
           },
           {
             "at": "oh/elecl/GRD PWR/1",
-            "set": "OFF"
+            "open": true
           }
         ],
         "quick": "always",
@@ -10157,7 +10195,7 @@ assertion_line: 34
           },
           {
             "at": "oh/elecl/GRD PWR/1",
-            "set": "OFF"
+            "open": true
           }
         ],
         "note": "Do this just before the battery goes off.",
@@ -10230,11 +10268,12 @@ assertion_line: 34
         "text": "AUTOPILOT (IF ENGAGED)",
         "expect": "DISENGAGE",
         "controls": [
-          "apdis"
+          "apdis",
+          "apdisc"
         ],
         "targets": [
           {
-            "at": "gl/mcp/DISENGAGE/1"
+            "at": "seat/yoke/A/P DISENGAGE/1"
           }
         ],
         "confirmed_by": [
@@ -10461,11 +10500,12 @@ assertion_line: 34
         "text": "AUTOPILOT (IF ENGAGED)",
         "expect": "DISENGAGE",
         "controls": [
-          "apdis"
+          "apdis",
+          "apdisc"
         ],
         "targets": [
           {
-            "at": "gl/mcp/DISENGAGE/1"
+            "at": "seat/yoke/A/P DISENGAGE/1"
           }
         ],
         "confirmed_by": [
@@ -10671,11 +10711,22 @@ assertion_line: 34
         "text": "IF ONLY STANDBY AIRSPEED IS RELIABLE",
         "expect": "NO AUTOPILOT, AUTOTHROTTLE OR FLIGHT DIRECTORS",
         "controls": [
-          "isfdc"
+          "isfdc",
+          "mcpset",
+          "fd"
         ],
         "targets": [
           {
             "at": "mn/ctr/STANDBY DISPLAY/1"
+          },
+          {
+            "at": "gl/mcp/A/T ARM/1"
+          },
+          {
+            "at": "gl/mcp/F/D L/1"
+          },
+          {
+            "at": "gl/mcp/F/D R/1"
           }
         ],
         "non_recall": true,
@@ -10692,7 +10743,8 @@ assertion_line: 34
         "text": "IF CAPTAIN OR FO AIRSPEED IS RELIABLE",
         "expect": "USE THAT SIDE'S F/D AND AUTOPILOT IF NEEDED. KEEP AUTOTHROTTLE OFF",
         "controls": [
-          "fd"
+          "fd",
+          "mcpset"
         ],
         "targets": [
           {
@@ -10702,6 +10754,10 @@ assertion_line: 34
           {
             "at": "gl/mcp/F/D R/1",
             "open": true
+          },
+          {
+            "at": "gl/mcp/A/T ARM/1",
+            "set": "OFF"
           }
         ],
         "non_recall": true,
@@ -10975,13 +11031,7 @@ assertion_line: 34
             "at": "seat/side/MASK STOWAGE/1"
           },
           {
-            "at": "seat/side/RESET/TEST/1"
-          },
-          {
             "at": "seat/side/EMERGENCY/TEST/1"
-          },
-          {
-            "at": "seat/side/NORMAL/100%/1"
           }
         ]
       },
@@ -12082,7 +12132,8 @@ assertion_line: 34
         "text": "IF A FIRE WARNING IS OBSERVED OR INDICATED",
         "expect": "ROTATE ILLUMINATED SWITCH TO THE STOP AND HOLD 1 SECOND",
         "controls": [
-          "firesw"
+          "firesw",
+          "apufire"
         ],
         "targets": [
           {
@@ -12090,6 +12141,10 @@ assertion_line: 34
           },
           {
             "at": "con/fi/FIRE 2/1"
+          },
+          {
+            "at": "con/fi/FIRE APU/1",
+            "open": true
           }
         ]
       }
@@ -13088,7 +13143,7 @@ assertion_line: 34
           },
           {
             "at": "mn/ctr/LANDING GEAR LEVER/1",
-            "set": "UP"
+            "open": true
           }
         ],
         "confirmed_by": [

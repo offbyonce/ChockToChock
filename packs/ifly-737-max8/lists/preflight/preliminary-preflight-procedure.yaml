@@ -1052,12 +1052,12 @@ steps:
       - efispanel
     targets:
       - at: "gl/efisl/MINS/1"
-        set: "BARO"
+        open: true
       - at: "gl/efisl/BARO/1"
       - at: "gl/efisl/MODE/1"
         set: "MAP"
       - at: "gl/efisr/MINS/1"
-        set: "BARO"
+        open: true
       - at: "gl/efisr/BARO/1"
       - at: "gl/efisr/MODE/1"
         set: "MAP"
@@ -1091,6 +1091,8 @@ steps:
       - ltest
     targets:
       - at: "mn/cl/LIGHTS/1"
+      - at: "mn/cl/A/P A/T TEST/1"
+      - at: "mn/fl/A/P A/T TEST/1"
     why: Proves the lights work
     check: Tested lights come on
     how: ltest

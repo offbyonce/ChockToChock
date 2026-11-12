@@ -99,7 +99,7 @@ steps:
       - at: "oh/apu/APU/1"
         set: "OFF"
       - at: "oh/elecl/GRD PWR/1"
-        set: "OFF"
+        open: true
     note: Do this just before the battery goes off.
     why: Removes AC power from the airplane
     panel_lights:

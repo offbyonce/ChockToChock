@@ -119,6 +119,9 @@ steps:
     expect: ROTATE ILLUMINATED SWITCH TO THE STOP AND HOLD 1 SECOND
     controls:
       - firesw
+      - apufire
     targets:
       - at: "con/fi/FIRE 1/1"
       - at: "con/fi/FIRE 2/1"
+      - at: "con/fi/FIRE APU/1"
+        open: true
