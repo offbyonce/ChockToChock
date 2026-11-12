@@ -62,14 +62,16 @@ from the pack, and the zone marked by a thicker outline, fill and bold label as 
     h: bounds.y1 - bounds.y0 + pad.top + pad.bottom,
   });
   /**
-   * Labels keep 3.0's rendered sizes (measured: about 9.5px for areas, 9.3px for the edge
-   * captions) however large the map is drawn; `width` is the map's width on screen.
+   * As 3.0 draws its maps (the area coordinates are 3.0's): area labels are 11.6 map units, so
+   * they grow with the map, and a map is at most 230px tall, or 360px for a tall one such as the
+   * center console. Edge captions keep 3.0's measured 9.3px. `width` is the map's width on screen.
    */
-  const PX = { label: 9.5, edge: 9.3 };
+  const PX = { edge: 9.3 };
+  const LABEL = 11.6;
+  let cap = $derived(bounds.y1 - bounds.y0 > bounds.x1 - bounds.x0 ? 360 : 230);
   let width = $state(0);
-  // The map is as wide as its box unless its height cap (30rem) makes it narrower.
-  let k = $derived(width > 0 ? Math.min(width, (480 * box.w) / box.h) / box.w : 0.75);
-  let LABEL = $derived(PX.label / k);
+  // The map is as wide as its box unless its height cap makes it narrower.
+  let k = $derived(width > 0 ? Math.min(width, (cap * box.w) / box.h) / box.w : 0.75);
   let cx = $derived((bounds.x0 + bounds.x1) / 2);
   let cy = $derived((bounds.y0 + bounds.y1) / 2);
 
@@ -83,6 +85,7 @@ from the pack, and the zone marked by a thicker outline, fill and bold label as 
     class="map"
     viewBox="{box.x} {box.y} {box.w} {box.h}"
     style:max-width="min({Math.round(box.w * 1.4)}px, 32rem)"
+    style:max-height="{cap}px"
     role="img"
     aria-label="Flight deck map, {region?.name ?? zone.area}: {zone.title} marked"
   >
@@ -138,7 +141,6 @@ from the pack, and the zone marked by a thicker outline, fill and bold label as 
     display: block;
     width: 100%;
     height: auto;
-    max-height: 30rem;
     margin: 0 auto;
   }
   rect {
