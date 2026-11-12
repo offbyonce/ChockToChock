@@ -143,6 +143,10 @@ const ANGLES: Record<number, number[]> = {
 export const angle = (index: number, count: number) =>
   count < 2 ? 0 : (ANGLES[count]?.[index] ?? -125 + (250 * index) / (count - 1));
 
+/** A selector position's angle: the pack's, as on the panel, or else spread over the top. */
+export const angleOf = (item: PanelItem, index: number) =>
+  item.angles?.[index] ?? angle(index, positionsOf(item).length);
+
 /** Which selector positions get a label: all of up to four; otherwise the ends and the target. */
 export const labelledPositions = (count: number, target: number | null): number[] =>
   count <= 4
@@ -154,7 +158,7 @@ type Box = { x0: number; y0: number; x1: number; y1: number };
 const overlaps = (a: Box, b: Box) => a.x0 < b.x1 && b.x0 < a.x1 && a.y0 < b.y1 && b.y0 < a.y1;
 
 /** How wide a control's shape is, either side of its center. */
-function halfWidth(item: PanelItem): number {
+export function halfWidth(item: PanelItem): number {
   switch (item.kind) {
     case "toggle_switch":
       return toggleHalfWidth(!!item.guarded);
@@ -335,14 +339,21 @@ function place(
       for (const l of chosen) placed.push(boxOf(l));
       layout.positions = chosen;
     } else if (it.kind === "selector") {
-      for (const n of labelledPositions(pos.length, on ? t : rest >= 0 ? rest : null)) {
-        const a = (angle(n, pos.length) * Math.PI) / 180;
-        const sn = Math.sin(a);
+      // Every position is labeled at its own angle, just beyond its tick: a label above or below
+      // moves out by half a line, as 3.0 places it; one at the side stays level with its tick,
+      // clear of a wide label at the top.
+      const line = posPx / k;
+      for (const n of pos.keys()) {
+        const a = (angleOf(it, n) * Math.PI) / 180;
+        const [sn, cs] = [Math.sin(a), Math.cos(a)];
+        const anchor = sn < -0.35 ? "end" : sn > 0.35 ? "start" : "middle";
+        const lift = anchor === "middle" ? (cs > 0 ? -0.55 : 0.55) : 0;
         const l: PositionLabel = {
           n,
-          x: sn * 18.5,
-          y: -Math.cos(a) * 18.5 + 3,
-          anchor: sn < -0.3 ? "end" : sn > 0.3 ? "start" : "middle",
+          x: sn * 17.5,
+          // The label's middle at its point; the baseline sits half a capital below.
+          y: -cs * 17.5 + lift * line + 0.36 * line,
+          anchor,
         };
         if (!free(boxOf(l), i)) clear = false;
         placed.push(boxOf(l));

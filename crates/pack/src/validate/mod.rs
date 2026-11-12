@@ -28,7 +28,7 @@ use links::check_links;
 use panels::check_panels_and_lights;
 use phases::check_phases;
 use references::check_other_references;
-use steps::check_list;
+use steps::{check_list, check_notes_repeat_how};
 
 use crate::Pack;
 
@@ -83,6 +83,7 @@ fn validate_with_allow_list(pack: &Pack, allow: &[&str]) -> Vec<Issue> {
     for list in &pack.checklists {
         check_list(list, &idx, &mut issues);
     }
+    check_notes_repeat_how(pack, &mut issues);
     check_phases(pack, &idx, &mut issues);
     check_panels_and_lights(pack, &idx, &mut issues);
     check_other_references(pack, &idx, &mut issues);

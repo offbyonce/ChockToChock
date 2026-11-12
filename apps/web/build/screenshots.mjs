@@ -78,6 +78,12 @@ const SHOTS = [
     base: { hash: "#cold-dark", before: [click(".it .tick", 0), go("#gpu-power"), click("#opbtn")] },
   },
   { name: "emergency", app: { hash: "#/reference" }, base: { hash: "#memory" } },
+  {
+    // The first memory item opened and its first step chosen, so the drawing shows.
+    name: "emergency-step",
+    app: { hash: "#/reference", before: [click("details summary", 0), click(".it .row", 0)] },
+    base: { hash: "#memory", before: [click("details summary", 0), click(".it .chev", 0)] },
+  },
   { name: "settings", app: { hash: "#/settings" }, base: { hash: "#settings" } },
   {
     name: "menu",

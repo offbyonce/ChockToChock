@@ -100,6 +100,46 @@ pub(super) fn check_list(list: &Checklist, idx: &Index, issues: &mut Vec<Issue>)
     }
 }
 
+/// Words too common to tell two sentences apart.
+const COMMON: &[&str] = &[
+    "a", "an", "the", "and", "or", "of", "to", "in", "on", "at", "for", "with", "is", "are", "be",
+    "it", "its", "this", "that", "as", "by", "from", "then", "each", "one", "if", "not", "no",
+    "up", "down", "so", "than", "out", "into",
+];
+
+fn words(text: &str) -> std::collections::BTreeSet<String> {
+    text.to_lowercase()
+        .split(|c: char| !c.is_alphanumeric() && c != '/')
+        .filter(|w| !w.is_empty() && !COMMON.contains(w))
+        .map(str::to_owned)
+        .collect()
+}
+
+/// A step's note must add something to its "How to do it" steps: a note whose words are mostly
+/// already there says the same thing twice, so the pilot reads it twice.
+pub(super) fn check_notes_repeat_how(pack: &crate::Pack, issues: &mut Vec<Issue>) {
+    let Some(notes) = &pack.content.notes else {
+        return;
+    };
+    for step in pack.checklists.iter().flat_map(|l| &l.steps) {
+        let (Some(note), Some(how)) = (&step.note, &step.how) else {
+            continue;
+        };
+        let Some(how) = notes.how.iter().find(|h| &h.id == how) else {
+            continue;
+        };
+        let note_words = words(note);
+        let how_words = words(&how.steps.join(" "));
+        let shared = note_words.intersection(&how_words).count();
+        if !note_words.is_empty() && shared * 10 >= note_words.len() * 7 {
+            issues.push(error(
+                step.id.as_str(),
+                "the note repeats its \"How to do it\" steps; say it once",
+            ));
+        }
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use checklist_core::{
@@ -107,6 +147,30 @@ mod tests {
     };
 
     use super::super::test_support::{assert_flags, messages, pack, step};
+
+    #[test]
+    fn a_note_must_not_repeat_its_how_to_steps() {
+        let mut s = step("ifly-737-max8.preflight.n1-bugs");
+        s.how = Some("n1".into());
+        s.note = Some(
+            "Compare the takeoff thrust bugs with the green N1 reference on the engine display."
+                .into(),
+        );
+        let mut p = pack(vec![s], vec![]);
+        p.content.notes = Some(checklist_core::NotesFile {
+            how: vec![checklist_core::HowNote {
+                id: "n1".into(),
+                steps: vec![
+                    "Compare the N1 bugs with the green reference N1 readouts on the engine display.".into(),
+                    "Check that they agree with the CDU value.".into(),
+                ],
+            }],
+            explain: vec![],
+        });
+        assert_flags(&p, "the note repeats its \"How to do it\" steps");
+        p.checklists[0].steps[0].note = Some("Set the bugs before the engines start.".into());
+        assert!(!messages(&p).contains("repeats"));
+    }
 
     #[test]
     fn lists_need_a_declared_basis() {

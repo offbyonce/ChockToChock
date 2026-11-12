@@ -210,9 +210,9 @@ describe("knobY", () => {
 });
 
 describe("selector angles", () => {
-  it("keeps the meters row at full text size: end positions sit low at the sides, as in 3.0", () => {
-    // The electrical meters section as the pack places it. Straight-out end labels pushed
-    // STBY PWR past the frame, so the whole section's text shrank.
+  it("labels every meter position at full text size, at the dial's real angles, none overlapping", () => {
+    // The electrical meters section as the pack places it, with each dial's real geometry:
+    // STBY PWR lower left, over the top, TEST at the bottom (DC) or lower right (AC).
     const item = (kind: string, label: string, x: number, y: number, positions: string) =>
       ({ kind, label, x, y, controls: [], positions, description: "" }) as unknown as PanelItem;
     const meters = {
@@ -223,14 +223,25 @@ describe("selector angles", () => {
       width: 225,
       height: 318,
       items: [
-        item("selector", "DC METERS", 60, 206, "STBY PWR, BAT BUS, BAT, AUX BAT, TR1, TR2, TR3, TEST"),
-        item("selector", "AC METERS", 168, 206, "STBY PWR, GRD PWR, GEN 1, APU GEN, GEN 2, INV, TEST"),
+        {
+          ...item("selector", "DC METERS", 60, 206, "STBY PWR, BAT BUS, BAT, AUX BAT, TR1, TR2, TR3, TEST"),
+          angles: [-135, -90, -45, 0, 45, 90, 135, 180],
+        },
+        {
+          ...item("selector", "AC METERS", 168, 206, "STBY PWR, GRD PWR, GEN1, APU GEN, GEN2, INV, TEST"),
+          angles: [-135, -90, -45, 0, 45, 90, 135],
+        },
         { ...item("toggle_switch", "BATTERY", 60, 276, "OFF, ON"), guarded: true },
         item("toggle_switch", "CAB/UTIL", 140, 276, "OFF, ON"),
         item("toggle_switch", "IFE/PASS SEAT", 196, 276, "OFF, ON"),
       ],
     } as unknown as PanelSection;
     const target = (i: number) => (i === 2 ? { on: true, t: 1, rest: 0 } : { on: false, t: null, rest: 0 });
-    expect(layoutSection(meters, [0, 1, 2, 3, 4], target, 1.4, 150).scale).toBe(1);
+    for (const k of [1.4, 1.8]) {
+      const layout = layoutSection(meters, [0, 1, 2, 3, 4], target, k, 150);
+      expect(layout.scale, `at ${k}`).toBe(1);
+      expect(layout.items.get(0)?.positions).toHaveLength(8);
+      expect(layout.items.get(1)?.positions).toHaveLength(7);
+    }
   });
 });

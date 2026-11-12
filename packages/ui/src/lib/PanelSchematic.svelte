@@ -76,8 +76,9 @@ the card; text keeps 3.0's sizes.
       const c = (Math.min(...ys) + Math.max(...ys)) / 2;
       const reach = Math.max(REACH, (Math.max(...ys) - Math.min(...ys)) / 2 + 30);
       const kept = s.items.map((it) => it.y).filter((y) => Math.abs(y - c) <= reach);
-      // Room above and below the kept controls for their shapes; sections draw the items inside.
-      rows = { y0: Math.max(0, Math.min(...kept) - 20), y1: Math.min(s.height, Math.max(...kept) + 20) };
+      // Room above the kept controls for their shapes and a line of labels over them (a dial's
+      // top position); below, the section grows to hold its labels.
+      rows = { y0: Math.max(0, Math.min(...kept) - 34), y1: Math.min(s.height, Math.max(...kept) + 20) };
     }
     let across = {};
     if (s.width > WIDE) {

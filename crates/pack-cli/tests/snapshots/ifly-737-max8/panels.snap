@@ -625,7 +625,17 @@ assertion_line: 38
               "eleclts"
             ],
             "positions": "STBY PWR, BAT BUS, BAT, AUX BAT, TR1, TR2, TR3, TEST",
-            "rest": "STBY PWR",
+            "rest": "AUX BAT",
+            "angles": [
+              -135.0,
+              -90.0,
+              -45.0,
+              0.0,
+              45.0,
+              90.0,
+              135.0,
+              180.0
+            ],
             "description": "Chooses what the DC meters show."
           },
           {
@@ -636,8 +646,17 @@ assertion_line: 38
             "controls": [
               "eleclts"
             ],
-            "positions": "STBY PWR, GRD PWR, GEN 1, APU GEN, GEN 2, INV, TEST",
-            "rest": "STBY PWR",
+            "positions": "STBY PWR, GRD PWR, GEN1, APU GEN, GEN2, INV, TEST",
+            "rest": "APU GEN",
+            "angles": [
+              -135.0,
+              -90.0,
+              -45.0,
+              0.0,
+              45.0,
+              90.0,
+              135.0
+            ],
             "description": "Chooses what the AC meters show."
           },
           {
@@ -4941,7 +4960,7 @@ assertion_line: 38
           {
             "kind": "light",
             "label": "PARK BRAKE LIGHT",
-            "color": "amber",
+            "color": "red",
             "x": 170.0,
             "y": 52.0,
             "controls": [

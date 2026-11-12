@@ -396,9 +396,10 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
   .msg {
     padding: 1.5rem;
   }
+  /* Muted, not red: it is a standing notice, not an error. */
   .legal {
     margin: 1.75rem 0 0;
-    color: var(--stop);
+    color: var(--muted);
     font-size: 0.7812rem;
   }
   /* Narrow screens show the context inside the step instead. */

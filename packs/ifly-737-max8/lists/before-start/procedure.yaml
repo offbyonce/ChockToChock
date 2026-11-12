@@ -19,7 +19,6 @@ steps:
     expect: "MATCH THE GREEN N1 REFERENCE"
     controls:
       - n1
-    note: "Compare the takeoff thrust bugs with the green N1 reference on the engine display."
     why: Takeoff thrust target
     check: "N1 bugs match the N1 reference"
     how: n1

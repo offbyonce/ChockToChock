@@ -73,9 +73,10 @@ every change to `.github/workflows/`. For those, prepare what the step needs and
    the packs, under a cache named from a hash of the built files; it never takes over mid-session
    and offers a reload instead. `just update-test` runs the version-to-version test in headless
    Firefox (first visit, offline, new version waiting with the reload offer, reload); it passes.
-   Still to do by hand on the live site, once per release while the beta lasts: install the app,
-   deploy a new version, and check the reload offer and the new version on a desktop browser and
-   a tablet.
+   Checked by hand on the live site after batch 0's deploy: the reload offer appeared and Reload
+   brought in the new version. The step is done. While the beta lasts, repeat the check once per
+   release: install the app, deploy a new version, and check the reload offer and the new version
+   on a desktop browser and a tablet.
 7. **Interface parity.** Phases, checklists and flows, panel states, timers, the CDU walkthrough,
    SimBrief import and the guided tour, matching 3.0. Report one feature at a time. Include the
    carried-over checks from the Phase 1 brief: the LEGS page renders correctly with no departure

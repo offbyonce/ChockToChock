@@ -231,6 +231,9 @@ describe("App", () => {
     expect((screen.getByRole("button", { name: "Back" }) as HTMLButtonElement).disabled).toBe(false);
     // The demo steps have no control on the map, so Flow view offers no "Where is this?".
     expect(screen.queryByText("Where is this?")).toBeNull();
+    // Nor does the step set a control, so the hint does not ask to set it.
+    expect(screen.getByText("Check it, then confirm.")).toBeTruthy();
+    expect(screen.queryByText("Set it, check it, then confirm.")).toBeNull();
   });
 
   it("shows a tagged error from Rust", async () => {

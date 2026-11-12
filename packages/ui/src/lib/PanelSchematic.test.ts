@@ -365,4 +365,47 @@ describe("PanelSchematic", () => {
     // jsdom lays nothing out, so the drawing uses its default 1.6 pixels per unit.
     expect(Number.parseFloat(label.style.fontSize) * 1.6).toBeCloseTo(12.6, 1);
   });
+
+  it("keeps full-size text when a tall section is cut above a dial with labels on top", () => {
+    // The electrical meters section cut to the battery step: the dials' top labels (AUX BAT,
+    // APU GEN) ran into the section title, so the whole section's text shrank to its minimum.
+    const it = (kind: string, label: string, x: number, y: number, positions: string, extra = {}) =>
+      ({ kind, label, x, y, controls: ["c"], positions, description: "", ...extra }) as unknown;
+    const panel = {
+      id: "oh",
+      title: "Overhead",
+      width: 300,
+      height: 400,
+      sections: [
+        {
+          id: "elecu",
+          title: "Electrical meters",
+          x: 0,
+          y: 0,
+          width: 225,
+          height: 318,
+          items: [
+            it("display_unit", "METER DISPLAY", 112, 74, "", { width: 150, height: 60 }),
+            it("selector", "DC METERS", 60, 206, "STBY PWR, BAT BUS, BAT, AUX BAT, TR1, TR2, TR3, TEST", {
+              angles: [-135, -90, -45, 0, 45, 90, 135, 180],
+            }),
+            it("selector", "AC METERS", 168, 206, "STBY PWR, GRD PWR, GEN1, APU GEN, GEN2, INV, TEST", {
+              angles: [-135, -90, -45, 0, 45, 90, 135],
+            }),
+            it("toggle_switch", "BATTERY", 60, 276, "OFF, ON", { guarded: true }),
+            it("toggle_switch", "CAB/UTIL", 140, 276, "OFF, ON"),
+            it("toggle_switch", "IFE/PASS SEAT", 196, 276, "OFF, ON"),
+          ],
+        },
+      ],
+    } as unknown as Panel;
+    render(PanelSchematic, {
+      panel,
+      focus: ["elecu"],
+      targets: [{ section: "elecu", item: 3, position: 1, lit: false }],
+    });
+    const aux = screen.getByText("AUX BAT") as unknown as SVGTextElement;
+    // jsdom lays nothing out, so the drawing uses its default 1.6 pixels per unit.
+    expect(Number.parseFloat(aux.style.fontSize) * 1.6).toBeCloseTo(10.8, 1);
+  });
 });

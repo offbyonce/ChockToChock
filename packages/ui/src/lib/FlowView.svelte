@@ -42,6 +42,8 @@ value on the right. The pilot confirms each step; the app never knows a switch p
   let entry = $derived(at >= 0 ? entries[at] : undefined);
   let step = $derived<Step | undefined>(entry ? index.step(entry.row.id) : undefined);
   let place = $derived(step ? index.place(step) : null);
+  /** Whether the step sets a control (its value names a position), or only checks something. */
+  let sets = $derived(entry?.row.targets.some((t) => t.position != null) ?? false);
   let next = $derived.by(() => {
     const e = entries.slice(at + 1).find((x) => x.row.state !== "done");
     return e ? index.step(e.row.id) : undefined;
@@ -84,7 +86,8 @@ value on the right. The pilot confirms each step; the app never knows a switch p
       <p class="state">
         {#if entry.row.state === "done"}<Icon name="check" /> Done. Confirm again to move on.
         {:else if entry.row.state === "skipped"}<Icon name="skip" /> Skipped, still open
-        {:else}Set it, check it, then confirm.{/if}
+        {:else if sets}Set it, check it, then confirm.
+        {:else}Check it, then confirm.{/if}
         {#if !entry.row.counts}<span class="ns">Not modeled in the simulator</span>{/if}
       </p>
     </section>

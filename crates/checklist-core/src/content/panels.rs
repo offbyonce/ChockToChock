@@ -59,6 +59,11 @@ data_types! {
         /// step asks for that position.
         #[serde(default, skip_serializing_if = "Option::is_none")]
         pub lit_at: Option<String>,
+        /// Only on a selector: each position's angle on the dial, in degrees clockwise from
+        /// straight up, as on the panel (decision 0017). Without it, the positions spread over
+        /// the top of the dial.
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        pub angles: Option<Vec<f64>>,
         pub description: String,
         #[serde(default, skip_serializing_if = "Option::is_none")]
         pub width: Option<f64>,

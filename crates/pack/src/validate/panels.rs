@@ -115,6 +115,7 @@ fn check_panel_item(at: &str, item: &PanelItem, issues: &mut Vec<Issue>) {
             ));
         }
     }
+    check_selector(at, item, issues);
     if item.guarded
         && !matches!(
             item.kind,
@@ -124,6 +125,56 @@ fn check_panel_item(at: &str, item: &PanelItem, issues: &mut Vec<Issue>) {
         issues.push(error(
             at,
             format!("`{label}`: only a toggle switch or push button can be `guarded`"),
+        ));
+    }
+}
+
+/// A selector names every position it has (a drawing labels each one), and its `angles`, when
+/// given, place each position on the dial, sweeping clockwise (decision 0017).
+fn check_selector(at: &str, item: &PanelItem, issues: &mut Vec<Issue>) {
+    let label = &item.label;
+    let is_selector = item.kind == PanelItemKind::Selector;
+    let positions: Vec<&str> = item
+        .positions
+        .as_deref()
+        .map(|p| p.split(',').map(str::trim).collect())
+        .unwrap_or_default();
+    if is_selector && positions.len() > 1 && positions.iter().any(|p| p.is_empty()) {
+        issues.push(error(
+            at,
+            format!("selector `{label}` has a position without a name"),
+        ));
+    }
+    let Some(angles) = &item.angles else {
+        return;
+    };
+    if !is_selector {
+        issues.push(error(
+            at,
+            format!("`{label}`: only a selector has `angles`"),
+        ));
+        return;
+    }
+    if angles.len() != positions.len() {
+        issues.push(error(
+            at,
+            format!(
+                "`{label}`: {} angles for {} positions",
+                angles.len(),
+                positions.len()
+            ),
+        ));
+    }
+    if angles.iter().any(|a| !(-180.0..=180.0).contains(a)) {
+        issues.push(error(
+            at,
+            format!("`{label}`: angles run from -180 to 180 degrees"),
+        ));
+    }
+    if angles.windows(2).any(|w| w[1] <= w[0]) {
+        issues.push(error(
+            at,
+            format!("`{label}`: angles must sweep clockwise, each larger than the last"),
         ));
     }
 }
@@ -282,6 +333,7 @@ mod tests {
                     positions: None,
                     rest: None,
                     lit_at: None,
+                    angles: None,
                     description: "Low".into(),
                     width: None,
                     height: None,
@@ -315,6 +367,31 @@ mod tests {
             }],
         });
         p
+    }
+
+    #[test]
+    fn a_selector_names_every_position_and_places_each_on_its_dial() {
+        let mut p = rest_pack("OFF");
+        let item = &mut p.content.panels[0].sections[0].items[0];
+        item.kind = PanelItemKind::Selector;
+        item.positions = Some("OFF, LOW, HIGH".into());
+        item.angles = Some(vec![-135.0, 0.0, 135.0]);
+        assert!(!messages(&p).contains("angles"));
+        assert!(!messages(&p).contains("without a name"));
+        p.content.panels[0].sections[0].items[0].positions = Some("OFF, , HIGH".into());
+        assert_flags(&p, "selector `A/B LOW` has a position without a name");
+        let item = &mut p.content.panels[0].sections[0].items[0];
+        item.positions = Some("OFF, LOW, HIGH".into());
+        item.angles = Some(vec![-135.0, 0.0]);
+        assert_flags(&p, "2 angles for 3 positions");
+        p.content.panels[0].sections[0].items[0].angles = Some(vec![-135.0, 0.0, 200.0]);
+        assert_flags(&p, "angles run from -180 to 180 degrees");
+        p.content.panels[0].sections[0].items[0].angles = Some(vec![0.0, -135.0, 135.0]);
+        assert_flags(&p, "angles must sweep clockwise");
+        let item = &mut p.content.panels[0].sections[0].items[0];
+        item.kind = PanelItemKind::ToggleSwitch;
+        item.angles = Some(vec![-135.0, 0.0, 135.0]);
+        assert_flags(&p, "only a selector has `angles`");
     }
 
     #[test]

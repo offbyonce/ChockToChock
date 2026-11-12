@@ -234,7 +234,7 @@ sections:
         description: Red handle.
       - kind: light
         label: PARK BRAKE LIGHT
-        color: amber
+        color: red
         x: 170
         "y": 52
         controls:

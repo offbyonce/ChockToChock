@@ -464,7 +464,8 @@ sections:
         controls:
           - eleclts
         positions: "STBY PWR, BAT BUS, BAT, AUX BAT, TR1, TR2, TR3, TEST"
-        rest: "STBY PWR"
+        angles: [-135, -90, -45, 0, 45, 90, 135, 180]
+        rest: "AUX BAT"
         description: Chooses what the DC meters show.
       - kind: selector
         label: AC METERS
@@ -472,8 +473,9 @@ sections:
         "y": 206
         controls:
           - eleclts
-        positions: "STBY PWR, GRD PWR, GEN 1, APU GEN, GEN 2, INV, TEST"
-        rest: "STBY PWR"
+        positions: "STBY PWR, GRD PWR, GEN1, APU GEN, GEN2, INV, TEST"
+        angles: [-135, -90, -45, 0, 45, 90, 135]
+        rest: "APU GEN"
         description: Chooses what the AC meters show.
       - kind: toggle_switch
         label: BATTERY
