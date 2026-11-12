@@ -15,26 +15,10 @@ steps:
     controls:
       - efispanel
     targets:
-      - at: "gl/efisl/MINS/1"
-      - at: "gl/efisl/BARO/1"
-      - at: "gl/efisl/MODE/1"
-      - at: "gl/efisl/RANGE/1"
       - at: "gl/efisl/WXR/1"
-      - at: "gl/efisl/TERR/1"
-      - at: "gl/efisl/POS/1"
-      - at: "gl/efisl/STA/1"
-      - at: "gl/efisl/WPT/1"
-      - at: "gl/efisl/ARPT/1"
-      - at: "gl/efisr/MINS/1"
-      - at: "gl/efisr/BARO/1"
-      - at: "gl/efisr/MODE/1"
-      - at: "gl/efisr/RANGE/1"
       - at: "gl/efisr/WXR/1"
+      - at: "gl/efisl/TERR/1"
       - at: "gl/efisr/TERR/1"
-      - at: "gl/efisr/POS/1"
-      - at: "gl/efisr/STA/1"
-      - at: "gl/efisr/WPT/1"
-      - at: "gl/efisr/ARPT/1"
     why: A transmitting radar is a hazard to ground crew and during fueling
     panel_lights:
       efispanel:
@@ -88,14 +72,6 @@ steps:
     controls:
       - wheat
     targets:
-      - at: "oh/heat/ON/1"
-        light: on
-      - at: "oh/heat/ON/2"
-        light: on
-      - at: "oh/heat/ON/3"
-        light: on
-      - at: "oh/heat/ON/4"
-        light: on
       - at: "oh/heat/L SIDE/1"
         set: "ON"
       - at: "oh/heat/L FWD/1"

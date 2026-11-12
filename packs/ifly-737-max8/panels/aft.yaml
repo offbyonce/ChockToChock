@@ -234,12 +234,16 @@ sections:
         color: amber
         x: 87
         "y": 20
+        controls:
+          - eec
         description: "In flight, a reverse thrust lever is not fully down."
       - kind: light
         label: REVERSER AIR/GRD
         color: amber
         x: 143
         "y": 20
+        controls:
+          - eec
         description: The air/ground logic used by the thrust reversers has failed.
       - kind: light
         label: REVERSER LIMITED

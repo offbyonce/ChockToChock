@@ -223,7 +223,6 @@ steps:
     controls:
       - xpndr
     targets:
-      - at: "con/atc/XPNDR/1"
       - at: "con/atc/MODE/1"
         set: "XPNDR"
     quick: always

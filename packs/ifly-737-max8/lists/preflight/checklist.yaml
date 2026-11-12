@@ -46,14 +46,6 @@ steps:
     controls:
       - wheat
     targets:
-      - at: "oh/heat/ON/1"
-        light: on
-      - at: "oh/heat/ON/2"
-        light: on
-      - at: "oh/heat/ON/3"
-        light: on
-      - at: "oh/heat/ON/4"
-        light: on
       - at: "oh/heat/L SIDE/1"
         set: "ON"
       - at: "oh/heat/L FWD/1"

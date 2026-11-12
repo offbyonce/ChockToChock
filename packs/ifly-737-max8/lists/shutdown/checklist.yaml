@@ -33,12 +33,15 @@ steps:
         date: 2026-11-09
   - id: ifly-737-max8.shutdown.probe-heat
     text: PROBE HEAT
-    expect: "OFF"
+    expect: "AUTO"
     controls:
       - pheat
     targets:
       - at: "oh/heat/PROBE A/1"
+        set: "AUTO"
       - at: "oh/heat/PROBE B/1"
+        set: "AUTO"
+    note: "The iFly tutorial's shutdown checklist says OFF, but the MAX probe heat switches have only AUTO and ON. AUTO turns the heat off once the engines are shut down."
     why: "Not needed once the engines are stopped."
     confirmed_by:
       - kind: vendor-docs
@@ -115,26 +118,8 @@ steps:
     controls:
       - efispanel
     targets:
-      - at: "gl/efisl/MINS/1"
-      - at: "gl/efisl/BARO/1"
-      - at: "gl/efisl/MODE/1"
-      - at: "gl/efisl/RANGE/1"
       - at: "gl/efisl/WXR/1"
-      - at: "gl/efisl/TERR/1"
-      - at: "gl/efisl/POS/1"
-      - at: "gl/efisl/STA/1"
-      - at: "gl/efisl/WPT/1"
-      - at: "gl/efisl/ARPT/1"
-      - at: "gl/efisr/MINS/1"
-      - at: "gl/efisr/BARO/1"
-      - at: "gl/efisr/MODE/1"
-      - at: "gl/efisr/RANGE/1"
       - at: "gl/efisr/WXR/1"
-      - at: "gl/efisr/TERR/1"
-      - at: "gl/efisr/POS/1"
-      - at: "gl/efisr/STA/1"
-      - at: "gl/efisr/WPT/1"
-      - at: "gl/efisr/ARPT/1"
     why: A transmitting radar is a hazard to ground crew and during fueling
     panel_lights:
       efispanel:

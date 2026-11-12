@@ -18,8 +18,6 @@ steps:
     targets:
       - at: "gl/mcp/HDG SEL/1"
       - at: "gl/mcp/LNAV/1"
-      - at: "gl/mcp/VOR LOC/1"
-      - at: "gl/mcp/APP/1"
     quick: always
     note: Select the lateral mode above 400 ft.
     why: LNAV follows the FMC route. HDG SEL flies a heading you set

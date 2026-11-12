@@ -57,12 +57,14 @@ steps:
     expect: "CHECK ALTIMETER SETTINGS. IF THE DISAGREE REMAINS, DO NOT USE THE FLIGHT PATH VECTOR, AND SELECT THE TRANSPONDER TO THE RELIABLE SIDE, OR ALTITUDE REPORTING OFF"
     controls:
       - xpndr
+      - baro
     targets:
       - at: "con/atc/ALT SOURCE 1/1"
       - at: "con/atc/XPNDR/1"
-      - at: "con/atc/CODE/1"
       - at: "con/atc/MODE/1"
       - at: "con/atc/ALT SOURCE 2/1"
+      - at: "gl/efisl/BARO/1"
+      - at: "gl/efisr/BARO/1"
     confirmed_by:
       - kind: vendor-docs
         date: 2026-11-10

@@ -15,9 +15,13 @@ steps:
     controls:
       - apufire
       - firetest
+      - ovhtdet
     targets:
-      - at: "con/fi/FIRE TEST/1"
       - at: "con/fi/FIRE APU/1"
+      - at: "con/fi/OVHT DET 1/1"
+        set: "NORMAL"
+      - at: "con/fi/OVHT DET 2/1"
+        set: "NORMAL"
     quick: always
     why: Confirms the fire protection panel is in its normal state before it is tested.
     confirmed_by:
@@ -83,18 +87,8 @@ steps:
     controls:
       - fuelpumps
     targets:
-      - at: "oh/fuel/CTR L/1"
-        set: "ON"
-      - at: "oh/fuel/CTR R/1"
-        set: "ON"
-      - at: "oh/fuel/AFT 1/1"
-        set: "ON"
       - at: "oh/fuel/FWD 1/1"
-        set: "ON"
-      - at: "oh/fuel/FWD 2/1"
-        set: "ON"
-      - at: "oh/fuel/AFT 2/1"
-        set: "ON"
+        open: true
     show_if:
       any_of:
         - option: power
@@ -150,18 +144,8 @@ steps:
     controls:
       - fuelpumps
     targets:
-      - at: "oh/fuel/CTR L/1"
-        set: "ON"
-      - at: "oh/fuel/CTR R/1"
-        set: "ON"
-      - at: "oh/fuel/AFT 1/1"
-        set: "ON"
       - at: "oh/fuel/FWD 1/1"
-        set: "ON"
-      - at: "oh/fuel/FWD 2/1"
-        set: "ON"
-      - at: "oh/fuel/AFT 2/1"
-        set: "ON"
+        open: true
     show_if:
       all_of:
         - option: power

@@ -86,14 +86,16 @@ steps:
     expect: "OFF"
     controls:
       - apub
+      - apusw
+      - grdpwr
     targets:
-      - at: "oh/elecl/GEN 1/1"
-        set: "OFF"
       - at: "oh/elecl/APU GEN/1"
-        set: "OFF"
+        open: true
       - at: "oh/elecl/APU GEN/2"
+        open: true
+      - at: "oh/apu/APU/1"
         set: "OFF"
-      - at: "oh/elecl/GEN 2/1"
+      - at: "oh/elecl/GRD PWR/1"
         set: "OFF"
     quick: always
     note: Do this just before the battery goes off.

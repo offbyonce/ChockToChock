@@ -244,6 +244,13 @@ describe("App", () => {
     expect(where, "the expanded step's narrow lines").toContain("What it does · Powers the standby bus.");
   });
 
+  it("says when a step's control is not drawn, rather than show nothing", async () => {
+    // The control column has a place on the map but no drawing.
+    render(App, { context: hostContext(host()) });
+    await screen.findByRole("heading", { level: 1, name: "Power up" });
+    expect(await screen.findByText("Standby power switch isn't drawn on the map.")).toBeTruthy();
+  });
+
   it("shows a list's When and Why above its steps, as 3.0 does", async () => {
     // Emergency lists carried a Why in the pack that the card never showed.
     const { container } = render(App, { context: hostContext(host()) });

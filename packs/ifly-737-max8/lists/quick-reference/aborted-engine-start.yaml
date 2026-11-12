@@ -19,9 +19,9 @@ steps:
       - starts
     targets:
       - at: "oh/start/ENGINE START 1/1"
-        set: "OFF"
+        open: true
       - at: "oh/start/ENGINE START 2/1"
-        set: "OFF"
+        open: true
     panel_lights:
       starts:
         - ENGINE START 1
@@ -34,6 +34,6 @@ steps:
       - slever
     targets:
       - at: "con/lo/START LEVER 1/1"
-        set: "CUTOFF"
+        open: true
       - at: "con/lo/START LEVER 2/1"
-        set: "CUTOFF"
+        open: true

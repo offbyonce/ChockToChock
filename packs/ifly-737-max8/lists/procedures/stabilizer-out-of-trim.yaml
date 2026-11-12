@@ -17,7 +17,7 @@ steps:
       - stabout
     targets:
       - at: "mn/cl/STAB OUT OF TRIM/1"
-        light: out
+        light: on
     confirmed_by:
       - kind: vendor-docs
         date: 2026-11-10
@@ -38,9 +38,12 @@ steps:
     expect: "HOLD COLUMN, DISENGAGE A/P AND A/T, USE MAIN ELECTRIC TRIM"
     controls:
       - column
+      - stabtrim
+      - apdisc
     targets:
       - at: "seat/yoke/STAB TRIM/1"
       - at: "seat/yoke/A/P DISENGAGE/1"
+      - at: "con/st/A/T DISENGAGE/1"
     confirmed_by:
       - kind: vendor-docs
         date: 2026-11-10

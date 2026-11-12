@@ -18,9 +18,6 @@ steps:
     expect: HOLD FIRMLY
     controls:
       - column
-    targets:
-      - at: "seat/yoke/STAB TRIM/1"
-      - at: "seat/yoke/A/P DISENGAGE/1"
     confirmed_by:
       - kind: vendor-docs
         date: 2026-11-10
@@ -52,9 +49,6 @@ steps:
     expect: CONTROL PITCH ATTITUDE AND AIRSPEED
     controls:
       - column
-    targets:
-      - at: "seat/yoke/STAB TRIM/1"
-      - at: "seat/yoke/A/P DISENGAGE/1"
     confirmed_by:
       - kind: vendor-docs
         date: 2026-11-10
@@ -64,9 +58,9 @@ steps:
     expect: USE TO REDUCE COLUMN FORCES
     controls:
       - column
+      - stabtrim
     targets:
       - at: "seat/yoke/STAB TRIM/1"
-      - at: "seat/yoke/A/P DISENGAGE/1"
     confirmed_by:
       - kind: vendor-docs
         date: 2026-11-10

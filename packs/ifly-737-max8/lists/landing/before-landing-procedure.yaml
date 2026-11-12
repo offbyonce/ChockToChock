@@ -18,7 +18,6 @@ steps:
       - speedt
     targets:
       - at: "con/st/FLAP LEVER/1"
-        set: "1"
     quick: always
     why: "Configure early so you are stable by 1,000 ft in cloud or 500 ft in visual conditions"
     how: flapdn
@@ -265,7 +264,7 @@ steps:
     controls:
       - apdisc
     targets:
-      - at: "con/st/A/T DISENGAGE/1"
+      - at: "seat/yoke/A/P DISENGAGE/1"
     quick: always
     why: Hands on for a manual landing
     check: "Autopilot disengage warning"

@@ -33,11 +33,16 @@ steps:
     expect: "SET V2, HEADING, ALTITUDE, ARM A/T, ARM LNAV AND VNAV FOR AN RNAV DEPARTURE"
     controls:
       - mcpset
+      - rollmode
+      - pitchmode
     targets:
       - at: "gl/mcp/A/T ARM/1"
         set: "ARM"
       - at: "gl/mcp/HEADING/1"
       - at: "gl/mcp/ALTITUDE/1"
+      - at: "gl/mcp/IAS/MACH/1"
+      - at: "gl/mcp/LNAV/1"
+      - at: "gl/mcp/VNAV/1"
     quick: always
     why: "Departure speed, heading and altitude"
     check: "A/T ARM switch at ARM, green light on"
@@ -106,9 +111,9 @@ steps:
       - fuelpumps
     targets:
       - at: "oh/fuel/CTR L/1"
-        set: "ON"
+        open: true
       - at: "oh/fuel/CTR R/1"
-        set: "ON"
+        open: true
       - at: "oh/fuel/AFT 1/1"
         set: "ON"
       - at: "oh/fuel/FWD 1/1"

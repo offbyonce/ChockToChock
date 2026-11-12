@@ -38,8 +38,7 @@ steps:
     targets:
       - at: "con/atc/XPNDR/1"
         set: "AUTO"
-      - at: "con/atc/MODE/1"
-        set: "XPNDR"
+      - at: "con/atc/CODE/1"
     hint:
       - prefix: "SQUAWK "
         field: squawk

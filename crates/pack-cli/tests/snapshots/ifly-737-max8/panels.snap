@@ -2959,6 +2959,9 @@ assertion_line: 38
             "color": "amber",
             "x": 87.0,
             "y": 20.0,
+            "controls": [
+              "eec"
+            ],
             "description": "In flight, a reverse thrust lever is not fully down."
           },
           {
@@ -2967,6 +2970,9 @@ assertion_line: 38
             "color": "amber",
             "x": 143.0,
             "y": 20.0,
+            "controls": [
+              "eec"
+            ],
             "description": "The air/ground logic used by the thrust reversers has failed."
           },
           {
@@ -5044,6 +5050,9 @@ assertion_line: 38
             "label": "OVHT DET 1",
             "x": 44.0,
             "y": 46.0,
+            "controls": [
+              "ovhtdet"
+            ],
             "positions": "A, NORMAL, B",
             "rest": "NORMAL",
             "description": "Selects loop A, B, or both (NORMAL) for engine 1."
@@ -5125,6 +5134,9 @@ assertion_line: 38
             "label": "OVHT DET 2",
             "x": 470.0,
             "y": 46.0,
+            "controls": [
+              "ovhtdet"
+            ],
             "positions": "A, NORMAL, B",
             "rest": "NORMAL",
             "description": "Selects loop A, B, or both (NORMAL) for engine 2."
@@ -5770,7 +5782,7 @@ assertion_line: 38
             "x": 70.0,
             "y": 72.0,
             "controls": [
-              "column"
+              "stabtrim"
             ],
             "positions": "NOSE DOWN, NOSE UP",
             "description": "Main electric stabilizer trim: two thumb switches on the outboard grip of the wheel, moved together. Spring-loaded to the center."
@@ -5781,7 +5793,7 @@ assertion_line: 38
             "x": 190.0,
             "y": 72.0,
             "controls": [
-              "column"
+              "apdisc"
             ],
             "description": "Disengages the autopilot. On the outboard grip of the wheel."
           }

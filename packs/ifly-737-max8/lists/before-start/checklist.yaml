@@ -26,9 +26,9 @@ steps:
       - fuelpumps
     targets:
       - at: "oh/fuel/CTR L/1"
-        set: "ON"
+        open: true
       - at: "oh/fuel/CTR R/1"
-        set: "ON"
+        open: true
       - at: "oh/fuel/AFT 1/1"
         set: "ON"
       - at: "oh/fuel/FWD 1/1"
@@ -68,7 +68,6 @@ steps:
     controls:
       - mcpset
     targets:
-      - at: "gl/mcp/A/T ARM/1"
       - at: "gl/mcp/IAS/MACH/1"
       - at: "gl/mcp/HEADING/1"
       - at: "gl/mcp/ALTITUDE/1"

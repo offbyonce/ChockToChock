@@ -27,11 +27,10 @@ steps:
     expect: ESTABLISH
     controls:
       - mask
+      - audio
     targets:
-      - at: "seat/side/MASK STOWAGE/1"
-      - at: "seat/side/RESET/TEST/1"
-      - at: "seat/side/EMERGENCY/TEST/1"
-      - at: "seat/side/NORMAL/100%/1"
+      - at: "con/a1/AUDIO PANEL 1/1"
+      - at: "con/a2/AUDIO PANEL 2/1"
   - id: ifly-737-max8.memory.pressurization-mode-selector
     number: 3
     text: PRESSURIZATION MODE SELECTOR
@@ -88,8 +87,7 @@ steps:
       - at: "oh/cab/CABIN ALT/1"
       - at: "oh/cab/CABIN CLIMB/1"
       - at: "oh/press/MANUAL/1"
-        light: out
-      - at: "oh/press/FLT ALT/1"
-      - at: "oh/press/FLT ALT KNOB/1"
+        light: on
       - at: "oh/press/MODE/1"
+        set: "MAN"
     non_recall: true

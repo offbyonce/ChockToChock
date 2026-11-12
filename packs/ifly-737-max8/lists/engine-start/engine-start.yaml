@@ -83,8 +83,6 @@ steps:
     targets:
       - at: "oh/start/ENGINE START 1/1"
         set: "GRD"
-      - at: "oh/start/ENGINE START 2/1"
-        set: "GRD"
     quick: always
     why: "The engine must spin before fuel is added. Order varies by airline. Many start engine 2 first because it drives hydraulic system B, which supplies the normal brakes."
     check: "N2 rising, START VALVE OPEN alert"
@@ -124,8 +122,6 @@ steps:
     targets:
       - at: "con/lo/START LEVER 1/1"
         set: "IDLE"
-      - at: "con/lo/START LEVER 2/1"
-        set: "IDLE"
     quick: always
     why: Fuel only once turning fast enough to light off
     check: "Fuel flow, then EGT rising"
@@ -156,8 +152,6 @@ steps:
       - starts
     targets:
       - at: "oh/start/ENGINE START 1/1"
-        set: "OFF"
-      - at: "oh/start/ENGINE START 2/1"
         set: "OFF"
     quick: always
     why: Confirms the starter has cut out
@@ -194,8 +188,6 @@ steps:
     controls:
       - starts
     targets:
-      - at: "oh/start/ENGINE START 1/1"
-        set: "GRD"
       - at: "oh/start/ENGINE START 2/1"
         set: "GRD"
     quick: always
@@ -235,8 +227,6 @@ steps:
     controls:
       - slever
     targets:
-      - at: "con/lo/START LEVER 1/1"
-        set: "IDLE"
       - at: "con/lo/START LEVER 2/1"
         set: "IDLE"
     quick: always
@@ -268,8 +258,6 @@ steps:
     controls:
       - starts
     targets:
-      - at: "oh/start/ENGINE START 1/1"
-        set: "OFF"
       - at: "oh/start/ENGINE START 2/1"
         set: "OFF"
     quick: always

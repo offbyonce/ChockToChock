@@ -8,8 +8,8 @@
 use std::collections::BTreeSet;
 
 use checklist_core::{
-    LightState, PanelItemKind, Step, locate, named_position, names, names_position, says_light_on,
-    switch_value,
+    LightState, PanelItemKind, Step, clauses, locate, named_position, names, names_position,
+    says_light_on, switch_value,
 };
 
 use super::{Issue, error};
@@ -75,6 +75,12 @@ fn check_step(panels: &[checklist_core::Panel], step: &Step, issues: &mut Vec<Is
             ));
         }
         let is_light = item.kind == PanelItemKind::Light;
+        if t.open && t.set.is_some() {
+            issues.push(error(
+                at,
+                format!("`{}` leaves its position `open` and also `set`s one", t.at),
+            ));
+        }
         if is_light && t.set.is_some() {
             issues.push(error(
                 at,
@@ -122,6 +128,7 @@ fn check_wording(
             ));
         }
     } else if !is_light
+        && !t.open
         && let Some(n) = item
             .positions
             .as_deref()
@@ -136,7 +143,7 @@ fn check_wording(
         ));
     }
     if let Some(light) = t.light {
-        let says_out = step.expect.split([',', ';']).any(|c| {
+        let says_out = clauses(&step.expect).into_iter().any(|c| {
             names(c, &item.label) && (names(c, "OUT") || names(c, "OFF")) && !names(c, "ON")
         });
         let (on, sure) = says_light_on(&step.expect, &item.label);
@@ -192,6 +199,7 @@ mod tests {
             at: at.into(),
             set: set.map(Into::into),
             light,
+            open: false,
         }
     }
 
@@ -222,6 +230,18 @@ mod tests {
                 ],
             ),
             "is expected on, but the step's wording says it is out",
+        );
+    }
+
+    #[test]
+    fn a_position_left_open_is_accepted_but_not_with_a_set() {
+        let mut open = target("oh/elec/BATTERY/1", None, None);
+        open.open = true;
+        assert!(!messages(&pack_with("ON IF NEEDED", vec![open.clone()])).contains("target"));
+        open.set = Some("ON".into());
+        assert_flags(
+            &pack_with("ON IF NEEDED", vec![open]),
+            "leaves its position `open` and also `set`s one",
         );
     }
 

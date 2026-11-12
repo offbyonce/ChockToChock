@@ -17,6 +17,9 @@ drops the cabin masks) because the light it names, PASS OXY ON, contains the wor
   (the n-th item with that label in the section, as light notes name them), with `set: <position>`
   for a switch, selector, lever or handle, or `light: on | out` for a light. A target with neither
   only highlights the item (a screen, a button, a switch whose position the step leaves open).
+  Where the wording names a position the step does not ask for (a condition, "ON IF MORE THAN
+  1,000 LB"; an option; one engine of two; or a word that belongs to something else), the target
+  says `open: true`: the drawing claims no position, and the check accepts the wording.
 - Drawings show exactly these targets. Nothing reads a step's wording at render time.
 - A light that may cycle (the window heat ON lights, which go out when the window is warm) gets
   no `light` state, so a drawing never claims a state the light may not be in.

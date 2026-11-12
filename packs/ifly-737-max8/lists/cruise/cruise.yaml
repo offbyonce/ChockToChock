@@ -68,11 +68,11 @@ steps:
       - aice
     targets:
       - at: "oh/aice/WING ANTI-ICE/1"
-        set: "OFF"
+        open: true
       - at: "oh/aice/ENG 1/1"
-        set: "OFF"
+        open: true
       - at: "oh/aice/ENG 2/1"
-        set: "OFF"
+        open: true
     quick: always
     note: Engine anti-ice ON in icing conditions (TAT 10C or below with visible moisture). Turn it off once you are clear of icing.
     why: Long use in dry air can overheat the inlet
@@ -83,26 +83,8 @@ steps:
     controls:
       - efispanel
     targets:
-      - at: "gl/efisl/MINS/1"
-      - at: "gl/efisl/BARO/1"
-      - at: "gl/efisl/MODE/1"
-      - at: "gl/efisl/RANGE/1"
       - at: "gl/efisl/WXR/1"
-      - at: "gl/efisl/TERR/1"
-      - at: "gl/efisl/POS/1"
-      - at: "gl/efisl/STA/1"
-      - at: "gl/efisl/WPT/1"
-      - at: "gl/efisl/ARPT/1"
-      - at: "gl/efisr/MINS/1"
-      - at: "gl/efisr/BARO/1"
-      - at: "gl/efisr/MODE/1"
-      - at: "gl/efisr/RANGE/1"
       - at: "gl/efisr/WXR/1"
-      - at: "gl/efisr/TERR/1"
-      - at: "gl/efisr/POS/1"
-      - at: "gl/efisr/STA/1"
-      - at: "gl/efisr/WPT/1"
-      - at: "gl/efisr/ARPT/1"
     note: "Look ahead for weather on the ND, and plan any deviation early."
     why: Plan any deviation early
     panel_lights:

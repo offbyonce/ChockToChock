@@ -15,9 +15,10 @@ steps:
     expect: "HOLD COLUMN FIRMLY, DISENGAGE BOTH"
     controls:
       - column
+      - apdisc
     targets:
-      - at: "seat/yoke/STAB TRIM/1"
       - at: "seat/yoke/A/P DISENGAGE/1"
+      - at: "con/st/A/T DISENGAGE/1"
     confirmed_by:
       - kind: vendor-docs
         date: 2026-11-10
@@ -27,9 +28,9 @@ steps:
     expect: "LOWER THE NOSE UNTIL THE SHAKER AND BUFFET END, TRIMMING AS NEEDED"
     controls:
       - column
+      - stabtrim
     targets:
       - at: "seat/yoke/STAB TRIM/1"
-      - at: "seat/yoke/A/P DISENGAGE/1"
     confirmed_by:
       - kind: vendor-docs
         date: 2026-11-10
@@ -39,9 +40,6 @@ steps:
     expect: "WINGS LEVEL THE SHORT WAY, IF NEEDED"
     controls:
       - column
-    targets:
-      - at: "seat/yoke/STAB TRIM/1"
-      - at: "seat/yoke/A/P DISENGAGE/1"
     confirmed_by:
       - kind: vendor-docs
         date: 2026-11-10
@@ -51,8 +49,10 @@ steps:
     expect: "ADVANCE THRUST, RETRACT SPEEDBRAKES"
     controls:
       - thrust
+      - speedbrake
     targets:
       - at: "con/st/THRUST LEVERS 1 AND 2/1"
+      - at: "con/st/SPEEDBRAKE LEVER/1"
     confirmed_by:
       - kind: vendor-docs
         date: 2026-11-10
@@ -62,8 +62,11 @@ steps:
     expect: "NO CHANGE. EXCEPTION: IF THE STALL IS AT LIFTOFF WITH FLAPS UP, SET FLAPS 1"
     controls:
       - flaplever
+      - gearlever
     targets:
       - at: "con/st/FLAP LEVER/1"
+      - at: "mn/ctr/LANDING GEAR LEVER/1"
+        set: "UP"
     confirmed_by:
       - kind: vendor-docs
         date: 2026-11-10

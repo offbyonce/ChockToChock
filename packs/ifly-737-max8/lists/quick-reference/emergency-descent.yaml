@@ -37,7 +37,6 @@ steps:
       - mcpalt
     targets:
       - at: "gl/mcp/ALTITUDE/1"
-      - at: "gl/mcp/ALT HLD/1"
   - id: ifly-737-max8.quick-reference.start-switches
     number: 4
     text: START SWITCHES
@@ -85,11 +84,7 @@ steps:
     controls:
       - xpndr
     targets:
-      - at: "con/atc/ALT SOURCE 1/1"
-      - at: "con/atc/XPNDR/1"
       - at: "con/atc/CODE/1"
-      - at: "con/atc/MODE/1"
-      - at: "con/atc/ALT SOURCE 2/1"
   - id: ifly-737-max8.quick-reference.approaching-level-off
     number: 9
     text: APPROACHING LEVEL OFF

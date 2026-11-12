@@ -31,6 +31,7 @@ steps:
       - ldgalt
     targets:
       - at: "oh/press/LAND ALT/1"
+      - at: "oh/press/LAND ALT KNOB/1"
     note: The pressurization system uses this to bring the cabin down to the airport elevation.
     why: Brings the cabin down to airport elevation
     confirmed_by:

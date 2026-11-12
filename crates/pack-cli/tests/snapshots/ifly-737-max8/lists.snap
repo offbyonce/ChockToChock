@@ -284,14 +284,20 @@ assertion_line: 34
         "expect": "IN, NORMAL",
         "controls": [
           "apufire",
-          "firetest"
+          "firetest",
+          "ovhtdet"
         ],
         "targets": [
           {
-            "at": "con/fi/FIRE TEST/1"
+            "at": "con/fi/FIRE APU/1"
           },
           {
-            "at": "con/fi/FIRE APU/1"
+            "at": "con/fi/OVHT DET 1/1",
+            "set": "NORMAL"
+          },
+          {
+            "at": "con/fi/OVHT DET 2/1",
+            "set": "NORMAL"
           }
         ],
         "quick": "always",
@@ -393,28 +399,8 @@ assertion_line: 34
         ],
         "targets": [
           {
-            "at": "oh/fuel/CTR L/1",
-            "set": "ON"
-          },
-          {
-            "at": "oh/fuel/CTR R/1",
-            "set": "ON"
-          },
-          {
-            "at": "oh/fuel/AFT 1/1",
-            "set": "ON"
-          },
-          {
             "at": "oh/fuel/FWD 1/1",
-            "set": "ON"
-          },
-          {
-            "at": "oh/fuel/FWD 2/1",
-            "set": "ON"
-          },
-          {
-            "at": "oh/fuel/AFT 2/1",
-            "set": "ON"
+            "open": true
           }
         ],
         "show_if": {
@@ -505,28 +491,8 @@ assertion_line: 34
         ],
         "targets": [
           {
-            "at": "oh/fuel/CTR L/1",
-            "set": "ON"
-          },
-          {
-            "at": "oh/fuel/CTR R/1",
-            "set": "ON"
-          },
-          {
-            "at": "oh/fuel/AFT 1/1",
-            "set": "ON"
-          },
-          {
             "at": "oh/fuel/FWD 1/1",
-            "set": "ON"
-          },
-          {
-            "at": "oh/fuel/FWD 2/1",
-            "set": "ON"
-          },
-          {
-            "at": "oh/fuel/AFT 2/1",
-            "set": "ON"
+            "open": true
           }
         ],
         "show_if": {
@@ -1179,6 +1145,14 @@ assertion_line: 34
           {
             "at": "aft/eng/EEC 2/1",
             "set": "ON"
+          },
+          {
+            "at": "aft/eng/REVERSER COMMAND/1",
+            "light": "out"
+          },
+          {
+            "at": "aft/eng/REVERSER AIR/GRD/1",
+            "light": "out"
           }
         ],
         "note": "The electronic engine control protects the engine limits. Check that both show ON, with no ALTN light.",
@@ -2094,22 +2068,6 @@ assertion_line: 34
         ],
         "targets": [
           {
-            "at": "oh/heat/ON/1",
-            "light": "on"
-          },
-          {
-            "at": "oh/heat/ON/2",
-            "light": "on"
-          },
-          {
-            "at": "oh/heat/ON/3",
-            "light": "on"
-          },
-          {
-            "at": "oh/heat/ON/4",
-            "light": "on"
-          },
-          {
             "at": "oh/heat/L SIDE/1",
             "set": "ON"
           },
@@ -2204,7 +2162,8 @@ assertion_line: 34
         "text": "HYDRAULIC PUMP SWITCHES",
         "expect": "ENG 1 AND 2 ON, ELEC 1 AND 2 OFF",
         "controls": [
-          "elechyd"
+          "elechyd",
+          "hydpumps"
         ],
         "targets": [
           {
@@ -2214,6 +2173,14 @@ assertion_line: 34
           {
             "at": "oh/hyd/ELEC 1/1",
             "set": "OFF"
+          },
+          {
+            "at": "oh/hyd/ENG 1/1",
+            "set": "ON"
+          },
+          {
+            "at": "oh/hyd/ENG 2/1",
+            "set": "ON"
           }
         ],
         "why": "The engine pumps start with the engines. The electric pumps stay off until Before start.",
@@ -2514,7 +2481,8 @@ assertion_line: 34
         "text": "CABIN PRESSURIZATION PANEL",
         "expect": "FLT ALT AND LAND ALT SET, MODE AUTO",
         "controls": [
-          "press"
+          "press",
+          "ldgalt"
         ],
         "targets": [
           {
@@ -2523,6 +2491,15 @@ assertion_line: 34
           {
             "at": "oh/press/MODE/1",
             "set": "AUTO"
+          },
+          {
+            "at": "oh/press/FLT ALT KNOB/1"
+          },
+          {
+            "at": "oh/press/LAND ALT/1"
+          },
+          {
+            "at": "oh/press/LAND ALT KNOB/1"
           }
         ],
         "hint": [
@@ -2780,6 +2757,30 @@ assertion_line: 34
           {
             "at": "gl/efisr/MODE/1",
             "set": "MAP"
+          },
+          {
+            "at": "gl/efisl/POS/1"
+          },
+          {
+            "at": "gl/efisr/POS/1"
+          },
+          {
+            "at": "gl/efisl/STA/1"
+          },
+          {
+            "at": "gl/efisr/STA/1"
+          },
+          {
+            "at": "gl/efisl/WPT/1"
+          },
+          {
+            "at": "gl/efisr/WPT/1"
+          },
+          {
+            "at": "gl/efisl/ARPT/1"
+          },
+          {
+            "at": "gl/efisr/ARPT/1"
           }
         ],
         "quick": "always",
@@ -3477,19 +3478,7 @@ assertion_line: 34
         ],
         "targets": [
           {
-            "at": "con/atc/ALT SOURCE 1/1"
-          },
-          {
-            "at": "con/atc/XPNDR/1"
-          },
-          {
             "at": "con/atc/CODE/1"
-          },
-          {
-            "at": "con/atc/MODE/1"
-          },
-          {
-            "at": "con/atc/ALT SOURCE 2/1"
           }
         ],
         "hint": [
@@ -3599,22 +3588,6 @@ assertion_line: 34
           "wheat"
         ],
         "targets": [
-          {
-            "at": "oh/heat/ON/1",
-            "light": "on"
-          },
-          {
-            "at": "oh/heat/ON/2",
-            "light": "on"
-          },
-          {
-            "at": "oh/heat/ON/3",
-            "light": "on"
-          },
-          {
-            "at": "oh/heat/ON/4",
-            "light": "on"
-          },
           {
             "at": "oh/heat/L SIDE/1",
             "set": "ON"
@@ -3797,7 +3770,9 @@ assertion_line: 34
         "text": "MCP",
         "expect": "SET V2, HEADING, ALTITUDE, ARM A/T, ARM LNAV AND VNAV FOR AN RNAV DEPARTURE",
         "controls": [
-          "mcpset"
+          "mcpset",
+          "rollmode",
+          "pitchmode"
         ],
         "targets": [
           {
@@ -3809,6 +3784,15 @@ assertion_line: 34
           },
           {
             "at": "gl/mcp/ALTITUDE/1"
+          },
+          {
+            "at": "gl/mcp/IAS/MACH/1"
+          },
+          {
+            "at": "gl/mcp/LNAV/1"
+          },
+          {
+            "at": "gl/mcp/VNAV/1"
           }
         ],
         "quick": "always",
@@ -3925,11 +3909,11 @@ assertion_line: 34
         "targets": [
           {
             "at": "oh/fuel/CTR L/1",
-            "set": "ON"
+            "open": true
           },
           {
             "at": "oh/fuel/CTR R/1",
-            "set": "ON"
+            "open": true
           },
           {
             "at": "oh/fuel/AFT 1/1",
@@ -4076,11 +4060,11 @@ assertion_line: 34
         "targets": [
           {
             "at": "oh/fuel/CTR L/1",
-            "set": "ON"
+            "open": true
           },
           {
             "at": "oh/fuel/CTR R/1",
-            "set": "ON"
+            "open": true
           },
           {
             "at": "oh/fuel/AFT 1/1",
@@ -4148,9 +4132,6 @@ assertion_line: 34
           "mcpset"
         ],
         "targets": [
-          {
-            "at": "gl/mcp/A/T ARM/1"
-          },
           {
             "at": "gl/mcp/IAS/MACH/1"
           },
@@ -4330,8 +4311,7 @@ assertion_line: 34
             "set": "AUTO"
           },
           {
-            "at": "con/atc/MODE/1",
-            "set": "XPNDR"
+            "at": "con/atc/CODE/1"
           }
         ],
         "hint": [
@@ -4589,10 +4569,6 @@ assertion_line: 34
           {
             "at": "oh/start/ENGINE START 1/1",
             "set": "GRD"
-          },
-          {
-            "at": "oh/start/ENGINE START 2/1",
-            "set": "GRD"
           }
         ],
         "quick": "always",
@@ -4652,10 +4628,6 @@ assertion_line: 34
           {
             "at": "con/lo/START LEVER 1/1",
             "set": "IDLE"
-          },
-          {
-            "at": "con/lo/START LEVER 2/1",
-            "set": "IDLE"
           }
         ],
         "quick": "always",
@@ -4700,10 +4672,6 @@ assertion_line: 34
         "targets": [
           {
             "at": "oh/start/ENGINE START 1/1",
-            "set": "OFF"
-          },
-          {
-            "at": "oh/start/ENGINE START 2/1",
             "set": "OFF"
           }
         ],
@@ -4761,10 +4729,6 @@ assertion_line: 34
           "starts"
         ],
         "targets": [
-          {
-            "at": "oh/start/ENGINE START 1/1",
-            "set": "GRD"
-          },
           {
             "at": "oh/start/ENGINE START 2/1",
             "set": "GRD"
@@ -4825,10 +4789,6 @@ assertion_line: 34
         ],
         "targets": [
           {
-            "at": "con/lo/START LEVER 1/1",
-            "set": "IDLE"
-          },
-          {
             "at": "con/lo/START LEVER 2/1",
             "set": "IDLE"
           }
@@ -4873,10 +4833,6 @@ assertion_line: 34
           "starts"
         ],
         "targets": [
-          {
-            "at": "oh/start/ENGINE START 1/1",
-            "set": "OFF"
-          },
           {
             "at": "oh/start/ENGINE START 2/1",
             "set": "OFF"
@@ -5300,9 +5256,6 @@ assertion_line: 34
           "xpndr"
         ],
         "targets": [
-          {
-            "at": "con/atc/XPNDR/1"
-          },
           {
             "at": "con/atc/MODE/1",
             "set": "XPNDR"
@@ -5837,64 +5790,10 @@ assertion_line: 34
         ],
         "targets": [
           {
-            "at": "gl/efisl/MINS/1"
-          },
-          {
-            "at": "gl/efisl/BARO/1"
-          },
-          {
-            "at": "gl/efisl/MODE/1"
-          },
-          {
-            "at": "gl/efisl/RANGE/1"
-          },
-          {
-            "at": "gl/efisl/WXR/1"
-          },
-          {
             "at": "gl/efisl/TERR/1"
           },
           {
-            "at": "gl/efisl/POS/1"
-          },
-          {
-            "at": "gl/efisl/STA/1"
-          },
-          {
-            "at": "gl/efisl/WPT/1"
-          },
-          {
-            "at": "gl/efisl/ARPT/1"
-          },
-          {
-            "at": "gl/efisr/MINS/1"
-          },
-          {
-            "at": "gl/efisr/BARO/1"
-          },
-          {
-            "at": "gl/efisr/MODE/1"
-          },
-          {
-            "at": "gl/efisr/RANGE/1"
-          },
-          {
-            "at": "gl/efisr/WXR/1"
-          },
-          {
             "at": "gl/efisr/TERR/1"
-          },
-          {
-            "at": "gl/efisr/POS/1"
-          },
-          {
-            "at": "gl/efisr/STA/1"
-          },
-          {
-            "at": "gl/efisr/WPT/1"
-          },
-          {
-            "at": "gl/efisr/ARPT/1"
           }
         ],
         "why": "Weather or terrain on the ND for the departure. Weather radar is not simulated in the iFly, so use TERR",
@@ -5997,16 +5896,7 @@ assertion_line: 34
         ],
         "targets": [
           {
-            "at": "gl/mcp/A/T ARM/1"
-          },
-          {
             "at": "gl/mcp/IAS/MACH/1"
-          },
-          {
-            "at": "gl/mcp/HEADING/1"
-          },
-          {
-            "at": "gl/mcp/ALTITUDE/1"
           }
         ],
         "fill": [
@@ -6658,12 +6548,6 @@ assertion_line: 34
           },
           {
             "at": "gl/mcp/LNAV/1"
-          },
-          {
-            "at": "gl/mcp/VOR LOC/1"
-          },
-          {
-            "at": "gl/mcp/APP/1"
           }
         ],
         "quick": "always",
@@ -7116,15 +7000,15 @@ assertion_line: 34
         "targets": [
           {
             "at": "oh/aice/WING ANTI-ICE/1",
-            "set": "OFF"
+            "open": true
           },
           {
             "at": "oh/aice/ENG 1/1",
-            "set": "OFF"
+            "open": true
           },
           {
             "at": "oh/aice/ENG 2/1",
-            "set": "OFF"
+            "open": true
           }
         ],
         "quick": "always",
@@ -7141,64 +7025,10 @@ assertion_line: 34
         ],
         "targets": [
           {
-            "at": "gl/efisl/MINS/1"
-          },
-          {
-            "at": "gl/efisl/BARO/1"
-          },
-          {
-            "at": "gl/efisl/MODE/1"
-          },
-          {
-            "at": "gl/efisl/RANGE/1"
-          },
-          {
             "at": "gl/efisl/WXR/1"
           },
           {
-            "at": "gl/efisl/TERR/1"
-          },
-          {
-            "at": "gl/efisl/POS/1"
-          },
-          {
-            "at": "gl/efisl/STA/1"
-          },
-          {
-            "at": "gl/efisl/WPT/1"
-          },
-          {
-            "at": "gl/efisl/ARPT/1"
-          },
-          {
-            "at": "gl/efisr/MINS/1"
-          },
-          {
-            "at": "gl/efisr/BARO/1"
-          },
-          {
-            "at": "gl/efisr/MODE/1"
-          },
-          {
-            "at": "gl/efisr/RANGE/1"
-          },
-          {
             "at": "gl/efisr/WXR/1"
-          },
-          {
-            "at": "gl/efisr/TERR/1"
-          },
-          {
-            "at": "gl/efisr/POS/1"
-          },
-          {
-            "at": "gl/efisr/STA/1"
-          },
-          {
-            "at": "gl/efisr/WPT/1"
-          },
-          {
-            "at": "gl/efisr/ARPT/1"
           }
         ],
         "note": "Look ahead for weather on the ND, and plan any deviation early.",
@@ -7312,6 +7142,9 @@ assertion_line: 34
         "targets": [
           {
             "at": "oh/press/LAND ALT/1"
+          },
+          {
+            "at": "oh/press/LAND ALT KNOB/1"
           }
         ],
         "note": "The pressurization system uses this to bring the cabin down to the airport elevation.",
@@ -7933,8 +7766,7 @@ assertion_line: 34
         ],
         "targets": [
           {
-            "at": "con/st/FLAP LEVER/1",
-            "set": "1"
+            "at": "con/st/FLAP LEVER/1"
           }
         ],
         "quick": "always",
@@ -8323,7 +8155,7 @@ assertion_line: 34
         ],
         "targets": [
           {
-            "at": "con/st/A/T DISENGAGE/1"
+            "at": "seat/yoke/A/P DISENGAGE/1"
           }
         ],
         "quick": "always",
@@ -8881,64 +8713,16 @@ assertion_line: 34
         ],
         "targets": [
           {
-            "at": "gl/efisl/MINS/1"
-          },
-          {
-            "at": "gl/efisl/BARO/1"
-          },
-          {
-            "at": "gl/efisl/MODE/1"
-          },
-          {
-            "at": "gl/efisl/RANGE/1"
-          },
-          {
             "at": "gl/efisl/WXR/1"
-          },
-          {
-            "at": "gl/efisl/TERR/1"
-          },
-          {
-            "at": "gl/efisl/POS/1"
-          },
-          {
-            "at": "gl/efisl/STA/1"
-          },
-          {
-            "at": "gl/efisl/WPT/1"
-          },
-          {
-            "at": "gl/efisl/ARPT/1"
-          },
-          {
-            "at": "gl/efisr/MINS/1"
-          },
-          {
-            "at": "gl/efisr/BARO/1"
-          },
-          {
-            "at": "gl/efisr/MODE/1"
-          },
-          {
-            "at": "gl/efisr/RANGE/1"
           },
           {
             "at": "gl/efisr/WXR/1"
           },
           {
+            "at": "gl/efisl/TERR/1"
+          },
+          {
             "at": "gl/efisr/TERR/1"
-          },
-          {
-            "at": "gl/efisr/POS/1"
-          },
-          {
-            "at": "gl/efisr/STA/1"
-          },
-          {
-            "at": "gl/efisr/WPT/1"
-          },
-          {
-            "at": "gl/efisr/ARPT/1"
           }
         ],
         "why": "Display not needed for taxi",
@@ -8992,64 +8776,16 @@ assertion_line: 34
         ],
         "targets": [
           {
-            "at": "gl/efisl/MINS/1"
-          },
-          {
-            "at": "gl/efisl/BARO/1"
-          },
-          {
-            "at": "gl/efisl/MODE/1"
-          },
-          {
-            "at": "gl/efisl/RANGE/1"
-          },
-          {
             "at": "gl/efisl/WXR/1"
-          },
-          {
-            "at": "gl/efisl/TERR/1"
-          },
-          {
-            "at": "gl/efisl/POS/1"
-          },
-          {
-            "at": "gl/efisl/STA/1"
-          },
-          {
-            "at": "gl/efisl/WPT/1"
-          },
-          {
-            "at": "gl/efisl/ARPT/1"
-          },
-          {
-            "at": "gl/efisr/MINS/1"
-          },
-          {
-            "at": "gl/efisr/BARO/1"
-          },
-          {
-            "at": "gl/efisr/MODE/1"
-          },
-          {
-            "at": "gl/efisr/RANGE/1"
           },
           {
             "at": "gl/efisr/WXR/1"
           },
           {
+            "at": "gl/efisl/TERR/1"
+          },
+          {
             "at": "gl/efisr/TERR/1"
-          },
-          {
-            "at": "gl/efisr/POS/1"
-          },
-          {
-            "at": "gl/efisr/STA/1"
-          },
-          {
-            "at": "gl/efisr/WPT/1"
-          },
-          {
-            "at": "gl/efisr/ARPT/1"
           }
         ],
         "why": "A transmitting radar is a hazard to ground crew and during fueling",
@@ -9140,22 +8876,6 @@ assertion_line: 34
           "wheat"
         ],
         "targets": [
-          {
-            "at": "oh/heat/ON/1",
-            "light": "on"
-          },
-          {
-            "at": "oh/heat/ON/2",
-            "light": "on"
-          },
-          {
-            "at": "oh/heat/ON/3",
-            "light": "on"
-          },
-          {
-            "at": "oh/heat/ON/4",
-            "light": "on"
-          },
           {
             "at": "oh/heat/L SIDE/1",
             "set": "ON"
@@ -9663,11 +9383,20 @@ assertion_line: 34
         "text": "ENGINE AND APU BLEED SWITCHES",
         "expect": "ON",
         "controls": [
-          "apubleed"
+          "apubleed",
+          "engbleed"
         ],
         "targets": [
           {
             "at": "oh/bleed/APU BLEED/1",
+            "set": "ON"
+          },
+          {
+            "at": "oh/bleed/ENG BLEED 1/1",
+            "set": "ON"
+          },
+          {
+            "at": "oh/bleed/ENG BLEED 2/1",
             "set": "ON"
           }
         ],
@@ -9752,11 +9481,16 @@ assertion_line: 34
         "text": "GROUND POWER",
         "expect": "IF AVAILABLE, CONNECT AND VERIFY ACCEPTED, THEN APU OFF",
         "controls": [
-          "grdpwr"
+          "grdpwr",
+          "apusw"
         ],
         "targets": [
           {
             "at": "oh/elecl/GRD PWR/1",
+            "open": true
+          },
+          {
+            "at": "oh/apu/APU/1",
             "set": "OFF"
           }
         ],
@@ -9836,18 +9570,21 @@ assertion_line: 34
       {
         "id": "ifly-737-max8.shutdown.probe-heat",
         "text": "PROBE HEAT",
-        "expect": "OFF",
+        "expect": "AUTO",
         "controls": [
           "pheat"
         ],
         "targets": [
           {
-            "at": "oh/heat/PROBE A/1"
+            "at": "oh/heat/PROBE A/1",
+            "set": "AUTO"
           },
           {
-            "at": "oh/heat/PROBE B/1"
+            "at": "oh/heat/PROBE B/1",
+            "set": "AUTO"
           }
         ],
+        "note": "The iFly tutorial's shutdown checklist says OFF, but the MAX probe heat switches have only AUTO and ON. AUTO turns the heat off once the engines are shut down.",
         "why": "Not needed once the engines are stopped.",
         "confirmed_by": [
           {
@@ -9981,64 +9718,10 @@ assertion_line: 34
         ],
         "targets": [
           {
-            "at": "gl/efisl/MINS/1"
-          },
-          {
-            "at": "gl/efisl/BARO/1"
-          },
-          {
-            "at": "gl/efisl/MODE/1"
-          },
-          {
-            "at": "gl/efisl/RANGE/1"
-          },
-          {
             "at": "gl/efisl/WXR/1"
           },
           {
-            "at": "gl/efisl/TERR/1"
-          },
-          {
-            "at": "gl/efisl/POS/1"
-          },
-          {
-            "at": "gl/efisl/STA/1"
-          },
-          {
-            "at": "gl/efisl/WPT/1"
-          },
-          {
-            "at": "gl/efisl/ARPT/1"
-          },
-          {
-            "at": "gl/efisr/MINS/1"
-          },
-          {
-            "at": "gl/efisr/BARO/1"
-          },
-          {
-            "at": "gl/efisr/MODE/1"
-          },
-          {
-            "at": "gl/efisr/RANGE/1"
-          },
-          {
             "at": "gl/efisr/WXR/1"
-          },
-          {
-            "at": "gl/efisr/TERR/1"
-          },
-          {
-            "at": "gl/efisr/POS/1"
-          },
-          {
-            "at": "gl/efisr/STA/1"
-          },
-          {
-            "at": "gl/efisr/WPT/1"
-          },
-          {
-            "at": "gl/efisr/ARPT/1"
           }
         ],
         "why": "A transmitting radar is a hazard to ground crew and during fueling",
@@ -10216,23 +9899,25 @@ assertion_line: 34
         "text": "APU OR GROUND POWER",
         "expect": "OFF",
         "controls": [
-          "apub"
+          "apub",
+          "apusw",
+          "grdpwr"
         ],
         "targets": [
           {
-            "at": "oh/elecl/GEN 1/1",
-            "set": "OFF"
-          },
-          {
             "at": "oh/elecl/APU GEN/1",
-            "set": "OFF"
+            "open": true
           },
           {
             "at": "oh/elecl/APU GEN/2",
+            "open": true
+          },
+          {
+            "at": "oh/apu/APU/1",
             "set": "OFF"
           },
           {
-            "at": "oh/elecl/GEN 2/1",
+            "at": "oh/elecl/GRD PWR/1",
             "set": "OFF"
           }
         ],
@@ -10457,23 +10142,25 @@ assertion_line: 34
         "text": "APU OR GROUND POWER",
         "expect": "OFF",
         "controls": [
-          "apub"
+          "apub",
+          "apusw",
+          "grdpwr"
         ],
         "targets": [
           {
-            "at": "oh/elecl/GEN 1/1",
-            "set": "OFF"
-          },
-          {
             "at": "oh/elecl/APU GEN/1",
-            "set": "OFF"
+            "open": true
           },
           {
             "at": "oh/elecl/APU GEN/2",
+            "open": true
+          },
+          {
+            "at": "oh/apu/APU/1",
             "set": "OFF"
           },
           {
-            "at": "oh/elecl/GEN 2/1",
+            "at": "oh/elecl/GRD PWR/1",
             "set": "OFF"
           }
         ],
@@ -10534,14 +10221,6 @@ assertion_line: 34
         "controls": [
           "column"
         ],
-        "targets": [
-          {
-            "at": "seat/yoke/STAB TRIM/1"
-          },
-          {
-            "at": "seat/yoke/A/P DISENGAGE/1"
-          }
-        ],
         "confirmed_by": [
           {
             "kind": "vendor-docs",
@@ -10597,14 +10276,6 @@ assertion_line: 34
         "controls": [
           "column"
         ],
-        "targets": [
-          {
-            "at": "seat/yoke/STAB TRIM/1"
-          },
-          {
-            "at": "seat/yoke/A/P DISENGAGE/1"
-          }
-        ],
         "confirmed_by": [
           {
             "kind": "vendor-docs",
@@ -10618,14 +10289,12 @@ assertion_line: 34
         "text": "MAIN ELECTRIC STABILIZER TRIM",
         "expect": "USE TO REDUCE COLUMN FORCES",
         "controls": [
-          "column"
+          "column",
+          "stabtrim"
         ],
         "targets": [
           {
             "at": "seat/yoke/STAB TRIM/1"
-          },
-          {
-            "at": "seat/yoke/A/P DISENGAGE/1"
           }
         ],
         "confirmed_by": [
@@ -11032,11 +10701,11 @@ assertion_line: 34
         "targets": [
           {
             "at": "gl/mcp/F/D L/1",
-            "set": "OFF"
+            "open": true
           },
           {
             "at": "gl/mcp/F/D R/1",
-            "set": "OFF"
+            "open": true
           }
         ],
         "non_recall": true,
@@ -11092,9 +10761,6 @@ assertion_line: 34
           },
           {
             "at": "con/atc/XPNDR/1"
-          },
-          {
-            "at": "con/atc/CODE/1"
           },
           {
             "at": "con/atc/MODE/1"
@@ -11158,20 +10824,15 @@ assertion_line: 34
         "text": "CREW COMMUNICATIONS",
         "expect": "ESTABLISH",
         "controls": [
-          "mask"
+          "mask",
+          "audio"
         ],
         "targets": [
           {
-            "at": "seat/side/MASK STOWAGE/1"
+            "at": "con/a1/AUDIO PANEL 1/1"
           },
           {
-            "at": "seat/side/RESET/TEST/1"
-          },
-          {
-            "at": "seat/side/EMERGENCY/TEST/1"
-          },
-          {
-            "at": "seat/side/NORMAL/100%/1"
+            "at": "con/a2/AUDIO PANEL 2/1"
           }
         ]
       },
@@ -11268,16 +10929,11 @@ assertion_line: 34
           },
           {
             "at": "oh/press/MANUAL/1",
-            "light": "out"
+            "light": "on"
           },
           {
-            "at": "oh/press/FLT ALT/1"
-          },
-          {
-            "at": "oh/press/FLT ALT KNOB/1"
-          },
-          {
-            "at": "oh/press/MODE/1"
+            "at": "oh/press/MODE/1",
+            "set": "MAN"
           }
         ],
         "non_recall": true
@@ -11339,20 +10995,15 @@ assertion_line: 34
         "text": "CREW COMMUNICATIONS",
         "expect": "ESTABLISH",
         "controls": [
-          "mask"
+          "mask",
+          "audio"
         ],
         "targets": [
           {
-            "at": "seat/side/MASK STOWAGE/1"
+            "at": "con/a1/AUDIO PANEL 1/1"
           },
           {
-            "at": "seat/side/RESET/TEST/1"
-          },
-          {
-            "at": "seat/side/EMERGENCY/TEST/1"
-          },
-          {
-            "at": "seat/side/NORMAL/100%/1"
+            "at": "con/a2/AUDIO PANEL 2/1"
           }
         ],
         "non_recall": true
@@ -11400,11 +11051,11 @@ assertion_line: 34
         "targets": [
           {
             "at": "oh/start/ENGINE START 1/1",
-            "set": "OFF"
+            "open": true
           },
           {
             "at": "oh/start/ENGINE START 2/1",
-            "set": "OFF"
+            "open": true
           }
         ],
         "panel_lights": {
@@ -11425,11 +11076,11 @@ assertion_line: 34
         "targets": [
           {
             "at": "con/lo/START LEVER 1/1",
-            "set": "CUTOFF"
+            "open": true
           },
           {
             "at": "con/lo/START LEVER 2/1",
-            "set": "CUTOFF"
+            "open": true
           }
         ]
       }
@@ -11484,11 +11135,11 @@ assertion_line: 34
         "targets": [
           {
             "at": "con/lo/START LEVER 1/1",
-            "set": "CUTOFF"
+            "open": true
           },
           {
             "at": "con/lo/START LEVER 2/1",
-            "set": "CUTOFF"
+            "open": true
           }
         ]
       },
@@ -11503,11 +11154,11 @@ assertion_line: 34
         "targets": [
           {
             "at": "con/fi/FIRE 1/1",
-            "set": "PULL"
+            "open": true
           },
           {
             "at": "con/fi/FIRE 2/1",
-            "set": "PULL"
+            "open": true
           }
         ]
       },
@@ -11738,7 +11389,8 @@ assertion_line: 34
         "text": "EGT AT REDLINE, OR FLAT FOR 30 SECONDS",
         "expect": "THAT START LEVER TO CUTOFF, THEN BACK TO IDLE. REPEAT IF NEEDED",
         "controls": [
-          "engmon"
+          "engmon",
+          "slever"
         ],
         "targets": [
           {
@@ -11746,6 +11398,12 @@ assertion_line: 34
           },
           {
             "at": "con/ed/ENG/1"
+          },
+          {
+            "at": "con/lo/START LEVER 1/1"
+          },
+          {
+            "at": "con/lo/START LEVER 2/1"
           }
         ]
       },
@@ -11772,11 +11430,20 @@ assertion_line: 34
         "text": "APU (IF AVAILABLE)",
         "expect": "START AND PUT ON BUSES. DO NOT WAIT FOR ENGINE START",
         "controls": [
-          "apusw"
+          "apusw",
+          "apugen"
         ],
         "targets": [
           {
             "at": "oh/apu/APU/1",
+            "set": "ON"
+          },
+          {
+            "at": "oh/elecl/APU GEN/1",
+            "set": "ON"
+          },
+          {
+            "at": "oh/elecl/APU GEN/2",
             "set": "ON"
           }
         ]
@@ -11877,9 +11544,6 @@ assertion_line: 34
         "targets": [
           {
             "at": "gl/mcp/ALTITUDE/1"
-          },
-          {
-            "at": "gl/mcp/ALT HLD/1"
           }
         ]
       },
@@ -11961,19 +11625,7 @@ assertion_line: 34
         ],
         "targets": [
           {
-            "at": "con/atc/ALT SOURCE 1/1"
-          },
-          {
-            "at": "con/atc/XPNDR/1"
-          },
-          {
             "at": "con/atc/CODE/1"
-          },
-          {
-            "at": "con/atc/MODE/1"
-          },
-          {
-            "at": "con/atc/ALT SOURCE 2/1"
           }
         ]
       },
@@ -12058,11 +11710,11 @@ assertion_line: 34
         "targets": [
           {
             "at": "con/lo/START LEVER 1/1",
-            "set": "CUTOFF"
+            "open": true
           },
           {
             "at": "con/lo/START LEVER 2/1",
-            "set": "CUTOFF"
+            "open": true
           }
         ]
       }
@@ -12088,16 +11740,10 @@ assertion_line: 34
         ],
         "targets": [
           {
-            "at": "con/cf/TEST/1"
-          },
-          {
             "at": "con/cf/ARM FWD/1"
           },
           {
             "at": "con/cf/ARM AFT/1"
-          },
-          {
-            "at": "con/cf/DISCH/1"
           }
         ],
         "panel_lights": {
@@ -12216,7 +11862,9 @@ assertion_line: 34
         "text": "CONFIGURATION",
         "expect": "GEAR DOWN AND LOCKED, FLAPS AND SPEEDBRAKE SET FOR LANDING",
         "controls": [
-          "gearlever"
+          "gearlever",
+          "flaplever",
+          "speedbrake"
         ],
         "targets": [
           {
@@ -12234,6 +11882,13 @@ assertion_line: 34
           {
             "at": "mn/ctr/LANDING GEAR LEVER/1",
             "set": "DN"
+          },
+          {
+            "at": "con/st/FLAP LEVER/1"
+          },
+          {
+            "at": "con/st/SPEEDBRAKE LEVER/1",
+            "open": true
           }
         ]
       }
@@ -12407,7 +12062,8 @@ assertion_line: 34
         "text": "ENGINE AND APU FIRE SWITCHES (ALL)",
         "expect": "OVERRIDE AND PULL",
         "controls": [
-          "firesw"
+          "firesw",
+          "apufire"
         ],
         "targets": [
           {
@@ -12416,6 +12072,10 @@ assertion_line: 34
           },
           {
             "at": "con/fi/FIRE 2/1",
+            "set": "PULL"
+          },
+          {
+            "at": "con/fi/FIRE APU/1",
             "set": "PULL"
           }
         ]
@@ -12598,7 +12258,7 @@ assertion_line: 34
         "targets": [
           {
             "at": "mn/cl/STAB OUT OF TRIM/1",
-            "light": "out"
+            "light": "on"
           }
         ],
         "confirmed_by": [
@@ -12634,7 +12294,9 @@ assertion_line: 34
         "text": "IN FLIGHT, STABILIZER NOT TRIMMING",
         "expect": "HOLD COLUMN, DISENGAGE A/P AND A/T, USE MAIN ELECTRIC TRIM",
         "controls": [
-          "column"
+          "column",
+          "stabtrim",
+          "apdisc"
         ],
         "targets": [
           {
@@ -12642,6 +12304,9 @@ assertion_line: 34
           },
           {
             "at": "seat/yoke/A/P DISENGAGE/1"
+          },
+          {
+            "at": "con/st/A/T DISENGAGE/1"
           }
         ],
         "confirmed_by": [
@@ -12877,7 +12542,8 @@ assertion_line: 34
         "text": "ALT DISAGREE ALONE",
         "expect": "CHECK ALTIMETER SETTINGS. IF THE DISAGREE REMAINS, DO NOT USE THE FLIGHT PATH VECTOR, AND SELECT THE TRANSPONDER TO THE RELIABLE SIDE, OR ALTITUDE REPORTING OFF",
         "controls": [
-          "xpndr"
+          "xpndr",
+          "baro"
         ],
         "targets": [
           {
@@ -12887,13 +12553,16 @@ assertion_line: 34
             "at": "con/atc/XPNDR/1"
           },
           {
-            "at": "con/atc/CODE/1"
-          },
-          {
             "at": "con/atc/MODE/1"
           },
           {
             "at": "con/atc/ALT SOURCE 2/1"
+          },
+          {
+            "at": "gl/efisl/BARO/1"
+          },
+          {
+            "at": "gl/efisr/BARO/1"
           }
         ],
         "confirmed_by": [
@@ -12961,11 +12630,19 @@ assertion_line: 34
         "text": "THRUST LEVERS AND BRAKES",
         "expect": "CLOSE THRUST LEVERS, DISENGAGE A/T, MAX MANUAL BRAKES OR VERIFY RTO AUTOBRAKE",
         "controls": [
-          "thrust"
+          "thrust",
+          "apdisc",
+          "abrake"
         ],
         "targets": [
           {
             "at": "con/st/THRUST LEVERS 1 AND 2/1"
+          },
+          {
+            "at": "con/st/A/T DISENGAGE/1"
+          },
+          {
+            "at": "con/ed/AUTO BRAKE/1"
           }
         ]
       },
@@ -13005,14 +12682,6 @@ assertion_line: 34
         "expect": "CONTINUE UNTIL CERTAIN OF STOPPING ON THE RUNWAY",
         "controls": [
           "column"
-        ],
-        "targets": [
-          {
-            "at": "seat/yoke/STAB TRIM/1"
-          },
-          {
-            "at": "seat/yoke/A/P DISENGAGE/1"
-          }
         ]
       },
       {
@@ -13082,11 +12751,15 @@ assertion_line: 34
         "text": "AUTOPILOT AND TO/GA",
         "expect": "DISENGAGE A/P, PUSH TO/GA",
         "controls": [
-          "toga"
+          "toga",
+          "apdisc"
         ],
         "targets": [
           {
             "at": "con/st/TO/GA/1"
+          },
+          {
+            "at": "seat/yoke/A/P DISENGAGE/1"
           }
         ]
       },
@@ -13096,11 +12769,15 @@ assertion_line: 34
         "text": "THRUST",
         "expect": "MAXIMUM, DISENGAGE A/T",
         "controls": [
-          "thrust"
+          "thrust",
+          "apdisc"
         ],
         "targets": [
           {
             "at": "con/st/THRUST LEVERS 1 AND 2/1"
+          },
+          {
+            "at": "con/st/A/T DISENGAGE/1"
           }
         ]
       },
@@ -13111,14 +12788,6 @@ assertion_line: 34
         "expect": "LEVEL THE WINGS AND PITCH TOWARD 15 DEGREES",
         "controls": [
           "column"
-        ],
-        "targets": [
-          {
-            "at": "seat/yoke/STAB TRIM/1"
-          },
-          {
-            "at": "seat/yoke/A/P DISENGAGE/1"
-          }
         ]
       },
       {
@@ -13164,11 +12833,15 @@ assertion_line: 34
         "text": "FLAPS AND GEAR",
         "expect": "LEAVE THEM UNTIL THE WINDSHEAR HAS PASSED",
         "controls": [
-          "flaplever"
+          "flaplever",
+          "gearlever"
         ],
         "targets": [
           {
             "at": "con/st/FLAP LEVER/1"
+          },
+          {
+            "at": "mn/ctr/LANDING GEAR LEVER/1"
           }
         ]
       },
@@ -13244,14 +12917,6 @@ assertion_line: 34
         "expect": "LEVEL THE WINGS, THEN PITCH UP TO 20 DEGREES TO START",
         "controls": [
           "column"
-        ],
-        "targets": [
-          {
-            "at": "seat/yoke/STAB TRIM/1"
-          },
-          {
-            "at": "seat/yoke/A/P DISENGAGE/1"
-          }
         ]
       },
       {
@@ -13275,14 +12940,6 @@ assertion_line: 34
         "expect": "ROTATE TO PITCH LIMIT, STICK SHAKER OR INITIAL BUFFET",
         "controls": [
           "column"
-        ],
-        "targets": [
-          {
-            "at": "seat/yoke/STAB TRIM/1"
-          },
-          {
-            "at": "seat/yoke/A/P DISENGAGE/1"
-          }
         ]
       },
       {
@@ -13291,11 +12948,15 @@ assertion_line: 34
         "text": "GEAR AND FLAPS",
         "expect": "NO CHANGE UNTIL TERRAIN SEPARATION IS ASSURED",
         "controls": [
-          "flaplever"
+          "flaplever",
+          "gearlever"
         ],
         "targets": [
           {
             "at": "con/st/FLAP LEVER/1"
+          },
+          {
+            "at": "mn/ctr/LANDING GEAR LEVER/1"
           }
         ]
       },
@@ -13338,14 +12999,15 @@ assertion_line: 34
         "text": "AUTOPILOT AND AUTOTHROTTLE",
         "expect": "HOLD COLUMN FIRMLY, DISENGAGE BOTH",
         "controls": [
-          "column"
+          "column",
+          "apdisc"
         ],
         "targets": [
           {
-            "at": "seat/yoke/STAB TRIM/1"
+            "at": "seat/yoke/A/P DISENGAGE/1"
           },
           {
-            "at": "seat/yoke/A/P DISENGAGE/1"
+            "at": "con/st/A/T DISENGAGE/1"
           }
         ],
         "confirmed_by": [
@@ -13361,14 +13023,12 @@ assertion_line: 34
         "text": "PITCH",
         "expect": "LOWER THE NOSE UNTIL THE SHAKER AND BUFFET END, TRIMMING AS NEEDED",
         "controls": [
-          "column"
+          "column",
+          "stabtrim"
         ],
         "targets": [
           {
             "at": "seat/yoke/STAB TRIM/1"
-          },
-          {
-            "at": "seat/yoke/A/P DISENGAGE/1"
           }
         ],
         "confirmed_by": [
@@ -13386,14 +13046,6 @@ assertion_line: 34
         "controls": [
           "column"
         ],
-        "targets": [
-          {
-            "at": "seat/yoke/STAB TRIM/1"
-          },
-          {
-            "at": "seat/yoke/A/P DISENGAGE/1"
-          }
-        ],
         "confirmed_by": [
           {
             "kind": "vendor-docs",
@@ -13407,11 +13059,15 @@ assertion_line: 34
         "text": "THRUST AND SPEEDBRAKES",
         "expect": "ADVANCE THRUST, RETRACT SPEEDBRAKES",
         "controls": [
-          "thrust"
+          "thrust",
+          "speedbrake"
         ],
         "targets": [
           {
             "at": "con/st/THRUST LEVERS 1 AND 2/1"
+          },
+          {
+            "at": "con/st/SPEEDBRAKE LEVER/1"
           }
         ],
         "confirmed_by": [
@@ -13427,11 +13083,16 @@ assertion_line: 34
         "text": "GEAR AND FLAPS",
         "expect": "NO CHANGE. EXCEPTION: IF THE STALL IS AT LIFTOFF WITH FLAPS UP, SET FLAPS 1",
         "controls": [
-          "flaplever"
+          "flaplever",
+          "gearlever"
         ],
         "targets": [
           {
             "at": "con/st/FLAP LEVER/1"
+          },
+          {
+            "at": "mn/ctr/LANDING GEAR LEVER/1",
+            "set": "UP"
           }
         ],
         "confirmed_by": [
@@ -13487,14 +13148,6 @@ assertion_line: 34
         "expect": "RECOVER FROM THE STALL FIRST",
         "controls": [
           "column"
-        ],
-        "targets": [
-          {
-            "at": "seat/yoke/STAB TRIM/1"
-          },
-          {
-            "at": "seat/yoke/A/P DISENGAGE/1"
-          }
         ]
       },
       {
@@ -13521,12 +13174,17 @@ assertion_line: 34
         "text": "NOSE HIGH",
         "expect": "NOSE DOWN ELEVATOR AND TRIM, REDUCE THRUST, IF NEEDED, BANK TO HELP THE NOSE COME DOWN",
         "controls": [
-          "column"
+          "column",
+          "stabtrim",
+          "thrust"
         ],
         "targets": [
           {
             "at": "seat/yoke/STAB TRIM/1",
             "set": "NOSE DOWN"
+          },
+          {
+            "at": "con/st/THRUST LEVERS 1 AND 2/1"
           }
         ]
       },
@@ -13536,12 +13194,17 @@ assertion_line: 34
         "text": "NOSE LOW",
         "expect": "ROLL SHORTEST WAY TO WINGS LEVEL, THEN NOSE UP ELEVATOR, ADJUST THRUST AND DRAG",
         "controls": [
-          "column"
+          "column",
+          "thrust",
+          "speedbrake"
         ],
         "targets": [
           {
-            "at": "seat/yoke/STAB TRIM/1",
-            "set": "NOSE UP"
+            "at": "con/st/THRUST LEVERS 1 AND 2/1"
+          },
+          {
+            "at": "con/st/SPEEDBRAKE LEVER/1",
+            "open": true
           }
         ]
       }
@@ -13580,14 +13243,6 @@ assertion_line: 34
         "expect": "ADJUST SMOOTHLY TO SATISFY THE RA",
         "controls": [
           "column"
-        ],
-        "targets": [
-          {
-            "at": "seat/yoke/STAB TRIM/1"
-          },
-          {
-            "at": "seat/yoke/A/P DISENGAGE/1"
-          }
         ]
       },
       {
@@ -13619,11 +13274,21 @@ assertion_line: 34
         "text": "CLIMB RA IN LANDING CONFIGURATION",
         "expect": "MAXIMUM THRUST, FLAPS 15, GEAR UP AFTER POSITIVE RATE",
         "controls": [
-          "thrust"
+          "thrust",
+          "flaplever",
+          "gearlever"
         ],
         "targets": [
           {
             "at": "con/st/THRUST LEVERS 1 AND 2/1"
+          },
+          {
+            "at": "con/st/FLAP LEVER/1",
+            "set": "15"
+          },
+          {
+            "at": "mn/ctr/LANDING GEAR LEVER/1",
+            "set": "UP"
           }
         ]
       },

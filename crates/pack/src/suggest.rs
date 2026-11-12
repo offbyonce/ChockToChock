@@ -6,8 +6,8 @@
 //! says where its reading was not certain.
 
 use checklist_core::{
-    LightState, Panel, PanelItem, PanelItemKind, Step, StepTarget, locator, named_position, names,
-    says_light_on, switch_value,
+    LightState, Panel, PanelItem, PanelItemKind, Step, StepTarget, clauses, locator,
+    named_position, names, says_light_on, switch_value,
 };
 use serde::Serialize;
 
@@ -88,7 +88,7 @@ fn light_state(
     let state = if sets_a_switch {
         // A value naming a switch position is about the switch; its light's state is known only
         // if a clause speaks of it.
-        let clause_out = step.expect.split([',', ';']).any(|c| {
+        let clause_out = clauses(&step.expect).into_iter().any(|c| {
             (names(c, label) || names(c, "LIGHT") || names(c, "LIGHTS"))
                 && (names(c, "OUT") || names(c, "OFF"))
         });
@@ -229,6 +229,7 @@ pub fn suggest(panels: &[Panel], step: &Step) -> Suggestion {
                     at,
                     set: set[n].clone(),
                     light: None,
+                    open: false,
                 },
             ));
             continue;
@@ -250,6 +251,7 @@ pub fn suggest(panels: &[Panel], step: &Step) -> Suggestion {
                 at,
                 set: None,
                 light,
+                open: false,
             },
         ));
     }

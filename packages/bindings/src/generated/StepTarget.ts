@@ -19,4 +19,10 @@ set?: string | null,
  * The state the step expects a light in. Leave it out for a light that may cycle (window
  * heat ON lights), so a drawing never claims a state the light may not be in.
  */
-light?: LightState | null, };
+light?: LightState | null, 
+/**
+ * The step's wording names one of the item's positions, but leaves it open: a condition
+ * ("ON IF MORE THAN 1,000 LB"), an option, one engine of two, or the word belongs to
+ * something else. The drawing claims no position, and `pack check` accepts the wording.
+ */
+open?: boolean, };

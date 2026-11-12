@@ -19,6 +19,6 @@ steps:
       - slever
     targets:
       - at: "con/lo/START LEVER 1/1"
-        set: "CUTOFF"
+        open: true
       - at: "con/lo/START LEVER 2/1"
-        set: "CUTOFF"
+        open: true

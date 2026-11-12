@@ -442,6 +442,13 @@ assertion_line: 36
       "function": "Puts external power on the buses. Wait for the GRD POWER AVAILABLE light before switching on."
     },
     {
+      "id": "ovhtdet",
+      "name": "Overheat detector switches",
+      "zone": "fire",
+      "location": "Fire protection panel on the aft electronic panel, one switch for each engine: A, NORMAL or B.",
+      "function": "Chooses which detector loop warns of an engine overheat or fire. NORMAL uses both."
+    },
+    {
       "id": "firetest",
       "name": "Fire test switch",
       "zone": "fire",
@@ -1308,10 +1315,17 @@ assertion_line: 36
     },
     {
       "id": "column",
-      "name": "Control column and trim",
+      "name": "Control column",
       "zone": "yoke",
-      "location": "In front of each pilot. Main electric trim switches are on the control wheel.",
+      "location": "In front of each pilot.",
       "function": "Hold the column firmly, and use main electric trim to reduce forces."
+    },
+    {
+      "id": "stabtrim",
+      "name": "Main electric stabilizer trim switches",
+      "zone": "yoke",
+      "location": "On the outboard grip of each control wheel: two thumb switches, moved together.",
+      "function": "Trims the stabilizer nose down or nose up while held."
     },
     {
       "id": "stabwheel",

@@ -142,9 +142,9 @@ steps:
       - fd
     targets:
       - at: "gl/mcp/F/D L/1"
-        set: "OFF"
+        open: true
       - at: "gl/mcp/F/D R/1"
-        set: "OFF"
+        open: true
     non_recall: true
     confirmed_by:
       - kind: vendor-docs
@@ -174,7 +174,6 @@ steps:
     targets:
       - at: "con/atc/ALT SOURCE 1/1"
       - at: "con/atc/XPNDR/1"
-      - at: "con/atc/CODE/1"
       - at: "con/atc/MODE/1"
       - at: "con/atc/ALT SOURCE 2/1"
     non_recall: true

@@ -213,8 +213,13 @@ steps:
     expect: "ON"
     controls:
       - apubleed
+      - engbleed
     targets:
       - at: "oh/bleed/APU BLEED/1"
+        set: "ON"
+      - at: "oh/bleed/ENG BLEED 1/1"
+        set: "ON"
+      - at: "oh/bleed/ENG BLEED 2/1"
         set: "ON"
     why: Feeds APU air for ground air conditioning
     confirmed_by:
@@ -267,8 +272,11 @@ steps:
     expect: "IF AVAILABLE, CONNECT AND VERIFY ACCEPTED, THEN APU OFF"
     controls:
       - grdpwr
+      - apusw
     targets:
       - at: "oh/elecl/GRD PWR/1"
+        open: true
+      - at: "oh/apu/APU/1"
         set: "OFF"
     why: Takes over before the APU goes off
     check: Ground power on the buses

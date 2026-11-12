@@ -581,6 +581,10 @@
             }
           ]
         },
+        "open": {
+          "description": "The step's wording names one of the item's positions, but leaves it open: a condition\n(\"ON IF MORE THAN 1,000 LB\"), an option, one engine of two, or the word belongs to\nsomething else. The drawing claims no position, and `pack check` accepts the wording.",
+          "type": "boolean"
+        },
         "set": {
           "description": "The position the step sets a switch, selector, lever or handle to: one of its\n`positions`.",
           "type": [

@@ -21,7 +21,7 @@ sections:
         x: 70
         "y": 72
         controls:
-          - column
+          - stabtrim
         positions: "NOSE DOWN, NOSE UP"
         description: "Main electric stabilizer trim: two thumb switches on the outboard grip of the wheel, moved together. Spring-loaded to the center."
       - kind: push_button
@@ -29,7 +29,7 @@ sections:
         x: 190
         "y": 72
         controls:
-          - column
+          - apdisc
         description: Disengages the autopilot. On the outboard grip of the wheel.
   - id: side
     title: Oxygen mask

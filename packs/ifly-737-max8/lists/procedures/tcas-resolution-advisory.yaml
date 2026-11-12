@@ -25,9 +25,6 @@ steps:
     expect: ADJUST SMOOTHLY TO SATISFY THE RA
     controls:
       - column
-    targets:
-      - at: "seat/yoke/STAB TRIM/1"
-      - at: "seat/yoke/A/P DISENGAGE/1"
   - id: ifly-737-max8.procedures.lateral-path
     number: 3
     text: LATERAL PATH
@@ -45,8 +42,14 @@ steps:
     expect: "MAXIMUM THRUST, FLAPS 15, GEAR UP AFTER POSITIVE RATE"
     controls:
       - thrust
+      - flaplever
+      - gearlever
     targets:
       - at: "con/st/THRUST LEVERS 1 AND 2/1"
+      - at: "con/st/FLAP LEVER/1"
+        set: "15"
+      - at: "mn/ctr/LANDING GEAR LEVER/1"
+        set: "UP"
   - id: ifly-737-max8.procedures.near-the-ground
     number: 5
     text: NEAR THE GROUND

@@ -225,7 +225,7 @@ mod tests {
         for step in pack.lists.iter().flat_map(|l| &l.steps) {
             for t in step_targets(&pack, step).iter().filter(|t| t.lit) {
                 let (label, _) = label_of(&pack, t);
-                for clause in step.expect.split([',', ';']) {
+                for clause in checklist_core::clauses(&step.expect) {
                     // A clause saying both OFF and ON ("OFF WHEN BOTH LOW PRESSURE LIGHTS COME
                     // ON") is about a switch and a light; it does not say the light is out.
                     if names(clause, label) && !names(clause, "ON") {
@@ -280,8 +280,16 @@ mod tests {
             .flat_map(|l| &l.steps)
             .filter(|s| {
                 let phase = s.id.as_str().split('.').nth(1).unwrap_or_default();
+                // A control no panel draws (the control column) has nothing to show.
+                let drawn = pack
+                    .content
+                    .panels
+                    .iter()
+                    .flat_map(|p| &p.sections)
+                    .flat_map(|s| &s.items)
+                    .any(|i| i.controls.iter().any(|c| s.controls.contains(c)));
                 ["memory", "quick-reference", "procedures"].contains(&phase)
-                    && !s.controls.is_empty()
+                    && drawn
                     && step_targets(&pack, s).is_empty()
             })
             .map(|s| s.id.as_str())

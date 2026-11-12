@@ -18,10 +18,8 @@ steps:
     controls:
       - cargofire
     targets:
-      - at: "con/cf/TEST/1"
       - at: "con/cf/ARM FWD/1"
       - at: "con/cf/ARM AFT/1"
-      - at: "con/cf/DISCH/1"
     panel_lights:
       cargofire:
         - ARM FWD

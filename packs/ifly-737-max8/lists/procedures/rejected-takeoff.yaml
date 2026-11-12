@@ -39,8 +39,12 @@ steps:
     expect: "CLOSE THRUST LEVERS, DISENGAGE A/T, MAX MANUAL BRAKES OR VERIFY RTO AUTOBRAKE"
     controls:
       - thrust
+      - apdisc
+      - abrake
     targets:
       - at: "con/st/THRUST LEVERS 1 AND 2/1"
+      - at: "con/st/A/T DISENGAGE/1"
+      - at: "con/ed/AUTO BRAKE/1"
   - id: ifly-737-max8.procedures.speedbrake
     number: 5
     text: SPEEDBRAKE
@@ -64,9 +68,6 @@ steps:
     expect: CONTINUE UNTIL CERTAIN OF STOPPING ON THE RUNWAY
     controls:
       - column
-    targets:
-      - at: "seat/yoke/STAB TRIM/1"
-      - at: "seat/yoke/A/P DISENGAGE/1"
   - id: ifly-737-max8.procedures.reverse-levers
     number: 8
     text: REVERSE LEVERS

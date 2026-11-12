@@ -293,6 +293,8 @@ sections:
         label: OVHT DET 1
         x: 44
         "y": 46
+        controls:
+          - ovhtdet
         positions: "A, NORMAL, B"
         rest: "NORMAL"
         description: "Selects loop A, B, or both (NORMAL) for engine 1."
@@ -353,6 +355,8 @@ sections:
         label: OVHT DET 2
         x: 470
         "y": 46
+        controls:
+          - ovhtdet
         positions: "A, NORMAL, B"
         rest: "NORMAL"
         description: "Selects loop A, B, or both (NORMAL) for engine 2."

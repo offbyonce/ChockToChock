@@ -35,9 +35,9 @@ steps:
       - slever
     targets:
       - at: "con/lo/START LEVER 1/1"
-        set: "CUTOFF"
+        open: true
       - at: "con/lo/START LEVER 2/1"
-        set: "CUTOFF"
+        open: true
   - id: ifly-737-max8.quick-reference.engine-fire-switch-affected-engine
     number: 4
     text: "FIRE SWITCH, AFFECTED ENGINE"
@@ -46,9 +46,9 @@ steps:
       - firesw
     targets:
       - at: "con/fi/FIRE 1/1"
-        set: "PULL"
+        open: true
       - at: "con/fi/FIRE 2/1"
-        set: "PULL"
+        open: true
   - id: ifly-737-max8.quick-reference.if-the-engine-fire-switch-or-eng-overheat-light
     number: 5
     text: FIRE SWITCH OR OVERHEAT LIGHT STILL ON

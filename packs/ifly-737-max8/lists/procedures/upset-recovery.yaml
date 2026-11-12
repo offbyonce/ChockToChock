@@ -15,9 +15,6 @@ steps:
     expect: RECOVER FROM THE STALL FIRST
     controls:
       - column
-    targets:
-      - at: "seat/yoke/STAB TRIM/1"
-      - at: "seat/yoke/A/P DISENGAGE/1"
   - id: ifly-737-max8.procedures.autopilot-and-autothrottle-upset-recovery
     number: 2
     text: AUTOPILOT AND AUTOTHROTTLE
@@ -34,15 +31,21 @@ steps:
     expect: "NOSE DOWN ELEVATOR AND TRIM, REDUCE THRUST, IF NEEDED, BANK TO HELP THE NOSE COME DOWN"
     controls:
       - column
+      - stabtrim
+      - thrust
     targets:
       - at: "seat/yoke/STAB TRIM/1"
         set: "NOSE DOWN"
+      - at: "con/st/THRUST LEVERS 1 AND 2/1"
   - id: ifly-737-max8.procedures.nose-low
     number: 4
     text: NOSE LOW
     expect: "ROLL SHORTEST WAY TO WINGS LEVEL, THEN NOSE UP ELEVATOR, ADJUST THRUST AND DRAG"
     controls:
       - column
+      - thrust
+      - speedbrake
     targets:
-      - at: "seat/yoke/STAB TRIM/1"
-        set: "NOSE UP"
+      - at: "con/st/THRUST LEVERS 1 AND 2/1"
+      - at: "con/st/SPEEDBRAKE LEVER/1"
+        open: true

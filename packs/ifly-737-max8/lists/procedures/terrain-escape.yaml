@@ -33,9 +33,6 @@ steps:
     expect: "LEVEL THE WINGS, THEN PITCH UP TO 20 DEGREES TO START"
     controls:
       - column
-    targets:
-      - at: "seat/yoke/STAB TRIM/1"
-      - at: "seat/yoke/A/P DISENGAGE/1"
   - id: ifly-737-max8.procedures.speedbrakes-terrain-escape
     number: 4
     text: SPEEDBRAKES
@@ -50,17 +47,16 @@ steps:
     expect: "ROTATE TO PITCH LIMIT, STICK SHAKER OR INITIAL BUFFET"
     controls:
       - column
-    targets:
-      - at: "seat/yoke/STAB TRIM/1"
-      - at: "seat/yoke/A/P DISENGAGE/1"
   - id: ifly-737-max8.procedures.gear-and-flaps
     number: 6
     text: GEAR AND FLAPS
     expect: NO CHANGE UNTIL TERRAIN SEPARATION IS ASSURED
     controls:
       - flaplever
+      - gearlever
     targets:
       - at: "con/st/FLAP LEVER/1"
+      - at: "mn/ctr/LANDING GEAR LEVER/1"
   - id: ifly-737-max8.procedures.flight-director-terrain-escape
     number: 7
     text: FLIGHT DIRECTOR

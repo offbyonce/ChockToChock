@@ -40,6 +40,7 @@ pub use model::{
     Timer, WalkaroundPoint,
 };
 pub use positions::{
-    locate, locator, named_position, names, names_position, says_light_on, says_on, switch_value,
+    clauses, locate, locator, named_position, names, names_position, says_light_on, says_on,
+    switch_value,
 };
 pub use session::{Millis, Progress, Session, SessionError, StepState, counts};

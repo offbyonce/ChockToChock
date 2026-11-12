@@ -30,26 +30,8 @@ steps:
     controls:
       - efispanel
     targets:
-      - at: "gl/efisl/MINS/1"
-      - at: "gl/efisl/BARO/1"
-      - at: "gl/efisl/MODE/1"
-      - at: "gl/efisl/RANGE/1"
-      - at: "gl/efisl/WXR/1"
       - at: "gl/efisl/TERR/1"
-      - at: "gl/efisl/POS/1"
-      - at: "gl/efisl/STA/1"
-      - at: "gl/efisl/WPT/1"
-      - at: "gl/efisl/ARPT/1"
-      - at: "gl/efisr/MINS/1"
-      - at: "gl/efisr/BARO/1"
-      - at: "gl/efisr/MODE/1"
-      - at: "gl/efisr/RANGE/1"
-      - at: "gl/efisr/WXR/1"
       - at: "gl/efisr/TERR/1"
-      - at: "gl/efisr/POS/1"
-      - at: "gl/efisr/STA/1"
-      - at: "gl/efisr/WPT/1"
-      - at: "gl/efisr/ARPT/1"
     why: "Weather or terrain on the ND for the departure. Weather radar is not simulated in the iFly, so use TERR"
     panel_lights:
       efispanel:

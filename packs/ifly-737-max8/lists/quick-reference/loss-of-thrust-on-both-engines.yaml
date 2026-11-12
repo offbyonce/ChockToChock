@@ -62,9 +62,12 @@ steps:
     expect: "THAT START LEVER TO CUTOFF, THEN BACK TO IDLE. REPEAT IF NEEDED"
     controls:
       - engmon
+      - slever
     targets:
       - at: "mn/cd/INBOARD DU: ND AND ENGINES/1"
       - at: "con/ed/ENG/1"
+      - at: "con/lo/START LEVER 1/1"
+      - at: "con/lo/START LEVER 2/1"
   - id: ifly-737-max8.quick-reference.engine-acceleration
     number: 6
     text: ENGINE ACCELERATION
@@ -80,6 +83,11 @@ steps:
     expect: START AND PUT ON BUSES. DO NOT WAIT FOR ENGINE START
     controls:
       - apusw
+      - apugen
     targets:
       - at: "oh/apu/APU/1"
+        set: "ON"
+      - at: "oh/elecl/APU GEN/1"
+        set: "ON"
+      - at: "oh/elecl/APU GEN/2"
         set: "ON"

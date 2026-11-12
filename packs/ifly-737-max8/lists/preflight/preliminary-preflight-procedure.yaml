@@ -115,6 +115,10 @@ steps:
         set: "ON"
       - at: "aft/eng/EEC 2/1"
         set: "ON"
+      - at: "aft/eng/REVERSER COMMAND/1"
+        light: out
+      - at: "aft/eng/REVERSER AIR/GRD/1"
+        light: out
     note: "The electronic engine control protects the engine limits. Check that both show ON, with no ALTN light."
     why: Protects the engine limits
     check: Both EEC buttons show ON
@@ -655,14 +659,6 @@ steps:
     controls:
       - wheat
     targets:
-      - at: "oh/heat/ON/1"
-        light: on
-      - at: "oh/heat/ON/2"
-        light: on
-      - at: "oh/heat/ON/3"
-        light: on
-      - at: "oh/heat/ON/4"
-        light: on
       - at: "oh/heat/L SIDE/1"
         set: "ON"
       - at: "oh/heat/L FWD/1"
@@ -721,11 +717,16 @@ steps:
     expect: "ENG 1 AND 2 ON, ELEC 1 AND 2 OFF"
     controls:
       - elechyd
+      - hydpumps
     targets:
       - at: "oh/hyd/ELEC 2/1"
         set: "OFF"
       - at: "oh/hyd/ELEC 1/1"
         set: "OFF"
+      - at: "oh/hyd/ENG 1/1"
+        set: "ON"
+      - at: "oh/hyd/ENG 2/1"
+        set: "ON"
     why: "The engine pumps start with the engines. The electric pumps stay off until Before start."
     check: "Four LOW PRESSURE lights ON, two OVERHEAT lights OUT"
     confirmed_by:
@@ -900,10 +901,14 @@ steps:
     expect: "FLT ALT AND LAND ALT SET, MODE AUTO"
     controls:
       - press
+      - ldgalt
     targets:
       - at: "oh/press/FLT ALT/1"
       - at: "oh/press/MODE/1"
         set: "AUTO"
+      - at: "oh/press/FLT ALT KNOB/1"
+      - at: "oh/press/LAND ALT/1"
+      - at: "oh/press/LAND ALT KNOB/1"
     hint:
       - prefix: CRUISE FL
         field: cruise_level
@@ -1056,6 +1061,14 @@ steps:
       - at: "gl/efisr/BARO/1"
       - at: "gl/efisr/MODE/1"
         set: "MAP"
+      - at: "gl/efisl/POS/1"
+      - at: "gl/efisr/POS/1"
+      - at: "gl/efisl/STA/1"
+      - at: "gl/efisr/STA/1"
+      - at: "gl/efisl/WPT/1"
+      - at: "gl/efisr/WPT/1"
+      - at: "gl/efisl/ARPT/1"
+      - at: "gl/efisr/ARPT/1"
     quick: always
     why: Altimeter must read local QNH for departure
     check: Both altimeters show field elevation
@@ -1465,11 +1478,7 @@ steps:
     controls:
       - xpndr
     targets:
-      - at: "con/atc/ALT SOURCE 1/1"
-      - at: "con/atc/XPNDR/1"
       - at: "con/atc/CODE/1"
-      - at: "con/atc/MODE/1"
-      - at: "con/atc/ALT SOURCE 2/1"
     hint:
       - prefix: "SQUAWK "
         field: squawk
