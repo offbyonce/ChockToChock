@@ -26,8 +26,10 @@ Never rewrite an accepted record; add a new one that supersedes it.
 | [0015](0015-resting-positions.md) | Resting positions for controls a step does not use | Accepted |
 | [0016](0016-levers-handles-and-lit-lights.md) | Levers, handles, and lights a step expects on | Accepted |
 | [0017](0017-selector-dials.md) | Selector dials: every position named, at its real angle | Accepted |
-| [0018](0018-lights-and-switch-values.md) | Explicit step targets | Accepted |
+| [0018](0018-lights-and-switch-values.md) | Explicit step targets | Accepted; SEE STEP caption replaced by 0022 |
 | [0019](0019-flight-data.md) | Flight data: values, units, saved plan and import | Proposed |
-| [0020](0020-design-system.md) | A design system, enforced, before more screens | Proposed |
+| [0020](0020-design-system.md) | A design system, enforced, before more screens | Withdrawn; replaced by 0021 |
+| [0021](0021-design-system-and-layouts.md) | The design system and layouts | Proposed |
+| [0022](0022-conditional-controls-and-decision-steps.md) | Conditional controls and decision steps | Proposed |
 
 Template: Context, Decision, Consequences. Keep it under a page.

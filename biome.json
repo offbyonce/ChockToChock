@@ -11,6 +11,8 @@
       "!**/dist",
       "!apps/web/src/wasm",
       "!schemas",
+      "!docs/design/boards",
+      "!docs/design/tokens.json",
       "!target"
     ]
   },

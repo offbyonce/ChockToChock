@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Flight deck reference</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="width: 1440px; height: 900px; box-sizing: border-box; background: {{t.bg}}; color: {{t.text}}; font-family: Geist, system-ui, sans-serif; display: flex; flex-direction: column; overflow: hidden">
+
+  <header style="height: 60px; flex: none; display: flex; align-items: center; gap: 16px; padding: 0 16px; border-bottom: 1px solid {{t.line}}">
+    <a href="Checklist.dc.html" style="height: 44px; display: flex; align-items: center; gap: 8px; padding: 0 12px; border: 1px solid {{t.border}}; border-radius: 10px; background: {{t.btnBg}}; box-shadow: {{t.btnShadow}}; color: {{t.text}}; text-decoration: none; font-size: 16px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"></path></svg>Checklist</a>
+    <div style="display: flex; flex-direction: column; line-height: 1.2"><h1 style="margin: 0; font-size: 20px; font-weight: 700">Flight deck</h1><span style="font-size: 12px; color: {{t.muted}}">Every area, panel and light</span></div>
+    <div style="flex: 1"></div>
+    <button role="switch" aria-checked="false" style="height: 44px; display: flex; align-items: center; gap: 10px; padding: 0 2px; border: 0; background: transparent; color: {{t.sub}}; font: inherit; font-size: 14px">Name every panel<span style="position: relative; width: 52px; height: 30px; border-radius: 999px; background: {{t.toggleOff}}"><span style="position: absolute; top: 3px; left: 3px; width: 24px; height: 24px; border-radius: 50%; background: #ffffff; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35)"></span></span></button>
+  </header>
+
+  <div style="flex: 1; min-height: 0; display: grid; grid-template-columns: 272px minmax(0, 1fr) 456px">
+    <nav aria-label="Flight deck areas" style="border-right: 1px solid {{t.line}}; padding: 16px 12px; display: flex; flex-direction: column; gap: 2px">
+      <figure role="img" aria-label="Side view of the flight deck with the forward overhead highlighted" style="margin: 0 0 8px; background: {{p.bg}}; border: 1px solid {{p.frame}}; border-radius: 10px; padding: 6px">
+        <svg viewBox="0 0 400 210" width="100%" fill="none" stroke-linejoin="round" aria-hidden="true">
+          <path d="M400 30 L206 30 C156 30 118 42 92 62 C66 82 34 100 18 122 C6 140 10 160 28 170 C48 182 88 186 136 186 L400 186" fill="{{p.fus}}" stroke="{{p.stroke}}" stroke-width="1.5"></path>
+          <path d="M70 80 L112 50 L120 55 L80 85 Z" fill="{{p.glass}}" stroke="{{p.stroke}}"></path>
+          <g fill="{{p.seat}}" stroke="{{p.stroke}}" stroke-width="1.2"><path d="M282 150 L328 150 C333 150 335 154 333 158 L331 162 L280 162 Z"></path><path d="M318 150 L326 82 C327 74 338 74 338 82 L334 154 Z"></path><circle cx="306" cy="92" r="11"></circle></g>
+          <g fill="{{p.panel}}" stroke="{{p.stroke}}" stroke-width="1.2"><path d="M86 86 L132 84 L134 93 L90 95 Z"></path><path d="M92 96 L99 95 L110 150 L103 151 Z"></path><path d="M112 178 L112 156 L146 138 L148 178 Z"></path><path d="M148 178 L148 138 L194 138 L200 154 L200 178 Z"></path><path d="M200 178 L200 154 L256 154 L256 178 Z"></path><path d="M206 32 L264 31 L264 41 L206 42 Z"></path></g>
+          <path d="M124 46 L198 33 L200 43 L128 57 Z" fill="{{p.hiFill}}" stroke="{{p.accent}}" stroke-width="3"></path>
+        </svg>
+      </figure>
+      <a href="#" style="height: 44px; display: flex; align-items: center; padding: 0 12px; border-radius: 8px; color: {{t.sub}}; text-decoration: none; font-size: 16px">Aft overhead</a>
+      <a href="#" aria-current="true" style="height: 44px; display: flex; align-items: center; justify-content: space-between; padding: 0 12px; border-radius: 8px; background: {{t.accentSoft}}; box-shadow: inset 0 0 0 1.5px {{t.accent}}; color: {{t.strong}}; text-decoration: none; font-size: 16px; font-weight: 600">Forward overhead<span style="font-family: 'Geist Mono', monospace; font-size: 12px; font-weight: 500; color: {{t.muted}}">P5</span></a>
+      <a href="#" style="height: 44px; display: flex; align-items: center; justify-content: space-between; padding: 0 12px; border-radius: 8px; color: {{t.sub}}; text-decoration: none; font-size: 16px">Glareshield<span style="font-family: 'Geist Mono', monospace; font-size: 12px; color: {{t.muted}}">P7</span></a>
+      <a href="#" style="height: 44px; display: flex; align-items: center; justify-content: space-between; padding: 0 12px; border-radius: 8px; color: {{t.sub}}; text-decoration: none; font-size: 16px">Main panel<span style="font-family: 'Geist Mono', monospace; font-size: 12px; color: {{t.muted}}">P1–P3</span></a>
+      <a href="#" style="height: 44px; display: flex; align-items: center; justify-content: space-between; padding: 0 12px; border-radius: 8px; color: {{t.sub}}; text-decoration: none; font-size: 16px">Forward electronic<span style="font-family: 'Geist Mono', monospace; font-size: 12px; color: {{t.muted}}">P9</span></a>
+      <a href="#" style="height: 44px; display: flex; align-items: center; padding: 0 12px; border-radius: 8px; color: {{t.sub}}; text-decoration: none; font-size: 16px">Control stand</a>
+      <a href="#" style="height: 44px; display: flex; align-items: center; justify-content: space-between; padding: 0 12px; border-radius: 8px; color: {{t.sub}}; text-decoration: none; font-size: 16px">Aft electronic<span style="font-family: 'Geist Mono', monospace; font-size: 12px; color: {{t.muted}}">P8</span></a>
+    </nav>
+
+    <section aria-label="Forward overhead" style="padding: 20px 24px; display: flex; flex-direction: column; gap: 12px; min-width: 0">
+      <div style="display: flex; flex-direction: column; gap: 4px"><h2 style="margin: 0; font-size: 24px; font-weight: 700">Forward overhead</h2><span style="font-size: 14px; color: {{t.sub}}">Above the windshield, in front of your head. Look up from the seat.</span></div>
+      <figure style="margin: 0; background: {{p.bg}}; border: 1px solid {{p.frame}}; border-radius: 12px; padding: 12px 16px; display: flex; flex-direction: column; gap: 8px">
+        <svg viewBox="-28 -26 428 198" width="100%" role="img" aria-label="Forward overhead layout. The fuel panel is selected, captain side, row nearest the windshield.">
+          <g font-family="Geist, sans-serif" font-size="9" font-weight="600" fill="{{p.label}}" text-anchor="middle"><text x="186" y="-10">↑ AFT, TOWARD THE CABIN</text><text x="186" y="168">↓ FORWARD, TOWARD THE WINDSHIELD</text><text transform="translate(-14 64) rotate(-90)">CAPTAIN SIDE</text><text transform="translate(386 64) rotate(90)">F/O SIDE</text></g>
+          <g fill="{{p.panel}}" stroke="{{p.stroke}}" stroke-width="1.2">
+            <rect x="0" y="0" width="80" height="50" rx="2"></rect><rect x="0" y="53" width="80" height="26" rx="2"></rect>
+            <rect x="84" y="0" width="76" height="60" rx="2"></rect><rect x="84" y="63" width="76" height="40" rx="2"></rect><rect x="84" y="106" width="76" height="16" rx="2"></rect>
+            <rect x="164" y="0" width="36" height="102" rx="2"></rect><rect x="164" y="106" width="36" height="16" rx="2"></rect>
+            <rect x="204" y="0" width="86" height="24" rx="2"></rect><rect x="204" y="27" width="86" height="17" rx="2"></rect><rect x="204" y="47" width="86" height="19" rx="2"></rect><rect x="204" y="69" width="86" height="25" rx="2"></rect><rect x="204" y="97" width="86" height="25" rx="2"></rect>
+            <rect x="294" y="0" width="78" height="13" rx="2"></rect><rect x="294" y="16" width="78" height="22" rx="2"></rect><rect x="294" y="41" width="78" height="33" rx="2"></rect><rect x="294" y="77" width="78" height="45" rx="2"></rect>
+            <rect x="0" y="128" width="128" height="22" rx="2"></rect><rect x="132" y="128" width="40" height="22" rx="2"></rect><rect x="176" y="128" width="84" height="22" rx="2"></rect><rect x="264" y="128" width="108" height="22" rx="2"></rect>
+          </g>
+          <rect x="0" y="82" width="80" height="40" rx="2" fill="{{p.hiFill}}" stroke="{{p.accent}}" stroke-width="3"></rect>
+          <text x="40" y="106" text-anchor="middle" font-family="Geist, sans-serif" font-size="11" font-weight="700" fill="{{p.hiText}}">FUEL</text>
+        </svg>
+        <figcaption style="font-size: 12px; color: {{p.label}}">Select a panel to open it. Turn on Name every panel to label them all.</figcaption>
+      </figure>
+      <a href="#" style="min-height: 44px; display: flex; align-items: center; justify-content: space-between; padding: 0 14px; border: 1px solid {{t.border}}; border-radius: 10px; background: {{t.surface}}; color: {{t.text}}; text-decoration: none; font-size: 14px">Panels in this area, as a list<span style="color: {{t.muted}}">25 ⌄</span></a>
+      <a href="#" style="min-height: 44px; display: flex; align-items: center; justify-content: space-between; padding: 0 14px; border: 1px solid {{t.border}}; border-radius: 10px; background: {{t.surface}}; color: {{t.text}}; text-decoration: none; font-size: 14px">Light meanings for this area<span style="color: {{t.muted}}">⌄</span></a>
+    </section>
+
+    <aside aria-label="Fuel panel" style="border-left: 1px solid {{t.line}}; background: {{t.surface2}}; padding: 20px 24px; display: flex; flex-direction: column; gap: 14px; overflow: hidden">
+      <div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; font-weight: 600; color: {{t.muted}}">Selected panel</span><h3 style="margin: 0; font-size: 20px; font-weight: 700">Fuel panel</h3></div>
+      <figure style="margin: 0; background: {{p.bg}}; border: 1px solid {{p.frame}}; border-radius: 10px; padding: 10px 12px; display: flex; flex-direction: column; gap: 6px">
+        <svg viewBox="0 0 440 190" width="100%" role="img" aria-label="Fuel panel at its resting positions: all pump switches OFF, which is up. LOW PRESSURE lights drawn unlit.">
+          <defs><g id="lpd"><rect x="0.75" y="0.75" width="54.5" height="26.5" rx="2" fill="none" stroke="{{p.stroke}}" stroke-width="1.5"></rect><text x="28" y="12" text-anchor="middle" font-family="Geist, sans-serif" font-size="10" font-weight="700" fill="{{p.label}}">LOW</text><text x="28" y="23" text-anchor="middle" font-family="Geist, sans-serif" font-size="10" font-weight="700" fill="{{p.label}}">PRESSURE</text></g></defs>
+          <use href="#lpd" x="134" y="2"></use><use href="#lpd" x="250" y="2"></use>
+          <use href="#lpd" x="16" y="96"></use><use href="#lpd" x="118" y="96"></use><use href="#lpd" x="266" y="96"></use><use href="#lpd" x="368" y="96"></use>
+          <g fill="none" stroke="{{p.rest}}" stroke-width="2">
+            <rect x="155" y="38" width="14" height="30" rx="7"></rect><rect x="271" y="38" width="14" height="30" rx="7"></rect>
+            <rect x="37" y="132" width="14" height="30" rx="7"></rect><rect x="139" y="132" width="14" height="30" rx="7"></rect><rect x="287" y="132" width="14" height="30" rx="7"></rect><rect x="389" y="132" width="14" height="30" rx="7"></rect>
+            <circle cx="162" cy="46" r="5"></circle><circle cx="278" cy="46" r="5"></circle><circle cx="44" cy="140" r="5"></circle><circle cx="146" cy="140" r="5"></circle><circle cx="294" cy="140" r="5"></circle><circle cx="396" cy="140" r="5"></circle>
+          </g>
+          <g font-family="Geist, sans-serif" font-size="11" fill="{{p.label}}"><text x="174" y="47">OFF</text><text x="174" y="68">ON</text><text x="290" y="47">OFF</text><text x="290" y="68">ON</text><text x="56" y="141">OFF</text><text x="56" y="162">ON</text><text x="158" y="141">OFF</text><text x="158" y="162">ON</text><text x="306" y="141">OFF</text><text x="306" y="162">ON</text><text x="408" y="141">OFF</text><text x="408" y="162">ON</text></g>
+          <g font-family="Geist, sans-serif" font-size="12" font-weight="600" fill="{{p.text}}" text-anchor="middle"><text x="162" y="86">CTR L</text><text x="278" y="86">CTR R</text><text x="44" y="182">AFT 1</text><text x="146" y="182">FWD 1</text><text x="294" y="182">FWD 2</text><text x="396" y="182">AFT 2</text></g>
+        </svg>
+        <figcaption style="font-size: 12px; color: {{p.label}}">Resting positions. Tap a light for its meaning.</figcaption>
+      </figure>
+      <div style="display: flex; flex-direction: column; gap: 8px">
+        <span style="font-size: 14px; font-weight: 600; color: {{t.sub}}">Light meanings</span>
+        <div style="display: flex; align-items: flex-start; gap: 12px; padding: 12px; background: {{t.surface}}; border: 1px solid {{t.border}}; border-radius: 10px">
+          <span style="flex: none; font-size: 11px; font-weight: 700; line-height: 1.2; text-align: center; color: #3a2a00; background: #f2bd5c; border-radius: 3px; padding: 4px 6px">LOW<br>PRESSURE</span>
+          <span style="font-size: 14px; line-height: 1.5; color: {{t.sub}}">Amber when lit: that pump's output pressure is low.</span>
+        </div>
+      </div>
+      <div style="display: flex; flex-direction: column">
+        <span style="font-size: 14px; font-weight: 600; color: {{t.sub}}">Steps that use this panel</span>
+        <a href="Checklist.dc.html" style="min-height: 44px; display: flex; align-items: center; font-size: 14px; color: {{t.link}}; text-decoration: none">Fuel pump switches · Before start</a>
+        <a href="#" style="min-height: 44px; display: flex; align-items: center; font-size: 14px; color: {{t.link}}; text-decoration: none">Left fuel pump for the APU · APU start</a>
+      </div>
+    </aside>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["dark","light"],"default":"dark"},"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const T = {
+      dark: { bg: '#0f1218', surface: '#161b23', surface2: '#121720', border: '#2a323e', line: '#222934', text: '#e6e9ee', sub: '#b7bec9', muted: '#8b94a3', strong: '#ffffff', accent: '#4c8dff', accentSoft: '#14243c', link: '#7fb0ff', btnBg: 'transparent', btnShadow: 'none', toggleOff: '#3a4351' },
+      light: { bg: '#f5f7fa', surface: '#ffffff', surface2: '#eef1f5', border: '#d3d9e1', line: '#e2e6ec', text: '#1a1f27', sub: '#3d4552', muted: '#5b6472', strong: '#0b0f14', accent: '#2563eb', accentSoft: '#e4ecfd', link: '#1d4fd8', btnBg: '#ffffff', btnShadow: '0 1px 2px rgba(16, 24, 40, 0.10)', toggleOff: '#b9c1cc' }
+    };
+    const P = {
+      dark: { bg: '#161b23', frame: '#2a323e', panel: '#1b212b', stroke: '#6b7482', label: '#a3abb8', text: '#d5dae2', hiFill: '#163056', accent: '#4c8dff', hiText: '#ffffff', rest: '#6b7482', fus: '#12171f', seat: '#20262f', glass: '#1d2a3a' },
+      light: { bg: '#ffffff', frame: '#d3d9e1', panel: '#e3e7ec', stroke: '#8a93a0', label: '#4a5462', text: '#1a1f27', hiFill: '#d6e4fd', accent: '#2563eb', hiText: '#0b1f4d', rest: '#7a8391', fus: '#f3f5f8', seat: '#d3d9e1', glass: '#d4e3f6' }
+    };
+    const k = this.props.theme === 'light' ? 'light' : 'dark';
+    return { t: T[k], p: P[k] };
+  }
+}
+</script>
+</body>
+</html>

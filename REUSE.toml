@@ -47,3 +47,18 @@ path = ["packages/ui/src/icons/tabler/*.svg"]
 precedence = "override"
 SPDX-FileCopyrightText = "2020-2026 Paweł Kuna"
 SPDX-License-Identifier = "MIT"
+
+# The approved interface design handoff (docs/design), kept as delivered, without comment headers.
+[[annotations]]
+path = [
+    "docs/design/README.md",
+    "docs/design/rules.md",
+    "docs/design/screens.md",
+    "docs/design/coverage.md",
+    "docs/design/content-to-validate.md",
+    "docs/design/boards/**",
+    "docs/design/review/**",
+]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2026 offbyonce"
+SPDX-License-Identifier = "MIT"

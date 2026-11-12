@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Flight, SimBrief and OFP file</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="width: 1440px; height: 900px; box-sizing: border-box; background: {{t.bg}}; color: {{t.text}}; font-family: Geist, system-ui, sans-serif; display: flex; flex-direction: column; overflow: hidden">
+
+  <header style="height: 60px; flex: none; display: flex; align-items: center; gap: 16px; padding: 0 16px; border-bottom: 1px solid {{t.line}}">
+    <a href="Checklist.dc.html" style="height: 44px; display: flex; align-items: center; gap: 8px; padding: 0 12px; border: 1px solid {{t.border}}; border-radius: 10px; background: {{t.btnBg}}; box-shadow: {{t.btnShadow}}; color: {{t.text}}; text-decoration: none; font-size: 16px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"></path></svg>Checklist</a>
+    <div style="display: flex; flex-direction: column; line-height: 1.2"><h1 style="margin: 0; font-size: 20px; font-weight: 700">Flight</h1><span style="font-family: 'Geist Mono', monospace; font-size: 12px; color: {{t.muted}}">KSEA → KSFO · alternate KOAK</span></div>
+    <div style="flex: 1"></div>
+    <span style="font-size: 12px; color: {{t.muted}}">From SimBrief, 10:02</span>
+    <div role="group" aria-label="Field descriptions" style="display: flex; align-items: center; gap: 8px; font-size: 14px; color: {{t.sub}}">Descriptions
+      <div style="display: flex; background: {{t.segTrack}}; border: 1px solid {{t.segBorder}}; border-radius: 12px; padding: 2px">
+        <button aria-pressed="true" style="height: 44px; padding: 0 14px; border: 0; border-radius: 10px; background: {{t.segOn}}; box-shadow: inset 0 0 0 1.5px {{t.accent}}, {{t.segShadow}}; color: {{t.strong}}; font: inherit; font-size: 14px; font-weight: 600">On</button>
+        <button aria-pressed="false" style="height: 44px; padding: 0 14px; border: 0; border-radius: 10px; background: transparent; color: {{t.muted}}; font: inherit; font-size: 14px">Off</button>
+      </div>
+    </div>
+  </header>
+
+  <div style="flex: 1; min-height: 0; display: flex">
+    <nav aria-label="Flight sections" style="width: 232px; flex: none; box-sizing: border-box; border-right: 1px solid {{t.line}}; padding: 16px 12px; display: flex; flex-direction: column; gap: 2px">
+      <a href="#" style="height: 44px; display: flex; align-items: center; padding: 0 12px; border-radius: 8px; color: {{t.sub}}; text-decoration: none; font-size: 16px">Overview</a>
+      <a href="#" style="height: 44px; display: flex; align-items: center; padding: 0 12px; border-radius: 8px; color: {{t.sub}}; text-decoration: none; font-size: 16px">Route</a>
+      <a href="#" style="height: 44px; display: flex; align-items: center; padding: 0 12px; border-radius: 8px; color: {{t.sub}}; text-decoration: none; font-size: 16px">Fuel and weights</a>
+      <a href="#" style="height: 44px; display: flex; align-items: center; padding: 0 12px; border-radius: 8px; color: {{t.sub}}; text-decoration: none; font-size: 16px">Cruise and levels</a>
+      <a href="Weather.dc.html" style="height: 44px; display: flex; align-items: center; padding: 0 12px; border-radius: 8px; color: {{t.sub}}; text-decoration: none; font-size: 16px">Weather</a>
+      <a href="#" style="height: 44px; display: flex; align-items: center; padding: 0 12px; border-radius: 8px; color: {{t.sub}}; text-decoration: none; font-size: 16px">Clearance</a>
+      <a href="#" style="height: 44px; display: flex; align-items: center; justify-content: space-between; padding: 0 12px; border-radius: 8px; color: {{t.sub}}; text-decoration: none; font-size: 16px">Takeoff<span style="font-size: 12px; color: {{t.amber}}">2 to enter</span></a>
+      <a href="#" style="height: 44px; display: flex; align-items: center; padding: 0 12px; border-radius: 8px; color: {{t.sub}}; text-decoration: none; font-size: 16px">Approach</a>
+      <div style="height: 1px; background: {{t.line}}; margin: 8px 4px"></div>
+      <a href="Start.dc.html" style="height: 44px; display: flex; align-items: center; padding: 0 12px; border-radius: 8px; color: {{t.sub}}; text-decoration: none; font-size: 16px">Start options</a>
+      <a href="#" aria-current="true" style="height: 44px; display: flex; align-items: center; padding: 0 12px; border-radius: 8px; background: {{t.accentSoft}}; box-shadow: inset 0 0 0 1.5px {{t.accent}}; color: {{t.strong}}; text-decoration: none; font-size: 16px; font-weight: 600">SimBrief and OFP file</a>
+    </nav>
+
+    <main style="flex: 1; min-width: 0; padding: 24px 32px; display: flex; flex-direction: column; gap: 16px; overflow: hidden">
+      <div style="max-width: 1040px; display: flex; flex-direction: column; gap: 16px">
+        <div style="display: flex; flex-direction: column; gap: 4px"><h2 style="margin: 0; font-size: 24px; font-weight: 700">SimBrief and OFP file</h2><span style="font-size: 14px; color: {{t.sub}}">Bring your plan in once. Every page and step that needs a number uses it.</span></div>
+
+        <section style="background: {{t.surface}}; border: 1px solid {{t.border}}; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 16px">
+          <h3 style="margin: 0; font-size: 16px; font-weight: 600">Import from SimBrief</h3>
+          <div style="display: flex; align-items: flex-end; gap: 12px">
+            <label style="flex: 1; max-width: 360px; display: flex; flex-direction: column; gap: 6px; font-size: 12px; color: {{t.muted}}">SimBrief username or pilot ID<input placeholder="Your SimBrief username" value="" style="height: 44px; box-sizing: border-box; padding: 0 12px; background: {{t.field}}; border: 1px solid {{t.border}}; border-radius: 8px; color: {{t.strong}}; font: inherit; font-size: 16px"></label>
+            <button style="height: 44px; padding: 0 20px; border: 0; border-radius: 10px; background: {{t.accent}}; color: {{t.onAccent}}; font: inherit; font-size: 16px; font-weight: 700">Import latest flight</button>
+          </div>
+          <span style="font-size: 14px; line-height: 1.5; color: {{t.sub}}">No password. The username is saved on this device only, and the import reads your newest SimBrief plan.</span>
+          <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px">
+            <div style="display: flex; flex-direction: column; gap: 6px"><span style="font-size: 12px; font-weight: 600; color: {{t.muted}}">What's brought in</span><span style="font-size: 14px; line-height: 1.6; color: {{t.text}}">Route, runway, SID, fuel, zero fuel weight, reserves, cost index, cruise wind, ISA deviation, transition levels and the airport weather</span></div>
+            <div style="display: flex; flex-direction: column; gap: 6px"><span style="font-size: 12px; font-weight: 600; color: {{t.muted}}">Never brought in</span><span style="font-size: 14px; line-height: 1.6; color: {{t.text}}">Names, airline details and other personal fields. The full OFP text isn't stored.</span></div>
+          </div>
+        </section>
+
+        <section style="background: {{t.surface}}; border: 1px solid {{t.border}}; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 12px">
+          <h3 style="margin: 0; font-size: 16px; font-weight: 600">Offline: use a saved OFP file</h3>
+          <div style="display: flex; align-items: center; gap: 20px; padding: 24px; border: 2px dashed {{t.dash}}; border-radius: 12px; background: {{t.drop}}">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="{{t.sub}}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5"></path><path d="M12 17v-6"></path><path d="M9.5 13.5L12 11l2.5 2.5"></path></svg>
+            <div style="flex: 1; display: flex; flex-direction: column; gap: 4px"><span style="font-size: 16px; font-weight: 600">Drop a saved OFP file here</span><span style="font-size: 14px; color: {{t.sub}}">The file is read once on this device. Only the flight data listed above is kept.</span></div>
+            <button style="height: 44px; padding: 0 16px; border: 1px solid {{t.border}}; border-radius: 10px; background: {{t.btnBg}}; box-shadow: {{t.btnShadow}}; color: {{t.text}}; font: inherit; font-size: 14px; font-weight: 600">Choose file</button>
+          </div>
+        </section>
+
+        <section style="background: {{t.surface}}; border: 1px solid {{t.border}}; border-radius: 12px; padding: 16px 20px; display: flex; align-items: center; gap: 16px">
+          <div style="flex: 1; display: flex; flex-direction: column; gap: 4px"><span style="font-size: 16px; font-weight: 600">Last import</span><span style="font-size: 14px; color: {{t.sub}}">KSEA → KSFO, imported 10:02. Values you typed since then are kept unless you import again.</span></div>
+          <button style="height: 44px; padding: 0 12px; border: 0; background: transparent; color: {{t.redText}}; font: inherit; font-size: 14px">Reset flight plan</button>
+        </section>
+      </div>
+    </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["dark","light"],"default":"dark"},"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const T = {
+      dark: { bg: '#0f1218', surface: '#161b23', field: '#0f1218', border: '#2f3846', line: '#222934', text: '#e6e9ee', sub: '#b7bec9', muted: '#8b94a3', strong: '#ffffff', accent: '#4c8dff', onAccent: '#08101f', accentSoft: '#14243c', amber: '#f2bd5c', redText: '#ff8a7a', segTrack: '#121720', segBorder: '#2a323e', segOn: '#2a323e', segShadow: '0 0 0 0 transparent', btnBg: 'transparent', btnShadow: 'none', dash: '#4a5361', drop: '#121720' },
+      light: { bg: '#f5f7fa', surface: '#ffffff', field: '#ffffff', border: '#c9d0d9', line: '#e2e6ec', text: '#1a1f27', sub: '#3d4552', muted: '#5b6472', strong: '#0b0f14', accent: '#2563eb', onAccent: '#ffffff', accentSoft: '#e4ecfd', amber: '#8a5a00', redText: '#b3261e', segTrack: '#e6eaf0', segBorder: '#dde2e8', segOn: '#ffffff', segShadow: '0 1px 2px rgba(16, 24, 40, 0.14)', btnBg: '#ffffff', btnShadow: '0 1px 2px rgba(16, 24, 40, 0.10)', dash: '#a3abb8', drop: '#f5f7fa' }
+    };
+    return { t: this.props.theme === 'light' ? T.light : T.dark };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Where is this</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="position: relative; width: 1440px; height: 900px; overflow: hidden; background: {{o.bg}}; color: {{o.text}}; font-family: Geist, system-ui, sans-serif">
+  <dc-import name="Checklist" theme="{{theme}}" hint-size="1440px,900px"></dc-import>
+
+  <div role="dialog" aria-labelledby="wh-title" style="position: absolute; left: 136px; top: 300px; width: 776px; box-sizing: border-box; background: {{o.surface}}; border: 1px solid {{o.border}}; border-radius: 14px; box-shadow: {{o.shadow}}; padding: 16px 20px 18px; display: flex; flex-direction: column; gap: 12px">
+    <span aria-hidden="true" style="position: absolute; right: -7px; top: 168px; width: 12px; height: 12px; background: {{o.surface}}; border-right: 1px solid {{o.border}}; border-top: 1px solid {{o.border}}; transform: rotate(45deg)"></span>
+    <div style="display: flex; align-items: center; justify-content: space-between">
+      <h2 id="wh-title" style="margin: 0; font-size: 20px; font-weight: 700">Where is the forward overhead panel?</h2>
+      <a href="Checklist.dc.html" aria-label="Close" style="width: 44px; height: 44px; margin-right: -10px; display: flex; align-items: center; justify-content: center; color: {{o.sub}}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></a>
+    </div>
+    <p style="margin: 0; font-size: 16px; line-height: 1.5">Above the windshield, in front of your head. Look up from the seat.</p>
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px">
+      <figure style="margin: 0; background: {{p.bg}}; border: 1px solid {{p.frame}}; border-radius: 10px; padding: 8px 10px; display: flex; flex-direction: column; gap: 4px">
+        <span style="font-size: 12px; font-weight: 600; color: {{p.label}}">From the side: how high, how far</span>
+        <svg viewBox="0 0 400 210" width="100%" role="img" aria-label="Side view of the flight deck. A sight line runs from the pilot's head up and forward to the forward overhead panel, above the windshield." fill="none" stroke-linejoin="round" stroke-linecap="round">
+          <path d="M400 30 L206 30 C156 30 118 42 92 62 C66 82 34 100 18 122 C6 140 10 160 28 170 C48 182 88 186 136 186 L400 186" fill="{{p.fus}}" stroke="{{p.stroke}}" stroke-width="1.5"></path>
+          <path d="M70 80 L112 50 L120 55 L80 85 Z" fill="{{p.glass}}" stroke="{{p.stroke}}" stroke-width="1"></path>
+          <g fill="{{p.seat}}" stroke="{{p.stroke}}" stroke-width="1.2"><path d="M282 150 L328 150 C333 150 335 154 333 158 L331 162 L280 162 Z"></path><path d="M318 150 L326 82 C327 74 338 74 338 82 L334 154 Z"></path><rect x="300" y="162" width="9" height="16" rx="2"></rect><circle cx="306" cy="92" r="11"></circle></g>
+          <g fill="{{p.panel}}" stroke="{{p.stroke}}" stroke-width="1.2"><path d="M86 86 L132 84 L134 93 L90 95 Z"></path><path d="M92 96 L99 95 L110 150 L103 151 Z"></path><path d="M112 178 L112 156 L146 138 L148 178 Z"></path><path d="M148 178 L148 138 L194 138 L200 154 L200 178 Z"></path><path d="M200 178 L200 154 L256 154 L256 178 Z"></path><path d="M206 32 L264 31 L264 41 L206 42 Z"></path></g>
+          <path d="M124 46 L198 33 L200 43 L128 57 Z" fill="{{p.hiFill}}" stroke="{{p.accent}}" stroke-width="3"></path>
+          <path d="M296 88 L166 47" stroke="{{p.accent}}" stroke-width="2" stroke-dasharray="5 5"></path>
+          <circle cx="162" cy="46" r="5" fill="{{p.accent}}"></circle>
+          <g font-family="Geist, sans-serif" font-size="14" font-weight="600" fill="{{p.label}}" stroke="none"><text x="4" y="40">WINDSHIELD</text><text x="396" y="204" text-anchor="end">CABIN →</text><text x="306" y="68" text-anchor="middle">YOU</text></g>
+        </svg>
+      </figure>
+      <figure style="margin: 0; background: {{p.bg}}; border: 1px solid {{p.frame}}; border-radius: 10px; padding: 8px 10px; display: flex; flex-direction: column; gap: 4px">
+        <span style="font-size: 12px; font-weight: 600; color: {{p.label}}">From the captain seat: which side</span>
+        <svg viewBox="0 0 400 270" width="100%" role="img" aria-label="View forward from the captain seat. The forward overhead sits above the windshield.">
+          <g fill="{{p.panel}}" stroke="{{p.stroke}}" stroke-width="1.5"><path d="M70 4 L330 4 L314 34 L86 34 Z"></path><path d="M40 158 L360 158 L360 176 L40 176 Z"></path><path d="M40 180 L148 180 L148 228 L40 228 Z"></path><path d="M152 180 L248 180 L248 228 L152 228 Z"></path><path d="M252 180 L360 180 L360 228 L252 228 Z"></path><path d="M162 232 L238 232 L238 268 L162 268 Z"></path></g>
+          <g fill="{{p.glass}}" stroke="{{p.stroke}}" stroke-width="1.2"><path d="M22 96 L60 92 L64 150 L30 154 Z"></path><path d="M70 92 L194 90 L194 150 L74 150 Z"></path><path d="M206 90 L330 92 L326 150 L206 150 Z"></path><path d="M340 92 L378 96 L370 154 L336 150 Z"></path></g>
+          <path d="M86 38 L314 38 L294 86 L106 86 Z" fill="{{p.hiFill}}" stroke="{{p.accent}}" stroke-width="3"></path>
+          <g font-family="Geist, sans-serif" font-weight="600" text-anchor="middle"><text x="200" y="68" font-size="17" fill="{{p.hiText}}">FORWARD OVERHEAD</text><text x="94" y="252" font-size="14" fill="{{p.label}}">CAPTAIN SIDE</text><text x="306" y="252" font-size="14" fill="{{p.label}}">F/O SIDE</text><text x="200" y="126" font-size="14" fill="{{p.label}}">WINDSHIELD</text></g>
+        </svg>
+      </figure>
+    </div>
+    <div aria-hidden="true" style="display: flex; align-items: center; gap: 20px; font-size: 12px; color: {{o.sub}}">
+      <span style="display: flex; align-items: center; gap: 6px"><i style="width: 14px; height: 10px; background: {{p.hiFill}}; border: 2px solid {{p.accent}}; border-radius: 2px"></i>This area</span>
+      <span style="display: flex; align-items: center; gap: 6px"><i style="width: 14px; height: 10px; background: {{p.panel}}; border: 1px solid {{p.stroke}}; border-radius: 2px"></i>Other panels</span>
+      <span style="flex: 1"></span>
+      <a href="Deck.dc.html" style="min-height: 44px; display: inline-flex; align-items: center; font-size: 14px; color: {{o.link}}; text-decoration: none">Open in Flight deck</a>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["dark","light"],"default":"dark"},"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const O = {
+      dark: { bg: '#0f1218', surface: '#1b212b', border: '#34404f', text: '#e6e9ee', sub: '#b7bec9', link: '#7fb0ff', shadow: '0 24px 60px rgba(0, 0, 0, 0.55)' },
+      light: { bg: '#f5f7fa', surface: '#ffffff', border: '#d3d9e1', text: '#1a1f27', sub: '#3d4552', link: '#1d4fd8', shadow: '0 24px 60px rgba(16, 24, 40, 0.18)' }
+    };
+    const P = {
+      dark: { bg: '#161b23', frame: '#2a323e', panel: '#1b212b', stroke: '#6b7482', label: '#a3abb8', hiFill: '#163056', accent: '#4c8dff', hiText: '#ffffff', fus: '#12171f', seat: '#20262f', glass: '#1d2a3a' },
+      light: { bg: '#ffffff', frame: '#d3d9e1', panel: '#e3e7ec', stroke: '#8a93a0', label: '#4a5462', hiFill: '#d6e4fd', accent: '#2563eb', hiText: '#0b1f4d', fus: '#f3f5f8', seat: '#d3d9e1', glass: '#d4e3f6' }
+    };
+    const th = this.props.theme === 'light' ? 'light' : 'dark';
+    return { theme: th, o: O[th], p: P[th] };
+  }
+}
+</script>
+</body>
+</html>

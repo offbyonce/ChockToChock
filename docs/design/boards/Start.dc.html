@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Flight, start options</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="width: 1440px; height: 900px; box-sizing: border-box; background: {{t.bg}}; color: {{t.text}}; font-family: Geist, system-ui, sans-serif; display: flex; flex-direction: column; overflow: hidden">
+
+  <header style="height: 60px; flex: none; display: flex; align-items: center; gap: 16px; padding: 0 16px; border-bottom: 1px solid {{t.line}}">
+    <a href="Checklist.dc.html" style="height: 44px; display: flex; align-items: center; gap: 8px; padding: 0 12px; border: 1px solid {{t.border}}; border-radius: 10px; background: {{t.btnBg}}; box-shadow: {{t.btnShadow}}; color: {{t.text}}; text-decoration: none; font-size: 16px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"></path></svg>Checklist</a>
+    <div style="display: flex; flex-direction: column; line-height: 1.2"><h1 style="margin: 0; font-size: 20px; font-weight: 700">Flight</h1><span style="font-family: 'Geist Mono', monospace; font-size: 12px; color: {{t.muted}}">KSEA → KSFO · alternate KOAK</span></div>
+    <div style="flex: 1"></div>
+    <span style="font-size: 12px; color: {{t.muted}}">From SimBrief, 10:02</span>
+    <div role="group" aria-label="Field descriptions" style="display: flex; align-items: center; gap: 8px; font-size: 14px; color: {{t.sub}}">Descriptions
+      <div style="display: flex; background: {{t.segTrack}}; border: 1px solid {{t.segBorder}}; border-radius: 12px; padding: 2px">
+        <button aria-pressed="true" style="height: 44px; padding: 0 14px; border: 0; border-radius: 10px; background: {{t.segOn}}; box-shadow: inset 0 0 0 1.5px {{t.accent}}, {{t.segShadow}}; color: {{t.strong}}; font: inherit; font-size: 14px; font-weight: 600">On</button>
+        <button aria-pressed="false" style="height: 44px; padding: 0 14px; border: 0; border-radius: 10px; background: transparent; color: {{t.muted}}; font: inherit; font-size: 14px">Off</button>
+      </div>
+    </div>
+  </header>
+
+  <div style="flex: 1; min-height: 0; display: flex">
+    <nav aria-label="Flight sections" style="width: 232px; flex: none; box-sizing: border-box; border-right: 1px solid {{t.line}}; padding: 16px 12px; display: flex; flex-direction: column; gap: 2px">
+      <a href="#" style="height: 44px; display: flex; align-items: center; padding: 0 12px; border-radius: 8px; color: {{t.sub}}; text-decoration: none; font-size: 16px">Overview</a>
+      <a href="#" style="height: 44px; display: flex; align-items: center; padding: 0 12px; border-radius: 8px; color: {{t.sub}}; text-decoration: none; font-size: 16px">Route</a>
+      <a href="#" style="height: 44px; display: flex; align-items: center; padding: 0 12px; border-radius: 8px; color: {{t.sub}}; text-decoration: none; font-size: 16px">Fuel and weights</a>
+      <a href="#" style="height: 44px; display: flex; align-items: center; padding: 0 12px; border-radius: 8px; color: {{t.sub}}; text-decoration: none; font-size: 16px">Cruise and levels</a>
+      <a href="Weather.dc.html" style="height: 44px; display: flex; align-items: center; padding: 0 12px; border-radius: 8px; color: {{t.sub}}; text-decoration: none; font-size: 16px">Weather</a>
+      <a href="#" style="height: 44px; display: flex; align-items: center; padding: 0 12px; border-radius: 8px; color: {{t.sub}}; text-decoration: none; font-size: 16px">Clearance</a>
+      <a href="#" style="height: 44px; display: flex; align-items: center; justify-content: space-between; padding: 0 12px; border-radius: 8px; color: {{t.sub}}; text-decoration: none; font-size: 16px">Takeoff<span style="font-size: 12px; color: {{t.amber}}">2 to enter</span></a>
+      <a href="#" style="height: 44px; display: flex; align-items: center; padding: 0 12px; border-radius: 8px; color: {{t.sub}}; text-decoration: none; font-size: 16px">Approach</a>
+      <div style="height: 1px; background: {{t.line}}; margin: 8px 4px"></div>
+      <a href="#" aria-current="true" style="height: 44px; display: flex; align-items: center; padding: 0 12px; border-radius: 8px; background: {{t.accentSoft}}; box-shadow: inset 0 0 0 1.5px {{t.accent}}; color: {{t.strong}}; text-decoration: none; font-size: 16px; font-weight: 600">Start options</a>
+      <a href="SimBrief.dc.html" style="height: 44px; display: flex; align-items: center; padding: 0 12px; border-radius: 8px; color: {{t.sub}}; text-decoration: none; font-size: 16px">SimBrief and OFP file</a>
+    </nav>
+
+    <main style="flex: 1; min-width: 0; padding: 24px 32px; display: flex; flex-direction: column; overflow: hidden">
+      <div style="max-width: 1040px; display: flex; flex-direction: column; gap: 16px">
+        <div style="display: flex; flex-direction: column; gap: 4px"><h2 style="margin: 0; font-size: 24px; font-weight: 700">Start options</h2><span style="font-size: 14px; color: {{t.sub}}">How this flight begins. The steps adjust to match.</span></div>
+
+        <section style="background: {{t.surface}}; border: 1px solid {{t.border}}; border-radius: 12px; padding: 16px 20px; display: flex; align-items: flex-start; gap: 20px">
+          <div style="flex: 1; display: flex; flex-direction: column; gap: 4px"><span style="font-size: 16px; font-weight: 600">Exterior inspection</span><span style="font-size: 14px; line-height: 1.5; color: {{t.sub}}">The walk around the airplane before you board: 18 numbered stops on a diagram. Off skips the stage; anything you ticked is kept.</span><a href="Exterior.dc.html" style="min-height: 44px; display: inline-flex; align-items: center; align-self: flex-start; font-size: 14px; color: {{t.link}}; text-decoration: none">Preview the inspection</a></div>
+          <button role="switch" aria-checked="true" aria-label="Exterior inspection" style="height: 44px; display: flex; align-items: center; gap: 10px; padding: 0 2px; border: 0; background: transparent; color: {{t.strong}}; font: inherit; font-size: 14px; font-weight: 600">On<span style="position: relative; width: 52px; height: 30px; border-radius: 999px; background: {{t.accent}}"><span style="position: absolute; top: 3px; left: 25px; width: 24px; height: 24px; border-radius: 50%; background: #ffffff; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35)"></span></span></button>
+        </section>
+
+        <section style="background: {{t.surface}}; border: 1px solid {{t.border}}; border-radius: 12px; padding: 16px 20px; display: flex; align-items: flex-start; gap: 20px">
+          <div style="flex: 1; display: flex; flex-direction: column; gap: 4px"><span style="font-size: 16px; font-weight: 600">Power source</span><span style="font-size: 14px; line-height: 1.5; color: {{t.sub}}">On ground power, the APU starts before the Before start procedure. The Power up step asks the same question, so you can choose there too.</span></div>
+          <div style="display: flex; background: {{t.segTrack}}; border: 1px solid {{t.segBorder}}; border-radius: 12px; padding: 2px">
+            <button aria-pressed="true" style="height: 44px; padding: 0 14px; border: 0; border-radius: 10px; background: {{t.segOn}}; box-shadow: inset 0 0 0 1.5px {{t.accent}}, {{t.segShadow}}; color: {{t.strong}}; font: inherit; font-size: 14px; font-weight: 600">Ground power at the gate</button>
+            <button aria-pressed="false" style="height: 44px; padding: 0 14px; border: 0; border-radius: 10px; background: transparent; color: {{t.muted}}; font: inherit; font-size: 14px">No ground power</button>
+          </div>
+        </section>
+
+        <section style="background: {{t.surface}}; border: 1px solid {{t.border}}; border-radius: 12px; padding: 16px 20px; display: flex; align-items: flex-start; gap: 20px">
+          <div style="flex: 1; display: flex; flex-direction: column; gap: 4px"><span style="font-size: 16px; font-weight: 600">iFly panel state</span><span style="font-size: 14px; line-height: 1.5; color: {{t.sub}}">Loaded a panel state from the iFly EFB? Pick it to tick the steps it has already set and start where the airplane is. Steps it can't set, like the FMC, MCP and radios, stay open.</span></div>
+          <label style="display: flex; flex-direction: column; gap: 6px; font-size: 12px; color: {{t.muted}}">Panel state
+            <span style="position: relative; display: block"><select style="appearance: none; height: 44px; min-width: 240px; padding: 0 40px 0 12px; background: {{t.btnBgSolid}}; box-shadow: {{t.btnShadow}}; border: 1px solid {{t.border}}; border-radius: 8px; color: {{t.text}}; font: inherit; font-size: 14px"><option>Choose a panel state</option><option>Cold &amp; Dark</option><option>GPU Connected</option><option>On GRD Power</option><option>On APU Power</option><option>Before Engine Start</option><option>Ready to Taxi</option><option>On Runway</option></select><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="{{t.muted}}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="position: absolute; right: 12px; top: 14px; pointer-events: none"><path d="M6 9l6 6 6-6"></path></svg></span>
+          </label>
+        </section>
+
+        <section style="background: {{t.surface}}; border: 1px solid {{t.border}}; border-radius: 12px; padding: 16px 20px; display: flex; align-items: flex-start; gap: 20px">
+          <div style="flex: 1; display: flex; flex-direction: column; gap: 4px"><span style="font-size: 16px; font-weight: 600">Turnaround</span><span style="font-size: 14px; line-height: 1.5; color: {{t.sub}}">Next leg in the same airplane. Starts from the turnaround steps instead of cold and dark.</span></div>
+          <button role="switch" aria-checked="false" aria-label="Turnaround" style="height: 44px; display: flex; align-items: center; gap: 10px; padding: 0 2px; border: 0; background: transparent; color: {{t.sub}}; font: inherit; font-size: 14px; font-weight: 600">Off<span style="position: relative; width: 52px; height: 30px; border-radius: 999px; background: {{t.toggleOff}}"><span style="position: absolute; top: 3px; left: 3px; width: 24px; height: 24px; border-radius: 50%; background: #ffffff; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35)"></span></span></button>
+        </section>
+      </div>
+    </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["dark","light"],"default":"dark"},"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const T = {
+      dark: { bg: '#0f1218', surface: '#161b23', border: '#2f3846', line: '#222934', text: '#e6e9ee', sub: '#b7bec9', muted: '#8b94a3', strong: '#ffffff', accent: '#4c8dff', accentSoft: '#14243c', link: '#7fb0ff', amber: '#f2bd5c', segTrack: '#121720', segBorder: '#2a323e', segOn: '#2a323e', segShadow: '0 0 0 0 transparent', btnBg: 'transparent', btnBgSolid: '#0f1218', btnShadow: 'none', toggleOff: '#3a4351' },
+      light: { bg: '#f5f7fa', surface: '#ffffff', border: '#c9d0d9', line: '#e2e6ec', text: '#1a1f27', sub: '#3d4552', muted: '#5b6472', strong: '#0b0f14', accent: '#2563eb', accentSoft: '#e4ecfd', link: '#1d4fd8', amber: '#8a5a00', segTrack: '#e6eaf0', segBorder: '#dde2e8', segOn: '#ffffff', segShadow: '0 1px 2px rgba(16, 24, 40, 0.14)', btnBg: '#ffffff', btnBgSolid: '#ffffff', btnShadow: '0 1px 2px rgba(16, 24, 40, 0.10)', toggleOff: '#b9c1cc' }
+    };
+    return { t: this.props.theme === 'light' ? T.light : T.dark };
+  }
+}
+</script>
+</body>
+</html>

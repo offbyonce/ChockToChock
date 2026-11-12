@@ -4,7 +4,7 @@ SPDX-License-Identifier: MIT
 -->
 # 0020: A design system, enforced, before more screens
 
-Date: 2026-11-12. Status: proposed. Changes the bar set in the Phase 2 brief: 3.0 stays the
+Date: 2026-11-12. Status: withdrawn; replaced by [0021](0021-design-system-and-layouts.md). Changes the bar set in the Phase 2 brief: 3.0 stays the
 reference for content and features, but not for layout quality.
 
 ## Context
