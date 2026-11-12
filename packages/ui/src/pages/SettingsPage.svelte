@@ -146,7 +146,7 @@ saves them on the device, and batch 7 adds the rest.
   .seg button {
     min-width: 0;
     min-height:  var(--size-touch-min);
-    padding: 0 var(--space-1);
+    padding: 0 var(--space-3);
     border-radius: var(--radius-control);
     color: var(--color-text-muted);
     font-weight: var(--weight-medium);
@@ -160,7 +160,7 @@ saves them on the device, and batch 7 adds the rest.
     display: flex;
     justify-content: flex-end;
   }
-  @media (max-width: 600px) {
+  @media (max-width: 599px) {
     .set {
       grid-template-columns: 1fr;
     }

@@ -121,7 +121,7 @@ from the pack, and the zone marked by a thicker outline, fill and bold label as 
         <text
           class="edge group"
           x={bounds.x0 - (sides && !short ? 23 : 8)}
-          y={(g.y0 + g.y1) / 2 + (n - (g.lines.length - 1) / 2) * ((PX.edge * 1.15) / k)}
+          y={(g.y0 + g.y1) / 2 + (n - (g.lines.length - 1) / 2) * ((PX.edge * page * 1.15) / k)}
           style:text-anchor="end"
           style:font-size="{(PX.edge * page) / k}px">{line}</text
         >

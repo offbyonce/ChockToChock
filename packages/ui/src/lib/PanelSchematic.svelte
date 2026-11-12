@@ -11,7 +11,7 @@ smallest size that keeps 11 px labels, scrolls sideways, and offers a full-width
 -->
 <script lang="ts">
   import type { ItemTarget, Panel, PanelSection as Section } from "@chocktochock/bindings";
-  import { drawingScale, K, layoutSection, positionsOf } from "./panel-layout";
+  import { drawingScale, halfWidth, K, layoutSection, positionsOf } from "./panel-layout";
   import PanelSection from "./PanelSection.svelte";
   import Self from "./PanelSchematic.svelte";
 
@@ -125,18 +125,23 @@ smallest size that keeps 11 px labels, scrolls sideways, and offers a full-width
   let wrap = $state<HTMLDivElement | null>(null);
   $effect(() => {
     if (!wrap || !scale.overflow) return;
-    const xs = drawn.flatMap((s) =>
-      s.items.flatMap((it, i) => (targets.some((t) => t.section === s.id && t.item === i) ? [s.x + it.x] : [])),
+    // The step's controls, edge to edge (a screen wider than the card counts from its left edge).
+    const spans = drawn.flatMap((s) =>
+      s.items.flatMap((it, i) =>
+        targets.some((t) => t.section === s.id && t.item === i)
+          ? [[s.x + it.x - halfWidth(it), s.x + it.x + halfWidth(it)] as const]
+          : [],
+      ),
     );
-    if (!xs.length) return;
-    // The step's controls centered when they fit across; otherwise the first of them at the left,
-    // so the view opens on a control the step asks for, never on empty panel.
-    const [first, last] = [Math.min(...xs), Math.max(...xs)];
-    const span = (last - first) * scale.k;
+    if (!spans.length) return;
+    // Centered when they fit across; otherwise the first of them at the left edge, so the view
+    // opens on a control the step asks for, never on empty panel.
+    const [first, last] = [Math.min(...spans.map((x) => x[0])), Math.max(...spans.map((x) => x[1]))];
     const room = wrap.clientWidth;
-    const at = span <= room * 0.8 ? (first + last) / 2 : first;
+    const fits = (last - first) * scale.k <= room;
+    const at = fits ? (first + last) / 2 : first;
     const px = (at - view.box.x) * scale.k;
-    wrap.scrollLeft = span <= room * 0.8 ? px - room / 2 : px - room * 0.15;
+    wrap.scrollLeft = fits ? px - room / 2 : px - 24;
   });
 
   let sheet = $state<HTMLDialogElement | null>(null);

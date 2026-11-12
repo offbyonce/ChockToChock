@@ -49,10 +49,11 @@ function css(path: string): string {
 /** Raw sizes and colors in some CSS, and media queries off the breakpoints. */
 export function violations(source: string): string[] {
   const out: string[] = [];
-  for (const m of source.matchAll(/@media[^{]*\(\s*(?:min|max)-width:\s*(\d+)px\s*\)/g)) {
-    const w = Number(m[1]);
-    // A max-width query sits one pixel under a breakpoint.
-    if (!BREAKPOINTS.includes(w) && !BREAKPOINTS.includes(w + 1)) out.push(`breakpoint ${w}px`);
+  for (const m of source.matchAll(/\((min|max)-width:\s*(\d+)px\s*\)/g)) {
+    const w = Number(m[2]);
+    // min-width sits on a breakpoint; max-width one pixel under it, so the two never overlap.
+    const ok = m[1] === "min" ? BREAKPOINTS.includes(w) : BREAKPOINTS.includes(w + 1);
+    if (!ok) out.push(`breakpoint ${m[1]}-width ${w}px`);
   }
   const body = source.replace(/@media[^{]*\{/g, "{");
   for (const m of body.matchAll(/([a-z-]+)\s*:\s*([^;{}]+);/g)) {
@@ -83,7 +84,11 @@ describe("design tokens", () => {
       "font: 500",
     ]);
     expect(violations("@media (max-width: 760px) { a { gap: var(--space-2); } }")).toEqual([
-      "breakpoint 760px",
+      "breakpoint max-width 760px",
+    ]);
+    // A max-width on the breakpoint itself overlaps the min-width query at that width.
+    expect(violations("@media (max-width: 600px) { a { gap: var(--space-2); } }")).toEqual([
+      "breakpoint max-width 600px",
     ]);
     expect(violations("@media (max-width: 899px) { a { margin: 0; gap: var(--space-2); } }")).toEqual([]);
   });

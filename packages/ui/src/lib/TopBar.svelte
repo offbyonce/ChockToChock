@@ -174,7 +174,7 @@ red Emergency button. Stage tabs hide in narrow windows; the menu has them there
       display: none;
     }
   }
-  @media (max-width: 900px) {
+  @media (max-width: 899px) {
     .stages {
       display: none;
     }
@@ -182,7 +182,7 @@ red Emergency button. Stage tabs hide in narrow windows; the menu has them there
       margin-right: auto;
     }
   }
-  @media (max-width: 600px) {
+  @media (max-width: 599px) {
     .brand {
       display: none;
     }

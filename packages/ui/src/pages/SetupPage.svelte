@@ -104,7 +104,7 @@ state picker comes with panel states in batch 3 (decision 0019).
   .seg button {
     min-width: 0;
     min-height:  var(--size-touch-min);
-    padding: 0 var(--space-1);
+    padding: 0 var(--space-3);
     border-radius: var(--radius-control);
     color: var(--color-text-muted);
     font-weight: var(--weight-medium);
@@ -157,12 +157,12 @@ state picker comes with panel states in batch 3 (decision 0019).
     justify-content: flex-end;
     margin-top: var(--space-4);
   }
-  @media (max-width: 900px) {
+  @media (max-width: 899px) {
     .sgrid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
-  @media (max-width: 600px) {
+  @media (max-width: 599px) {
     .set,
     .sgrid {
       grid-template-columns: 1fr;

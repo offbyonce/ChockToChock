@@ -186,7 +186,7 @@ started, a filled circle with a check when complete, and a dashed ring when a st
       display: none;
     }
   }
-  @media (max-width: 600px) {
+  @media (max-width: 599px) {
     .saved {
       display: none;
     }

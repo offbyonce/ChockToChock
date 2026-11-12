@@ -375,7 +375,7 @@ with the words "Skipped, still open". The quick level shows the item and value o
   .large .val {
     font-size: var(--font-size-body);
   }
-  @media (max-width: 600px) {
+  @media (max-width: 599px) {
     .val {
       width: 100%;
       max-width: 100%;

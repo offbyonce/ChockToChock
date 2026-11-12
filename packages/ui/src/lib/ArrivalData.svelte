@@ -36,19 +36,15 @@ fill in. The core says which phase shows it (decision 0019).
   header b {
     font-weight: var(--weight-semibold);
   }
-  /* 3.0's five-field row: four narrow fields and a wider one for minimums with its unit choice. */
+  /* Three fields across: five no longer fit beside the side pane with 44 px fields (batch 4
+     redesigns this form on the Flight pages). */
   .sgrid5 {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr)) minmax(max-content, 1.4fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: var(--space-4);
     padding: var(--space-4);
   }
-  @media (max-width: 1439px) {
-    .sgrid5 {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-  }
-  @media (max-width: 600px) {
+  @media (max-width: 599px) {
     .sgrid5 {
       grid-template-columns: 1fr;
     }

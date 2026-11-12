@@ -113,7 +113,7 @@ two-way unit choice beside it, and a help line. Every change goes to the core as
   .mode button {
     min-width: var(--size-touch-min);
     height: 100%;
-    padding: 0 var(--space-2);
+    padding: 0 var(--space-3);
     border-radius: var(--radius-small);
     color: var(--color-text-muted);
     font-size: var(--font-size-body);

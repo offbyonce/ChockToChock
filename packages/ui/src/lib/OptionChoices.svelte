@@ -110,7 +110,7 @@ applies the option in Rust, which decides what shows.
     box-shadow: inset 0 0 0 var(--size-focus-ring) var(--color-accent);
     color: var(--color-text);
   }
-  @media (max-width: 600px) {
+  @media (max-width: 599px) {
     .cards,
     .row {
       grid-template-columns: 1fr;

@@ -368,7 +368,7 @@ first. Tapping one part of the summary opens the pop-out on that part's field.
     border-color: var(--color-danger-text);
     color: var(--color-danger-text);
   }
-  @media (max-width: 600px) {
+  @media (max-width: 599px) {
     .fsum {
       overflow: hidden;
       text-overflow: ellipsis;
