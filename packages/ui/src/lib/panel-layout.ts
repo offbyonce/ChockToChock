@@ -48,7 +48,8 @@ export function half(item: PanelItem): number {
     case "lever":
       return 18;
     case "handle":
-      return 12;
+      // The grip reaches 14.5 below the center at its last position; the name sits clear of it.
+      return 16;
     default:
       return (item.height ?? 30) / 2;
   }

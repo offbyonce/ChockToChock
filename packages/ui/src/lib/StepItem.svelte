@@ -112,6 +112,10 @@ with the words "Skipped, still open". The quick level shows the item and value o
           <StepDetail {index} {step} />
           {#if place?.control}
             <p class="narrow where"><b>Where</b> · {place.control.location}</p>
+            <!-- What the side panel tells on wide screens; 3.0 showed it as the step's Why. -->
+            {#if !step.why && place.control.function}
+              <p class="narrow where"><b>What it does</b> · {place.control.function}</p>
+            {/if}
           {/if}
           {#if place}
             <button class="btn quiet narrow" type="button" aria-expanded={mapOpen} onclick={() => (mapOpen = !mapOpen)}>

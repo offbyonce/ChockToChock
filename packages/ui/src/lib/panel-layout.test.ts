@@ -3,7 +3,7 @@
 
 import type { PanelItem, PanelSection } from "@chocktochock/bindings";
 import { describe, expect, it } from "vitest";
-import { knobY, layoutSection, nameFit, TOGGLE } from "./panel-layout";
+import { half, knobY, layoutSection, leverY, nameFit, TOGGLE } from "./panel-layout";
 import { em, widest } from "./text-width";
 
 const lever = (label: string, x: number) =>
@@ -245,5 +245,22 @@ describe("selector angles", () => {
       expect(layout.items.get(0)?.positions).toHaveLength(8);
       expect(layout.items.get(1)?.positions).toHaveLength(7);
     }
+  });
+});
+
+describe("handle", () => {
+  it("puts a handle's name clear of its grip at the last position", () => {
+    // The PARKING BRAKE name touched the grip at SET.
+    const handle = {
+      kind: "handle",
+      label: "PARKING BRAKE",
+      x: 0,
+      y: 0,
+      controls: [],
+      positions: "RELEASED, SET",
+      description: "",
+    } as unknown as PanelItem;
+    const gripBottom = leverY(1, 2) + 5;
+    expect(half(handle) + 3 - gripBottom).toBeGreaterThanOrEqual(2);
   });
 });

@@ -82,7 +82,7 @@ the card; text keeps 3.0's sizes.
 
   /**
    * The crops to draw, each a band for every drawn section. Sections drawn together show whole,
-   * and so does a section drawn alone that is at most half as wide again as the card can show (it
+   * and so does a section drawn alone that is at most a tenth wider than the card can show (it
    * scrolls sideways to the step's controls). A wider one is divided across into parts that do not
    * overlap, and the parts that hold the step's controls are drawn one under the other.
    */
@@ -103,7 +103,7 @@ the card; text keeps 3.0's sizes.
     const mine = only ? only.items.filter((_, i) => targets.some((t) => t.section === only.id && t.item === i)) : [];
     if (!only || !mine.length) return [new Map(group.map((s) => [s.id, wholeOf(s)]))];
     const rows = (ys: number[]) => ({ ...wholeOf(only), ...rowsAround(only, ys) });
-    if (only.width <= room * 1.5) return [new Map([[only.id, rows(mine.map((it) => it.y))]])];
+    if (only.width <= room * 1.1) return [new Map([[only.id, rows(mine.map((it) => it.y))]])];
     const parts = Math.ceil(only.width / room);
     const step = only.width / parts;
     const out: Map<string, Band>[] = [];
@@ -147,7 +147,7 @@ the card; text keeps 3.0's sizes.
    * what it shows (its controls and labels, with room for its title), so the drawing fills the
    * card instead of the section's empty corners.
    */
-  function sizeAt(group: Section[], bands: Map<string, Band>, kText: number) {
+  function sizeAt(group: Section[], bands: Map<string, Band>, kText: number, titled = true) {
     const frames = new Map<string, Band | undefined>();
     let box: { x: number; y: number; w: number; h: number };
     const only = group.length === 1 ? group[0] : undefined;
@@ -155,10 +155,13 @@ the card; text keeps 3.0's sizes.
       const band = bands.get(only.id) ?? wholeOf(only);
       const e = layoutFor(only, band, kText, -1000).extent;
       // Fitted to what is drawn, even where a control at the crop's edge reaches past it.
-      const x0 = e.x0 - 8;
-      const titleW = 16 + em(only.title.toUpperCase()) * (PX.title / kText);
-      // Equal margins on every side; the title sits in the top one.
-      const f = { x0, x1: Math.max(e.x1 + 8, x0 + titleW), y0: e.y0 - 22, y1: e.y1 + 8 };
+      // A part of a divided section spans its whole band, so the parts line up one under another.
+      const part = band.x0 > 0 || band.x1 < only.width;
+      const x0 = part ? Math.min(band.x0, e.x0 - 8) : e.x0 - 8;
+      const titleW = titled ? 16 + em(only.title.toUpperCase()) * (PX.title / kText) : 0;
+      const x1 = Math.max(part ? Math.max(band.x1, e.x1 + 8) : e.x1 + 8, x0 + titleW);
+      // Equal margins on every side; the title, when drawn, sits in the top one.
+      const f = { x0, x1, y0: e.y0 - (titled ? 22 : 8), y1: e.y1 + 8 };
       frames.set(only.id, f);
       box = { x: only.x + f.x0 - 2, y: only.y + f.y0 - 2, w: f.x1 - f.x0 + 4, h: f.y1 - f.y0 + 4 };
     } else {
@@ -173,7 +176,27 @@ the card; text keeps 3.0's sizes.
     }
     return { bands, frames, box, k: K };
   }
-  let views = $derived(crops.map((c) => ({ ...sizeAt(c.group, c.bands, K), group: c.group })));
+  // Only the first part of a divided section carries its title; the rest continue it.
+  let views = $derived.by(() => {
+    const vs = crops.map((c, n) => {
+      const titled = n === 0 || crops[n - 1]?.group !== c.group;
+      return { ...sizeAt(c.group, c.bands, K, titled), group: c.group, titled };
+    });
+    // The parts of a divided section share one width, so they line up one under another.
+    for (const g of new Set(vs.map((v) => v.group))) {
+      const parts = vs.filter((v) => v.group === g && g.length === 1);
+      if (parts.length < 2) continue;
+      const wide = Math.max(...parts.map((v) => v.box.w));
+      for (const v of parts) {
+        const id = g[0]?.id ?? "";
+        const f = v.frames.get(id);
+        const grow = wide - v.box.w;
+        if (f) v.frames.set(id, { ...f, x0: f.x0 - grow / 2, x1: f.x1 + grow / 2 });
+        v.box = { ...v.box, x: v.box.x - grow / 2, w: wide };
+      }
+    }
+    return vs;
+  });
 
   /** A drawing wider than the card starts scrolled to the step's controls. */
   let wrap = $state<HTMLDivElement | null>(null);
@@ -211,7 +234,7 @@ the card; text keeps 3.0's sizes.
       aria-label="{title} panel, schematic{views.length > 1 ? `, part ${n + 1} of ${views.length}` : ''}.{described ? ` This step: ${described}.` : ''}"
     >
       {#each v.group as s (s.id)}
-        <PanelSection section={s} {targets} {guardClosed} band={v.bands.get(s.id) ?? wholeOf(s)} frame={v.frames.get(s.id)} k={kText} />
+        <PanelSection section={s} {targets} {guardClosed} band={v.bands.get(s.id) ?? wholeOf(s)} frame={v.frames.get(s.id)} titled={v.titled} k={kText} />
       {/each}
     </svg>
   {/each}

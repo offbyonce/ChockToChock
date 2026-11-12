@@ -52,7 +52,7 @@ const pack = {
           check: "Voltage shows",
         },
         // No number in the pack, as for some real steps; the shown number comes from Rust.
-        { id: "standby", text: "STANDBY POWER", expect: "AUTO" },
+        { id: "standby", text: "STANDBY POWER", expect: "AUTO", controls: ["stby"] },
       ],
     },
   ],
@@ -74,7 +74,18 @@ const pack = {
       stages: [],
       phases: [],
     },
-    controls: null,
+    controls: {
+      zones: [{ id: "elec", area: "Forward overhead", title: "Electrical", short_title: "ELEC" }],
+      controls: [
+        {
+          id: "stby",
+          name: "Standby power switch",
+          zone: "elec",
+          location: "Forward overhead.",
+          function: "Powers the standby bus.",
+        },
+      ],
+    },
     panels: [],
   },
 } as unknown as FlatPack;
@@ -222,6 +233,17 @@ describe("App", () => {
     ).toBe("true");
   });
 
+  it("shows what a control does on a step without a Why, where the side panel is hidden", async () => {
+    // 3.0 showed it as the step's Why; on tablets the step had none.
+    render(App, { context: hostContext(host()) });
+    await screen.findByRole("heading", { level: 1, name: "Power up" });
+    const row = [...document.querySelectorAll(".it")].find((el) => el.textContent?.includes("STANDBY POWER"));
+    const chev = row?.querySelector(".chev") as HTMLElement | null;
+    if (chev && !document.querySelector("p.where")) await fireEvent.click(chev);
+    const where = [...document.querySelectorAll("p.where")].map((p) => p.textContent);
+    expect(where, "the expanded step's narrow lines").toContain("What it does · Powers the standby bus.");
+  });
+
   it("shows a list's When and Why above its steps, as 3.0 does", async () => {
     // Emergency lists carried a Why in the pack that the card never showed.
     const { container } = render(App, { context: hostContext(host()) });
@@ -240,8 +262,8 @@ describe("App", () => {
     expect(screen.getByText("Power up · Step 2 of 2")).toBeTruthy();
     expect(screen.getByRole("button", { name: "Confirmed, next step" })).toBeTruthy();
     expect((screen.getByRole("button", { name: "Back" }) as HTMLButtonElement).disabled).toBe(false);
-    // The demo steps have no control on the map, so Flow view offers no "Where is this?".
-    expect(screen.queryByText("Where is this?")).toBeNull();
+    // The standby step's control has a place, so Flow view offers "Where is this?".
+    expect(screen.getByText("Where is this?")).toBeTruthy();
     // Nor does the step set a control, so the hint does not ask to set it.
     expect(screen.getByText("Check it, then confirm.")).toBeTruthy();
     expect(screen.queryByText("Set it, check it, then confirm.")).toBeNull();

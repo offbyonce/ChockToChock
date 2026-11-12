@@ -22,6 +22,7 @@ however large the drawing is.
     guardClosed,
     band,
     frame,
+    titled = true,
     k,
   }: {
     section: PanelSection;
@@ -31,6 +32,8 @@ however large the drawing is.
     band: { y0: number; y1: number; x0: number; x1: number };
     /** The outline drawn around the controls, fitted to them; by default the band and labels. */
     frame?: { y0: number; y1: number; x0: number; x1: number } | undefined;
+    /** The section's title is drawn; a later part of a divided section continues without it. */
+    titled?: boolean;
     /** Screen pixels per drawing unit, for the fixed text sizes. */
     k: number;
   } = $props();
@@ -92,7 +95,7 @@ however large the drawing is.
 
 <g transform="translate({section.x} {section.y})">
   <rect class="frame" x={left} y={top} width={right - left} height={frameBottom - top} rx="3" />
-  <text class="title" x={left + 8} y={top + 13} style:font-size={fs(PX.title * layout.scale)}>{section.title.toUpperCase()}</text>
+  {#if titled}<text class="title" x={left + 8} y={top + 13} style:font-size={fs(PX.title * layout.scale)}>{section.title.toUpperCase()}</text>{/if}
   {#each shown as { item, i } (i)}
     {@const on = byItem.has(i)}
     {@const target = targetOf(i, item)}

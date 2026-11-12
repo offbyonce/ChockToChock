@@ -183,7 +183,7 @@ describe("PanelSchematic", () => {
     const lights = {
       id: "con",
       title: "Console",
-      width: 300,
+      width: 250,
       height: 100,
       sections: [
         {
@@ -191,7 +191,7 @@ describe("PanelSchematic", () => {
           title: "Parking brake",
           x: 0,
           y: 0,
-          width: 300,
+          width: 250,
           height: 100,
           items: [
             {
@@ -444,5 +444,40 @@ describe("PanelSchematic", () => {
     };
     expect(sizeOf(120)).toBeCloseTo(1.8, 2);
     expect(sizeOf(300)).toBeCloseTo(1.8, 2);
+  });
+
+  it("draws a wide section's parts lined up, with the title only on the first", () => {
+    const item = (label: string, x: number) =>
+      ({ kind: "push_button", label, x, y: 40, controls: ["c"], description: "" }) as unknown;
+    const panel = {
+      id: "gl",
+      title: "Glareshield",
+      width: 700,
+      height: 100,
+      sections: [
+        {
+          id: "mcp",
+          title: "Mode control panel",
+          x: 0,
+          y: 0,
+          width: 660,
+          height: 80,
+          items: [item("VNAV", 60), item("APP", 600)],
+        },
+      ],
+    } as unknown as Panel;
+    const { container } = render(PanelSchematic, {
+      panel,
+      focus: ["mcp"],
+      targets: [
+        { section: "mcp", item: 0, position: null, lit: false },
+        { section: "mcp", item: 1, position: null, lit: false },
+      ],
+    });
+    const svgs = [...container.querySelectorAll("svg.schematic")];
+    expect(svgs).toHaveLength(2);
+    expect(svgs.map((s) => s.querySelectorAll(".title").length)).toEqual([1, 0]);
+    const widths = svgs.map((s) => Number((s.getAttribute("viewBox") ?? "").split(" ")[2]));
+    expect(Math.abs((widths[0] ?? 0) - (widths[1] ?? 0))).toBeLessThan(1);
   });
 });
