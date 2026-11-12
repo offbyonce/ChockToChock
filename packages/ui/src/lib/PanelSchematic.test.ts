@@ -475,11 +475,12 @@ describe("PanelSchematic", () => {
       ],
     });
     const svgs = [...container.querySelectorAll("svg.schematic")];
-    expect(svgs).toHaveLength(2);
-    // The card's caption names a lone section, so neither part repeats its title.
-    expect(svgs.map((s) => s.querySelectorAll(".title").length)).toEqual([0, 0]);
+    // Every part is drawn (660 units across, 240 to a part, so three).
+    expect(svgs).toHaveLength(3);
+    // The card's caption names a lone section, so no part repeats its title.
+    expect(svgs.map((s) => s.querySelectorAll(".title").length)).toEqual([0, 0, 0]);
     const widths = svgs.map((s) => Number((s.getAttribute("viewBox") ?? "").split(" ")[2]));
-    expect(Math.abs((widths[0] ?? 0) - (widths[1] ?? 0))).toBeLessThan(1);
+    expect(Math.max(...widths) - Math.min(...widths)).toBeLessThan(1);
   });
 
   it("rests a step's switch where the pack says when the step leaves its position open", () => {
@@ -520,5 +521,63 @@ describe("PanelSchematic", () => {
     const knob = container.querySelector(".knob.rest");
     expect(knob).not.toBeNull();
     expect(container.querySelector(".knob.unknown")).toBeNull();
+  });
+
+  it("draws every part of a divided section, not only the parts with the step's controls", () => {
+    // V/S, CMD A, CWS A and the disengage bar vanished from the MCP when the step used none.
+    const item = (label: string, x: number) =>
+      ({ kind: "push_button", label, x, y: 40, controls: ["c"], description: "" }) as unknown;
+    const panel = {
+      id: "gl",
+      title: "Glareshield",
+      width: 800,
+      height: 100,
+      sections: [
+        {
+          id: "mcp",
+          title: "Mode control panel",
+          x: 0,
+          y: 0,
+          width: 760,
+          height: 80,
+          items: [item("VNAV", 60), item("V/S", 700)],
+        },
+      ],
+    } as unknown as Panel;
+    render(PanelSchematic, {
+      panel,
+      focus: ["mcp"],
+      targets: [{ section: "mcp", item: 0, position: null, lit: false }],
+    });
+    expect(screen.getByText("V/S")).toBeTruthy();
+  });
+
+  it("puts the part with the step's control first, so it is in first view", () => {
+    // The captain displays' inboard display fell below the outboard one when every part was drawn.
+    const item = (label: string, x: number) =>
+      ({ kind: "push_button", label, x, y: 40, controls: ["c"], description: "" }) as unknown;
+    const panel = {
+      id: "mn",
+      title: "Main panel",
+      width: 800,
+      height: 100,
+      sections: [
+        {
+          id: "cd",
+          title: "Captain displays",
+          x: 0,
+          y: 0,
+          width: 760,
+          height: 80,
+          items: [item("OUTBD", 60), item("INBD", 700)],
+        },
+      ],
+    } as unknown as Panel;
+    const { container } = render(PanelSchematic, {
+      panel,
+      focus: ["cd"],
+      targets: [{ section: "cd", item: 1, position: null, lit: false }],
+    });
+    expect(container.querySelector("svg.schematic")?.textContent).toContain("INBD");
   });
 });

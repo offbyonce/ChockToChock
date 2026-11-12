@@ -106,13 +106,17 @@ the card; text keeps 3.0's sizes.
     if (only.width <= room * 1.1) return [new Map([[only.id, rows(mine.map((it) => it.y))]])];
     const parts = Math.ceil(only.width / room);
     const step = only.width / parts;
-    const out: Map<string, Band>[] = [];
+    const out: { step: boolean; band: Map<string, Band> }[] = [];
     for (let n = 0; n < parts; n++) {
       const [x0, x1] = [n * step, (n + 1) * step];
+      // Every part is drawn, so the whole section is there as on the panel; a part with none of
+      // the step's controls keeps the rows the step's controls are in.
       const here = mine.filter((it) => it.x >= x0 && it.x < x1);
-      if (here.length) out.push(new Map([[only.id, { ...rows(here.map((it) => it.y)), x0, x1 }]]));
+      const ys = (here.length ? here : mine).map((it) => it.y);
+      out.push({ step: here.length > 0, band: new Map([[only.id, { ...rows(ys), x0, x1 }]]) });
     }
-    return out;
+    // The parts with the step's controls come first, so they are in first view.
+    return [...out.filter((p) => p.step), ...out.filter((p) => !p.step)].map((p) => p.band);
   }
 
   /** How a section's labels lay out in a band at `kText` pixels per unit, title at `titleTop`. */
