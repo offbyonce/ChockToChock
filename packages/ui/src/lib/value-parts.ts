@@ -14,3 +14,28 @@ export function fillParts(expect: string): { blanks: string; rest: string } | nu
     rest: parts.filter((p) => !p.includes("___")).join(", "),
   };
 }
+
+/**
+ * The fields of a value's blank parts, as 3.0 labeled them: each blank with the words before it
+ * and, up to the next comma, the words after it. "REQUIRED ___ KG/LBS, ON BOARD ___ KG/LBS" is
+ * REQUIRED [] KG/LBS and ON BOARD [] KG/LBS; "CDU ___, PWB ___" is CDU [] and PWB [].
+ */
+export function fields(blanks: string): { before: string; after: string }[] {
+  const pieces = blanks.split("___");
+  const out: { before: string; after: string }[] = [];
+  let before = pieces[0]?.trim() ?? "";
+  for (let i = 1; i < pieces.length; i++) {
+    const piece = pieces[i] ?? "";
+    const comma = piece.indexOf(",");
+    if (i === pieces.length - 1) {
+      out.push({ before, after: (comma < 0 ? piece : piece.slice(0, comma)).trim() });
+    } else if (comma >= 0) {
+      out.push({ before, after: piece.slice(0, comma).trim() });
+      before = piece.slice(piece.lastIndexOf(",") + 1).trim();
+    } else {
+      out.push({ before, after: "" });
+      before = piece.trim();
+    }
+  }
+  return out;
+}

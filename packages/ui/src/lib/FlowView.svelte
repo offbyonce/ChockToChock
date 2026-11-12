@@ -8,6 +8,8 @@ value on the right. The pilot confirms each step; the app never knows a switch p
 (decision 0006). At the end of the phase come the completion calls.
 -->
 <script lang="ts">
+  import BlankFields from "./BlankFields.svelte";
+  import { fillParts } from "./value-parts";
   import type { Detail, PhaseView, Step } from "@chocktochock/bindings";
   import type { PackIndex } from "../pack-index";
   import { phaseHref } from "../route.svelte";
@@ -23,6 +25,7 @@ value on the right. The pilot confirms each step; the app never knows a switch p
     onConfirm,
     onSkip,
     onMove,
+    onBlank,
   }: {
     index: PackIndex;
     view: PhaseView;
@@ -32,6 +35,8 @@ value on the right. The pilot confirms each step; the app never knows a switch p
     onConfirm: (id: string) => void;
     onSkip: (id: string) => void;
     onMove: (id: string) => void;
+    /** What the pilot typed into a step's blank. */
+    onBlank: (id: string, index: number, value: string) => void;
   } = $props();
 
   let entries = $derived(view.lists.flatMap((list) => list.steps.map((row, i) => ({ list, row, i }))));
@@ -41,6 +46,7 @@ value on the right. The pilot confirms each step; the app never knows a switch p
   });
   let entry = $derived(at >= 0 ? entries[at] : undefined);
   let step = $derived<Step | undefined>(entry ? index.step(entry.row.id) : undefined);
+  let fill = $derived(step ? fillParts(step.expect) : null);
   let place = $derived(step ? index.place(step) : null);
   /** Whether the step sets a control (its value names a position), or only checks something. */
   let sets = $derived(entry?.row.targets.some((t) => t.position != null) ?? false);
@@ -82,7 +88,14 @@ value on the right. The pilot confirms each step; the app never knows a switch p
       >
         {step.text}
       </h1>
-      <p class="value">{step.expect}</p>
+      {#if fill}
+        <div class="value fill">
+          <BlankFields name={step.text} blanks={fill.blanks} rest={fill.rest} values={entry.row.values} onBlank={(n, v) => onBlank(step.id, n, v)} />
+        </div>
+      {:else}
+        <p class="value">{step.expect}</p>
+        {#if entry.row.hint}<p class="vh">{entry.row.hint}</p>{/if}
+      {/if}
       <p class="state">
         {#if entry.row.state === "done"}<Icon name="check" /> Done. Confirm again to move on.
         {:else if entry.row.state === "skipped"}<Icon name="skip" /> Skipped, still open
@@ -128,7 +141,7 @@ value on the right. The pilot confirms each step; the app never knows a switch p
       <span class="keys">Space: confirm · Left arrow: back · S: skip</span>
     </div>
     {#if next}
-      <p class="nx"><b>Next</b> <span class="nn">{next.text}</span> <span class="mono">{next.expect}</span></p>
+      <p class="nx"><b>Next</b> <span class="nn">{next.text}</span> {#if !next.expect.includes("___")}<span class="mono">{next.expect}</span>{/if}</p>
     {/if}
   {:else}
     <p class="crumb">{view.title}</p>
@@ -218,6 +231,15 @@ value on the right. The pilot confirms each step; the app never knows a switch p
     margin: 0;
     color: var(--accent);
     font: clamp(1.15rem, 1.9vw, 1.7rem) / 1.25 var(--mono);
+  }
+  .value.fill {
+    color: var(--ink);
+    font-size: 1rem;
+  }
+  .vh {
+    margin: 0.25rem 0 0;
+    color: var(--accent);
+    font-size: 0.875rem;
   }
   .state {
     flex-basis: 100%;

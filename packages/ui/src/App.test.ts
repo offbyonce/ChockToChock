@@ -129,6 +129,7 @@ function view(states: [StepState, StepState]): PhaseView {
     complete: done === 2,
     strip: [],
     note: "",
+    arrival: false,
   };
 }
 
@@ -312,6 +313,53 @@ describe("App", () => {
     await fireEvent.click(await screen.findByRole("button", { name: "Undo" }));
     await fireEvent.click(screen.getByText("SQK 4521"));
     expect((screen.getByLabelText("Squawk") as HTMLInputElement).value).toBe("7000");
+  });
+
+  it("fills a step's blanks from flight values, keeps what the pilot types, and shows hints", async () => {
+    const actions: Action[] = [];
+    const withBlank = structuredClone(pack);
+    const first = withBlank.lists[0]?.steps[0];
+    if (!first) throw new Error("a step");
+    first.expect = "V2 ___ SET";
+    const shown = view(["current", "to_do"]);
+    const [battery, standby] = shown.lists[0]?.steps ?? [];
+    if (!battery || !standby) throw new Error("two steps");
+    battery.values = ["152"];
+    standby.hint = "GND 121.700";
+    const h = host({
+      loadPack: async () => withBlank,
+      phaseView: async () => shown,
+      apply: async (_pack, flight, action) => {
+        actions.push(action);
+        return flight;
+      },
+    });
+    render(App, { context: hostContext(h) });
+
+    const v2 = (await screen.findByLabelText("BATTERY V2")) as HTMLInputElement;
+    expect(v2.value).toBe("152");
+    expect(screen.getByText("SET")).toBeTruthy();
+    await fireEvent.input(v2, { target: { value: "150" } });
+    expect(actions.at(-1)).toEqual({ type: "setBlank", step: "battery", index: 0, value: "150" });
+    expect(screen.getByText("GND 121.700")).toBeTruthy();
+  });
+
+  it("asks for arrival data on the phase the core names", async () => {
+    const actions: Action[] = [];
+    const h = host({
+      phaseView: async () => ({ ...view(["current", "to_do"]), arrival: true }),
+      apply: async (_pack, flight, action) => {
+        actions.push(action);
+        return flight;
+      },
+    });
+    render(App, { context: hostContext(h) });
+
+    expect(await screen.findByText("Arrival data")).toBeTruthy();
+    await fireEvent.input(screen.getByLabelText("VREF"), { target: { value: "142" } });
+    expect(actions.at(-1)).toEqual({ type: "setValue", field: "vref", value: "142" });
+    await fireEvent.click(screen.getByRole("radio", { name: "RADIO" }));
+    expect(actions.at(-1)).toEqual({ type: "setValue", field: "minimums_type", value: "RADIO" });
   });
 
   it("shows what a control does on a step without a Why, where the side panel is hidden", async () => {

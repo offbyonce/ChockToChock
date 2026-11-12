@@ -348,6 +348,7 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
               onTick={tick}
               onSkip={skip}
               onUnskip={(id) => act({ type: "unskip", step: id })}
+              onBlank={(step, index, value) => act({ type: "setBlank", step, index, value })}
               onSelect={(id) => (selected = id)}
               onClear={(list) => act({ type: "clearList", list })}
             />
@@ -365,7 +366,7 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
               <OpenStepsCard {index} open={behind} onTick={(id) => act({ type: "tick", step: id, at: Date.now() })} />
             {/if}
             {#if flow}
-              <FlowView {index} {view} {cursor} {detail} onConfirm={confirm} onSkip={skip} onMove={(id) => (cursor = id)} />
+              <FlowView {index} {view} {cursor} {detail} onConfirm={confirm} onSkip={skip} onMove={(id) => (cursor = id)} onBlank={(step, index, value) => act({ type: "setBlank", step, index, value })} />
             {:else}
               <PhasePage
                 {index}
@@ -377,11 +378,13 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
                 onTick={tick}
                 onSkip={skip}
                 onUnskip={(id) => act({ type: "unskip", step: id })}
+                onBlank={(step, index, value) => act({ type: "setBlank", step, index, value })}
                 onSelect={(id) => (selected = id)}
                 onClear={(list) => act({ type: "clearList", list })}
                 full={!settings.essentials}
                 {fullView}
                 onOption={(option, value) => act({ type: "setOption", option, value })}
+                onValue={(field, value) => act({ type: "setValue", field, value })}
               />
             {/if}
           {:else}

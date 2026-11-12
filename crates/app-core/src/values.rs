@@ -113,6 +113,37 @@ pub fn hint(flight: &Flight, step: &Step) -> String {
         .join(" · ")
 }
 
+/// The values the Arrival data box asks for, as 3.0's did.
+pub const ARRIVAL: [FillField; 5] = [
+    FillField::LandingAltitude,
+    FillField::LandingFlaps,
+    FillField::Vref,
+    FillField::Autobrake,
+    FillField::Minimums,
+];
+
+/// Whether a phase shows the Arrival data box: it is the first phase, in flight order, whose
+/// steps have blanks for arrival values (the descent, in the iFly pack, as in 3.0).
+pub fn asks_arrival<'a>(
+    pack: &pack::FlatPack,
+    order: impl IntoIterator<Item = &'a str>,
+    id: &str,
+) -> bool {
+    let needs = |phase: &str| {
+        pack.content
+            .phases
+            .iter()
+            .flat_map(|p| &p.phases)
+            .find(|p| p.id == phase)
+            .into_iter()
+            .flat_map(|p| &p.lists)
+            .filter_map(|l| pack.lists.iter().find(|x| &x.id == l))
+            .flat_map(|l| &l.steps)
+            .any(|s| s.fill.iter().any(|f| ARRIVAL.contains(f)))
+    };
+    order.into_iter().find(|p| needs(p)) == Some(id)
+}
+
 /// The values a choice field may take, or `None` for a field that takes any text.
 pub fn allowed(field: FillField) -> Option<&'static [&'static str]> {
     match field {
@@ -215,6 +246,18 @@ mod tests {
         };
         let flight = apply(&pack, flight, notes).unwrap();
         assert_eq!(last_note(&flight), "Climb 7000");
+    }
+
+    #[test]
+    fn the_arrival_box_shows_on_the_first_phase_needing_arrival_values() {
+        let pack = ifly_pack();
+        let order = ["before-start", "descent", "approach", "landing"];
+        assert!(asks_arrival(&pack, order, "descent"));
+        assert!(
+            !asks_arrival(&pack, order, "landing"),
+            "landing flaps come later"
+        );
+        assert!(!asks_arrival(&pack, order, "before-start"));
     }
 
     #[test]

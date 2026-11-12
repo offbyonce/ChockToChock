@@ -24,6 +24,7 @@ type (step 7 requirement for non-normal lists).
     onTick,
     onSkip,
     onUnskip,
+    onBlank,
     onSelect,
     onClear,
     full = true,
@@ -39,6 +40,7 @@ type (step 7 requirement for non-normal lists).
     onTick: (id: string, done: boolean) => void;
     onSkip: (id: string) => void;
     onUnskip: (id: string) => void;
+    onBlank: (id: string, index: number, value: string) => void;
     onSelect: (id: string) => void;
     onClear: (list: string) => void;
     full?: boolean;
@@ -80,6 +82,7 @@ type (step 7 requirement for non-normal lists).
         {onTick}
         {onSkip}
         {onUnskip}
+    {onBlank}
         {onSelect}
         {onClear}
       />

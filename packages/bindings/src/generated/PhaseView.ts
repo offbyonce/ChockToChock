@@ -23,4 +23,8 @@ strip: Array<StripPart>,
 /**
  * The last line of the flight's notes, shown under the strip, or empty.
  */
-note: string, };
+note: string, 
+/**
+ * The phase shows the Arrival data box (decision 0019).
+ */
+arrival: boolean, };

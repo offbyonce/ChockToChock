@@ -160,3 +160,26 @@ export function setupGroups(
     },
   ];
 }
+
+/** The Arrival data box's fields, as 3.0 asked for them on the descent page. */
+export const ARRIVAL_FIELDS: SetupField[] = [
+  num("landing_altitude", "Landing altitude", "430", "Feet, destination elevation", -1000, 14000),
+  {
+    field: "landing_flaps",
+    label: "Landing flaps",
+    example: "",
+    help: "From your landing data",
+    kind: "select",
+    options: FLAPS,
+  },
+  num("vref", "VREF", "142", "100 to 250 knots", 100, 250),
+  {
+    field: "autobrake",
+    label: "Autobrake",
+    example: "",
+    help: "As needed for the runway",
+    kind: "select",
+    options: ["OFF", "1", "2", "3", "MAX"],
+  },
+  num("minimums", "Minimums", "680", "Feet, from your chart", 0, 14000, { unit: MINIMUMS_TYPE }),
+];
