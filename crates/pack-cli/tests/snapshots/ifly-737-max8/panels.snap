@@ -1699,15 +1699,15 @@ assertion_line: 38
         "title": "Doors",
         "x": 596.0,
         "y": 1010.0,
-        "width": 242.0,
-        "height": 117.0,
+        "width": 232.0,
+        "height": 112.0,
         "items": [
           {
             "kind": "light",
             "label": "EQUIP",
             "color": "amber",
             "x": 31.0,
-            "y": 49.0,
+            "y": 42.0,
             "controls": [
               "doorsp"
             ],
@@ -1730,7 +1730,7 @@ assertion_line: 38
             "label": "LEFT FWD OVERWING",
             "color": "amber",
             "x": 87.0,
-            "y": 44.0,
+            "y": 42.0,
             "controls": [
               "doorsp"
             ],
@@ -1742,7 +1742,7 @@ assertion_line: 38
             "label": "LEFT AFT OVERWING",
             "color": "amber",
             "x": 87.0,
-            "y": 72.0,
+            "y": 68.0,
             "controls": [
               "doorsp"
             ],
@@ -1754,7 +1754,7 @@ assertion_line: 38
             "label": "AFT ENTRY",
             "color": "amber",
             "x": 87.0,
-            "y": 100.0,
+            "y": 94.0,
             "controls": [
               "doorsp"
             ],
@@ -1778,7 +1778,7 @@ assertion_line: 38
             "label": "RIGHT FWD OVERWING",
             "color": "amber",
             "x": 143.0,
-            "y": 44.0,
+            "y": 42.0,
             "controls": [
               "doorsp"
             ],
@@ -1790,7 +1790,7 @@ assertion_line: 38
             "label": "RIGHT AFT OVERWING",
             "color": "amber",
             "x": 143.0,
-            "y": 72.0,
+            "y": 68.0,
             "controls": [
               "doorsp"
             ],
@@ -1802,7 +1802,7 @@ assertion_line: 38
             "label": "AFT SERVICE",
             "color": "amber",
             "x": 143.0,
-            "y": 100.0,
+            "y": 94.0,
             "controls": [
               "doorsp"
             ],
@@ -1813,7 +1813,7 @@ assertion_line: 38
             "kind": "light",
             "label": "FWD CARGO",
             "color": "amber",
-            "x": 206.0,
+            "x": 199.0,
             "y": 42.0,
             "controls": [
               "doorsp"
@@ -1826,8 +1826,8 @@ assertion_line: 38
             "kind": "light",
             "label": "AFT CARGO",
             "color": "amber",
-            "x": 206.0,
-            "y": 67.0,
+            "x": 199.0,
+            "y": 68.0,
             "controls": [
               "doorsp"
             ],
@@ -1842,13 +1842,13 @@ assertion_line: 38
         "title": "Cockpit voice recorder microphone monitor",
         "x": 596.0,
         "y": 1131.0,
-        "width": 232.0,
-        "height": 63.0,
+        "width": 211.0,
+        "height": 50.0,
         "items": [
           {
             "kind": "push_button",
             "label": "ERASE",
-            "x": 88.0,
+            "x": 86.0,
             "y": 31.0,
             "controls": [
               "cvrpanel"
@@ -1860,7 +1860,7 @@ assertion_line: 38
             "label": "STATUS",
             "color": "green",
             "x": 34.0,
-            "y": 37.0,
+            "y": 31.0,
             "controls": [
               "cvrpanel"
             ],
@@ -1870,7 +1870,7 @@ assertion_line: 38
           {
             "kind": "push_button",
             "label": "TEST",
-            "x": 135.0,
+            "x": 134.0,
             "y": 31.0,
             "controls": [
               "cvrpanel"
@@ -1881,7 +1881,7 @@ assertion_line: 38
           {
             "kind": "push_button",
             "label": "HEADPHONE",
-            "x": 194.0,
+            "x": 182.0,
             "y": 31.0,
             "controls": [
               "cvrpanel"
@@ -2611,8 +2611,8 @@ assertion_line: 38
         "title": "APU lights",
         "x": 252.0,
         "y": 1269.0,
-        "width": 124.0,
-        "height": 84.0,
+        "width": 121.0,
+        "height": 72.0,
         "items": [
           {
             "kind": "light",
@@ -2626,7 +2626,7 @@ assertion_line: 38
             "kind": "light",
             "label": "LOW OIL PRESSURE",
             "color": "amber",
-            "x": 90.0,
+            "x": 88.0,
             "y": 28.0,
             "description": "APU oil pressure is low."
           },
@@ -2635,15 +2635,15 @@ assertion_line: 38
             "label": "FAULT",
             "color": "amber",
             "x": 32.0,
-            "y": 62.0,
+            "y": 54.0,
             "description": "APU fault. The APU has shut down automatically."
           },
           {
             "kind": "light",
             "label": "OVER SPEED",
             "color": "amber",
-            "x": 90.0,
-            "y": 62.0,
+            "x": 88.0,
+            "y": 54.0,
             "description": "APU overspeed shutdown."
           }
         ]
@@ -2950,14 +2950,14 @@ assertion_line: 38
         "title": "Engine",
         "x": 570.0,
         "y": 182.0,
-        "width": 254.0,
-        "height": 94.0,
+        "width": 232.0,
+        "height": 118.0,
         "items": [
           {
             "kind": "light",
             "label": "REVERSER COMMAND",
             "color": "amber",
-            "x": 101.0,
+            "x": 87.0,
             "y": 20.0,
             "description": "In flight, a reverse thrust lever is not fully down."
           },
@@ -2965,7 +2965,7 @@ assertion_line: 38
             "kind": "light",
             "label": "REVERSER AIR/GRD",
             "color": "amber",
-            "x": 157.0,
+            "x": 143.0,
             "y": 20.0,
             "description": "The air/ground logic used by the thrust reversers has failed."
           },
@@ -2974,7 +2974,7 @@ assertion_line: 38
             "label": "REVERSER LIMITED",
             "color": "amber",
             "x": 31.0,
-            "y": 48.0,
+            "y": 46.0,
             "controls": [
               "eec"
             ],
@@ -2985,7 +2985,7 @@ assertion_line: 38
             "label": "ENGINE CONTROL",
             "color": "amber",
             "x": 31.0,
-            "y": 76.0,
+            "y": 100.0,
             "controls": [
               "eec"
             ],
@@ -2995,8 +2995,8 @@ assertion_line: 38
             "kind": "light",
             "label": "REVERSER LIMITED",
             "color": "amber",
-            "x": 222.0,
-            "y": 48.0,
+            "x": 199.0,
+            "y": 46.0,
             "controls": [
               "eec"
             ],
@@ -3006,8 +3006,8 @@ assertion_line: 38
             "kind": "light",
             "label": "ENGINE CONTROL",
             "color": "amber",
-            "x": 222.0,
-            "y": 76.0,
+            "x": 199.0,
+            "y": 100.0,
             "controls": [
               "eec"
             ],
@@ -3016,8 +3016,8 @@ assertion_line: 38
           {
             "kind": "push_button",
             "label": "EEC 1",
-            "x": 101.0,
-            "y": 62.0,
+            "x": 87.0,
+            "y": 73.0,
             "controls": [
               "eec"
             ],
@@ -3029,8 +3029,8 @@ assertion_line: 38
           {
             "kind": "push_button",
             "label": "EEC 2",
-            "x": 157.0,
-            "y": 62.0,
+            "x": 143.0,
+            "y": 73.0,
             "controls": [
               "eec"
             ],
@@ -3165,8 +3165,8 @@ assertion_line: 38
         "title": "Stall warning test",
         "x": 800.0,
         "y": 280.0,
-        "width": 192.0,
-        "height": 61.0,
+        "width": 141.0,
+        "height": 50.0,
         "items": [
           {
             "kind": "push_button",
@@ -3181,7 +3181,7 @@ assertion_line: 38
           {
             "kind": "push_button",
             "label": "STALL TEST 2",
-            "x": 128.0,
+            "x": 112.0,
             "y": 31.0,
             "controls": [
               "stalltest"
@@ -3269,8 +3269,8 @@ assertion_line: 38
         "title": "Gear lights",
         "x": 572.0,
         "y": 400.0,
-        "width": 234.0,
-        "height": 86.0,
+        "width": 195.0,
+        "height": 74.0,
         "items": [
           {
             "kind": "light",
@@ -3287,7 +3287,7 @@ assertion_line: 38
             "kind": "light",
             "label": "RIGHT GEAR",
             "color": "green",
-            "x": 106.0,
+            "x": 162.0,
             "y": 30.0,
             "controls": [
               "gearovhd"
@@ -3298,8 +3298,8 @@ assertion_line: 38
             "kind": "light",
             "label": "NOSE GEAR",
             "color": "green",
-            "x": 78.0,
-            "y": 62.0,
+            "x": 106.0,
+            "y": 56.0,
             "controls": [
               "gearovhd"
             ],
@@ -3461,14 +3461,14 @@ assertion_line: 38
         "title": "Left annunciators",
         "x": 236.0,
         "y": 6.0,
-        "width": 160.0,
-        "height": 228.0,
+        "width": 155.0,
+        "height": 139.0,
         "items": [
           {
             "kind": "push_button",
             "label": "FLT CONT",
             "x": 30.0,
-            "y": 140.0,
+            "y": 92.0,
             "controls": [
               "recall"
             ],
@@ -3479,8 +3479,8 @@ assertion_line: 38
           {
             "kind": "push_button",
             "label": "IRS",
-            "x": 79.0,
-            "y": 140.0,
+            "x": 78.0,
+            "y": 92.0,
             "controls": [
               "recall"
             ],
@@ -3491,8 +3491,8 @@ assertion_line: 38
           {
             "kind": "push_button",
             "label": "FUEL",
-            "x": 127.0,
-            "y": 140.0,
+            "x": 126.0,
+            "y": 92.0,
             "controls": [
               "recall"
             ],
@@ -3504,7 +3504,7 @@ assertion_line: 38
             "kind": "push_button",
             "label": "ELEC",
             "x": 30.0,
-            "y": 184.0,
+            "y": 120.0,
             "controls": [
               "recall"
             ],
@@ -3515,8 +3515,8 @@ assertion_line: 38
           {
             "kind": "push_button",
             "label": "APU",
-            "x": 79.0,
-            "y": 184.0,
+            "x": 78.0,
+            "y": 120.0,
             "controls": [
               "recall"
             ],
@@ -3527,8 +3527,8 @@ assertion_line: 38
           {
             "kind": "push_button",
             "label": "OVHT/DET",
-            "x": 127.0,
-            "y": 184.0,
+            "x": 126.0,
+            "y": 120.0,
             "controls": [
               "recall"
             ],
@@ -3539,7 +3539,7 @@ assertion_line: 38
           {
             "kind": "push_button",
             "label": "FIRE WARN",
-            "x": 43.0,
+            "x": 30.0,
             "y": 64.0,
             "description": "Fire warning. Push to silence the bell and reset.",
             "width": 54.0,
@@ -3548,7 +3548,7 @@ assertion_line: 38
           {
             "kind": "push_button",
             "label": "MASTER CAUTION",
-            "x": 114.0,
+            "x": 126.0,
             "y": 64.0,
             "description": "Master caution. Push to reset; the six-pack shows which system.",
             "width": 54.0,
@@ -3800,14 +3800,14 @@ assertion_line: 38
         "title": "Right annunciators",
         "x": 1024.0,
         "y": 6.0,
-        "width": 160.0,
-        "height": 228.0,
+        "width": 155.0,
+        "height": 139.0,
         "items": [
           {
             "kind": "push_button",
             "label": "ANTI-ICE",
             "x": 30.0,
-            "y": 140.0,
+            "y": 92.0,
             "controls": [
               "recall"
             ],
@@ -3818,8 +3818,8 @@ assertion_line: 38
           {
             "kind": "push_button",
             "label": "HYD",
-            "x": 79.0,
-            "y": 140.0,
+            "x": 78.0,
+            "y": 92.0,
             "controls": [
               "recall"
             ],
@@ -3830,8 +3830,8 @@ assertion_line: 38
           {
             "kind": "push_button",
             "label": "DOORS",
-            "x": 127.0,
-            "y": 140.0,
+            "x": 126.0,
+            "y": 92.0,
             "controls": [
               "recall"
             ],
@@ -3843,7 +3843,7 @@ assertion_line: 38
             "kind": "push_button",
             "label": "ENG",
             "x": 30.0,
-            "y": 184.0,
+            "y": 120.0,
             "controls": [
               "recall"
             ],
@@ -3854,8 +3854,8 @@ assertion_line: 38
           {
             "kind": "push_button",
             "label": "OVERHEAD",
-            "x": 79.0,
-            "y": 184.0,
+            "x": 78.0,
+            "y": 120.0,
             "controls": [
               "recall"
             ],
@@ -3866,8 +3866,8 @@ assertion_line: 38
           {
             "kind": "push_button",
             "label": "AIR COND",
-            "x": 127.0,
-            "y": 184.0,
+            "x": 126.0,
+            "y": 120.0,
             "controls": [
               "recall"
             ],
@@ -3878,7 +3878,7 @@ assertion_line: 38
           {
             "kind": "push_button",
             "label": "FIRE WARN",
-            "x": 114.0,
+            "x": 126.0,
             "y": 64.0,
             "description": "Fire warning. Push to silence the bell and reset.",
             "width": 54.0,
@@ -3887,7 +3887,7 @@ assertion_line: 38
           {
             "kind": "push_button",
             "label": "MASTER CAUTION",
-            "x": 43.0,
+            "x": 30.0,
             "y": 64.0,
             "description": "Master caution. Push to reset; the six-pack shows which system.",
             "width": 54.0,

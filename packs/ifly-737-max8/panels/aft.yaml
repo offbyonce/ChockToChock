@@ -226,26 +226,26 @@ sections:
     title: Engine
     x: 570
     "y": 182
-    width: 254
-    height: 94
+    width: 232
+    height: 118
     items:
       - kind: light
         label: REVERSER COMMAND
         color: amber
-        x: 101
+        x: 87
         "y": 20
         description: "In flight, a reverse thrust lever is not fully down."
       - kind: light
         label: REVERSER AIR/GRD
         color: amber
-        x: 157
+        x: 143
         "y": 20
         description: The air/ground logic used by the thrust reversers has failed.
       - kind: light
         label: REVERSER LIMITED
         color: amber
         x: 31
-        "y": 48
+        "y": 46
         controls:
           - eec
         description: "A thrust reverser fault. In flight it means that reverser may not deploy, or reverse is limited to idle."
@@ -253,30 +253,30 @@ sections:
         label: ENGINE CONTROL
         color: amber
         x: 31
-        "y": 76
+        "y": 100
         controls:
           - eec
         description: "Engine control fault, not dispatchable. Only shows with the engine running on the ground."
       - kind: light
         label: REVERSER LIMITED
         color: amber
-        x: 222
-        "y": 48
+        x: 199
+        "y": 46
         controls:
           - eec
         description: "A thrust reverser fault. In flight it means that reverser may not deploy, or reverse is limited to idle."
       - kind: light
         label: ENGINE CONTROL
         color: amber
-        x: 222
-        "y": 76
+        x: 199
+        "y": 100
         controls:
           - eec
         description: "Engine control fault, not dispatchable. Only shows with the engine running on the ground."
       - kind: push_button
         label: EEC 1
-        x: 101
-        "y": 62
+        x: 87
+        "y": 73
         controls:
           - eec
         positions: "ON, ALTN"
@@ -285,8 +285,8 @@ sections:
         width: 40
       - kind: push_button
         label: EEC 2
-        x: 157
-        "y": 62
+        x: 143
+        "y": 73
         controls:
           - eec
         positions: "ON, ALTN"
@@ -384,8 +384,8 @@ sections:
     title: Stall warning test
     x: 800
     "y": 280
-    width: 192
-    height: 61
+    width: 141
+    height: 50
     items:
       - kind: push_button
         label: STALL TEST 1
@@ -396,7 +396,7 @@ sections:
         description: Tests the left stick shaker.
       - kind: push_button
         label: STALL TEST 2
-        x: 128
+        x: 112
         "y": 31
         controls:
           - stalltest
@@ -459,8 +459,8 @@ sections:
     title: Gear lights
     x: 572
     "y": 400
-    width: 234
-    height: 86
+    width: 195
+    height: 74
     items:
       - kind: light
         label: LEFT GEAR
@@ -473,7 +473,7 @@ sections:
       - kind: light
         label: RIGHT GEAR
         color: green
-        x: 106
+        x: 162
         "y": 30
         controls:
           - gearovhd
@@ -481,8 +481,8 @@ sections:
       - kind: light
         label: NOSE GEAR
         color: green
-        x: 78
-        "y": 62
+        x: 106
+        "y": 56
         controls:
           - gearovhd
         description: The nose gear is down and locked. This is the second set of gear lights.

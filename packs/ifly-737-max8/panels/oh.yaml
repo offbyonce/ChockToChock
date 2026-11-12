@@ -1243,14 +1243,14 @@ sections:
     title: Doors
     x: 596
     "y": 1010
-    width: 242
-    height: 117
+    width: 232
+    height: 112
     items:
       - kind: light
         label: EQUIP
         color: amber
         x: 31
-        "y": 49
+        "y": 42
         controls:
           - doorsp
         description: The electronics bay access hatch is open or not fully latched.
@@ -1267,7 +1267,7 @@ sections:
         label: LEFT FWD OVERWING
         color: amber
         x: 87
-        "y": 44
+        "y": 42
         controls:
           - doorsp
         description: The left front overwing exit is open or not fully latched.
@@ -1276,7 +1276,7 @@ sections:
         label: LEFT AFT OVERWING
         color: amber
         x: 87
-        "y": 72
+        "y": 68
         controls:
           - doorsp
         description: The left rear overwing exit is open or not fully latched.
@@ -1285,7 +1285,7 @@ sections:
         label: AFT ENTRY
         color: amber
         x: 87
-        "y": 100
+        "y": 94
         controls:
           - doorsp
         description: The rear passenger door is open or not fully latched.
@@ -1303,7 +1303,7 @@ sections:
         label: RIGHT FWD OVERWING
         color: amber
         x: 143
-        "y": 44
+        "y": 42
         controls:
           - doorsp
         description: The right front overwing exit is open or not fully latched.
@@ -1312,7 +1312,7 @@ sections:
         label: RIGHT AFT OVERWING
         color: amber
         x: 143
-        "y": 72
+        "y": 68
         controls:
           - doorsp
         description: The right rear overwing exit is open or not fully latched.
@@ -1321,7 +1321,7 @@ sections:
         label: AFT SERVICE
         color: amber
         x: 143
-        "y": 100
+        "y": 94
         controls:
           - doorsp
         description: The rear galley service door is open or not fully latched.
@@ -1329,7 +1329,7 @@ sections:
       - kind: light
         label: FWD CARGO
         color: amber
-        x: 206
+        x: 199
         "y": 42
         controls:
           - doorsp
@@ -1339,8 +1339,8 @@ sections:
       - kind: light
         label: AFT CARGO
         color: amber
-        x: 206
-        "y": 67
+        x: 199
+        "y": 68
         controls:
           - doorsp
         description: The rear hold door is open or not fully latched.
@@ -1350,12 +1350,12 @@ sections:
     title: Cockpit voice recorder microphone monitor
     x: 596
     "y": 1131
-    width: 232
-    height: 63
+    width: 211
+    height: 50
     items:
       - kind: push_button
         label: ERASE
-        x: 88
+        x: 86
         "y": 31
         controls:
           - cvrpanel
@@ -1364,14 +1364,14 @@ sections:
         label: STATUS
         color: green
         x: 34
-        "y": 37
+        "y": 31
         controls:
           - cvrpanel
         description: Recorder status.
         width: 40
       - kind: push_button
         label: TEST
-        x: 135
+        x: 134
         "y": 31
         controls:
           - cvrpanel
@@ -1379,7 +1379,7 @@ sections:
         width: 40
       - kind: push_button
         label: HEADPHONE
-        x: 194
+        x: 182
         "y": 31
         controls:
           - cvrpanel
@@ -1913,8 +1913,8 @@ sections:
     title: APU lights
     x: 252
     "y": 1269
-    width: 124
-    height: 84
+    width: 121
+    height: 72
     items:
       - kind: light
         label: MAINT
@@ -1925,18 +1925,18 @@ sections:
       - kind: light
         label: LOW OIL PRESSURE
         color: amber
-        x: 90
+        x: 88
         "y": 28
         description: APU oil pressure is low.
       - kind: light
         label: FAULT
         color: amber
         x: 32
-        "y": 62
+        "y": 54
         description: APU fault. The APU has shut down automatically.
       - kind: light
         label: OVER SPEED
         color: amber
-        x: 90
-        "y": 62
+        x: 88
+        "y": 54
         description: APU overspeed shutdown.

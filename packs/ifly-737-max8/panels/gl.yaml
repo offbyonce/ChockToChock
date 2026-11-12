@@ -115,13 +115,13 @@ sections:
     title: Left annunciators
     x: 236
     "y": 6
-    width: 160
-    height: 228
+    width: 155
+    height: 139
     items:
       - kind: push_button
         label: FLT CONT
         x: 30
-        "y": 140
+        "y": 92
         controls:
           - recall
         description: Lights with MASTER CAUTION for a FLT CONT caution. Press to recall stored cautions.
@@ -129,8 +129,8 @@ sections:
         height: 24
       - kind: push_button
         label: IRS
-        x: 79
-        "y": 140
+        x: 78
+        "y": 92
         controls:
           - recall
         description: Lights with MASTER CAUTION for a IRS caution. Press to recall stored cautions.
@@ -138,8 +138,8 @@ sections:
         height: 24
       - kind: push_button
         label: FUEL
-        x: 127
-        "y": 140
+        x: 126
+        "y": 92
         controls:
           - recall
         description: Lights with MASTER CAUTION for a FUEL caution. Press to recall stored cautions.
@@ -148,7 +148,7 @@ sections:
       - kind: push_button
         label: ELEC
         x: 30
-        "y": 184
+        "y": 120
         controls:
           - recall
         description: Lights with MASTER CAUTION for a ELEC caution. Press to recall stored cautions.
@@ -156,8 +156,8 @@ sections:
         height: 24
       - kind: push_button
         label: APU
-        x: 79
-        "y": 184
+        x: 78
+        "y": 120
         controls:
           - recall
         description: Lights with MASTER CAUTION for a APU caution. Press to recall stored cautions.
@@ -165,8 +165,8 @@ sections:
         height: 24
       - kind: push_button
         label: OVHT/DET
-        x: 127
-        "y": 184
+        x: 126
+        "y": 120
         controls:
           - recall
         description: Lights with MASTER CAUTION for a OVHT/DET caution. Press to recall stored cautions.
@@ -174,14 +174,14 @@ sections:
         height: 24
       - kind: push_button
         label: FIRE WARN
-        x: 43
+        x: 30
         "y": 64
         description: Fire warning. Push to silence the bell and reset.
         width: 54
         height: 34
       - kind: push_button
         label: MASTER CAUTION
-        x: 114
+        x: 126
         "y": 64
         description: "Master caution. Push to reset; the six-pack shows which system."
         width: 54
@@ -362,13 +362,13 @@ sections:
     title: Right annunciators
     x: 1024
     "y": 6
-    width: 160
-    height: 228
+    width: 155
+    height: 139
     items:
       - kind: push_button
         label: ANTI-ICE
         x: 30
-        "y": 140
+        "y": 92
         controls:
           - recall
         description: Lights with MASTER CAUTION for a ANTI-ICE caution. Press to recall stored cautions.
@@ -376,8 +376,8 @@ sections:
         height: 24
       - kind: push_button
         label: HYD
-        x: 79
-        "y": 140
+        x: 78
+        "y": 92
         controls:
           - recall
         description: Lights with MASTER CAUTION for a HYD caution. Press to recall stored cautions.
@@ -385,8 +385,8 @@ sections:
         height: 24
       - kind: push_button
         label: DOORS
-        x: 127
-        "y": 140
+        x: 126
+        "y": 92
         controls:
           - recall
         description: Lights with MASTER CAUTION for a DOORS caution. Press to recall stored cautions.
@@ -395,7 +395,7 @@ sections:
       - kind: push_button
         label: ENG
         x: 30
-        "y": 184
+        "y": 120
         controls:
           - recall
         description: Lights with MASTER CAUTION for a ENG caution. Press to recall stored cautions.
@@ -403,8 +403,8 @@ sections:
         height: 24
       - kind: push_button
         label: OVERHEAD
-        x: 79
-        "y": 184
+        x: 78
+        "y": 120
         controls:
           - recall
         description: Lights with MASTER CAUTION for a OVERHEAD caution. Press to recall stored cautions.
@@ -412,8 +412,8 @@ sections:
         height: 24
       - kind: push_button
         label: AIR COND
-        x: 127
-        "y": 184
+        x: 126
+        "y": 120
         controls:
           - recall
         description: Lights with MASTER CAUTION for a AIR COND caution. Press to recall stored cautions.
@@ -421,14 +421,14 @@ sections:
         height: 24
       - kind: push_button
         label: FIRE WARN
-        x: 114
+        x: 126
         "y": 64
         description: Fire warning. Push to silence the bell and reset.
         width: 54
         height: 34
       - kind: push_button
         label: MASTER CAUTION
-        x: 43
+        x: 30
         "y": 64
         description: "Master caution. Push to reset; the six-pack shows which system."
         width: 54

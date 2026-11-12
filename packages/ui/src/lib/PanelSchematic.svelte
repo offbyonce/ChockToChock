@@ -157,7 +157,8 @@ the card; text keeps 3.0's sizes.
       // Fitted to what is drawn, even where a control at the crop's edge reaches past it.
       const x0 = e.x0 - 8;
       const titleW = 16 + em(only.title.toUpperCase()) * (PX.title / kText);
-      const f = { x0, x1: Math.max(e.x1 + 8, x0 + titleW), y0: e.y0 - 22, y1: e.y1 + 6 };
+      // Equal margins on every side; the title sits in the top one.
+      const f = { x0, x1: Math.max(e.x1 + 8, x0 + titleW), y0: e.y0 - 22, y1: e.y1 + 8 };
       frames.set(only.id, f);
       box = { x: only.x + f.x0 - 2, y: only.y + f.y0 - 2, w: f.x1 - f.x0 + 4, h: f.y1 - f.y0 + 4 };
     } else {
