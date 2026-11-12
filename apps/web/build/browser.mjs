@@ -45,9 +45,9 @@ export function serve(root, port) {
 
 /**
  * Starts headless Firefox with a fresh profile, optional preferences and window size (in headless
- * mode, the viewport), and BiDi on `port`.
+ * mode, the viewport), and BiDi on `port`. `extra` adds command-line arguments.
  */
-export async function startFirefox(profile, port, prefs = {}, size = null) {
+export async function startFirefox(profile, port, prefs = {}, size = null, extra = []) {
   fs.rmSync(profile, { recursive: true, force: true });
   fs.mkdirSync(profile, { recursive: true });
   const lines = Object.entries(prefs).map(([k, v]) => `user_pref(${JSON.stringify(k)}, ${JSON.stringify(v)});`);
@@ -61,6 +61,7 @@ export async function startFirefox(profile, port, prefs = {}, size = null) {
       profile,
       `--remote-debugging-port=${port}`,
       ...(size ? ["--width", String(size.width), "--height", String(size.height)] : []),
+      ...extra,
     ],
     { stdio: ["ignore", "ignore", "pipe"] },
   );

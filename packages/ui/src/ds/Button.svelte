@@ -4,8 +4,8 @@ SPDX-License-Identifier: MIT
 
 The one button (docs/design/system.md). A button, or a link styled as one when it has an href.
 Variants: primary (the one main action on a screen), secondary (the default), quiet (low
-emphasis, in rows and footers), danger (destroys something; asks first elsewhere), link (text
-only). Every variant is at least the touch height; compact is for fine pointers inside dense rows.
+emphasis, in rows and footers), danger (destroys something; asks first elsewhere), emergency (the
+Emergency button only), link (text only). Every variant is at least the touch height; compact is for fine pointers inside dense rows.
 -->
 <script lang="ts">
   import type { Snippet } from "svelte";
@@ -23,18 +23,18 @@ only). Every variant is at least the touch height; compact is for fine pointers 
     onclick,
     children,
   }: {
-    variant?: "primary" | "secondary" | "quiet" | "danger" | "link";
-    compact?: boolean;
-    href?: string;
-    icon?: IconName;
-    iconEnd?: IconName;
-    disabled?: boolean;
+    variant?: "primary" | "secondary" | "quiet" | "danger" | "emergency" | "link" | undefined;
+    compact?: boolean | undefined;
+    href?: string | undefined;
+    icon?: IconName | undefined;
+    iconEnd?: IconName | undefined;
+    disabled?: boolean | undefined;
     /** A toggle button's state. */
-    pressed?: boolean;
+    pressed?: boolean | undefined;
     /** The accessible name, when the visible text is not enough. */
-    label?: string;
-    onclick?: (e: MouseEvent) => void;
-    children?: Snippet;
+    label?: string | undefined;
+    onclick?: ((e: MouseEvent) => void) | undefined;
+    children?: Snippet | undefined;
   } = $props();
 </script>
 
@@ -98,6 +98,16 @@ only). Every variant is at least the touch height; compact is for fine pointers 
   .danger:hover:not(:disabled) {
     border-color: var(--stop);
     background: var(--stop-soft);
+  }
+  .emergency {
+    border-color: var(--emergency);
+    background: var(--emergency);
+    color: var(--on-emergency);
+    font-weight: var(--weight-bold);
+  }
+  .emergency:hover:not(:disabled) {
+    border-color: var(--emergency);
+    filter: brightness(1.1);
   }
   .link {
     padding: 0 var(--space-2);

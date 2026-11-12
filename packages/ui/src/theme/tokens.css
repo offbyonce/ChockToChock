@@ -60,6 +60,7 @@
   --card-min: 14rem; /* 224: the narrowest choice card or form column */
   --field-min: 10rem; /* 160: the narrowest field in a form grid */
   --content-max: 105rem; /* 1680 */
+  --main-max: 52rem; /* 832: the list and form column */
   --dialog-w: 44rem; /* 704: pop-outs and dialogs */
   --dialog-max-h: 50rem; /* 800 */
   --pane-w: 25rem; /* 400 */

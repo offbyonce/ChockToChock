@@ -70,6 +70,16 @@ update-test: site
 screenshots out: site
     node apps/web/build/screenshots.mjs {{out}}
 
+# The design system's mockups at phone, tablet and desktop sizes, in both themes, into <out>
+# (local; needs Firefox). See docs/design/system.md.
+design-shots out: site
+    node apps/web/build/design-shots.mjs {{out}}
+
+# Each design system component against its saved baseline (local; needs Firefox). Pass --update
+# after an intended change to save new baselines.
+design-components *args: site
+    node apps/web/build/design-shots.mjs --components {{args}}
+
 # Regenerate the pack JSON Schemas from the Rust types.
 schemas:
     cargo run -q -p pack-cli -- schema schemas

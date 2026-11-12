@@ -15,11 +15,11 @@ a body. Lists inside a card run edge to edge (flush); everything else gets the c
     actions,
     children,
   }: {
-    title?: string;
+    title?: string | undefined;
     /** A small tag before the title ("Procedure", "Checklist"). */
-    kind?: string;
-    flush?: boolean;
-    actions?: Snippet;
+    kind?: string | undefined;
+    flush?: boolean | undefined;
+    actions?: Snippet | undefined;
     children: Snippet;
   } = $props();
 </script>
@@ -58,15 +58,18 @@ a body. Lists inside a card run edge to edge (flush); everything else gets the c
     font: var(--weight-medium) var(--text-xs) / var(--leading-normal) var(--sans);
   }
   h2 {
+    flex: 1 1 auto;
     min-width: 0;
     margin: 0;
     font: var(--weight-bold) var(--text-md) / var(--leading-tight) var(--sans);
   }
   .actions {
     display: flex;
+    flex: none;
     align-items: center;
     gap: var(--space-2);
     margin-left: auto;
+    white-space: nowrap;
   }
   .body {
     padding: var(--space-4);

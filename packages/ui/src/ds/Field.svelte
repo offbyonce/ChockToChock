@@ -32,20 +32,20 @@ field the width of the value. Values are kept as typed and trimmed when the pilo
     label: string;
     value: string;
     onInput: (value: string) => void;
-    help?: string;
-    example?: string;
-    kind?: "text" | "number" | "select";
-    options?: string[];
-    min?: number;
-    max?: number;
-    maxLength?: number;
-    inputMode?: "numeric" | "decimal";
+    help?: string | undefined;
+    example?: string | undefined;
+    kind?: "text" | "number" | "select" | undefined;
+    options?: string[] | undefined;
+    min?: number | undefined;
+    max?: number | undefined;
+    maxLength?: number | undefined;
+    inputMode?: "numeric" | "decimal" | undefined;
     unit?: { values: string[]; value: string; onChange: (v: string) => void };
-    variant?: "box" | "inline";
+    variant?: "box" | "inline" | undefined;
     /** Inline only: the words before and after the field ("FLAPS", "INDICATED"). */
-    before?: string;
-    after?: string;
-    wide?: boolean;
+    before?: string | undefined;
+    after?: string | undefined;
+    wide?: boolean | undefined;
   } = $props();
 
   const trimmed = (el: HTMLInputElement) => {
@@ -62,7 +62,13 @@ field the width of the value. Values are kept as typed and trimmed when the pilo
   </label>
 {:else}
   <div class="f" class:wide>
-    <label for={id}>{label}</label>
+    <!-- A unit choice sits beside the label, so the value keeps the column's full width. -->
+    <div class="head">
+      <label for={id}>{label}</label>
+      {#if unit}
+        <Segmented layout="inline" label="{label} unit" choices={unit.values.map((v) => ({ value: v, label: v }))} value={unit.value} onChange={unit.onChange} />
+      {/if}
+    </div>
     <div class="row">
       {#if kind === "select"}
         <select {id} {value} onchange={(e) => onInput(e.currentTarget.value)}>
@@ -85,9 +91,6 @@ field the width of the value. Values are kept as typed and trimmed when the pilo
           onchange={(e) => trimmed(e.currentTarget)}
         />
       {/if}
-      {#if unit}
-        <Segmented layout="inline" label="{label} unit" choices={unit.values.map((v) => ({ value: v, label: v }))} value={unit.value} onChange={unit.onChange} />
-      {/if}
     </div>
     {#if help}<small>{help}</small>{/if}
   </div>
@@ -105,6 +108,30 @@ field the width of the value. Values are kept as typed and trimmed when the pilo
   }
   label {
     font: var(--weight-medium) var(--text-sm) / var(--leading-tight) var(--sans);
+  }
+  .head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+    /* Every label row is the unit choice's height, so inputs in a row line up. */
+    min-height: var(--control-h);
+  }
+  .head :global(.seg button) {
+    padding: 0 var(--space-2);
+  }
+  /* Compact beside the label on fine pointers; a full touch target on touch screens. */
+  @media (pointer: fine) {
+    .head {
+      min-height: var(--control-h-compact);
+    }
+    .head :global(.seg) {
+      padding: 0;
+    }
+    .head :global(.seg button) {
+      min-height: var(--control-h-compact);
+    }
   }
   .row {
     display: flex;

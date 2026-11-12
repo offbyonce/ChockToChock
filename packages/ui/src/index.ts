@@ -5,4 +5,5 @@
 // Styles: import "@chocktochock/ui/app.css" in the entry point.
 
 export { default as App } from "./App.svelte";
+export { default as DesignPage } from "./design/DesignPage.svelte";
 export { getHost, type Host, hostContext, type Saved, type SavedItem } from "./host";

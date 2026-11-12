@@ -24,9 +24,9 @@ the cards layout shows each as a card. Inline is the compact form beside a field
     value: T;
     onChange: (value: T) => void;
     /** The accessible name, or the id of the element that names it. */
-    label?: string;
-    labelledby?: string;
-    layout?: "bar" | "inline" | "cards";
+    label?: string | undefined;
+    labelledby?: string | undefined;
+    layout?: "bar" | "inline" | "cards" | undefined;
   } = $props();
 </script>
 

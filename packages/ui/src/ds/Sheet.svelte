@@ -21,9 +21,9 @@ and on the scrim, and keeps its own scroll.
     title: string;
     onClose: () => void;
     /** On wider screens, sit under the element it opened from instead of in the middle. */
-    anchored?: boolean;
+    anchored?: boolean | undefined;
     children: Snippet;
-    footer?: Snippet;
+    footer?: Snippet | undefined;
   } = $props();
 </script>
 

@@ -16,10 +16,10 @@ title, an optional line under it, and actions on the right. Pages use level 1, p
     actions,
   }: {
     title: string;
-    crumb?: string;
-    lead?: string;
-    level?: 1 | 2;
-    actions?: Snippet;
+    crumb?: string | undefined;
+    lead?: string | undefined;
+    level?: 1 | 2 | undefined;
+    actions?: Snippet | undefined;
   } = $props();
 </script>
 

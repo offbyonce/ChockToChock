@@ -26,23 +26,23 @@ edge to edge and share one rule between them.
     body,
     onSelect,
   }: {
-    number?: number | string;
+    number?: number | string | undefined;
     title: string;
     /** The setting, in the monospaced face, on the right (or below when long). */
-    value?: string;
-    valueBelow?: boolean;
-    meta?: string;
-    marked?: boolean;
-    selected?: boolean;
+    value?: string | undefined;
+    valueBelow?: boolean | undefined;
+    meta?: string | undefined;
+    marked?: boolean | undefined;
+    selected?: boolean | undefined;
     /** A done step: the words step back. */
-    muted?: boolean;
+    muted?: boolean | undefined;
     /** Non-normal and reference lists: one step larger type. */
-    large?: boolean;
-    leading?: Snippet;
-    chips?: Snippet;
-    trailing?: Snippet;
-    body?: Snippet;
-    onSelect?: () => void;
+    large?: boolean | undefined;
+    leading?: Snippet | undefined;
+    chips?: Snippet | undefined;
+    trailing?: Snippet | undefined;
+    body?: Snippet | undefined;
+    onSelect?: (() => void) | undefined;
   } = $props();
 </script>
 

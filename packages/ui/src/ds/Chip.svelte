@@ -17,10 +17,10 @@ outline for skipped.
     title,
     children,
   }: {
-    tone?: "neutral" | "accent" | "go" | "warn" | "stop";
-    solid?: boolean;
-    dashed?: boolean;
-    title?: string;
+    tone?: "neutral" | "accent" | "go" | "warn" | "stop" | undefined;
+    solid?: boolean | undefined;
+    dashed?: boolean | undefined;
+    title?: string | undefined;
     children: Snippet;
   } = $props();
 </script>
