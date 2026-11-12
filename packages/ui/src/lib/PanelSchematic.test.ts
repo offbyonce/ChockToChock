@@ -126,6 +126,20 @@ describe("PanelSchematic", () => {
     expect(screen.queryByText(/SET TO/)).toBeNull();
   });
 
+  it("shows no position for it, not even its resting one", () => {
+    // Drawn at rest (OFF), the center fuel pumps read as set OFF.
+    const rests = { ...panel, sections: panel.sections.map((s) => (s.id === "elec" ? { ...s, items: s.items.map((it, n) => (n === 0 ? { ...it, rest: "OFF" } : it)) } : s)) };
+    const { container } = render(PanelSchematic, {
+      panel: rests,
+      focus: ["elec"],
+      targets: [{ section: "elec", item: 0, position: null, lit: false, open: true }],
+    });
+
+    expect(container.querySelector(".on .knob.rest")).toBeNull();
+    expect(container.querySelector(".on .pos.at-rest")).toBeNull();
+    expect(container.querySelector(".on .knob.unknown")).not.toBeNull();
+  });
+
   it("draws neighboring small sections together in one drawing", () => {
     const targets = [
       { section: "lwip", item: 0, position: 1, lit: false, open: false },

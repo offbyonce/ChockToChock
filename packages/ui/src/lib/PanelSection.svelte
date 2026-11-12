@@ -97,8 +97,10 @@ however large the drawing is.
     {@const positions = positionsOf(item)}
     {@const t = byItem.get(i)?.position ?? null}
     <!-- A control the step does not use rests where the pack says, drawn dimmed. -->
-    <!-- A step's control whose position the step leaves open rests there too, dimmed. -->
-    {@const r = (!on || t == null) && item.rest ? positions.indexOf(item.rest) : -1}
+    <!-- A step's control whose position the step leaves to a condition shows no position at all
+         (its caption says to see the step): drawn at rest, it read as set to that position. -->
+    {@const open = on && (byItem.get(i)?.open ?? false)}
+    {@const r = (!on || (t == null && !open)) && item.rest ? positions.indexOf(item.rest) : -1}
     <g class="item {item.kind}" class:on transform="translate({item.x} {item.y})">
       {#if item.kind === "toggle_switch"}
         {#if item.guarded}
