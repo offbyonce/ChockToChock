@@ -10,7 +10,7 @@ the card; text keeps 3.0's sizes.
 -->
 <script lang="ts">
   import type { ItemTarget, Panel, PanelSection as Section } from "@chocktochock/bindings";
-  import { bottomOf, positionsOf } from "./panel-layout";
+  import { layoutSection, positionsOf } from "./panel-layout";
   import PanelSection from "./PanelSection.svelte";
 
   let {
@@ -31,6 +31,9 @@ the card; text keeps 3.0's sizes.
 
   /** Fill the card's width, up to 1.8 times the pack's size. */
   const SCALE = 1.8;
+  /** A section wider than this is cropped across to SPAN around the step's controls, as 3.0 does. */
+  const WIDE = 320;
+  const SPAN = 240;
   /** How far beside the step's sections a neighbor may sit and still be drawn. */
   const NEAR = 120;
 
@@ -48,29 +51,64 @@ the card; text keeps 3.0's sizes.
   });
 
   /** The rows of a section to draw: a tall one is cut to the rows around the step's controls. */
+  /**
+   * The part of a section to draw. As 3.0 frames its panel cards: a tall section is cut to the
+   * rows around the step's controls, and a wide one to the controls around them across, so the
+   * drawing stays as large as 3.0's. Sections drawn together are shown whole.
+   */
   function bandOf(s: Section) {
-    const ys = s.items.filter((_, i) => targets.some((t) => t.section === s.id && t.item === i)).map((it) => it.y);
-    if (!ys.length || s.height <= 200 || drawn.length > 1) return { y0: 0, y1: s.height };
-    return { y0: Math.max(0, Math.min(...ys) - 95), y1: Math.min(s.height, Math.max(...ys) + 72) };
+    const mine = s.items.filter((_, i) => targets.some((t) => t.section === s.id && t.item === i));
+    const whole = { y0: 0, y1: s.height, x0: 0, x1: s.width };
+    if (!mine.length || drawn.length > 1) return whole;
+    const ys = mine.map((it) => it.y);
+    const xs = mine.map((it) => it.x);
+    const rows = s.height > 200 ? { y0: Math.max(0, Math.min(...ys) - 95), y1: Math.min(s.height, Math.max(...ys) + 72) } : {};
+    let across = {};
+    if (s.width > WIDE) {
+      const c = (Math.min(...xs) + Math.max(...xs)) / 2;
+      const half = Math.max(SPAN / 2, (Math.max(...xs) - Math.min(...xs)) / 2 + 60);
+      const x0 = Math.max(0, Math.min(c - half, s.width - 2 * half));
+      across = { x0, x1: Math.min(s.width, x0 + 2 * half) };
+    }
+    return { ...whole, ...rows, ...across };
   }
   let bands = $derived(new Map(drawn.map((s) => [s.id, bandOf(s)])));
   const top = (s: Section) => s.y + Math.max(0, (bands.get(s.id)?.y0 ?? 0) - ((bands.get(s.id)?.y0 ?? 0) > 0 ? 18 : 0));
-  let x0 = $derived(Math.min(...drawn.map((s) => s.x)) - 2);
-  let w = $derived(Math.max(...drawn.map((s) => s.x + s.width)) + 2 - x0);
+  let x0 = $derived(Math.min(...drawn.map((s) => s.x + (bands.get(s.id)?.x0 ?? 0))) - 2);
+  let w = $derived(Math.max(...drawn.map((s) => s.x + (bands.get(s.id)?.x1 ?? s.width))) + 2 - x0);
 
+  /** The height before labels, for the scale (labels depend on the scale, so not used for it). */
+  let boxH = $derived(
+    Math.max(...drawn.map((s) => s.y + (bands.get(s.id)?.y1 ?? s.height))) - Math.min(...drawn.map(top)) + 30,
+  );
   let width = $state(0);
   // The drawing is as wide as its box, but never more than SCALE times the pack's size.
-  let k = $derived(width > 0 ? Math.min(width, w * SCALE) / w : 1.6);
+  // Its height cap (21rem) can make it narrower still; text sizes follow the size drawn.
+  let k = $derived(width > 0 ? Math.min(width, w * SCALE, (336 * w) / Math.max(1, boxH)) / w : 1.6);
 
-  const hasTarget = (s: Section, i: number) =>
-    targets.some((t) => t.section === s.id && t.item === i && t.position != null && positionsOf(s.items[i]!)[t.position]);
-  /** A section's lowest point: its band, or past its lowest label (as PanelSection frames it). */
+  /** A section's lowest point: its band, or past its lowest label (as PanelSection lays it out). */
   const bottom = (s: Section) => {
-    const band = bands.get(s.id) ?? { y0: 0, y1: s.height };
-    const items = s.items
-      .map((item, i) => ({ item, i }))
-      .filter(({ item }) => item.y >= band.y0 + 10 && item.y <= band.y1 - 10);
-    return s.y + Math.max(band.y1, ...items.map(({ item, i }) => bottomOf(item, hasTarget(s, i), k) + 4));
+    const band = bands.get(s.id) ?? { y0: 0, y1: s.height, x0: 0, x1: s.width };
+    const shown = s.items.flatMap((item, i) =>
+      item.y >= band.y0 + 10 && item.y <= band.y1 - 10 && item.x >= band.x0 + 4 && item.x <= band.x1 - 4 ? [i] : [],
+    );
+    const on = (i: number) => targets.find((t) => t.section === s.id && t.item === i);
+    const layout = layoutSection(
+      s,
+      shown,
+      (i) => {
+        const item = s.items[i] as (typeof s.items)[number];
+        return {
+          on: !!on(i),
+          t: on(i)?.position ?? null,
+          rest: !on(i) && item.rest ? positionsOf(item).indexOf(item.rest) : -1,
+        };
+      },
+      k,
+      top(s) - s.y,
+      { x0: band.x0, x1: band.x1 },
+    );
+    return s.y + Math.max(band.y1, layout.bottom);
   };
   let box = $derived.by(() => {
     const y = Math.min(...drawn.map(top)) - 2;
@@ -100,7 +138,7 @@ the card; text keeps 3.0's sizes.
     aria-label="{title} panel, schematic.{described ? ` This step: ${described}.` : ''}"
   >
     {#each drawn as s (s.id)}
-      <PanelSection section={s} {targets} {guardClosed} band={bands.get(s.id) ?? { y0: 0, y1: s.height }} {k} />
+      <PanelSection section={s} {targets} {guardClosed} band={bands.get(s.id) ?? { y0: 0, y1: s.height, x0: 0, x1: s.width }} {k} />
     {/each}
   </svg>
 </div>

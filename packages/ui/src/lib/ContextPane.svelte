@@ -84,7 +84,7 @@ the list on wide screens and inside the step on narrow ones.
   {#if place && area}
     <div class="where">
       <span class="label">Where it is</span>
-      <b>{area[0]}</b>{#if area[1]}<span class="code"> · {area[1]}</span>{/if}
+      <span><b>{area[0]}</b>{#if area[1]}<span class="code"> · {area[1]}</span>{/if}</span>
       <Locator {index} zone={place.zone} />
     </div>
     <OverviewMap {index} zone={place.zone} />
@@ -121,7 +121,7 @@ the list on wide screens and inside the step on narrow ones.
       <h3 class="label">Coming up</h3>
       <ol class="next">
         {#each upcoming as u (u.step.id)}
-          <li class={u.state}>
+          <li class={u.state} class:long={u.step.expect.length > 28}>
             <span class="nm">{u.step.text}</span>
             <span class="mono">{u.step.expect}</span>
           </li>
@@ -242,6 +242,12 @@ the list on wide screens and inside the step on narrow ones.
   }
   /* In the text face, as long values are in the list: the monospaced face makes "1,000" look like
      "1, 000" and its parentheses look like brackets. */
+  .next li.long {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .next li.long .mono {
+    text-align: left;
+  }
   .next .mono {
     color: var(--muted);
     font: 0.8125rem/1.4 var(--sans);

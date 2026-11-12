@@ -45,7 +45,8 @@ from the pack, and the zone marked by a thicker outline, fill and bold label as 
    */
   const PX = { label: 9.5, edge: 9.3 };
   let width = $state(0);
-  let k = $derived(width > 0 ? width / box.w : 0.75);
+  // The map is as wide as its box unless its height cap (20rem) makes it narrower.
+  let k = $derived(width > 0 ? Math.min(width, (320 * box.w) / box.h) / box.w : 0.75);
   let LABEL = $derived(PX.label / k);
   let cx = $derived((bounds.x0 + bounds.x1) / 2);
   let cy = $derived((bounds.y0 + bounds.y1) / 2);

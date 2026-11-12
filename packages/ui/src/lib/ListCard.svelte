@@ -20,9 +20,13 @@ so instead.
     detail,
     selected,
     large = false,
+    full = true,
+    fullList = null,
     onTick,
     onSkip,
+    onUnskip,
     onSelect,
+    onClear,
   }: {
     index: PackIndex;
     list: PhaseList;
@@ -31,10 +35,34 @@ so instead.
     detail: Detail;
     selected: string | null;
     large?: boolean;
+    /** Every step shows (not Essentials only): Essentials steps carry an E. */
+    full?: boolean;
+    /** In Essentials, this list in Full, for "Show N more steps from Full". */
+    fullList?: PhaseList | null;
     onTick: (id: string, done: boolean) => void;
     onSkip: (id: string) => void;
+    onUnskip: (id: string) => void;
     onSelect: (id: string) => void;
+    onClear: (list: string) => void;
   } = $props();
+
+  /** Clear asks once: the first press turns it into "Clear all?" for a few seconds. */
+  let confirming = $state(false);
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  function clear(): void {
+    if (!confirming) {
+      confirming = true;
+      timer = setTimeout(() => (confirming = false), 4000);
+      return;
+    }
+    clearTimeout(timer);
+    confirming = false;
+    onClear(list.id);
+  }
+  let touched = $derived(list.progress.done + list.progress.skipped > 0);
+  /** Showing the whole list in Essentials, as 3.0's "Show 3 more steps from Full". */
+  let more = $state(false);
+  let rows = $derived(more && fullList ? fullList.steps : list.steps);
 
   const KIND = { checklist: "Checklist", flow: "Procedure", "non-normal": "Non-normal" } as const;
 </script>
@@ -46,12 +74,15 @@ so instead.
     <span class="count mono" aria-label="{list.progress.done} of {list.progress.total} done">
       {list.progress.done}/{list.progress.total}
     </span>
+    <button class="clear" class:confirming type="button" disabled={!touched} onclick={clear}>
+      {confirming ? "Clear all?" : "Clear"}
+    </button>
   </header>
   {#if source?.when}
     <p class="when"><b>When</b> · {source.when}</p>
   {/if}
   <ol class="items">
-    {#each list.steps as row (row.id)}
+    {#each rows as row (row.id)}
       {@const step = index.step(row.id)}
       {#if step}
         <StepItem
@@ -60,15 +91,22 @@ so instead.
           {row}
           {detail}
           {large}
+          full={full || more}
           doneAt={flight.session.done[row.id]}
           selected={selected === row.id}
           onTick={() => onTick(row.id, row.state === "done")}
           onSkip={() => onSkip(row.id)}
+          onUnskip={() => onUnskip(row.id)}
           onSelect={() => onSelect(row.id)}
         />
       {/if}
     {/each}
   </ol>
+  {#if list.hidden > 0 && fullList}
+    <button class="more" type="button" aria-expanded={more} onclick={() => (more = !more)}>
+      {more ? "Show Essentials only" : `Show ${list.hidden} more ${list.hidden === 1 ? "step" : "steps"} from Full`}
+    </button>
+  {/if}
   {#if list.complete}
     <p class="call done" role="status"><Icon name="check" /> {list.title} complete</p>
   {:else if list.progress.toDo === 0 && list.progress.skipped > 0}
@@ -109,6 +147,28 @@ so instead.
     background: var(--stop-soft);
     color: var(--stop);
   }
+  .clear {
+    position: relative;
+    color: var(--muted);
+    font-size: 0.8125rem;
+  }
+  .clear:hover:not(:disabled) {
+    color: var(--ink);
+  }
+  .clear:disabled {
+    opacity: 0.5;
+  }
+  .clear.confirming {
+    color: var(--stop);
+    font-weight: 600;
+  }
+  .clear::after {
+    position: absolute;
+    inset: 50% -0.5rem auto;
+    height: 2.75rem;
+    content: "";
+    transform: translateY(-50%);
+  }
   .count {
     margin-left: auto;
     color: var(--muted);
@@ -125,6 +185,14 @@ so instead.
     margin: 0;
     padding: 0;
     list-style: none;
+  }
+  .more {
+    min-height: 2.75rem;
+    padding: 0 1rem 0.5rem;
+    color: var(--accent);
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-align: left;
   }
   .call {
     display: flex;

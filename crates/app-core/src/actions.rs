@@ -31,6 +31,14 @@ pub enum Action {
         #[ts(type = "number")]
         at: Millis,
     },
+    /// Back to do: the skip mark goes.
+    Unskip {
+        step: StepId,
+    },
+    /// Clear every tick and skip in one list.
+    ClearList {
+        list: String,
+    },
     SetOption {
         option: String,
         value: String,
@@ -78,6 +86,21 @@ pub fn apply(pack: &FlatPack, mut flight: Flight, action: Action) -> Result<Flig
                 .session
                 .skip(list, &step, at)
                 .map_err(|e| invalid(e.to_string()))?;
+        }
+        Action::Unskip { step } => {
+            let list = list_of(&step)?;
+            flight
+                .session
+                .unskip(list, &step)
+                .map_err(|e| invalid(e.to_string()))?;
+        }
+        Action::ClearList { list } => {
+            let list = pack
+                .lists
+                .iter()
+                .find(|l| l.id == list)
+                .ok_or_else(|| invalid(format!("unknown list `{list}`")))?;
+            flight.session.clear_list(list);
         }
         Action::SetOption { option, value } => {
             let known = pack

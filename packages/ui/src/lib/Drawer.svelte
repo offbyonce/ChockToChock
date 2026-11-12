@@ -15,6 +15,8 @@ batches add flight setup, the flight log, practice and the rest here.
     stage,
     total,
     detail,
+    essentials,
+    openCount,
     version,
     onClose,
   }: {
@@ -23,6 +25,9 @@ batches add flight setup, the flight log, practice and the rest here.
     stage: string | null;
     total: Progress;
     detail: Detail;
+    essentials: boolean;
+    /** How many steps are skipped and still open. */
+    openCount: number;
     version: string | null;
     onClose: () => void;
   } = $props();
@@ -57,10 +62,12 @@ batches add flight setup, the flight log, practice and the rest here.
       {/if}
     {/each}
   </div>
+  <p class="grp">Flight</p>
+  <a class="ref" href="#/open" onclick={onClose}>Open steps <span>{openCount}</span></a>
   <p class="grp">Reference</p>
   <a class="ref" href="#/reference" onclick={onClose}>Emergency</a>
   <div class="foot">
-    <a class="ref" href="#/settings" onclick={onClose}>Settings <span>Full · {detail === "expanded" ? "Detailed" : "Simple"}</span></a>
+    <a class="ref" href="#/settings" onclick={onClose}>Settings <span>{essentials ? "Essentials" : "Full"} · {detail === "expanded" ? "Detailed" : "Simple"}</span></a>
     {#if version}<p class="ver">Version {version}</p>{/if}
   </div>
 </nav>

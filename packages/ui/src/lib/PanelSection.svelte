@@ -13,7 +13,7 @@ however large the drawing is.
 -->
 <script lang="ts">
   import type { ItemTarget, PanelItem, PanelSection } from "@chocktochock/bindings";
-  import { angle, bottomOf, half, labelledPositions, labelled, labelY, lines, PX, positionsOf } from "./panel-layout";
+  import { angle, labelledPositions, labelled, layoutSection, leverY, lines, PX, positionsOf } from "./panel-layout";
 
   let {
     section,
@@ -25,8 +25,8 @@ however large the drawing is.
     section: PanelSection;
     targets: ItemTarget[];
     guardClosed: boolean;
-    /** The rows to draw, in section units; the whole section when not cut down. */
-    band: { y0: number; y1: number };
+    /** The part to draw, in section units: rows and, for a wide section, a span across. */
+    band: { y0: number; y1: number; x0: number; x1: number };
     /** Screen pixels per drawing unit, for the fixed text sizes. */
     k: number;
   } = $props();
@@ -45,29 +45,47 @@ however large the drawing is.
     return t?.position != null ? (positionsOf(item)[t.position] ?? null) : null;
   };
 
-  /** A toggle's lever position: first position at the top, last at the bottom. */
-  const leverY = (index: number, count: number) => (count < 2 ? 0 : -8 + (16 * index) / (count - 1));
-
 
   let top = $derived(band.y0 === 0 ? 0 : band.y0 - TITLE);
   const shownItems = () =>
-    section.items.map((item, i) => ({ item, i })).filter(({ item }) => item.y >= band.y0 + 10 && item.y <= band.y1 - 10);
+    section.items
+      .map((item, i) => ({ item, i }))
+      .filter(
+        ({ item }) =>
+          item.y >= band.y0 + 10 && item.y <= band.y1 - 10 && item.x >= band.x0 + 4 && item.x <= band.x1 - 4,
+      );
   let shown = $derived(shownItems());
-  /** The frame reaches past the lowest label, so no text crosses its edge. */
-  let frameBottom = $derived(
-    Math.max(band.y1, ...shownItems().map(({ item, i }) => bottomOf(item, targetOf(i, item) != null, k) + 4)),
+  /** Every label placed clear of the controls and of each other (panel-layout.ts). */
+  let layout = $derived(
+    layoutSection(
+      section,
+      shown.map((s) => s.i),
+      (i) => {
+        const item = section.items[i] as PanelItem;
+        const on = byItem.has(i);
+        return {
+          on,
+          t: byItem.get(i)?.position ?? null,
+          rest: !on && item.rest ? positionsOf(item).indexOf(item.rest) : -1,
+        };
+      },
+      k,
+      top,
+      { x0: band.x0, x1: band.x1 },
+    ),
   );
+  /** The frame reaches past the lowest label, so no text crosses its edge. */
+  let frameBottom = $derived(Math.max(band.y1, layout.bottom));
 </script>
 
 <g transform="translate({section.x} {section.y})">
-  <rect class="frame" y={top} width={section.width} height={frameBottom - top} rx="3" />
-  <text class="title" x="8" y={top + 13} style:font-size={fs(PX.title)}>{section.title.toUpperCase()}</text>
+  <rect class="frame" x={band.x0} y={top} width={band.x1 - band.x0} height={frameBottom - top} rx="3" />
+  <text class="title" x={band.x0 + 8} y={top + 13} style:font-size={fs(PX.title * layout.scale)}>{section.title.toUpperCase()}</text>
   {#each shown as { item, i } (i)}
     {@const on = byItem.has(i)}
     {@const target = targetOf(i, item)}
     {@const positions = positionsOf(item)}
     {@const t = byItem.get(i)?.position ?? null}
-    {@const h = half(item)}
     <!-- A control the step does not use rests where the pack says, drawn dimmed. -->
     {@const r = !on && item.rest ? positions.indexOf(item.rest) : -1}
     <g class="item {item.kind}" class:on transform="translate({item.x} {item.y})">
@@ -83,13 +101,12 @@ however large the drawing is.
         {:else}
           <circle class="knob unknown" r="2.6" />
         {/if}
-        {#if positions.length <= 3}
-          {#each positions as p, n (n)}
-            <text class="pos" class:target={on && n === t} class:at-rest={n === r} x={item.guarded ? 14 : 10} y={leverY(n, positions.length) + 2.5} style:font-size={fs(PX.pos)}>{p}</text>
-          {/each}
-        {/if}
+        {#each layout.items.get(i)?.positions ?? [] as l (l.n)}
+          <text class="pos" class:target={on && l.n === t} class:at-rest={l.n === r} x={l.x} y={l.y} text-anchor={l.anchor} style:font-size={fs(PX.pos * layout.scale)}>{positions[l.n]}</text>
+        {/each}
       {:else if item.kind === "selector"}
-        {#each positions as _, n (n)}
+        <!-- A tick for each labelled position, so no tick is left without a name. -->
+        {#each layout.items.get(i)?.positions.map((l) => l.n) ?? [] as n (n)}
           <line class="tick" class:target={on && n === t} x1="0" y1="-12" x2="0" y2="-15.5" transform="rotate({angle(n, positions.length)})" />
         {/each}
         <circle class="body" r="10.5" />
@@ -103,17 +120,8 @@ however large the drawing is.
           <circle class="knob-ring" r="4.5" />
         {/if}
         <!-- Each label sits at its own tick, so the pointer and its label always agree. -->
-        {#each labelledPositions(positions.length, on ? t : r >= 0 ? r : null) as n (n)}
-          {@const a = (angle(n, positions.length) * Math.PI) / 180}
-          {@const r = 18.5}
-          <text
-            class="pos"
-            class:target={on && n === t}
-            x={Math.sin(a) * r}
-            y={-Math.cos(a) * r + 3}
-            text-anchor={Math.sin(a) < -0.3 ? "end" : Math.sin(a) > 0.3 ? "start" : "middle"}
-            style:font-size={fs(PX.pos)}>{positions[n]}</text
-          >
+        {#each layout.items.get(i)?.positions ?? [] as l (l.n)}
+          <text class="pos" class:target={on && l.n === t} class:at-rest={l.n === r} x={l.x} y={l.y} text-anchor={l.anchor} style:font-size={fs(PX.pos * layout.scale)}>{positions[l.n]}</text>
         {/each}
       {:else if item.kind === "push_button"}
         {#if item.guarded}
@@ -136,11 +144,14 @@ however large the drawing is.
         <text class="lamp-text" y="2" style:font-size={lampFs([item.label], w)}>{item.label}</text>
       {/if}
       {#if labelled(item)}
-        {#each lines(item.label) as line, n (n)}
-          <text class="label" y={labelY(item, n, k)} style:font-size={fs(PX.name)}>{line}</text>
-        {/each}
-        {#if on && target}
-          <text class="set-to" y={labelY(item, lines(item.label).length, k)} style:font-size={fs(PX.setTo)}>SET TO {target}</text>
+        {@const name = layout.items.get(i)?.name}
+        {#if name}
+          {#each name.lines as line, n (n)}
+            <text class="label" y={name.y + (n * name.px * 1.15) / k} style:font-size={fs(name.px)}>{line}</text>
+          {/each}
+          {#if on && target}
+            <text class="set-to" y={name.y + (name.lines.length * name.px * 1.15) / k} style:font-size={fs(PX.setTo * layout.scale)}>SET TO {target}</text>
+          {/if}
         {/if}
       {/if}
     </g>

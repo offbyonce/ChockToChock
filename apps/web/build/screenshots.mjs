@@ -28,6 +28,9 @@ const VIEWPORTS = {
 const THEMES = { dark: 0, light: 1 };
 
 const click = (selector, n = 0) => `document.querySelectorAll(${JSON.stringify(selector)})[${n}].click(); true`;
+const pressText = (text) =>
+  `[...document.querySelectorAll("button")].find((b) => b.textContent.trim() === ${JSON.stringify(text)}).click(); true`;
+const go = (hash) => `location.hash = ${JSON.stringify(hash)}; true`;
 
 /**
  * The screens to capture: a name, and for each app the address after `#` and an optional script
@@ -58,6 +61,16 @@ const SHOTS = [
     name: "flow",
     app: { hash: "#/phase/before-start", before: [click("header.top .tool", 1)] },
     base: { hash: "#before-start", before: [click("#flowb")] },
+  },
+  {
+    name: "essentials",
+    app: { hash: "#/settings", before: [pressText("Essentials"), go("")] },
+    base: { hash: "#settings", before: [pressText("Essentials"), go("#cold-dark")] },
+  },
+  {
+    name: "open",
+    app: { hash: "", before: [click(".it .tick", 0), go("#/phase/gpu-power"), click(".opn .line")] },
+    base: { hash: "#cold-dark", before: [click(".it .tick", 0), go("#gpu-power"), click("#opbtn")] },
   },
   { name: "emergency", app: { hash: "#/reference" }, base: { hash: "#memory" } },
   { name: "settings", app: { hash: "#/settings" }, base: { hash: "#settings" } },
@@ -174,6 +187,8 @@ async function main() {
       url: (hash) => `http://localhost:8772/app/?shot=${Date.now()}${hash}`,
       ready: "!!document.querySelector('[data-app-ready]')",
       dir: out,
+      // The app saves progress on the device: each screen starts from nothing saved.
+      reset: "localStorage.clear(); true",
     },
   ];
   if (baseline) {

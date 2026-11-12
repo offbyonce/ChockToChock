@@ -13,6 +13,7 @@ import type {
   Flight,
   Loaded,
   Ofp,
+  OpenStep,
   PhaseView,
   Rail,
   Reply,
@@ -60,14 +61,31 @@ export async function apply(pack: string, flight: Flight, action: Action): Promi
   return unwrap<Flight>(wasm.apply(pack, JSON.stringify(flight), JSON.stringify(action)));
 }
 
-export async function rail(pack: string, flight: Flight): Promise<Rail> {
+export async function rail(pack: string, flight: Flight, settings: Settings): Promise<Rail> {
   await load();
-  return unwrap<Rail>(wasm.rail(pack, JSON.stringify(flight)));
+  return unwrap<Rail>(wasm.rail(pack, JSON.stringify(flight), JSON.stringify(settings)));
 }
 
-export async function phaseView(pack: string, flight: Flight, phase: string): Promise<PhaseView> {
+export async function openSteps(
+  pack: string,
+  flight: Flight,
+  settings: Settings,
+  before?: string,
+): Promise<OpenStep[]> {
   await load();
-  return unwrap<PhaseView>(wasm.phase_view(pack, JSON.stringify(flight), phase));
+  return unwrap<OpenStep[]>(
+    wasm.open_steps(pack, JSON.stringify(flight), JSON.stringify(settings), before ?? ""),
+  );
+}
+
+export async function phaseView(
+  pack: string,
+  flight: Flight,
+  settings: Settings,
+  phase: string,
+): Promise<PhaseView> {
+  await load();
+  return unwrap<PhaseView>(wasm.phase_view(pack, JSON.stringify(flight), JSON.stringify(settings), phase));
 }
 
 /** Reads a saved flight: ready (migrated if older), newer, or unreadable (decision 0012). */

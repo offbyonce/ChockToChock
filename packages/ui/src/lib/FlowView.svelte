@@ -51,8 +51,8 @@ value on the right. The pilot confirms each step; the app never knows a switch p
   /** 3.0's keys: Space confirms, Left arrow goes back, S skips. Ignored while typing or on a control. */
   function onKey(e: KeyboardEvent): void {
     if (!entry || !step || e.altKey || e.ctrlKey || e.metaKey) return;
-    const t = e.target as HTMLElement | null;
-    if (t?.closest("input, textarea, select, button, a, summary, [contenteditable]")) return;
+    const t = e.target;
+    if (t instanceof Element && t.closest("input, textarea, select, button, a, summary, [contenteditable]")) return;
     if (e.key === " ") {
       e.preventDefault();
       onConfirm(step.id);

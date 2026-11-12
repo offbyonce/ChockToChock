@@ -12,10 +12,10 @@ saves them on the device, and batch 7 adds the rest.
   let { settings, onChange }: { settings: Settings; onChange: (s: Settings) => void } = $props();
 
   type Row = {
-    key: "listView" | "detail" | "theme" | "dimming";
+    key: "listView" | "essentials" | "detail" | "theme" | "dimming";
     title: string;
     text: string;
-    choices: [string | number, string][];
+    choices: [string | number | boolean, string][];
   };
   const ROWS: Row[] = [
     {
@@ -25,6 +25,15 @@ saves them on the device, and batch 7 adds the rest.
       choices: [
         ["checklist", "Checklist"],
         ["flow", "Flow"],
+      ],
+    },
+    {
+      key: "essentials",
+      title: "Steps",
+      text: "Full is maximum immersion, with every step. Essentials is only what you need, in the right order, to get off the ground fast.",
+      choices: [
+        [false, "Full"],
+        [true, "Essentials"],
       ],
     },
     {
@@ -71,7 +80,7 @@ saves them on the device, and batch 7 adds the rest.
         <p>{row.text}</p>
       </div>
       <div class="seg" role="radiogroup" aria-labelledby="set-{row.key}">
-        {#each row.choices as [value, label] (value)}
+        {#each row.choices as [value, label] (String(value))}
           <button
             type="button"
             role="radio"
@@ -115,18 +124,20 @@ saves them on the device, and batch 7 adds the rest.
     color: var(--muted);
     font-size: 0.875rem;
   }
+  /* Equal segments, in one aligned column on every row. */
   .seg {
-    display: flex;
+    display: grid;
+    grid-auto-columns: 1fr;
+    grid-auto-flow: column;
     gap: 0.25rem;
     padding: 0.25rem;
     border-radius: 0.625rem;
     background: var(--zone);
   }
   .seg button {
-    flex: 1;
     min-width: 0;
     min-height: 2.75rem;
-    padding: 0 1rem;
+    padding: 0 0.25rem;
     border-radius: 0.5rem;
     color: var(--muted);
     font-weight: 500;

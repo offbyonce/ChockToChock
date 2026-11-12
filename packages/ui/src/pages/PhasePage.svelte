@@ -23,7 +23,11 @@ a time (lib/FlowView.svelte).
     selected,
     onTick,
     onSkip,
+    onUnskip,
     onSelect,
+    onClear,
+    full = true,
+    fullView = null,
     onOption,
   }: {
     index: PackIndex;
@@ -34,12 +38,44 @@ a time (lib/FlowView.svelte).
     selected: string | null;
     onTick: (id: string, done: boolean) => void;
     onSkip: (id: string) => void;
+    onUnskip: (id: string) => void;
     onSelect: (id: string) => void;
+    onClear: (list: string) => void;
+    full?: boolean;
+    /** In Essentials, this phase in Full. */
+    fullView?: PhaseView | null;
     onOption: (option: string, value: string) => void;
   } = $props();
 
   let asked = $derived(index.options.filter((o) => (o.ask_in ?? []).includes(view.id)));
+
+  /**
+   * Keys, as in 3.0's Flow view: Down and Up arrows move between steps, Space ticks the selected
+   * step (the current one if none is selected). Ignored while typing or on a control.
+   */
+  let rows = $derived(view.lists.flatMap((l) => l.steps));
+  function onKey(e: KeyboardEvent): void {
+    if (e.altKey || e.ctrlKey || e.metaKey) return;
+    const t = e.target;
+    if (t instanceof Element && t.closest("input, textarea, select, button, a, summary, [contenteditable]")) return;
+    const at = rows.findIndex((r) => r.id === (selected ?? view.lists.find((l) => l.current)?.current));
+    if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+      const next = rows[Math.min(rows.length - 1, Math.max(0, at + (e.key === "ArrowDown" ? 1 : -1)))];
+      if (next) {
+        e.preventDefault();
+        onSelect(next.id);
+      }
+    } else if (e.key === " " && at >= 0) {
+      const row = rows[at];
+      if (row) {
+        e.preventDefault();
+        onTick(row.id, row.state === "done");
+      }
+    }
+  }
 </script>
+
+<svelte:window onkeydown={onKey} />
 
 {#if view.stage && view.position}
   <p class="crumb">{view.stage} · Phase {view.position[0]} of {view.position[1]}</p>
@@ -63,9 +99,13 @@ a time (lib/FlowView.svelte).
     {detail}
     {selected}
     large={list.kind === "non-normal"}
+    {full}
+    fullList={fullView?.lists.find((l) => l.id === list.id) ?? null}
     {onTick}
     {onSkip}
+    {onUnskip}
     {onSelect}
+    {onClear}
   />
 {/each}
 

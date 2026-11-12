@@ -11,6 +11,8 @@ import type {
   AppInfo,
   FlatPack,
   Flight,
+  Loaded,
+  OpenStep,
   PackSummary,
   PhaseView,
   Rail,
@@ -28,12 +30,26 @@ export interface Host {
   newFlight(pack: string): Promise<Flight>;
   /** Applies an action and returns the changed flight. */
   apply(pack: string, flight: Flight, action: Action): Promise<Flight>;
-  /** The phase rail for a flight. */
-  rail(pack: string, flight: Flight): Promise<Rail>;
+  /** The phase rail for a flight, for the pilot's settings (Full or Essentials). */
+  rail(pack: string, flight: Flight, settings: Settings): Promise<Rail>;
   /** One phase as shown: its lists, step states, progress and neighbors. */
-  phaseView(pack: string, flight: Flight, phase: string): Promise<PhaseView>;
+  phaseView(pack: string, flight: Flight, settings: Settings, phase: string): Promise<PhaseView>;
+  /** Open steps: undone steps of started phases; with `before`, only from phases before it. */
+  openSteps(pack: string, flight: Flight, settings: Settings, before?: string): Promise<OpenStep[]>;
+  /**
+   * What is saved on this device for a pack (decision 0012): each read by Rust as ready (migrated
+   * if older), newer or unreadable, with the saved text so nothing is lost. Null when none.
+   */
+  loadSaved(pack: string): Promise<Saved>;
+  /** Saves the flight or the settings on this device; returns when, in milliseconds. */
+  save(pack: string, what: "flight" | "settings", value: Flight | Settings): Promise<number>;
+  /** Moves saved text the app cannot use aside (kept, not deleted), so a new save can start. */
+  setAside(pack: string, what: "flight" | "settings"): Promise<void>;
   defaultSettings(): Promise<Settings>;
 }
+
+export type SavedItem<T> = { loaded: Loaded<T>; text: string } | null;
+export type Saved = { flight: SavedItem<Flight>; settings: SavedItem<Settings> };
 
 const HOST = Symbol("host");
 

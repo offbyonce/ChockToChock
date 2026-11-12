@@ -14,8 +14,22 @@ started, a filled circle with a check when complete, and a dashed ring when a st
     phases,
     current,
     detail,
+    essentials,
     total,
-  }: { phases: RailPhase[]; current: string | null; detail: Detail; total: Progress } = $props();
+    savedAt,
+  }: {
+    phases: RailPhase[];
+    current: string | null;
+    detail: Detail;
+    essentials: boolean;
+    total: Progress;
+    /** When progress was last saved on this device. */
+    savedAt: number | null;
+  } = $props();
+
+  let saved = $derived(
+    savedAt === null ? null : new Date(savedAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+  );
 
   const mark = (p: RailPhase) =>
     p.complete ? "complete" : p.skipped > 0 ? "skipped" : p.progress.done > 0 ? "started" : "todo";
@@ -33,9 +47,12 @@ started, a filled circle with a check when complete, and a dashed ring when a st
     {/each}
   </nav>
   <div class="meta">
-    <a class="chip" href="#/settings">Full · {detail === "expanded" ? "Detailed" : "Simple"}</a>
-    <div class="bar" aria-hidden="true"><i style:width="{total.total ? (100 * total.done) / total.total : 0}%"></i></div>
+    <a class="chip" href="#/settings">{essentials ? "Essentials" : "Full"} · {detail === "expanded" ? "Detailed" : "Simple"}</a>
+    <div class="bar" aria-hidden="true">
+      <i style:width={total.done ? `max(0.375rem, ${(100 * total.done) / total.total}%)` : "0"}></i>
+    </div>
     <span class="count mono" aria-label="{total.done} of {total.total} steps done">{total.done}/{total.total}</span>
+    {#if saved}<span class="saved" role="status">Saved {saved}</span>{/if}
   </div>
 </div>
 
@@ -155,12 +172,22 @@ started, a filled circle with a check when complete, and a dashed ring when a st
     height: 100%;
     background: var(--go);
   }
+  .saved {
+    color: var(--muted);
+    font-size: 0.7812rem;
+    white-space: nowrap;
+  }
   .count {
     color: var(--muted);
     font-size: 0.8125rem;
   }
   @media (max-width: 1100px) {
     .bar {
+      display: none;
+    }
+  }
+  @media (max-width: 760px) {
+    .saved {
       display: none;
     }
   }

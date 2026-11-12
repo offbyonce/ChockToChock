@@ -10,7 +10,8 @@ use serde::Serialize;
 use ts_rs::TS;
 
 use crate::flight::Flight;
-use crate::visibility::{passes, visible_steps};
+use crate::settings::Settings;
+use crate::visibility::{Shown, passes, shown_steps};
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, TS)]
 #[serde(rename_all = "camelCase")]
@@ -44,7 +45,7 @@ pub struct Rail {
     pub reference: Vec<RailPhase>,
 }
 
-fn phase_entry(pack: &FlatPack, flight: &Flight, id: &str) -> Option<RailPhase> {
+fn phase_entry(pack: &FlatPack, flight: &Flight, shown: Shown, id: &str) -> Option<RailPhase> {
     let phase = pack
         .content
         .phases
@@ -59,7 +60,7 @@ fn phase_entry(pack: &FlatPack, flight: &Flight, id: &str) -> Option<RailPhase> 
         .map(|list| {
             flight
                 .session
-                .progress(visible_steps(list, &flight.options))
+                .progress(shown_steps(list, &flight.options, shown, phase.reference))
         })
         .fold(Progress::default(), Progress::plus);
     Some(RailPhase {
@@ -72,8 +73,9 @@ fn phase_entry(pack: &FlatPack, flight: &Flight, id: &str) -> Option<RailPhase> 
     })
 }
 
-/// The rail for this flight.
-pub fn rail(pack: &FlatPack, flight: &Flight) -> Rail {
+/// The rail for this flight, counting the steps the pilot chose to see (Full or Essentials).
+pub fn rail(pack: &FlatPack, flight: &Flight, settings: &Settings) -> Rail {
+    let shown = Shown::new(pack, settings);
     let Some(file) = &pack.content.phases else {
         return Rail {
             stages: vec![],
@@ -94,7 +96,9 @@ pub fn rail(pack: &FlatPack, flight: &Flight) -> Rail {
                         .as_ref()
                         .is_none_or(|s| passes(s, &flight.options))
                 })
-                .filter_map(|place| phase_entry(pack, flight, &place.phase))
+                .filter_map(|place| phase_entry(pack, flight, shown, &place.phase))
+                // In Essentials, a phase with no Essentials steps is left out, as in 3.0.
+                .filter(|p| !shown.essentials || p.progress.total > 0)
                 .collect(),
         })
         .collect();
@@ -102,7 +106,7 @@ pub fn rail(pack: &FlatPack, flight: &Flight) -> Rail {
         .phases
         .iter()
         .filter(|p| p.reference)
-        .filter_map(|p| phase_entry(pack, flight, &p.id))
+        .filter_map(|p| phase_entry(pack, flight, shown, &p.id))
         .collect();
     Rail { stages, reference }
 }
@@ -147,10 +151,19 @@ mod tests {
             },
         )
         .unwrap();
-        assert!(titles(&rail(&pack, &gpu), "Preflight").contains(&"gpu-power".to_owned()));
-        assert!(!titles(&rail(&pack, &apu), "Preflight").contains(&"gpu-power".to_owned()));
-        assert!(titles(&rail(&pack, &apu), "Preflight").contains(&"apu-power".to_owned()));
-        assert_eq!(rail(&pack, &gpu).reference.len(), 3);
+        assert!(
+            titles(&rail(&pack, &gpu, &Settings::default()), "Preflight")
+                .contains(&"gpu-power".to_owned())
+        );
+        assert!(
+            !titles(&rail(&pack, &apu, &Settings::default()), "Preflight")
+                .contains(&"gpu-power".to_owned())
+        );
+        assert!(
+            titles(&rail(&pack, &apu, &Settings::default()), "Preflight")
+                .contains(&"apu-power".to_owned())
+        );
+        assert_eq!(rail(&pack, &gpu, &Settings::default()).reference.len(), 3);
     }
 
     #[test]
@@ -176,7 +189,7 @@ mod tests {
             };
             flight = apply(&pack, flight, action).unwrap();
         }
-        let phase = rail(&pack, &flight).stages[0]
+        let phase = rail(&pack, &flight, &Settings::default()).stages[0]
             .phases
             .iter()
             .find(|p| p.id == "exterior")
@@ -186,7 +199,7 @@ mod tests {
         assert_eq!((phase.open, phase.skipped), (1, 1));
         let step = first.steps[0].id.clone();
         flight = apply(&pack, flight, Action::Tick { step, at: 3 }).unwrap();
-        let phase = rail(&pack, &flight).stages[0]
+        let phase = rail(&pack, &flight, &Settings::default()).stages[0]
             .phases
             .iter()
             .find(|p| p.id == "exterior")

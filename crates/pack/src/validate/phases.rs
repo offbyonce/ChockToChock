@@ -5,7 +5,7 @@
 
 use std::collections::BTreeSet;
 
-use checklist_core::UserOption;
+use checklist_core::{Quick, UserOption};
 
 use super::index::Index;
 use super::{Issue, error};
@@ -15,6 +15,20 @@ pub(super) fn check_phases(pack: &Pack, idx: &Index, issues: &mut Vec<Issue>) {
     let Some(file) = &pack.content.phases else {
         return;
     };
+    if let Some(turnaround) = &file.turnaround {
+        idx.check_show_if("turnaround", turnaround, issues);
+    }
+    let uses_turnaround = pack
+        .checklists
+        .iter()
+        .flat_map(|l| &l.steps)
+        .find(|s| s.quick == Some(Quick::Turnaround));
+    if let (Some(step), None) = (uses_turnaround, &file.turnaround) {
+        issues.push(error(
+            step.id.as_str(),
+            "is in Essentials on a turnaround, but phases.yaml declares no `turnaround`",
+        ));
+    }
     for option in &file.options {
         idx.check_option_value(&option.id, &option.id, &option.default, issues);
         check_choices(option, issues);
@@ -106,6 +120,33 @@ mod tests {
         }
         assert_flags(&p, "more than one phase");
         assert_flags(&p, "unknown list");
+    }
+
+    #[test]
+    fn a_turnaround_step_needs_a_turnaround_declaration() {
+        let mut s = step("a");
+        s.quick = Some(checklist_core::Quick::Turnaround);
+        let mut p = pack(vec![s.clone()], vec![]);
+        assert_flags(&p, "declares no `turnaround`");
+        if let Some(file) = &mut p.content.phases {
+            file.turnaround = Some(ShowIf::Test(OptionTest::Equals {
+                option: "power".into(),
+                equals: "nope".into(),
+            }));
+        }
+        assert_flags(&p, "has no value `nope`");
+        let mut p = pack(vec![s], vec![]);
+        if let Some(file) = &mut p.content.phases {
+            file.turnaround = Some(ShowIf::Test(OptionTest::Equals {
+                option: "power".into(),
+                equals: "apu".into(),
+            }));
+        }
+        assert!(
+            crate::validate_pack(&p)
+                .iter()
+                .all(|i| !i.message.contains("turnaround"))
+        );
     }
 
     #[test]

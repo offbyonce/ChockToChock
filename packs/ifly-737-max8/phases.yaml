@@ -49,6 +49,10 @@ options:
     ask_in:
       - descent
       - approach
+# Steps in Essentials only on a turnaround (quick: turnaround) count when this holds.
+turnaround:
+  option: start
+  equals: turn
 stages:
   - title: Preflight
     phases:

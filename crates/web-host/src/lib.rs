@@ -94,22 +94,37 @@ pub fn apply(pack: &str, flight: &str, action: &str) -> String {
     })())
 }
 
-/// The phase rail for a flight.
+/// The phase rail for a flight, for the pilot's settings (Full or Essentials).
 #[wasm_bindgen]
-pub fn rail(pack: &str, flight: &str) -> String {
-    reply(
-        read::<Flight>("flight", flight)
-            .and_then(|flight| with_pack(pack, |p| Ok(app_core::rail(p, &flight)))),
-    )
+pub fn rail(pack: &str, flight: &str, settings: &str) -> String {
+    reply((|| {
+        let flight: Flight = read("flight", flight)?;
+        let settings: Settings = read("settings", settings)?;
+        with_pack(pack, |p| Ok(app_core::rail(p, &flight, &settings)))
+    })())
+}
+
+/// The flight's open steps; with a phase id, only those from phases before it ("" for all).
+#[wasm_bindgen]
+pub fn open_steps(pack: &str, flight: &str, settings: &str, before: &str) -> String {
+    reply((|| {
+        let flight: Flight = read("flight", flight)?;
+        let settings: Settings = read("settings", settings)?;
+        let before = (!before.is_empty()).then_some(before);
+        with_pack(pack, |p| {
+            Ok(app_core::open_steps(p, &flight, &settings, before))
+        })
+    })())
 }
 
 /// One phase of a flight as the interface shows it: lists, step states, progress, neighbors.
 #[wasm_bindgen]
-pub fn phase_view(pack: &str, flight: &str, phase: &str) -> String {
-    reply(
-        read::<Flight>("flight", flight)
-            .and_then(|flight| with_pack(pack, |p| app_core::phase_view(p, &flight, phase))),
-    )
+pub fn phase_view(pack: &str, flight: &str, settings: &str, phase: &str) -> String {
+    reply((|| {
+        let flight: Flight = read("flight", flight)?;
+        let settings: Settings = read("settings", settings)?;
+        with_pack(pack, |p| app_core::phase_view(p, &flight, &settings, phase))
+    })())
 }
 
 /// Read a saved flight: ready (migrated if older), newer, or unreadable.
@@ -192,16 +207,31 @@ mod tests {
             ticked["session"]["done"]["example-trainer.before-start.battery"],
             7
         );
-        assert!(json(&rail("example-trainer", &ticked.to_string()))["ok"]["stages"].is_array());
+        let settings = default_settings();
+        let settings = json(&settings)["ok"].to_string();
+        assert!(
+            json(&rail("example-trainer", &ticked.to_string(), &settings))["ok"]["stages"]
+                .is_array()
+        );
+        assert!(
+            json(&open_steps(
+                "example-trainer",
+                &ticked.to_string(),
+                &settings,
+                ""
+            ))["ok"]
+                .is_array()
+        );
         let view = json(&phase_view(
             "example-trainer",
             &ticked.to_string(),
+            &settings,
             "before-start",
         ))["ok"]
             .clone();
         assert_eq!(view["lists"][0]["steps"][0]["state"], "done");
         assert_eq!(
-            json(&phase_view("example-trainer", &flight, "nope"))["error"]["kind"],
+            json(&phase_view("example-trainer", &flight, &settings, "nope"))["error"]["kind"],
             "InvalidAction"
         );
     }

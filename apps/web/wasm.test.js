@@ -51,7 +51,8 @@ test("the module keeps a loaded pack for flights, actions and the rail", () => {
   const skipped = ok(
     wasm.apply("ifly-737-max8", JSON.stringify(flight), JSON.stringify({ type: "skip", step, at: 1 })),
   );
-  const rail = ok(wasm.rail("ifly-737-max8", JSON.stringify(skipped)));
+  const settings = JSON.stringify(ok(wasm.default_settings()));
+  const rail = ok(wasm.rail("ifly-737-max8", JSON.stringify(skipped), settings));
   const exterior = rail.stages[0].phases.find((p) => p.id === "exterior");
   assert.equal(exterior.skipped, 1);
   assert.equal(exterior.complete, false);
@@ -59,5 +60,10 @@ test("the module keeps a loaded pack for flights, actions and the rail", () => {
     rail.reference.map((p) => p.id),
     ["memory", "quick-reference", "procedures"],
   );
+  const open = ok(wasm.open_steps("ifly-737-max8", JSON.stringify(skipped), settings, ""));
+  assert.equal(open.find((o) => o.step === step)?.skipped, true);
+  const essentials = JSON.stringify({ ...JSON.parse(settings), essentials: true });
+  const view = ok(wasm.phase_view("ifly-737-max8", JSON.stringify(skipped), essentials, "preflight"));
+  assert.ok(view.lists.every((l) => l.steps.every((s) => s.essential)));
   assert.equal(JSON.parse(wasm.load_flight('{"format":99}')).ok.state, "newer");
 });

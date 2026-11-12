@@ -5,6 +5,7 @@ import type {
   Action,
   FlatPack,
   Flight,
+  Loaded,
   PhaseView,
   Rail,
   RailPhase,
@@ -101,7 +102,9 @@ function view(states: [StepState, StepState]): PhaseView {
           state: states[i] as StepState,
           counts: true,
           targets: [],
+          essential: i === 0,
         })),
+        hidden: 0,
         progress,
         complete: done === 2,
         current,
@@ -122,6 +125,10 @@ function host(overrides: Partial<Host> = {}): Host {
     apply: async (_pack, flight) => flight,
     rail: async () => rail,
     phaseView: async () => view(["skipped", "current"]),
+    openSteps: async () => [],
+    loadSaved: async () => ({ flight: null, settings: null }),
+    save: async () => 0,
+    setAside: async () => {},
     defaultSettings: async () =>
       ({ theme: "dark", dimming: 0, detail: "expanded", listView: "checklist" }) as Settings,
     ...overrides,
@@ -142,7 +149,9 @@ describe("App", () => {
     expect(within(stages).getByRole("link", { name: "Preflight" }).getAttribute("aria-current")).toBe("true");
     expect(screen.getByRole("link", { name: "Exterior, complete" })).toBeTruthy();
     expect(screen.getByRole("link", { name: "Power up, has skipped steps" })).toBeTruthy();
-    expect(screen.getByRole("button", { name: "1BATTERY , skipped, still open ON" })).toBeTruthy();
+    expect(
+      screen.getByRole("button", { name: "1BATTERY , in Essentials , skipped, still open ON" }),
+    ).toBeTruthy();
     expect(screen.getByRole("button", { name: "2STANDBY POWER , current AUTO" })).toBeTruthy();
     const top = document.querySelector<HTMLElement>("header.top");
     expect(
@@ -229,5 +238,165 @@ describe("App", () => {
     render(App, { context: hostContext(failing) });
 
     expect((await screen.findByRole("alert")).textContent).toBe("PackInvalid: pack format 3 is newer");
+  });
+
+  it("saves a tick on the device and shows when", async () => {
+    const saves: string[] = [];
+    const h = host({
+      save: async (_p, what) => {
+        saves.push(what);
+        return new Date(2026, 10, 11, 14, 5).getTime();
+      },
+    });
+    render(App, { context: hostContext(h) });
+
+    await fireEvent.click(await screen.findByRole("button", { name: "Confirm STANDBY POWER: AUTO" }));
+    expect(await screen.findByText(/^Saved /)).toBeTruthy();
+    expect(saves).toContain("flight");
+  });
+
+  it("restores saved progress", async () => {
+    const savedFlight = {
+      pack: "demo",
+      options: { power: "apu" },
+      session: { done: {}, skipped: {} },
+    } as unknown as Flight;
+    let given: Flight | null = null;
+    const h = host({
+      loadSaved: async () => ({
+        flight: {
+          loaded: { state: "ready", value: savedFlight, migratedFrom: null } as Loaded<Flight>,
+          text: "{}",
+        },
+        settings: null,
+      }),
+      phaseView: async (_p, f) => {
+        given = f;
+        return view(["skipped", "current"]);
+      },
+    });
+    render(App, { context: hostContext(h) });
+
+    await screen.findByRole("heading", { level: 1, name: "Power up" });
+    expect(given).toEqual(savedFlight);
+  });
+
+  it("keeps newer saved progress, saves nothing over it, and sets it aside on Start fresh", async () => {
+    const saves: string[] = [];
+    const asides: string[] = [];
+    const h = host({
+      loadSaved: async () => ({
+        flight: { loaded: { state: "newer", format: 9 } as Loaded<Flight>, text: '{"format":9}' },
+        settings: null,
+      }),
+      save: async (_p, what) => {
+        saves.push(what);
+        return 0;
+      },
+      setAside: async (_p, what) => {
+        asides.push(what);
+      },
+    });
+    render(App, { context: hostContext(h) });
+
+    expect(await screen.findByText("Your saved progress is from a newer version of the app.")).toBeTruthy();
+    expect(screen.getByRole("link", { name: "Save a copy" })).toBeTruthy();
+    await fireEvent.click(await screen.findByRole("button", { name: "Confirm STANDBY POWER: AUTO" }));
+    await new Promise((r) => setTimeout(r, 20));
+    expect(saves).not.toContain("flight");
+
+    await fireEvent.click(screen.getByRole("button", { name: "Start fresh" }));
+    await new Promise((r) => setTimeout(r, 20));
+    expect(asides).toEqual(["flight"]);
+    expect(saves).toContain("flight");
+    expect(screen.queryByText(/newer version of the app/)).toBeNull();
+  });
+
+  it("clears a list only after a second press", async () => {
+    const actions: Action[] = [];
+    const h = host({
+      apply: async (_pack, flight, action) => {
+        actions.push(action);
+        return { ...flight };
+      },
+    });
+    render(App, { context: hostContext(h) });
+
+    await fireEvent.click(await screen.findByRole("button", { name: "Clear" }));
+    expect(actions).toHaveLength(0);
+    await fireEvent.click(screen.getByRole("button", { name: "Clear all?" }));
+    expect(actions).toEqual([{ type: "clearList", list: "power-up-flow" }]);
+  });
+
+  it("lists open steps and puts one back to do", async () => {
+    window.location.hash = "#/open";
+    const actions: Action[] = [];
+    const h = host({
+      openSteps: async () => [
+        {
+          step: "battery",
+          phase: "power-up",
+          phaseTitle: "Power up",
+          listTitle: "Power up flow",
+          skipped: true,
+        },
+      ],
+      apply: async (_pack, flight, action) => {
+        actions.push(action);
+        return { ...flight };
+      },
+    });
+    render(App, { context: hostContext(h) });
+
+    expect(await screen.findByRole("heading", { level: 1, name: "Open steps" })).toBeTruthy();
+    expect(await screen.findByText("BATTERY")).toBeTruthy();
+    await fireEvent.click(screen.getByRole("button", { name: "Unskip" }));
+    expect(actions).toEqual([{ type: "unskip", step: "battery" }]);
+  });
+
+  it("moves between steps with the arrow keys and ticks with Space in Checklist view", async () => {
+    const actions: Action[] = [];
+    const h = host({
+      apply: async (_pack, flight, action) => {
+        actions.push(action);
+        return { ...flight };
+      },
+    });
+    render(App, { context: hostContext(h) });
+    await screen.findByRole("heading", { level: 1, name: "Power up" });
+
+    await fireEvent.keyDown(window, { key: "ArrowUp" });
+    expect(screen.getByRole("button", { name: /^1BATTERY/ }).getAttribute("aria-current")).toBe("true");
+    await fireEvent.keyDown(window, { key: " " });
+    expect(actions[0]).toMatchObject({ type: "tick", step: "battery" });
+  });
+
+  it("shows open steps from earlier pages on a phase, and ticks one from there", async () => {
+    const actions: Action[] = [];
+    const h = host({
+      openSteps: async (_p, _f, _s, before) =>
+        before
+          ? [
+              {
+                step: "standby",
+                phase: "earlier",
+                phaseTitle: "Earlier",
+                listTitle: "Earlier flow",
+                skipped: false,
+              },
+            ]
+          : [],
+      apply: async (_pack, flight, action) => {
+        actions.push(action);
+        return { ...flight };
+      },
+    });
+    render(App, { context: hostContext(h) });
+
+    const line = await screen.findByRole("button", { name: /Open steps.*1 from earlier pages.*Earlier 1/ });
+    await fireEvent.click(line);
+    expect(screen.getByText("Missed")).toBeTruthy();
+    await fireEvent.click(screen.getByRole("button", { name: "Tick STANDBY POWER" }));
+    expect(actions[0]).toMatchObject({ type: "tick", step: "standby" });
   });
 });
