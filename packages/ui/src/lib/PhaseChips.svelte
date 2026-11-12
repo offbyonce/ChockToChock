@@ -165,7 +165,7 @@ started, a filled circle with a check when complete, and a dashed ring when a st
     height: var(--size-progress-bar);
     overflow: hidden;
     border-radius: var(--radius-control);
-    background: var(--color-surface-2);
+    background: var(--color-track);
   }
   .bar i {
     display: block;

@@ -29,13 +29,14 @@ export const MAX_SCALE = 2 * K;
 /**
  * The scale for a drawing `boxWidth` units wide in `room` pixels: as wide as the room, keeping its
  * proportions, but never so small that a label drops under its minimum. `overflow` says the
- * drawing is then wider than the room (it scrolls, and a larger view is offered). Unmeasured
- * room (0) draws at the layout scale.
+ * drawing is then wider than the room (it scrolls, and a larger view is offered). `page` is the
+ * page's own scale (wide screens, Text size): limits grow with it, so the drawing keeps its size
+ * against the text around it. Unmeasured room (0) draws at the layout scale.
  */
-export function drawingScale(room: number, boxWidth: number): { k: number; overflow: boolean } {
-  if (room <= 0 || boxWidth <= 0) return { k: K, overflow: false };
+export function drawingScale(room: number, boxWidth: number, page = 1): { k: number; overflow: boolean } {
+  if (room <= 0 || boxWidth <= 0) return { k: K * page, overflow: false };
   const fit = room / boxWidth;
-  const k = Math.min(MAX_SCALE, Math.max(MIN_SCALE, fit));
+  const k = Math.min(MAX_SCALE * page, Math.max(MIN_SCALE * page, fit));
   return { k, overflow: k > fit + 1e-6 };
 }
 

@@ -60,7 +60,7 @@ types over it.
     font: var(--weight-medium) var(--font-size-value-mono) var(--font-mono);
   }
   input {
-    width: 7ch;
+    width: 10ch;
     padding: var(--space-1) var(--space-1);
     border: 0;
     border-bottom: var(--size-focus-ring) solid var(--color-text-muted);
@@ -76,7 +76,7 @@ types over it.
   }
   @media (pointer: coarse) {
     input {
-      width: 7ch;
+      width: 10ch;
       min-height: var(--size-touch-min);
     }
   }

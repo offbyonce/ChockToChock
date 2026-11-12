@@ -686,4 +686,38 @@ describe("PanelSchematic", () => {
     });
     expect(container.querySelector("svg.schematic")?.textContent).toContain("INBD");
   });
+
+  it("draws the sections between two far-apart step sections, so the piece is never empty", () => {
+    // TERR: the two EFIS panels at either end of the glareshield, with the MCP (taller than a
+    // context neighbor) between them; the MCP was left out and the drawing opened on empty panel.
+    const item = (label: string) => ({
+      kind: "push_button",
+      label,
+      x: 40,
+      y: 40,
+      controls: ["c"],
+      description: "",
+    });
+    const panel = {
+      id: "gl",
+      title: "Glareshield",
+      width: 1000,
+      height: 260,
+      sections: [
+        { id: "efisl", title: "EFIS L", x: 0, y: 0, width: 200, height: 120, items: [item("TERR")] },
+        { id: "mcp", title: "MCP", x: 220, y: 0, width: 560, height: 228, items: [item("VNAV")] },
+        { id: "efisr", title: "EFIS R", x: 800, y: 0, width: 200, height: 120, items: [item("TERR")] },
+      ],
+    } as unknown as Panel;
+    const { container } = render(PanelSchematic, {
+      panel,
+      focus: ["efisl", "efisr"],
+      targets: [
+        { section: "efisl", item: 0, position: null, lit: false, open: false },
+        { section: "efisr", item: 0, position: null, lit: false, open: false },
+      ],
+    });
+    expect(container.querySelectorAll("svg.schematic")).toHaveLength(1);
+    expect(container.textContent).toContain("VNAV");
+  });
 });

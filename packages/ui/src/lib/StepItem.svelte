@@ -198,7 +198,10 @@ with the words "Skipped, still open". The quick level shows the item and value o
     min-width: 0;
     padding: var(--space-3) var(--space-10) var(--space-3) 0;
   }
+  /* The whole row is the button, full width; it keeps its text height so rows stay dense. The
+     step row component in batch 3 makes the full row (with its location line) the target. */
   .row {
+    min-height: 0;
     display: flex;
     flex-wrap: wrap;
     align-items: baseline;

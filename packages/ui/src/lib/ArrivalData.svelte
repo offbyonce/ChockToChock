@@ -39,7 +39,7 @@ fill in. The core says which phase shows it (decision 0019).
   /* 3.0's five-field row: four narrow fields and a wider one for minimums with its unit choice. */
   .sgrid5 {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr)) minmax(0, 1.4fr);
+    grid-template-columns: repeat(4, minmax(0, 1fr)) minmax(max-content, 1.4fr);
     gap: var(--space-4);
     padding: var(--space-4);
   }

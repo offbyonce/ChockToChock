@@ -121,7 +121,7 @@ two-way unit choice beside it, and a help line. Every change goes to the core as
   }
   .mode button[aria-checked="true"] {
     background: var(--color-surface);
-    box-shadow: var(--color-segment-shadow);
+    box-shadow: inset 0 0 0 var(--size-focus-ring) var(--color-accent);
     color: var(--color-text);
   }
   small {

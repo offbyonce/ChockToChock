@@ -153,7 +153,7 @@ saves them on the device, and batch 7 adds the rest.
   }
   .seg button[aria-checked="true"] {
     background: var(--color-surface);
-    box-shadow: var(--color-segment-shadow);
+    box-shadow: inset 0 0 0 var(--size-focus-ring) var(--color-accent);
     color: var(--color-text);
   }
   .done {

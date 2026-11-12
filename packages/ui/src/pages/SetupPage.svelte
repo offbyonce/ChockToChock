@@ -111,7 +111,7 @@ state picker comes with panel states in batch 3 (decision 0019).
   }
   .seg button[aria-checked="true"] {
     background: var(--color-surface);
-    box-shadow: var(--color-segment-shadow);
+    box-shadow: inset 0 0 0 var(--size-focus-ring) var(--color-accent);
     color: var(--color-text);
   }
   summary {

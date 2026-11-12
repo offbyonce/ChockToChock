@@ -302,6 +302,13 @@ describe("drawingScale", () => {
     expect(drawingScale(1000, 50)).toEqual({ k: MAX_SCALE, overflow: false });
   });
 
+  it("grows its limits with the page's scale, so a wide screen draws it larger too", () => {
+    // 2560 x 1440 scales the page by 1.6: a drawing too wide for its room is drawn 1.6 times larger
+    // than at 1440, so its labels stay in proportion to the text around them.
+    expect(drawingScale(400, 600, 1.6).k).toBeCloseTo(MIN_SCALE * 1.6, 6);
+    expect(drawingScale(5000, 50, 1.6).k).toBeCloseTo(MAX_SCALE * 1.6, 6);
+  });
+
   it("draws at the layout scale until the room is measured", () => {
     expect(drawingScale(0, 300)).toEqual({ k: K, overflow: false });
   });

@@ -49,6 +49,23 @@ button {
   cursor: pointer;
 }
 
+/* Every control is at least 44 by 44 (decision 0021, rules.md §3). */
+button,
+summary,
+select,
+input:not([type="checkbox"], [type="radio"]) {
+  min-height: var(--size-touch-min);
+}
+button {
+  min-width: var(--size-touch-min);
+}
+summary {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  cursor: pointer;
+}
+
 button:disabled {
   cursor: default;
 }

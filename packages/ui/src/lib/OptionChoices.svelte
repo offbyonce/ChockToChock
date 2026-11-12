@@ -107,7 +107,7 @@ applies the option in Rust, which decides what shows.
   }
   .seg button[aria-checked="true"] {
     background: var(--color-surface);
-    box-shadow: var(--color-segment-shadow);
+    box-shadow: inset 0 0 0 var(--size-focus-ring) var(--color-accent);
     color: var(--color-text);
   }
   @media (max-width: 600px) {

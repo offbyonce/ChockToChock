@@ -48,9 +48,15 @@ smallest size that keeps 11 px labels, scrolls sideways, and offers a full-width
     const x1 = Math.max(...focused.map((s) => s.x + s.width)) + NEAR;
     const y0 = Math.min(...focused.map((s) => s.y));
     const y1 = Math.max(...focused.map((s) => s.y + s.height));
-    return panel.sections.filter(
-      (s) => focus.includes(s.id) || (s.x >= x0 && s.x + s.width <= x1 && s.y < y1 && s.y + s.height > y0 && s.height <= 200),
-    );
+    const [left, right] = [x0 + NEAR, x1 - NEAR];
+    return panel.sections.filter((s) => {
+      if (focus.includes(s.id)) return true;
+      if (!(s.y < y1 && s.y + s.height > y0)) return false;
+      // Everything between the step's sections is part of the one piece (the MCP between the two
+      // EFIS panels); small neighbors beside them are drawn for context.
+      if (s.x >= left && s.x + s.width <= right) return true;
+      return s.x >= x0 && s.x + s.width <= x1 && s.height <= 200;
+    });
   });
 
   type Band = { y0: number; y1: number; x0: number; x1: number };
@@ -102,7 +108,18 @@ smallest size that keeps 11 px labels, scrolls sideways, and offers a full-width
   });
 
   let width = $state(0);
-  let scale = $derived(drawingScale(width, view.box.w));
+  /** The page's own scale (wide screens and Text size), so a drawing grows with the page. */
+  let pageScale = $state(1);
+  $effect(() => {
+    if (!wrap) return;
+    const read = () => {
+      pageScale = Number.parseFloat(getComputedStyle(document.documentElement).fontSize) / 16 || 1;
+    };
+    read();
+    window.addEventListener("resize", read);
+    return () => window.removeEventListener("resize", read);
+  });
+  let scale = $derived(drawingScale(width, view.box.w, pageScale));
 
   /** A drawing wider than the card starts scrolled to the step's controls. */
   let wrap = $state<HTMLDivElement | null>(null);
@@ -112,8 +129,14 @@ smallest size that keeps 11 px labels, scrolls sideways, and offers a full-width
       s.items.flatMap((it, i) => (targets.some((t) => t.section === s.id && t.item === i) ? [s.x + it.x] : [])),
     );
     if (!xs.length) return;
-    const mid = (Math.min(...xs) + Math.max(...xs)) / 2;
-    wrap.scrollLeft = (mid - view.box.x) * scale.k - wrap.clientWidth / 2;
+    // The step's controls centered when they fit across; otherwise the first of them at the left,
+    // so the view opens on a control the step asks for, never on empty panel.
+    const [first, last] = [Math.min(...xs), Math.max(...xs)];
+    const span = (last - first) * scale.k;
+    const room = wrap.clientWidth;
+    const at = span <= room * 0.8 ? (first + last) / 2 : first;
+    const px = (at - view.box.x) * scale.k;
+    wrap.scrollLeft = span <= room * 0.8 ? px - room / 2 : px - room * 0.15;
   });
 
   let sheet = $state<HTMLDialogElement | null>(null);
@@ -135,7 +158,7 @@ smallest size that keeps 11 px labels, scrolls sideways, and offers a full-width
   <svg
     class="schematic"
     viewBox="{view.box.x} {view.box.y} {view.box.w} {view.box.h}"
-    style:width="{view.box.w * scale.k}px"
+    style:width="{Math.floor(view.box.w * scale.k)}px"
     role="img"
     aria-label="{title} panel, schematic.{described ? ` This step: ${described}.` : ''}"
   >
