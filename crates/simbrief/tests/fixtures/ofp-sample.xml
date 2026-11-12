@@ -4,9 +4,14 @@
 <!-- Invented test data, the same plan as ofp-sample.json in SimBrief's XML form. -->
 <OFP>
   <fetch>
+    <userid>123456</userid>
     <status>Success</status>
   </fetch>
   <params>
+    <request_id>10001</request_id>
+    <sequence_id>a1b2c3</sequence_id>
+    <user_id>123456</user_id>
+    <time_generated>1700000000</time_generated>
     <units>kgs</units>
     <airac>2406</airac>
   </params>
@@ -16,41 +21,149 @@
     <initial_altitude>37000</initial_altitude>
     <route>SUMMA2 SUMMA J1 BTG</route>
     <costindex>35</costindex>
+    <sid_ident>SUMMA2</sid_ident>
+    <sid_trans></sid_trans>
+    <star_ident>BTG1A</star_ident>
+    <star_trans></star_trans>
+    <avg_wind_dir>265</avg_wind_dir>
+    <avg_wind_spd>42</avg_wind_spd>
+    <avg_temp_dev>-3</avg_temp_dev>
+    <air_distance>212</air_distance>
+    <route_distance>205</route_distance>
   </general>
   <origin>
     <icao_code>EGLL</icao_code>
-    <plan_rwy>09R</plan_rwy>
+    <iata_code>LHR</iata_code>
+    <name>Test Origin</name>
     <elevation>83</elevation>
+    <pos_lat>51.4775</pos_lat>
+    <pos_long>-0.461389</pos_long>
+    <plan_rwy>09R</plan_rwy>
     <trans_alt>6000</trans_alt>
+    <trans_level>7000</trans_level>
+    <metar>EGLL 010850Z 24010KT 9999 FEW030 15/08 Q1015</metar>
+    <taf>TAF EGLL 010500Z 0106/0212 24012KT 9999 SCT035</taf>
   </origin>
   <destination>
     <icao_code>LFPG</icao_code>
-    <plan_rwy></plan_rwy>
+    <iata_code>CDG</iata_code>
+    <name>Test Destination</name>
     <elevation>392</elevation>
+    <pos_lat>49.009722</pos_lat>
+    <pos_long>2.547778</pos_long>
+    <plan_rwy></plan_rwy>
+    <trans_alt>5000</trans_alt>
     <trans_level>7000</trans_level>
+    <metar>LFPG 010900Z 26008KT CAVOK 16/07 Q1016</metar>
+    <taf></taf>
   </destination>
-  <fuel>
-    <plan_ramp>6400</plan_ramp>
-    <reserve>1200</reserve>
-  </fuel>
-  <weights>
-    <est_zfw>52300</est_zfw>
-  </weights>
-  <aircraft>
-    <reg></reg>
-  </aircraft>
+  <alternate>
+    <icao_code>LFPO</icao_code>
+    <iata_code>ORY</iata_code>
+    <name>Test Alternate</name>
+    <elevation>291</elevation>
+    <pos_lat>48.723333</pos_lat>
+    <pos_long>2.379444</pos_long>
+    <plan_rwy>06</plan_rwy>
+    <trans_alt>5000</trans_alt>
+    <trans_level>7000</trans_level>
+  </alternate>
+  <weather>
+    <altn_metar>LFPO 010900Z 25009KT CAVOK 16/06 Q1016</altn_metar>
+    <altn_taf>TAF LFPO 010500Z 0106/0212 25010KT CAVOK</altn_taf>
+  </weather>
   <navlog>
     <fix>
       <ident>SUMMA</ident>
+      <type>wpt</type>
       <via_airway>SUMMA2</via_airway>
       <is_sid_star>1</is_sid_star>
       <stage>CLB</stage>
+      <pos_lat>51.2</pos_lat>
+      <pos_long>0.1</pos_long>
+      <altitude_feet>18000</altitude_feet>
+      <distance>38</distance>
+      <wind_dir>250</wind_dir>
+      <wind_spd>30</wind_spd>
+      <oat>-21</oat>
+      <fuel_plan_onboard>5600</fuel_plan_onboard>
+      <time_total>540</time_total>
     </fix>
     <fix>
       <ident>BTG</ident>
+      <type>vor</type>
       <via_airway>J1</via_airway>
       <is_sid_star>0</is_sid_star>
       <stage>CRZ</stage>
+      <pos_lat>50.1</pos_lat>
+      <pos_long>1.6</pos_long>
+      <altitude_feet>37000</altitude_feet>
+      <distance>95</distance>
+      <wind_dir>265</wind_dir>
+      <wind_spd>48</wind_spd>
+      <oat>-56</oat>
+      <fuel_plan_onboard>4300</fuel_plan_onboard>
+      <time_total>1980</time_total>
     </fix>
   </navlog>
+  <alternate_navlog>
+    <fix>
+      <ident>LFPO</ident>
+      <type>apt</type>
+      <via_airway>DCT</via_airway>
+      <is_sid_star>0</is_sid_star>
+      <stage>DSC</stage>
+      <altitude_feet>291</altitude_feet>
+      <distance>21</distance>
+      <fuel_plan_onboard>2400</fuel_plan_onboard>
+      <time_total>600</time_total>
+    </fix>
+  </alternate_navlog>
+  <fuel>
+    <taxi>200</taxi>
+    <enroute_burn>3100</enroute_burn>
+    <contingency>160</contingency>
+    <alternate_burn>700</alternate_burn>
+    <reserve>1200</reserve>
+    <etops>0</etops>
+    <extra>1040</extra>
+    <min_takeoff>5160</min_takeoff>
+    <plan_takeoff>6200</plan_takeoff>
+    <plan_ramp>6400</plan_ramp>
+    <plan_landing>3100</plan_landing>
+  </fuel>
+  <weights>
+    <oew>45000</oew>
+    <pax_count>150</pax_count>
+    <cargo>2100</cargo>
+    <payload>16300</payload>
+    <est_zfw>52300</est_zfw>
+    <max_zfw>62700</max_zfw>
+    <est_tow>58500</est_tow>
+    <max_tow>82200</max_tow>
+    <est_ldw>55400</est_ldw>
+    <max_ldw>69300</max_ldw>
+  </weights>
+  <times>
+    <sched_out>1700003600</sched_out>
+    <sched_off>1700004300</sched_off>
+    <sched_on>1700008200</sched_on>
+    <sched_in>1700008500</sched_in>
+    <est_time_enroute>3900</est_time_enroute>
+    <est_block>4900</est_block>
+    <taxi_out>700</taxi_out>
+    <taxi_in>300</taxi_in>
+  </times>
+  <aircraft>
+    <icaocode>B38M</icaocode>
+    <reg></reg>
+  </aircraft>
+  <crew>
+    <cpt>Pilot</cpt>
+    <pilot_id>123456</pilot_id>
+  </crew>
+  <api_params>
+    <orig>EGLL</orig>
+    <dest>LFPG</dest>
+  </api_params>
 </OFP>

@@ -3,8 +3,32 @@
 /**
  * One navlog fix.
  */
-export type Fix = { ident: string, via: string | null, 
+export type Fix = { ident?: string, 
 /**
- * True when the fix is part of a SID or STAR rather than the en-route legs.
+ * SimBrief's kind of fix: `wpt`, `vor`, `apt`, `ltlg` and so on.
  */
-sid_star: boolean, stage: string | null, };
+kind?: string, via?: string, 
+/**
+ * Part of a SID or STAR rather than the en-route legs.
+ */
+sidStar?: boolean, 
+/**
+ * `CLB`, `CRZ` or `DSC`.
+ */
+stage?: string, lat?: number, lon?: number, altitudeFt?: number, 
+/**
+ * Distance of the leg to this fix (nautical miles).
+ */
+distanceNm?: number, windDir?: number, windSpeed?: number, 
+/**
+ * Outside air temperature (degrees C).
+ */
+oat?: number, 
+/**
+ * Planned fuel on board at the fix.
+ */
+fuelOnBoard?: number, 
+/**
+ * Time from takeoff to the fix (seconds).
+ */
+elapsedS?: number, };

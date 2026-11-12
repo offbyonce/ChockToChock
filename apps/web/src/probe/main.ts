@@ -5,7 +5,7 @@
 // WebAssembly. The username goes from this browser straight to SimBrief; it is not stored, and
 // nothing is sent anywhere else. Kept as a test page; the app's own plan loading comes in step 7.
 
-import { type AppError, isAppError, type Ofp } from "@chocktochock/bindings";
+import { type AppError, isAppError, type Plan } from "@chocktochock/bindings";
 import { parsePlan, planUrl } from "../core";
 
 function element<T extends HTMLElement>(id: string): T {
@@ -21,16 +21,19 @@ function message(e: unknown): string {
 }
 
 /** A few fields from the plan, as the page shows them. */
-function fields(plan: Ofp): Record<string, string> {
+function fields(plan: Plan): Record<string, string> {
+  const g = plan.general;
   return {
-    Flight: `${plan.airline ?? ""}${plan.flightNumber ?? ""}`,
-    From: [plan.origin, plan.originRunway && `runway ${plan.originRunway}`].filter(Boolean).join(", "),
-    To: plan.destination ?? "",
-    "Cruise altitude": plan.cruiseAltitudeFt == null ? "" : `${plan.cruiseAltitudeFt} ft`,
-    Route: plan.route ?? "",
-    "Ramp fuel": plan.rampFuel == null ? "" : `${plan.rampFuel} ${plan.units ?? ""}`.trim(),
-    AIRAC: plan.airac ?? "",
-    "Navlog fixes": String(plan.fixes.length),
+    Flight: `${g.airline ?? ""}${g.flightNumber ?? ""}`,
+    From: [plan.origin?.icao, plan.origin?.runway && `runway ${plan.origin.runway}`]
+      .filter(Boolean)
+      .join(", "),
+    To: plan.destination?.icao ?? "",
+    "Cruise altitude": g.cruiseAltitudeFt == null ? "" : `${g.cruiseAltitudeFt} ft`,
+    Route: g.route ?? "",
+    "Ramp fuel": plan.fuel.planRamp == null ? "" : `${plan.fuel.planRamp} ${plan.units ?? ""}`.trim(),
+    AIRAC: g.airac ?? "",
+    "Navlog fixes": String(plan.fixes?.length ?? 0),
   };
 }
 

@@ -28,7 +28,7 @@ pub use flight::{FLIGHT_FORMAT, Flight, new_flight};
 pub use open_steps::{OpenStep, open_steps};
 pub use packs::load_pack;
 pub use phase_view::{PhaseLink, PhaseList, PhaseView, StepRow, phase_view};
-pub use plans::{parse_plan, plan_url};
+pub use plans::{PLAN_FORMAT, PlanValues, SavedPlan, parse_plan, plan_url, plan_values};
 pub use rail::{Rail, RailPhase, RailStage, rail};
 pub use saved::{Loaded, load_flight, load_settings};
 pub use settings::{

@@ -49,6 +49,12 @@ pub enum Action {
         field: FillField,
         value: String,
     },
+    /// Several flight values at once, such as those a SimBrief plan fills in; each replaces the
+    /// value it covers, and the whole change is one step to undo (decision 0019).
+    SetValues {
+        #[ts(type = "Partial<Record<FillField, string>>")]
+        values: std::collections::BTreeMap<FillField, String>,
+    },
     /// What the pilot typed into a step's blank (`index` from 0). Empty removes the entry, so the
     /// blank shows the linked flight value again.
     SetBlank {
@@ -192,6 +198,11 @@ pub fn apply(pack: &FlatPack, mut flight: Flight, action: Action) -> Result<Flig
         }
         Action::SetOption { option, value } => set_option(pack, &mut flight, option, value)?,
         Action::SetValue { field, value } => set_value(&mut flight, field, &value)?,
+        Action::SetValues { values } => {
+            for (field, value) in &values {
+                set_value(&mut flight, *field, value)?;
+            }
+        }
         Action::SetBlank { step, index, value } => {
             set_blank(pack, &mut flight, &step, index, &value)?;
         }
