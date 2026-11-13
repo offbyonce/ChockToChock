@@ -41,6 +41,10 @@ describe("Slideout", () => {
     expect(screen.getByRole("heading", { level: 2, name: "Fuel panel" })).toBeTruthy();
     expect(screen.getByText("Step 6 · Fuel pump switches")).toBeTruthy();
     expect(screen.getByRole("button", { name: /^Where it is/ }).getAttribute("aria-expanded")).toBe("false");
+    // The center pumps are drawn dashed, so the legend says what dashed means.
+    expect(document.querySelector(".figure figcaption")?.textContent).toMatch(
+      /dashed: only if the step's condition applies/,
+    );
     await fireEvent.keyDown(screen.getByRole("dialog"), { key: "Escape" });
     expect(closed).toBe(true);
   });

@@ -263,6 +263,9 @@ way to Flight setup and Reset flight plan (with Undo), until batch 4's strip pan
     font-size: var(--font-size-caption);
   }
   .prompt {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
     color: var(--color-text-secondary);
     font-size: var(--font-size-secondary);
   }

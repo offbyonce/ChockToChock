@@ -258,7 +258,7 @@ surface, opening with the step's controls in view; nothing inside scrolls up and
         <figure class="figure" bind:this={figure}>
           <PanelSchematic panel={shown.panel} focus={shown.focus} {targets} {index} large ownCard={false} {room} bind:picked bind:wider bind:scroller />
           <figcaption bind:clientHeight={legendHeight}>
-            Blue: set by this step{#if decided}{" "}· ◆ set by your {decided.toLowerCase()} answer{/if} · lights drawn unlit · tap a control for details
+            Blue: set by this step{#if targets.some((t) => t.open)}{" "}· dashed: only if the step's condition applies{/if}{#if decided}{" "}· ◆ set by your {decided.toLowerCase()} answer{/if} · lights drawn unlit · tap a control for details
           </figcaption>
         </figure>
       {/if}
@@ -508,6 +508,7 @@ surface, opening with the step's controls in view; nothing inside scrolls up and
   }
   /* The control card (R6Control). */
   .card {
+    flex: none;
     display: flex;
     flex-direction: column;
     gap: var(--space-2);
@@ -568,6 +569,7 @@ surface, opening with the step's controls in view; nothing inside scrolls up and
   }
   /* Where it is, expanded (R6Where). */
   .where-it-is {
+    flex: none;
     display: flex;
     flex-direction: column;
     gap: var(--space-2);

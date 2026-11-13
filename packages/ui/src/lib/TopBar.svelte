@@ -48,7 +48,9 @@ narrow windows; the menu has them there.
     <nav class="stages" aria-label="Stages">
       {#each rail.stages as s (s.title)}
         {@const id = target(s.phases)}
-        {@const openHere = s.phases.filter((p) => open.includes(p.id)).length}
+        <!-- The dot marks other stages holding an open step; the current stage's own show on its
+             phase tabs (Checklist board). -->
+        {@const openHere = s.title === stage ? 0 : s.phases.filter((p) => open.includes(p.id)).length}
         {#if id}
           <a href={phaseHref(id)} aria-current={s.title === stage ? "page" : undefined}
             >{s.title}{#if openHere}<span class="dot" aria-label="{openHere} open step{openHere === 1 ? '' : 's'}"></span>{/if}</a

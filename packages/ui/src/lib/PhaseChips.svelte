@@ -34,7 +34,7 @@ batch 3).
   } = $props();
 
   let saved = $derived(
-    savedAt === null ? null : new Date(savedAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+    savedAt === null ? null : new Date(savedAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hourCycle: "h23" }),
   );
   const share = (p: RailPhase) => (p.progress.total ? (100 * p.progress.done) / p.progress.total : 0);
 </script>

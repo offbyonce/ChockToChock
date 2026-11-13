@@ -103,7 +103,7 @@ column until batch 4 (owner). On narrow screens a chevron opens the step's detai
         {#if row.state === "done" && time}<span class="stamp" aria-hidden="true">Done {time}</span>{/if}
         {#if !row.counts}<span class="ns">Not modeled in the simulator</span>{/if}
       </span>
-      {#if current && place}<span class="where-line">{place.zone.area} · {place.zone.title}</span>{/if}
+      {#if current && place}<span class="where-line">{place.zone.area} · {place.zone.title}</span>{:else if place && detail === "expanded"}<span class="where-line narrow">{place.zone.area} · {place.zone.title}</span>{/if}
       {#if detail === "expanded" && step.look_for}<span class="look"><b>Look for:</b> {step.look_for}</span>{/if}
     </button>
     {#if row.state === "skipped"}<button class="do-now" type="button" onclick={onSelect}>Do it now</button>{/if}
@@ -117,6 +117,11 @@ column until batch 4 (owner). On narrow screens a chevron opens the step's detai
     {#if row.hint}<small class="hint">{row.hint}</small>{/if}
   </div>
   <div class="end" data-menu={row.id}>
+    {#if detail === "expanded"}
+      <button class="chev narrow" type="button" aria-expanded={open} aria-label="{open ? 'Hide' : 'Show'} details for {title}" onclick={() => (open = !open)}>
+        <Icon name="chevron-down" />
+      </button>
+    {/if}
     <button class="more" class:on={menu} type="button" aria-label="More actions for {title}" aria-expanded={menu} aria-haspopup="menu" onclick={() => (menu = !menu)}>···</button>
     {#if menu}
       <div class="menu" role="menu" aria-label="Actions for {title}">
@@ -143,9 +148,6 @@ column until batch 4 (owner). On narrow screens a chevron opens the step's detai
     </div>
   {/if}
   {#if detail === "expanded"}
-    <button class="chev narrow" type="button" aria-expanded={open} aria-label="{open ? 'Hide' : 'Show'} details for {title}" onclick={() => (open = !open)}>
-      <Icon name="chevron-down" />
-    </button>
     {#if open}
       <!-- Narrow screens (no side pane): the details, where it is and the map in the step, until
            batch 5's sheets. -->
@@ -356,6 +358,7 @@ column until batch 4 (owner). On narrow screens a chevron opens the step's detai
   }
   .end {
     position: relative;
+    display: flex;
   }
   .end:has(.menu) {
     z-index: 4;
@@ -461,7 +464,6 @@ column until batch 4 (owner). On narrow screens a chevron opens the step's detai
     font-size: var(--font-size-caption);
   }
   .chev {
-    grid-column: 4;
     width: var(--size-touch-min);
     height: var(--size-touch-min);
     border: 0;
@@ -492,6 +494,12 @@ column until batch 4 (owner). On narrow screens a chevron opens the step's detai
     align-self: flex-start;
     min-height: var(--size-touch-min);
   }
+  /* Narrow screens: the chevron sits beside the row menu. */
+  @media (max-width: 899px) {
+    .it {
+      grid-template-columns: calc(var(--size-touch-min) - var(--space-1)) minmax(0, 1fr) 34% auto;
+    }
+  }
   /* Wide screens show the details in the side pane. */
   @media (min-width: 900px) {
     .narrow {
@@ -505,7 +513,7 @@ column until batch 4 (owner). On narrow screens a chevron opens the step's detai
   }
   @media (max-width: 599px) {
     .it {
-      grid-template-columns: var(--size-touch-min) minmax(0, 1fr) var(--size-touch-min);
+      grid-template-columns: var(--size-touch-min) minmax(0, 1fr) auto;
     }
     .value {
       grid-column: 2;

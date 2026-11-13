@@ -267,7 +267,7 @@ What the step asks for, never the simulator's state (decision 0006).
         {@const nameW = name ? Math.max(...name.lines.map((line) => em(line))) * (name.px / k) : 0}
         {@const x0 = Math.min(-hw, -nameW / 2, ...labels.map((l) => reach(l)[0] ?? 0)) - 4}
         {@const x1 = Math.max(hw, nameW / 2, ...labels.map((l) => reach(l)[1] ?? 0)) + 4}
-        <rect class="selection" x={x0} y={-hh - 5} width={x1 - x0} height={low + hh + 8} rx="4" />
+        <rect class="selection" x={x0} y={-hh - 4} width={x1 - x0} height={low + hh + 5} rx="4" />
       {/if}
       {#if hit > 0 && onPick}
         {@const hw = Math.max(halfWidth(item), hit / 2)}
@@ -308,9 +308,13 @@ What the step asks for, never the simulator's state (decision 0006).
     stroke-width: calc(1.5 * var(--border-thick));
     vector-effect: non-scaling-stroke;
   }
-  /* The preview draws no text at all. */
+  /* The preview draws no text at all, and its outlines keep their width on screen at any scale,
+     so they read as the full panel's do (3:1 or better). */
   .textless text {
     display: none;
+  }
+  .textless :global(*) {
+    vector-effect: non-scaling-stroke;
   }
   .frame {
     fill: var(--panel-bg);
