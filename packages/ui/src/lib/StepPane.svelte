@@ -402,6 +402,11 @@ A step with no control on the map shows the steps coming up below its details.
     border-radius: var(--radius-control);
     background: var(--color-surface);
   }
+  /* The board's links on this line: 8 px each side. */
+  .line .lk,
+  .line :global(.where-link) {
+    padding: 0 var(--space-2);
+  }
   .line span {
     flex: 1;
     color: var(--color-text-secondary);

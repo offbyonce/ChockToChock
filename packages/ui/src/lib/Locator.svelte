@@ -59,7 +59,8 @@ deck" until the Flight deck page exists (batch 6). All from the pack, in the pan
   }
   /**
    * Beside the pane where the WherePop board puts it: its top 300 px down the page and its arrow
-   * 168 px down the pop-over, both scaled with the page (wide screens, Text size), kept on screen.
+   * 168 px down the pop-over, both scaled with the page (wide screens, Text size), kept on screen;
+   * 8 px from the pane, measured without the page's scrollbar (the board has none).
    */
   function position(pane: Element) {
     if (!dialog) return;
@@ -67,7 +68,7 @@ deck" until the Flight deck page exists (batch 6). All from the pack, in the pan
     const paneLeft = pane.getBoundingClientRect().left;
     const height = dialog.offsetHeight;
     const top = Math.max(8 * page, Math.min(300 * page, window.innerHeight - height - 8 * page));
-    place = { top, right: window.innerWidth - paneLeft + 8 * page, arrow: 168 * page };
+    place = { top, right: document.documentElement.clientWidth - paneLeft + 8 * page, arrow: 168 * page };
   }
   function close() {
     dialog?.close();
