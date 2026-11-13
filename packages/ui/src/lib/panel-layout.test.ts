@@ -339,13 +339,12 @@ describe("openingScroll", () => {
 describe("roomScale", () => {
   it("fits the whole drawing in its room both ways, never under the 11 px scale", () => {
     // Fits: as large as the room allows, no navigator.
-    expect(roomScale(800, 600, { w: 200, h: 100 })).toEqual({ k: MAX_SCALE, bigger: false });
+    expect(roomScale(800, 600, { w: 200, h: 100 })).toEqual({ k: MAX_SCALE, wider: false, taller: false });
     expect(roomScale(400, 600, { w: 200, h: 100 }).k).toBe(2);
-    // The fuel panel is tall: at 11 px it is taller than the room, so it scrolls with a navigator.
+    // The fuel panel is tall: at 11 px it is taller than the room (the body scrolls), not wider.
     const fuel = roomScale(792, 466, { w: 309, h: 425 });
-    expect(fuel.k).toBe(MIN_SCALE);
-    expect(fuel.bigger).toBe(true);
-    // The captain lights are wide.
-    expect(roomScale(792, 466, { w: 918, h: 109 }).bigger).toBe(true);
+    expect(fuel).toEqual({ k: MIN_SCALE, wider: false, taller: true });
+    // The captain lights are wide: a navigator.
+    expect(roomScale(792, 466, { w: 918, h: 109 })).toMatchObject({ wider: true, taller: false });
   });
 });

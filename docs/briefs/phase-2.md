@@ -197,6 +197,8 @@ every change to `.github/workflows/`. For those, prepare what the step needs and
       Keep screen awake; the step timer chip (IRS); "Used in" links to the steps that use a
       control; every menu item in coverage.md (Flight deck, Practice, Glossary, Flight log,
       Tour, References, How procedures work). The coverage.md rows added for review apply.
+      Find (Ctrl K) in the header, built from a results board the owner will provide; hidden
+      in the header until then (owner, 2026-11-13).
    7. Content. First on the sourcing list (owner, 2026-11-12): the resting position of FLT
       CONTROL A and B, which the pack rests at STBY RUD where they are normally guarded ON; and
       the placards of the 11 positions not in capitals (`pack check` warns on each): "OFF to

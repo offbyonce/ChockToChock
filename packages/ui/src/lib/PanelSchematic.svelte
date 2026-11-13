@@ -31,7 +31,7 @@ smallest size that keeps 11 px labels, scrolls sideways, and offers a full-width
     fits = $bindable(),
     ownButton = true,
     room,
-    bigger = $bindable(),
+    wider = $bindable(),
     scroller = $bindable(),
   }: {
     /** The panel the sections are on. */
@@ -62,11 +62,11 @@ smallest size that keeps 11 px labels, scrolls sideways, and offers a full-width
      * caption row instead and calls `openLarger`. */
     ownButton?: boolean | undefined;
     /** The slide-out's panel: the room it has, in pixels. The whole drawing fits it both ways at
-     * 11 px labels or more and hugs its own height; bigger than the room, it scrolls (round 6,
-     * gate review). */
+     * 11 px labels or more, at its own height (taller than the room, the slide-out's body
+     * scrolls); wider than the room, it scrolls sideways (round 6, gate reviews). */
     room?: { width: number; height: number } | undefined;
-    /** Out: the drawing is bigger than its room (the slide-out shows a navigator). */
-    bigger?: boolean | undefined;
+    /** Out: the drawing is wider than its room (the slide-out shows a navigator). */
+    wider?: boolean | undefined;
     /** Out: the element that scrolls the drawing, for the navigator. */
     scroller?: HTMLDivElement | null | undefined;
   } = $props();
@@ -183,10 +183,10 @@ smallest size that keeps 11 px labels, scrolls sideways, and offers a full-width
   let scale = $derived.by(() => {
     if (!room) return drawingScale(width, view.box.w, pageScale);
     const fit = roomScale(room.width, room.height, view.box, pageScale);
-    return { k: fit.k, overflow: view.box.w * fit.k > width + 1, bigger: fit.bigger };
+    return { k: fit.k, overflow: fit.wider, wider: fit.wider };
   });
   $effect(() => {
-    if (room) bigger = "bigger" in scale ? scale.bigger : false;
+    if (room) wider = "wider" in scale ? scale.wider : false;
   });
   $effect(() => {
     scroller = wrap;
@@ -283,7 +283,8 @@ smallest size that keeps 11 px labels, scrolls sideways, and offers a full-width
 
 <div
   class="wrap"
-  style:height={room ? `${Math.min(room.height, Math.ceil(view.box.h * scale.k))}px` : undefined}
+  style:height={room ? `${Math.ceil(view.box.h * scale.k)}px` : undefined}
+  class:across={!!room}
   class:more={scale.overflow} class:more-y={moreY} bind:clientWidth={width} bind:clientHeight={height} bind:this={wrap}>
   <svg
     class="schematic"
@@ -332,6 +333,10 @@ smallest size that keeps 11 px labels, scrolls sideways, and offers a full-width
     display: none;
   }
   /* A drawing bigger than its room fades at the edges where there is more. */
+  /* The slide-out's panel scrolls sideways only; the slide-out's body scrolls it up and down. */
+  .wrap.across {
+    overflow-y: hidden;
+  }
   .wrap.more {
     mask-image: linear-gradient(90deg, transparent, black var(--space-10), black calc(100% - var(--space-10)), transparent);
   }

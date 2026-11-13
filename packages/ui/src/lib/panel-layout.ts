@@ -37,19 +37,20 @@ export function openingScroll(first: number, last: number, room: number): number
 /**
  * The scale for the whole of a drawing `box` units in a room `width` by `height` pixels (the
  * slide-out's panel): as large as fits both ways, never so small that a label drops under its
- * minimum, never past the largest scale. `bigger` says the drawing is then bigger than the room
- * in either direction (it scrolls, and a navigator shows where the view is).
+ * minimum, never past the largest scale. `wider` says it is then wider than the room (it scrolls
+ * sideways under a navigator); `taller`, taller (the slide-out's body scrolls instead).
  */
 export function roomScale(
   width: number,
   height: number,
   box: { w: number; h: number },
   page = 1,
-): { k: number; bigger: boolean } {
-  if (width <= 0 || height <= 0 || box.w <= 0 || box.h <= 0) return { k: K * page, bigger: false };
+): { k: number; wider: boolean; taller: boolean } {
+  if (width <= 0 || height <= 0 || box.w <= 0 || box.h <= 0)
+    return { k: K * page, wider: false, taller: false };
   const fit = Math.min(width / box.w, height / box.h);
   const k = Math.min(MAX_SCALE * page, Math.max(MIN_SCALE * page, fit));
-  return { k, bigger: box.w * k > width + 1 || box.h * k > height + 1 };
+  return { k, wider: box.w * k > width + 1, taller: box.h * k > height + 1 };
 }
 
 /**

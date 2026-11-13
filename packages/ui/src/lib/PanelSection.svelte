@@ -52,8 +52,8 @@ What the step asks for, never the simulator's state (decision 0006).
     /** The label-free panel preview (round 6): the same geometry, glyphs and states, no text, and
      * every light outline only. */
     textless?: boolean;
-    /** A thick blue halo around the step's controls, dashed for conditional ones, the same width
-     * on screen at any scale (the preview, so they read at small sizes). */
+    /** A thick solid blue halo around the step's controls, the same width on screen at any scale
+     * (the preview, so they read at small sizes). */
     halo?: boolean;
     /** Screen pixels per drawing unit, for the fixed text sizes. */
     k: number;
@@ -134,7 +134,7 @@ What the step asks for, never the simulator's state (decision 0006).
       {#if halo && on}
         {@const hw = item.kind === "light" ? LAMP.w / 2 : halfWidth(item)}
         {@const hh = item.kind === "light" ? LAMP.h / 2 : half(item)}
-        <rect class="halo" class:conditional-halo={open} x={-hw - 6} y={-hh - 6} width={2 * hw + 12} height={2 * hh + 12} rx="6" />
+        <rect class="halo" x={-hw - 6} y={-hh - 6} width={2 * hw + 12} height={2 * hh + 12} rx="6" />
       {/if}
 
       {#if item.kind === "toggle_switch"}
@@ -281,9 +281,6 @@ What the step asks for, never the simulator's state (decision 0006).
     stroke: var(--panel-changed);
     stroke-width: calc(1.5 * var(--border-thick));
     vector-effect: non-scaling-stroke;
-  }
-  .halo.conditional-halo {
-    stroke-dasharray: var(--space-1) var(--space-1);
   }
   /* The preview draws no text at all. */
   .textless text {

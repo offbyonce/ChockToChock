@@ -6,8 +6,10 @@ The slide-out (round 6, ROUND6.md; boards R6Panel, R6Where, R6Control, R6TabL; L
 the step's panel, labeled at 11 px or more, and where it is. It fills the box its parent gives it
 (beside the side pane, over the step list, below the flight strip). In order: a switcher when the
 step's controls are on several panels; the header (the step, the panel's name, where it is, Esc
-and close); The panel, with a navigator above it when it is bigger than its room (owner, gate
-review); then Where it is, folded to one line.
+and close); The panel, with a navigator above it when it is wider than the slide-out (owner,
+gate reviews); then Where it is, folded to one line. A panel taller than the room keeps its
+height and the body scrolls as one surface, opening with the step's controls in view; nothing
+inside scrolls up and down on its own.
 -->
 <script lang="ts">
   import type { ItemTarget, Step } from "@chocktochock/bindings";
@@ -16,7 +18,7 @@ review); then Where it is, folded to one line.
   import PanelNavigator from "./PanelNavigator.svelte";
   import PanelSchematic from "./PanelSchematic.svelte";
   import { panelCaption } from "./panel-name";
-  import { sentence } from "./sentence";
+  import { stepTitle } from "./sentence";
 
   let {
     index,
@@ -76,7 +78,7 @@ review); then Where it is, folded to one line.
   let foldHeight = $state(0);
   /** The body's own padding, top and bottom. */
   let bodyPad = $state(0);
-  let bigger = $state(false);
+  let wider = $state(false);
   let scroller = $state<HTMLDivElement | null>(null);
   let figure = $state<HTMLElement | null>(null);
   /** The figure's padding and border on each axis, both sides. */
@@ -112,11 +114,36 @@ review); then Where it is, folded to one line.
           width: sectionWidth - bodySide - edge("x"),
           height: Math.max(
             0,
-            sectionHeight - bodyPad - rowHeight - foldHeight - roomGap - panelGap * (bigger ? 2 : 1) - (bigger ? navHeight : 0) - legendHeight - edge("y") - gap,
+            sectionHeight - bodyPad - rowHeight - foldHeight - roomGap - panelGap * (wider ? 2 : 1) - (wider ? navHeight : 0) - legendHeight - edge("y") - gap,
           ),
         }
       : undefined,
   );
+
+  /** The body scrolls (a panel taller than the room): fades where there is more, and it opens
+   * with the step's controls in view. */
+  let more = $state({ up: false, down: false });
+  function edges() {
+    const el = roomEl;
+    if (el) more = { up: el.scrollTop > 1, down: el.scrollTop + el.clientHeight < el.scrollHeight - 1 };
+  }
+  $effect(() => {
+    const el = roomEl;
+    void room;
+    void shown;
+    if (!el) return;
+    const frame = requestAnimationFrame(() => {
+      const on = [...el.querySelectorAll("g.item.on")].map((g) => g.getBoundingClientRect());
+      if (on.length) {
+        const box = el.getBoundingClientRect();
+        const top = Math.min(...on.map((r) => r.top)) - box.top + el.scrollTop;
+        const bottom = Math.max(...on.map((r) => r.bottom)) - box.top + el.scrollTop;
+        el.scrollTop = Math.max(0, (top + bottom) / 2 - el.clientHeight / 2);
+      }
+      edges();
+    });
+    return () => cancelAnimationFrame(frame);
+  });
 
   let head = $state<HTMLElement | null>(null);
   $effect(() => {
@@ -141,26 +168,26 @@ review); then Where it is, folded to one line.
   {/if}
   <header class="head">
     <div class="titles">
-      <span class="step">Step {number} · {sentence(index, step.text)}</span>
+      <span class="step">Step {number} · {stepTitle(index, step)}</span>
       <h2 id="so-title" tabindex="-1" bind:this={head}>{caption}</h2>
       {#if where}<span class="where">{where}</span>{/if}
     </div>
     <kbd class="esc" aria-hidden="true">Esc</kbd>
     <button class="close" type="button" aria-label="Close" onclick={onClose}><Icon name="x" /></button>
   </header>
-  <div class="body" bind:clientWidth={sectionWidth} bind:clientHeight={sectionHeight} bind:this={roomEl}>
+  <div class="body" class:more-up={more.up} class:more-down={more.down} bind:clientWidth={sectionWidth} bind:clientHeight={sectionHeight} bind:this={roomEl} onscroll={edges}>
     <section class="panel" aria-labelledby="so-panel">
       <div class="row" bind:clientHeight={rowHeight}>
         <h3 id="so-panel">The panel</h3>
       </div>
-      {#if bigger && scroller && shown}
+      {#if wider && scroller && shown}
         <div class="nav" bind:clientHeight={navHeight}>
           <PanelNavigator panel={shown.panel} focus={shown.focus} {targets} {scroller} title={caption} />
         </div>
       {/if}
       {#if shown}
         <figure class="figure" bind:this={figure}>
-          <PanelSchematic panel={shown.panel} focus={shown.focus} {targets} large {room} bind:bigger bind:scroller />
+          <PanelSchematic panel={shown.panel} focus={shown.focus} {targets} large {room} bind:wider bind:scroller />
           <figcaption bind:clientHeight={legendHeight}>
             Blue: set by this step{#if decided}{" "}· ◆ set by your {decided.toLowerCase()} answer{/if} · lights drawn unlit · tap a control for details
           </figcaption>
@@ -186,7 +213,7 @@ review); then Where it is, folded to one line.
     overflow: hidden;
     border: var(--border-thin) solid var(--color-popover-border);
     border-radius: var(--radius-popover) 0 0 0;
-    background: var(--color-surface);
+    background: var(--color-popover-surface);
     box-shadow: var(--color-overlay-shadow);
     color: var(--color-text);
   }
@@ -262,12 +289,27 @@ review); then Where it is, folded to one line.
   .body {
     flex: 1;
     min-height: 0;
+    overflow-y: auto;
+    scrollbar-width: none;
     display: flex;
     flex-direction: column;
     gap: var(--space-4);
     padding: var(--space-4) var(--space-6);
   }
+  .body::-webkit-scrollbar {
+    display: none;
+  }
+  .body.more-up {
+    mask-image: linear-gradient(180deg, transparent, black var(--space-10));
+  }
+  .body.more-down {
+    mask-image: linear-gradient(180deg, black calc(100% - var(--space-10)), transparent);
+  }
+  .body.more-up.more-down {
+    mask-image: linear-gradient(180deg, transparent, black var(--space-10), black calc(100% - var(--space-10)), transparent);
+  }
   .panel {
+    flex: none;
     min-height: 0;
     display: flex;
     flex-direction: column;

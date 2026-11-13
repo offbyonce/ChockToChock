@@ -132,8 +132,8 @@ while the labeled panel stays at 11 px labels or more.
     cursor: grab;
     touch-action: none;
   }
-  /* The navigator is smaller than a preview: half its maximum height. */
+  /* The navigator is smaller than a preview (size.navigator-max). */
   .navigator :global(.preview) {
-    max-height: calc(var(--size-preview-max) / 2);
+    max-height: var(--size-navigator-max);
   }
 </style>

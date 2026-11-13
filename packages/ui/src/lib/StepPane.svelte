@@ -10,7 +10,7 @@ a Say line in the Check box, a caution note under If not, and the control card (
 A step with no control on the map shows the steps coming up below its details.
 -->
 <script lang="ts">
-  import { sentence as toSentence } from "./sentence";
+  import { sentence as toSentence, stepTitle } from "./sentence";
   import type { ItemTarget, MapInSteps, Step, StepState } from "@chocktochock/bindings";
   import type { PackIndex } from "../pack-index";
   import Icon from "./Icon.svelte";
@@ -141,7 +141,7 @@ A step with no control on the map shows the steps coming up below its details.
 <div class="pane-step">
   {#if !flow}
   <div class="head">
-    <span class="pos">Step {number} of {total} · {sentence(step.text)}</span>
+    <span class="pos">Step {number} of {total} · {stepTitle(index, step)}</span>
     <span class="value">{step.expect}</span>
   </div>
 

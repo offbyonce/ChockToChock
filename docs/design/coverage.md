@@ -39,7 +39,7 @@ Every 3.0 feature and where it lives at each size. Use this as a release check: 
 | Flight log | Menu | Menu | Menu | Menu |
 | Open steps across pages | "2 open steps" list; amber dots on stage and phase | "2 open steps ⌄" | Same | "2 open" sheet |
 | Skip a step | Skip for now, row menu, Do it now | Same | Bottom bar, row menu | Bottom bar, row menu |
-| Find | Header (Ctrl K) | Header icon | Header icon | Header icon |
+| Find **(batch 6; hidden until built, owner 2026-11-13)** | Header (Ctrl K) | Header icon | Header icon | Header icon |
 | Keyboard (Space, ←, S) | Hint on the current step | n/a | n/a | n/a |
 | Settings | Menu | Menu | Menu | Menu |
 | Tour | Menu | Menu | Menu | Menu |

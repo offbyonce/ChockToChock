@@ -73,9 +73,8 @@ describe("PanelPreview", () => {
     expect(svg.querySelectorAll(".body.changed")).toHaveLength(1);
     expect(svg.querySelectorAll(".body.conditional")).toHaveLength(1);
     expect(svg.querySelectorAll(".lamp.lit")).toHaveLength(0);
-    // Each of the step's controls has a halo; the conditional one's is dashed.
+    // Each of the step's controls has a solid halo, the conditional one too.
     expect(svg.querySelectorAll(".halo")).toHaveLength(3);
-    expect(svg.querySelectorAll(".halo.conditional-halo")).toHaveLength(1);
     // Text is in the drawing for layout but never shown.
     expect(svg.querySelector("g")?.classList.contains("textless")).toBe(true);
   });

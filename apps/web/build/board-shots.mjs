@@ -92,6 +92,12 @@ const SHOTS = [
   ["R6Where", { layout: "desktop", state: "where" }, 1440, 900, "Locator", round6],
   ["R6Control", { layout: "desktop", state: "control" }, 1440, 900, "Locator", round6],
   ["R6TabL", { layout: "tabletL", state: "panel" }, 1180, 820, "Locator", round6],
+  ["R6TabLPane", { orient: "landscape", overlay: "none", r6: true }, 1180, 820, "Tablet", round6],
+  ["R6Flow", { view: "flow", r6: true }, 1440, 900, "Views", round6],
+  ["R6Settings", { view: "settings", r6: true }, 1440, 900, "Views", round6],
+  // Round 6's Checklist at 1600 by 900, for the 2560 by 1440 side-by-side (scaled 1.6, as Wide).
+  ["R6Wide", { r6: true, preview: true, w: 1600, h: 900 }, 1600, 900, "Checklist", round6],
+  ["OpenSteps", {}, 1440, 900],
 ];
 
 async function main() {

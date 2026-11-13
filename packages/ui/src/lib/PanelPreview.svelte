@@ -4,8 +4,8 @@ SPDX-License-Identifier: MIT
 
 The label-free panel preview (round 6, ROUND6.md): the whole panel the step uses, drawn by the same
 renderer from the same pack data as the full panel, with the same glyphs and states (changed
-filled blue, conditional dashed, lights outline only), simply without text, and a thick blue halo
-around the step's controls (dashed for conditional ones) so they read at small sizes. The whole
+filled blue, conditional dashed, lights outline only), simply without text, and a thick solid blue
+halo around the step's controls so they read at small sizes. The whole
 panel is scaled to fit a box, its card's width and at most `size.preview-max` tall (the owner,
 gate review), and centered in it; it is never cropped or stretched.
 -->
