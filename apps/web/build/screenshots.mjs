@@ -220,11 +220,17 @@ const SHOTS = [
     base: { hash: "#preflight", before: [stepNamed("STAB OUT OF TRIM LIGHT", ".chev"), paneToControls("#pane")] },
   },
   {
-    // The aft overhead (IRS mode selectors) and the pilot station (oxygen mask), so every panel in
+    // The fuel pumps' "See the whole panel larger" sheet, which opens on the step's controls.
+    name: "panel-fuel-larger",
+    only: ["desktop", "tablet-landscape"],
+    app: { hash: "#/phase/before-start", before: [click(".it .row", 5), click(".it .chev", 5), click("aside .larger")] },
+  },
+  {
+    // The aft overhead (IRS mode selectors; the pane unscrolled, title and Check in frame) and the pilot station (oxygen mask), so every panel in
     // the pack has a drawing in the review set. No 3.0 counterpart is shot for these.
     name: "panel-aft",
     only: ["desktop", "wide"],
-    app: { hash: "#/phase/preflight", before: [stepExact("IRS", ".row"), stepExact("IRS", ".chev"), paneToControls("aside.pane")] },
+    app: { hash: "#/phase/preflight", before: [stepExact("IRS", ".row"), stepExact("IRS", ".chev")] },
   },
   {
     name: "panel-seat",

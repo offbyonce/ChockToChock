@@ -783,4 +783,66 @@ describe("PanelSchematic", () => {
     expect(svg.querySelectorAll(".bar.rest")).toHaveLength(1);
     expect(svg.querySelectorAll(".tip.rest")).toHaveLength(1);
   });
+
+  it("opens the larger view on the step's controls, not the top of the panel", () => {
+    // The fuel pumps sit at the foot of their panel; the larger view opened at its top.
+    const item = (kind: string, label: string, x: number, y: number) =>
+      ({ kind, label, x, y, controls: ["c"], positions: "OFF, ON", description: "" }) as unknown;
+    const tall = {
+      id: "oh",
+      title: "Overhead",
+      width: 300,
+      height: 900,
+      sections: [
+        {
+          id: "fuel",
+          title: "Fuel",
+          x: 0,
+          y: 0,
+          width: 240,
+          height: 880,
+          items: [item("light", "FILTER BYPASS", 60, 60), item("toggle_switch", "AFT 1", 60, 840)],
+        },
+      ],
+    } as unknown as Panel;
+    const frames: FrameRequestCallback[] = [];
+    const raf = globalThis.requestAnimationFrame;
+    globalThis.requestAnimationFrame = (cb) => (frames.push(cb), frames.length);
+    const proto = HTMLDialogElement.prototype as unknown as { showModal: () => void };
+    const showModal = proto.showModal;
+    proto.showModal = function (this: HTMLDialogElement) {
+      this.setAttribute("open", "");
+    };
+    try {
+      render(PanelSchematic, {
+        panel: tall,
+        focus: ["fuel"],
+        targets: [{ section: "fuel", item: 1, position: 1, lit: false, open: false, resolved: false }],
+        around: true,
+      });
+      const sheet = document.querySelector("dialog.sheet") as HTMLDialogElement;
+      const box = (top: number, height: number) =>
+        ({
+          top,
+          bottom: top + height,
+          height,
+          left: 0,
+          right: 0,
+          width: 0,
+          x: 0,
+          y: top,
+          toJSON: () => ({}),
+        }) as DOMRect;
+      sheet.getBoundingClientRect = () => box(0, 800);
+      for (const g of sheet.querySelectorAll("g.item.on"))
+        (g as Element).getBoundingClientRect = () => box(1500, 100);
+      screen.getByRole("button", { name: "See the whole panel larger" }).click();
+      for (const cb of frames.splice(0)) cb(0);
+      expect(sheet.hasAttribute("open")).toBe(true);
+      expect(sheet.scrollTop).toBe(1550 - 400);
+    } finally {
+      globalThis.requestAnimationFrame = raf;
+      proto.showModal = showModal;
+    }
+  });
 });

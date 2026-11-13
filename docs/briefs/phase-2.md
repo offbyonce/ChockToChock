@@ -197,7 +197,9 @@ every change to `.github/workflows/`. For those, prepare what the step needs and
       Keep screen awake; the step timer chip (IRS); "Used in" links to the steps that use a
       control; every menu item in coverage.md (Flight deck, Practice, Glossary, Flight log,
       Tour, References, How procedures work). The coverage.md rows added for review apply.
-   7. Content: the center tank decision step (the pilot answers until the pack has a sourced
+   7. Content. First on the sourcing list (owner, 2026-11-12): the resting position of FLT
+      CONTROL A and B, which the pack rests at STBY RUD where they are normally guarded ON. Then
+      the center tank decision step (the pilot answers until the pack has a sourced
       wing-tank capacity; then the app may suggest an answer for the pilot to confirm) and every
       mockup wording in content-to-validate.md, sourced and validated under decision 0007 before
       it ships.

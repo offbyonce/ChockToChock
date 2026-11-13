@@ -361,7 +361,7 @@ A step with no control on the map shows the steps coming up below its details.
   }
   .map {
     display: grid;
-    grid-template-columns: minmax(0, 13fr) minmax(0, 7fr);
+    grid-template-columns: var(--size-map-figure) minmax(0, 1fr);
     align-items: center;
     gap: var(--space-3);
   }

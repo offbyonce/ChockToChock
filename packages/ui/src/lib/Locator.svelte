@@ -3,7 +3,7 @@ SPDX-FileCopyrightText: 2026 offbyonce
 SPDX-License-Identifier: MIT
 
 "Where is this?" (WherePop board, decision 0023). Beside a side pane (tablet landscape and up) it
-is a pop-over that opens leftward over the step list, its arrow at the link, so the side pane with
+is a pop-over that opens leftward over the step list where the board places it, so the side pane with
 Check, If not and Why stays in view; elsewhere (tablet portrait, phone) it is a dialog until the
 TabWhere and PhoneWhere boards arrive in batch 5. Inside: the region's title and where to look
 from the seat, the side and seat views, the legend, and the whole flight deck behind "Whole flight
@@ -57,15 +57,17 @@ deck" until the Flight deck page exists (batch 6). All from the pack, in the pan
     open = true;
     heading?.focus();
   }
-  /** Beside the pane, its arrow on the link: the board's arrow sits 168 + 6 px from the top. */
+  /**
+   * Beside the pane where the WherePop board puts it: its top 300 px down the page and its arrow
+   * 168 px down the pop-over, both scaled with the page (wide screens, Text size), kept on screen.
+   */
   function position(pane: Element) {
-    if (!dialog || !trigger) return;
-    const link = trigger.getBoundingClientRect();
+    if (!dialog) return;
+    const page = Number.parseFloat(getComputedStyle(document.documentElement).fontSize) / 16 || 1;
     const paneLeft = pane.getBoundingClientRect().left;
-    const mid = link.top + link.height / 2;
     const height = dialog.offsetHeight;
-    const top = Math.max(8, Math.min(mid - 174, window.innerHeight - height - 8));
-    place = { top, right: window.innerWidth - paneLeft + 8, arrow: mid - top - 6 };
+    const top = Math.max(8 * page, Math.min(300 * page, window.innerHeight - height - 8 * page));
+    place = { top, right: window.innerWidth - paneLeft + 8 * page, arrow: 168 * page };
   }
   function close() {
     dialog?.close();

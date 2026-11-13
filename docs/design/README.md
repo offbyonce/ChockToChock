@@ -64,4 +64,6 @@ result.
 `tokens.json` is the delivered file plus additions the owner approved on 2026-11-12: border
 widths, line heights and eight sizes (icons, the tablet side pane, the drawer, the open-step dot,
 status icons, the progress bar and the Flow button). Each names its source board in a `$sources`
-entry. New tokens are proposed to the owner with their source first, never added on their own.
+entry. Approved the same day for batch 2: `radius.popover`, `color.popover-border` and
+`color.overlay-shadow` (WherePop's values, for every pop-over, sheet and drawer) and
+`size.map-figure` (280, the side pane's map figure on the Checklist and WherePop boards). New tokens are proposed to the owner with their source first, never added on their own.

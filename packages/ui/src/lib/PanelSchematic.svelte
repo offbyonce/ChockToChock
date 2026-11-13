@@ -195,6 +195,28 @@ smallest size that keeps 11 px labels, scrolls sideways, and offers a full-width
   }
 
   let sheet = $state<HTMLDialogElement | null>(null);
+  /**
+   * Opens the larger view scrolled so the step's controls are in sight (the owner, batch 2). The
+   * drawing takes its full size a frame or two after the sheet opens, so it centers again whenever
+   * the drawing resizes in the first half second.
+   */
+  function openLarger() {
+    const el = sheet;
+    if (!el) return;
+    el.showModal();
+    const center = () => {
+      const ons = [...el.querySelectorAll("g.item.on")].map((g) => g.getBoundingClientRect());
+      if (!ons.length) return;
+      const top = Math.min(...ons.map((r) => r.top));
+      const bottom = Math.max(...ons.map((r) => r.bottom));
+      const box = el.getBoundingClientRect();
+      el.scrollTop += (top + bottom) / 2 - (box.top + box.height / 2);
+    };
+    requestAnimationFrame(center);
+    const watch = new ResizeObserver(center);
+    for (const svg of el.querySelectorAll("svg")) watch.observe(svg);
+    setTimeout(() => watch.disconnect(), 500);
+  }
 
   /** The open control card: the item, its light meaning, and what its control does. */
   let card = $derived.by(() => {
@@ -244,7 +266,7 @@ smallest size that keeps 11 px labels, scrolls sideways, and offers a full-width
   </div>
 {/if}
 {#if (scale.overflow || band) && !large}
-  <button type="button" class="btn larger" onclick={() => sheet?.showModal()}>See the whole panel larger</button>
+  <button type="button" class="btn larger" onclick={openLarger}>See the whole panel larger</button>
   <dialog class="sheet" bind:this={sheet} aria-label="{title} panel">
     <div class="sheet-head">
       <span>{title}</span>
@@ -308,7 +330,13 @@ smallest size that keeps 11 px labels, scrolls sideways, and offers a full-width
   .sheet::backdrop {
     background: var(--color-scrim);
   }
+  /* Stays in view (with Close) when the sheet opens scrolled to the step's controls. */
   .sheet-head {
+    position: sticky;
+    top: calc(-1 * var(--space-4));
+    z-index: 1;
+    padding: var(--space-2) 0;
+    background: var(--color-sheet);
     display: flex;
     align-items: center;
     justify-content: space-between;
