@@ -221,8 +221,10 @@ What the step asks for, never the simulator's state (decision 0006).
 <style>
   /* Panel palette only (decision 0021): outlines, switch bodies and lens rims at 3:1 or better
      against the panel, labels at 4.5:1, in both themes. */
+  /* Sections sit on the panel background, as on the boards, so the blue of a changed control
+     stands out against it (design review F2). */
   .frame {
-    fill: var(--panel-fill);
+    fill: var(--panel-bg);
     stroke: var(--panel-stroke);
     stroke-width: 1;
   }
