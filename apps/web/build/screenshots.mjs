@@ -36,7 +36,7 @@ const stepNamed = (title, part) =>
   `[...document.querySelectorAll(".it")].find((it) => it.textContent.trim().toUpperCase().includes(${JSON.stringify(title)})).querySelector(${JSON.stringify(part)}).click(); true`;
 /** Clicks `part` of the list step whose name is exactly `name`. */
 const stepExact = (name, part) =>
-  `[...document.querySelectorAll(".it")].find((it) => [...(it.querySelector(".name")?.childNodes ?? [])].filter((c) => c.nodeType === 3).map((c) => c.textContent).join("").trim().toUpperCase() === ${JSON.stringify(name)}).querySelector(${JSON.stringify(part)}).click(); true`;
+  `[...document.querySelectorAll(".it")].find((it) => (it.querySelector(".nm")?.textContent ?? "").trim().toUpperCase() === ${JSON.stringify(name)}).querySelector(${JSON.stringify(part)}).click(); true`;
 /** Scrolls the side pane `pane` so its controls drawing starts at the top. */
 const paneToControls = (pane) =>
   `(() => { const p = document.querySelector(${JSON.stringify(pane)}); const h = [...p.querySelectorAll("*")].find((e) => e.children.length === 0 && e.textContent.trim().toUpperCase().startsWith("THE CONTROLS")); p.scrollTop += h.getBoundingClientRect().top - p.getBoundingClientRect().top; })(); true`;
@@ -89,15 +89,17 @@ const BOARD_STATE = [
 ];
 /** Opens the list step `title` and its narrow-screen details (its chevron first if it is closed). */
 const openNarrow = (title) =>
-  `(() => { const it = [...document.querySelectorAll(".it")].find((i) => i.textContent.toUpperCase().includes(${JSON.stringify(title)})); if (!it.querySelector("button.narrow")) it.querySelector(".chev").click(); return new Promise((go) => setTimeout(() => { it.querySelector("button.narrow").click(); go(true); }, 300)); })()`;
+  `(() => { const it = [...document.querySelectorAll(".it")].find((i) => i.textContent.toUpperCase().includes(${JSON.stringify(title)})); const chev = it.querySelector(".chev"); if (chev.getAttribute("aria-expanded") !== "true") chev.click(); return new Promise((go) => setTimeout(() => { [...it.querySelectorAll("button")].find((b) => b.textContent.includes("Show on map")).click(); go(true); }, 300)); })()`;
 /** Show map on the pane's location line (where the drawing took the map figure's room). */
 const showMap = `[...document.querySelectorAll("aside.pane .line button")].find((b) => b.textContent.trim() === "Show map")?.click(); true`;
 /** Taps an element that has no click() of its own (an SVG control's tap target). */
 const tap = (selector) => `document.querySelector(${JSON.stringify(selector)}).dispatchEvent(new MouseEvent("click", { bubbles: true })); true`;
+/** Opens the checklists still folded until their procedure is done. */
+const unfold = `[...document.querySelectorAll("button.folded")].forEach((b) => b.click()); true`;
 /** Presses a key on the page, as the pilot would. */
 const press = (key) => `window.dispatchEvent(new KeyboardEvent("keydown", { key: ${JSON.stringify(key)}, bubbles: true })); true`;
 /** The Flow view button in the top bar. */
-const toFlow = `[...document.querySelectorAll("header.top .tool")].find((b) => /flow/i.test(b.textContent)).click(); true`;
+const toFlow = `[...document.querySelectorAll("header.top .seg button")].find((b) => b.textContent.trim() === "Flow").click(); true`;
 
 const SHOTS = [
   { name: "phase", app: { hash: "" }, base: { hash: "#cold-dark" } },
@@ -109,8 +111,10 @@ const SHOTS = [
       before: [
         click(".it .tick", 0),
         click(".it .tick", 1),
-        click(".it .chev", 3),
-        `[...document.querySelectorAll(".dskip .btn")][0].click(); true`,
+        // The two done steps fold into one line; Show keeps every row in place.
+        `[...document.querySelectorAll(".done-group .show")][0]?.click(); true`,
+        click(".it .more", 3),
+        `[...document.querySelectorAll('[role="menuitem"]')].find((b) => b.textContent.trim() === "Skip for now").click(); true`,
         click(".it .row", 2),
         click(".it .chev", 2),
       ],
@@ -137,7 +141,7 @@ const SHOTS = [
   {
     // N1 BUGS in Flow on both sides: the app ticks Landing gear pins first.
     name: "flow",
-    app: { hash: "#/phase/before-start", before: [click(".it .tick", 0), click("header.top .tool", 1)] },
+    app: { hash: "#/phase/before-start", before: [click(".it .tick", 0), toFlow] },
     base: { hash: "#before-start", before: [click("#flowb")] },
   },
   {
@@ -147,7 +151,7 @@ const SHOTS = [
   },
   {
     name: "open",
-    app: { hash: "", before: [click(".it .tick", 0), go("#/phase/gpu-power"), click(".opn .line")] },
+    app: { hash: "", before: [click(".it .tick", 0), go("#/phase/gpu-power"), click(".opener")] },
     base: { hash: "#cold-dark", before: [click(".it .tick", 0), go("#gpu-power"), click("#opbtn")] },
   },
   { name: "emergency", app: { hash: "#/reference" }, base: { hash: "#memory" } },
@@ -255,13 +259,13 @@ const SHOTS = [
   {
     name: "panel-seat",
     only: ["desktop", "wide"],
-    app: { hash: "#/phase/preflight", before: [stepExact("OXYGEN", ".row"), stepExact("OXYGEN", ".chev"), press("p")] },
+    app: { hash: "#/phase/preflight", before: [unfold, stepExact("OXYGEN", ".row"), stepExact("OXYGEN", ".chev"), press("p")] },
   },
   {
     // Tablet portrait and phone keep a dialog for Where is this? until batch 5.
     name: "where-narrow",
     only: ["phone", "tablet"],
-    app: { hash: "#/phase/before-start", before: [click(".it .chev", 5), click(".it button.narrow"), click(".where-btn")] },
+    app: { hash: "#/phase/before-start", before: [openNarrow("FUEL PUMP SWITCHES"), click(".where-btn")] },
   },
   {
     name: "panel-brake",
@@ -281,6 +285,7 @@ const SHOTS = [
     only: ["desktop", "tablet-landscape"],
     app: { hash: "#/phase/before-start", before: [...BOARD_STATE, press("p"), tap('.slide-box rect.hit[aria-label="CTR L: what it is"]')] },
   },
+  { name: "board-open", full: true, only: ["desktop"], app: { hash: "#/phase/before-start", before: [...BOARD_STATE, click(".opener")] } },
   { name: "board-flow", full: true, only: ["desktop"], app: { hash: "#/phase/before-start", before: [...BOARD_STATE, toFlow] } },
   { name: "board-settings", full: true, only: ["desktop"], app: { hash: "#/settings" } },
   {

@@ -91,19 +91,23 @@ column until batch 4 (owner). On narrow screens a chevron opens the step's detai
       {#if row.state === "done"}<Icon name="check" />{:else if row.state === "skipped"}<i class="dash"></i>{:else if current}<i class="pip"></i>{/if}
     </span>
   </button>
-  <!-- The whole row selects the step: the side pane shows it. -->
-  <button class="row" type="button" onclick={onSelect} aria-current={selected ? "true" : undefined}>
-    <span class="name">
-      <span class="nm">{title}</span>
-      {#if full && row.essential && !large}<span class="ebadge" title="Essentials step" aria-hidden="true">E</span><span class="sr-only">, in Essentials</span>{/if}
-      <span class="sr-only">, {STATE_WORDS[row.state]}</span>
-      {#if row.state === "skipped"}<span class="pill" aria-hidden="true">Skipped</span>{/if}
-      {#if row.state === "done" && time}<span class="stamp" aria-hidden="true">Done {time}</span>{/if}
-      {#if !row.counts}<span class="ns">Not modeled in the simulator</span>{/if}
-    </span>
-    {#if current && place}<span class="where-line">{place.zone.area} · {place.zone.title}</span>{/if}
-    {#if detail === "expanded" && step.look_for}<span class="look"><b>Look for:</b> {step.look_for}</span>{/if}
-  </button>
+  <!-- The whole row selects the step (a stretched target over the row); the controls in it sit
+       above that target. -->
+  <div class="namecol">
+    <button class="row" type="button" onclick={onSelect} aria-current={selected ? "true" : undefined}>
+      <span class="name">
+        <span class="nm">{title}</span>
+        {#if full && row.essential && !large}<span class="ebadge" title="Essentials step" aria-hidden="true">E</span><span class="sr-only">, in Essentials</span>{/if}
+        <span class="sr-only">, {STATE_WORDS[row.state]}</span>
+        {#if row.state === "skipped"}<span class="pill" aria-hidden="true">Skipped</span>{/if}
+        {#if row.state === "done" && time}<span class="stamp" aria-hidden="true">Done {time}</span>{/if}
+        {#if !row.counts}<span class="ns">Not modeled in the simulator</span>{/if}
+      </span>
+      {#if current && place}<span class="where-line">{place.zone.area} · {place.zone.title}</span>{/if}
+      {#if detail === "expanded" && step.look_for}<span class="look"><b>Look for:</b> {step.look_for}</span>{/if}
+    </button>
+    {#if row.state === "skipped"}<button class="do-now" type="button" onclick={onSelect}>Do it now</button>{/if}
+  </div>
   <div class="value">
     {#if step.expect && fill}
       <BlankFields name={step.text} blanks={fill.blanks} rest={fill.rest} values={row.values} {onBlank} />
@@ -130,9 +134,6 @@ column until batch 4 (owner). On narrow screens a chevron opens the step's detai
       </div>
     {/if}
   </div>
-  {#if row.state === "skipped"}
-    <button class="do-now" type="button" onclick={onSelect}>Do it now</button>
-  {/if}
   {#if current}
     <div class="actions">
       <button class="done" type="button" onclick={onTick}>Done</button>
@@ -235,6 +236,29 @@ column until batch 4 (owner). On narrow screens a chevron opens the step's detai
     height: var(--border-thick);
     background: var(--color-open-dot);
   }
+  .namecol {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0 var(--space-2);
+    min-width: 0;
+  }
+  /* The row's own target reaches over the whole row; the buttons in it stay on top. */
+  .row::after {
+    position: absolute;
+    inset: 0;
+    content: "";
+  }
+  .tick,
+  .do-now,
+  .end,
+  .actions,
+  .value :global(input),
+  .chev,
+  .dtl {
+    position: relative;
+    z-index: 1;
+  }
   .row {
     display: flex;
     flex-direction: column;
@@ -252,6 +276,9 @@ column until batch 4 (owner). On narrow screens a chevron opens the step's detai
   .current .row {
     gap: var(--space-1);
     padding-top: var(--space-2);
+  }
+  .row {
+    flex: 0 1 auto;
   }
   .name {
     display: flex;
@@ -330,6 +357,9 @@ column until batch 4 (owner). On narrow screens a chevron opens the step's detai
   .end {
     position: relative;
   }
+  .end:has(.menu) {
+    z-index: 4;
+  }
   .more {
     width: var(--size-touch-min);
     height: var(--size-touch-min);
@@ -387,10 +417,7 @@ column until batch 4 (owner). On narrow screens a chevron opens the step's detai
     background: var(--color-line);
   }
   .do-now {
-    grid-column: 2;
-    justify-self: start;
     min-height: var(--size-touch-min);
-    margin-top: calc(-1 * var(--space-2));
     padding: 0 var(--space-1);
     border: 0;
     background: none;

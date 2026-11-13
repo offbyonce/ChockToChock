@@ -255,6 +255,9 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
    * strip. It closes on the scrim, its X or Esc; P toggles the panel and W opens Where it is.
    * Focus moves into it when it opens and back to what opened it when it closes.
    */
+  /** Open steps as the boards count them: skipped ones, and ones left on a phase other than this
+   * one; the current phase's own to-do steps are not "open". */
+  let openShown = $derived(open.filter((o) => o.skipped || o.phase !== phaseId));
   let slide = $state<Opening | null>(null);
   let opener: HTMLElement | null = null;
   function openSlide(how: Opening): void {
@@ -409,7 +412,7 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
     {stage}
     view={settings && view && (screen === "phase" || screen === "start") ? listView : null}
     {menuOpen}
-    open={open.map((o) => o.phase)}
+    open={openShown.map((o) => o.phase)}
     onMenu={() => (menuOpen = !menuOpen)}
     onView={changeView}
   />
@@ -418,7 +421,7 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
   {:else if !rail || !settings || !flight || !index}
     <p class="msg">Loading…</p>
   {:else}
-    <PhaseChips phases={stagePhases} current={phaseId} {detail} essentials={settings.essentials} {total} {savedAt} open={open.map((o) => o.phase)} />
+    <PhaseChips phases={stagePhases} current={phaseId} {detail} essentials={settings.essentials} {total} {savedAt} open={openShown.map((o) => o.phase)} />
     <Drawer
       open={menuOpen}
       {rail}
@@ -495,7 +498,7 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
                 onBlank={(step, index, value) => act({ type: "setBlank", step, index, value })}
                 onSelect={(id) => (selected = id)}
                 onClear={(list) => void clearTicks(list)}
-                {open}
+                open={openShown}
                 onGo={goToStep}
                 onEssentials={toggleEssentials}
                 full={!settings.essentials}

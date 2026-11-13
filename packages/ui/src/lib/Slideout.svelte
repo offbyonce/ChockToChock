@@ -185,6 +185,15 @@ surface, opening with the step's controls in view; nothing inside scrolls up and
         edges();
         return;
       }
+      // Opened on a control: its card in view, under the ringed control.
+      const cardAt = opening.entry === "control" ? el.querySelector(".card") : null;
+      if (cardAt) {
+        const box = el.getBoundingClientRect();
+        const r = cardAt.getBoundingClientRect();
+        el.scrollTop += Math.max(0, r.bottom - box.bottom + Number.parseFloat(getComputedStyle(el).paddingBottom || "0"));
+        edges();
+        return;
+      }
       const on = [...el.querySelectorAll("g.item.on")].map((g) => g.getBoundingClientRect());
       if (on.length) {
         const box = el.getBoundingClientRect();
@@ -195,6 +204,12 @@ surface, opening with the step's controls in view; nothing inside scrolls up and
       edges();
     });
     return () => cancelAnimationFrame(frame);
+  });
+
+  // A control tapped in the slide-out: its card into view.
+  let cardEl = $state<HTMLElement | null>(null);
+  $effect(() => {
+    if (picked && cardEl) cardEl.scrollIntoView?.({ block: "nearest" });
   });
 
   let head = $state<HTMLElement | null>(null);
@@ -249,7 +264,7 @@ surface, opening with the step's controls in view; nothing inside scrolls up and
       {/if}
     </section>
     {#if card}
-      <section class="card" aria-labelledby="so-card">
+      <section class="card" aria-labelledby="so-card" bind:this={cardEl}>
         <div class="card-head">
           <div class="titles">
             <h3 id="so-card">{card.title}</h3>
