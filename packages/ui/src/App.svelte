@@ -37,7 +37,7 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
   import SettingsPage from "./pages/SettingsPage.svelte";
   import SetupPage from "./pages/SetupPage.svelte";
   import { currentRoute } from "./route.svelte";
-  import { applyPalette } from "./theme/tokens";
+  import { applyPalette, applyScale } from "./theme/tokens";
 
   const host = getHost();
   const route = currentRoute();
@@ -112,6 +112,9 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
     query?.addEventListener("change", apply);
     return () => query?.removeEventListener("change", apply);
   });
+
+  // The desktop scale and the Text and controls size (decision 0021).
+  $effect(() => applyScale(document.documentElement, Number(settings?.textSize ?? "100")));
 
   let screen = $derived(route.value.screen);
   /** The phase on screen: a rail phase, or the open reference tab. */
@@ -416,77 +419,68 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
 <style>
   .app {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) clamp(26rem, 42vw, 50rem);
+    grid-template-columns: minmax(0, 1fr) var(--side-pane);
     align-items: start;
-  }
-  /* Flow view gives the map and drawing a wider column, as 3.0's does. */
-  .app.flow {
-    grid-template-columns: minmax(0, 1fr) minmax(26rem, 42%);
   }
   .app.nopane {
     grid-template-columns: minmax(0, 1fr);
   }
   main {
     min-width: 0;
-    padding: 1.5rem clamp(1rem, 3vw, 2.5rem) 3rem;
+    padding: var(--space-6) var(--gutter) var(--space-10);
   }
+  /* The content stops at 1040 before scaling; extra width becomes margin (decision 0021). */
   .inner {
-    max-width: 54rem;
+    max-width: var(--size-content-max);
     margin: 0 auto;
-  }
-  .nopane .inner {
-    max-width: 70rem;
-  }
-  .flow .inner {
-    max-width: 60rem;
   }
   .pane {
     position: sticky;
-    top: calc(var(--top-h) + var(--rail-h));
-    height: calc(100vh - var(--top-h) - var(--rail-h));
-    padding: 1.375rem 1rem;
+    top: calc(var(--size-header) + var(--size-phase-row));
+    height: calc(100vh - var(--size-header) - var(--size-phase-row));
+    padding: var(--space-6) var(--space-4);
     overflow-y: auto;
-    border-left: 1px solid var(--line);
-    background: var(--surface);
+    border-left: var(--border-thin) solid var(--color-border);
+    background: var(--color-surface);
   }
   /* 3.0's toast: dark on light (light on dark), centered at the bottom. */
   .toast {
     position: fixed;
-    bottom: 1.25rem;
+    bottom: var(--space-6);
     left: 50%;
     z-index: 70;
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: var(--space-3);
     width: max-content;
-    max-width: calc(100vw - 2rem);
+    max-width: calc(100vw - 2 * var(--gutter));
     box-sizing: border-box;
-    padding: 0.6rem 0.9rem;
-    border-radius: 0.6rem;
-    background: var(--ink);
-    box-shadow: 0 6px 24px rgb(0 0 0 / 28%);
-    color: var(--bg);
-    font-size: 0.9rem;
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius-control);
+    background: var(--color-text);
+    box-shadow: none;
+    color: var(--color-bg);
+    font-size: var(--font-size-secondary);
     transform: translateX(-50%);
   }
   .toast button {
     flex: none;
-    margin-left: 0.75rem;
+    margin-left: var(--space-3);
     color: inherit;
-    font-weight: 600;
+    font-weight: var(--weight-semibold);
     text-decoration: underline;
   }
   .msg {
-    padding: 1.5rem;
+    padding: var(--space-6);
   }
   /* Muted, not red: it is a standing notice, not an error. */
   .legal {
-    margin: 1.75rem 0 0;
-    color: var(--muted);
-    font-size: 0.7812rem;
+    margin: var(--space-8) 0 0;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-caption);
   }
   /* Narrow screens show the context inside the step instead. */
-  @media (max-width: 1023px) {
+  @media (max-width: 899px) {
     .app,
     .app.flow {
       grid-template-columns: minmax(0, 1fr);

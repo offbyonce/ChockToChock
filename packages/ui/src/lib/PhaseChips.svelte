@@ -59,20 +59,20 @@ started, a filled circle with a check when complete, and a dashed ring when a st
 <style>
   .rail {
     position: sticky;
-    top: var(--top-h);
+    top: var(--size-header);
     z-index: 19;
     display: flex;
     align-items: center;
-    gap: 1rem;
-    height: var(--rail-h);
-    padding: 0 1rem;
-    border-bottom: 1px solid var(--line);
-    background: var(--surface);
+    gap: var(--space-4);
+    height: var(--size-phase-row);
+    padding: 0 var(--space-4);
+    border-bottom: var(--border-thin) solid var(--color-border);
+    background: var(--color-surface);
   }
   .chips {
     display: flex;
     flex: 1;
-    gap: 0.15rem;
+    gap: var(--space-1);
     min-width: 0;
     overflow-x: auto;
     scrollbar-width: none;
@@ -82,117 +82,117 @@ started, a filled circle with a check when complete, and a dashed ring when a st
     display: flex;
     flex: none;
     align-items: center;
-    gap: 0.45rem;
-    height: 2.25rem;
-    padding: 0 0.6rem;
-    border-radius: 0.5rem;
-    color: var(--muted);
-    font-size: 0.875rem;
+    gap: var(--space-2);
+    height: var(--size-touch-min);
+    padding: 0 var(--space-2);
+    border-radius: var(--radius-control);
+    color: var(--color-text-muted);
+    font-size: var(--font-size-secondary);
     text-decoration: none;
     white-space: nowrap;
   }
   .chips a:hover {
-    color: var(--ink);
+    color: var(--color-text);
   }
   .chips a[aria-current="true"] {
-    background: var(--accent-soft);
-    color: var(--accent);
-    font-weight: 600;
+    background: var(--color-accent-soft);
+    color: var(--color-accent);
+    font-weight: var(--weight-semibold);
   }
   /* The touch area grows to 44px without changing 3.0's look (step 7). */
   .chips a::after,
   .chip::after {
     position: absolute;
     inset: 50% 0 auto;
-    height: 2.75rem;
+    height:  var(--size-touch-min);
     content: "";
     transform: translateY(-50%);
   }
   .chips {
-    padding: 0.25rem 0;
+    padding: var(--space-1) 0;
   }
   /* 3.0's small filled dots. State reads without color too: half filled when started, a check
      ring when complete, dashed when a step is skipped. */
   .dot {
     position: relative;
-    width: 0.5rem;
-    height: 0.5rem;
+    width: var(--size-dot);
+    height: var(--size-dot);
     border-radius: 50%;
-    background: var(--line);
+    background: var(--color-border);
   }
   [aria-current="true"] .dot {
-    background: var(--accent);
+    background: var(--color-accent);
   }
   .dot.started {
-    background: linear-gradient(90deg, var(--accent) 50%, var(--line) 50%);
+    background: linear-gradient(90deg, var(--color-accent) 50%, var(--color-border) 50%);
   }
   .dot.complete {
-    background: var(--go);
-    box-shadow: 0 0 0 2px var(--surface), 0 0 0 3px var(--go);
+    background: var(--color-done);
+    box-shadow: 0 0 0 var(--border-thick) var(--color-surface), 0 0 0 calc(var(--border-thick) + var(--border-thin)) var(--color-done);
   }
   .dot.skipped {
     background: none;
-    border: 1.5px dashed var(--warn);
+    border: var(--size-focus-ring) dashed var(--color-open-text);
   }
   /* A row of chips wider than the screen fades at its edge, so more is clearly there. */
-  @media (max-width: 1100px) {
+  @media (max-width: 1439px) {
     .chips {
-      mask-image: linear-gradient(90deg, #000 calc(100% - 2rem), transparent);
+      mask-image: linear-gradient(90deg, black calc(100% - var(--space-8)), transparent);
     }
   }
   .meta {
     display: flex;
     flex: none;
     align-items: center;
-    gap: 0.6rem;
+    gap: var(--space-2);
   }
   .chip {
     position: relative;
     display: inline-flex;
     align-items: center;
-    min-height: 2rem;
-    padding: 0.3rem 0.7rem;
-    border: 1px solid var(--line);
-    border-radius: 99rem;
-    background: var(--bg);
-    font-size: 0.8125rem;
-    font-weight: 500;
+    min-height: var(--size-touch-min);
+    padding: var(--space-1) var(--space-3);
+    border: var(--border-thin) solid var(--color-border);
+    border-radius: var(--radius-pill);
+    background: var(--color-bg);
+    font-size: var(--font-size-secondary);
+    font-weight: var(--weight-medium);
     text-decoration: none;
     white-space: nowrap;
   }
   .bar {
-    width: 9rem;
-    height: 0.375rem;
+    width: calc(4 * var(--space-8));
+    height: var(--size-progress-bar);
     overflow: hidden;
-    border-radius: 0.5rem;
-    background: var(--zone);
+    border-radius: var(--radius-control);
+    background: var(--color-track);
   }
   .bar i {
     display: block;
     height: 100%;
-    background: var(--go);
+    background: var(--color-done);
   }
   .saved {
-    color: var(--muted);
-    font-size: 0.7812rem;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-caption);
     white-space: nowrap;
   }
   .count {
-    color: var(--muted);
-    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-secondary);
   }
-  @media (max-width: 1100px) {
+  @media (max-width: 1439px) {
     .bar {
       display: none;
     }
   }
-  @media (max-width: 760px) {
+  @media (max-width: 599px) {
     .saved {
       display: none;
     }
   }
   /* As in 3.0, narrow screens drop the bar when there are no phases to show. */
-  @media (max-width: 1023px) {
+  @media (max-width: 899px) {
     .rail.none {
       display: none;
     }

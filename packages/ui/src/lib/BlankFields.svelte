@@ -50,34 +50,34 @@ types over it.
   .flds {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.45rem 1.1rem;
-    margin-top: 0.15rem;
+    gap: var(--space-2) var(--space-4);
+    margin-top: var(--space-1);
   }
   .fld {
     display: inline-flex;
     align-items: baseline;
-    gap: 0.4rem;
-    font: 500 0.84rem var(--mono);
+    gap: var(--space-2);
+    font: var(--weight-medium) var(--font-size-value-mono) var(--font-mono);
   }
   input {
-    width: 5.2rem;
-    padding: 0.05rem 0.1rem;
+    width: 10ch;
+    padding: var(--space-1) var(--space-1);
     border: 0;
-    border-bottom: 1.5px solid var(--muted);
+    border-bottom: var(--size-focus-ring) solid var(--color-text-muted);
     border-radius: 0;
     background: transparent;
-    color: var(--ink);
-    font: 500 0.9rem var(--mono);
+    color: var(--color-text);
+    font: var(--weight-medium) var(--font-size-value-mono) var(--font-mono);
     text-align: center;
   }
   .rest {
-    color: var(--muted);
-    font: 400 0.875rem/1.45 var(--sans);
+    color: var(--color-text-muted);
+    font: var(--weight-regular) var(--font-size-secondary) / var(--leading-normal) var(--font-sans);
   }
   @media (pointer: coarse) {
     input {
-      width: 5.6rem;
-      min-height: 2.25rem;
+      width: 10ch;
+      min-height: var(--size-touch-min);
     }
   }
 </style>

@@ -75,36 +75,35 @@ or found in its phase.
 
 <style>
   h1 {
-    margin: 0 0 0.5rem;
-    font-size: 1.6875rem;
+    margin: 0 0 var(--space-2);
+    font-size: var(--font-size-section-title);
     font-weight: 650;
-    letter-spacing: -0.02em;
   }
   .lead {
-    margin: 0 0 1.125rem;
-    color: var(--muted);
+    margin: 0 0 var(--space-4);
+    color: var(--color-text-muted);
   }
   header {
     display: flex;
     align-items: center;
-    gap: 0.625rem;
-    padding: 0.75rem 1rem;
-    border-bottom: 1px solid var(--line);
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-4);
+    border-bottom: var(--border-thin) solid var(--color-border);
   }
   h2 {
     margin: 0;
-    font-size: 0.9375rem;
-    font-weight: 600;
+    font-size: var(--font-size-body);
+    font-weight: var(--weight-semibold);
   }
   .link {
     display: inline-flex;
     align-items: center;
-    gap: 0.25rem;
-    min-height: 2.75rem;
+    gap: var(--space-1);
+    min-height:  var(--size-touch-min);
     margin-left: auto;
-    color: var(--accent);
-    font-size: 0.8125rem;
-    font-weight: 500;
+    color: var(--color-accent);
+    font-size: var(--font-size-secondary);
+    font-weight: var(--weight-medium);
     text-decoration: none;
   }
   ul {
@@ -116,9 +115,9 @@ or found in its phase.
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 0.5rem 1rem;
-    padding: 0.625rem 1rem;
-    border-top: 1px solid var(--line);
+    gap: var(--space-2) var(--space-4);
+    padding: var(--space-3) var(--space-4);
+    border-top: var(--border-thin) solid var(--color-border);
   }
   li:first-child {
     border-top: 0;
@@ -128,35 +127,35 @@ or found in its phase.
     flex: 1;
     flex-wrap: wrap;
     align-items: baseline;
-    gap: 0.125rem 1rem;
+    gap: var(--space-1) var(--space-4);
     min-width: 0;
   }
   b {
-    font-weight: 500;
+    font-weight: var(--weight-medium);
   }
   .val {
     margin-left: auto;
-    font: 0.8125rem var(--mono);
+    font: var(--weight-regular) var(--font-size-value-mono) var(--font-mono);
   }
   small {
     flex-basis: 100%;
-    color: var(--muted);
-    font-size: 0.7812rem;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-caption);
   }
   .badge {
-    padding: 0 0.5rem;
-    border: 1px solid var(--line);
-    border-radius: 99rem;
-    color: var(--muted);
-    font-size: 0.72rem;
-    font-weight: 600;
+    padding: 0 var(--space-2);
+    border: var(--border-thin) solid var(--color-border);
+    border-radius: var(--radius-pill);
+    color: var(--color-text-muted);
+    font-size: var(--font-size-caption);
+    font-weight: var(--weight-semibold);
   }
   .badge.sk {
-    border: 1px dashed var(--warn);
-    color: var(--warn);
+    border: var(--border-thin) dashed var(--color-open-text);
+    color: var(--color-open-text);
   }
   .acts {
     display: flex;
-    gap: 0.5rem;
+    gap: var(--space-2);
   }
 </style>

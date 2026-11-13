@@ -58,74 +58,73 @@ Flow view and in the side panel. Each item shows once.
   .detail {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: var(--space-2);
     line-height: 1.45;
   }
   .cells {
     display: grid;
     grid-template-columns: repeat(var(--n), minmax(0, 1fr));
-    gap: 0.35rem;
+    gap: var(--space-1);
   }
   .cell {
-    padding: 0.65rem 0.8rem;
-    border-radius: 0.6rem;
-    background: var(--bg);
+    padding: var(--space-3) var(--space-3);
+    border-radius: var(--radius-control);
+    background: var(--color-bg);
   }
   .cell small {
     display: block;
-    color: var(--muted);
-    font-size: 0.72rem;
-    font-weight: 600;
-    letter-spacing: 0.03em;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-caption);
+    font-weight: var(--weight-semibold);
   }
   .cell b {
     display: block;
-    margin-top: 0.2rem;
-    font-size: 1rem;
-    font-weight: 600;
+    margin-top: var(--space-1);
+    font-size: var(--font-size-body);
+    font-weight: var(--weight-semibold);
     line-height: 1.25;
   }
   .cell span {
     display: block;
-    margin-top: 0.2rem;
-    color: var(--muted);
-    font-size: 0.8125rem;
+    margin-top: var(--space-1);
+    color: var(--color-text-muted);
+    font-size: var(--font-size-secondary);
     line-height: 1.3;
   }
   .cell.ck {
-    background: color-mix(in srgb, var(--accent) 16%, var(--surface));
+    background: color-mix(in srgb, var(--color-accent) 16%, var(--color-surface));
   }
   .cell.ck small {
-    color: var(--accent);
+    color: var(--color-accent);
   }
   .cell.if {
-    background: var(--warn-soft);
+    background: var(--color-open-bg);
   }
   .cell.if small {
-    color: var(--warn);
+    color: var(--color-open-text);
   }
   .large .cell b {
-    font-size: 1.1rem;
+    font-size: var(--font-size-body);
   }
   .line {
     margin: 0;
-    color: var(--muted);
-    font-size: 0.875rem;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-secondary);
   }
   .line b {
-    color: var(--ink);
-    font-weight: 600;
+    color: var(--color-text);
+    font-weight: var(--weight-semibold);
   }
   .large .line {
-    font-size: 1rem;
+    font-size: var(--font-size-body);
   }
   summary {
     display: inline-flex;
     align-items: center;
-    gap: 0.375rem;
-    min-height: 2.75rem;
-    color: var(--accent);
-    font-weight: 500;
+    gap: var(--space-2);
+    min-height:  var(--size-touch-min);
+    color: var(--color-accent);
+    font-weight: var(--weight-medium);
     list-style: none;
     cursor: pointer;
   }
@@ -136,12 +135,12 @@ Flow view and in the side panel. Each item shows once.
     transform: rotate(180deg);
   }
   ol {
-    margin: 0.1rem 0 0.4rem;
-    padding: 0.625rem 0.875rem 0.625rem 2rem;
-    border-radius: 0.5rem;
-    background: var(--zone);
+    margin: var(--space-1) 0 var(--space-2);
+    padding: var(--space-3) var(--space-4) var(--space-3) var(--space-8);
+    border-radius: var(--radius-control);
+    background: var(--color-surface-2);
   }
   li + li {
-    margin-top: 0.25rem;
+    margin-top: var(--space-1);
   }
 </style>

@@ -49,68 +49,68 @@ applies the option in Rust, which decides what shows.
   .cards {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 0.625rem;
-    margin-bottom: 1.125rem;
+    gap: var(--space-3);
+    margin-bottom: var(--space-4);
   }
   .cards button {
-    padding: 0.8125rem 0.9375rem;
-    border: 1px solid var(--line);
-    border-radius: 0.75rem;
-    background: var(--surface);
+    padding: var(--space-3) var(--space-4);
+    border: var(--border-thin) solid var(--color-border);
+    border-radius: var(--radius-panel);
+    background: var(--color-surface);
     text-align: left;
   }
   .cards button:hover {
-    border-color: var(--muted);
+    border-color: var(--color-text-muted);
   }
   .cards b {
     display: block;
-    font-weight: 600;
+    font-weight: var(--weight-semibold);
   }
   .cards span {
-    color: var(--muted);
-    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-secondary);
   }
   .cards button[aria-pressed="true"] {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 1px var(--accent);
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 var(--size-focus-ring) var(--color-accent);
   }
   .row {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 15rem;
+    grid-template-columns: minmax(0, 1fr) auto;
     align-items: center;
-    gap: 1rem 2rem;
-    padding: 1rem;
+    gap: var(--space-4) var(--space-8);
+    padding: var(--space-4);
   }
   .row b {
-    font-weight: 600;
+    font-weight: var(--weight-semibold);
   }
   .row p {
-    margin: 0.125rem 0 0;
-    color: var(--muted);
-    font-size: 0.875rem;
+    margin: var(--space-1) 0 0;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-secondary);
   }
   .seg {
     display: flex;
-    gap: 0.25rem;
-    padding: 0.25rem;
-    border-radius: 0.625rem;
-    background: var(--zone);
+    gap: var(--space-1);
+    padding: var(--space-1);
+    border-radius: var(--radius-control);
+    background: var(--color-surface-2);
   }
   .seg button {
     flex: 1;
     min-width: 0;
-    min-height: 2.75rem;
-    padding: 0 1rem;
-    border-radius: 0.5rem;
-    color: var(--muted);
-    font-weight: 500;
+    min-height:  var(--size-touch-min);
+    padding: 0 var(--space-4);
+    border-radius: var(--radius-control);
+    color: var(--color-text-muted);
+    font-weight: var(--weight-medium);
   }
   .seg button[aria-checked="true"] {
-    background: var(--surface);
-    box-shadow: 0 1px 2px rgb(0 0 0 / 25%);
-    color: var(--ink);
+    background: var(--color-surface);
+    box-shadow: inset 0 0 0 var(--size-focus-ring) var(--color-accent);
+    color: var(--color-text);
   }
-  @media (max-width: 760px) {
+  @media (max-width: 599px) {
     .cards,
     .row {
       grid-template-columns: 1fr;

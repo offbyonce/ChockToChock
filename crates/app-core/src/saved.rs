@@ -11,6 +11,8 @@ use serde_json::Value;
 use ts_rs::TS;
 
 use crate::flight::{FLIGHT_FORMAT, Flight};
+#[cfg(test)]
+use crate::settings::TextSize;
 use crate::settings::{SETTINGS_FORMAT, Settings};
 
 /// What reading saved data found.
@@ -36,7 +38,14 @@ pub(crate) type Migration = fn(Value) -> Result<Value, String>;
 /// Migrations for [`Flight`]: entry `i` turns format `i + 1` into format `i + 2`.
 const FLIGHT_MIGRATIONS: &[Migration] = &[];
 /// Migrations for [`Settings`], indexed the same way.
-const SETTINGS_MIGRATIONS: &[Migration] = &[];
+const SETTINGS_MIGRATIONS: &[Migration] = &[settings_1_to_2];
+
+/// Format 2 adds Text and controls size, standard for settings saved before it.
+fn settings_1_to_2(mut value: Value) -> Result<Value, String> {
+    let object = value.as_object_mut().ok_or("settings are not an object")?;
+    object.insert("textSize".into(), Value::from("100"));
+    Ok(value)
+}
 
 pub(crate) fn load_with<T: DeserializeOwned>(
     json: &str,
@@ -122,6 +131,26 @@ mod tests {
                 migrated_from: None
             }
         );
+    }
+
+    #[test]
+    fn settings_from_format_1_get_the_standard_text_size() {
+        let mut old = serde_json::to_value(Settings::default()).unwrap();
+        let object = old.as_object_mut().unwrap();
+        object.remove("textSize");
+        object.insert("format".into(), json!(1));
+        object.insert("dimming".into(), json!(2));
+        let Loaded::Ready {
+            value,
+            migrated_from,
+        } = load_settings(&old.to_string())
+        else {
+            panic!("format 1 settings did not load");
+        };
+        assert_eq!(migrated_from, Some(1));
+        assert_eq!(value.text_size, TextSize::Standard);
+        assert_eq!(value.dimming, 2);
+        assert_eq!(value.format, SETTINGS_FORMAT);
     }
 
     #[test]

@@ -1,0 +1,146 @@
+// SPDX-FileCopyrightText: 2026 offbyonce
+// SPDX-License-Identifier: MIT
+
+// Generated from docs/design/tokens.json by packages/ui/build/tokens.mjs (just tokens). Do not
+// edit by hand.
+
+export const COLOR = {
+  "dark": {
+    "bg": "#0f1218",
+    "surface": "#161b23",
+    "surface-2": "#121720",
+    "sheet": "#121720",
+    "field": "#0f1218",
+    "border": "#2a323e",
+    "border-strong": "#2f3846",
+    "line": "#222934",
+    "chip": "#222934",
+    "text": "#e6e9ee",
+    "text-secondary": "#b7bec9",
+    "text-muted": "#8b94a3",
+    "text-strong": "#ffffff",
+    "accent": "#4c8dff",
+    "on-accent": "#08101f",
+    "accent-soft": "#14243c",
+    "accent-text": "#a9caff",
+    "current-row": "#132036",
+    "link": "#7fb0ff",
+    "done": "#3fb67a",
+    "on-done": "#08140e",
+    "track": "#2a323e",
+    "todo-ring": "#6b7482",
+    "open-text": "#f2bd5c",
+    "open-dot": "#e0a43a",
+    "open-bg": "#241d10",
+    "open-border": "#6b5020",
+    "danger": "#e2564a",
+    "danger-text": "#ff8a7a",
+    "danger-bg": "transparent",
+    "danger-soft": "#2a1614",
+    "segment-track": "#121720",
+    "segment-border": "#2a323e",
+    "segment-on": "#2a323e",
+    "segment-shadow": "none",
+    "button-bg": "transparent",
+    "button-shadow": "none",
+    "skip-bg": "transparent",
+    "toggle-off": "#3a4351",
+    "essentials-text": "#a9b4c4",
+    "essentials-border": "#4a5361",
+    "scrim": "rgba(6, 8, 12, 0.55)",
+    "lit-amber": "#f2bd5c",
+    "on-lit-amber": "#3a2a00"
+  },
+  "light": {
+    "bg": "#f5f7fa",
+    "surface": "#ffffff",
+    "surface-2": "#eef1f5",
+    "sheet": "#ffffff",
+    "field": "#ffffff",
+    "border": "#d3d9e1",
+    "border-strong": "#c9d0d9",
+    "line": "#e2e6ec",
+    "chip": "#f0f2f5",
+    "text": "#1a1f27",
+    "text-secondary": "#3d4552",
+    "text-muted": "#5b6472",
+    "text-strong": "#0b0f14",
+    "accent": "#2563eb",
+    "on-accent": "#ffffff",
+    "accent-soft": "#e4ecfd",
+    "accent-text": "#1d4fd8",
+    "current-row": "#eaf1fe",
+    "link": "#1d4fd8",
+    "done": "#1f8a55",
+    "on-done": "#ffffff",
+    "track": "#d3d9e1",
+    "todo-ring": "#7a8391",
+    "open-text": "#8a5a00",
+    "open-dot": "#a86f00",
+    "open-bg": "#fdf4e1",
+    "open-border": "#e0b766",
+    "danger": "#c62f22",
+    "danger-text": "#b3261e",
+    "danger-bg": "#fdecea",
+    "danger-soft": "#fdecea",
+    "segment-track": "#e6eaf0",
+    "segment-border": "#dde2e8",
+    "segment-on": "#ffffff",
+    "segment-shadow": "0 1px 2px rgba(16, 24, 40, 0.14)",
+    "button-bg": "#ffffff",
+    "button-shadow": "0 1px 2px rgba(16, 24, 40, 0.10)",
+    "skip-bg": "#fdf4e1",
+    "toggle-off": "#b9c1cc",
+    "essentials-text": "#3d4552",
+    "essentials-border": "#8a93a0",
+    "scrim": "rgba(20, 26, 36, 0.35)",
+    "lit-amber": "#f2bd5c",
+    "on-lit-amber": "#3a2a00"
+  }
+} as const;
+
+export const PANEL = {
+  "dark": {
+    "bg": "#161b23",
+    "frame": "#2a323e",
+    "fill": "#1b212b",
+    "stroke": "#6b7482",
+    "label": "#a3abb8",
+    "text": "#d5dae2",
+    "changed-fill": "#163056",
+    "changed": "#4c8dff",
+    "changed-text": "#ffffff",
+    "resting": "#6b7482",
+    "fuselage": "#12171f",
+    "seat": "#20262f",
+    "glass": "#1d2a3a"
+  },
+  "light": {
+    "bg": "#ffffff",
+    "frame": "#d3d9e1",
+    "fill": "#e3e7ec",
+    "stroke": "#8a93a0",
+    "label": "#4a5462",
+    "text": "#1a1f27",
+    "changed-fill": "#d6e4fd",
+    "changed": "#2563eb",
+    "changed-text": "#0b1f4d",
+    "resting": "#7a8391",
+    "fuselage": "#f3f5f8",
+    "seat": "#d3d9e1",
+    "glass": "#d4e3f6"
+  }
+} as const;
+
+/** The widest width of each layout class below desktop, in CSS pixels. */
+export const BREAKPOINTS = {
+  "phoneMax": 599,
+  "tabletPortraitMax": 899,
+  "tabletLandscapeMax": 1439
+} as const;
+
+/** The size every desktop layout is drawn at before scaling. */
+export const DESIGN_SIZE = { width: 1440, height: 900 } as const;
+
+/** The smallest rendered sizes inside drawings, in CSS pixels. */
+export const DRAWING = { labelMin: 11, legendMin: 10 } as const;

@@ -134,21 +134,20 @@ a time (lib/FlowView.svelte).
 
 <style>
   .crumb {
-    margin: 0 0 0.125rem;
-    color: var(--muted);
-    font-size: 0.8125rem;
+    margin: 0 0 var(--space-1);
+    color: var(--color-text-muted);
+    font-size: var(--font-size-secondary);
   }
   h1 {
-    margin: 0 0 1.125rem;
-    font-size: 1.6875rem;
+    margin: 0 0 var(--space-4);
+    font-size: var(--font-size-section-title);
     font-weight: 650;
     line-height: 1.2;
-    letter-spacing: -0.02em;
   }
   .nav {
     display: flex;
     justify-content: space-between;
-    gap: 0.625rem;
-    margin-top: 0.375rem;
+    gap: var(--space-3);
+    margin-top: var(--space-2);
   }
 </style>

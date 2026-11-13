@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Wide screen</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="width: 2560px; height: 1440px; overflow: hidden; background: {{bg}}; font-family: Geist, system-ui, sans-serif">
+  <div style="width: 1600px; height: 900px; transform: scale(1.6); transform-origin: 0 0">
+    <dc-import name="Checklist" theme="{{theme}}" w="1600" h="900" hint-size="1600px,900px"></dc-import>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["dark","light"],"default":"dark"},"$preview":{"width":2560,"height":1440}}'>
+class Component extends DCLogic {
+  renderVals() { const th = this.props.theme ?? 'dark'; return { theme: th, bg: th === 'light' ? '#f5f7fa' : '#0f1218' }; }
+}
+</script>
+</body>
+</html>

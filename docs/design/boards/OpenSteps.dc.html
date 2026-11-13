@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Open steps</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="position: relative; width: 1440px; height: 900px; overflow: hidden; background: {{o.bg}}; color: {{o.text}}; font-family: Geist, system-ui, sans-serif">
+  <dc-import name="Checklist" theme="{{theme}}" hint-size="1440px,900px"></dc-import>
+
+  <div role="dialog" aria-labelledby="os-title" style="position: absolute; left: 400px; top: 252px; width: 488px; box-sizing: border-box; background: {{o.surface}}; border: 1px solid {{o.border}}; border-radius: 14px; box-shadow: {{o.shadow}}; padding: 8px 8px 12px; display: flex; flex-direction: column; gap: 4px">
+    <span aria-hidden="true" style="position: absolute; top: -7px; right: 48px; width: 12px; height: 12px; background: {{o.surface}}; border-left: 1px solid {{o.border}}; border-top: 1px solid {{o.border}}; transform: rotate(45deg)"></span>
+    <div style="display: flex; align-items: center; justify-content: space-between; padding: 4px 4px 4px 12px">
+      <h2 id="os-title" style="margin: 0; font-size: 16px; font-weight: 700">2 open steps</h2>
+      <a href="Checklist.dc.html" aria-label="Close" style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; color: {{o.sub}}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></a>
+    </div>
+
+    <span style="padding: 4px 12px; font-size: 12px; font-weight: 600; color: {{o.muted}}">Preflight · Preliminary preflight procedure</span>
+    <div style="display: flex; align-items: center; gap: 12px; padding: 6px 4px 6px 12px; border-radius: 10px; background: {{o.row}}">
+      <svg width="20" height="20" viewBox="0 0 24 24" role="img" aria-label="Skipped" style="flex: none"><circle cx="12" cy="12" r="10" fill="none" stroke="{{o.amberDot}}" stroke-width="2" stroke-dasharray="4 3"></circle><path d="M8 12h8" stroke="{{o.amberDot}}" stroke-width="2" stroke-linecap="round"></path></svg>
+      <span style="flex: 1; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 16px; font-weight: 500">Crew oxygen</span><span style="font-family: 'Geist Mono', monospace; font-size: 12px; color: {{o.sub}}">VERIFY SUFFICIENT FOR FLIGHT</span></span>
+      <a href="#" style="min-height: 44px; display: inline-flex; align-items: center; padding: 0 12px; font-size: 14px; font-weight: 600; color: {{o.link}}; text-decoration: none">Go to step</a>
+    </div>
+
+    <span style="padding: 10px 12px 4px; font-size: 12px; font-weight: 600; color: {{o.muted}}">Departure · Before start procedure</span>
+    <div style="display: flex; align-items: center; gap: 12px; padding: 6px 4px 6px 12px; border-radius: 10px; background: {{o.row}}">
+      <svg width="20" height="20" viewBox="0 0 24 24" role="img" aria-label="Skipped" style="flex: none"><circle cx="12" cy="12" r="10" fill="none" stroke="{{o.amberDot}}" stroke-width="2" stroke-dasharray="4 3"></circle><path d="M8 12h8" stroke="{{o.amberDot}}" stroke-width="2" stroke-linecap="round"></path></svg>
+      <span style="flex: 1; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 16px; font-weight: 500">TERR (EFIS control panel)</span><span style="font-family: 'Geist Mono', monospace; font-size: 12px; color: {{o.sub}}">ON</span></span>
+      <a href="#" style="min-height: 44px; display: inline-flex; align-items: center; padding: 0 12px; font-size: 14px; font-weight: 600; color: {{o.link}}; text-decoration: none">Go to step</a>
+    </div>
+
+    <p style="margin: 8px 12px 0; font-size: 12px; line-height: 1.5; color: {{o.muted}}">Skipped steps stay open until you do them. The Flight log lists any still open at the end.</p>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["dark","light"],"default":"dark"},"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const O = {
+      dark: { bg: '#0f1218', surface: '#1b212b', row: '#161b23', border: '#34404f', text: '#e6e9ee', sub: '#b7bec9', muted: '#8b94a3', link: '#7fb0ff', amberDot: '#e0a43a', shadow: '0 24px 60px rgba(0, 0, 0, 0.55)' },
+      light: { bg: '#f5f7fa', surface: '#ffffff', row: '#f5f7fa', border: '#d3d9e1', text: '#1a1f27', sub: '#3d4552', muted: '#5b6472', link: '#1d4fd8', amberDot: '#a86f00', shadow: '0 24px 60px rgba(16, 24, 40, 0.18)' }
+    };
+    const th = this.props.theme === 'light' ? 'light' : 'dark';
+    return { theme: th, o: O[th] };
+  }
+}
+</script>
+</body>
+</html>

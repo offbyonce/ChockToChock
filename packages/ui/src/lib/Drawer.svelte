@@ -82,11 +82,11 @@ batches add flight setup, the flight log, practice and the rest here.
     z-index: 50;
     display: flex;
     flex-direction: column;
-    width: 18rem;
-    padding: 0.75rem 0.75rem 1rem;
+    width: var(--size-drawer);
+    padding: var(--space-3) var(--space-3) var(--space-4);
     overflow-y: auto;
-    border-right: 1px solid var(--line);
-    background: var(--surface);
+    border-right: var(--border-thin) solid var(--color-border);
+    background: var(--color-surface);
     transform: translateX(-102%);
     transition: transform 0.18s;
   }
@@ -97,96 +97,95 @@ batches add flight setup, the flight log, practice and the rest here.
     position: fixed;
     inset: 0;
     z-index: 45;
-    background: rgb(0 0 0 / 45%);
+    background: var(--color-scrim);
   }
   .continue {
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
-    padding: 0.75rem;
-    border-radius: 0.75rem;
-    background: var(--bg);
+    gap: var(--space-1);
+    padding: var(--space-3);
+    border-radius: var(--radius-panel);
+    background: var(--color-bg);
     text-decoration: none;
   }
   .continue small {
-    color: var(--muted);
-    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-caption);
   }
   .continue b {
-    font-size: 1.0625rem;
-    font-weight: 600;
+    font-size: var(--font-size-body);
+    font-weight: var(--weight-semibold);
   }
   .bar {
     display: block;
-    height: 0.375rem;
-    margin: 0.25rem 0;
+    height: var(--size-progress-bar);
+    margin: var(--space-1) 0;
     overflow: hidden;
-    border-radius: 0.5rem;
-    background: var(--zone);
+    border-radius: var(--radius-control);
+    background: var(--color-surface-2);
   }
   .bar i {
     display: block;
     height: 100%;
-    background: var(--go);
+    background: var(--color-done);
   }
   .stages {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.25rem;
-    margin: 0.75rem 0;
+    gap: var(--space-1);
+    margin: var(--space-3) 0;
   }
   .stages a {
     display: flex;
     align-items: center;
-    min-height: 2.75rem;
-    padding: 0 0.625rem;
-    border-radius: 0.5rem;
-    background: var(--bg);
-    color: var(--muted);
-    font-size: 0.875rem;
-    font-weight: 500;
+    min-height:  var(--size-touch-min);
+    padding: 0 var(--space-3);
+    border-radius: var(--radius-control);
+    background: var(--color-bg);
+    color: var(--color-text-muted);
+    font-size: var(--font-size-secondary);
+    font-weight: var(--weight-medium);
     text-decoration: none;
   }
   .stages a[aria-current="true"] {
-    background: var(--accent-soft);
-    color: var(--accent);
+    background: var(--color-accent-soft);
+    color: var(--color-accent);
   }
   .grp {
     margin: 0;
-    padding: 0.875rem 0.625rem 0.375rem;
-    color: var(--muted);
-    font-size: 0.7188rem;
-    font-weight: 600;
-    letter-spacing: 0.05em;
+    padding: var(--space-4) var(--space-3) var(--space-2);
+    color: var(--color-text-muted);
+    font-size: var(--font-size-caption);
+    font-weight: var(--weight-semibold);
     text-transform: uppercase;
   }
   .ref {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    min-height: 2.75rem;
-    padding: 0 0.625rem;
-    border-radius: 0.5rem;
-    font-weight: 500;
+    min-height:  var(--size-touch-min);
+    padding: 0 var(--space-3);
+    border-radius: var(--radius-control);
+    font-weight: var(--weight-medium);
     text-decoration: none;
   }
   .ref:hover {
-    background: var(--bg);
+    background: var(--color-bg);
   }
   .ref span {
-    color: var(--muted);
-    font-size: 0.75rem;
-    font-weight: 400;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-caption);
+    font-weight: var(--weight-regular);
   }
   .foot {
     margin-top: auto;
-    padding-top: 0.75rem;
-    border-top: 1px solid var(--line);
+    padding-top: var(--space-3);
+    border-top: var(--border-thin) solid var(--color-border);
   }
   .ver {
-    margin: 0.5rem 0.625rem 0;
-    color: var(--muted);
-    font-size: 0.75rem;
+    margin: var(--space-2) var(--space-3) 0;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-caption);
   }
   @media (prefers-reduced-motion: reduce) {
     nav {

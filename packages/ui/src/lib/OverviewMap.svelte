@@ -69,15 +69,25 @@ from the pack, and the zone marked by a thicker outline, fill and bold label as 
    */
   const PX = { edge: 9.3 };
   const LABEL = 11.6;
-  let cap = $derived(bounds.y1 - bounds.y0 > bounds.x1 - bounds.x0 ? 360 : 230);
   let width = $state(0);
+  /** The page's own scale (wide screens and Text size): the map's limits grow with the page. */
+  let page = $state(1);
+  $effect(() => {
+    const read = () => {
+      page = Number.parseFloat(getComputedStyle(document.documentElement).fontSize) / 16 || 1;
+    };
+    read();
+    window.addEventListener("resize", read);
+    return () => window.removeEventListener("resize", read);
+  });
+  let cap = $derived((bounds.y1 - bounds.y0 > bounds.x1 - bounds.x0 ? 360 : 230) * page);
   // The map is as wide as its box unless its height cap makes it narrower.
   let k = $derived(width > 0 ? Math.min(width, (cap * box.w) / box.h) / box.w : 0.75);
   let cx = $derived((bounds.x0 + bounds.x1) / 2);
   let cy = $derived((bounds.y0 + bounds.y1) / 2);
 
   /** Labels shrink to stay inside their boxes, as 3.0's do, never below 6.5px. */
-  const size = (text: string[], width: number, height: number) => Math.max(6.5 / k, fitSize(text, width, height, LABEL));
+  const size = (text: string[], width: number, height: number) => Math.max((6.5 * page) / k, fitSize(text, width, height, LABEL));
 </script>
 
 {#if map && map.areas.length}
@@ -85,7 +95,7 @@ from the pack, and the zone marked by a thicker outline, fill and bold label as 
   <svg
     class="map"
     viewBox="{box.x} {box.y} {box.w} {box.h}"
-    style:max-width="min({Math.round(box.w * 1.4)}px, 32rem)"
+    style:max-width="min({Math.round(box.w * 1.4 * page)}px, 32rem)"
     style:max-height="{cap}px"
     role="img"
     aria-label="Flight deck map, {region?.name ?? zone.area}: {zone.title} marked"
@@ -111,24 +121,24 @@ from the pack, and the zone marked by a thicker outline, fill and bold label as 
         <text
           class="edge group"
           x={bounds.x0 - (sides && !short ? 23 : 8)}
-          y={(g.y0 + g.y1) / 2 + (n - (g.lines.length - 1) / 2) * ((PX.edge * 1.15) / k)}
+          y={(g.y0 + g.y1) / 2 + (n - (g.lines.length - 1) / 2) * ((PX.edge * page * 1.15) / k)}
           style:text-anchor="end"
-          style:font-size="{PX.edge / k}px">{line}</text
+          style:font-size="{(PX.edge * page) / k}px">{line}</text
         >
       {/each}
     {/each}
     {#if region?.top}
-      <text class="edge" x={cx} y={bounds.y0 - 13} style:font-size="{PX.edge / k}px">↑ {region.top}</text>
+      <text class="edge" x={cx} y={bounds.y0 - 13} style:font-size="{(PX.edge * page) / k}px">↑ {region.top}</text>
     {/if}
     {#if region?.bottom}
-      <text class="edge" x={cx} y={bounds.y1 + 15} style:font-size="{PX.edge / k}px">↓ {region.bottom}</text>
+      <text class="edge" x={cx} y={bounds.y1 + 15} style:font-size="{(PX.edge * page) / k}px">↓ {region.bottom}</text>
     {/if}
     {#if sides && short}
-      {#if region?.left}<text class="edge" x={bounds.x0} y={bounds.y0 - 13} style:text-anchor="start" style:font-size="{PX.edge / k}px">{region.left}</text>{/if}
-      {#if region?.right}<text class="edge" x={bounds.x1} y={bounds.y0 - 13} style:text-anchor="end" style:font-size="{PX.edge / k}px">{region.right}</text>{/if}
+      {#if region?.left}<text class="edge" x={bounds.x0} y={bounds.y0 - 13} style:text-anchor="start" style:font-size="{(PX.edge * page) / k}px">{region.left}</text>{/if}
+      {#if region?.right}<text class="edge" x={bounds.x1} y={bounds.y0 - 13} style:text-anchor="end" style:font-size="{(PX.edge * page) / k}px">{region.right}</text>{/if}
     {:else if sides}
-      {#if region?.left}<text class="edge" transform="translate({bounds.x0 - 10} {cy}) rotate(-90)" style:font-size="{PX.edge / k}px">{region.left}</text>{/if}
-      {#if region?.right}<text class="edge" transform="translate({bounds.x1 + 10} {cy}) rotate(90)" style:font-size="{PX.edge / k}px">{region.right}</text>{/if}
+      {#if region?.left}<text class="edge" transform="translate({bounds.x0 - 10} {cy}) rotate(-90)" style:font-size="{(PX.edge * page) / k}px">{region.left}</text>{/if}
+      {#if region?.right}<text class="edge" transform="translate({bounds.x1 + 10} {cy}) rotate(90)" style:font-size="{(PX.edge * page) / k}px">{region.right}</text>{/if}
     {/if}
   </svg>
   </div>
@@ -145,27 +155,27 @@ from the pack, and the zone marked by a thicker outline, fill and bold label as 
     margin: 0 auto;
   }
   rect {
-    fill: var(--surface);
-    stroke: var(--muted);
+    fill: var(--color-surface);
+    stroke: var(--color-text-muted);
     stroke-width: 1;
   }
   text {
-    font-family: var(--sans);
+    font-family: var(--font-sans);
     font-weight: 600;
-    fill: var(--ink);
+    fill: var(--color-text);
     text-anchor: middle;
     dominant-baseline: central;
   }
   .edge {
     letter-spacing: 0.05em;
-    fill: var(--muted);
+    fill: var(--color-text-muted);
   }
   .on rect {
-    fill: var(--accent-soft);
-    stroke: var(--accent);
+    fill: var(--color-accent-soft);
+    stroke: var(--color-accent);
     stroke-width: 2.5;
   }
   .on text {
-    fill: var(--accent);
+    fill: var(--color-accent);
   }
 </style>

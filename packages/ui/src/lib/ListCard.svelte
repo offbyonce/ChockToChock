@@ -129,71 +129,71 @@ so instead.
   header {
     display: flex;
     align-items: center;
-    gap: 0.625rem;
-    padding: 0.75rem 1rem;
-    border-bottom: 1px solid var(--line);
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-4);
+    border-bottom: var(--border-thin) solid var(--color-border);
   }
   h2 {
     margin: 0;
-    font-size: 0.9375rem;
-    font-weight: 600;
+    font-size: var(--font-size-body);
+    font-weight: var(--weight-semibold);
   }
   .tag {
-    padding: 0.0625rem 0.5rem;
-    border-radius: 99rem;
-    background: var(--zone);
-    color: var(--zone-ink);
-    font-size: 0.7188rem;
-    font-weight: 600;
+    padding: var(--space-1) var(--space-2);
+    border-radius: var(--radius-pill);
+    background: var(--color-surface-2);
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-caption);
+    font-weight: var(--weight-semibold);
     white-space: nowrap;
   }
   .tag.checklist {
-    background: var(--go-soft);
-    color: var(--go);
+    background: var(--color-surface-2);
+    color: var(--color-done);
   }
   .tag.non-normal {
-    background: var(--stop-soft);
-    color: var(--stop);
+    background: var(--color-danger-soft);
+    color: var(--color-danger-text);
   }
   .clear {
     position: relative;
-    color: var(--muted);
-    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-secondary);
   }
   .clear:hover:not(:disabled) {
-    color: var(--ink);
+    color: var(--color-text);
   }
   .clear:disabled {
     cursor: default;
   }
   .clear.confirming {
-    color: var(--stop);
-    font-weight: 600;
+    color: var(--color-danger-text);
+    font-weight: var(--weight-semibold);
   }
   .clear::after {
     position: absolute;
-    inset: 50% -0.5rem auto;
-    height: 2.75rem;
+    inset: 50% calc(-1 * var(--space-2)) auto;
+    height:  var(--size-touch-min);
     content: "";
     transform: translateY(-50%);
   }
   .count {
     margin-left: auto;
-    color: var(--muted);
-    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-secondary);
   }
   .when {
     margin: 0;
-    padding: 0.6rem 1rem;
-    border-bottom: 1px solid var(--line);
-    background: var(--bg);
-    font-size: 0.86rem;
+    padding: var(--space-2) var(--space-4);
+    border-bottom: var(--border-thin) solid var(--color-border);
+    background: var(--color-bg);
+    font-size: var(--font-size-secondary);
   }
   .when p {
     margin: 0;
   }
   .when p + p {
-    margin-top: 0.25rem;
+    margin-top: var(--space-1);
   }
   .items {
     margin: 0;
@@ -201,31 +201,30 @@ so instead.
     list-style: none;
   }
   .more {
-    min-height: 2.75rem;
-    padding: 0 1rem 0.5rem;
-    color: var(--accent);
-    font-size: 0.875rem;
-    font-weight: 500;
+    min-height:  var(--size-touch-min);
+    padding: 0 var(--space-4) var(--space-2);
+    color: var(--color-accent);
+    font-size: var(--font-size-secondary);
+    font-weight: var(--weight-medium);
     text-align: left;
   }
   .call {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: var(--space-2);
     margin: 0;
-    padding: 0.875rem 1rem;
-    border-top: 1px solid var(--line);
-    font-weight: 600;
+    padding: var(--space-4) var(--space-4);
+    border-top: var(--border-thin) solid var(--color-border);
+    font-weight: var(--weight-semibold);
   }
   .call.done {
-    background: var(--go-soft);
-    color: var(--go);
-    font-size: 1.0625rem;
-    letter-spacing: 0.02em;
+    background: var(--color-surface-2);
+    color: var(--color-done);
+    font-size: var(--font-size-body);
     text-transform: uppercase;
   }
   .call.open {
-    background: var(--warn-soft);
-    color: var(--warn);
+    background: var(--color-open-bg);
+    color: var(--color-open-text);
   }
 </style>

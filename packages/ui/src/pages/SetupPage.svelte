@@ -68,63 +68,62 @@ state picker comes with panel states in batch 3 (decision 0019).
 
 <style>
   h1 {
-    margin: 0 0 0.5rem;
-    font-size: 1.6875rem;
+    margin: 0 0 var(--space-2);
+    font-size: var(--font-size-section-title);
     font-weight: 650;
-    letter-spacing: -0.02em;
   }
   .lead {
     max-width: 66ch;
-    margin: 0 0 1.125rem;
-    color: var(--muted);
+    margin: 0 0 var(--space-4);
+    color: var(--color-text-muted);
   }
   .set {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 15rem;
+    grid-template-columns: minmax(0, 1fr) auto;
     align-items: center;
-    gap: 1rem 2rem;
-    padding: 1rem;
+    gap: var(--space-4) var(--space-8);
+    padding: var(--space-4);
   }
   .set b {
-    font-weight: 600;
+    font-weight: var(--weight-semibold);
   }
   .set p {
-    margin: 0.125rem 0 0;
-    color: var(--muted);
-    font-size: 0.875rem;
+    margin: var(--space-1) 0 0;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-secondary);
   }
   .seg {
     display: grid;
     grid-auto-columns: 1fr;
     grid-auto-flow: column;
-    gap: 0.25rem;
-    padding: 0.25rem;
-    border-radius: 0.625rem;
-    background: var(--zone);
+    gap: var(--space-1);
+    padding: var(--space-1);
+    border-radius: var(--radius-control);
+    background: var(--color-surface-2);
   }
   .seg button {
     min-width: 0;
-    min-height: 2.75rem;
-    padding: 0 0.25rem;
-    border-radius: 0.5rem;
-    color: var(--muted);
-    font-weight: 500;
+    min-height:  var(--size-touch-min);
+    padding: 0 var(--space-3);
+    border-radius: var(--radius-control);
+    color: var(--color-text-muted);
+    font-weight: var(--weight-medium);
   }
   .seg button[aria-checked="true"] {
-    background: var(--surface);
-    box-shadow: 0 1px 2px rgb(0 0 0 / 25%);
-    color: var(--ink);
+    background: var(--color-surface);
+    box-shadow: inset 0 0 0 var(--size-focus-ring) var(--color-accent);
+    color: var(--color-text);
   }
   summary {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 1rem;
-    min-height: 2.75rem;
+    gap: var(--space-4);
+    min-height:  var(--size-touch-min);
     box-sizing: border-box;
-    padding: 0.875rem 1rem;
+    padding: var(--space-4) var(--space-4);
     cursor: pointer;
-    font-weight: 600;
+    font-weight: var(--weight-semibold);
     list-style: none;
   }
   summary::-webkit-details-marker {
@@ -134,15 +133,15 @@ state picker comes with panel states in batch 3 (decision 0019).
   summary::after {
     content: "";
     flex: none;
-    width: 0.5rem;
-    height: 0.5rem;
-    margin-right: 0.25rem;
-    border-right: 2px solid var(--muted);
-    border-bottom: 2px solid var(--muted);
+    width: var(--size-dot);
+    height: var(--size-dot);
+    margin-right: var(--space-1);
+    border-right: var(--border-thick) solid var(--color-text-muted);
+    border-bottom: var(--border-thick) solid var(--color-text-muted);
     transform: rotate(45deg);
   }
   details[open] > summary {
-    border-bottom: 1px solid var(--line);
+    border-bottom: var(--border-thin) solid var(--color-border);
   }
   details[open] > summary::after {
     transform: rotate(-135deg);
@@ -150,20 +149,20 @@ state picker comes with panel states in batch 3 (decision 0019).
   .sgrid {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 1rem;
-    padding: 1rem;
+    gap: var(--space-4);
+    padding: var(--space-4);
   }
   .nav {
     display: flex;
     justify-content: flex-end;
-    margin-top: 1rem;
+    margin-top: var(--space-4);
   }
-  @media (max-width: 900px) {
+  @media (max-width: 899px) {
     .sgrid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
-  @media (max-width: 640px) {
+  @media (max-width: 599px) {
     .set,
     .sgrid {
       grid-template-columns: 1fr;

@@ -92,54 +92,53 @@ type (step 7 requirement for non-normal lists).
 
 <style>
   h1 {
-    margin: 0 0 1.125rem;
-    font-size: 1.6875rem;
+    margin: 0 0 var(--space-4);
+    font-size: var(--font-size-section-title);
     font-weight: 650;
     line-height: 1.2;
-    letter-spacing: -0.02em;
   }
   .tabs {
     display: grid;
     grid-auto-columns: 1fr;
     grid-auto-flow: column;
-    gap: 0.25rem;
-    margin-bottom: 1rem;
-    padding: 0.25rem;
-    border: 1px solid var(--line);
-    border-radius: 0.75rem;
+    gap: var(--space-1);
+    margin-bottom: var(--space-4);
+    padding: var(--space-1);
+    border: var(--border-thin) solid var(--color-border);
+    border-radius: var(--radius-panel);
     background: transparent;
   }
   .tabs a {
     display: grid;
     place-items: center;
-    min-height: 2.75rem;
-    padding: 0 0.5rem;
-    border-radius: 0.5rem;
-    color: var(--muted);
-    font-weight: 500;
+    min-height:  var(--size-touch-min);
+    padding: 0 var(--space-2);
+    border-radius: var(--radius-control);
+    color: var(--color-text-muted);
+    font-weight: var(--weight-medium);
     text-align: center;
     text-decoration: none;
   }
   .tabs a[aria-current="page"] {
-    background: var(--surface);
-    box-shadow: 0 1px 2px rgb(0 0 0 / 20%);
-    color: var(--accent);
+    background: var(--color-surface);
+    box-shadow: var(--color-segment-shadow);
+    color: var(--color-accent);
   }
   .intro {
-    padding: 0.75rem 1rem;
-    font-size: 0.9375rem;
+    padding: var(--space-3) var(--space-4);
+    font-size: var(--font-size-body);
   }
   .intro p {
-    margin: 0.25rem 0;
+    margin: var(--space-1) 0;
   }
   summary {
     display: flex;
     align-items: center;
-    gap: 0.625rem;
-    min-height: 3rem;
-    padding: 0.5rem 1rem;
-    font-size: 0.9375rem;
-    font-weight: 600;
+    gap: var(--space-3);
+    min-height: var(--size-touch-min);
+    padding: var(--space-2) var(--space-4);
+    font-size: var(--font-size-body);
+    font-weight: var(--weight-semibold);
     list-style: none;
     cursor: pointer;
   }
@@ -148,23 +147,23 @@ type (step 7 requirement for non-normal lists).
   }
   .n {
     margin-left: auto;
-    color: var(--muted);
-    font-size: 0.8125rem;
-    font-weight: 400;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-secondary);
+    font-weight: var(--weight-regular);
   }
   details[open] summary {
-    border-bottom: 1px solid var(--line);
+    border-bottom: var(--border-thin) solid var(--color-border);
   }
   summary :global(.icon) {
-    color: var(--muted);
-    font-size: 1rem;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-body);
     transition: transform 0.12s;
   }
   details[open] summary :global(.icon) {
     transform: rotate(180deg);
   }
   .intro b {
-    font-weight: 600;
+    font-weight: var(--weight-semibold);
   }
   /* The card inside a card drops its own frame and title row. */
   .group :global(section.card) {

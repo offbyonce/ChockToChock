@@ -12,7 +12,7 @@ saves them on the device, and batch 7 adds the rest.
   let { settings, onChange }: { settings: Settings; onChange: (s: Settings) => void } = $props();
 
   type Row = {
-    key: "listView" | "essentials" | "detail" | "theme" | "dimming";
+    key: "listView" | "essentials" | "detail" | "theme" | "textSize" | "dimming";
     title: string;
     text: string;
     choices: [string | number | boolean, string][];
@@ -56,6 +56,16 @@ saves them on the device, and batch 7 adds the rest.
       ],
     },
     {
+      key: "textSize",
+      title: "Text and controls size",
+      text: "Scales everything, on top of the automatic wide-screen scaling.",
+      choices: [
+        ["100", "100%"],
+        ["115", "115%"],
+        ["130", "130%"],
+      ],
+    },
+    {
       key: "dimming",
       title: "Dimming",
       text: "Dims the whole screen for a dark room. Text stays readable at every step.",
@@ -96,62 +106,61 @@ saves them on the device, and batch 7 adds the rest.
 
 <style>
   h1 {
-    margin: 0 0 0.5rem;
-    font-size: 1.6875rem;
+    margin: 0 0 var(--space-2);
+    font-size: var(--font-size-section-title);
     font-weight: 650;
-    letter-spacing: -0.02em;
   }
   .lead {
-    margin: 0 0 1.125rem;
-    color: var(--muted);
+    margin: 0 0 var(--space-4);
+    color: var(--color-text-muted);
   }
   .set {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 15rem;
+    grid-template-columns: minmax(0, 1fr) auto;
     align-items: center;
-    gap: 1rem 2rem;
-    padding: 1rem;
-    border-top: 1px solid var(--line);
+    gap: var(--space-4) var(--space-8);
+    padding: var(--space-4);
+    border-top: var(--border-thin) solid var(--color-border);
   }
   .set:first-child {
     border-top: 0;
   }
   .set b {
-    font-weight: 600;
+    font-weight: var(--weight-semibold);
   }
   .set p {
-    margin: 0.125rem 0 0;
-    color: var(--muted);
-    font-size: 0.875rem;
+    margin: var(--space-1) 0 0;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-secondary);
   }
   /* Equal segments, in one aligned column on every row. */
   .seg {
     display: grid;
     grid-auto-columns: 1fr;
     grid-auto-flow: column;
-    gap: 0.25rem;
-    padding: 0.25rem;
-    border-radius: 0.625rem;
-    background: var(--zone);
+    gap: var(--space-1);
+    padding: var(--space-1);
+    border-radius: var(--radius-control);
+    background: var(--color-surface-2);
   }
   .seg button {
     min-width: 0;
-    min-height: 2.75rem;
-    padding: 0 0.25rem;
-    border-radius: 0.5rem;
-    color: var(--muted);
-    font-weight: 500;
+    min-height:  var(--size-touch-min);
+    padding: 0 var(--space-3);
+    border-radius: var(--radius-control);
+    color: var(--color-text-muted);
+    font-weight: var(--weight-medium);
   }
   .seg button[aria-checked="true"] {
-    background: var(--surface);
-    box-shadow: 0 1px 2px rgb(0 0 0 / 25%);
-    color: var(--ink);
+    background: var(--color-surface);
+    box-shadow: inset 0 0 0 var(--size-focus-ring) var(--color-accent);
+    color: var(--color-text);
   }
   .done {
     display: flex;
     justify-content: flex-end;
   }
-  @media (max-width: 640px) {
+  @media (max-width: 599px) {
     .set {
       grid-template-columns: 1fr;
     }

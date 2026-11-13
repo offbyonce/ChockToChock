@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Design rules</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="width: 1440px; height: 1100px; box-sizing: border-box; padding: 40px; background: #0f1218; color: #e6e9ee; font-family: Geist, system-ui, sans-serif; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: auto auto auto; gap: 24px; align-content: start">
+
+  <div style="grid-column: 1 / 4; display: flex; flex-direction: column; gap: 8px">
+    <h1 style="margin: 0; font-size: 32px; font-weight: 700">Design rules for every screen</h1>
+    <p style="margin: 0; font-size: 16px; line-height: 1.5; color: #b7bec9; max-width: 1100px">One set of tokens for both themes and every size. No feature is removed at any size, panel layouts never change, and detail is revealed on demand.</p>
+  </div>
+
+  <section style="background: #161b23; border: 1px solid #2a323e; border-radius: 12px; padding: 24px; display: flex; flex-direction: column; gap: 16px">
+    <h2 style="margin: 0; font-size: 20px; font-weight: 600">Spacing and sizes</h2>
+    <div style="display: flex; align-items: flex-end; gap: 12px">
+      <span style="display: flex; flex-direction: column; align-items: center; gap: 6px; font-family: 'Geist Mono', monospace; font-size: 12px; color: #8b94a3"><span style="width: 4px; height: 4px; background: #4c8dff"></span>4</span>
+      <span style="display: flex; flex-direction: column; align-items: center; gap: 6px; font-family: 'Geist Mono', monospace; font-size: 12px; color: #8b94a3"><span style="width: 8px; height: 8px; background: #4c8dff"></span>8</span>
+      <span style="display: flex; flex-direction: column; align-items: center; gap: 6px; font-family: 'Geist Mono', monospace; font-size: 12px; color: #8b94a3"><span style="width: 12px; height: 12px; background: #4c8dff"></span>12</span>
+      <span style="display: flex; flex-direction: column; align-items: center; gap: 6px; font-family: 'Geist Mono', monospace; font-size: 12px; color: #8b94a3"><span style="width: 16px; height: 16px; background: #4c8dff"></span>16</span>
+      <span style="display: flex; flex-direction: column; align-items: center; gap: 6px; font-family: 'Geist Mono', monospace; font-size: 12px; color: #8b94a3"><span style="width: 24px; height: 24px; background: #4c8dff"></span>24</span>
+      <span style="display: flex; flex-direction: column; align-items: center; gap: 6px; font-family: 'Geist Mono', monospace; font-size: 12px; color: #8b94a3"><span style="width: 32px; height: 32px; background: #4c8dff"></span>32</span>
+      <span style="display: flex; flex-direction: column; align-items: center; gap: 6px; font-family: 'Geist Mono', monospace; font-size: 12px; color: #8b94a3"><span style="width: 40px; height: 40px; background: #4c8dff"></span>40</span>
+    </div>
+    <ul style="margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 8px; font-size: 14px; line-height: 1.5; color: #d5dae2">
+      <li>Header 60 · phase row 60 · Flight strip 48</li>
+      <li>Side pane 520 at 1440 · Flight page section list 232</li>
+      <li>Rows: 12 top and bottom · panels: 16 to 24 · page gutters 32 desktop, 20 tablet, 16 phone</li>
+      <li>Every control and link at least 44 px tall and 44 px wide, including row menus, ? buttons and tabs</li>
+    </ul>
+  </section>
+
+  <section style="background: #161b23; border: 1px solid #2a323e; border-radius: 12px; padding: 24px; display: flex; flex-direction: column; gap: 12px">
+    <h2 style="margin: 0; font-size: 20px; font-weight: 600">Type</h2>
+    <span style="font-size: 32px; font-weight: 700">32 Page title</span>
+    <span style="font-size: 24px; font-weight: 700">24 Section title</span>
+    <span style="font-size: 20px; font-weight: 600">20 Panel title</span>
+    <span style="font-size: 16px">16 Body and step names</span>
+    <span style="font-size: 14px; color: #b7bec9">14 Secondary text and descriptions</span>
+    <span style="font-size: 12px; color: #8b94a3">12 Captions and field labels</span>
+    <span style="font-family: 'Geist Mono', monospace; font-size: 15px">15 MONO · SETTINGS, VALUES, CODES</span>
+    <span style="font-size: 14px; line-height: 1.5; color: #b7bec9">Capitals only for text you would see in the airplane or its documents: placards, light legends, settings, CDU pages, METAR groups. App labels use sentence case: Check, If not, The controls.</span>
+  </section>
+
+  <section style="background: #161b23; border: 1px solid #2a323e; border-radius: 12px; padding: 24px; display: flex; flex-direction: column; gap: 12px">
+    <h2 style="margin: 0; font-size: 20px; font-weight: 600">Sizes and scaling</h2>
+    <div style="display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 8px 12px; font-size: 14px; line-height: 1.4">
+      <span style="font-family: 'Geist Mono', monospace; color: #a9caff">under 600</span><span>Phone layout</span>
+      <span style="font-family: 'Geist Mono', monospace; color: #a9caff">600–899</span><span>Tablet portrait layout</span>
+      <span style="font-family: 'Geist Mono', monospace; color: #a9caff">900–1439</span><span>Tablet landscape layout (also a half-screen window beside the sim)</span>
+      <span style="font-family: 'Geist Mono', monospace; color: #a9caff">1440 and up</span><span>Desktop layout, scaled up</span>
+    </div>
+    <span style="font-family: 'Geist Mono', monospace; font-size: 14px; padding: 10px 12px; background: #0f1218; border-radius: 8px">scale = max(1, min(w / 1440, h / 900))</span>
+    <span style="font-size: 14px; line-height: 1.5; color: #b7bec9">Never below 100%. 2560 × 1440 gets 160%; 5K at 1× gets 320%. Wide screens never add columns. The checklist column's content stops at 1040 px (before scaling), so lines don't get too long on ultrawide screens.</span>
+  </section>
+
+  <section style="grid-column: 1 / 3; background: #161b23; border: 1px solid #2a323e; border-radius: 12px; padding: 24px; display: flex; flex-direction: column; gap: 14px">
+    <h2 style="margin: 0; font-size: 20px; font-weight: 600">Color, both themes</h2>
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px">
+      <div style="display: flex; flex-direction: column; gap: 8px; padding: 14px; background: #0f1218; border-radius: 10px">
+        <span style="font-size: 12px; color: #8b94a3">Dark</span>
+        <div style="display: flex; flex-wrap: wrap; gap: 8px; font-size: 12px">
+          <span style="padding: 6px 10px; border-radius: 6px; background: #161b23; border: 1px solid #2a323e">Surface #161b23</span>
+          <span style="padding: 6px 10px; border-radius: 6px; background: #4c8dff; color: #08101f">Changes / current #4c8dff</span>
+          <span style="padding: 6px 10px; border-radius: 6px; background: #241d10; color: #f2bd5c; border: 1px solid #6b5020">Open, skipped, If not</span>
+          <span style="padding: 6px 10px; border-radius: 6px; color: #3fb67a; border: 1px solid #2f5a44">Done #3fb67a</span>
+          <span style="padding: 6px 10px; border-radius: 6px; color: #ff8a7a; border: 1.5px solid #e2564a">Emergency, reset</span>
+          <span style="padding: 6px 10px; border-radius: 6px; color: #b7bec9; border: 1px solid #6b7482">Panel outline #6b7482 (3.7:1)</span>
+        </div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 8px; padding: 14px; background: #f5f7fa; border-radius: 10px; color: #1a1f27">
+        <span style="font-size: 12px; color: #5b6472">Light</span>
+        <div style="display: flex; flex-wrap: wrap; gap: 8px; font-size: 12px">
+          <span style="padding: 6px 10px; border-radius: 6px; background: #ffffff; border: 1px solid #d3d9e1">Surface #ffffff</span>
+          <span style="padding: 6px 10px; border-radius: 6px; background: #2563eb; color: #ffffff">Changes / current #2563eb</span>
+          <span style="padding: 6px 10px; border-radius: 6px; background: #fdf4e1; color: #8a5a00; border: 1px solid #e0b766">Open, skipped, If not</span>
+          <span style="padding: 6px 10px; border-radius: 6px; color: #1f8a55; border: 1px solid #9fd0b6">Done #1f8a55</span>
+          <span style="padding: 6px 10px; border-radius: 6px; color: #b3261e; background: #fdecea; border: 1.5px solid #c62f22">Emergency, reset</span>
+          <span style="padding: 6px 10px; border-radius: 6px; color: #3d4552; border: 1px solid #8a93a0">Panel outline #8a93a0 (3.1:1)</span>
+        </div>
+      </div>
+    </div>
+    <ul style="margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; font-size: 14px; line-height: 1.5; color: #d5dae2">
+      <li>Blue only on what the step changes and on the current step. Values and labels stay neutral.</li>
+      <li>Unlit lights are an outline and legend only. Lit lights take their real color.</li>
+      <li>Selected tabs and segments get a 1.5 px blue ring as well as weight, so they never rely on a pale fill.</li>
+      <li>Text at least 4.5:1, drawing outlines and icons at least 3:1, checked in CI for both themes.</li>
+    </ul>
+  </section>
+
+  <section style="background: #161b23; border: 1px solid #2a323e; border-radius: 12px; padding: 24px; display: flex; flex-direction: column; gap: 10px">
+    <h2 style="margin: 0; font-size: 20px; font-weight: 600">Drawings and words</h2>
+    <ul style="margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; font-size: 14px; line-height: 1.5; color: #d5dae2">
+      <li>Drawings size by width; height follows. Labels render at 11 px or more, light legends at 10 px or more.</li>
+      <li>Panel layouts come from the pack unchanged. Switches drawn in their real ON direction with OFF / ON labels.</li>
+      <li>Check, If not and Why sit above the drawings and are never hidden.</li>
+      <li>If not says the condition and the action. ? explains why.</li>
+      <li>One name per action: <strong>Reset flight plan</strong> clears the plan, clearance and notes. <strong>Clear all progress</strong> (Settings) also clears ticks. Both offer Undo.</li>
+      <li>Flight strip labels match open and closed: Runway, SID, Initial altitude, Squawk, Departure frequency.</li>
+    </ul>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1100}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

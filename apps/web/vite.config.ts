@@ -72,7 +72,6 @@ export default defineConfig({
         index: "index.html",
         app: "app/index.html",
         "simbrief-probe": "simbrief-probe.html",
-        design: "design/index.html",
       },
     },
   },

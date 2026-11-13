@@ -49,8 +49,8 @@ control around them carries the words.
 <style>
   .icon {
     display: inline-flex;
-    width: 1.25em;
-    height: 1.25em;
+    width: var(--size-icon);
+    height: var(--size-icon);
     flex: none;
   }
   .icon :global(svg) {

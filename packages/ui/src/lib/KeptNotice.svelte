@@ -39,23 +39,23 @@ this device instead of deleting it. Nothing is saved over it until then.
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 0.75rem 1rem;
-    margin-bottom: 0.875rem;
-    padding: 0.75rem 1rem;
-    border: 1px solid var(--warn);
-    border-radius: 0.75rem;
-    background: var(--warn-soft);
+    gap: var(--space-3) var(--space-4);
+    margin-bottom: var(--space-4);
+    padding: var(--space-3) var(--space-4);
+    border: var(--border-thin) solid var(--color-open-text);
+    border-radius: var(--radius-panel);
+    background: var(--color-open-bg);
   }
   p {
-    flex: 1 1 24rem;
+    flex: 1 1 auto;
     margin: 0;
-    font-size: 0.875rem;
+    font-size: var(--font-size-secondary);
   }
   b {
-    font-weight: 600;
+    font-weight: var(--weight-semibold);
   }
   .acts {
     display: flex;
-    gap: 0.5rem;
+    gap: var(--space-2);
   }
 </style>

@@ -1,116 +1,89 @@
 // SPDX-FileCopyrightText: 2026 offbyonce
 // SPDX-License-Identifier: MIT
 
-// Color tokens for the dark and light themes, and dimming (Phase 2 brief, step 7). The roles and
-// base colors follow the 3.0 design. Text contrast stays at least 4.5:1 in every theme and at
-// every dimming step; tokens.test.ts checks it. Tokens are applied as CSS custom properties
-// through the CSSOM, which the content security policy allows (no inline <style>).
+// The theme's colors, dimming and scaling (decision 0021). Colors come from docs/design/tokens.json
+// through tokens.generated.ts; sizes are CSS custom properties in tokens.generated.css. Colors and
+// the scale are set on the page through the CSSOM, which the content security policy allows (no
+// inline <style>). tokens.test.ts checks contrast in both themes at every dimming step.
 
-export type Palette = {
-  // Surfaces: dim with the screen.
-  bg: string;
-  surface: string;
-  zone: string;
-  line: string;
-  accentSoft: string;
-  goSoft: string;
-  warnSoft: string;
-  stopSoft: string;
-  // Text, icons and signal surfaces (the primary button, the Emergency button): dim less, so
-  // they stay readable.
-  ink: string;
-  muted: string;
-  zoneInk: string;
-  accent: string;
-  go: string;
-  warn: string;
-  stop: string;
-  accentSurface: string;
-  emergency: string;
-  // Text on a signal surface: does not change.
-  onAccent: string;
-  onEmergency: string;
-};
+import { COLOR, DESIGN_SIZE, PANEL } from "./tokens.generated";
 
-const SURFACES: (keyof Palette)[] = [
-  "bg",
-  "surface",
-  "zone",
-  "line",
-  "accentSoft",
-  "goSoft",
-  "warnSoft",
-  "stopSoft",
-];
-const ON_SIGNAL: (keyof Palette)[] = ["onAccent", "onEmergency"];
-
-export const DARK: Palette = {
-  bg: "#0e1116",
-  surface: "#161a21",
-  zone: "#1e242d",
-  line: "#262c36",
-  accentSoft: "#15273d",
-  goSoft: "#10291f",
-  warnSoft: "#2b2110",
-  stopSoft: "#2c1616",
-  ink: "#e8ebf0",
-  muted: "#97a1b1",
-  zoneInk: "#b4bdca",
-  accent: "#5aa2f0",
-  go: "#3ecf8e",
-  warn: "#f0b35e",
-  stop: "#ff8a80",
-  accentSurface: "#5aa2f0",
-  emergency: "#b42318",
-  onAccent: "#0b1320",
-  onEmergency: "#ffffff",
-};
-
-export const LIGHT: Palette = {
-  bg: "#f7f8fa",
-  surface: "#ffffff",
-  zone: "#eef1f4",
-  line: "#e2e5ea",
-  accentSoft: "#e8f1fb",
-  goSoft: "#e3f5ec",
-  warnSoft: "#fdf3e3",
-  stopSoft: "#fdecec",
-  ink: "#12161c",
-  muted: "#5d6677",
-  zoneInk: "#44505c",
-  accent: "#0a66c2",
-  go: "#0f7d4d",
-  warn: "#9a4b07",
-  stop: "#c62828",
-  accentSurface: "#0a66c2",
-  emergency: "#b42318",
-  onAccent: "#ffffff",
-  onEmergency: "#ffffff",
-};
+export type ColorName = keyof (typeof COLOR)["dark"];
+export type PanelName = keyof (typeof PANEL)["dark"];
+export type Colors = Record<ColorName, string>;
+export type PanelColors = Record<PanelName, string>;
 
 /** Brightness factors for each dimming step, 0 (full) to 4. */
 export const DIMMING = [1, 0.8, 0.64, 0.5, 0.4] as const;
 
-/** Text and background pairs that must stay readable. */
-export const TEXT_PAIRS: [keyof Palette, keyof Palette][] = [
-  ["ink", "bg"],
-  ["ink", "surface"],
-  ["ink", "zone"],
-  ["muted", "bg"],
-  ["muted", "surface"],
-  ["muted", "zone"],
-  ["zoneInk", "zone"],
-  ["accent", "bg"],
-  ["accent", "surface"],
-  ["accent", "accentSoft"],
-  ["go", "surface"],
-  ["go", "goSoft"],
-  ["warn", "surface"],
-  ["warn", "warnSoft"],
-  ["stop", "surface"],
-  ["stop", "stopSoft"],
-  ["onAccent", "accentSurface"],
-  ["onEmergency", "emergency"],
+/** Backgrounds and outlines of surfaces: they dim with the screen. */
+const SURFACES = new Set<string>([
+  "bg",
+  "surface",
+  "surface-2",
+  "sheet",
+  "field",
+  "border",
+  "border-strong",
+  "line",
+  "chip",
+  "accent-soft",
+  "current-row",
+  "track",
+  "open-bg",
+  "open-border",
+  "danger-soft",
+  "segment-track",
+  "segment-border",
+  "segment-on",
+  "toggle-off",
+]);
+const PANEL_SURFACES = new Set<string>(["bg", "frame", "fill", "fuselage", "seat", "glass", "changed-fill"]);
+/** Text on a signal fill, and lit lights, which keep their real color: they do not change. */
+const ON_SIGNAL = new Set<string>(["on-accent", "on-done", "on-lit-amber", "lit-amber"]);
+
+/** Text and the background it sits on: at least 4.5:1. */
+export const TEXT_PAIRS: [ColorName, ColorName][] = [
+  ...(["text", "text-secondary", "text-muted", "text-strong"] as const).flatMap((fg) =>
+    (["bg", "surface", "surface-2", "sheet", "field", "current-row"] as const).map(
+      (bg) => [fg, bg] as [ColorName, ColorName],
+    ),
+  ),
+  ["accent-text", "accent-soft"],
+  ["accent-text", "current-row"],
+  ["link", "bg"],
+  ["link", "surface"],
+  ["open-text", "open-bg"],
+  ["open-text", "surface"],
+  ["danger-text", "surface"],
+  ["danger-text", "danger-soft"],
+  ["on-accent", "accent"],
+  ["essentials-text", "surface"],
+  ["on-lit-amber", "lit-amber"],
+];
+
+/** Status icons, rings and outlines a pilot needs to see: at least 3:1. */
+export const GRAPHIC_PAIRS: [ColorName, ColorName][] = [
+  ...(["accent", "done", "todo-ring", "open-dot", "danger"] as const).flatMap((fg) =>
+    (["bg", "surface", "current-row"] as const).map((bg) => [fg, bg] as [ColorName, ColorName]),
+  ),
+  // The tick drawn on a done step's green circle.
+  ["on-done", "done"],
+];
+
+/** Inside drawings: labels at 4.5:1, outlines, switch bodies and lens rims at 3:1. */
+export const PANEL_TEXT_PAIRS: [PanelName, PanelName][] = [
+  ["label", "bg"],
+  ["label", "fill"],
+  ["text", "bg"],
+  ["text", "fill"],
+  ["changed-text", "changed-fill"],
+];
+export const PANEL_GRAPHIC_PAIRS: [PanelName, PanelName][] = [
+  ["stroke", "bg"],
+  ["resting", "bg"],
+  ["changed", "bg"],
+  ["changed", "fill"],
 ];
 
 function channels(hex: string): [number, number, number] {
@@ -128,6 +101,8 @@ const fromLinear = (l: number) => {
   return Math.round(Math.min(1, Math.max(0, s)) * 255);
 };
 
+const isHex = (value: string) => /^#[0-9a-f]{6}$/i.test(value);
+
 /** Relative luminance (WCAG 2). */
 export function luminance(hex: string): number {
   const [r, g, b] = channels(hex).map(toLinear) as [number, number, number];
@@ -140,38 +115,76 @@ export function contrast(a: string, b: string): number {
   return (hi + 0.05) / (lo + 0.05);
 }
 
-/** A color with its light scaled down by `factor` (1 leaves it as it is). */
-export function dim(hex: string, factor: number): string {
-  return `#${channels(hex)
+/** A color with its light scaled down by `factor` (1 leaves it as it is). Only plain hex colors
+ * dim; "transparent", shadows and scrims stay as they are. */
+export function dim(value: string, factor: number): string {
+  if (!isHex(value) || factor === 1) return value;
+  return `#${channels(value)
     .map((c) => fromLinear(toLinear(c) * factor))
     .map((c) => c.toString(16).padStart(2, "0"))
     .join("")}`;
 }
 
-/**
- * The palette for a theme at a dimming step. Surfaces dim by the step's factor. Text and signal
- * surfaces dim less in the dark theme and darken more in the light theme, so contrast holds as
- * the screen dims; text on a signal surface does not change.
- */
-export function palette(dark: boolean, dimming: number): Palette {
-  const base = dark ? DARK : LIGHT;
-  const factor = DIMMING[Math.min(Math.max(dimming, 0), DIMMING.length - 1)] ?? 1;
-  const textFactor = dark ? Math.sqrt(factor) : factor ** 1.5;
-  const factorFor = (key: keyof Palette) => {
-    if (ON_SIGNAL.includes(key)) return 1;
-    return SURFACES.includes(key) ? factor : textFactor;
-  };
-  return Object.fromEntries(
-    Object.entries(base).map(([k, v]) => [k, dim(v, factorFor(k as keyof Palette))]),
-  ) as Palette;
+/** The brightness factor for surfaces and for text at a dimming step. Text dims less in the dark
+ * theme and darkens more in the light theme, so contrast holds as the screen dims. */
+function factors(dark: boolean, dimming: number): { surface: number; text: number } {
+  const surface = DIMMING[Math.min(Math.max(dimming, 0), DIMMING.length - 1)] ?? 1;
+  return { surface, text: dark ? surface ** 0.4 : surface ** 1.5 };
 }
 
-/** `accentSoft` becomes `--accent-soft`. */
-const cssName = (key: string) => `--${key.replace(/[A-Z]/g, (c) => `-${c.toLowerCase()}`)}`;
+function dimSet<K extends string>(
+  base: Record<K, string>,
+  surfaces: Set<string>,
+  dark: boolean,
+  dimming: number,
+): Record<K, string> {
+  const f = factors(dark, dimming);
+  return Object.fromEntries(
+    Object.entries<string>(base).map(([k, v]) => {
+      // Dark text on a signal fill (dark theme) dims with the fill; white text (light) stays.
+      const fixed = ON_SIGNAL.has(k) && (k === "lit-amber" || !dark);
+      const factor = fixed ? 1 : surfaces.has(k) ? f.surface : f.text;
+      return [k, dim(v, factor)];
+    }),
+  ) as Record<K, string>;
+}
 
-/** Sets the theme's tokens on the page. */
+/** The interface colors for a theme at a dimming step. */
+export function colors(dark: boolean, dimming: number): Colors {
+  return dimSet<ColorName>(COLOR[dark ? "dark" : "light"], SURFACES, dark, dimming);
+}
+
+/** The drawing colors for a theme at a dimming step. */
+export function panelColors(dark: boolean, dimming: number): PanelColors {
+  return dimSet<PanelName>(PANEL[dark ? "dark" : "light"], PANEL_SURFACES, dark, dimming);
+}
+
+/** Sets the theme's colors on the page: `--color-<name>` and `--panel-<name>`. */
 export function applyPalette(root: HTMLElement, dark: boolean, dimming: number): void {
-  const p = palette(dark, dimming);
-  for (const [key, value] of Object.entries(p)) root.style.setProperty(cssName(key), value);
+  for (const [key, value] of Object.entries(colors(dark, dimming)))
+    root.style.setProperty(`--color-${key}`, value);
+  for (const [key, value] of Object.entries(panelColors(dark, dimming)))
+    root.style.setProperty(`--panel-${key}`, value);
   root.style.setProperty("color-scheme", dark ? "dark" : "light");
+}
+
+/** The desktop scale for a window: max(1, min(width / 1440, height / 900)). Below desktop widths
+ * it is always 1, since width / 1440 is under 1. */
+export function scaleFor(width: number, height: number): number {
+  return Math.max(1, Math.min(width / DESIGN_SIZE.width, height / DESIGN_SIZE.height));
+}
+
+/**
+ * Sets the root size from the window's scale and the Text and controls size (a percentage), so
+ * every size in rem follows. Breakpoints are in CSS pixels and do not move. Returns a function
+ * that stops following the window.
+ */
+export function applyScale(root: HTMLElement, textPercent: number, win: Window = window): () => void {
+  const update = () => {
+    root.style.setProperty("--scale", String(scaleFor(win.innerWidth, win.innerHeight)));
+    root.style.setProperty("--text-scale", String(textPercent / 100));
+  };
+  update();
+  win.addEventListener("resize", update);
+  return () => win.removeEventListener("resize", update);
 }

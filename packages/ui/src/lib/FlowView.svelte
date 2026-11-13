@@ -180,12 +180,12 @@ value on the right. The pilot confirms each step; the app never knows a switch p
     display: flex;
     flex-direction: column;
     /* The screen under the bars, less the flight strip and padding, so Next stays in view. */
-    min-height: calc(100vh - var(--top-h) - var(--rail-h) - 8.5rem);
+    min-height: calc(100vh - var(--size-header) - var(--size-phase-row) - var(--size-flight-strip) - 2 * var(--space-10));
   }
   .crumb {
     margin: 0;
-    color: var(--muted);
-    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-secondary);
   }
   /* The name and the value share a line when both fit; otherwise the value goes under the name,
      as in 3.0, so the name is never squeezed onto more lines. */
@@ -194,20 +194,20 @@ value on the right. The pilot confirms each step; the app never knows a switch p
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
-    gap: 0.5rem 2rem;
-    margin: 0.75rem 0 0.5rem;
-    padding: 1.25rem 1.5rem;
-    border: 1px solid var(--line);
-    border-left: 0.375rem solid var(--accent);
-    border-radius: 0.75rem;
-    background: var(--surface);
+    gap: var(--space-2) var(--space-8);
+    margin: var(--space-3) 0 var(--space-2);
+    padding: var(--space-6) var(--space-6);
+    border: var(--border-thin) solid var(--color-border);
+    border-left: var(--border-bar) solid var(--color-accent);
+    border-radius: var(--radius-panel);
+    background: var(--color-surface);
   }
   .box.done {
-    border-left-color: var(--go);
+    border-left-color: var(--color-done);
   }
   .box.skipped {
     border-left-style: dashed;
-    border-left-color: var(--warn);
+    border-left-color: var(--color-open-text);
   }
   /* The headline is sized to fit its column: its longest word on one line and the whole name in
      about three, so it never breaks inside a word or leaves one word hanging. */
@@ -217,73 +217,72 @@ value on the right. The pilot confirms each step; the app never knows a switch p
   h1 {
     margin: 0;
     font-size: clamp(
-      1.6rem,
+      var(--font-size-section-title),
       min(calc(55cqi / (var(--longest) * 0.66)), calc(160cqi / (var(--len) * 0.66))),
-      3.4rem
+      var(--font-size-flow-title)
     );
     font-weight: 650;
     line-height: 1.06;
-    letter-spacing: -0.02em;
     text-wrap: balance;
     max-width: 100%;
   }
   .value {
     margin: 0;
-    color: var(--accent);
-    font: clamp(1.15rem, 1.9vw, 1.7rem) / 1.25 var(--mono);
+    color: var(--color-accent);
+    font: var(--weight-medium) var(--font-size-flow-value) / var(--leading-tight) var(--font-mono);
   }
   .value.fill {
-    color: var(--ink);
-    font-size: 1rem;
+    color: var(--color-text);
+    font-size: var(--font-size-body);
   }
   .vh {
-    margin: 0.25rem 0 0;
-    color: var(--accent);
-    font-size: 0.875rem;
+    margin: var(--space-1) 0 0;
+    color: var(--color-accent);
+    font-size: var(--font-size-secondary);
   }
   .state {
     flex-basis: 100%;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 0.375rem 0.75rem;
+    gap: var(--space-2) var(--space-3);
     margin: 0;
-    color: var(--muted);
-    font-size: 0.875rem;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-secondary);
   }
   .ns {
-    padding: 0.0625rem 0.5rem;
-    border-radius: 99rem;
-    background: var(--zone);
-    color: var(--zone-ink);
-    font-size: 0.75rem;
-    font-weight: 700;
+    padding: var(--space-1) var(--space-2);
+    border-radius: var(--radius-pill);
+    background: var(--color-surface-2);
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-caption);
+    font-weight: var(--weight-bold);
   }
   .more {
     display: flex;
     flex-direction: column;
-    gap: 0.625rem;
-    margin-top: 0.5rem;
+    gap: var(--space-3);
+    margin-top: var(--space-2);
   }
   .more p {
     margin: 0;
   }
   .link {
     align-self: flex-start;
-    min-height: 2.75rem;
-    color: var(--muted);
-    font-size: 0.8125rem;
+    min-height:  var(--size-touch-min);
+    color: var(--color-text-muted);
+    font-size: var(--font-size-secondary);
   }
   details summary {
     display: inline-flex;
     align-items: center;
-    gap: 0.375rem;
-    min-height: 2.75rem;
-    color: var(--accent);
-    font-weight: 700;
+    gap: var(--space-2);
+    min-height:  var(--size-touch-min);
+    color: var(--color-accent);
+    font-weight: var(--weight-bold);
     cursor: pointer;
   }
-  @media (min-width: 1024px) {
+  @media (min-width: 900px) {
     .inline-context {
       display: none;
     }
@@ -292,25 +291,25 @@ value on the right. The pilot confirms each step; the app never knows a switch p
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 0.625rem;
+    gap: var(--space-3);
     margin-top: auto;
-    padding-top: 1rem;
+    padding-top: var(--space-4);
   }
   .bar + .bar {
     margin-top: 0;
   }
   .bar .btn {
-    min-height: 3.5rem;
-    padding-inline: 1.5rem;
+    min-height: var(--size-flow-button);
+    padding-inline: var(--space-6);
   }
   .bar .big {
-    padding-inline: 2.25rem;
-    font-size: 1.15rem;
+    padding-inline: var(--space-10);
+    font-size: var(--font-size-panel-title);
   }
   .keys {
     margin-left: auto;
-    color: var(--muted);
-    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-caption);
   }
   @media (pointer: coarse) {
     .keys {
@@ -324,28 +323,28 @@ value on the right. The pilot confirms each step; the app never knows a switch p
     display: flex;
     flex-wrap: wrap;
     align-items: baseline;
-    gap: 0.25rem 0.75rem;
-    margin: 1rem 0 0;
-    padding-top: 0.75rem;
-    border-top: 1px solid var(--line);
+    gap: var(--space-1) var(--space-3);
+    margin: var(--space-4) 0 0;
+    padding-top: var(--space-3);
+    border-top: var(--border-thin) solid var(--color-border);
   }
   .nx b {
-    color: var(--muted);
-    font-weight: 600;
+    color: var(--color-text-muted);
+    font-weight: var(--weight-semibold);
   }
   .nn {
-    font-weight: 500;
+    font-weight: var(--weight-medium);
   }
   .nx .mono {
-    color: var(--muted);
-    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-secondary);
   }
   .end {
-    margin: 0.5rem 0 1rem;
+    margin: var(--space-2) 0 var(--space-4);
   }
   .calls {
     display: grid;
-    gap: 0.5rem;
+    gap: var(--space-2);
     margin: 0;
     padding: 0;
     list-style: none;
@@ -353,16 +352,16 @@ value on the right. The pilot confirms each step; the app never knows a switch p
   .calls li {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    padding: 0.875rem 1rem;
-    border-radius: 0.625rem;
-    background: var(--warn-soft);
-    color: var(--warn);
-    font-weight: 700;
+    gap: var(--space-2);
+    padding: var(--space-4) var(--space-4);
+    border-radius: var(--radius-control);
+    background: var(--color-open-bg);
+    color: var(--color-open-text);
+    font-weight: var(--weight-bold);
   }
   .calls li.done {
-    background: var(--go-soft);
-    color: var(--go);
+    background: var(--color-surface-2);
+    color: var(--color-done);
     text-transform: uppercase;
   }
 </style>

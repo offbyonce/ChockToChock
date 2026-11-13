@@ -153,151 +153,154 @@ with the words "Skipped, still open". The quick level shows the item and value o
   .it {
     position: relative;
     display: grid;
-    grid-template-columns: 3rem minmax(0, 1fr);
-    border-top: 1px solid var(--line);
+    grid-template-columns: var(--size-touch-min) minmax(0, 1fr);
+    border-top: var(--border-thin) solid var(--color-border);
   }
   .it:first-child {
     border-top: 0;
   }
   .it.marked {
-    box-shadow: inset 0.1875rem 0 0 var(--accent);
+    box-shadow: inset var(--border-bar) 0 0 var(--color-accent);
   }
   .it.sel {
-    background: var(--accent-soft);
+    background: var(--color-accent-soft);
   }
   .tick {
     display: grid;
     place-items: start center;
-    min-height: 3.25rem;
-    padding-top: 0.8125rem;
+    min-height: var(--size-touch-min);
+    padding-top: var(--space-3);
   }
   .box {
     display: grid;
     place-items: center;
-    width: 1.375rem;
-    height: 1.375rem;
-    border: 1.5px solid var(--muted);
-    border-radius: 0.4375rem;
-    background: var(--surface);
-    font-size: 0.8rem;
+    width: var(--size-status-icon);
+    height: var(--size-status-icon);
+    border: var(--size-focus-ring) solid var(--color-text-muted);
+    border-radius: var(--radius-small);
+    background: var(--color-surface);
+    font-size: var(--font-size-caption);
   }
   .current .box {
-    border: 2px solid var(--accent);
+    border: var(--border-thick) solid var(--color-accent);
   }
   .done .box {
-    border-color: var(--go);
-    background: var(--go);
-    color: var(--surface);
+    border-color: var(--color-done);
+    background: var(--color-done);
+    color: var(--color-surface);
   }
   .skipped .box {
-    border: 2px dashed var(--warn);
-    color: var(--warn);
+    border: var(--border-thick) dashed var(--color-open-text);
+    color: var(--color-open-text);
   }
   .b {
     position: relative;
     min-width: 0;
-    padding: 0.625rem 2.75rem 0.625rem 0;
+    padding: var(--space-3) var(--space-10) var(--space-3) 0;
   }
+  /* The whole row is the button, full width; it keeps its text height so rows stay dense. The
+     step row component in batch 3 makes the full row (with its location line) the target. */
   .row {
+    min-height: 0;
     display: flex;
     flex-wrap: wrap;
     align-items: baseline;
     justify-content: space-between;
-    gap: 0.125rem 1rem;
+    gap: var(--space-1) var(--space-4);
     width: 100%;
     text-align: left;
   }
   .name {
     min-width: 0;
-    font-weight: 500;
+    font-weight: var(--weight-medium);
   }
   .name small {
-    margin-right: 0.4375rem;
-    color: var(--muted);
-    font: 400 0.75rem var(--mono);
-    vertical-align: 0.15em;
+    margin-right: var(--space-2);
+    color: var(--color-text-muted);
+    font: var(--weight-regular) var(--font-size-caption) var(--font-mono);
+    vertical-align: middle;
   }
   .val {
     min-width: 0;
     max-width: 62%;
     margin-left: auto;
-    font: 0.8125rem/1.5 var(--mono);
+    font: var(--weight-regular) var(--font-size-value-mono) / var(--leading-normal) var(--font-mono);
     text-align: right;
   }
   .val.long {
     flex: 1 1 100%;
     max-width: none;
-    margin: 0.1rem 0 0;
-    font: 400 0.9rem/1.45 var(--sans);
+    margin: var(--space-1) 0 0;
+    font: var(--weight-regular) var(--font-size-secondary) / var(--leading-normal) var(--font-sans);
     text-align: left;
   }
   /* A hint from flight values under the step's value ("GND 121.700"), as 3.0 showed it. */
   .vh {
     display: block;
-    color: var(--accent);
-    font-size: 0.8125rem;
+    color: var(--color-accent);
+    font-size: var(--font-size-secondary);
   }
   .more {
-    color: var(--muted);
+    color: var(--color-text-muted);
   }
   .look {
-    margin-top: 0.1875rem;
-    font-size: 0.8438rem;
+    margin-top: var(--space-1);
+    font-size: var(--font-size-secondary);
   }
   .look b {
-    font-weight: 600;
+    font-weight: var(--weight-semibold);
   }
   .done .name,
   .done .val {
-    color: var(--muted);
+    color: var(--color-text-muted);
   }
   .loc {
-    margin-top: 1px;
-    color: var(--muted);
-    font-size: 0.7812rem;
+    margin-top: var(--space-1);
+    color: var(--color-text-muted);
+    font-size: var(--font-size-caption);
   }
   /* 3.0's boxed E after a step in Essentials. */
   .ebadge {
     display: inline-grid;
     place-items: center;
-    width: 1rem;
-    height: 1rem;
-    margin-left: 0.4375rem;
-    border: 1px solid var(--accent);
-    border-radius: 0.1875rem;
-    color: var(--accent);
-    font-size: 0.625rem;
-    font-weight: 600;
-    vertical-align: 0.125rem;
+    width: var(--size-icon-small);
+    height: var(--size-icon-small);
+    margin-left: var(--space-2);
+    border: var(--border-thin) solid var(--color-accent);
+    border-radius: var(--radius-small);
+    color: var(--color-accent);
+    font-size: var(--font-size-caption);
+    font-weight: var(--weight-semibold);
+    vertical-align: middle;
   }
   .tag {
     display: inline-block;
-    margin-left: 0.5rem;
-    padding: 0 0.4375rem;
-    border-radius: 99rem;
-    font-size: 0.6875rem;
-    font-weight: 600;
-    line-height: 1.25rem;
-    vertical-align: 0.0625rem;
+    margin-left: var(--space-2);
+    padding: 0 var(--space-2);
+    border-radius: var(--radius-pill);
+    font-size: var(--font-size-caption);
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-tight);
+    vertical-align: middle;
   }
   .tag.cur {
-    background: var(--accent-surface);
-    color: var(--on-accent);
+    background: var(--color-accent);
+    color: var(--color-on-accent);
   }
   .tag.skip {
-    border: 1px dashed var(--warn);
-    color: var(--warn);
-    line-height: 1.125rem;
+    border: var(--border-thin) dashed var(--color-open-text);
+    color: var(--color-open-text);
+    line-height: var(--leading-tight);
   }
   .tag.done {
     padding: 0;
-    color: var(--go);
-    font-size: 0.72rem;
-    font-weight: 600;
+    color: var(--color-done);
+    font-size: var(--font-size-caption);
+    font-weight: var(--weight-semibold);
   }
   .tag.ns {
-    background: var(--zone);
-    color: var(--zone-ink);
+    background: var(--color-surface-2);
+    color: var(--color-text-secondary);
   }
   .chev {
     position: absolute;
@@ -305,11 +308,11 @@ with the words "Skipped, still open". The quick level shows the item and value o
     right: 0;
     display: grid;
     place-items: center;
-    width: 2.75rem;
-    height: 2.75rem;
-    border-radius: 0.5rem;
-    color: var(--muted);
-    font-size: 0.8rem;
+    width:  var(--size-touch-min);
+    height:  var(--size-touch-min);
+    border-radius: var(--radius-control);
+    color: var(--color-text-muted);
+    font-size: var(--font-size-caption);
   }
   .chev :global(.icon) {
     transition: transform 0.12s;
@@ -320,59 +323,59 @@ with the words "Skipped, still open". The quick level shows the item and value o
   .dtl {
     display: flex;
     flex-direction: column;
-    gap: 0.625rem;
-    margin: 0.5rem 0 0.2rem;
-    padding: 0.25rem 0 0.25rem;
-    font-size: 0.87rem;
+    gap: var(--space-3);
+    margin: var(--space-2) 0 var(--space-1);
+    padding: var(--space-1) 0 var(--space-1);
+    font-size: var(--font-size-secondary);
     line-height: 1.45;
   }
   .where {
     margin: 0;
-    color: var(--muted);
-    font-size: 0.875rem;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-secondary);
   }
   .where b {
-    color: var(--ink);
-    font-weight: 600;
+    color: var(--color-text);
+    font-weight: var(--weight-semibold);
   }
   .btn.quiet {
     align-self: flex-start;
-    min-height: 2.75rem;
-    font-weight: 500;
+    min-height:  var(--size-touch-min);
+    font-weight: var(--weight-medium);
   }
   .btn.quiet :global(.icon) {
-    color: var(--muted);
+    color: var(--color-text-muted);
   }
   .inmap {
-    padding-top: 0.25rem;
+    padding-top: var(--space-1);
   }
   .dskip {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 0.5rem 0.75rem;
-    margin: 0.25rem 0 0;
-    padding-top: 0.625rem;
-    border-top: 1px solid var(--line);
+    gap: var(--space-2) var(--space-3);
+    margin: var(--space-1) 0 0;
+    padding-top: var(--space-3);
+    border-top: var(--border-thin) solid var(--color-border);
   }
   .dskip span {
-    color: var(--muted);
-    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-secondary);
   }
   /* Wide screens show where it is and the map in the panel beside the list. */
-  @media (min-width: 1024px) {
+  @media (min-width: 900px) {
     .narrow {
       display: none !important;
     }
   }
   /* Non-normal and reference lists use larger type (step 7). */
   .large {
-    font-size: 1.0625rem;
+    font-size: var(--font-size-body);
   }
   .large .val {
-    font-size: 0.95rem;
+    font-size: var(--font-size-body);
   }
-  @media (max-width: 760px) {
+  @media (max-width: 599px) {
     .val {
       width: 100%;
       max-width: 100%;
