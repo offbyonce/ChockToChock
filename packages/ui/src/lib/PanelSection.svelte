@@ -32,6 +32,7 @@ What the step asks for, never the simulator's state (decision 0006).
     titled = true,
     framed = true,
     textless = false,
+    halo = false,
     k,
     hit = 0,
     onPick,
@@ -51,6 +52,9 @@ What the step asks for, never the simulator's state (decision 0006).
     /** The label-free panel preview (round 6): the same geometry, glyphs and states, no text, and
      * every light outline only. */
     textless?: boolean;
+    /** A thick blue halo around the step's controls, dashed for conditional ones, the same width
+     * on screen at any scale (the preview, so they read at small sizes). */
+    halo?: boolean;
     /** Screen pixels per drawing unit, for the fixed text sizes. */
     k: number;
     /** The smallest hit area, in drawing units (44 px on screen); 0 draws none. */
@@ -127,6 +131,11 @@ What the step asks for, never the simulator's state (decision 0006).
     {@const open = on && (byItem.get(i)?.open ?? false)}
     {@const r = (!on || (t == null && !open)) && item.rest ? positions.indexOf(item.rest) : -1}
     <g class="item {item.kind}" class:on class:resolved={on && (byItem.get(i)?.resolved ?? false)} class:conditional={open} transform="translate({item.x} {item.y})">
+      {#if halo && on}
+        {@const hw = item.kind === "light" ? LAMP.w / 2 : halfWidth(item)}
+        {@const hh = item.kind === "light" ? LAMP.h / 2 : half(item)}
+        <rect class="halo" class:conditional-halo={open} x={-hw - 6} y={-hh - 6} width={2 * hw + 12} height={2 * hh + 12} rx="6" />
+      {/if}
 
       {#if item.kind === "toggle_switch"}
         {#if item.guarded && !guardShut(on)}
@@ -267,6 +276,15 @@ What the step asks for, never the simulator's state (decision 0006).
      against the panel, labels at 4.5:1, in both themes. */
   /* Sections sit on the panel background, as on the boards, so the blue of a changed control
      stands out against it (design review F2). */
+  .halo {
+    fill: none;
+    stroke: var(--panel-changed);
+    stroke-width: calc(1.5 * var(--border-thick));
+    vector-effect: non-scaling-stroke;
+  }
+  .halo.conditional-halo {
+    stroke-dasharray: var(--space-1) var(--space-1);
+  }
   /* The preview draws no text at all. */
   .textless text {
     display: none;

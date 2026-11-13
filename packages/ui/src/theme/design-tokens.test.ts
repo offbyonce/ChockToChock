@@ -25,6 +25,7 @@ const DRAWINGS = new Set([
   "lib/PanelSection.svelte",
   "lib/PanelSchematic.svelte",
   "lib/PanelPreview.svelte",
+  "lib/PanelNavigator.svelte",
   "lib/Locator.svelte",
   "lib/OverviewMap.svelte",
   "lib/ViewDrawing.svelte",

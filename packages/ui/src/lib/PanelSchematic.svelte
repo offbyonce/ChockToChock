@@ -12,7 +12,7 @@ smallest size that keeps 11 px labels, scrolls sideways, and offers a full-width
 <script lang="ts">
   import { panelCaption } from "./panel-name";
   import type { ItemTarget, Panel, PanelSection as Section } from "@chocktochock/bindings";
-  import { drawingScale, K, layoutSection, openingScroll, positionsOf } from "./panel-layout";
+  import { drawingScale, K, layoutSection, openingScroll, positionsOf, roomScale } from "./panel-layout";
   import PanelSection from "./PanelSection.svelte";
   import Self from "./PanelSchematic.svelte";
   import type { PackIndex } from "../pack-index";
@@ -30,6 +30,9 @@ smallest size that keeps 11 px labels, scrolls sideways, and offers a full-width
     enlargeable = $bindable(),
     fits = $bindable(),
     ownButton = true,
+    room,
+    bigger = $bindable(),
+    scroller = $bindable(),
   }: {
     /** The panel the sections are on. */
     panel: Panel;
@@ -58,6 +61,14 @@ smallest size that keeps 11 px labels, scrolls sideways, and offers a full-width
     /** Draws its own "See the whole panel larger" button; the side pane puts it in the card's
      * caption row instead and calls `openLarger`. */
     ownButton?: boolean | undefined;
+    /** The slide-out's panel: the room it has, in pixels. The whole drawing fits it both ways at
+     * 11 px labels or more and hugs its own height; bigger than the room, it scrolls (round 6,
+     * gate review). */
+    room?: { width: number; height: number } | undefined;
+    /** Out: the drawing is bigger than its room (the slide-out shows a navigator). */
+    bigger?: boolean | undefined;
+    /** Out: the element that scrolls the drawing, for the navigator. */
+    scroller?: HTMLDivElement | null | undefined;
   } = $props();
 
   /** How far beside the step's sections a neighbor may sit and still be drawn. */
@@ -167,15 +178,25 @@ smallest size that keeps 11 px labels, scrolls sideways, and offers a full-width
     window.addEventListener("resize", read);
     return () => window.removeEventListener("resize", read);
   });
-  let scale = $derived(drawingScale(width, view.box.w, pageScale));
+  let wrap = $state<HTMLDivElement | null>(null);
+  let height = $state(0);
+  let scale = $derived.by(() => {
+    if (!room) return drawingScale(width, view.box.w, pageScale);
+    const fit = roomScale(room.width, room.height, view.box, pageScale);
+    return { k: fit.k, overflow: view.box.w * fit.k > width + 1, bigger: fit.bigger };
+  });
+  $effect(() => {
+    if (room) bigger = "bigger" in scale ? scale.bigger : false;
+  });
+  $effect(() => {
+    scroller = wrap;
+  });
 
   /**
    * A drawing bigger than its room (wider than the card, or taller than the room the side pane
    * leaves it) opens centered on the step's controls, both ways, at every size (the owner, batch 2),
    * and fades at the edges where there is more.
    */
-  let wrap = $state<HTMLDivElement | null>(null);
-  let height = $state(0);
   let moreY = $state(false);
   $effect(() => {
     if (!wrap) return;
@@ -260,7 +281,10 @@ smallest size that keeps 11 px labels, scrolls sideways, and offers a full-width
   let caption = $derived(panelCaption(focused.map((s) => s.title)));
 </script>
 
-<div class="wrap" class:more={scale.overflow} class:more-y={moreY} bind:clientWidth={width} bind:clientHeight={height} bind:this={wrap}>
+<div
+  class="wrap"
+  style:height={room ? `${Math.min(room.height, Math.ceil(view.box.h * scale.k))}px` : undefined}
+  class:more={scale.overflow} class:more-y={moreY} bind:clientWidth={width} bind:clientHeight={height} bind:this={wrap}>
   <svg
     class="schematic"
     viewBox="{view.box.x} {view.box.y} {view.box.w} {view.box.h}"

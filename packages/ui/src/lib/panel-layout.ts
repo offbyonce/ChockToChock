@@ -35,6 +35,24 @@ export function openingScroll(first: number, last: number, room: number): number
 }
 
 /**
+ * The scale for the whole of a drawing `box` units in a room `width` by `height` pixels (the
+ * slide-out's panel): as large as fits both ways, never so small that a label drops under its
+ * minimum, never past the largest scale. `bigger` says the drawing is then bigger than the room
+ * in either direction (it scrolls, and a navigator shows where the view is).
+ */
+export function roomScale(
+  width: number,
+  height: number,
+  box: { w: number; h: number },
+  page = 1,
+): { k: number; bigger: boolean } {
+  if (width <= 0 || height <= 0 || box.w <= 0 || box.h <= 0) return { k: K * page, bigger: false };
+  const fit = Math.min(width / box.w, height / box.h);
+  const k = Math.min(MAX_SCALE * page, Math.max(MIN_SCALE * page, fit));
+  return { k, bigger: box.w * k > width + 1 || box.h * k > height + 1 };
+}
+
+/**
  * The scale for a drawing `boxWidth` units wide in `room` pixels: as wide as the room, keeping its
  * proportions, but never so small that a label drops under its minimum. `overflow` says the
  * drawing is then wider than the room (it scrolls, and a larger view is offered). `page` is the

@@ -10,6 +10,7 @@ a Say line in the Check box, a caution note under If not, and the control card (
 A step with no control on the map shows the steps coming up below its details.
 -->
 <script lang="ts">
+  import { sentence as toSentence } from "./sentence";
   import type { ItemTarget, MapInSteps, Step, StepState } from "@chocktochock/bindings";
   import type { PackIndex } from "../pack-index";
   import Icon from "./Icon.svelte";
@@ -47,14 +48,7 @@ A step with no control on the map shows the steps coming up below its details.
     flow?: boolean;
   } = $props();
 
-  /** "FUEL PUMP SWITCHES" as "Fuel pump switches", keeping glossary terms and codes ("MCP",
-   * "TERR (EFIS control panel)", "N1"); mixed case stays. */
-  const sentence = (text: string) => {
-    if (text !== text.toUpperCase()) return text;
-    const words = text.split(/(\s+|[(),])/).map((w) => (index.glossary(w) !== undefined || /\d|\//.test(w) ? w : w.toLowerCase()));
-    const out = words.join("");
-    return out.charAt(0).toUpperCase() + out.slice(1);
-  };
+  const sentence = (text: string) => toSentence(index, text);
 
   let place = $derived(index.place(step));
   let before = $derived(previous ? index.place(previous) : null);

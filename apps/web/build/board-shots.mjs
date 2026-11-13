@@ -17,6 +17,8 @@ import { serve, session, sleep, startFirefox } from "./browser.mjs";
 const web = path.resolve(import.meta.dirname, "..");
 const root = path.resolve(web, "../..");
 const boards = path.join(root, "docs/design/boards");
+/** Round 6's boards (docs/design/round6), which import each other from their own folder. */
+const round6 = path.join(root, "docs/design/round6/boards");
 const work = path.join(root, "target/board-shots");
 const BIDI = 9264;
 const PORT = 8776;
@@ -49,27 +51,28 @@ const evaluate = (expr, vals) => {
 };
 
 /** One board as HTML, for these props. */
-function render(name, given = {}) {
-  const text = fs.readFileSync(path.join(boards, `${name}.dc.html`), "utf8");
+function render(name, given = {}, dir = boards) {
+  const text = fs.readFileSync(path.join(dir, `${name}.dc.html`), "utf8");
   const props = propsOf(text, given);
   const vals = valuesOf(text, props);
   let body = text.slice(text.indexOf("<x-dc>") + 6, text.indexOf("</x-dc>"));
   body = body.replace(/<helmet>[\s\S]*?<\/helmet>/, "");
-  // Imports first: each renders its board with its attributes as props.
+  // Conditional blocks, innermost first, before imports, so a board imported inside a
+  // false block is never rendered.
+  const sc = /<sc-if value="\{\{\s*([^"]*?)\s*\}\}"[^>]*>((?:(?!<sc-if)[\s\S])*?)<\/sc-if>/;
+  while (sc.test(body)) body = body.replace(sc, (_, e, inner) => (evaluate(e, vals) ? inner : ""));
+  // Then imports: each renders its board with its attributes as props.
   body = body.replace(/<dc-import ([^>]*)><\/dc-import>/g, (_, attrs) => {
     const a = Object.fromEntries([...attrs.matchAll(/([\w-]+)="([^"]*)"/g)].map(([, k, v]) => [camel(k), v.replace(/\{\{\s*([\s\S]*?)\s*\}\}/g, (_, e) => String(evaluate(e, vals)))]));
     const { name: inner, hintSize: _hint, ...rest } = a;
     for (const k of Object.keys(rest)) if (rest[k] === "true" || rest[k] === "false") rest[k] = rest[k] === "true";
-    return render(inner, rest);
+    return render(inner, rest, dir);
   });
-  // Conditional blocks, innermost first.
-  const sc = /<sc-if value="\{\{\s*([\s\S]*?)\s*\}\}"[^>]*>((?:(?!<sc-if)[\s\S])*?)<\/sc-if>/;
-  while (sc.test(body)) body = body.replace(sc, (_, e, inner) => (evaluate(e, vals) ? inner : ""));
   return body.replace(/\{\{\s*([\s\S]*?)\s*\}\}/g, (_, e) => String(evaluate(e, vals)));
 }
 
-function page(name, given) {
-  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><link rel="stylesheet" href="fonts/fonts.css"><style>body{margin:0}</style></head><body>${render(name, given)}</body></html>`;
+function page(name, given, dir) {
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><link rel="stylesheet" href="fonts/fonts.css"><style>body{margin:0}</style></head><body>${render(name, given, dir)}</body></html>`;
 }
 
 /** Each board shot: file name, board, props, viewport. */
@@ -83,6 +86,12 @@ const SHOTS = [
   ["TabWhere", { orient: "landscape", overlay: "where" }, 1180, 820, "Tablet"],
   ["PhoneWhere", { screen: "where" }, 390, 844, "Mobile"],
   ["Wide", {}, 2560, 1440],
+  // Round 6 (docs/design/round6/boards).
+  ["R6PanePre", { r6: true, preview: true }, 1440, 900, "Checklist", round6],
+  ["R6Panel", { layout: "desktop", state: "panel" }, 1440, 900, "Locator", round6],
+  ["R6Where", { layout: "desktop", state: "where" }, 1440, 900, "Locator", round6],
+  ["R6Control", { layout: "desktop", state: "control" }, 1440, 900, "Locator", round6],
+  ["R6TabL", { layout: "tabletL", state: "panel" }, 1180, 820, "Locator", round6],
 ];
 
 async function main() {
@@ -95,7 +104,7 @@ async function main() {
   for (const f of fs.readdirSync(path.join(web, "src/fonts"))) fs.copyFileSync(path.join(web, "src/fonts", f), path.join(work, "fonts", f));
   const shots = SHOTS.filter(([n]) => !only.length || only.includes(n));
   for (const theme of ["dark", "light"]) {
-    for (const [file, given, , , board] of shots) fs.writeFileSync(path.join(work, `${file}-${theme}.html`), page(board ?? file, { ...given, theme }));
+    for (const [file, given, , , board, dir] of shots) fs.writeFileSync(path.join(work, `${file}-${theme}.html`), page(board ?? file, { ...given, theme }, dir));
   }
   const server = await serve(work, PORT);
   try {

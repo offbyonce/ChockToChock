@@ -19,6 +19,7 @@ import {
   nameFit,
   openingScroll,
   PX,
+  roomScale,
   TOGGLE,
 } from "./panel-layout";
 import { em, widest } from "./text-width";
@@ -332,5 +333,19 @@ describe("openingScroll", () => {
     // Tablet landscape opened the fuel drawing at its section's left edge, cutting CTR R.
     expect(openingScroll(300, 700, 400)).toBe(300);
     expect(openingScroll(40, 200, 400)).toBe(0);
+  });
+});
+
+describe("roomScale", () => {
+  it("fits the whole drawing in its room both ways, never under the 11 px scale", () => {
+    // Fits: as large as the room allows, no navigator.
+    expect(roomScale(800, 600, { w: 200, h: 100 })).toEqual({ k: MAX_SCALE, bigger: false });
+    expect(roomScale(400, 600, { w: 200, h: 100 }).k).toBe(2);
+    // The fuel panel is tall: at 11 px it is taller than the room, so it scrolls with a navigator.
+    const fuel = roomScale(792, 466, { w: 309, h: 425 });
+    expect(fuel.k).toBe(MIN_SCALE);
+    expect(fuel.bigger).toBe(true);
+    // The captain lights are wide.
+    expect(roomScale(792, 466, { w: 918, h: 109 }).bigger).toBe(true);
   });
 });

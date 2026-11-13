@@ -1,0 +1,328 @@
+<!--
+SPDX-FileCopyrightText: 2026 offbyonce
+SPDX-License-Identifier: MIT
+
+The slide-out (round 6, ROUND6.md; boards R6Panel, R6Where, R6Control, R6TabL; Locator.dc.html):
+the step's panel, labeled at 11 px or more, and where it is. It fills the box its parent gives it
+(beside the side pane, over the step list, below the flight strip). In order: a switcher when the
+step's controls are on several panels; the header (the step, the panel's name, where it is, Esc
+and close); The panel, with a navigator above it when it is bigger than its room (owner, gate
+review); then Where it is, folded to one line.
+-->
+<script lang="ts">
+  import type { ItemTarget, Step } from "@chocktochock/bindings";
+  import type { PackIndex } from "../pack-index";
+  import Icon from "./Icon.svelte";
+  import PanelNavigator from "./PanelNavigator.svelte";
+  import PanelSchematic from "./PanelSchematic.svelte";
+  import { panelCaption } from "./panel-name";
+  import { sentence } from "./sentence";
+
+  let {
+    index,
+    step,
+    number,
+    targets,
+    panel: chosen = $bindable(),
+    onClose,
+  }: {
+    index: PackIndex;
+    step: Step;
+    /** The step's number in its list ("Step 7"). */
+    number: number;
+    targets: ItemTarget[];
+    /** The panel shown, by id, when the step's controls are on several. */
+    panel?: string | undefined;
+    onClose: () => void;
+  } = $props();
+
+  let place = $derived(index.place(step));
+  /** One entry per panel the step's controls are on, its own control's first. */
+  let panels = $derived.by(() => {
+    const ids = [...new Set([place?.section?.id, ...targets.map((t) => t.section)].filter((x): x is string => !!x))];
+    const out = new Map<string, { panel: NonNullable<ReturnType<PackIndex["panelOf"]>>; focus: string[] }>();
+    for (const id of ids) {
+      const p = index.panelOf(id);
+      if (!p) continue;
+      const entry = out.get(p.id) ?? { panel: p, focus: [] };
+      entry.focus.push(id);
+      out.set(p.id, entry);
+    }
+    return [...out.values()];
+  });
+  let shown = $derived(panels.find((p) => p.panel.id === chosen) ?? panels[0]);
+  let caption = $derived(shown ? panelCaption(shown.focus.map((id) => index.section(id)?.title ?? id)) : "");
+  let zone = $derived(place?.zone);
+  let where = $derived(
+    zone ? [zone.area, zone.position ? zone.position.charAt(0).toLowerCase() + zone.position.slice(1) : null].filter(Boolean).join(" · ") : "",
+  );
+  let region = $derived(zone ? (index.region(zone)?.region ?? null) : null);
+  /** The plain-language line, folded: its first sentence. */
+  let locate = $derived(region?.locate ? region.locate.split(/(?<=\.)\s/)[0]?.replace(/\.$/, "") : "");
+  /** The decision a resolved control's position came from, for the legend's ◆ entry. */
+  let decided = $derived.by(() => {
+    if (!targets.some((t) => t.resolved)) return null;
+    const option = (step.targets ?? []).find((t) => t.when)?.when?.option;
+    return index.options.find((o) => o.id === option)?.title ?? null;
+  });
+
+  // The room the labeled panel has: the panel section's size, less the legend, the navigator and
+  // the figure's own padding and border.
+  let sectionWidth = $state(0);
+  let sectionHeight = $state(0);
+  let legendHeight = $state(0);
+  let navHeight = $state(0);
+  let rowHeight = $state(0);
+  let foldHeight = $state(0);
+  /** The body's own padding, top and bottom. */
+  let bodyPad = $state(0);
+  let bigger = $state(false);
+  let scroller = $state<HTMLDivElement | null>(null);
+  let figure = $state<HTMLElement | null>(null);
+  /** The figure's padding and border on each axis, both sides. */
+  const edge = (axis: "x" | "y") => {
+    if (!figure) return 0;
+    const css = getComputedStyle(figure);
+    const n = (k: string) => Number.parseFloat(css.getPropertyValue(k)) || 0;
+    return axis === "x"
+      ? n("padding-left") + n("padding-right") + n("border-left-width") + n("border-right-width")
+      : n("padding-top") + n("padding-bottom") + n("border-top-width") + n("border-bottom-width");
+  };
+  /** The gap between the navigator, the drawing and the legend (space-1, space-2). */
+  let gap = $state(0);
+  let roomGap = $state(0);
+  let roomEl = $state<HTMLElement | null>(null);
+  /** The body's side padding, and the gap inside the panel section. */
+  let bodySide = $state(0);
+  let panelGap = $state(0);
+  $effect(() => {
+    if (figure) gap = Number.parseFloat(getComputedStyle(figure).rowGap) || 0;
+    if (roomEl) {
+      const css = getComputedStyle(roomEl);
+      roomGap = Number.parseFloat(css.rowGap) || 0;
+      bodyPad = (Number.parseFloat(css.paddingTop) || 0) + (Number.parseFloat(css.paddingBottom) || 0);
+      bodySide = (Number.parseFloat(css.paddingLeft) || 0) + (Number.parseFloat(css.paddingRight) || 0);
+      const panel = roomEl.querySelector(".panel");
+      panelGap = panel ? Number.parseFloat(getComputedStyle(panel).rowGap) || 0 : 0;
+    }
+  });
+  let room = $derived(
+    sectionWidth > 0 && sectionHeight > 0
+      ? {
+          width: sectionWidth - bodySide - edge("x"),
+          height: Math.max(
+            0,
+            sectionHeight - bodyPad - rowHeight - foldHeight - roomGap - panelGap * (bigger ? 2 : 1) - (bigger ? navHeight : 0) - legendHeight - edge("y") - gap,
+          ),
+        }
+      : undefined,
+  );
+
+  let head = $state<HTMLElement | null>(null);
+  $effect(() => {
+    head?.focus();
+  });
+  function key(e: KeyboardEvent) {
+    if (e.key === "Escape") {
+      e.preventDefault();
+      onClose();
+    }
+  }
+</script>
+
+<div class="slideout" role="dialog" aria-labelledby="so-title" tabindex="-1" onkeydown={key}>
+  {#if panels.length > 1}
+    <div class="switcher" role="tablist" aria-label="The step's panels">
+      {#each panels as p (p.panel.id)}
+        {@const name = panelCaption(p.focus.map((id) => index.section(id)?.title ?? id))}
+        <button type="button" role="tab" aria-selected={p === shown} class:on={p === shown} onclick={() => (chosen = p.panel.id)}>{name}</button>
+      {/each}
+    </div>
+  {/if}
+  <header class="head">
+    <div class="titles">
+      <span class="step">Step {number} · {sentence(index, step.text)}</span>
+      <h2 id="so-title" tabindex="-1" bind:this={head}>{caption}</h2>
+      {#if where}<span class="where">{where}</span>{/if}
+    </div>
+    <kbd class="esc" aria-hidden="true">Esc</kbd>
+    <button class="close" type="button" aria-label="Close" onclick={onClose}><Icon name="x" /></button>
+  </header>
+  <div class="body" bind:clientWidth={sectionWidth} bind:clientHeight={sectionHeight} bind:this={roomEl}>
+    <section class="panel" aria-labelledby="so-panel">
+      <div class="row" bind:clientHeight={rowHeight}>
+        <h3 id="so-panel">The panel</h3>
+      </div>
+      {#if bigger && scroller && shown}
+        <div class="nav" bind:clientHeight={navHeight}>
+          <PanelNavigator panel={shown.panel} focus={shown.focus} {targets} {scroller} title={caption} />
+        </div>
+      {/if}
+      {#if shown}
+        <figure class="figure" bind:this={figure}>
+          <PanelSchematic panel={shown.panel} focus={shown.focus} {targets} large {room} bind:bigger bind:scroller />
+          <figcaption bind:clientHeight={legendHeight}>
+            Blue: set by this step{#if decided}{" "}· ◆ set by your {decided.toLowerCase()} answer{/if} · lights drawn unlit · tap a control for details
+          </figcaption>
+        </figure>
+      {/if}
+    </section>
+    <button class="fold" type="button" aria-expanded="false" bind:clientHeight={foldHeight}>
+      <strong>Where it is</strong>
+      <span>{locate}</span>
+      <Icon name="chevron-down" />
+    </button>
+  </div>
+</div>
+
+<style>
+  /* Locator.dc.html: the pop-over tokens; square except the top left corner. */
+  .slideout {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border: var(--border-thin) solid var(--color-popover-border);
+    border-radius: var(--radius-popover) 0 0 0;
+    background: var(--color-surface);
+    box-shadow: var(--color-overlay-shadow);
+    color: var(--color-text);
+  }
+  .switcher {
+    display: flex;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-6) 0;
+  }
+  .switcher button {
+    min-height: var(--size-touch-min);
+    padding: 0 var(--space-3);
+    border: var(--border-thin) solid var(--color-border);
+    border-radius: var(--radius-pill);
+    background: none;
+    color: var(--color-text-secondary);
+    font: inherit;
+    font-size: var(--font-size-secondary);
+  }
+  .switcher button.on {
+    border-color: var(--color-accent);
+    color: var(--color-accent-text);
+  }
+  .head {
+    flex: none;
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-2);
+    padding: var(--space-4) var(--space-4) var(--space-3) var(--space-6);
+    border-bottom: var(--border-thin) solid var(--color-line);
+  }
+  .titles {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--border-thick);
+  }
+  .step {
+    color: var(--color-link);
+    font-size: var(--font-size-caption);
+    font-weight: var(--weight-semibold);
+  }
+  h2 {
+    margin: 0;
+    font-size: var(--font-size-panel-title);
+    font-weight: var(--weight-bold);
+    outline: none;
+  }
+  .where {
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-secondary);
+  }
+  .esc {
+    align-self: center;
+    padding: 0 var(--space-1);
+    border: var(--border-thin) solid var(--color-popover-border);
+    border-radius: var(--radius-small);
+    color: var(--color-text-muted);
+    font: inherit;
+    font-size: var(--font-size-caption);
+  }
+  .close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--size-touch-min);
+    height: var(--size-touch-min);
+    margin-top: calc(-1 * var(--space-2));
+    border: 0;
+    background: none;
+    color: var(--color-text-secondary);
+  }
+  .body {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    padding: var(--space-4) var(--space-6);
+  }
+  .panel {
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+  .row {
+    display: flex;
+    align-items: center;
+    min-height: var(--size-touch-min);
+  }
+  h3 {
+    margin: 0;
+    font-size: var(--font-size-secondary);
+    font-weight: var(--weight-semibold);
+  }
+  .figure {
+    margin: 0;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    padding: var(--space-2) var(--space-3);
+    border: var(--border-thin) solid var(--panel-frame);
+    border-radius: var(--radius-control);
+    background: var(--panel-bg);
+  }
+  figcaption {
+    color: var(--panel-label);
+    font-size: var(--font-size-caption);
+    line-height: var(--leading-snug);
+  }
+  .fold {
+    flex: none;
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    min-height: var(--size-touch-min);
+    padding: 0 var(--space-4);
+    border: var(--border-thin) solid var(--color-popover-border);
+    border-radius: var(--radius-control);
+    background: var(--color-surface-2);
+    color: var(--color-text-secondary);
+    font: inherit;
+    font-size: var(--font-size-secondary);
+    text-align: left;
+  }
+  .fold strong {
+    color: var(--color-text);
+    font-weight: var(--weight-semibold);
+  }
+  .fold span {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+</style>

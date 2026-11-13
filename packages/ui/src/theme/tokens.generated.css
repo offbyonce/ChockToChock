@@ -61,6 +61,7 @@
   --size-map-figure: 17.5rem; /* 280 */
   --size-slideout: 52.5rem; /* 840 */
   --size-slideout-tablet: 43.75rem; /* 700 */
+  --size-preview-max: 15rem; /* 240 */
   --size-toggle-width: 3.25rem; /* 52 */
   --size-toggle-height: 1.875rem; /* 30 */
   --size-toggle-knob: 1.5rem; /* 24 */

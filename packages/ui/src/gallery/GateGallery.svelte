@@ -13,6 +13,8 @@ pack (its `at` locators read here, for review only). `?view=gate&theme=dark|ligh
   import { MIN_SCALE, positionsOf } from "../lib/panel-layout";
   import PanelPreview from "../lib/PanelPreview.svelte";
   import PanelSchematic from "../lib/PanelSchematic.svelte";
+  import Slideout from "../lib/Slideout.svelte";
+  import { indexPack } from "../pack-index";
   import { panelCaption } from "../lib/panel-name";
   import { applyPalette } from "../theme/tokens";
 
@@ -31,7 +33,7 @@ pack (its `at` locators read here, for review only). `?view=gate&theme=dark|ligh
 
   /** The sections under review and the step whose targets each shows. */
   const GATE = [
-    { panel: "mn", section: "cl", step: "ifly-737-max8.preflight.lights-test-autopilot-and-general", why: "captain lights" },
+    { panel: "mn", section: "cl", step: "ifly-737-max8.preflight.stab-out-of-trim-light", why: "captain lights" },
     { panel: "gl", section: "mcp", step: "ifly-737-max8.before-start.mcp", why: "the MCP" },
     { panel: "oh", section: "heat", step: "ifly-737-max8.before-taxi.probe-heat", why: "the densest overhead section" },
     { panel: "oh", section: "fuel", step: "ifly-737-max8.before-start.fuel-pump-switches", why: "the fuel panel" },
@@ -71,6 +73,12 @@ pack (its `at` locators read here, for review only). `?view=gate&theme=dark|ligh
     return out;
   }
 
+  let index = $derived(pack ? indexPack(pack) : null);
+  /** The slide-out at the boards' sizes: below the flight strip to the window's foot. */
+  const ROOMS = [
+    { name: "1440", width: 840, height: 732 },
+    { name: "Tablet landscape", width: 700, height: 656 },
+  ];
   let rows = $derived.by(() => {
     if (!pack) return [];
     const p = pack;
@@ -86,6 +94,20 @@ pack (its `at` locators read here, for review only). `?view=gate&theme=dark|ligh
 
 <main class="gate">
   <h1>Round 6 dense-panel gate: label-free previews beside the full panel</h1>
+  {#if index}
+    {#each rows.filter((r) => r.section?.id === "cl" || r.section?.id === "fuel") as r (r.section?.id)}
+      {#if r.step}
+        {#each ROOMS as room (room.name)}
+          <section class="row" data-slideout="{r.section?.id}-{room.name === '1440' ? 'desktop' : 'tablet'}">
+            <h2>Slide-out, {room.name} ({room.width} × {room.height}) · {r.step.text}</h2>
+            <div class="slot" style:width="{room.width}px" style:height="{room.height}px">
+              <Slideout {index} step={r.step} number={(r.step.number ?? 1)} targets={r.targets} onClose={() => {}} />
+            </div>
+          </section>
+        {/each}
+      {/if}
+    {/each}
+  {/if}
   {#each rows as r (r.section?.id)}
     {#if r.section}
       <section class="row" data-gate={r.section.id}>
@@ -161,6 +183,9 @@ pack (its `at` locators read here, for review only). `?view=gate&theme=dark|ligh
   }
   .full {
     margin-top: var(--space-4);
+  }
+  .slot {
+    position: relative;
   }
   .fullwrap {
     max-width: none;
