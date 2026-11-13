@@ -44,6 +44,7 @@ steps:
     number: 4
     text: PRESSURIZATION MODE SELECTOR
     expect: MAN
+    terms: ["P5"]
     controls:
       - press
     targets:
@@ -56,6 +57,7 @@ steps:
     number: 5
     text: OUTFLOW VALVE SWITCH
     expect: HOLD IN OPEN UNTIL VALVE INDICATES FULLY OPEN
+    terms: ["outflow valve", "P5"]
     controls:
       - outflow
     targets:

@@ -40,7 +40,7 @@ steps:
     number: 4
     text: THRUST LEVERS AND BRAKES
     expect: "CLOSE THRUST LEVERS, DISENGAGE A/T, MAX MANUAL BRAKES OR VERIFY RTO AUTOBRAKE"
-    terms: ["A/T", "RTO"]
+    terms: ["A/T", "RTO", "autobrake"]
     controls:
       - thrust
       - apdisc

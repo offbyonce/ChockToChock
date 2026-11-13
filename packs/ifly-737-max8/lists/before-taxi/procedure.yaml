@@ -13,6 +13,7 @@ steps:
     number: 1
     text: ENGINE GENERATOR SWITCHES
     expect: BOTH ON
+    terms: ["P5"]
     controls:
       - engen
     targets:
@@ -31,6 +32,7 @@ steps:
     number: 2
     text: "PROBE HEAT"
     expect: "ON, PROBE LIGHTS OUT"
+    terms: ["probe heat", "P5"]
     controls:
       - pheat
     targets:
@@ -69,6 +71,7 @@ steps:
     number: 3
     text: ANTI-ICE
     expect: AS REQUIRED
+    terms: ["anti-ice", "P5"]
     controls:
       - aice
     targets:
@@ -86,7 +89,7 @@ steps:
     number: 4
     text: PACK SWITCHES
     expect: AUTO
-    terms: ["PACK"]
+    terms: ["PACK", "P5", "Bleed air"]
     controls:
       - packs
     targets:
@@ -104,7 +107,7 @@ steps:
     number: 5
     text: ISOLATION VALVE SWITCH
     expect: AUTO
-    terms: ["ISOLATION VALVE"]
+    terms: ["ISOLATION VALVE", "P5", "Bleed air"]
     controls:
       - iso
     targets:
@@ -119,7 +122,7 @@ steps:
   - id: ifly-737-max8.before-taxi.engine-bleed-switches
     text: ENGINE BLEED SWITCHES
     expect: "ON"
-    terms: ["APU"]
+    terms: ["APU", "P5", "Bleed air"]
     controls:
       - engbleed
     targets:
@@ -135,7 +138,7 @@ steps:
   - id: ifly-737-max8.before-taxi.engine-start-switches
     text: ENGINE START SWITCHES
     expect: CONT
-    terms: ["CONT"]
+    terms: ["CONT", "P5"]
     controls:
       - starts
     targets:
@@ -154,7 +157,7 @@ steps:
     number: 6
     text: APU BLEED SWITCH
     expect: "OFF"
-    terms: ["APU"]
+    terms: ["APU", "P5", "Bleed air"]
     controls:
       - apubleed
     targets:
@@ -169,7 +172,7 @@ steps:
     number: 7
     text: APU SWITCH
     expect: "OFF"
-    terms: ["APU"]
+    terms: ["APU", "P5"]
     controls:
       - apusw
     targets:
@@ -204,7 +207,7 @@ steps:
     number: 9
     text: SYS SWITCH
     expect: "PRESS, FLIGHT CONTROLS SHOWN"
-    terms: ["SYS"]
+    terms: ["SYS", "P9", "autobrake"]
     controls:
       - sysp
     targets:
@@ -245,7 +248,7 @@ steps:
     number: 11
     text: RECALL
     expect: "HOLD, ALL 12 ANNUNCIATOR LIGHTS ON; RELEASE, ALL OUT"
-    terms: ["RECALL"]
+    terms: ["RECALL", "P7"]
     controls:
       - recall
     targets:

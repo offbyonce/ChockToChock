@@ -11,14 +11,13 @@ import { em, widest } from "./text-width";
 
 /**
  * 3.0's rendered text sizes, in pixels: names and titles 11.8, positions and light words 10.8.
- * "SET TO …" sits under the name, a little smaller so the name reads first. A screen's label is
+ * "EXPECTED ON" under a light the step expects on is 11 (`setTo`). A screen's label is
  * 3.0's measured 12.6, its name size at the scale 3.0 draws a screen in the step pane.
  */
 export const PX = { name: 11.8, title: 11.8, pos: 11, lamp: 10.8, setTo: 11, screen: 12.6 } as const;
 /** Pixels per unit a drawing is laid out for: its text is drawn at the PX sizes at this scale. */
 export const K = 1.8;
-/** The smallest rendered sizes (decision 0021): labels 11 px, light legends 10 px. The "SET TO"
- * caption is a label too, at 11 px. */
+/** The smallest rendered sizes (decision 0021): labels 11 px, light legends 10 px. */
 export const LABEL_MIN = 11;
 export const LEGEND_MIN = 10;
 /** The smallest scale that keeps every label and legend at its minimum. */
@@ -98,8 +97,6 @@ export function half(item: PanelItem): number {
 export const KEY = { w: 50, h: 20 } as const;
 /** A light: a key. */
 export const LAMP = KEY;
-/** Room kept below a caption ("SET TO ON", "SEE STEP"), so the item below never crowds it. */
-export const CAPTION_ROOM = 3;
 /** Every selector dial's body radius: one size for every dial, however many positions it has. */
 export const DIAL = 10.5;
 /**
@@ -270,7 +267,7 @@ export const leverY = (index: number, count: number) => (count < 2 ? 0 : -9.5 + 
 export type PositionLabel = { n: number; x: number; y: number; anchor: "start" | "middle" | "end" };
 export type ItemLayout = {
   /** The name's lines, size in pixels, and the first line's baseline below the control's center. */
-  name: { lines: string[]; px: number; y: number; caption: string[] } | null;
+  name: { lines: string[]; px: number; y: number } | null;
   /** Position labels, relative to the control's center. */
   positions: PositionLabel[];
 };
@@ -283,26 +280,6 @@ export type SectionLayout = {
   extent: { x0: number; y0: number; x1: number; y1: number };
   /** Every label found a place clear of everything else. The pack's panels are tested for it. */
   clear: boolean;
-};
-
-/**
- * The caption under a step's control: the position it is set to. A control whose position the
- * step leaves to a condition has none; it is drawn dashed instead (decision 0022).
- */
-export const caption = (positions: string[], t: number | null, resolved = false): string | null => {
-  if (t == null) return null;
-  // A position set by a decision step's answer carries a diamond (decision 0022).
-  const mark = resolved ? "◆ " : "";
-  return positions[t] === "SET" ? `${mark}SET` : `${mark}SET TO ${positions[t] ?? ""}`;
-};
-
-/** The ways a caption may be set: on one line, or "SET TO" above the position when that is too
- * wide for its place. */
-export const captionLines = (text: string | null): string[][] => {
-  if (!text) return [[]];
-  const head = text.startsWith("◆ ") ? "◆ SET TO " : "SET TO ";
-  const rest = text.startsWith(head) ? text.slice(head.length) : null;
-  return rest ? [[text], [head.trim(), rest]] : [[text]];
 };
 
 /**
@@ -396,7 +373,7 @@ function place(
   const items = new Map<number, ItemLayout>();
   for (const i of order) {
     const it = moved.items[i] as PanelItem;
-    const { on, t, rest, lit, open, resolved } = target(i);
+    const { on, t, rest, lit, open } = target(i);
     const layout: ItemLayout = { name: null, positions: [] };
     if (it.kind === "light" && lit) {
       // "EXPECTED ON" under a light the step expects on.
@@ -483,39 +460,24 @@ function place(
     if (labelled(it)) {
       const fit = nameFit(it, moved, k);
       const px = fit.px * scale;
-      const setTo = on ? caption(pos, t, resolved ?? false) : null;
       const line = (px * LINE) / k;
-      const boxFor = (dy: number, cap: string[]): Box => {
-        const w = Math.max(widest(fit.lines) * px, widest(cap) * PX.setTo * scale) / k;
+      // A name and nothing under it: no board draws a "SET TO" caption; the set position shows on
+      // the control itself (the owner, batch 2).
+      const boxFor = (dy: number): Box => {
+        const w = (widest(fit.lines) * px) / k;
         const top = it.y + half(it) + 3 + dy * line;
-        return {
-          x0: it.x - w / 2,
-          y0: top,
-          x1: it.x + w / 2,
-          y1: top + (fit.lines.length + cap.length) * line + (cap.length ? CAPTION_ROOM : 0),
-        };
+        return { x0: it.x - w / 2, y0: top, x1: it.x + w / 2, y1: top + fit.lines.length * line };
       };
       const rowTop = rowTops?.get(Math.round(it.y));
       const base = rowTop === undefined ? 0 : Math.max(0, (rowTop - (it.y + half(it) + 3)) / line);
-      // The caption on one line where it stays within half the way to the nearest control in its
-      // row, so it never takes the room a neighbor's name needs; otherwise "SET TO" above the
-      // position.
-      const near = Math.min(
-        ...moved.items.filter((o) => o !== it && Math.abs(o.y - it.y) < 10).map((o) => Math.abs(o.x - it.x)),
-      );
-      const fitsRow = (cap: string[]) => (widest(cap) * PX.setTo * scale) / k / 2 <= near / 2 - 2;
-      const ways = captionLines(setTo);
-      const usable = ways.filter((cap, n) => n === ways.length - 1 || fitsRow(cap));
-      const tries = usable.flatMap((cap) => [base, base + 1, base + 2].map((d) => ({ d, cap })));
-      let pick = tries.find(({ d, cap }) => free(boxFor(d, cap)));
-      if (!pick) {
+      let dy = [base, base + 1, base + 2].find((d) => free(boxFor(d)));
+      if (dy === undefined) {
         clear = false;
-        pick = { d: base, cap: captionLines(setTo)[0] ?? [] };
+        dy = base;
       }
-      const { d: dy, cap } = pick;
-      layout.name = { lines: fit.lines, px, y: half(it) + 3 + dy * line + line * 0.82, caption: cap };
-      placed.push(boxFor(dy, cap));
-      tops.set(i, boxFor(dy, cap).y0);
+      layout.name = { lines: fit.lines, px, y: half(it) + 3 + dy * line + line * 0.82 };
+      placed.push(boxFor(dy));
+      tops.set(i, boxFor(dy).y0);
     }
     items.set(i, layout);
   }

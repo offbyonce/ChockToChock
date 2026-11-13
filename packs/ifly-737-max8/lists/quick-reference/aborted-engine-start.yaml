@@ -15,6 +15,7 @@ steps:
     number: 1
     text: BEFORE START LEVER IS RAISED TO IDLE
     expect: START SWITCH OFF
+    terms: ["start lever", "P5"]
     controls:
       - starts
     targets:
@@ -30,6 +31,7 @@ steps:
     number: 2
     text: AFTER START LEVER IS RAISED TO IDLE
     expect: START LEVER CUTOFF
+    terms: ["start lever"]
     controls:
       - slever
     targets:

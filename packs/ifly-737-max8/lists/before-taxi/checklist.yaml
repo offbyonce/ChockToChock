@@ -12,6 +12,7 @@ steps:
   - id: ifly-737-max8.before-taxi.generators
     text: GENERATORS
     expect: "ON"
+    terms: ["P5"]
     controls:
       - engen
     targets:
@@ -27,6 +28,7 @@ steps:
   - id: ifly-737-max8.before-taxi.probe-heat-check
     text: PROBE HEAT
     expect: "ON, PROBE LIGHTS OUT"
+    terms: ["probe heat", "P5"]
     controls:
       - pheat
     targets:
@@ -62,6 +64,7 @@ steps:
   - id: ifly-737-max8.before-taxi.anti-ice-check
     text: ANTI-ICE
     expect: AS REQUIRED
+    terms: ["anti-ice", "P5"]
     controls:
       - aice
     targets:
@@ -77,7 +80,7 @@ steps:
   - id: ifly-737-max8.before-taxi.isolation-valve-switch-check
     text: ISOLATION VALVE SWITCH
     expect: AUTO
-    terms: ["ISOLATION VALVE"]
+    terms: ["ISOLATION VALVE", "P5", "Bleed air"]
     controls:
       - iso
     targets:
@@ -91,7 +94,7 @@ steps:
   - id: ifly-737-max8.before-taxi.engine-start-switches-check
     text: ENGINE START SWITCHES
     expect: CONT
-    terms: ["CONT"]
+    terms: ["CONT", "P5"]
     controls:
       - starts
     targets:
@@ -108,7 +111,7 @@ steps:
   - id: ifly-737-max8.before-taxi.recall-check
     text: RECALL
     expect: CHECKED
-    terms: ["RECALL"]
+    terms: ["RECALL", "P7"]
     controls:
       - recall
     targets:
@@ -132,7 +135,7 @@ steps:
   - id: ifly-737-max8.before-taxi.autobrake
     text: AUTOBRAKE
     expect: RTO
-    terms: ["RTO"]
+    terms: ["autobrake", "RTO", "P9"]
     controls:
       - abrake
     targets:

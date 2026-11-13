@@ -32,7 +32,7 @@ steps:
     number: 2
     text: MCP
     expect: "SET V2, HEADING, ALTITUDE, ARM A/T, ARM LNAV AND VNAV FOR AN RNAV DEPARTURE"
-    terms: ["LNAV", "RNAV", "VNAV", "A/T", "MCP", "V2"]
+    terms: ["MCP", "V2", "A/T", "LNAV", "VNAV", "RNAV", "P7"]
     controls:
       - mcpset
       - rollmode
@@ -57,6 +57,7 @@ steps:
     number: 3
     text: DOOR LIGHTS
     expect: ALL OUT
+    terms: ["P5"]
     controls:
       - doorsp
     targets:
@@ -95,7 +96,7 @@ steps:
   - id: ifly-737-max8.before-start.terr-efis-control-panel
     text: TERR (EFIS CONTROL PANEL)
     expect: "ON"
-    terms: ["EFIS", "TERR", "ND"]
+    terms: ["TERR", "EFIS", "ND", "P7"]
     controls:
       - efispanel
     targets:
@@ -111,7 +112,7 @@ steps:
     number: 4
     text: FUEL PUMP SWITCHES
     expect: "ALL ON, CENTER PUMPS ON IF MORE THAN 1,000 LB (ABOUT 450 KG) IN THE CENTER TANK"
-    terms: ["LB", "KG"]
+    terms: ["center tank", "P5"]
     controls:
       - fuelpumps
     targets:
@@ -140,7 +141,7 @@ steps:
   - id: ifly-737-max8.before-start.electric-hydraulic-pump-switches
     text: ELECTRIC HYDRAULIC PUMP SWITCHES
     expect: "ON"
-    terms: ["ELEC"]
+    terms: ["P5"]
     controls:
       - elechyd
     targets:
@@ -158,6 +159,7 @@ steps:
     number: 5
     text: ANTI-COLLISION LIGHT
     expect: "ON"
+    terms: ["P5"]
     controls:
       - beacon
     targets:

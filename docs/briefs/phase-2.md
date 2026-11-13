@@ -198,7 +198,13 @@ every change to `.github/workflows/`. For those, prepare what the step needs and
       control; every menu item in coverage.md (Flight deck, Practice, Glossary, Flight log,
       Tour, References, How procedures work). The coverage.md rows added for review apply.
    7. Content. First on the sourcing list (owner, 2026-11-12): the resting position of FLT
-      CONTROL A and B, which the pack rests at STBY RUD where they are normally guarded ON. Then
+      CONTROL A and B, which the pack rests at STBY RUD where they are normally guarded ON; and
+      the placards of the 11 positions not in capitals (`pack check` warns on each): "OFF to
+      BRIGHT" on eight lighting knobs, "Guarded" on generator DISCONNECT 1 and 2, and the air
+      temperature SOURCE selector's "Supply duct, passenger cabin, pack". On the validation list
+      under decision 0007: the 17 glossary entries written in batch 2 (P1, P2, P3, P5, P7, P9,
+      center tank, main tank, crossfeed, autobrake, start lever, probe heat, window heat, outflow
+      valve, standby power, yaw damper, trim air, anti-ice). Then
       the center tank decision step (the pilot answers until the pack has a sourced
       wing-tank capacity; then the app may suggest an answer for the pilot to confirm) and every
       mockup wording in content-to-validate.md, sourced and validated under decision 0007 before

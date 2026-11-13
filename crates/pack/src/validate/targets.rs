@@ -31,6 +31,14 @@ pub(super) fn check_step_targets(pack: &Pack, issues: &mut Vec<Issue>) {
         .flat_map(|g| &g.terms)
         .map(|t| t.term.as_str())
         .collect();
+    let plain: BTreeSet<&str> = pack
+        .content
+        .glossary
+        .iter()
+        .flat_map(|g| &g.terms)
+        .filter(|t| t.step_term == Some(false))
+        .map(|t| t.term.as_str())
+        .collect();
     for step in pack.checklists.iter().flat_map(|l| &l.steps) {
         check_step(panels, step, issues);
         check_decision(&options, step, issues);
@@ -39,6 +47,11 @@ pub(super) fn check_step_targets(pack: &Pack, issues: &mut Vec<Issue>) {
                 issues.push(error(
                     step.id.as_str(),
                     format!("term `{term}` is not in the glossary"),
+                ));
+            } else if plain.contains(term.as_str()) {
+                issues.push(error(
+                    step.id.as_str(),
+                    format!("term `{term}` is a unit or plain abbreviation (step_term: false)"),
                 ));
             }
         }
@@ -450,13 +463,26 @@ mod tests {
     fn a_steps_terms_are_in_the_glossary() {
         let mut p = pack_with("ON", vec![target("oh/elec/BATTERY/1", Some("ON"), None)]);
         p.content.glossary = Some(checklist_core::GlossaryFile {
-            terms: vec![checklist_core::GlossaryEntry {
-                term: "APU".into(),
-                meaning: "Auxiliary power unit.".into(),
-            }],
+            terms: vec![
+                checklist_core::GlossaryEntry {
+                    term: "APU".into(),
+                    meaning: "Auxiliary power unit.".into(),
+                    step_term: None,
+                },
+                checklist_core::GlossaryEntry {
+                    term: "LB".into(),
+                    meaning: "Pounds.".into(),
+                    step_term: Some(false),
+                },
+            ],
         });
-        p.checklists[0].steps[0].terms = vec!["APU".into(), "XPDR".into()];
+        p.checklists[0].steps[0].terms = vec!["APU".into(), "XPDR".into(), "LB".into()];
         let joined = messages(&p);
+        // Units and plain abbreviations stay in the glossary but are never a step's terms.
+        assert!(
+            joined.contains("term `LB` is a unit or plain abbreviation"),
+            "{joined}"
+        );
         assert!(
             joined.contains("term `XPDR` is not in the glossary"),
             "{joined}"

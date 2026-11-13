@@ -12,6 +12,7 @@ steps:
   - id: ifly-737-max8.approach.altimeters-check
     text: ALTIMETERS
     expect: "___ SET"
+    terms: ["P7", "EFIS"]
     controls:
       - baro
     targets:
@@ -28,6 +29,7 @@ steps:
   - id: ifly-737-max8.approach.fasten-belts-selector-check
     text: FASTEN BELTS SELECTOR
     expect: "AUTO OR ON"
+    terms: ["P5"]
     controls:
       - sblts
     targets:
@@ -40,6 +42,7 @@ steps:
   - id: ifly-737-max8.approach.exterior-lights
     text: EXTERIOR LIGHTS
     expect: "LANDING, WING AND LOGO ON"
+    terms: ["P5"]
     controls:
       - landlt
       - winglt

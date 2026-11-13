@@ -12,7 +12,7 @@ smallest size that keeps 11 px labels, scrolls sideways, and offers a full-width
 <script lang="ts">
   import { panelCaption } from "./panel-name";
   import type { ItemTarget, Panel, PanelSection as Section } from "@chocktochock/bindings";
-  import { drawingScale, halfWidth, K, layoutSection, openingScroll, positionsOf } from "./panel-layout";
+  import { drawingScale, K, layoutSection, openingScroll, positionsOf } from "./panel-layout";
   import PanelSection from "./PanelSection.svelte";
   import Self from "./PanelSchematic.svelte";
   import type { PackIndex } from "../pack-index";
@@ -27,6 +27,9 @@ smallest size that keeps 11 px labels, scrolls sideways, and offers a full-width
     picked = $bindable(),
     around = false,
     named = "",
+    enlargeable = $bindable(),
+    fits = $bindable(),
+    ownButton = true,
   }: {
     /** The panel the sections are on. */
     panel: Panel;
@@ -48,6 +51,13 @@ smallest size that keeps 11 px labels, scrolls sideways, and offers a full-width
     named?: string | undefined;
     /** The control whose card is open. */
     picked?: { section: string; item: number } | null | undefined;
+    /** Out: whether the step's controls fit the drawing's room top to bottom at 11 px. */
+    fits?: boolean | undefined;
+    /** Out: whether there is a larger view to open (the drawing is cut to fit, or overflows). */
+    enlargeable?: boolean | undefined;
+    /** Draws its own "See the whole panel larger" button; the side pane puts it in the card's
+     * caption row instead and calls `openLarger`. */
+    ownButton?: boolean | undefined;
   } = $props();
 
   /** How far beside the step's sections a neighbor may sit and still be drawn. */
@@ -159,39 +169,55 @@ smallest size that keeps 11 px labels, scrolls sideways, and offers a full-width
   });
   let scale = $derived(drawingScale(width, view.box.w, pageScale));
 
-  /** A drawing wider than the card starts scrolled to the step's controls. */
+  /**
+   * A drawing bigger than its room (wider than the card, or taller than the room the side pane
+   * leaves it) opens centered on the step's controls, both ways, at every size (the owner, batch 2),
+   * and fades at the edges where there is more.
+   */
   let wrap = $state<HTMLDivElement | null>(null);
+  let height = $state(0);
+  let moreY = $state(false);
   $effect(() => {
-    if (!wrap || !scale.overflow) return;
+    if (!wrap) return;
     const el = wrap;
     void width;
+    void height;
+    void scale.k;
     // After the drawing has taken its new size (wide screens rescale it after the first frame).
-    const frame = requestAnimationFrame(() => openOnTargets(el));
+    const frame = requestAnimationFrame(() => {
+      moreY = el.scrollHeight > el.clientHeight + 1;
+      openOnTargets(el);
+    });
     return () => cancelAnimationFrame(frame);
   });
-  function openOnTargets(wrap: HTMLDivElement) {
-    // The step's controls, edge to edge.
-    const spans = drawn.flatMap((s) =>
-      s.items.flatMap((it, i) =>
-        targets.some((t) => t.section === s.id && t.item === i)
-          ? [{ x0: s.x + it.x - halfWidth(it), x1: s.x + it.x + halfWidth(it) }]
-          : [],
-      ),
-    );
-    if (!spans.length) return;
-    const room = wrap.clientWidth;
-    const px = (x: number) => (x - view.box.x) * scale.k;
-    const [first, last] = [Math.min(...spans.map((x) => x.x0)), Math.max(...spans.map((x) => x.x1))];
-    wrap.scrollLeft = openingScroll(px(first), px(last), room);
+  function openOnTargets(el: HTMLDivElement) {
+    const on = [...el.querySelectorAll("g.item.on")].map((g) => g.getBoundingClientRect());
+    if (!on.length) {
+      fits = true;
+      return;
+    }
+    const box = el.getBoundingClientRect();
+    const span = {
+      left: Math.min(...on.map((r) => r.left)) - box.left + el.scrollLeft,
+      right: Math.max(...on.map((r) => r.right)) - box.left + el.scrollLeft,
+      top: Math.min(...on.map((r) => r.top)) - box.top + el.scrollTop,
+      bottom: Math.max(...on.map((r) => r.bottom)) - box.top + el.scrollTop,
+    };
+    fits = span.bottom - span.top <= el.clientHeight + 1;
+    el.scrollLeft = openingScroll(span.left, span.right, el.clientWidth);
+    el.scrollTop = openingScroll(span.top, span.bottom, el.clientHeight);
   }
 
   let sheet = $state<HTMLDialogElement | null>(null);
+  $effect(() => {
+    enlargeable = !large && (scale.overflow || moreY || !!band);
+  });
   /**
    * Opens the larger view scrolled so the step's controls are in sight (the owner, batch 2). The
    * drawing takes its full size a frame or two after the sheet opens, so it centers again whenever
    * the drawing resizes in the first half second.
    */
-  function openLarger() {
+  export function openLarger() {
     const el = sheet;
     if (!el) return;
     el.showModal();
@@ -234,7 +260,7 @@ smallest size that keeps 11 px labels, scrolls sideways, and offers a full-width
   let caption = $derived(panelCaption(focused.map((s) => s.title)));
 </script>
 
-<div class="wrap" class:more={scale.overflow} bind:clientWidth={width} bind:this={wrap}>
+<div class="wrap" class:more={scale.overflow} class:more-y={moreY} bind:clientWidth={width} bind:clientHeight={height} bind:this={wrap}>
   <svg
     class="schematic"
     viewBox="{view.box.x} {view.box.y} {view.box.w} {view.box.h}"
@@ -243,7 +269,7 @@ smallest size that keeps 11 px labels, scrolls sideways, and offers a full-width
     aria-label="{title} panel, schematic.{described ? ` This step: ${described}.` : ''}"
   >
     {#each drawn as s (s.id)}
-      <PanelSection section={s} {targets} {guardClosed} band={bandOf(s)} frame={view.frames.get(s.id)} titled={view.titled} k={K} hit={index ? (44 * pageScale) / scale.k : 0} onPick={index ? (section, item) => (picked = { section, item }) : undefined} />
+      <PanelSection section={s} {targets} {guardClosed} band={bandOf(s)} frame={view.frames.get(s.id)} titled={view.titled} framed={large || !around || view.titled} k={K} hit={index ? (44 * pageScale) / scale.k : 0} onPick={index ? (section, item) => (picked = { section, item }) : undefined} />
     {/each}
   </svg>
 </div>
@@ -259,7 +285,7 @@ smallest size that keeps 11 px labels, scrolls sideways, and offers a full-width
   </div>
 {/if}
 {#if (scale.overflow || band) && !large}
-  <button type="button" class="btn larger" onclick={openLarger}>See the whole panel larger</button>
+  {#if ownButton}<button type="button" class="btn larger" onclick={openLarger}>See the whole panel larger</button>{/if}
   <dialog class="sheet" bind:this={sheet} aria-label={caption}>
     <div class="sheet-head">
       <span>{caption}</span>
@@ -270,18 +296,35 @@ smallest size that keeps 11 px labels, scrolls sideways, and offers a full-width
 {/if}
 
 <style>
+  /* The drawing centers in its room; where it is bigger, the room scrolls. */
   .wrap {
+    display: flex;
     width: 100%;
-    overflow-x: auto;
+    overflow: auto;
+    /* No scrollbar, as on the boards: the edge fades show there is more. */
+    scrollbar-width: none;
   }
-  /* A drawing wider than its card fades at its edges, so it is clear there is more. */
+  .wrap::-webkit-scrollbar {
+    display: none;
+  }
+  /* A drawing bigger than its room fades at the edges where there is more. */
   .wrap.more {
     mask-image: linear-gradient(90deg, transparent, black var(--space-10), black calc(100% - var(--space-10)), transparent);
   }
+  .wrap.more-y {
+    mask-image: linear-gradient(180deg, transparent, black var(--space-10), black calc(100% - var(--space-10)), transparent);
+  }
+  .wrap.more.more-y {
+    mask-image:
+      linear-gradient(90deg, transparent, black var(--space-10), black calc(100% - var(--space-10)), transparent),
+      linear-gradient(180deg, transparent, black var(--space-10), black calc(100% - var(--space-10)), transparent);
+    mask-composite: intersect;
+  }
   .schematic {
     display: block;
+    flex: none;
     height: auto;
-    margin: 0 auto;
+    margin: auto;
   }
   .control-card {
     margin-top: var(--space-2);

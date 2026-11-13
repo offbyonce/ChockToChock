@@ -12,7 +12,7 @@ steps:
   - id: ifly-737-max8.descent.fmc-route
     text: FMC ROUTE
     expect: VERIFIED
-    terms: ["FMC"]
+    terms: ["FMC", "P9"]
     controls:
       - cdu
     targets:
@@ -29,7 +29,7 @@ steps:
     number: 1
     text: LAND ALT
     expect: DESTINATION ELEVATION SET
-    terms: ["LAND ALT"]
+    terms: ["LAND ALT", "P5"]
     controls:
       - ldgalt
     targets:
@@ -44,7 +44,7 @@ steps:
     number: 2
     text: CDU
     expect: SET LANDING FLAPS AND VREF
-    terms: ["VREF", "CDU"]
+    terms: ["CDU", "VREF", "P9"]
     controls:
       - vref
     targets:
@@ -60,7 +60,7 @@ steps:
     number: 3
     text: RECALL
     expect: "PRESS, NO UNEXPECTED ALERTS"
-    terms: ["RECALL"]
+    terms: ["RECALL", "P7"]
     controls:
       - recall
     targets:
@@ -86,7 +86,7 @@ steps:
     number: 4
     text: MINIMUMS
     expect: BARO OR RADIO SET PER CHART
-    terms: ["BARO"]
+    terms: ["BARO", "P7", "EFIS"]
     controls:
       - mins
     targets:
@@ -104,6 +104,7 @@ steps:
     number: 5
     text: AUTOBRAKE
     expect: "1, 2, 3 OR MAX AS NEEDED"
+    terms: ["autobrake", "P9"]
     controls:
       - abrake
     targets:

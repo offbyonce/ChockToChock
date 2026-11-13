@@ -23,6 +23,13 @@
         "meaning": {
           "type": "string"
         },
+        "step_term": {
+          "description": "`false` for a unit or a plain abbreviation (LB, FT, ENG): it stays in the glossary but is\nnever one of a step's terms, which name what a learner needs (panels and systems).",
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
         "term": {
           "type": "string"
         }

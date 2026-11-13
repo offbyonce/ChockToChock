@@ -408,8 +408,8 @@ source: crates/pack-cli/tests/snapshot.rs
             "controls": [
               "xfeed"
             ],
-            "positions": "Closed, open",
-            "rest": "Closed",
+            "positions": "CLOSED, OPEN",
+            "rest": "CLOSED",
             "description": "Joins the left and right fuel manifolds."
           },
           {

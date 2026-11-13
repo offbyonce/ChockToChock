@@ -23,6 +23,7 @@ steps:
     number: 2
     text: LANDING GEAR LEVER
     expect: DN
+    terms: ["P2"]
     controls:
       - gearlever
     targets:

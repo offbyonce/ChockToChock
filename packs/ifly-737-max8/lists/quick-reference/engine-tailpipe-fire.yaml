@@ -15,6 +15,7 @@ steps:
     number: 1
     text: START LEVER (AFFECTED ENGINE)
     expect: CUTOFF
+    terms: ["start lever"]
     controls:
       - slever
     targets:

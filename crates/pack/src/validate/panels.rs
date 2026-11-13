@@ -106,6 +106,15 @@ pub(super) fn check_panels_and_lights(pack: &Pack, idx: &Index, issues: &mut Vec
 
 fn check_panel_item(at: &str, item: &PanelItem, issues: &mut Vec<Issue>) {
     let label = &item.label;
+    // Drawings print positions as the panel's placards, which are in capitals.
+    if let Some(positions) = &item.positions
+        && positions.chars().any(|c| c.is_ascii_lowercase())
+    {
+        issues.push(warning(
+            at,
+            format!("`{label}`: positions `{positions}` are not in capitals; drawings print them as the placard"),
+        ));
+    }
     let is_light = item.kind == PanelItemKind::Light;
     if is_light && item.color.is_none() {
         issues.push(error(at, format!("light `{label}` needs a `color`")));

@@ -13,7 +13,7 @@ steps:
     number: 1
     text: THRUST LEVERS
     expect: "ADVANCE TO ABOUT 40% N1, LET ENGINES STABILIZE"
-    terms: ["TO/GA", "N1"]
+    terms: ["N1", "TO/GA"]
     controls:
       - thrust
     targets:
@@ -89,7 +89,7 @@ steps:
     number: 6
     text: VR
     expect: ROTATE TOWARD 15 DEGREES PITCH
-    terms: ["V2", "VR"]
+    terms: ["VR", "V2"]
     controls:
       - speedt
     targets:

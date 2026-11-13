@@ -35,6 +35,7 @@ steps:
     number: 3
     text: PRESSURIZATION MODE SELECTOR
     expect: MAN
+    terms: ["P5"]
     controls:
       - press
     targets:
@@ -48,6 +49,7 @@ steps:
     number: 4
     text: OUTFLOW VALVE SWITCH
     expect: HOLD TO CLOSE UNTIL THE INDICATOR SHOWS FULLY SHUT
+    terms: ["outflow valve", "P5"]
     controls:
       - outflow
     targets:
@@ -59,6 +61,7 @@ steps:
     number: 5
     text: IF CABIN ALTITUDE IS UNCONTROLLABLE
     expect: FASTEN BELTS ON
+    terms: ["P5"]
     controls:
       - sblts
     targets:
@@ -69,7 +72,7 @@ steps:
     number: 6
     text: "IF CABIN ALTITUDE IS ABOVE, OR EXPECTED TO GO ABOVE, 14,000 FT"
     expect: "PASS OXYGEN ON, GO TO EMERGENCY DESCENT"
-    terms: ["FT"]
+    terms: ["P5"]
     controls:
       - paxoxy
     targets:
@@ -82,7 +85,7 @@ steps:
     number: 7
     text: "IF THE CABIN ALTITUDE RESPONDS"
     expect: "STAY IN MANUAL. MASKS CAN COME OFF ONCE THE CABIN IS 10,000 FT OR LOWER"
-    terms: ["FT"]
+    terms: ["P5"]
     controls:
       - press
     targets:

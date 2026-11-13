@@ -15,7 +15,7 @@ steps:
     number: 1
     text: CONFIGURATION
     expect: "GEAR DOWN AND LOCKED, FLAPS AND SPEEDBRAKE SET FOR LANDING"
-    terms: ["SPEEDBRAKE"]
+    terms: ["SPEEDBRAKE", "P2"]
     controls:
       - gearlever
       - flaplever

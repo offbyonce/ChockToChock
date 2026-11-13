@@ -20,7 +20,7 @@ steps:
     number: 1
     text: THRUST LEVERS
     expect: VERIFY CLOSED
-    terms: ["Spoilers"]
+    terms: ["Spoilers", "autobrake"]
     controls:
       - thrust
     targets:
@@ -110,6 +110,7 @@ steps:
     number: 7
     text: AUTOBRAKE
     expect: DISARM BEFORE TAXI SPEED
+    terms: ["autobrake", "P9"]
     controls:
       - abrake
     targets:

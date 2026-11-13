@@ -13,6 +13,7 @@ steps:
     number: 1
     text: LANDING GEAR LEVER
     expect: UP
+    terms: ["P2"]
     controls:
       - gearup
     targets:
@@ -45,7 +46,7 @@ steps:
     number: 3
     text: PACK SWITCHES
     expect: VERIFY AUTO
-    terms: ["PACK"]
+    terms: ["PACK", "P5", "Bleed air"]
     controls:
       - packs
     targets:

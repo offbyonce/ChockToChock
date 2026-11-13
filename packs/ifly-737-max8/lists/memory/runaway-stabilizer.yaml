@@ -25,6 +25,7 @@ steps:
     number: 2
     text: AUTOPILOT (IF ENGAGED)
     expect: DISENGAGE
+    terms: ["P7"]
     controls:
       - apdis
       - apdisc
@@ -69,6 +70,7 @@ steps:
     number: 6
     text: IF RUNAWAY STOPS AFTER AUTOPILOT IS DISENGAGED
     expect: DO NOT RE-ENGAGE AUTOPILOT OR AUTOTHROTTLE. END OF PROCEDURE
+    terms: ["P7"]
     controls:
       - apdis
     targets:

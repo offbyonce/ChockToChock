@@ -45,6 +45,7 @@ steps:
     number: 4
     text: RECIRC FAN SWITCHES (BOTH)
     expect: "OFF"
+    terms: ["P5"]
     controls:
       - recirc
     targets:

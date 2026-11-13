@@ -28,6 +28,7 @@ steps:
     number: 2
     text: TAXI AND RUNWAY TURNOFF LIGHTS
     expect: "ON"
+    terms: ["P5"]
     controls:
       - lldg
       - turnoff
@@ -44,6 +45,7 @@ steps:
   - id: ifly-737-max8.taxi.wing-light
     text: WING LIGHT
     expect: "ON"
+    terms: ["P5"]
     controls:
       - winglt
     targets:

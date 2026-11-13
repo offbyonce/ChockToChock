@@ -40,6 +40,7 @@ steps:
     number: 4
     text: POSITIVE RATE
     expect: GEAR UP
+    terms: ["P2"]
     controls:
       - gearup
     targets:
@@ -49,6 +50,7 @@ steps:
     number: 5
     text: MISSED APPROACH ALTITUDE
     expect: VERIFY SET
+    terms: ["P7"]
     controls:
       - mcpalt
     targets:
@@ -57,7 +59,7 @@ steps:
     number: 6
     text: ROLL MODE
     expect: SELECT ABOVE 400 FT
-    terms: ["FT"]
+    terms: ["P7"]
     controls:
       - rollmode
     targets:
@@ -73,6 +75,7 @@ steps:
     number: 7
     text: FLAPS
     expect: RETRACT PER SCHEDULE AT ACCELERATION HEIGHT
+    terms: ["Acceleration height"]
     controls:
       - flaplever
       - speedt
@@ -83,7 +86,7 @@ steps:
     number: 8
     text: PITCH MODE
     expect: "AT FLAP SPEED, SELECT LVL CHG OR VNAV, VERIFY CLIMB THRUST"
-    terms: ["LVL CHG", "VNAV"]
+    terms: ["LVL CHG", "VNAV", "P7"]
     controls:
       - pitchmode
     targets:
@@ -93,6 +96,7 @@ steps:
     number: 9
     text: MISSED APPROACH ALTITUDE
     expect: VERIFY CAPTURED
+    terms: ["P7"]
     controls:
       - mcpalt
     targets:

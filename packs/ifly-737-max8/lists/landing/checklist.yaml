@@ -12,7 +12,7 @@ steps:
   - id: ifly-737-max8.landing.engine-start-switches
     text: ENGINE START SWITCHES
     expect: CONT
-    terms: ["CONT"]
+    terms: ["CONT", "P5"]
     controls:
       - starts
     targets:
@@ -47,6 +47,7 @@ steps:
   - id: ifly-737-max8.landing.gear
     text: GEAR
     expect: "DOWN, 3 GREEN"
+    terms: ["P2"]
     controls:
       - gearlever
     targets:

@@ -102,4 +102,62 @@ describe("StepPane", () => {
     expect(legend()).toMatch(/dashed: only if the step's condition applies/);
     expect(legend()).toMatch(/◆ set by a decision step/);
   });
+
+  it("gives the map figure's room to a drawing that cannot fit, keeps Show map, and drops it all after Hide map", async () => {
+    // At 1440x900 the fuel pumps needed 222 px and the card left the drawing 120 px.
+    const raf = globalThis.requestAnimationFrame;
+    globalThis.requestAnimationFrame = (cb) => (cb(0), 1);
+    const rect = Element.prototype.getBoundingClientRect;
+    Element.prototype.getBoundingClientRect = function (this: Element) {
+      const tall = this.matches("g.item.on");
+      return {
+        top: tall ? 0 : 0,
+        bottom: tall ? 222 : 0,
+        left: 0,
+        right: 10,
+        width: 10,
+        height: tall ? 222 : 0,
+        x: 0,
+        y: 0,
+        toJSON: () => ({}),
+      } as DOMRect;
+    };
+    const height = Object.getOwnPropertyDescriptor(HTMLElement.prototype, "clientHeight");
+    Object.defineProperty(HTMLElement.prototype, "clientHeight", { configurable: true, get: () => 120 });
+    const query = window.matchMedia;
+    window.matchMedia = ((q: string) => ({
+      matches: true,
+      media: q,
+      addEventListener() {},
+      removeEventListener() {},
+    })) as unknown as typeof window.matchMedia;
+    try {
+      const props = {
+        index,
+        step: step("before-start.fuel-pump-switches")!,
+        targets: [{ section: "fuel", item: 17, position: 1, lit: false, open: false, resolved: false }],
+        number: 6,
+        total: 9,
+        previous: step("before-start.terr-efis-control-panel"),
+        mapMode: "new_panel" as const,
+        onMap: () => {},
+      };
+      const view = render(StepPane, props);
+      await Promise.resolve();
+      expect(document.querySelector(".map")).toBeNull();
+      expect(document.querySelector(".line")?.textContent).toMatch(
+        /^New panel · Forward overhead \(P5\) · Fuel panel/,
+      );
+      await fireEvent.click(screen.getByRole("button", { name: "Show map" }));
+      expect(document.querySelector(".map")).not.toBeNull();
+      // Hide map (Map in steps turns On request): the MapHidden board's line, with no New panel.
+      await view.rerender({ ...props, mapMode: "on_request" });
+      expect(document.querySelector(".line")?.textContent).toMatch(/^Forward overhead \(P5\) · Fuel panel/);
+    } finally {
+      globalThis.requestAnimationFrame = raf;
+      Element.prototype.getBoundingClientRect = rect;
+      if (height) Object.defineProperty(HTMLElement.prototype, "clientHeight", height);
+      window.matchMedia = query;
+    }
+  });
 });

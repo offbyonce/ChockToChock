@@ -42,19 +42,6 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
   const host = getHost();
   const route = currentRoute();
 
-  /**
-   * The Checklist board draws the side pane with 24 px each side and no scrollbar. The pane keeps
-   * its scrollbar's gutter and takes the gutter's width out of its right padding, so its cards keep
-   * the board's width.
-   */
-  let scrollbar = $state(0);
-  function scrollbarAware(el: HTMLElement) {
-    const measure = () => (scrollbar = el.offsetWidth - el.clientWidth - el.clientLeft);
-    const watch = new ResizeObserver(measure);
-    watch.observe(el);
-    measure();
-    return { destroy: () => watch.disconnect() };
-  }
   let info = $state<AppInfo | null>(null);
   let packId = $state("");
   let index = $state<PackIndex | null>(null);
@@ -432,7 +419,7 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
         </div>
       </main>
       {#if pane}
-        <aside class="pane" aria-label="About the step" use:scrollbarAware style:--scrollbar="{scrollbar}px">
+        <aside class="pane" aria-label="About the step">
           {#key pane.step.id}
             <StepPane
               {index}
@@ -476,11 +463,15 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
     position: sticky;
     top: calc(var(--size-header) + var(--size-phase-row));
     height: calc(100vh - var(--size-header) - var(--size-phase-row));
-    padding: var(--space-4) max(0px, calc(var(--space-6) - var(--scrollbar, 0px))) var(--space-4) var(--space-6);
+    padding: var(--space-4) var(--space-6);
+    /* It scrolls, but draws no scrollbar, as the Checklist board's pane. */
     overflow-y: auto;
-    scrollbar-gutter: stable;
+    scrollbar-width: none;
     border-left: var(--border-thin) solid var(--color-line);
     background: var(--color-surface-2);
+  }
+  .pane::-webkit-scrollbar {
+    display: none;
   }
   /* 3.0's toast: dark on light (light on dark), centered at the bottom. */
   .toast {

@@ -35,7 +35,7 @@ steps:
     number: 1
     text: TCAS AND TRANSPONDER
     expect: "SQUAWK SET, XPNDR AUTO"
-    terms: ["XPNDR", "TCAS"]
+    terms: ["TCAS", "XPNDR"]
     controls:
       - xpndr
     targets:

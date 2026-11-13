@@ -56,7 +56,7 @@ steps:
     number: 5
     text: NEAR THE GROUND
     expect: "NO DESCEND RA BELOW ABOUT 1,100 FT AGL, NO RA AT ALL BELOW ABOUT 1,000 FT AGL"
-    terms: ["AGL", "RA", "FT"]
+    terms: ["RA", "AGL"]
     controls:
       - fltinst
     targets:

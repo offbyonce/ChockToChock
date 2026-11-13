@@ -12,6 +12,7 @@ steps:
   - id: ifly-737-max8.climb.center-fuel-pumps
     text: "CENTER FUEL PUMPS"
     expect: "OFF WHEN THE LOW PRESSURE LIGHTS COME ON"
+    terms: ["center tank"]
     why: "The lights show the center tank is running out, so the pumps have nothing left to feed."
     confirmed_by:
       - kind: vendor-docs
@@ -20,6 +21,7 @@ steps:
     number: 1
     text: LANDING LIGHTS
     expect: "OFF"
+    terms: ["P5"]
     controls:
       - landlt
     targets:
@@ -37,6 +39,7 @@ steps:
     number: 2
     text: "WING, LOGO AND RUNWAY TURNOFF LIGHTS"
     expect: "OFF"
+    terms: ["P5"]
     controls:
       - winglt
       - logo
@@ -55,6 +58,7 @@ steps:
     number: 3
     text: FASTEN BELTS SELECTOR
     expect: AS DESIRED
+    terms: ["P5"]
     controls:
       - sblts
     targets:

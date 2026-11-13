@@ -87,7 +87,7 @@ steps:
   - id: ifly-737-max8.apu-power.left-forward-fuel-pump
     text: ONE LEFT FUEL PUMP
     expect: "ON (OPTIONAL)"
-    terms: ["APU"]
+    terms: ["APU", "P5"]
     controls:
       - fuelpumps
     targets:
@@ -112,7 +112,7 @@ steps:
     number: 2
     text: APU SWITCH
     expect: "START, THEN RELEASE TO ON"
-    terms: ["GEN OFF BUS", "APU"]
+    terms: ["APU", "GEN OFF BUS", "P5"]
     controls:
       - apusw
     targets:
@@ -130,7 +130,7 @@ steps:
     number: 3
     text: APU GENERATOR SWITCHES
     expect: BOTH ON
-    terms: ["APU"]
+    terms: ["APU", "Transfer bus", "P5"]
     controls:
       - apugen
     targets:
@@ -149,7 +149,7 @@ steps:
   - id: ifly-737-max8.apu-power.left-forward-fuel-pump-establishing-apu
     text: ONE LEFT FUEL PUMP
     expect: "ON (OPTIONAL)"
-    terms: ["APU"]
+    terms: ["APU", "P5"]
     controls:
       - fuelpumps
     targets:
@@ -175,7 +175,7 @@ steps:
     number: 4
     text: GROUND POWER CART (EFB)
     expect: DISCONNECT
-    terms: ["APU", "EFB", "GRD"]
+    terms: ["EFB", "GRD", "APU", "P5"]
     controls:
       - grddisc
       - grdpwr
@@ -200,7 +200,7 @@ steps:
   - id: ifly-737-max8.apu-power.apu-bleed-switch
     text: APU BLEED SWITCH
     expect: "ON"
-    terms: ["APU"]
+    terms: ["APU", "P5", "Bleed air"]
     controls:
       - apubleed
     targets:
@@ -217,7 +217,7 @@ steps:
   - id: ifly-737-max8.apu-power.pack-switches
     text: PACK SWITCHES
     expect: AUTO OR HIGH
-    terms: ["PACK"]
+    terms: ["PACK", "P5", "Bleed air"]
     controls:
       - packs
     targets:
@@ -235,7 +235,7 @@ steps:
   - id: ifly-737-max8.apu-power.isolation-valve-switch
     text: ISOLATION VALVE SWITCH
     expect: OPEN
-    terms: ["ISOLATION VALVE", "APU"]
+    terms: ["ISOLATION VALVE", "APU", "P5", "Bleed air"]
     controls:
       - iso
     targets:
@@ -251,7 +251,7 @@ steps:
   - id: ifly-737-max8.apu-power.pack-lights
     text: PACK LIGHTS
     expect: OUT
-    terms: ["PACK"]
+    terms: ["PACK", "P5", "Bleed air"]
     controls:
       - packlts
     targets:

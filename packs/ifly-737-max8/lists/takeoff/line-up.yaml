@@ -36,7 +36,7 @@ steps:
     number: 2
     text: ENGINE START SWITCHES
     expect: CONT
-    terms: ["CONT"]
+    terms: ["CONT", "P5"]
     controls:
       - starts
     targets:
@@ -53,6 +53,7 @@ steps:
     number: 3
     text: POSITION LIGHT
     expect: "STROBE & STEADY"
+    terms: ["P5"]
     controls:
       - poslt
     targets:
@@ -79,6 +80,7 @@ steps:
     number: 5
     text: LANDING LIGHTS
     expect: "ON"
+    terms: ["P5"]
     controls:
       - landlt
     targets:

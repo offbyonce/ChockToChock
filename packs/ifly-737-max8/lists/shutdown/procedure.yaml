@@ -13,7 +13,7 @@ steps:
     number: 1
     text: APU GENERATOR SWITCHES
     expect: BOTH ON
-    terms: ["GEN OFF BUS", "APU"]
+    terms: ["APU", "GEN OFF BUS", "P5"]
     controls:
       - apugen
     targets:
@@ -68,6 +68,7 @@ steps:
     number: 4
     text: FASTEN BELTS SELECTOR
     expect: "OFF"
+    terms: ["P5"]
     controls:
       - sblts
     targets:
@@ -81,6 +82,7 @@ steps:
     number: 5
     text: ANTI-COLLISION LIGHT
     expect: "OFF"
+    terms: ["P5"]
     controls:
       - beacon
     targets:
@@ -94,6 +96,7 @@ steps:
   - id: ifly-737-max8.shutdown.taxi-light
     text: TAXI LIGHT
     expect: "OFF"
+    terms: ["P5"]
     controls:
       - lldg
     targets:
@@ -111,6 +114,7 @@ steps:
     number: 6
     text: FUEL PUMP SWITCHES
     expect: ALL OFF
+    terms: ["P5"]
     controls:
       - fuelpumps
     targets:
@@ -135,7 +139,7 @@ steps:
     number: 7
     text: CAB/UTIL AND IFE/PASS SEAT SWITCHES
     expect: "OFF"
-    terms: ["CAB/UTIL"]
+    terms: ["CAB/UTIL", "P5"]
     controls:
       - cabutil
     targets:
@@ -151,6 +155,7 @@ steps:
     number: 8
     text: ANTI-ICE
     expect: "OFF"
+    terms: ["anti-ice", "P5"]
     controls:
       - aice
     targets:
@@ -169,6 +174,7 @@ steps:
     number: 9
     text: ELECTRIC HYDRAULIC PUMP SWITCHES
     expect: "OFF"
+    terms: ["P5"]
     controls:
       - elechyd
     targets:
@@ -185,7 +191,7 @@ steps:
     number: 10
     text: PACK SWITCHES
     expect: AUTO
-    terms: ["PACK"]
+    terms: ["PACK", "P5", "Bleed air"]
     controls:
       - packs
     targets:
@@ -202,7 +208,7 @@ steps:
     number: 11
     text: ISOLATION VALVE SWITCH
     expect: OPEN
-    terms: ["ISOLATION VALVE", "APU"]
+    terms: ["ISOLATION VALVE", "APU", "P5", "Bleed air"]
     controls:
       - iso
     targets:
@@ -216,7 +222,7 @@ steps:
     number: 12
     text: "ENGINE AND APU BLEED SWITCHES"
     expect: "ON"
-    terms: ["APU"]
+    terms: ["APU", "P5", "Bleed air"]
     controls:
       - apubleed
       - engbleed
@@ -235,6 +241,7 @@ steps:
     number: 13
     text: FLIGHT DIRECTORS
     expect: "OFF"
+    terms: ["P7"]
     controls:
       - fd
     targets:
@@ -279,7 +286,7 @@ steps:
   - id: ifly-737-max8.shutdown.ground-power
     text: GROUND POWER
     expect: "IF AVAILABLE, CONNECT AND VERIFY ACCEPTED, THEN APU OFF"
-    terms: ["APU"]
+    terms: ["APU", "P5"]
     controls:
       - grdpwr
       - apusw
@@ -295,7 +302,7 @@ steps:
     number: 15
     text: IRS
     expect: "OFF, OR LEAVE IN NAV FOR A QUICK TURNAROUND"
-    terms: ["IRS", "NAV"]
+    terms: ["IRS", "NAV", "P5"]
     controls:
       - irs
     targets:

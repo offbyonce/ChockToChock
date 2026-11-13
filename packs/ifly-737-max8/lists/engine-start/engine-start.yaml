@@ -21,7 +21,7 @@ steps:
   - id: ifly-737-max8.engine-start.secondary-engine-indications
     text: "SECONDARY ENGINE INDICATIONS"
     expect: "DISPLAYED"
-    terms: ["EGT", "N2"]
+    terms: ["N2", "EGT"]
     why: "N2 and EGT are shown here, and both are watched during the start."
     confirmed_by:
       - kind: vendor-docs
@@ -30,7 +30,7 @@ steps:
     number: 2
     text: PACK SWITCHES
     expect: "OFF"
-    terms: ["PACK", "APU"]
+    terms: ["PACK", "APU", "Bleed air", "P5"]
     controls:
       - packs
     targets:
@@ -48,7 +48,7 @@ steps:
     number: 3
     text: APU BLEED SWITCH
     expect: "ON"
-    terms: ["APU"]
+    terms: ["APU", "P5", "Bleed air"]
     controls:
       - apubleed
     targets:
@@ -62,6 +62,7 @@ steps:
   - id: ifly-737-max8.engine-start.ignition-selector
     text: IGNITION SELECTOR
     expect: "BOTH"
+    terms: ["P5"]
     controls:
       - starts
     targets:
@@ -82,7 +83,7 @@ steps:
     section: Engine 1
     text: ENGINE 1 START SWITCH
     expect: GRD
-    terms: ["GRD", "N2"]
+    terms: ["GRD", "N2", "P5"]
     controls:
       - starts
     targets:
@@ -124,7 +125,7 @@ steps:
     number: 6
     text: ENGINE 1 START LEVER
     expect: "IDLE AT ABOUT 25% N2"
-    terms: ["EGT", "N2"]
+    terms: ["start lever", "N2", "EGT"]
     controls:
       - slever
     targets:
@@ -142,7 +143,7 @@ steps:
     number: 7
     text: FUEL FLOW AND EGT
     expect: VERIFY EGT RISES WITHIN 10 SECONDS OF START LEVER TO IDLE
-    terms: ["EGT"]
+    terms: ["EGT", "start lever"]
     controls:
       - engmon
     targets:
@@ -159,7 +160,7 @@ steps:
     number: 8
     text: ENGINE 1 START SWITCH
     expect: "VERIFY OFF AT ABOUT 63% N2"
-    terms: ["N2"]
+    terms: ["N2", "P5"]
     controls:
       - starts
     targets:
@@ -179,7 +180,7 @@ steps:
     number: 9
     text: ENGINE 1
     expect: VERIFY STABLE AT IDLE
-    terms: ["EGT", "N1", "N2"]
+    terms: ["N1", "N2", "EGT"]
     controls:
       - engmon
     targets:
@@ -198,7 +199,7 @@ steps:
     section: Engine 2
     text: ENGINE 2 START SWITCH
     expect: GRD
-    terms: ["GRD", "N2"]
+    terms: ["GRD", "N2", "P5"]
     controls:
       - starts
     targets:
@@ -240,7 +241,7 @@ steps:
     number: 12
     text: ENGINE 2 START LEVER
     expect: "IDLE AT ABOUT 25% N2"
-    terms: ["EGT", "N2"]
+    terms: ["start lever", "N2", "EGT"]
     controls:
       - slever
     targets:
@@ -258,7 +259,7 @@ steps:
     number: 13
     text: FUEL FLOW AND EGT
     expect: VERIFY EGT RISES WITHIN 10 SECONDS OF START LEVER TO IDLE
-    terms: ["EGT"]
+    terms: ["EGT", "start lever"]
     controls:
       - engmon
     targets:
@@ -275,7 +276,7 @@ steps:
     number: 14
     text: ENGINE 2 START SWITCH
     expect: "VERIFY OFF AT ABOUT 63% N2"
-    terms: ["N2"]
+    terms: ["N2", "P5"]
     controls:
       - starts
     targets:
@@ -295,7 +296,7 @@ steps:
     number: 15
     text: ENGINE 2
     expect: VERIFY STABLE AT IDLE
-    terms: ["EGT", "N1", "N2"]
+    terms: ["N1", "N2", "EGT"]
     controls:
       - engmon
     targets:

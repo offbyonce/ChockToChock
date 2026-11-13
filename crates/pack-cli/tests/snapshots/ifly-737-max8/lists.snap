@@ -1,6 +1,5 @@
 ---
 source: crates/pack-cli/tests/snapshot.rs
-assertion_line: 34
 ---
 [
   {
@@ -28,6 +27,9 @@ assertion_line: 34
         ],
         "quick": "always",
         "note": "In the iFly the guard closes by itself about a second after the switch reaches ON, and it will not close with the switch OFF.",
+        "terms": [
+          "P5"
+        ],
         "why": "Brings the battery onto the electrical system for first power. The hot battery bus stays live regardless of this switch.",
         "confirmed_by": [
           {
@@ -53,6 +55,10 @@ assertion_line: 34
         ],
         "quick": "always",
         "note": "In the iFly the guard closes by itself about a second after the switch reaches AUTO, and it will not close in BAT or OFF.",
+        "terms": [
+          "standby power",
+          "P5"
+        ],
         "why": "AUTO keeps backup power available from the battery and the transformer rectifier.",
         "confirmed_by": [
           {
@@ -77,6 +83,9 @@ assertion_line: 34
           }
         ],
         "note": "The position switch beside it is checked in the preliminary preflight.",
+        "terms": [
+          "P5"
+        ],
         "why": "The backup flap drive is electric, so it must be off before normal power comes on.",
         "confirmed_by": [
           {
@@ -102,6 +111,9 @@ assertion_line: 34
             "at": "oh/rwip/R WIPER/1",
             "set": "PARK"
           }
+        ],
+        "terms": [
+          "P5"
         ],
         "why": "Left on, the wipers start moving as soon as power arrives.",
         "confirmed_by": [
@@ -131,9 +143,9 @@ assertion_line: 34
         ],
         "note": "They are the two inner switches on the hydraulic panel.",
         "terms": [
-          "ELEC",
+          "AC",
           "APU",
-          "AC"
+          "P5"
         ],
         "why": "These pumps run from the AC bus, so with the switches on they would start as soon as ground or APU power arrives, which pressurizes the hydraulic systems and can move flight controls with people near the airplane.",
         "check": "ELEC 1 and ELEC 2 OFF",
@@ -171,6 +183,9 @@ assertion_line: 34
           }
         ],
         "quick": "always",
+        "terms": [
+          "P2"
+        ],
         "why": "Green means the gear is down and locked. Red means a gear is unlocked or disagrees with the lever.",
         "check": "3 green gear lights, no red",
         "confirmed_by": [
@@ -270,8 +285,10 @@ assertion_line: 34
         ],
         "quick": "always",
         "terms": [
+          "Transfer bus",
           "GRD",
-          "AC"
+          "AC",
+          "P5"
         ],
         "why": "Connects ground power to the AC transfer buses.",
         "check": "TRANSFER BUS OFF, STANDBY PWR OFF and SOURCE OFF lights OUT",
@@ -449,7 +466,8 @@ assertion_line: 34
           ]
         },
         "terms": [
-          "APU"
+          "APU",
+          "P5"
         ],
         "why": "Optional. One left fuel pump may run while the APU does, which gives it positive fuel pressure. The procedure does not require it, because the APU can draw fuel from the left tank by suction, but many airlines do it. Any left pump works; the aft one is the common choice.",
         "check": "That pump's LOW PRESSURE light OUT",
@@ -478,8 +496,9 @@ assertion_line: 34
         ],
         "quick": "always",
         "terms": [
+          "APU",
           "GEN OFF BUS",
-          "APU"
+          "P5"
         ],
         "why": "Starts the APU for power and air",
         "check": "LOW OIL PRESSURE light during the start, then APU GEN OFF BUS light on",
@@ -512,7 +531,9 @@ assertion_line: 34
         ],
         "quick": "always",
         "terms": [
-          "APU"
+          "APU",
+          "Transfer bus",
+          "P5"
         ],
         "why": "Puts APU power on the transfer buses. The last source connected is the one in use, so the APU takes over from ground power.",
         "check": "TRANSFER BUS OFF, STANDBY PWR OFF and SOURCE OFF lights OUT",
@@ -555,7 +576,8 @@ assertion_line: 34
           ]
         },
         "terms": [
-          "APU"
+          "APU",
+          "P5"
         ],
         "why": "Optional. One left fuel pump may run while the APU does, which gives it positive fuel pressure. The procedure does not require it, because the APU can draw fuel from the left tank by suction, but many airlines do it. Any left pump works; the aft one is the common choice.",
         "check": "That pump's LOW PRESSURE light OUT",
@@ -599,9 +621,10 @@ assertion_line: 34
         },
         "note": "The iFly has no ground crew, so the EFB stands in for them. On a real airplane the crew disconnects the cart.",
         "terms": [
-          "APU",
           "EFB",
-          "GRD"
+          "GRD",
+          "APU",
+          "P5"
         ],
         "why": "The APU is carrying the load now, so ground power is no longer needed.",
         "check": "GRD POWER AVAILABLE light OUT",
@@ -641,7 +664,9 @@ assertion_line: 34
           ]
         },
         "terms": [
-          "APU"
+          "APU",
+          "P5",
+          "Bleed air"
         ],
         "why": "APU air for the packs now and the engine start later"
       },
@@ -674,7 +699,9 @@ assertion_line: 34
           ]
         },
         "terms": [
-          "PACK"
+          "PACK",
+          "P5",
+          "Bleed air"
         ],
         "why": "Supplies conditioned air. AUTO is normal. HIGH gives more airflow, for example with only one pack running",
         "check": "PACK lights OUT"
@@ -706,7 +733,9 @@ assertion_line: 34
         },
         "terms": [
           "ISOLATION VALVE",
-          "APU"
+          "APU",
+          "P5",
+          "Bleed air"
         ],
         "why": "One APU feeds both packs"
       },
@@ -740,7 +769,9 @@ assertion_line: 34
           ]
         },
         "terms": [
-          "PACK"
+          "PACK",
+          "P5",
+          "Bleed air"
         ],
         "why": "Out when the packs run correctly",
         "check": "PACK lights OUT"
@@ -1080,7 +1111,8 @@ assertion_line: 34
         "quick": "always",
         "terms": [
           "IRS",
-          "NAV"
+          "NAV",
+          "P5"
         ],
         "why": "Must align while the airplane is still",
         "how": "irs",
@@ -1116,7 +1148,8 @@ assertion_line: 34
         ],
         "note": "The iFly does not simulate the ELT. The switch and light only respond to clicks.",
         "terms": [
-          "ELT"
+          "ELT",
+          "P5"
         ],
         "why": "Stops an accidental distress signal",
         "check": "Guard closed",
@@ -1145,6 +1178,9 @@ assertion_line: 34
           {
             "at": "aft/jam/ELEV JAM LANDING ASSIST/1"
           }
+        ],
+        "terms": [
+          "P5"
         ],
         "why": "Not simulated in the iFly. Just confirm the guard is closed and the lights are out",
         "not_simulated": true,
@@ -1182,10 +1218,11 @@ assertion_line: 34
           }
         ],
         "terms": [
-          "MAINT",
-          "GLS",
           "GPS",
-          "ILS"
+          "ILS",
+          "GLS",
+          "MAINT",
+          "P5"
         ],
         "why": "A lit light means a GPS, ILS, GLS or maintenance fault",
         "check": "GPS, ILS, GLS and MAINT OUT",
@@ -1241,7 +1278,8 @@ assertion_line: 34
         "note": "The electronic engine control protects the engine limits. Check that both show ON, with no ALTN light.",
         "note_caution": true,
         "terms": [
-          "EEC"
+          "EEC",
+          "P5"
         ],
         "why": "Protects the engine limits",
         "check": "Both EEC buttons show ON",
@@ -1272,6 +1310,9 @@ assertion_line: 34
         ],
         "note": "Check that the guard is closed so the cabin masks cannot be dropped by accident.",
         "note_caution": true,
+        "terms": [
+          "P5"
+        ],
         "why": "Stops cabin masks dropping by accident",
         "check": "Guard closed",
         "check_detail": "PASS OXY ON light OUT",
@@ -1294,6 +1335,9 @@ assertion_line: 34
           {
             "at": "aft/oxy/CREW OXYGEN/1"
           }
+        ],
+        "terms": [
+          "P5"
         ],
         "why": "Needed at once in a decompression or smoke",
         "check": "Crew oxygen pressure read on the gauge",
@@ -1327,6 +1371,9 @@ assertion_line: 34
             "light": "on"
           }
         ],
+        "terms": [
+          "P5"
+        ],
         "why": "Second set of lights, green is down and locked",
         "check": "3 green lights",
         "confirmed_by": [
@@ -1348,6 +1395,9 @@ assertion_line: 34
           {
             "at": "aft/rec/FLIGHT RECORDER/1"
           }
+        ],
+        "terms": [
+          "P5"
         ],
         "why": "Recorder runs automatically",
         "check": "Guard closed",
@@ -1375,7 +1425,8 @@ assertion_line: 34
           }
         ],
         "terms": [
-          "MACH"
+          "MACH",
+          "P5"
         ],
         "why": "The clacker warns when you exceed the maximum operating speed (VMO/MMO)",
         "check": "Clacker sounds",
@@ -1403,6 +1454,9 @@ assertion_line: 34
           {
             "at": "aft/stall/STALL TEST 2/1"
           }
+        ],
+        "terms": [
+          "P5"
         ],
         "why": "Stick shaker warns of an approaching stall",
         "how": "stall",
@@ -1444,9 +1498,10 @@ assertion_line: 34
         "opens": "preflight-setup",
         "quick": "always",
         "terms": [
-          "TAKEOFF REF",
           "CDU",
-          "N1"
+          "N1",
+          "TAKEOFF REF",
+          "P9"
         ],
         "why": "Route, performance, N1 limit and takeoff reference",
         "check": "Route, performance, N1 limit and TAKEOFF REF pages complete",
@@ -1479,6 +1534,9 @@ assertion_line: 34
         ],
         "note": "These give hydraulic power to the flight controls. Both must be on for flight.",
         "note_caution": true,
+        "terms": [
+          "P5"
+        ],
         "why": "Hydraulic power to the flight controls",
         "check": "LOW PRESSURE lights ON",
         "check_detail": "Normal until hydraulic pressure is up",
@@ -1506,6 +1564,10 @@ assertion_line: 34
             "at": "oh/fctl/SPOILER B/1",
             "set": "ON"
           }
+        ],
+        "terms": [
+          "Spoilers",
+          "P5"
         ],
         "why": "Hydraulic power to the flight spoilers",
         "confirmed_by": [
@@ -1536,6 +1598,10 @@ assertion_line: 34
         "quick": "always",
         "note": "Check that the amber YAW DAMPER light goes out. The yaw damper engages only with the B FLT CONTROL switch ON.",
         "note_caution": true,
+        "terms": [
+          "yaw damper",
+          "P5"
+        ],
         "why": "Must be on for flight",
         "check": "YAW DAMPER light OUT",
         "if_not": "Light stays on",
@@ -1569,6 +1635,9 @@ assertion_line: 34
             "light": "out"
           }
         ],
+        "terms": [
+          "P5"
+        ],
         "why": "A lit light means a standby hydraulic fault",
         "check": "LOW QUANTITY, LOW PRESSURE and STBY RUD ON OUT",
         "confirmed_by": [
@@ -1595,6 +1664,9 @@ assertion_line: 34
             "at": "oh/fctl/ALT FLAPS/1",
             "set": "OFF"
           }
+        ],
+        "terms": [
+          "P5"
         ],
         "why": "Electric flap backup, off in normal use",
         "confirmed_by": [
@@ -1636,7 +1708,9 @@ assertion_line: 34
         ],
         "note": "The iFly does not model the FEEL DIFF PRESS light.",
         "terms": [
-          "MACH"
+          "MACH",
+          "Spoilers",
+          "P5"
         ],
         "why": "A lit light is a flight control fault to sort out before flight",
         "check": "All five lights OUT",
@@ -1680,9 +1754,10 @@ assertion_line: 34
           }
         ],
         "terms": [
-          "FMC",
+          "NAV",
           "IRS",
-          "NAV"
+          "FMC",
+          "P5"
         ],
         "why": "Each side uses its own navigation source",
         "confirmed_by": [
@@ -1709,6 +1784,9 @@ assertion_line: 34
             "at": "oh/disp/CONTROL PANEL/1",
             "set": "NORMAL"
           }
+        ],
+        "terms": [
+          "P5"
         ],
         "why": "Each side's displays run from their own computer",
         "confirmed_by": [
@@ -1752,7 +1830,8 @@ assertion_line: 34
           }
         ],
         "terms": [
-          "ENG"
+          "ENG",
+          "P5"
         ],
         "why": "With the start levers in CUTOFF, both fuel valves should be shut.",
         "confirmed_by": [
@@ -1777,10 +1856,14 @@ assertion_line: 34
           },
           {
             "at": "oh/fuel/CROSSFEED/1",
-            "set": "Closed"
+            "set": "CLOSED"
           }
         ],
         "quick": "turnaround",
+        "terms": [
+          "crossfeed",
+          "P5"
+        ],
         "why": "Keeps the fuel sides separate",
         "check": "VALVE OPEN light OUT",
         "confirmed_by": [
@@ -1837,7 +1920,10 @@ assertion_line: 34
           ]
         },
         "terms": [
-          "APU"
+          "center tank",
+          "main tank",
+          "APU",
+          "P5"
         ],
         "why": "Pumps stay off until Before start. If the APU is already running, the left forward pump stays on instead",
         "check": "Center tank LOW PRESSURE lights OUT, main tank LOW PRESSURE lights ON",
@@ -1892,7 +1978,8 @@ assertion_line: 34
           ]
         },
         "terms": [
-          "APU"
+          "APU",
+          "P5"
         ],
         "why": "Optional. A left pump gives the running APU positive fuel pressure. The APU can also draw from the left tank by suction.",
         "check": "The running pump's LOW PRESSURE light OUT",
@@ -1925,7 +2012,8 @@ assertion_line: 34
         "quick": "always",
         "note": "In the iFly, only the cabin light function of CAB/UTIL is simulated.",
         "terms": [
-          "CAB/UTIL"
+          "CAB/UTIL",
+          "P5"
         ],
         "why": "Power to galleys and seat equipment",
         "confirmed_by": [
@@ -1959,8 +2047,8 @@ assertion_line: 34
           }
         ],
         "terms": [
-          "ELEC",
-          "TR"
+          "TR",
+          "P5"
         ],
         "why": "A lit light is an electrical fault",
         "check": "BAT DISCHARGE, TR UNIT and ELEC OUT",
@@ -2005,7 +2093,8 @@ assertion_line: 34
         "note": "Check that the guards are closed. The amber DRIVE lights are normal before start because the engines are not turning.",
         "note_caution": true,
         "terms": [
-          "DRIVE"
+          "DRIVE",
+          "P5"
         ],
         "why": "The DRIVE lights are normal before start because the engines are not turning",
         "check": "Guards closed",
@@ -2030,6 +2119,9 @@ assertion_line: 34
             "set": "AUTO"
           }
         ],
+        "terms": [
+          "P5"
+        ],
         "why": "Transfer buses can switch source automatically"
       },
       {
@@ -2052,7 +2144,8 @@ assertion_line: 34
         ],
         "note": "Confirm these blue lights are on. The engines are not running, so their generators cannot be powering the buses.",
         "terms": [
-          "GEN OFF BUS"
+          "GEN OFF BUS",
+          "P5"
         ],
         "why": "Engines not running, so no generator power",
         "check": "Blue lights ON",
@@ -2083,6 +2176,9 @@ assertion_line: 34
           }
         ],
         "note": "The iFly does not simulate this light.",
+        "terms": [
+          "P5"
+        ],
         "why": "Lit means a smoke detector has gone off",
         "check": "Light OUT",
         "confirmed_by": [
@@ -2123,6 +2219,9 @@ assertion_line: 34
             "light": "out"
           }
         ],
+        "terms": [
+          "P5"
+        ],
         "why": "Avionics overheat without the fans",
         "check": "OFF lights OUT",
         "confirmed_by": [
@@ -2152,6 +2251,9 @@ assertion_line: 34
         ],
         "quick": "always",
         "note": "The iFly does not simulate the exit lights themselves.",
+        "terms": [
+          "P5"
+        ],
         "why": "Cabin exit lights come on if power is lost",
         "check": "NOT ARMED light OUT",
         "confirmed_by": [
@@ -2179,6 +2281,9 @@ assertion_line: 34
           }
         ],
         "quick": "always",
+        "terms": [
+          "P5"
+        ],
         "why": "Keeps the cabin signs working for the flight.",
         "confirmed_by": [
           {
@@ -2214,6 +2319,11 @@ assertion_line: 34
           }
         ],
         "quick": "always",
+        "terms": [
+          "window heat",
+          "P5",
+          "probe heat"
+        ],
         "why": "Heats the windshields. A green ON light shows the heating is working.",
         "check": "Green ON lights",
         "check_detail": "OVERHEAT lights OUT",
@@ -2245,6 +2355,10 @@ assertion_line: 34
           }
         ],
         "quick": "always",
+        "terms": [
+          "probe heat",
+          "P5"
+        ],
         "why": "AUTO heats the probes when the engines run",
         "check": "Amber probe lights stay on",
         "check_detail": "Normal until an engine runs",
@@ -2276,6 +2390,11 @@ assertion_line: 34
             "at": "oh/aice/ENG 2/1",
             "set": "OFF"
           }
+        ],
+        "terms": [
+          "anti-ice",
+          "Bleed air",
+          "P5"
         ],
         "why": "Uses bleed air, only needed in icing",
         "confirmed_by": [
@@ -2313,8 +2432,8 @@ assertion_line: 34
           }
         ],
         "terms": [
-          "ELEC",
-          "ENG"
+          "ENG",
+          "P5"
         ],
         "why": "The engine pumps start with the engines. The electric pumps stay off until Before start.",
         "check": "Four LOW PRESSURE lights ON, two OVERHEAT lights OUT",
@@ -2333,7 +2452,7 @@ assertion_line: 34
           "hal"
         ],
         "terms": [
-          "FT"
+          "P5"
         ],
         "why": "Raises the altitude at which the cabin altitude warning sounds, for very high airports.",
         "confirmed_by": [
@@ -2356,6 +2475,9 @@ assertion_line: 34
             "set": "AUTO"
           }
         ],
+        "terms": [
+          "P5"
+        ],
         "why": "Records the flight deck without a crew action"
       },
       {
@@ -2371,6 +2493,10 @@ assertion_line: 34
             "at": "oh/air/TRIM AIR/1",
             "set": "ON"
           }
+        ],
+        "terms": [
+          "trim air",
+          "P5"
         ],
         "why": "Fine-tunes each zone temperature",
         "confirmed_by": [
@@ -2402,6 +2528,9 @@ assertion_line: 34
             "set": "AUTO"
           }
         ],
+        "terms": [
+          "P5"
+        ],
         "why": "Automatic cabin temperature control",
         "confirmed_by": [
           {
@@ -2427,6 +2556,9 @@ assertion_line: 34
             "at": "oh/bleed/R RECIRC FAN/1",
             "set": "AUTO"
           }
+        ],
+        "terms": [
+          "P5"
         ],
         "why": "Reuses cabin air to reduce pack load",
         "confirmed_by": [
@@ -2466,7 +2598,9 @@ assertion_line: 34
           ]
         },
         "terms": [
-          "PACK"
+          "PACK",
+          "P5",
+          "Bleed air"
         ],
         "why": "Supplies conditioned air. AUTO is normal. HIGH gives more airflow, for example with only one pack running",
         "check": "PACK lights OUT",
@@ -2505,7 +2639,9 @@ assertion_line: 34
         },
         "terms": [
           "ISOLATION VALVE",
-          "APU"
+          "APU",
+          "P5",
+          "Bleed air"
         ],
         "why": "One APU feeds both packs",
         "confirmed_by": [
@@ -2543,7 +2679,9 @@ assertion_line: 34
           ]
         },
         "terms": [
-          "APU"
+          "APU",
+          "P5",
+          "Bleed air"
         ],
         "why": "APU air for the packs now and the engine start later",
         "confirmed_by": [
@@ -2573,7 +2711,9 @@ assertion_line: 34
         "quick": "always",
         "note": "Lets the engines feed the bleed system once they are running.",
         "terms": [
-          "DUAL BLEED"
+          "DUAL BLEED",
+          "P5",
+          "Bleed air"
         ],
         "why": "Ready to feed the bleed system once engines run",
         "check": "DUAL BLEED light on",
@@ -2616,7 +2756,9 @@ assertion_line: 34
           ]
         },
         "terms": [
-          "PACK"
+          "PACK",
+          "P5",
+          "Bleed air"
         ],
         "why": "Out when the packs run correctly",
         "check": "PACK lights OUT",
@@ -2662,8 +2804,9 @@ assertion_line: 34
         ],
         "quick": "always",
         "terms": [
+          "FLT ALT",
           "LAND ALT",
-          "FLT ALT"
+          "P5"
         ],
         "why": "FLT ALT is your planned cruise altitude and LAND ALT the destination airport elevation. AUTO schedules the cabin from them",
         "how": "press",
@@ -2713,6 +2856,9 @@ assertion_line: 34
             "set": "OFF"
           }
         ],
+        "terms": [
+          "P5"
+        ],
         "why": "Not needed while parked",
         "confirmed_by": [
           {
@@ -2745,6 +2891,9 @@ assertion_line: 34
         ],
         "note": "Leave both start switches OFF and turn the ignition selector to BOTH.",
         "note_caution": true,
+        "terms": [
+          "P5"
+        ],
         "why": "Igniter choice is set before start",
         "confirmed_by": [
           {
@@ -2767,6 +2916,9 @@ assertion_line: 34
             "set": "ON"
           }
         ],
+        "terms": [
+          "P5"
+        ],
         "why": "Makes the airplane easier to see at night"
       },
       {
@@ -2784,6 +2936,9 @@ assertion_line: 34
           }
         ],
         "quick": "always",
+        "terms": [
+          "P5"
+        ],
         "why": "Shows the airplane is powered"
       },
       {
@@ -2809,6 +2964,9 @@ assertion_line: 34
             "set": "OFF"
           }
         ],
+        "terms": [
+          "P5"
+        ],
         "why": "The beacon comes on just before engine start. Wing and wheel well lights are not needed at the gate"
       },
       {
@@ -2832,7 +2990,8 @@ assertion_line: 34
         ],
         "quick": "always",
         "terms": [
-          "MA"
+          "MA",
+          "P7"
         ],
         "why": "Left first, so it becomes the master",
         "check": "MA light on the left side",
@@ -2858,7 +3017,8 @@ assertion_line: 34
         ],
         "note": "Limits bank in HDG SEL and VOR modes. 25 degrees is a common choice.",
         "terms": [
-          "HDG SEL"
+          "HDG SEL",
+          "P7"
         ],
         "why": "Limits bank in HDG SEL and VOR modes",
         "confirmed_by": [
@@ -2881,6 +3041,9 @@ assertion_line: 34
             "at": "gl/mcp/DISENGAGE/1",
             "set": "UP"
           }
+        ],
+        "terms": [
+          "P7"
         ],
         "why": "DOWN stops the autopilot engaging",
         "confirmed_by": [
@@ -2948,9 +3111,10 @@ assertion_line: 34
         ],
         "quick": "always",
         "terms": [
-          "BARO",
           "EFIS",
-          "QNH"
+          "BARO",
+          "QNH",
+          "P7"
         ],
         "why": "Altimeter must read local QNH for departure",
         "check": "Both altimeters show field elevation",
@@ -2993,6 +3157,9 @@ assertion_line: 34
             "at": "mn/fl/A/P A/T TEST/1"
           }
         ],
+        "terms": [
+          "P1"
+        ],
         "why": "Proves the lights work",
         "check": "Tested lights come on",
         "how": "ltest",
@@ -3018,7 +3185,8 @@ assertion_line: 34
           }
         ],
         "terms": [
-          "STAB"
+          "STAB",
+          "P1"
         ],
         "why": "On the ground it points to a partial flight control computer failure. In flight, the autopilot could not set the trim it needed.",
         "check": "Light OUT",
@@ -3121,8 +3289,9 @@ assertion_line: 34
         ],
         "terms": [
           "GPWS",
+          "SYS",
           "G/S",
-          "SYS"
+          "P3"
         ],
         "why": "Warns of terrain and windshear",
         "check": "BELOW G/S light, PULL UP and WINDSHEAR alerts shown",
@@ -3146,7 +3315,8 @@ assertion_line: 34
         "quick": "always",
         "terms": [
           "BARO",
-          "QNH"
+          "QNH",
+          "P2"
         ],
         "why": "Backup if both main displays fail",
         "check": "Standby baro matches QNH",
@@ -3183,6 +3353,9 @@ assertion_line: 34
             "set": "DN"
           }
         ],
+        "terms": [
+          "P2"
+        ],
         "why": "Gear down and locked",
         "check": "Lever DN, 3 green lights, no red",
         "confirmed_by": [
@@ -3203,6 +3376,9 @@ assertion_line: 34
           {
             "at": "mn/ctr/NOSE WHEEL STEER ALT/1"
           }
+        ],
+        "terms": [
+          "P2"
         ],
         "why": "Normal steering source",
         "check": "Guard closed",
@@ -3239,6 +3415,10 @@ assertion_line: 34
             "set": "RATE"
           }
         ],
+        "terms": [
+          "P9",
+          "autobrake"
+        ],
         "why": "Resets the used fuel counter",
         "check": "Returns to RATE",
         "how": "fuelflow",
@@ -3265,7 +3445,9 @@ assertion_line: 34
         ],
         "quick": "always",
         "terms": [
-          "RTO"
+          "autobrake",
+          "RTO",
+          "P9"
         ],
         "why": "Maximum braking if you reject at high speed",
         "explain": "aut",
@@ -3290,7 +3472,9 @@ assertion_line: 34
           }
         ],
         "terms": [
-          "C/R"
+          "C/R",
+          "P9",
+          "autobrake"
         ],
         "why": "Shows any stored autoland faults",
         "check": "No autoland fault messages",
@@ -3320,6 +3504,10 @@ assertion_line: 34
           }
         ],
         "note": "The iFly does not simulate what these selectors do.",
+        "terms": [
+          "P9",
+          "autobrake"
+        ],
         "why": "C is the normal setting.",
         "confirmed_by": [
           {
@@ -3346,7 +3534,8 @@ assertion_line: 34
         "quick": "turnaround",
         "note": "Down keeps the spoilers stowed on the ground.",
         "terms": [
-          "SPEEDBRAKE"
+          "SPEEDBRAKE",
+          "Spoilers"
         ],
         "why": "Keeps the spoilers stowed on the ground",
         "check": "Lever in DOWN detent",
@@ -3604,7 +3793,8 @@ assertion_line: 34
           }
         ],
         "terms": [
-          "ILS"
+          "ILS",
+          "ADF"
         ],
         "why": "Guidance back to this runway if you must return",
         "confirmed_by": [
@@ -3797,6 +3987,9 @@ assertion_line: 34
             "set": "NORMAL"
           }
         ],
+        "terms": [
+          "P5"
+        ],
         "why": "Each side uses its own source",
         "check": "All NORMAL",
         "check_detail": "SOURCE AUTO",
@@ -3832,6 +4025,11 @@ assertion_line: 34
             "set": "ON"
           }
         ],
+        "terms": [
+          "window heat",
+          "P5",
+          "probe heat"
+        ],
         "why": "Heated windows resist ice and fogging, and warm windshield panels are more resistant to bird strikes.",
         "confirmed_by": [
           {
@@ -3854,8 +4052,9 @@ assertion_line: 34
           }
         ],
         "terms": [
+          "FLT ALT",
           "LAND ALT",
-          "FLT ALT"
+          "P5"
         ],
         "why": "Cabin pressure follows FLT ALT and LAND ALT",
         "panel_lights": {
@@ -4031,12 +4230,13 @@ assertion_line: 34
         ],
         "quick": "always",
         "terms": [
-          "LNAV",
-          "RNAV",
-          "VNAV",
-          "A/T",
           "MCP",
-          "V2"
+          "V2",
+          "A/T",
+          "LNAV",
+          "VNAV",
+          "RNAV",
+          "P7"
         ],
         "why": "Departure speed, heading and altitude",
         "check": "A/T ARM switch at ARM, green light on",
@@ -4106,6 +4306,9 @@ assertion_line: 34
         "quick": "always",
         "note": "Any light on means a door is not closed. All lights must be out before pushback.",
         "note_caution": true,
+        "terms": [
+          "P5"
+        ],
         "why": "All closed before pushback",
         "check": "All door lights OUT",
         "if_not": "Light on",
@@ -4134,9 +4337,10 @@ assertion_line: 34
         ],
         "note": "Shows surrounding terrain on the ND for departure.",
         "terms": [
-          "EFIS",
           "TERR",
-          "ND"
+          "EFIS",
+          "ND",
+          "P7"
         ],
         "why": "Terrain awareness for departure",
         "check": "TERR shown on the ND",
@@ -4182,8 +4386,8 @@ assertion_line: 34
         ],
         "quick": "always",
         "terms": [
-          "LB",
-          "KG"
+          "center tank",
+          "P5"
         ],
         "why": "Feeds fuel to the engines under pressure",
         "check": "LOW PRESSURE lights OUT",
@@ -4217,7 +4421,7 @@ assertion_line: 34
         ],
         "quick": "always",
         "terms": [
-          "ELEC"
+          "P5"
         ],
         "why": "System A and B pressure for brakes, steering and controls before push",
         "check": "ELEC 1 and ELEC 2 LOW PRESSURE lights OUT",
@@ -4240,6 +4444,9 @@ assertion_line: 34
           }
         ],
         "quick": "always",
+        "terms": [
+          "P5"
+        ],
         "why": "Warns people that engines are about to start",
         "explain": "beacon",
         "confirmed_by": [
@@ -4344,8 +4551,7 @@ assertion_line: 34
           "fuel"
         ],
         "terms": [
-          "LB",
-          "KG"
+          "center tank"
         ],
         "why": "Confirms enough fuel for the flight",
         "check": "Departing fuel above minimum",
@@ -4365,6 +4571,9 @@ assertion_line: 34
           {
             "at": "oh/col/FASTEN BELTS/1"
           }
+        ],
+        "terms": [
+          "P5"
         ],
         "why": "Keeps the cabin signs working for the flight.",
         "confirmed_by": [
@@ -4409,7 +4618,8 @@ assertion_line: 34
         ],
         "terms": [
           "MCP",
-          "V2"
+          "V2",
+          "P7"
         ],
         "why": "Confirms the departure set-up",
         "check": "V2, heading and altitude agree",
@@ -4437,8 +4647,9 @@ assertion_line: 34
         ],
         "terms": [
           "V1",
+          "VR",
           "V2",
-          "VR"
+          "P9"
         ],
         "why": "Speeds match the takeoff data",
         "check": "V1, VR and V2 shown on the speed tape",
@@ -4465,7 +4676,8 @@ assertion_line: 34
           }
         ],
         "terms": [
-          "CDU"
+          "CDU",
+          "P9"
         ],
         "why": "Route, performance and takeoff reference in",
         "check": "Preflight pages complete",
@@ -4526,6 +4738,9 @@ assertion_line: 34
             "at": "oh/lte/ANTI COLLISION/1",
             "set": "ON"
           }
+        ],
+        "terms": [
+          "P5"
         ],
         "why": "Warns people that engines are about to start",
         "explain": "beacon",
@@ -4599,8 +4814,8 @@ assertion_line: 34
         ],
         "note": "Squawk code set, and the transponder at AUTO so it transmits and ground controllers can see you.",
         "terms": [
-          "XPNDR",
-          "TCAS"
+          "TCAS",
+          "XPNDR"
         ],
         "why": "Ground controllers can see you",
         "check": "Code set"
@@ -4758,8 +4973,8 @@ assertion_line: 34
         "text": "SECONDARY ENGINE INDICATIONS",
         "expect": "DISPLAYED",
         "terms": [
-          "EGT",
-          "N2"
+          "N2",
+          "EGT"
         ],
         "why": "N2 and EGT are shown here, and both are watched during the start.",
         "confirmed_by": [
@@ -4790,7 +5005,9 @@ assertion_line: 34
         "quick": "always",
         "terms": [
           "PACK",
-          "APU"
+          "APU",
+          "Bleed air",
+          "P5"
         ],
         "why": "With the packs off, all the APU bleed air goes to the starters",
         "explain": "packoff",
@@ -4817,7 +5034,9 @@ assertion_line: 34
         ],
         "note": "The APU supplies the air that turns the starters. The packs stay off so that air reaches the engines.",
         "terms": [
-          "APU"
+          "APU",
+          "P5",
+          "Bleed air"
         ],
         "why": "APU air turns the starters",
         "confirmed_by": [
@@ -4843,6 +5062,9 @@ assertion_line: 34
         "quick": "always",
         "note": "Set in the preflight. Leave it at BOTH.",
         "note_caution": true,
+        "terms": [
+          "P5"
+        ],
         "why": "BOTH fires both igniters for the start.",
         "panel_lights": {
           "starts": [
@@ -4874,7 +5096,8 @@ assertion_line: 34
         "quick": "always",
         "terms": [
           "GRD",
-          "N2"
+          "N2",
+          "P5"
         ],
         "why": "The engine must spin before fuel is added. Order varies by airline. Many start engine 2 first because it drives hydraulic system B, which supplies the normal brakes.",
         "check": "N2 rising, START VALVE OPEN alert",
@@ -4942,8 +5165,9 @@ assertion_line: 34
         "note": "If 25% N2 is not reached, move to IDLE at maximum motoring, but not below 20% N2. This comes from older 737 practice and is not confirmed for the MAX.",
         "note_caution": true,
         "terms": [
-          "EGT",
-          "N2"
+          "start lever",
+          "N2",
+          "EGT"
         ],
         "why": "Fuel only once turning fast enough to light off",
         "check": "Fuel flow, then EGT rising",
@@ -4970,7 +5194,8 @@ assertion_line: 34
         "note": "During a short test, fuel flow reads zero and the ENG VALVE CLOSED light shows bright. Then fuel flow rises. EGT should rise within 10 seconds. If it does not, the EEC may stop the start. Otherwise, stop it yourself.",
         "note_caution": true,
         "terms": [
-          "EGT"
+          "EGT",
+          "start lever"
         ],
         "why": "Confirms light-off",
         "check": "EGT rises within 10 seconds",
@@ -4994,7 +5219,8 @@ assertion_line: 34
         ],
         "quick": "always",
         "terms": [
-          "N2"
+          "N2",
+          "P5"
         ],
         "why": "Confirms the starter has cut out",
         "check": "Switch back at OFF",
@@ -5030,9 +5256,9 @@ assertion_line: 34
         "quick": "always",
         "note": "N1, N2, EGT and oil pressure settle at idle with no alerts.",
         "terms": [
-          "EGT",
           "N1",
-          "N2"
+          "N2",
+          "EGT"
         ],
         "why": "Engine settled at idle",
         "check": "N1, N2, EGT and oil pressure stable, LOW OIL PRESSURE light OUT",
@@ -5062,7 +5288,8 @@ assertion_line: 34
         "quick": "always",
         "terms": [
           "GRD",
-          "N2"
+          "N2",
+          "P5"
         ],
         "why": "The engine must spin before fuel is added",
         "check": "N2 rising, START VALVE OPEN alert",
@@ -5130,8 +5357,9 @@ assertion_line: 34
         "note": "If 25% N2 is not reached, move to IDLE at maximum motoring, but not below 20% N2. This comes from older 737 practice and is not confirmed for the MAX.",
         "note_caution": true,
         "terms": [
-          "EGT",
-          "N2"
+          "start lever",
+          "N2",
+          "EGT"
         ],
         "why": "Fuel only once turning fast enough to light off",
         "check": "Fuel flow, then EGT rising",
@@ -5158,7 +5386,8 @@ assertion_line: 34
         "note": "During a short test, fuel flow reads zero and the ENG VALVE CLOSED light shows bright. Then fuel flow rises. EGT should rise within 10 seconds. If it does not, the EEC may stop the start. Otherwise, stop it yourself.",
         "note_caution": true,
         "terms": [
-          "EGT"
+          "EGT",
+          "start lever"
         ],
         "why": "Confirms light-off",
         "check": "EGT rises within 10 seconds",
@@ -5182,7 +5411,8 @@ assertion_line: 34
         ],
         "quick": "always",
         "terms": [
-          "N2"
+          "N2",
+          "P5"
         ],
         "why": "Confirms the starter has cut out",
         "check": "Switch back at OFF",
@@ -5218,9 +5448,9 @@ assertion_line: 34
         "quick": "always",
         "note": "N1, N2, EGT and oil pressure settle at idle with no alerts.",
         "terms": [
-          "EGT",
           "N1",
-          "N2"
+          "N2",
+          "EGT"
         ],
         "why": "Engine settled at idle",
         "check": "N1, N2, EGT and oil pressure stable, LOW OIL PRESSURE light OUT",
@@ -5278,6 +5508,9 @@ assertion_line: 34
           }
         ],
         "quick": "always",
+        "terms": [
+          "P5"
+        ],
         "why": "Engine generators take over the buses",
         "how": "gens",
         "explain": "gen",
@@ -5340,6 +5573,10 @@ assertion_line: 34
         ],
         "quick": "always",
         "note": "ON starts heating straight away. AUTO starts it only once the engines are running.",
+        "terms": [
+          "probe heat",
+          "P5"
+        ],
         "why": "Heats the probes for flight. The lights go out once heating is working.",
         "check": "Both PROBE HEAT switches ON, probe lights OUT",
         "check_detail": "Amber probe lights out once an engine is running",
@@ -5375,6 +5612,10 @@ assertion_line: 34
         "quick": "always",
         "note": "Turn ENG 1 and ENG 2 anti-ice ON when it is 10C or below with visible moisture. Otherwise leave them OFF.",
         "note_caution": true,
+        "terms": [
+          "anti-ice",
+          "P5"
+        ],
         "why": "Stops ice building in the engine inlets on the ground",
         "confirmed_by": [
           {
@@ -5403,7 +5644,9 @@ assertion_line: 34
         ],
         "quick": "always",
         "terms": [
-          "PACK"
+          "PACK",
+          "P5",
+          "Bleed air"
         ],
         "why": "Supplies conditioned air to the cabin",
         "check": "PACK lights OUT",
@@ -5431,7 +5674,9 @@ assertion_line: 34
         "quick": "always",
         "note": "AUTO closes the valve when both engine bleeds and both packs are on, and opens it if any of them is off.",
         "terms": [
-          "ISOLATION VALVE"
+          "ISOLATION VALVE",
+          "P5",
+          "Bleed air"
         ],
         "why": "Closes with both bleeds and packs on, opens if one is off",
         "confirmed_by": [
@@ -5460,7 +5705,9 @@ assertion_line: 34
         ],
         "note": "With the APU bleed about to go off, the engines now supply the packs.",
         "terms": [
-          "APU"
+          "APU",
+          "P5",
+          "Bleed air"
         ],
         "why": "Engines now supply the packs before the APU bleed goes off",
         "confirmed_by": [
@@ -5490,7 +5737,8 @@ assertion_line: 34
         "quick": "always",
         "note": "CONT keeps the igniters firing, ready against a flameout on takeoff.",
         "terms": [
-          "CONT"
+          "CONT",
+          "P5"
         ],
         "why": "Igniters ready against a flameout on takeoff",
         "panel_lights": {
@@ -5516,7 +5764,9 @@ assertion_line: 34
         ],
         "quick": "always",
         "terms": [
-          "APU"
+          "APU",
+          "P5",
+          "Bleed air"
         ],
         "why": "Engine bleeds now supply the air",
         "confirmed_by": [
@@ -5542,7 +5792,8 @@ assertion_line: 34
         ],
         "quick": "always",
         "terms": [
-          "APU"
+          "APU",
+          "P5"
         ],
         "why": "Saves fuel, after the engine generators are on",
         "explain": "apuoff",
@@ -5599,7 +5850,9 @@ assertion_line: 34
         ],
         "note": "Shows flight control positions on the display, ready for your control check.",
         "terms": [
-          "SYS"
+          "SYS",
+          "P9",
+          "autobrake"
         ],
         "why": "Ready for your control check",
         "confirmed_by": [
@@ -5700,7 +5953,8 @@ assertion_line: 34
           }
         ],
         "terms": [
-          "RECALL"
+          "RECALL",
+          "P7"
         ],
         "why": "Shows any stored system alerts",
         "check": "No lights left on after release",
@@ -5738,6 +5992,9 @@ assertion_line: 34
             "at": "oh/elecl/GEN 2/1",
             "set": "ON"
           }
+        ],
+        "terms": [
+          "P5"
         ],
         "why": "Engine generators take over the buses",
         "explain": "gen",
@@ -5798,6 +6055,10 @@ assertion_line: 34
           }
         ],
         "note": "ON starts heating straight away. AUTO starts it only once the engines are running.",
+        "terms": [
+          "probe heat",
+          "P5"
+        ],
         "why": "Heats the probes for flight. The lights go out once heating is working.",
         "check": "Both PROBE HEAT switches ON, probe lights OUT",
         "check_detail": "Amber probe lights out once an engine is running",
@@ -5830,6 +6091,10 @@ assertion_line: 34
         ],
         "note": "Turn ENG 1 and ENG 2 anti-ice ON when it is 10C or below with visible moisture. Otherwise leave them OFF.",
         "note_caution": true,
+        "terms": [
+          "anti-ice",
+          "P5"
+        ],
         "why": "Stops ice building in the engine inlets on the ground",
         "confirmed_by": [
           {
@@ -5853,7 +6118,9 @@ assertion_line: 34
         ],
         "note": "AUTO closes the valve when both engine bleeds and both packs are on, and opens it if any of them is off.",
         "terms": [
-          "ISOLATION VALVE"
+          "ISOLATION VALVE",
+          "P5",
+          "Bleed air"
         ],
         "why": "Closes with both bleeds and packs on, opens if one is off",
         "confirmed_by": [
@@ -5882,7 +6149,8 @@ assertion_line: 34
         ],
         "note": "CONT keeps the igniters firing, ready against a flameout on takeoff.",
         "terms": [
-          "CONT"
+          "CONT",
+          "P5"
         ],
         "why": "Igniters ready against a flameout on takeoff",
         "panel_lights": {
@@ -5938,7 +6206,8 @@ assertion_line: 34
           }
         ],
         "terms": [
-          "RECALL"
+          "RECALL",
+          "P7"
         ],
         "why": "Shows any stored system alerts",
         "check": "No unexpected alerts",
@@ -5963,7 +6232,9 @@ assertion_line: 34
           }
         ],
         "terms": [
-          "RTO"
+          "autobrake",
+          "RTO",
+          "P9"
         ],
         "why": "Maximum braking if you reject at high speed",
         "explain": "aut",
@@ -6098,6 +6369,9 @@ assertion_line: 34
         ],
         "quick": "always",
         "note": "Lets you and others see the taxiway at night or in low visibility.",
+        "terms": [
+          "P5"
+        ],
         "why": "See and be seen on the taxiway"
       },
       {
@@ -6112,6 +6386,9 @@ assertion_line: 34
             "at": "oh/lte/WING/1",
             "set": "ON"
           }
+        ],
+        "terms": [
+          "P5"
         ],
         "why": "Makes the airplane visible and lights the wing for ice checks",
         "check": "Wing leading edges lit"
@@ -6202,8 +6479,9 @@ assertion_line: 34
         ],
         "terms": [
           "EFIS",
+          "ND",
           "TERR",
-          "ND"
+          "P7"
         ],
         "why": "Weather or terrain on the ND for the departure. Weather radar is not simulated in the iFly, so use TERR",
         "panel_lights": {
@@ -6235,7 +6513,9 @@ assertion_line: 34
           }
         ],
         "terms": [
-          "PACK"
+          "PACK",
+          "P5",
+          "Bleed air"
         ],
         "why": "The pack setting must match the one used in your preflight performance calculations",
         "check": "Both PACK switches set for takeoff",
@@ -6300,6 +6580,9 @@ assertion_line: 34
         "fill": [
           "runway"
         ],
+        "terms": [
+          "P9"
+        ],
         "why": "Confirms the takeoff reference",
         "check": "Data and runway agree"
       },
@@ -6319,8 +6602,9 @@ assertion_line: 34
           "v2"
         ],
         "terms": [
+          "V2",
           "MCP",
-          "V2"
+          "P7"
         ],
         "why": "Target speed after liftoff",
         "check": "V2 set on the MCP",
@@ -6421,7 +6705,8 @@ assertion_line: 34
           }
         ],
         "terms": [
-          "CONT"
+          "CONT",
+          "P5"
         ],
         "why": "Igniters ready against a flameout on takeoff",
         "panel_lights": {
@@ -6446,6 +6731,9 @@ assertion_line: 34
           }
         ],
         "quick": "always",
+        "terms": [
+          "P5"
+        ],
         "why": "Strobes on for takeoff and flight",
         "confirmed_by": [
           {
@@ -6495,6 +6783,9 @@ assertion_line: 34
         ],
         "quick": "always",
         "note": "Turning on the landing lights shows others you are about to roll.",
+        "terms": [
+          "P5"
+        ],
         "why": "Shows others you are about to roll",
         "confirmed_by": [
           {
@@ -6612,8 +6903,8 @@ assertion_line: 34
         "note": "Advance to about 40% N1 and let both engines settle before TO/GA.",
         "note_caution": true,
         "terms": [
-          "TO/GA",
-          "N1"
+          "N1",
+          "TO/GA"
         ],
         "why": "Stable engines before TO/GA",
         "check": "Both engines steady",
@@ -6740,8 +7031,8 @@ assertion_line: 34
         "note": "Rotate smoothly toward 15 degrees pitch.",
         "note_caution": true,
         "terms": [
-          "V2",
-          "VR"
+          "VR",
+          "V2"
         ],
         "why": "A smooth rotation avoids a tail strike and lets the airplane reach V2 in the climb",
         "callout": "Pilot monitoring: \"Rotate.\"",
@@ -6811,6 +7102,9 @@ assertion_line: 34
           }
         ],
         "quick": "always",
+        "terms": [
+          "P2"
+        ],
         "why": "Gear up and locked",
         "check": "Red and green gear lights OUT",
         "check_detail": "Raise the gear only after a positive rate of climb",
@@ -6865,7 +7159,9 @@ assertion_line: 34
           }
         ],
         "terms": [
-          "PACK"
+          "PACK",
+          "P5",
+          "Bleed air"
         ],
         "why": "If the packs were off for takeoff, set them back to AUTO now so the cabin pressurizes",
         "check": "Both PACK switches at AUTO, PACK lights OUT",
@@ -6904,7 +7200,8 @@ assertion_line: 34
           }
         ],
         "terms": [
-          "Bleed air"
+          "Bleed air",
+          "P5"
         ],
         "why": "Bleed air into the pneumatic system",
         "confirmed_by": [
@@ -6932,7 +7229,9 @@ assertion_line: 34
           }
         ],
         "terms": [
-          "PACK"
+          "PACK",
+          "P5",
+          "Bleed air"
         ],
         "why": "Packs back in AUTO after a packs-off takeoff",
         "check": "PACK lights OUT",
@@ -6955,6 +7254,9 @@ assertion_line: 34
             "at": "mn/ctr/LANDING GEAR LEVER/1",
             "set": "UP"
           }
+        ],
+        "terms": [
+          "P2"
         ],
         "why": "Gear up and locked",
         "check": "Red and green gear lights OUT",
@@ -7018,11 +7320,11 @@ assertion_line: 34
         "note": "Select the lateral mode above 400 ft.",
         "note_caution": true,
         "terms": [
-          "HDG SEL",
           "LNAV",
+          "HDG SEL",
           "FMA",
           "FMC",
-          "FT"
+          "P7"
         ],
         "why": "LNAV follows the FMC route. HDG SEL flies a heading you set",
         "check": "FMA shows the mode",
@@ -7064,6 +7366,9 @@ assertion_line: 34
             "at": "oh/press/MODE/1"
           }
         ],
+        "terms": [
+          "P5"
+        ],
         "why": "Pressurization working",
         "check": "Cabin altitude climbing normally",
         "panel_lights": {
@@ -7092,8 +7397,7 @@ assertion_line: 34
         "note": "Thrust reduces automatically to climb thrust. Check N1 agrees.",
         "note_caution": true,
         "terms": [
-          "N1",
-          "FT"
+          "N1"
         ],
         "why": "Thrust reduces to climb automatically",
         "check": "N1 matches the CLB N1 limit",
@@ -7123,9 +7427,10 @@ assertion_line: 34
         "note": "The autopilot refuses to engage unless the airplane is trimmed and you are not pushing on the controls. There is a minimum height after takeoff below which the autopilot should not be engaged.",
         "note_caution": true,
         "terms": [
-          "FMA",
+          "CMD",
           "PFD",
-          "CMD"
+          "FMA",
+          "P7"
         ],
         "why": "The autopilot then flies the modes shown on the FMA",
         "check": "CMD shown on the PFD",
@@ -7154,7 +7459,9 @@ assertion_line: 34
         "note": "RTO is for the takeoff roll only. Turn it OFF after takeoff. Left at RTO, autobrake will not work on landing.",
         "note_caution": true,
         "terms": [
-          "RTO"
+          "autobrake",
+          "RTO",
+          "P9"
         ],
         "why": "Left at RTO, autobrake will not work on landing"
       },
@@ -7175,7 +7482,8 @@ assertion_line: 34
           }
         ],
         "terms": [
-          "CONT"
+          "CONT",
+          "P5"
         ],
         "why": "CONT in heavy rain, icing or severe turbulence. Otherwise OFF",
         "panel_lights": {
@@ -7199,6 +7507,9 @@ assertion_line: 34
         "id": "ifly-737-max8.climb.center-fuel-pumps",
         "text": "CENTER FUEL PUMPS",
         "expect": "OFF WHEN THE LOW PRESSURE LIGHTS COME ON",
+        "terms": [
+          "center tank"
+        ],
         "why": "The lights show the center tank is running out, so the pumps have nothing left to feed.",
         "confirmed_by": [
           {
@@ -7227,6 +7538,9 @@ assertion_line: 34
         ],
         "quick": "always",
         "note": "Above 10,000 ft they are no longer needed.",
+        "terms": [
+          "P5"
+        ],
         "why": "Not needed above 10,000 ft",
         "confirmed_by": [
           {
@@ -7263,6 +7577,9 @@ assertion_line: 34
             "set": "OFF"
           }
         ],
+        "terms": [
+          "P5"
+        ],
         "why": "Not needed in the climb"
       },
       {
@@ -7277,6 +7594,9 @@ assertion_line: 34
           {
             "at": "oh/col/FASTEN BELTS/1"
           }
+        ],
+        "terms": [
+          "P5"
         ],
         "why": "Belts off in smooth air if you choose",
         "confirmed_by": [
@@ -7332,6 +7652,9 @@ assertion_line: 34
             "set": "OFF"
           }
         ],
+        "terms": [
+          "P5"
+        ],
         "why": "Not needed in the climb"
       },
       {
@@ -7345,6 +7668,9 @@ assertion_line: 34
           {
             "at": "oh/col/FASTEN BELTS/1"
           }
+        ],
+        "terms": [
+          "P5"
         ],
         "why": "Belts off in smooth air if you choose",
         "confirmed_by": [
@@ -7380,8 +7706,10 @@ assertion_line: 34
         "quick": "always",
         "note": "Pressing STD gives every airplane the same altitude reference above the transition altitude.",
         "terms": [
+          "STD",
           "TRANSITION ALTITUDE",
-          "STD"
+          "P7",
+          "EFIS"
         ],
         "why": "Same altitude reference above transition",
         "how": "baro",
@@ -7474,6 +7802,9 @@ assertion_line: 34
         "quick": "always",
         "note": "Switch them off when the center tank is empty. Running them dry is a safety risk.",
         "note_caution": true,
+        "terms": [
+          "P5"
+        ],
         "why": "Running pumps dry is a safety risk",
         "check": "Both lights on first",
         "if_not": "One light on",
@@ -7510,6 +7841,10 @@ assertion_line: 34
         "quick": "always",
         "note": "Engine anti-ice ON in icing conditions (TAT 10C or below with visible moisture). Turn it off once you are clear of icing.",
         "note_caution": true,
+        "terms": [
+          "anti-ice",
+          "P5"
+        ],
         "why": "Long use in dry air can overheat the inlet"
       },
       {
@@ -7531,7 +7866,9 @@ assertion_line: 34
         "note": "Look ahead for weather on the ND, and plan any deviation early.",
         "note_caution": true,
         "terms": [
-          "ND"
+          "ND",
+          "P7",
+          "EFIS"
         ],
         "why": "Plan any deviation early",
         "panel_lights": {
@@ -7569,7 +7906,8 @@ assertion_line: 34
         "quick": "always",
         "terms": [
           "CDU",
-          "FMC"
+          "FMC",
+          "P9"
         ],
         "why": "The FMC needs the arrival to plan the descent",
         "confirmed_by": [
@@ -7594,8 +7932,9 @@ assertion_line: 34
         ],
         "quick": "always",
         "terms": [
+          "MCP",
           "VNAV",
-          "MCP"
+          "P7"
         ],
         "why": "VNAV will not descend below the MCP altitude",
         "confirmed_by": [
@@ -7633,7 +7972,8 @@ assertion_line: 34
         "note": "Check the arrival and approach in the CDU match your clearance.",
         "note_caution": true,
         "terms": [
-          "FMC"
+          "FMC",
+          "P9"
         ],
         "why": "Confirms the route ahead",
         "check": "Arrival and approach match the clearance",
@@ -7662,7 +8002,8 @@ assertion_line: 34
         ],
         "note": "The pressurization system uses this to bring the cabin down to the airport elevation.",
         "terms": [
-          "LAND ALT"
+          "LAND ALT",
+          "P5"
         ],
         "why": "Brings the cabin down to airport elevation",
         "confirmed_by": [
@@ -7690,8 +8031,9 @@ assertion_line: 34
         ],
         "quick": "always",
         "terms": [
+          "CDU",
           "VREF",
-          "CDU"
+          "P9"
         ],
         "why": "Target speed for flaps and weight",
         "check": "VREF on the speed tape",
@@ -7749,7 +8091,8 @@ assertion_line: 34
           }
         ],
         "terms": [
-          "RECALL"
+          "RECALL",
+          "P7"
         ],
         "why": "Shows any stored system alerts",
         "check": "No unexpected alerts",
@@ -7781,7 +8124,9 @@ assertion_line: 34
         "note": "Set the altitude at which you must see the runway or go around.",
         "note_caution": true,
         "terms": [
-          "BARO"
+          "BARO",
+          "P7",
+          "EFIS"
         ],
         "why": "At minimums you must see the runway, or go around",
         "how": "mins",
@@ -7806,6 +8151,10 @@ assertion_line: 34
           }
         ],
         "quick": "always",
+        "terms": [
+          "autobrake",
+          "P9"
+        ],
         "why": "Pick by runway length and surface: lower settings on long dry runways, higher on short or wet ones",
         "confirmed_by": [
           {
@@ -7843,7 +8192,8 @@ assertion_line: 34
           "landing_altitude"
         ],
         "terms": [
-          "LAND ALT"
+          "LAND ALT",
+          "P5"
         ],
         "why": "Brings the cabin down to airport elevation",
         "check": "LAND ALT matches the destination",
@@ -7900,7 +8250,8 @@ assertion_line: 34
           }
         ],
         "terms": [
-          "RECALL"
+          "RECALL",
+          "P7"
         ],
         "why": "Shows any stored system alerts",
         "check": "No unexpected alerts",
@@ -7925,6 +8276,10 @@ assertion_line: 34
         ],
         "fill": [
           "autobrake"
+        ],
+        "terms": [
+          "autobrake",
+          "P9"
         ],
         "why": "Pick by runway length and surface: lower settings on long dry runways, higher on short or wet ones",
         "confirmed_by": [
@@ -7961,7 +8316,8 @@ assertion_line: 34
           "minimums"
         ],
         "terms": [
-          "VREF"
+          "VREF",
+          "P9"
         ],
         "why": "Confirms the landing data",
         "check": "VREF and minimums set",
@@ -8022,7 +8378,9 @@ assertion_line: 34
         "note": "Below the transition level, altimeters must read local QNH so you see your true altitude above sea level.",
         "note_caution": true,
         "terms": [
-          "QNH"
+          "QNH",
+          "P7",
+          "EFIS"
         ],
         "why": "True altitude below transition",
         "how": "baro",
@@ -8062,6 +8420,9 @@ assertion_line: 34
           }
         ],
         "quick": "always",
+        "terms": [
+          "P5"
+        ],
         "why": "See and be seen below 10,000 ft"
       },
       {
@@ -8078,6 +8439,9 @@ assertion_line: 34
           }
         ],
         "note": "Tells the cabin to sit down for landing.",
+        "terms": [
+          "P5"
+        ],
         "why": "Cabin seated for landing",
         "confirmed_by": [
           {
@@ -8111,7 +8475,8 @@ assertion_line: 34
         "note_caution": true,
         "terms": [
           "ILS",
-          "PFD"
+          "PFD",
+          "ADF"
         ],
         "why": "Identify it before you rely on it",
         "check": "ILS ident shown on the PFD, or the Morse ident heard",
@@ -8146,10 +8511,11 @@ assertion_line: 34
         "note": "An RNAV approach follows the route in the FMC, so check it matches the chart.",
         "note_caution": true,
         "terms": [
-          "RNAV",
-          "LEGS",
           "CDU",
-          "FMC"
+          "LEGS",
+          "RNAV",
+          "FMC",
+          "P9"
         ],
         "why": "An RNAV approach follows the FMC route",
         "check": "Approach matches the chart"
@@ -8172,7 +8538,8 @@ assertion_line: 34
         ],
         "quick": "always",
         "terms": [
-          "ND"
+          "ND",
+          "P7"
         ],
         "why": "Both course selectors on the published final approach course, so the localizer can be compared with it",
         "check": "Course shows on the ND",
@@ -8201,11 +8568,12 @@ assertion_line: 34
           "equals": "ils"
         },
         "terms": [
-          "VOR/LOC",
-          "FMA",
+          "APP",
           "MCP",
+          "VOR/LOC",
           "G/S",
-          "APP"
+          "FMA",
+          "P7"
         ],
         "why": "Lets the autopilot capture the localizer and glideslope",
         "check": "VOR/LOC and G/S white on the FMA",
@@ -8250,6 +8618,10 @@ assertion_line: 34
         ],
         "note": "Below the transition level, altimeters must read local QNH so you see your true altitude above sea level.",
         "note_caution": true,
+        "terms": [
+          "P7",
+          "EFIS"
+        ],
         "why": "True altitude below transition",
         "confirmed_by": [
           {
@@ -8271,6 +8643,9 @@ assertion_line: 34
           }
         ],
         "note": "Tells the cabin to sit down for landing.",
+        "terms": [
+          "P5"
+        ],
         "why": "Cabin seated for landing",
         "confirmed_by": [
           {
@@ -8306,6 +8681,9 @@ assertion_line: 34
             "set": "ON"
           }
         ],
+        "terms": [
+          "P5"
+        ],
         "why": "See and be seen below 10,000 ft"
       }
     ]
@@ -8335,8 +8713,7 @@ assertion_line: 34
         "quick": "always",
         "terms": [
           "IMC",
-          "VMC",
-          "FT"
+          "VMC"
         ],
         "why": "Configure early so you are stable by 1,000 ft in cloud or 500 ft in visual conditions",
         "how": "flapdn",
@@ -8379,8 +8756,9 @@ assertion_line: 34
           "equals": "ils"
         },
         "terms": [
+          "ILS",
           "VREF",
-          "ILS"
+          "P2"
         ],
         "why": "Gear down before landing. Lowering it here also adds drag to help you slow down and descend. The common Boeing ILS profile is gear down and flaps 15 when the glideslope comes alive, then landing flaps, VREF + 5 and the missed approach altitude at glideslope capture.",
         "check": "3 green gear lights",
@@ -8440,8 +8818,8 @@ assertion_line: 34
           "equals": "ils"
         },
         "terms": [
-          "VREF",
-          "MCP"
+          "MCP",
+          "VREF"
         ],
         "why": "Sets the final approach speed, and the next altitude is ready if you go around.",
         "check": "VREF confirmed first",
@@ -8470,8 +8848,8 @@ assertion_line: 34
           "equals": "ils"
         },
         "terms": [
-          "VREF",
-          "ILS"
+          "ILS",
+          "VREF"
         ],
         "why": "Final landing configuration. The common Boeing ILS profile is gear down and flaps 15 when the glideslope comes alive, then landing flaps, VREF + 5 and the missed approach altitude at glideslope capture.",
         "check": "Flaps match the lever",
@@ -8513,6 +8891,9 @@ assertion_line: 34
           "option": "approach",
           "equals": "vis"
         },
+        "terms": [
+          "P2"
+        ],
         "why": "Gear down before landing. Lowering it here also adds drag to help you slow down and descend",
         "check": "3 green gear lights",
         "if_not": "Fewer than 3 green",
@@ -8572,9 +8953,6 @@ assertion_line: 34
           "option": "approach",
           "equals": "vis"
         },
-        "terms": [
-          "FT"
-        ],
         "why": "Final landing configuration",
         "check": "Flaps match the lever",
         "check_detail": "Green light"
@@ -8609,6 +8987,9 @@ assertion_line: 34
           "option": "approach",
           "equals": "rnav"
         },
+        "terms": [
+          "P2"
+        ],
         "why": "Gear down before landing. Lowering it here also adds drag to help you slow down and descend",
         "check": "3 green gear lights",
         "if_not": "Fewer than 3 green",
@@ -8691,7 +9072,8 @@ assertion_line: 34
         ],
         "quick": "always",
         "terms": [
-          "CONT"
+          "CONT",
+          "P5"
         ],
         "why": "Ignition on for approach and landing",
         "check": "Both start switches at CONT",
@@ -8743,6 +9125,9 @@ assertion_line: 34
           }
         ],
         "note": "Lights the runway ahead for rollout.",
+        "terms": [
+          "P5"
+        ],
         "why": "Lights the runway for rollout"
       },
       {
@@ -8758,9 +9143,6 @@ assertion_line: 34
           }
         ],
         "quick": "always",
-        "terms": [
-          "FT"
-        ],
         "why": "Hands on for a manual landing",
         "check": "Autopilot disengage warning",
         "check_detail": "Press each switch again to silence them",
@@ -8801,7 +9183,8 @@ assertion_line: 34
           }
         ],
         "terms": [
-          "CONT"
+          "CONT",
+          "P5"
         ],
         "why": "Ignition on for approach and landing",
         "panel_lights": {
@@ -8871,6 +9254,9 @@ assertion_line: 34
             "at": "mn/ctr/LANDING GEAR LEVER/1",
             "set": "DN"
           }
+        ],
+        "terms": [
+          "P2"
         ],
         "why": "Gear down and locked",
         "check": "3 green lights",
@@ -8962,7 +9348,8 @@ assertion_line: 34
         "note": "Confirm the levers are closed. The spoilers and autobrake rely on it.",
         "note_caution": true,
         "terms": [
-          "Spoilers"
+          "Spoilers",
+          "autobrake"
         ],
         "why": "Spoilers and autobrake rely on it",
         "check": "Levers closed",
@@ -9105,6 +9492,10 @@ assertion_line: 34
         ],
         "note": "Set the selector to OFF (pressing the toe brakes also disarms it), then brake with the toe brakes.",
         "note_caution": true,
+        "terms": [
+          "autobrake",
+          "P9"
+        ],
         "why": "Take over with the toe brakes",
         "confirmed_by": [
           {
@@ -9138,6 +9529,10 @@ assertion_line: 34
           }
         ],
         "quick": "always",
+        "terms": [
+          "autobrake",
+          "P9"
+        ],
         "why": "Taxi on the toe brakes",
         "confirmed_by": [
           {
@@ -9162,7 +9557,8 @@ assertion_line: 34
         ],
         "quick": "always",
         "terms": [
-          "SPEEDBRAKE"
+          "SPEEDBRAKE",
+          "Spoilers"
         ],
         "why": "Keeps the spoilers stowed on the ground",
         "check": "Lever in DOWN detent",
@@ -9193,6 +9589,10 @@ assertion_line: 34
         ],
         "quick": "always",
         "note": "AUTO keeps probe heat on while an engine runs, then off after shutdown.",
+        "terms": [
+          "probe heat",
+          "P5"
+        ],
         "why": "Probe heat stops by itself after shutdown",
         "confirmed_by": [
           {
@@ -9216,6 +9616,9 @@ assertion_line: 34
           }
         ],
         "quick": "always",
+        "terms": [
+          "P5"
+        ],
         "why": "Strobes off on the ground",
         "confirmed_by": [
           {
@@ -9257,6 +9660,9 @@ assertion_line: 34
           }
         ],
         "quick": "always",
+        "terms": [
+          "P5"
+        ],
         "why": "Not needed for taxi"
       },
       {
@@ -9278,6 +9684,9 @@ assertion_line: 34
           }
         ],
         "quick": "always",
+        "terms": [
+          "P5"
+        ],
         "why": "Ignition not needed for taxi",
         "panel_lights": {
           "starts": [
@@ -9357,8 +9766,9 @@ assertion_line: 34
         ],
         "terms": [
           "EFIS",
+          "WXR",
           "TERR",
-          "WXR"
+          "P7"
         ],
         "why": "Display not needed for taxi",
         "panel_lights": {
@@ -9390,7 +9800,8 @@ assertion_line: 34
         ],
         "quick": "always",
         "terms": [
-          "APU"
+          "APU",
+          "P5"
         ],
         "why": "Starts the APU for power and air",
         "how": "apuland"
@@ -9426,6 +9837,10 @@ assertion_line: 34
             "at": "gl/efisr/TERR/1"
           }
         ],
+        "terms": [
+          "P7",
+          "EFIS"
+        ],
         "why": "A transmitting radar is a hazard to ground crew and during fueling",
         "panel_lights": {
           "efispanel": [
@@ -9452,6 +9867,10 @@ assertion_line: 34
             "at": "con/ed/AUTO BRAKE/1",
             "set": "OFF"
           }
+        ],
+        "terms": [
+          "autobrake",
+          "P9"
         ],
         "why": "Taxi on the toe brakes",
         "confirmed_by": [
@@ -9499,7 +9918,8 @@ assertion_line: 34
           }
         ],
         "terms": [
-          "SPEEDBRAKE"
+          "SPEEDBRAKE",
+          "Spoilers"
         ],
         "why": "Keeps the spoilers stowed on the ground",
         "check": "Lever in DOWN detent",
@@ -9535,6 +9955,11 @@ assertion_line: 34
             "set": "ON"
           }
         ],
+        "terms": [
+          "window heat",
+          "P5",
+          "probe heat"
+        ],
         "why": "Keeps the windows warm and clear until the airplane is secured",
         "confirmed_by": [
           {
@@ -9561,6 +9986,10 @@ assertion_line: 34
           }
         ],
         "note": "AUTO keeps probe heat on while an engine runs, then off after shutdown.",
+        "terms": [
+          "probe heat",
+          "P5"
+        ],
         "why": "Probe heat stops by itself after shutdown",
         "confirmed_by": [
           {
@@ -9585,6 +10014,9 @@ assertion_line: 34
             "at": "oh/start/ENGINE START 2/1",
             "set": "OFF"
           }
+        ],
+        "terms": [
+          "P5"
         ],
         "why": "Ignition not needed for taxi",
         "panel_lights": {
@@ -9614,7 +10046,8 @@ assertion_line: 34
           }
         ],
         "terms": [
-          "APU"
+          "APU",
+          "P5"
         ],
         "why": "Starts the APU for power and air"
       }
@@ -9713,8 +10146,9 @@ assertion_line: 34
         "note": "Take power from the APU before you stop the engines, or you lose normal AC power.",
         "note_caution": true,
         "terms": [
+          "APU",
           "GEN OFF BUS",
-          "APU"
+          "P5"
         ],
         "why": "Puts APU power on both transfer buses",
         "check": "APU GEN OFF BUS light OUT",
@@ -9796,6 +10230,9 @@ assertion_line: 34
             "set": "OFF"
           }
         ],
+        "terms": [
+          "P5"
+        ],
         "why": "Passengers may stand",
         "confirmed_by": [
           {
@@ -9819,6 +10256,9 @@ assertion_line: 34
           }
         ],
         "quick": "always",
+        "terms": [
+          "P5"
+        ],
         "why": "Engines have stopped",
         "confirmed_by": [
           {
@@ -9841,6 +10281,9 @@ assertion_line: 34
           }
         ],
         "quick": "always",
+        "terms": [
+          "P5"
+        ],
         "why": "Not needed once parked",
         "check": "TAXI switch OFF",
         "if_not": "Taxi light still on",
@@ -9887,6 +10330,9 @@ assertion_line: 34
           }
         ],
         "quick": "always",
+        "terms": [
+          "P5"
+        ],
         "why": "Engines stopped, nothing to feed",
         "confirmed_by": [
           {
@@ -9914,7 +10360,8 @@ assertion_line: 34
           }
         ],
         "terms": [
-          "CAB/UTIL"
+          "CAB/UTIL",
+          "P5"
         ],
         "why": "Cabin power not needed now",
         "confirmed_by": [
@@ -9947,6 +10394,10 @@ assertion_line: 34
           }
         ],
         "quick": "always",
+        "terms": [
+          "anti-ice",
+          "P5"
+        ],
         "why": "Not needed after shutdown",
         "confirmed_by": [
           {
@@ -9974,6 +10425,9 @@ assertion_line: 34
           }
         ],
         "quick": "always",
+        "terms": [
+          "P5"
+        ],
         "why": "No hydraulic pressure needed at the gate",
         "confirmed_by": [
           {
@@ -10001,7 +10455,9 @@ assertion_line: 34
           }
         ],
         "terms": [
-          "PACK"
+          "PACK",
+          "P5",
+          "Bleed air"
         ],
         "why": "Supplies conditioned air to the cabin",
         "check": "PACK lights OUT",
@@ -10028,7 +10484,9 @@ assertion_line: 34
         ],
         "terms": [
           "ISOLATION VALVE",
-          "APU"
+          "APU",
+          "P5",
+          "Bleed air"
         ],
         "why": "One APU feeds both packs",
         "confirmed_by": [
@@ -10062,7 +10520,9 @@ assertion_line: 34
           }
         ],
         "terms": [
-          "APU"
+          "APU",
+          "P5",
+          "Bleed air"
         ],
         "why": "Feeds APU air for ground air conditioning",
         "confirmed_by": [
@@ -10091,6 +10551,9 @@ assertion_line: 34
           }
         ],
         "note": "Turns off the guidance for the next crew.",
+        "terms": [
+          "P7"
+        ],
         "why": "Reset for the next crew",
         "confirmed_by": [
           {
@@ -10164,7 +10627,8 @@ assertion_line: 34
           }
         ],
         "terms": [
-          "APU"
+          "APU",
+          "P5"
         ],
         "why": "Takes over before the APU goes off",
         "check": "Ground power on the buses",
@@ -10188,7 +10652,8 @@ assertion_line: 34
         ],
         "terms": [
           "IRS",
-          "NAV"
+          "NAV",
+          "P5"
         ],
         "why": "Leaving NAV avoids a new alignment if you fly again soon"
       }
@@ -10235,6 +10700,9 @@ assertion_line: 34
             "set": "OFF"
           }
         ],
+        "terms": [
+          "P5"
+        ],
         "why": "Engines stopped, nothing to feed",
         "confirmed_by": [
           {
@@ -10262,6 +10730,10 @@ assertion_line: 34
         ],
         "note": "The iFly tutorial's shutdown checklist says OFF, but the MAX probe heat switches have only AUTO and ON. AUTO turns the heat off once the engines are shut down.",
         "note_caution": true,
+        "terms": [
+          "probe heat",
+          "P5"
+        ],
         "why": "Not needed once the engines are stopped.",
         "confirmed_by": [
           {
@@ -10288,7 +10760,7 @@ assertion_line: 34
           }
         ],
         "terms": [
-          "ELEC"
+          "P5"
         ],
         "why": "Not needed after shutdown",
         "confirmed_by": [
@@ -10388,7 +10860,8 @@ assertion_line: 34
         ],
         "terms": [
           "IRS",
-          "NAV"
+          "NAV",
+          "P5"
         ],
         "why": "Leaving NAV avoids a new alignment if you fly again soon"
       },
@@ -10406,6 +10879,10 @@ assertion_line: 34
           {
             "at": "gl/efisr/WXR/1"
           }
+        ],
+        "terms": [
+          "P7",
+          "EFIS"
         ],
         "why": "A transmitting radar is a hazard to ground crew and during fueling",
         "panel_lights": {
@@ -10448,6 +10925,10 @@ assertion_line: 34
             "at": "oh/press/OUTFLOW/1"
           }
         ],
+        "terms": [
+          "outflow valve",
+          "P5"
+        ],
         "why": "Keeps snow and ice out of the outflow valve"
       }
     ]
@@ -10481,7 +10962,8 @@ assertion_line: 34
         "quick": "always",
         "note": "Stops the navigation system. It must realign before the next flight.",
         "terms": [
-          "IRS"
+          "IRS",
+          "P5"
         ],
         "why": "Must realign before the next flight",
         "confirmed_by": [
@@ -10510,6 +10992,9 @@ assertion_line: 34
           }
         ],
         "quick": "always",
+        "terms": [
+          "P5"
+        ],
         "why": "ARMED would light the exit lights when power goes off",
         "confirmed_by": [
           {
@@ -10544,6 +11029,11 @@ assertion_line: 34
           }
         ],
         "quick": "always",
+        "terms": [
+          "window heat",
+          "P5",
+          "probe heat"
+        ],
         "why": "Not needed once the airplane is secured",
         "check": "All four window heat switches OFF",
         "check_detail": "Green ON lights out",
@@ -10575,7 +11065,9 @@ assertion_line: 34
           }
         ],
         "terms": [
-          "PACK"
+          "PACK",
+          "P5",
+          "Bleed air"
         ],
         "why": "Stops the packs before the air source goes off",
         "confirmed_by": [
@@ -10618,7 +11110,8 @@ assertion_line: 34
         "note_caution": true,
         "terms": [
           "APU",
-          "AC"
+          "AC",
+          "P5"
         ],
         "why": "Removes AC power from the airplane",
         "panel_lights": {
@@ -10648,8 +11141,9 @@ assertion_line: 34
         ],
         "quick": "always",
         "terms": [
+          "APU",
           "GEN OFF BUS",
-          "APU"
+          "P5"
         ],
         "why": "Lets the APU finish its shutdown before power is removed",
         "timer": {
@@ -10686,6 +11180,9 @@ assertion_line: 34
         ],
         "quick": "always",
         "note": "The last switch.",
+        "terms": [
+          "P5"
+        ],
         "why": "Stops battery drain",
         "confirmed_by": [
           {
@@ -10721,6 +11218,9 @@ assertion_line: 34
             "set": "OFF"
           }
         ],
+        "terms": [
+          "P5"
+        ],
         "why": "Not needed when secured",
         "confirmed_by": [
           {
@@ -10748,7 +11248,8 @@ assertion_line: 34
         ],
         "note": "Stops the navigation system. It must realign before the next flight.",
         "terms": [
-          "IRS"
+          "IRS",
+          "P5"
         ],
         "why": "Must realign before the next flight",
         "confirmed_by": [
@@ -10783,6 +11284,11 @@ assertion_line: 34
             "set": "OFF"
           }
         ],
+        "terms": [
+          "window heat",
+          "P5",
+          "probe heat"
+        ],
         "why": "Not needed when secured",
         "confirmed_by": [
           {
@@ -10807,6 +11313,9 @@ assertion_line: 34
             "at": "oh/col/EMER EXIT LIGHTS/1",
             "set": "OFF"
           }
+        ],
+        "terms": [
+          "P5"
         ],
         "why": "ARMED would light the exit lights when power goes off",
         "confirmed_by": [
@@ -10834,7 +11343,9 @@ assertion_line: 34
           }
         ],
         "terms": [
-          "PACK"
+          "PACK",
+          "P5",
+          "Bleed air"
         ],
         "why": "Stops the packs before the air source goes off",
         "confirmed_by": [
@@ -10875,7 +11386,8 @@ assertion_line: 34
         "note_caution": true,
         "terms": [
           "APU",
-          "AC"
+          "AC",
+          "P5"
         ],
         "why": "Removes AC power from the airplane",
         "panel_lights": {
@@ -10904,6 +11416,9 @@ assertion_line: 34
           }
         ],
         "note": "The last switch.",
+        "terms": [
+          "P5"
+        ],
         "why": "Stops battery drain",
         "confirmed_by": [
           {
@@ -10953,6 +11468,9 @@ assertion_line: 34
           {
             "at": "seat/yoke/A/P DISENGAGE/1"
           }
+        ],
+        "terms": [
+          "P7"
         ],
         "confirmed_by": [
           {
@@ -11029,6 +11547,9 @@ assertion_line: 34
           {
             "at": "gl/mcp/DISENGAGE/1"
           }
+        ],
+        "terms": [
+          "P7"
         ],
         "confirmed_by": [
           {
@@ -11190,6 +11711,9 @@ assertion_line: 34
             "at": "seat/yoke/A/P DISENGAGE/1"
           }
         ],
+        "terms": [
+          "P7"
+        ],
         "confirmed_by": [
           {
             "kind": "vendor-docs",
@@ -11236,7 +11760,8 @@ assertion_line: 34
           }
         ],
         "terms": [
-          "F/D"
+          "F/D",
+          "P7"
         ],
         "confirmed_by": [
           {
@@ -11328,6 +11853,10 @@ assertion_line: 34
           }
         ],
         "non_recall": true,
+        "terms": [
+          "probe heat",
+          "P5"
+        ],
         "confirmed_by": [
           {
             "kind": "vendor-docs",
@@ -11425,6 +11954,9 @@ assertion_line: 34
           }
         ],
         "non_recall": true,
+        "terms": [
+          "P2"
+        ],
         "confirmed_by": [
           {
             "kind": "vendor-docs",
@@ -11458,7 +11990,7 @@ assertion_line: 34
         "non_recall": true,
         "terms": [
           "F/D",
-          "FO"
+          "P7"
         ],
         "confirmed_by": [
           {
@@ -11537,9 +12069,9 @@ assertion_line: 34
         "expect": "BARO MINIMUMS ON THE RELIABLE PFD ONLY. NO TO/GA IF ONLY STANDBY AIRSPEED IS RELIABLE",
         "non_recall": true,
         "terms": [
-          "TO/GA",
           "BARO",
-          "PFD"
+          "PFD",
+          "TO/GA"
         ],
         "confirmed_by": [
           {
@@ -11609,6 +12141,9 @@ assertion_line: 34
           }
         ],
         "non_recall": true,
+        "terms": [
+          "P5"
+        ],
         "panel_lights": {
           "press": [
             "MODE"
@@ -11632,7 +12167,11 @@ assertion_line: 34
             "set": "CLOSE"
           }
         ],
-        "non_recall": true
+        "non_recall": true,
+        "terms": [
+          "outflow valve",
+          "P5"
+        ]
       },
       {
         "id": "ifly-737-max8.memory.if-cabin-altitude-is-uncontrollable",
@@ -11648,7 +12187,10 @@ assertion_line: 34
             "set": "ON"
           }
         ],
-        "non_recall": true
+        "non_recall": true,
+        "terms": [
+          "P5"
+        ]
       },
       {
         "id": "ifly-737-max8.memory.if-cabin-altitude-is-above-or-expected-to-go",
@@ -11670,7 +12212,7 @@ assertion_line: 34
         ],
         "non_recall": true,
         "terms": [
-          "FT"
+          "P5"
         ]
       },
       {
@@ -11699,7 +12241,7 @@ assertion_line: 34
         ],
         "non_recall": true,
         "terms": [
-          "FT"
+          "P5"
         ]
       }
     ]
@@ -11784,7 +12326,10 @@ assertion_line: 34
             "set": "OFF"
           }
         ],
-        "non_recall": true
+        "non_recall": true,
+        "terms": [
+          "P5"
+        ]
       }
     ]
   },
@@ -11816,6 +12361,10 @@ assertion_line: 34
             "open": true
           }
         ],
+        "terms": [
+          "start lever",
+          "P5"
+        ],
         "panel_lights": {
           "starts": [
             "ENGINE START 1",
@@ -11840,6 +12389,9 @@ assertion_line: 34
             "at": "con/lo/START LEVER 2/1",
             "open": true
           }
+        ],
+        "terms": [
+          "start lever"
         ]
       }
     ]
@@ -11899,6 +12451,9 @@ assertion_line: 34
             "at": "con/lo/START LEVER 2/1",
             "open": true
           }
+        ],
+        "terms": [
+          "start lever"
         ]
       },
       {
@@ -12076,9 +12631,6 @@ assertion_line: 34
           {
             "at": "mn/cd/OUTBOARD DU: PFD/1"
           }
-        ],
-        "terms": [
-          "KT"
         ]
       },
       {
@@ -12100,7 +12652,8 @@ assertion_line: 34
           }
         ],
         "terms": [
-          "FLT"
+          "FLT",
+          "P5"
         ],
         "panel_lights": {
           "starts": [
@@ -12174,7 +12727,8 @@ assertion_line: 34
           }
         ],
         "terms": [
-          "EGT"
+          "EGT",
+          "start lever"
         ]
       },
       {
@@ -12194,8 +12748,8 @@ assertion_line: 34
           }
         ],
         "terms": [
-          "EGT",
-          "N2"
+          "N2",
+          "EGT"
         ]
       },
       {
@@ -12222,7 +12776,8 @@ assertion_line: 34
           }
         ],
         "terms": [
-          "APU"
+          "APU",
+          "P5"
         ]
       }
     ]
@@ -12269,7 +12824,8 @@ assertion_line: 34
           }
         ],
         "terms": [
-          "APU"
+          "APU",
+          "P5"
         ]
       }
     ]
@@ -12317,6 +12873,9 @@ assertion_line: 34
             "at": "oh/col/FASTEN BELTS/1",
             "set": "ON"
           }
+        ],
+        "terms": [
+          "P5"
         ]
       },
       {
@@ -12333,7 +12892,7 @@ assertion_line: 34
           }
         ],
         "terms": [
-          "FT"
+          "P7"
         ]
       },
       {
@@ -12355,7 +12914,8 @@ assertion_line: 34
           }
         ],
         "terms": [
-          "CONT"
+          "CONT",
+          "P5"
         ],
         "panel_lights": {
           "starts": [
@@ -12376,6 +12936,9 @@ assertion_line: 34
           {
             "at": "con/st/THRUST LEVERS 1 AND 2/1"
           }
+        ],
+        "terms": [
+          "anti-ice"
         ]
       },
       {
@@ -12454,10 +13017,7 @@ assertion_line: 34
             "set": "NORMAL"
           }
         ],
-        "non_recall": true,
-        "terms": [
-          "FT"
-        ]
+        "non_recall": true
       }
     ]
   },
@@ -12514,6 +13074,9 @@ assertion_line: 34
             "at": "con/lo/START LEVER 2/1",
             "open": true
           }
+        ],
+        "terms": [
+          "start lever"
         ]
       }
     ]
@@ -12587,6 +13150,9 @@ assertion_line: 34
             "at": "oh/bleed/R RECIRC FAN/1",
             "set": "OFF"
           }
+        ],
+        "terms": [
+          "P5"
         ]
       }
     ]
@@ -12640,6 +13206,9 @@ assertion_line: 34
             "at": "mn/ctr/LANDING GEAR LEVER/1",
             "set": "DN"
           }
+        ],
+        "terms": [
+          "P2"
         ]
       }
     ]
@@ -12690,7 +13259,8 @@ assertion_line: 34
           }
         ],
         "terms": [
-          "SPEEDBRAKE"
+          "SPEEDBRAKE",
+          "P2"
         ]
       }
     ]
@@ -12768,6 +13338,9 @@ assertion_line: 34
             "set": "MAN"
           }
         ],
+        "terms": [
+          "P5"
+        ],
         "panel_lights": {
           "press": [
             "MODE"
@@ -12790,6 +13363,10 @@ assertion_line: 34
             "at": "oh/press/OUTFLOW/1",
             "set": "OPEN"
           }
+        ],
+        "terms": [
+          "outflow valve",
+          "P5"
         ]
       },
       {
@@ -12960,6 +13537,9 @@ assertion_line: 34
             "at": "gl/mcp/DISENGAGE/1"
           }
         ],
+        "terms": [
+          "P7"
+        ],
         "confirmed_by": [
           {
             "kind": "vendor-docs",
@@ -13028,8 +13608,7 @@ assertion_line: 34
         "note": "Keep any wind additive to 5 knots or less, and check the landing distance in an approved source.",
         "note_caution": true,
         "terms": [
-          "VREF",
-          "KT"
+          "VREF"
         ],
         "confirmed_by": [
           {
@@ -13083,7 +13662,8 @@ assertion_line: 34
           }
         ],
         "terms": [
-          "STAB"
+          "STAB",
+          "P1"
         ],
         "confirmed_by": [
           {
@@ -13104,6 +13684,9 @@ assertion_line: 34
           {
             "at": "mn/cl/STAB OUT OF TRIM/1"
           }
+        ],
+        "terms": [
+          "P1"
         ],
         "confirmed_by": [
           {
@@ -13159,7 +13742,8 @@ assertion_line: 34
         ],
         "terms": [
           "A/P",
-          "A/T"
+          "A/T",
+          "P7"
         ],
         "confirmed_by": [
           {
@@ -13205,7 +13789,8 @@ assertion_line: 34
           }
         ],
         "terms": [
-          "FCC"
+          "FCC",
+          "P1"
         ],
         "confirmed_by": [
           {
@@ -13238,7 +13823,8 @@ assertion_line: 34
           }
         ],
         "terms": [
-          "MCAS"
+          "MCAS",
+          "P5"
         ],
         "panel_lights": {
           "fctllts": [
@@ -13264,6 +13850,9 @@ assertion_line: 34
           {
             "at": "oh/fctl/SPEED TRIM FAIL/1"
           }
+        ],
+        "terms": [
+          "P5"
         ],
         "panel_lights": {
           "fctllts": [
@@ -13503,7 +14092,8 @@ assertion_line: 34
         ],
         "terms": [
           "A/T",
-          "RTO"
+          "RTO",
+          "autobrake"
         ]
       },
       {
@@ -14194,9 +14784,8 @@ assertion_line: 34
           }
         ],
         "terms": [
-          "AGL",
           "RA",
-          "FT"
+          "AGL"
         ]
       },
       {
@@ -14289,6 +14878,9 @@ assertion_line: 34
             "at": "mn/ctr/LANDING GEAR LEVER/1",
             "set": "UP"
           }
+        ],
+        "terms": [
+          "P2"
         ]
       },
       {
@@ -14303,6 +14895,9 @@ assertion_line: 34
           {
             "at": "gl/mcp/ALTITUDE/1"
           }
+        ],
+        "terms": [
+          "P7"
         ]
       },
       {
@@ -14328,7 +14923,7 @@ assertion_line: 34
           }
         ],
         "terms": [
-          "FT"
+          "P7"
         ],
         "panel_lights": {
           "rollmode": [
@@ -14353,6 +14948,9 @@ assertion_line: 34
           {
             "at": "con/st/FLAP LEVER/1"
           }
+        ],
+        "terms": [
+          "Acceleration height"
         ]
       },
       {
@@ -14373,7 +14971,8 @@ assertion_line: 34
         ],
         "terms": [
           "LVL CHG",
-          "VNAV"
+          "VNAV",
+          "P7"
         ]
       },
       {
@@ -14388,6 +14987,9 @@ assertion_line: 34
           {
             "at": "gl/mcp/ALTITUDE/1"
           }
+        ],
+        "terms": [
+          "P7"
         ]
       },
       {

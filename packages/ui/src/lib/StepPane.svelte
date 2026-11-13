@@ -74,9 +74,21 @@ A step with no control on the map shows the steps coming up below its details.
     query.addEventListener("change", read);
     return () => query.removeEventListener("change", read);
   });
-  let showMap = $derived(
+  let wantMap = $derived(
     !flow && desktop && !!place && (mapMode === "always" || (mapMode === "new_panel" && (newPanel || forced))),
   );
+  /**
+   * A controls drawing that cannot fit its card at 11 px takes the map figure's height: the pane
+   * shows the one-line location instead (MapHidden board's line), and Show map brings the figure
+   * back for this step on request (the owner, batch 2). Once squeezed, a step stays so.
+   */
+  let fits = $state<Record<string, boolean | undefined>>({});
+  let squeezed = $state(false);
+  let asked = $state(false);
+  $effect(() => {
+    if (wantMap && !asked && Object.values(fits).some((f) => f === false)) squeezed = true;
+  });
+  let showMap = $derived(wantMap && (!squeezed || asked));
 
   let how = $derived(step.how ? index.how(step.how) : undefined);
   let explain = $derived(step.explain ? index.explain(step.explain) : undefined);
@@ -111,6 +123,9 @@ A step with no control on the map shows the steps coming up below its details.
   const inCard = (card: { panel: { sections: { id: string }[] } }) =>
     targets.filter((t) => card.panel.sections.some((s) => s.id === t.section));
   let picked = $state<Record<string, { section: string; item: number } | null>>({});
+  /** Each drawing, and whether it has a larger view, for the caption row's link. */
+  let drawing = $state<Record<string, { openLarger: () => void } | undefined>>({});
+  let enlarge = $state<Record<string, boolean>>({});
   /** The step's own control in the first drawing, for How to do it's link to its card. */
   let own = $derived.by(() => {
     const id = place?.control?.id;
@@ -203,10 +218,12 @@ A step with no control on the map shows the steps coming up below its details.
       </figure>
     {:else}
       <div class="line">
-        <span>{#if (flow || !desktop) && newPanel}New panel{" · "}{/if}{where} · {place.zone.title}</span>
+        <span>{#if (flow || !desktop || (squeezed && wantMap)) && newPanel}New panel{" · "}{/if}{where} · {place.zone.title}</span>
         <Locator {index} zone={place.zone} link />
         {#if flow || !desktop}
           <!-- Flow and tablet landscape keep to the location line. -->
+        {:else if squeezed && wantMap}
+          <button class="lk" type="button" onclick={() => (asked = true)}>Show map</button>
         {:else if mapMode === "on_request"}
           <button class="lk" type="button" onclick={() => onMap("show")}>Show map</button>
         {:else if mapMode === "new_panel"}
@@ -217,10 +234,28 @@ A step with no control on the map shows the steps coming up below its details.
 
     {#each cards as card (card.panel.id)}
       <figure class="controls">
-        <span class="cap">The controls · {panelCaption(card.focus.map((id) => index.section(id)?.title ?? id))}</span>
-        <PanelSchematic panel={card.panel} focus={card.focus} {targets} {guardClosed} {index} around named={`${check ?? ""} ${ifNot ?? ""}`} bind:picked={picked[card.panel.id]} />
+        <div class="cap-row">
+          <span class="cap">The controls · {panelCaption(card.focus.map((id) => index.section(id)?.title ?? id))}</span>
+          {#if enlarge[card.panel.id]}
+            <button class="lk larger" type="button" onclick={() => drawing[card.panel.id]?.openLarger()}>See the whole panel larger</button>
+          {/if}
+        </div>
+        <PanelSchematic
+          bind:this={drawing[card.panel.id]}
+          panel={card.panel}
+          focus={card.focus}
+          {targets}
+          {guardClosed}
+          {index}
+          around
+          ownButton={false}
+          named={`${check ?? ""} ${ifNot ?? ""}`}
+          bind:picked={picked[card.panel.id]}
+          bind:enlargeable={enlarge[card.panel.id]}
+          bind:fits={fits[card.panel.id]}
+        />
         <figcaption>
-          Blue: set by this step · lights drawn unlit · tap a light for its meaning{#if inCard(card).some((t) => t.open)}{" "}· dashed: only if the step's condition applies{/if}{#if inCard(card).some((t) => t.resolved)}{" "}· ◆ set by a decision step{/if}
+          Blue: set by this step · lights drawn unlit{#if !flow}{" "}· tap a light for its meaning{/if}{#if inCard(card).some((t) => t.open)}{" "}· dashed: only if the step's condition applies{/if}{#if inCard(card).some((t) => t.resolved)}{" "}· ◆ set by a decision step{/if}
         </figcaption>
       </figure>
     {/each}
@@ -239,10 +274,13 @@ A step with no control on the map shows the steps coming up below its details.
 
 <style>
   /* The Checklist board's side pane. */
+  /* Fills the side pane, so the controls take the height left below the rest (the Checklist
+     and Flow boards). */
   .pane-step {
     display: flex;
     flex-direction: column;
     gap: var(--space-3);
+    min-height: 100%;
   }
   .head {
     display: flex;
@@ -415,13 +453,33 @@ A step with no control on the map shows the steps coming up below its details.
     color: var(--color-text-secondary);
     font-size: var(--font-size-secondary);
   }
+  /* The card takes the pane's remaining height; its caption, drawing and legend sit together in
+     its middle (the Flow board). A drawing taller than the room scrolls inside it, never less than
+     room for a row of controls, the legend still under it. */
   .controls {
     display: flex;
+    flex: 1 1 0;
     flex-direction: column;
+    justify-content: center;
     gap: var(--space-1);
+    min-height: 0;
+  }
+  .controls :global(.wrap) {
+    flex: 0 1 auto;
+    min-height: calc(3 * var(--size-touch-min));
   }
   .controls .cap {
     color: var(--panel-label);
+  }
+  /* The card's caption, with "See the whole panel larger" at its right (the owner, batch 2). */
+  .cap-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+  }
+  .cap-row .larger {
+    font-size: var(--font-size-caption);
   }
   figcaption {
     color: var(--panel-label);

@@ -13,7 +13,7 @@ steps:
     number: 1
     text: FLAP LEVER
     expect: "EXTEND PER SPEED SCHEDULE. BE STABILIZED BY 1,000 FT IMC OR 500 FT VMC"
-    terms: ["IMC", "VMC", "FT"]
+    terms: ["IMC", "VMC"]
     controls:
       - flaplever
       - speedt
@@ -29,7 +29,7 @@ steps:
     number: 2
     text: LANDING GEAR LEVER
     expect: "DOWN WHEN SPEED ALLOWS"
-    terms: ["VREF", "ILS"]
+    terms: ["ILS", "VREF", "P2"]
     controls:
       - gearlever
     targets:
@@ -78,7 +78,7 @@ steps:
   - id: ifly-737-max8.landing.mcp-speed-and-altitude
     text: "MCP SPEED AND ALTITUDE"
     expect: "VREF + 5, MISSED APPROACH ALTITUDE SET AT GLIDESLOPE CAPTURE"
-    terms: ["VREF", "MCP"]
+    terms: ["MCP", "VREF"]
     show_if:
       option: approach
       equals: ils
@@ -90,7 +90,7 @@ steps:
   - id: ifly-737-max8.landing.landing-flaps
     text: LANDING FLAPS
     expect: "SET PER THE FLAP GUIDANCE AFTER GLIDESLOPE CAPTURE"
-    terms: ["VREF", "ILS"]
+    terms: ["ILS", "VREF"]
     controls:
       - flaplever
     targets:
@@ -108,6 +108,7 @@ steps:
   - id: ifly-737-max8.landing.landing-gear-lever-before-landing
     text: LANDING GEAR LEVER
     expect: DOWN WITH FLAPS 15 ON BASE OR EARLY FINAL
+    terms: ["P2"]
     controls:
       - gearlever
     targets:
@@ -152,7 +153,6 @@ steps:
   - id: ifly-737-max8.landing.landing-flaps-before-landing
     text: LANDING FLAPS
     expect: "SET BEFORE 500 FT, STABILIZED"
-    terms: ["FT"]
     controls:
       - flaplever
     targets:
@@ -167,6 +167,7 @@ steps:
   - id: ifly-737-max8.landing.landing-gear-lever-before-landing-2
     text: LANDING GEAR LEVER
     expect: DOWN WITH FLAPS 15 APPROACHING THE FINAL FIX
+    terms: ["P2"]
     controls:
       - gearlever
     targets:
@@ -225,7 +226,7 @@ steps:
   - id: ifly-737-max8.approach.engine-start-switches
     text: ENGINE START SWITCHES
     expect: CONT
-    terms: ["CONT"]
+    terms: ["CONT", "P5"]
     controls:
       - starts
     targets:
@@ -261,6 +262,7 @@ steps:
     number: 5
     text: TAXI LIGHT
     expect: "ON"
+    terms: ["P5"]
     controls:
       - lldg
     targets:
@@ -271,7 +273,6 @@ steps:
   - id: ifly-737-max8.landing.autopilot-and-autothrottle
     text: "AUTOPILOT"
     expect: "DISENGAGE BEFORE 500 FT FOR A MANUAL LANDING"
-    terms: ["FT"]
     controls:
       - apdisc
     targets:

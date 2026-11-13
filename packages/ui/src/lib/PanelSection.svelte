@@ -7,8 +7,10 @@ SPDX-License-Identifier: MIT
 One panel section inside a panel drawing (PanelSchematic): its frame and title and our own control
 glyphs, drawn from scratch and never traced from a real panel, at the pack's own positions, in the
 panel palette (decision 0021). Each control is in one state:
-- changed: the step sets it; blue fill and outline, the knob at the target, "SET TO …" under it;
-- resolved: changed, with the position from a decision step's answer (decision 0022);
+- changed: the step sets it; blue fill and outline, the knob or pointer at the target, whose
+  position label is the one in bold (no board draws a "SET TO" caption);
+- resolved: changed, with the position from a decision step's answer, its label marked ◆
+  (decision 0022);
 - conditional: the step sets it only if a condition applies that the app does not know yet;
   a dashed blue outline and no position;
 - resting: a control the step does not use, a neutral outline at its resting position;
@@ -28,6 +30,7 @@ What the step asks for, never the simulator's state (decision 0006).
     band,
     frame,
     titled = true,
+    framed = true,
     k,
     hit = 0,
     onPick,
@@ -41,6 +44,9 @@ What the step asks for, never the simulator's state (decision 0006).
     frame?: { y0: number; y1: number; x0: number; x1: number } | undefined;
     /** The section's title is drawn; a later part of a divided section continues without it. */
     titled?: boolean;
+    /** Its outline is drawn; the side pane's card is the outline of a drawing of one section, as
+     * on the boards, so a cut frame never shows as stray lines across it. */
+    framed?: boolean;
     /** Screen pixels per drawing unit, for the fixed text sizes. */
     k: number;
     /** The smallest hit area, in drawing units (44 px on screen); 0 draws none. */
@@ -102,7 +108,7 @@ What the step asks for, never the simulator's state (decision 0006).
 </script>
 
 <g transform="translate({section.x} {section.y})">
-  <rect class="frame" x={left} y={top} width={right - left} height={frameBottom - top} rx="3" />
+  <rect class="frame" class:bare={!framed} x={left} y={top} width={right - left} height={frameBottom - top} rx="3" />
   {#if titled}<text class="title" x={left + 8} y={top + 13} style:font-size={fs(PX.title * layout.scale)}>{section.title.toUpperCase()}</text>{/if}
   {#each shown as { item, i } (i)}
     {@const on = byItem.has(i)}
@@ -131,7 +137,7 @@ What the step asks for, never the simulator's state (decision 0006).
           <circle class="knob rest" cy={knobY(r, positions.length)} r={TOGGLE.knob} />
         {/if}
         {#each layout.items.get(i)?.positions ?? [] as l (l.n)}
-          <text class="pos" class:target={on && l.n === t} class:at-rest={l.n === r} x={l.x} y={l.y} text-anchor={l.anchor} style:font-size={fs(PX.pos * layout.scale)}>{positions[l.n]}</text>
+          <text class="pos" class:target={on && l.n === t} class:at-rest={l.n === r} x={l.x} y={l.y} text-anchor={l.anchor} style:font-size={fs(PX.pos * layout.scale)}>{on && l.n === t && byItem.get(i)?.resolved ? "◆ " : ""}{positions[l.n]}</text>
         {/each}
       {:else if item.kind === "selector"}
         <!-- A rotary selector: a tick for each labelled position, a round body and a pointer bar
@@ -150,7 +156,7 @@ What the step asks for, never the simulator's state (decision 0006).
         {/if}
         <!-- Each label sits at its own tick, so the pointer and its label always agree. -->
         {#each layout.items.get(i)?.positions ?? [] as l (l.n)}
-          <text class="pos" class:target={on && l.n === t} class:at-rest={l.n === r} x={l.x} y={l.y} text-anchor={l.anchor} style:font-size={fs(PX.pos * layout.scale)}>{positions[l.n]}</text>
+          <text class="pos" class:target={on && l.n === t} class:at-rest={l.n === r} x={l.x} y={l.y} text-anchor={l.anchor} style:font-size={fs(PX.pos * layout.scale)}>{on && l.n === t && byItem.get(i)?.resolved ? "◆ " : ""}{positions[l.n]}</text>
         {/each}
       {:else if item.kind === "push_button"}
         <!-- As 3.0 draws a push button: a key with its name inside and a line along its bottom. -->
@@ -159,7 +165,7 @@ What the step asks for, never the simulator's state (decision 0006).
           <rect class="guard" x={-BUTTON.w / 2 - 2} y={-BUTTON.h / 2 - 2} width={BUTTON.w + 4} height={BUTTON.h + 4} rx="4" />
         {/if}
         <rect class="body key" class:changed={on && !open} class:conditional={open} x={-BUTTON.w / 2} y={-BUTTON.h / 2} width={BUTTON.w} height={BUTTON.h} rx="3" />
-        <line class="key-line" x1={-BUTTON.w / 2 + 2} x2={BUTTON.w / 2 - 2} y1={BUTTON.h / 2 - 1.3} y2={BUTTON.h / 2 - 1.3} />
+        <line class="key-line" class:changed-line={on && !open} class:conditional-line={open} x1={-BUTTON.w / 2 + 2} x2={BUTTON.w / 2 - 2} y1={BUTTON.h / 2 - 1.3} y2={BUTTON.h / 2 - 1.3} />
         {#each words.lines as line, n (n)}
           <text
             class="lamp-text"
@@ -193,7 +199,7 @@ What the step asks for, never the simulator's state (decision 0006).
           <rect class="knob rest" x="-8" y={slotY(r, positions.length) - 3} width="16" height="6" rx="2" />
         {/if}
         {#each layout.items.get(i)?.positions ?? [] as l (l.n)}
-          <text class="pos" class:target={on && l.n === t} class:at-rest={l.n === r} x={l.x} y={l.y} text-anchor={l.anchor} style:font-size={fs(PX.pos * layout.scale)}>{positions[l.n]}</text>
+          <text class="pos" class:target={on && l.n === t} class:at-rest={l.n === r} x={l.x} y={l.y} text-anchor={l.anchor} style:font-size={fs(PX.pos * layout.scale)}>{on && l.n === t && byItem.get(i)?.resolved ? "◆ " : ""}{positions[l.n]}</text>
         {/each}
       {:else if item.kind === "handle"}
         <!-- A T-shaped pull handle on a short stem. -->
@@ -201,10 +207,10 @@ What the step asks for, never the simulator's state (decision 0006).
              pulled out at the bottom. -->
         {@const at = on && t != null ? t : r >= 0 ? r : -1}
         {@const gy = at >= 0 ? leverY(at, positions.length) : 0}
-        <rect class="body stem" x="-2" y="-12" width="4" height={gy + 8} rx="1" />
+        <rect class="body stem" class:changed={on && !open} class:conditional={open} x="-2" y="-12" width="4" height={gy + 8} rx="1" />
         <rect class="body grip" class:changed={on && !open} class:conditional={open} x="-13" y={gy - 5} width="26" height="10" rx="4" />
         {#each layout.items.get(i)?.positions ?? [] as l (l.n)}
-          <text class="pos" class:target={on && l.n === t} class:at-rest={l.n === r} x={l.x} y={l.y} text-anchor={l.anchor} style:font-size={fs(PX.pos * layout.scale)}>{positions[l.n]}</text>
+          <text class="pos" class:target={on && l.n === t} class:at-rest={l.n === r} x={l.x} y={l.y} text-anchor={l.anchor} style:font-size={fs(PX.pos * layout.scale)}>{on && l.n === t && byItem.get(i)?.resolved ? "◆ " : ""}{positions[l.n]}</text>
         {/each}
       {:else if item.kind === "gauge"}
         <circle class="body" class:changed={on} r="14" />
@@ -212,7 +218,9 @@ What the step asks for, never the simulator's state (decision 0006).
       {:else}
         {@const w = item.width ?? 60}
         {@const hh = item.height ?? 30}
+        <!-- A screen: a bezel and its display area, outlined; the step's screen has a blue bezel. -->
         <rect class="body screen" class:changed={on} x={-w / 2} y={-hh / 2} width={w} height={hh} rx="3" />
+        <rect class="display" x={-w / 2 + 4} y={-hh / 2 + 4} width={Math.max(0, w - 8)} height={Math.max(0, hh - 8)} rx="1.5" />
         <text class="lamp-text" y="2" style:font-size={screenFs(item.label, w)}>{item.label}</text>
       {/if}
       {#if labelled(item)}
@@ -220,9 +228,6 @@ What the step asks for, never the simulator's state (decision 0006).
         {#if name}
           {#each name.lines as line, n (n)}
             <text class="label" y={name.y + (n * name.px * 1.15) / k} style:font-size={fs(name.px)}>{line}</text>
-          {/each}
-          {#each name.caption as line, n (n)}
-            <text class="set-to" y={name.y + ((name.lines.length + n) * name.px * 1.15) / k} style:font-size={fs(PX.setTo * layout.scale)}>{line}</text>
           {/each}
         {/if}
       {/if}
@@ -257,6 +262,9 @@ What the step asks for, never the simulator's state (decision 0006).
     fill: var(--panel-bg);
     stroke: var(--panel-stroke);
     stroke-width: 1;
+  }
+  .frame.bare {
+    stroke: none;
   }
   .title {
     font-weight: var(--weight-semibold);
@@ -297,6 +305,14 @@ What the step asks for, never the simulator's state (decision 0006).
   .key {
     fill: var(--panel-fill);
   }
+  /* The key's bottom line takes its key's state, so no grey line crosses a blue or dashed key. */
+  .key-line.changed-line {
+    stroke: var(--panel-changed);
+  }
+  .key-line.conditional-line {
+    stroke: var(--panel-changed);
+    stroke-dasharray: 2 1.5;
+  }
   .key-line {
     stroke: var(--panel-resting);
     stroke-width: 0.8;
@@ -322,8 +338,13 @@ What the step asks for, never the simulator's state (decision 0006).
     stroke-linecap: round;
   }
   .screen {
-    fill: var(--panel-glass);
+    fill: var(--panel-fill);
     stroke: var(--panel-stroke);
+  }
+  .display {
+    fill: none;
+    stroke: var(--panel-resting);
+    stroke-width: 0.8;
   }
   /* Changed (and resolved): blue fill and outline, the knob or pointer at the target. */
   .body.changed,
@@ -334,6 +355,11 @@ What the step asks for, never the simulator's state (decision 0006).
   }
   .on .tick.target {
     fill: none;
+  }
+  /* A screen the step uses keeps its neutral face, its bezel outlined in blue: a screen-sized blue
+     fill read as one large blue box. */
+  .screen.changed {
+    fill: var(--panel-fill);
   }
   .set,
   .bar.set {

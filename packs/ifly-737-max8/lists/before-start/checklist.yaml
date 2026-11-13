@@ -21,7 +21,7 @@ steps:
   - id: ifly-737-max8.before-start.fuel
     text: FUEL
     expect: "REQUIRED ___ KG/LBS, ON BOARD ___ KG/LBS, FUEL PUMPS ON, CENTER PUMPS ON IF MORE THAN 1,000 LB (ABOUT 450 KG) IN THE CENTER TANK"
-    terms: ["LB", "KG"]
+    terms: ["center tank"]
     controls:
       - fuelq
       - fuelpumps
@@ -47,6 +47,7 @@ steps:
   - id: ifly-737-max8.before-start.passenger-signs
     text: PASSENGER SIGNS
     expect: "NO SMOKING AND FASTEN BELTS AUTO OR ON"
+    terms: ["P5"]
     controls:
       - signs
     targets:
@@ -66,7 +67,7 @@ steps:
   - id: ifly-737-max8.before-start.mcp-check
     text: MCP
     expect: "V2 ___, HEADING ___, ALTITUDE ___"
-    terms: ["MCP", "V2"]
+    terms: ["MCP", "V2", "P7"]
     controls:
       - mcpset
     targets:
@@ -85,7 +86,7 @@ steps:
   - id: ifly-737-max8.before-start.takeoff-speeds
     text: TAKEOFF SPEEDS
     expect: "V1, VR AND V2 SET AND CHECKED"
-    terms: ["V1", "V2", "VR"]
+    terms: ["V1", "VR", "V2", "P9"]
     controls:
       - cdu
     targets:
@@ -99,7 +100,7 @@ steps:
   - id: ifly-737-max8.before-start.cdu-preflight
     text: CDU PREFLIGHT
     expect: COMPLETE
-    terms: ["CDU"]
+    terms: ["CDU", "P9"]
     controls:
       - cdu
     targets:
@@ -135,6 +136,7 @@ steps:
   - id: ifly-737-max8.before-start.anti-collision-light-check
     text: ANTI-COLLISION LIGHT
     expect: "ON"
+    terms: ["P5"]
     controls:
       - beacon
     targets:

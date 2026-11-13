@@ -12,6 +12,7 @@ steps:
   - id: ifly-737-max8.after-landing.weather-radar-and-terrain
     text: WEATHER RADAR AND TERRAIN
     expect: "OFF"
+    terms: ["P7", "EFIS"]
     controls:
       - efispanel
     targets:
@@ -30,6 +31,7 @@ steps:
   - id: ifly-737-max8.after-landing.autobrake-check
     text: AUTOBRAKE
     expect: "OFF"
+    terms: ["autobrake", "P9"]
     controls:
       - abrake
     targets:
@@ -57,7 +59,7 @@ steps:
   - id: ifly-737-max8.after-landing.speedbrake-lever-check
     text: SPEEDBRAKE LEVER
     expect: DOWN DETENT
-    terms: ["SPEEDBRAKE"]
+    terms: ["SPEEDBRAKE", "Spoilers"]
     controls:
       - speedbrake
     targets:
@@ -71,6 +73,7 @@ steps:
   - id: ifly-737-max8.after-landing.window-heat
     text: WINDOW HEAT
     expect: ON UNTIL SECURE CHECKLIST
+    terms: ["window heat", "P5", "probe heat"]
     controls:
       - wheat
     targets:
@@ -89,6 +92,7 @@ steps:
   - id: ifly-737-max8.after-landing.probe-heat-check
     text: PROBE HEAT
     expect: AUTO
+    terms: ["probe heat", "P5"]
     controls:
       - pheat
     targets:
@@ -104,6 +108,7 @@ steps:
   - id: ifly-737-max8.after-landing.engine-start-switches-check
     text: ENGINE START SWITCHES
     expect: "OFF"
+    terms: ["P5"]
     controls:
       - starts
     targets:
@@ -122,7 +127,7 @@ steps:
   - id: ifly-737-max8.after-landing.apu-switch-check
     text: APU SWITCH
     expect: "START, THEN RELEASE TO ON"
-    terms: ["APU"]
+    terms: ["APU", "P5"]
     controls:
       - apusw
     targets:

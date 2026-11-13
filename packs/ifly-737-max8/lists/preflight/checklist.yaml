@@ -26,6 +26,7 @@ steps:
   - id: ifly-737-max8.preflight.navigation-transfer-and-display-switches
     text: NAVIGATION TRANSFER AND DISPLAY SWITCHES
     expect: "NORMAL, SOURCE AUTO"
+    terms: ["P5"]
     controls:
       - navsw
       - dispsw
@@ -49,6 +50,7 @@ steps:
   - id: ifly-737-max8.preflight.window-heat
     text: WINDOW HEAT
     expect: "ON"
+    terms: ["window heat", "P5", "probe heat"]
     controls:
       - wheat
     targets:
@@ -67,7 +69,7 @@ steps:
   - id: ifly-737-max8.preflight.pressurization-mode-selector
     text: PRESSURIZATION MODE SELECTOR
     expect: AUTO
-    terms: ["LAND ALT", "FLT ALT"]
+    terms: ["FLT ALT", "LAND ALT", "P5"]
     controls:
       - press
     targets:

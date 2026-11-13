@@ -305,8 +305,8 @@ sections:
         "y": 175
         controls:
           - xfeed
-        positions: "Closed, open"
-        rest: "Closed"
+        positions: "CLOSED, OPEN"
+        rest: "CLOSED"
         description: Joins the left and right fuel manifolds.
       - kind: light
         label: LOW PRESSURE

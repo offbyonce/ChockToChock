@@ -28,6 +28,7 @@ steps:
     number: 2
     text: AUTOPILOT
     expect: DO NOT USE (NOT AVAILABLE)
+    terms: ["P7"]
     controls:
       - apdis
     targets:
@@ -64,7 +65,7 @@ steps:
     number: 5
     text: LANDING
     expect: "PLAN FLAPS 15 AND VREF 15 + 10 KT, ESTABLISH CONFIGURATION EARLY"
-    terms: ["VREF", "KT"]
+    terms: ["VREF"]
     controls:
       - flaplever
     targets:

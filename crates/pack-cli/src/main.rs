@@ -71,16 +71,11 @@ fn suggest_targets(dir: &Path) -> Result<bool> {
 
 fn terms(dir: &Path) -> Result<bool> {
     let pack = load_pack_dir(dir).map_err(|e| anyhow::anyhow!("{e}"))?;
-    let glossary: Vec<&str> = pack
-        .content
-        .glossary
-        .iter()
-        .flat_map(|g| &g.terms)
-        .map(|t| t.term.as_str())
-        .collect();
+    let glossary = pack::terms::step_glossary(&pack);
     let mut clean = true;
     for step in pack.checklists.iter().flat_map(|l| &l.steps) {
-        let missing = pack::terms::missing_terms(step, &glossary);
+        let location = pack::terms::step_location(&pack, step);
+        let missing = pack::terms::missing_terms(step, &glossary, &location);
         if !missing.is_empty() {
             clean = false;
             println!(
@@ -96,22 +91,15 @@ fn terms(dir: &Path) -> Result<bool> {
     Ok(clean)
 }
 
+/// Each step's terms as its wording and location use them, in order: what `terms` should hold.
 fn terms_json(dir: &Path) -> Result<bool> {
     let pack = load_pack_dir(dir).map_err(|e| anyhow::anyhow!("{e}"))?;
-    let glossary: Vec<&str> = pack
-        .content
-        .glossary
-        .iter()
-        .flat_map(|g| &g.terms)
-        .map(|t| t.term.as_str())
-        .collect();
+    let glossary = pack::terms::step_glossary(&pack);
     let mut out = serde_json::Map::new();
     for step in pack.checklists.iter().flat_map(|l| &l.steps) {
-        let mut all = step.terms.clone();
-        all.extend(pack::terms::missing_terms(step, &glossary));
-        if !all.is_empty() {
-            out.insert(step.id.to_string(), serde_json::to_value(all)?);
-        }
+        let location = pack::terms::step_location(&pack, step);
+        let all = pack::terms::step_terms(step, &glossary, &location);
+        out.insert(step.id.to_string(), serde_json::to_value(all)?);
     }
     println!("{}", serde_json::to_string_pretty(&out)?);
     Ok(true)

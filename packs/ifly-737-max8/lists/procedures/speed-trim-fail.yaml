@@ -13,7 +13,7 @@ steps:
     number: 1
     text: SPEED TRIM AND MCAS
     expect: INOPERATIVE FOR THE REMAINDER OF THE FLIGHT
-    terms: ["MCAS"]
+    terms: ["MCAS", "P5"]
     controls:
       - fctllts
     targets:
@@ -28,6 +28,7 @@ steps:
     number: 2
     text: OPERATION
     expect: CONTINUE NORMAL OPERATION
+    terms: ["P5"]
     controls:
       - fctllts
     targets:

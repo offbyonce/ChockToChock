@@ -24,7 +24,7 @@ steps:
     number: 2
     text: APU SWITCH
     expect: "OFF"
-    terms: ["APU"]
+    terms: ["APU", "P5"]
     controls:
       - apusw
     targets:

@@ -97,7 +97,8 @@ source: crates/pack-cli/tests/snapshot.rs
     },
     {
       "term": "FO",
-      "meaning": "First officer."
+      "meaning": "First officer.",
+      "step_term": false
     },
     {
       "term": "GLS",
@@ -317,19 +318,23 @@ source: crates/pack-cli/tests/snapshot.rs
     },
     {
       "term": "KT",
-      "meaning": "Knots. Nautical miles per hour."
+      "meaning": "Knots. Nautical miles per hour.",
+      "step_term": false
     },
     {
       "term": "FT",
-      "meaning": "Feet."
+      "meaning": "Feet.",
+      "step_term": false
     },
     {
       "term": "LB",
-      "meaning": "Pounds."
+      "meaning": "Pounds.",
+      "step_term": false
     },
     {
       "term": "KG",
-      "meaning": "Kilograms."
+      "meaning": "Kilograms.",
+      "step_term": false
     },
     {
       "term": "FL",
@@ -453,11 +458,13 @@ source: crates/pack-cli/tests/snapshot.rs
     },
     {
       "term": "ELEC",
-      "meaning": "Electrical."
+      "meaning": "Electrical.",
+      "step_term": false
     },
     {
       "term": "HYD",
-      "meaning": "Hydraulic. The 737 has systems A, B and standby."
+      "meaning": "Hydraulic. The 737 has systems A, B and standby.",
+      "step_term": false
     },
     {
       "term": "STAB",
@@ -538,6 +545,78 @@ source: crates/pack-cli/tests/snapshot.rs
     {
       "term": "CAB/UTIL",
       "meaning": "Cabin and utility power. Powers the galleys and other cabin equipment."
+    },
+    {
+      "term": "P1",
+      "meaning": "Captain panel: the part of the main instrument panel in front of the captain."
+    },
+    {
+      "term": "P2",
+      "meaning": "Center panel: the middle of the main instrument panel, with the landing gear lever and the engine display."
+    },
+    {
+      "term": "P3",
+      "meaning": "First officer panel: the part of the main instrument panel in front of the first officer."
+    },
+    {
+      "term": "P5",
+      "meaning": "The overhead panel above both pilots, in two parts: forward, nearest the windshield, and aft."
+    },
+    {
+      "term": "P7",
+      "meaning": "Glareshield panel: the shelf under the windshield with the mode control panel and the EFIS control panels."
+    },
+    {
+      "term": "P9",
+      "meaning": "Forward electronic panel: below the center panel at the front of the control stand, with the lower display."
+    },
+    {
+      "term": "center tank",
+      "meaning": "The fuel tank in the fuselage between the wings. Its fuel is used first when it holds enough."
+    },
+    {
+      "term": "main tank",
+      "meaning": "One of the two fuel tanks inside the wings, one per side."
+    },
+    {
+      "term": "crossfeed",
+      "meaning": "A valve that joins the left and right fuel manifolds, so either side's tanks can feed either engine."
+    },
+    {
+      "term": "autobrake",
+      "meaning": "Brakes the airplane automatically after landing at a chosen rate, or at full pressure in a rejected takeoff."
+    },
+    {
+      "term": "start lever",
+      "meaning": "One lever per engine on the control stand: IDLE lets fuel in and the igniters fire; CUTOFF shuts the engine down."
+    },
+    {
+      "term": "probe heat",
+      "meaning": "Heaters that keep the airspeed and other air data probes free of ice."
+    },
+    {
+      "term": "window heat",
+      "meaning": "Heaters in the flight deck windows that prevent ice and fogging and make the glass tougher against bird strikes."
+    },
+    {
+      "term": "outflow valve",
+      "meaning": "The valve that lets cabin air out; opening and closing it sets the cabin pressure."
+    },
+    {
+      "term": "standby power",
+      "meaning": "Power for the most important instruments and radios when the normal supply fails, from the battery if need be."
+    },
+    {
+      "term": "yaw damper",
+      "meaning": "Moves the rudder automatically to damp the airplane's side-to-side swaying."
+    },
+    {
+      "term": "trim air",
+      "meaning": "Hot bleed air added to each cabin zone's supply to fine-tune its temperature."
+    },
+    {
+      "term": "anti-ice",
+      "meaning": "Hot bleed air that keeps ice off the engine inlets and the wing leading edges."
     }
   ]
 }

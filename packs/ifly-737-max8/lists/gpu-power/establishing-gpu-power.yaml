@@ -54,7 +54,7 @@ steps:
     number: 3
     text: GROUND POWER SWITCH
     expect: "ON"
-    terms: ["GRD", "AC"]
+    terms: ["Transfer bus", "GRD", "AC", "P5"]
     controls:
       - grdpwr
     targets:

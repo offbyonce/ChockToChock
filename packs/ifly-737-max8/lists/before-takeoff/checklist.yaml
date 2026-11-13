@@ -30,6 +30,7 @@ steps:
   - id: ifly-737-max8.before-takeoff.takeoff-data
     text: TAKEOFF DATA
     expect: "SET, RUNWAY ___"
+    terms: ["P9"]
     controls:
       - cdu
     targets:
@@ -42,7 +43,7 @@ steps:
   - id: ifly-737-max8.before-takeoff.v2
     text: V2
     expect: "___ SET"
-    terms: ["MCP", "V2"]
+    terms: ["V2", "MCP", "P7"]
     controls:
       - mcpset
     targets:

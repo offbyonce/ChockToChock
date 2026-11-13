@@ -12,6 +12,7 @@ steps:
   - id: ifly-737-max8.secure.electric-hydraulic-pump-switches
     text: ELECTRIC HYDRAULIC PUMP SWITCHES
     expect: "OFF"
+    terms: ["P5"]
     controls:
       - elechyd
     targets:
@@ -26,7 +27,7 @@ steps:
   - id: ifly-737-max8.secure.irs-check
     text: IRS
     expect: "OFF"
-    terms: ["IRS"]
+    terms: ["IRS", "P5"]
     controls:
       - irs
     targets:
@@ -42,6 +43,7 @@ steps:
   - id: ifly-737-max8.secure.window-heat
     text: WINDOW HEAT
     expect: "OFF"
+    terms: ["window heat", "P5", "probe heat"]
     controls:
       - wheat
     targets:
@@ -60,6 +62,7 @@ steps:
   - id: ifly-737-max8.secure.emergency-exit-lights-check
     text: EMERGENCY EXIT LIGHTS
     expect: "OFF"
+    terms: ["P5"]
     controls:
       - emerext
     targets:
@@ -74,7 +77,7 @@ steps:
   - id: ifly-737-max8.secure.pack-switches-check
     text: PACK SWITCHES
     expect: "OFF"
-    terms: ["PACK"]
+    terms: ["PACK", "P5", "Bleed air"]
     controls:
       - packs
     targets:
@@ -89,7 +92,7 @@ steps:
   - id: ifly-737-max8.secure.apu-or-ground-power-check
     text: APU OR GROUND POWER
     expect: "OFF"
-    terms: ["APU", "AC"]
+    terms: ["APU", "AC", "P5"]
     controls:
       - apub
       - apusw
@@ -115,6 +118,7 @@ steps:
   - id: ifly-737-max8.secure.battery-check
     text: BATTERY
     expect: "OFF"
+    terms: ["P5"]
     controls:
       - bat
     targets:

@@ -41,6 +41,7 @@ steps:
     number: 3
     text: CENTER FUEL PUMPS
     expect: OFF WHEN BOTH LOW PRESSURE LIGHTS COME ON
+    terms: ["P5"]
     controls:
       - fuelpumps
     targets:
@@ -66,6 +67,7 @@ steps:
     number: 4
     text: ANTI-ICE
     expect: "AS REQUIRED, OFF PROMPTLY AFTER ICING, NOT IN DRY AIR"
+    terms: ["anti-ice", "P5"]
     controls:
       - aice
     targets:
@@ -83,7 +85,7 @@ steps:
     number: 5
     text: WEATHER
     expect: "MONITOR, IF SHOWN ON ND"
-    terms: ["ND"]
+    terms: ["ND", "P7", "EFIS"]
     controls:
       - efispanel
     targets:
@@ -106,7 +108,7 @@ steps:
     number: 7
     text: DESCENT AND ARRIVAL DATA
     expect: ENTER IN CDU
-    terms: ["CDU", "FMC"]
+    terms: ["CDU", "FMC", "P9"]
     controls:
       - fmc
     targets:
@@ -121,7 +123,7 @@ steps:
     number: 8
     text: MCP ALTITUDE
     expect: "SET THE CLEARED ALTITUDE WHEN CLEARED TO DESCEND"
-    terms: ["VNAV", "MCP"]
+    terms: ["MCP", "VNAV", "P7"]
     controls:
       - mcpalt
     targets:

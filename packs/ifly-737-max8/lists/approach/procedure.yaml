@@ -12,7 +12,7 @@ steps:
   - id: ifly-737-max8.approach.altimeters
     text: ALTIMETERS
     expect: SET QNH AT TRANSITION
-    terms: ["QNH"]
+    terms: ["QNH", "P7", "EFIS"]
     controls:
       - baro
     targets:
@@ -33,6 +33,7 @@ steps:
     number: 1
     text: "LANDING LIGHTS, WING LIGHTS, LOGO LIGHT"
     expect: "ON"
+    terms: ["P5"]
     controls:
       - landlt
       - winglt
@@ -52,6 +53,7 @@ steps:
     number: 2
     text: FASTEN BELTS SELECTOR
     expect: "AUTO OR ON"
+    terms: ["P5"]
     controls:
       - sblts
     targets:
@@ -65,7 +67,7 @@ steps:
     number: 3
     text: MULTI-MODE RECEIVER
     expect: TUNE THE ILS FOR THE LANDING RUNWAY
-    terms: ["ILS", "PFD"]
+    terms: ["ILS", "PFD", "ADF"]
     controls:
       - mmr
     targets:
@@ -86,7 +88,7 @@ steps:
   - id: ifly-737-max8.approach.approach-in-the-cdu
     text: APPROACH IN THE CDU
     expect: CORRECT APPROACH ON THE LEGS PAGE
-    terms: ["RNAV", "LEGS", "CDU", "FMC"]
+    terms: ["CDU", "LEGS", "RNAV", "FMC", "P9"]
     controls:
       - fmc
     targets:
@@ -104,7 +106,7 @@ steps:
     number: 4
     text: COURSE SELECTORS
     expect: FINAL APPROACH COURSE SET
-    terms: ["ND"]
+    terms: ["ND", "P7"]
     controls:
       - crs
     targets:
@@ -119,7 +121,7 @@ steps:
   - id: ifly-737-max8.approach.app-mcp
     text: APP (MCP)
     expect: "ARM, VOR/LOC AND G/S ARMED ON THE FMA"
-    terms: ["VOR/LOC", "FMA", "MCP", "G/S", "APP"]
+    terms: ["APP", "MCP", "VOR/LOC", "G/S", "FMA", "P7"]
     controls:
       - appmode
     targets:

@@ -13,7 +13,7 @@ steps:
     number: 1
     text: ROLL MODE
     expect: LNAV OR HDG SEL ABOVE 400 FT
-    terms: ["HDG SEL", "LNAV", "FMA", "FMC", "FT"]
+    terms: ["LNAV", "HDG SEL", "FMA", "FMC", "P7"]
     controls:
       - rollmode
     targets:
@@ -35,6 +35,7 @@ steps:
     number: 1
     text: PRESSURIZATION
     expect: CABIN ALTITUDE CLIMBING NORMALLY
+    terms: ["P5"]
     controls:
       - press
     targets:
@@ -53,7 +54,7 @@ steps:
     number: 2
     text: CLIMB THRUST
     expect: "VERIFY AT ABOUT 1,500 FT"
-    terms: ["N1", "FT"]
+    terms: ["N1"]
     controls:
       - engmon
     targets:
@@ -70,7 +71,7 @@ steps:
     number: 3
     text: AUTOPILOT
     expect: "CMD A OR B"
-    terms: ["FMA", "PFD", "CMD"]
+    terms: ["CMD", "PFD", "FMA", "P7"]
     controls:
       - ap
     targets:
@@ -87,7 +88,7 @@ steps:
     number: 4
     text: AUTOBRAKE
     expect: OFF AFTER FLAP RETRACTION
-    terms: ["RTO"]
+    terms: ["autobrake", "RTO", "P9"]
     controls:
       - abrake
     targets:
@@ -101,7 +102,7 @@ steps:
     number: 5
     text: ENGINE START SWITCHES
     expect: OFF OR CONT AS CONDITIONS REQUIRE
-    terms: ["CONT"]
+    terms: ["CONT", "P5"]
     controls:
       - starts
     targets:
