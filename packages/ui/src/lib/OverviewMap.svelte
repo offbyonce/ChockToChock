@@ -89,8 +89,9 @@ unlabeled; the marked area is always named.
   let cx = $derived((bounds.x0 + bounds.x1) / 2);
   let cy = $derived((bounds.y0 + bounds.y1) / 2);
 
-  /** An area's label size in map units: as large as fits its box, up to 3.0's size. */
-  const size = (text: string[], width: number, height: number) => fitSize(text, width, height, LABEL);
+  /** An area's label size in map units: as large as fits its box, up to 3.0's size or 11 px. */
+  const size = (text: string[], width: number, height: number) =>
+    fitSize(text, width, height, Math.max(LABEL, (LABEL_MIN * page) / k));
   /** A label is drawn only at 11 px or more on screen; the marked area's never smaller. */
   const shows = (fs: number) => (fs * k) / page >= LABEL_MIN - 0.01;
 </script>
@@ -108,7 +109,7 @@ unlabeled; the marked area is always named.
     {#each map.areas as area (area.zone + area.x + area.y)}
       {@const z = byId.get(area.zone)}
       {@const on = area.zone === zone.id}
-      {@const text = labelLines(area.label ?? z?.short_title ?? "", area.width, area.height, LABEL)}
+      {@const text = labelLines(area.label ?? z?.short_title ?? "", area.width, area.height, Math.max(LABEL, (LABEL_MIN * page) / k))}
       {@const fit = size(text, area.width, area.height)}
       {@const fs = on ? Math.max(fit, (LABEL_MIN * page) / k) : fit}
       <g class:on>

@@ -19,7 +19,7 @@ What the step asks for, never the simulator's state (decision 0006).
 <script lang="ts">
   import type { ItemTarget, PanelItem, PanelSection } from "@chocktochock/bindings";
   import { em } from "./text-width";
-  import { angleOf, BUTTON, DIAL, withinAcross, knobY, LAMP, TOGGLE, labelled, lampText, layoutSection, leverY, PX, positionsOf, slotY } from "./panel-layout";
+  import { angleOf, BUTTON, DIAL, half, withinAcross, knobY, LAMP, TOGGLE, labelled, lampText, layoutSection, leverY, PX, positionsOf, slotY } from "./panel-layout";
 
   let {
     section,
@@ -107,12 +107,17 @@ What the step asks for, never the simulator's state (decision 0006).
     {@const open = on && (byItem.get(i)?.open ?? false)}
     {@const r = (!on || (t == null && !open)) && item.rest ? positions.indexOf(item.rest) : -1}
     <g class="item {item.kind}" class:on class:resolved={on && (byItem.get(i)?.resolved ?? false)} class:conditional={open} transform="translate({item.x} {item.y})">
+      {#if on && (byItem.get(i)?.resolved ?? false)}
+        <!-- Resolved: set by a decision step's answer (decision 0022), marked with a small diamond
+             so it is told apart from a setting the step always asks for. -->
+        <path class="decided" d="M 0 {-11 - half(item)} l 3 3 l -3 3 l -3 -3 z" />
+      {/if}
       {#if item.kind === "toggle_switch"}
         {#if item.guarded}
           <!-- A guard: an open frame around the switch, with its hinge at the top; closed, a lid
                line across it. -->
           <path class="guard" d="M {-gw} {gh} V {-gh + 2} Q {-gw} {-gh} {-gw + 2} {-gh} H {gw - 2} Q {gw} {-gh} {gw} {-gh + 2} V {gh}" />
-          {#if on && guardClosed}<line class="guard lid" x1={-gw} x2={gw} y1={gh} y2={gh} />{/if}
+          {#if on && guardClosed}<line class="guard lid" x1={-gw - 1.5} x2={gw + 1.5} y1={gh} y2={gh} />{/if}
         {/if}
         <rect class="body track" class:changed={on && !open} class:conditional={open} x={-TOGGLE.w / 2} y={-TOGGLE.h / 2} width={TOGGLE.w} height={TOGGLE.h} rx={TOGGLE.w / 2} />
         {#if on && t != null}
@@ -135,6 +140,8 @@ What the step asks for, never the simulator's state (decision 0006).
           <circle class="tip set" cy={-DIAL + 3.2} r="1.3" transform="rotate({angleOf(item, t)})" />
         {:else if r >= 0}
           <rect class="bar rest" x="-1.6" y={-DIAL + 2.5} width="3.2" height={2 * DIAL - 5} rx="1.6" transform="rotate({angleOf(item, r)})" />
+          <!-- The pointing end, so a resting knob reads one way (SYS DSPL L or R). -->
+          <circle class="tip rest" cy={-DIAL + 3.6} r="1.4" transform="rotate({angleOf(item, r)})" />
         {/if}
         <!-- Each label sits at its own tick, so the pointer and its label always agree. -->
         {#each layout.items.get(i)?.positions ?? [] as l (l.n)}
@@ -283,7 +290,9 @@ What the step asks for, never the simulator's state (decision 0006).
     stroke-width: 1.1;
   }
   .guard.lid {
-    stroke-width: 2;
+    stroke: var(--panel-changed);
+    stroke-width: 2.4;
+    stroke-linecap: round;
   }
   .screen {
     fill: var(--panel-glass);
@@ -306,6 +315,12 @@ What the step asks for, never the simulator's state (decision 0006).
   }
   .tip.set {
     fill: var(--panel-changed-fill);
+  }
+  .tip.rest {
+    fill: var(--panel-resting);
+  }
+  .decided {
+    fill: var(--panel-changed);
   }
   .on .lamp-text {
     fill: var(--panel-changed-text);

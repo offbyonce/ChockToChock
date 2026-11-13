@@ -138,6 +138,11 @@ smallest size that keeps 11 px labels, scrolls sideways, and offers a full-width
     // opens on a control the step asks for, never on empty panel.
     const [first, last] = [Math.min(...spans.map((x) => x[0])), Math.max(...spans.map((x) => x[1]))];
     const room = wrap.clientWidth;
+    // From the left edge when that already shows all of them, so no control is cut at the left.
+    if ((last - view.box.x) * scale.k <= room) {
+      wrap.scrollLeft = 0;
+      return;
+    }
     const fits = (last - first) * scale.k <= room;
     const at = fits ? (first + last) / 2 : first;
     const px = (at - view.box.x) * scale.k;

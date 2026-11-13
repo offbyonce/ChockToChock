@@ -47,33 +47,46 @@ caption says it is a schematic.
   let eye = $derived(shapes.find((s) => s.role === "eye")?.points[0] ?? null);
   const path = (points: number[][], closed: boolean) =>
     `M ${points.map(([x, y]) => `${x} ${y}`).join(" L ")}${closed ? " Z" : ""}`;
-  /** Where a shape's label goes: inside a closed shape, just above a dot, beside a vertical line
-   * (rotated along it), and off a sloping or level line on the side away from the frame's middle. */
+  /** Where a shape's label goes: inside a closed shape, just above a dot, at the foot of a
+   * vertical line (reading inward), and off a sloping or level line on the side away from the
+   * frame's middle. */
   const labelAt = (points: number[][], closed: boolean) => {
     const xs = points.map((p) => p[0] ?? 0);
     const ys = points.map((p) => p[1] ?? 0);
     const x = (Math.min(...xs) + Math.max(...xs)) / 2;
     const y = (Math.min(...ys) + Math.max(...ys)) / 2;
-    if (points.length === 1) return { x, y: y - fs * 1.1, rotate: 0 };
-    if (closed) return { x, y, rotate: 0 };
+    if (points.length === 1) return { x, y: y - fs * 1.1, anchor: "middle" };
+    if (closed) return { x, y, anchor: "middle" };
     if (xs.every((v) => v === xs[0])) {
-      const side = x < frame.width / 2 ? 1 : -1;
-      return { x: x + side * fs * 0.9, y, rotate: side * 90 };
+      const left = x < frame.width / 2;
+      return { x: x + (left ? fs * 0.5 : -fs * 0.5), y: Math.max(...ys) - fs * 0.7, anchor: left ? "start" : "end" };
     }
     const dx = x - frame.width / 2;
     const dy = y - frame.height / 2;
     const len = Math.hypot(dx, dy) || 1;
-    return { x: x + (dx / len) * fs * 2.4, y: y + (dy / len) * fs * 1.2, rotate: 0 };
+    return { x: x + (dx / len) * fs * 3.2, y: y + (dy / len) * fs * 1.6, anchor: "middle" };
   };
-  /** The highlighted region's name: inside its place when it fits, else above a place in the top
-   * half of the frame and below one in the bottom half. */
+  type Box = { x0: number; y0: number; x1: number; y1: number };
+  const overlaps = (a: Box, b: Box) => a.x0 < b.x1 && b.x0 < a.x1 && a.y0 < b.y1 && b.y0 < a.y1;
+  /** The highlighted region's name: inside its place when it fits, else the first of below, above,
+   * right and left that clears every other place. */
   let nameAt = $derived.by(() => {
     if (!here || !region) return null;
-    const textW = region.length * fs * 0.62;
+    const w = region.length * fs * 0.62;
     const cx = here.x + here.width / 2;
-    if (here.height >= fs * 1.6 && here.width >= textW + fs) return { x: cx, y: here.y + here.height / 2, inside: true };
-    const top = here.y + here.height / 2 < frame.height / 2;
-    return { x: cx, y: top ? here.y + here.height + fs * 1.1 : here.y - fs * 0.8, inside: false };
+    if (here.height >= fs * 1.6 && here.width >= w + fs) return { x: cx, y: here.y + here.height / 2, inside: true };
+    const others: Box[] = places
+      .filter((p) => p !== here)
+      .map((p) => ({ x0: p.x, y0: p.y, x1: p.x + p.width, y1: p.y + p.height }));
+    const at = (x: number, y: number) => ({ x, y, box: { x0: x - w / 2, y0: y - fs / 2, x1: x + w / 2, y1: y + fs / 2 } });
+    const tries = [
+      at(cx, here.y + here.height + fs * 0.9),
+      at(cx, here.y - fs * 0.8),
+      at(here.x + here.width + w / 2 + fs * 0.4, here.y + here.height / 2),
+      at(here.x - w / 2 - fs * 0.4, here.y + here.height / 2),
+    ];
+    const free = tries.find((t) => !others.some((o) => overlaps(o, t.box))) ?? tries[0];
+    return free ? { x: free.x, y: free.y, inside: false } : null;
   });
 </script>
 
@@ -97,7 +110,7 @@ caption says it is a schematic.
       {/if}
       {#each shapes.filter((s) => s.label) as shape, n (n)}
         {@const at = labelAt(shape.points, shape.closed ?? false)}
-        <text class="tag" x={at.x} y={at.y} style:font-size="{fs}px" transform={at.rotate ? `rotate(${at.rotate} ${at.x} ${at.y})` : undefined}>{shape.label}</text>
+        <text class="tag" x={at.x} y={at.y} style:font-size="{fs}px" style:text-anchor={at.anchor}>{shape.label}</text>
       {/each}
       {#if nameAt && region}
         <text class="name" class:inside={nameAt.inside} x={nameAt.x} y={nameAt.y} style:font-size="{fs}px">{region.toUpperCase()}</text>
@@ -165,6 +178,14 @@ caption says it is a schematic.
     text-anchor: middle;
     dominant-baseline: central;
   }
+  /* A halo in the background color, so no line strikes through a label. */
+  .tag,
+  .name {
+    paint-order: stroke;
+    stroke: var(--panel-bg);
+    stroke-width: 4;
+    stroke-linejoin: round;
+  }
   .tag {
     fill: var(--panel-label);
   }
@@ -173,6 +194,7 @@ caption says it is a schematic.
   }
   .name.inside {
     fill: var(--panel-changed-text);
+    stroke: var(--panel-changed-fill);
   }
   .note {
     margin: var(--space-2) 0 0;

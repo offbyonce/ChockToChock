@@ -771,4 +771,15 @@ describe("PanelSchematic", () => {
     const captions = [...screen.getByRole("img").querySelectorAll(".set-to")].map((t) => t.textContent);
     expect(captions).toEqual(["SET TO", "STROBE & STEADY"]);
   });
+
+  it("draws a resting selector's pointing end, so it reads one way", () => {
+    // SYS DSPL rested as a bar across the knob, pointing at L and R at once.
+    const rested = structuredClone(wiperPanel);
+    const wiper = rested.sections[0]?.items[0];
+    if (wiper) wiper.rest = "PARK";
+    render(PanelSchematic, { panel: rested, focus: ["lwip"], targets: [] });
+    const svg = screen.getByRole("img");
+    expect(svg.querySelectorAll(".bar.rest")).toHaveLength(1);
+    expect(svg.querySelectorAll(".tip.rest")).toHaveLength(1);
+  });
 });

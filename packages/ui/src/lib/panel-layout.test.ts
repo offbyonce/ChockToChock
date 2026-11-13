@@ -7,9 +7,11 @@ import {
   drawingScale,
   half,
   K,
+  KEY,
   knobY,
   LABEL_MIN,
   LEGEND_MIN,
+  lampText,
   layoutSection,
   leverY,
   MAX_SCALE,
@@ -311,5 +313,15 @@ describe("drawingScale", () => {
 
   it("draws at the layout scale until the room is measured", () => {
     expect(drawingScale(0, 300)).toEqual({ k: K, overflow: false });
+  });
+});
+
+describe("lampText", () => {
+  it("breaks a legend after a slash and never sets it under 10 px", () => {
+    // EMERGENCY/TEST was squeezed to about 9 px on one line.
+    const item = { kind: "push_button", label: "EMERGENCY/TEST" } as unknown as PanelItem;
+    const words = lampText(item, K, PX.lamp, KEY.w);
+    expect(words.lines).toEqual(["EMERGENCY/", "TEST"]);
+    expect(words.px).toBeGreaterThanOrEqual(LEGEND_MIN);
   });
 });

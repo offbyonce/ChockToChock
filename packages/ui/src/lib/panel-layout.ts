@@ -119,12 +119,15 @@ export function lampText(
   width: number = LAMP.w,
 ): { lines: string[]; px: number } {
   const room = (width - 5) * k;
-  const words = item.label.split(" ");
-  const size = Math.min(px, room / widest(words));
+  // Words break at spaces and after a slash ("EMERGENCY/ TEST"), and a legend never goes under
+  // 10 px (decision 0021).
+  const words = item.label.split(" ").flatMap((w) => w.split(/(?<=\/)/));
+  const size = Math.max(LEGEND_MIN, Math.min(px, room / widest(words)));
   const out: string[] = [];
   for (const w of words) {
     const last = out[out.length - 1];
-    if (last !== undefined && em(`${last} ${w}`) * size <= room) out[out.length - 1] = `${last} ${w}`;
+    const joined = last?.endsWith("/") ? `${last}${w}` : `${last} ${w}`;
+    if (last !== undefined && em(joined) * size <= room) out[out.length - 1] = joined;
     else out.push(w);
   }
   return { lines: out.slice(0, 3), px: size };
