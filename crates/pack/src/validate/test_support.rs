@@ -60,6 +60,7 @@ pub(super) fn phases() -> PhasesFile {
             description: None,
             choices: vec![],
             ask_in: vec![],
+            suggests: None,
         }],
         stages: vec![Stage {
             title: "Preflight".into(),
@@ -133,6 +134,7 @@ pub(super) fn alias_pack(aliases: Vec<Alias>) -> Pack {
             area: "Overhead".into(),
             title: "Overhead".into(),
             short_title: "OH".into(),
+            position: None,
         }],
         controls: vec![],
         overview: None,

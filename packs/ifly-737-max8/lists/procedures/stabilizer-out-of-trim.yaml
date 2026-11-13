@@ -13,6 +13,7 @@ steps:
     number: 1
     text: "ON THE GROUND: STAB OUT OF TRIM LIGHT"
     expect: DO NOT TAKE OFF
+    terms: ["STAB", "P1"]
     controls:
       - stabout
     targets:
@@ -25,6 +26,7 @@ steps:
     number: 2
     text: "LIGHT MOMENTARY IN FLIGHT, STABILIZER TRIMMING"
     expect: CONTINUE NORMAL OPERATION
+    terms: ["P1"]
     controls:
       - stabout
     targets:
@@ -36,6 +38,7 @@ steps:
     number: 3
     text: "IN FLIGHT, STABILIZER NOT TRIMMING"
     expect: "HOLD COLUMN, DISENGAGE A/P AND A/T, USE MAIN ELECTRIC TRIM"
+    terms: ["A/P", "A/T"]
     controls:
       - column
       - stabtrim
@@ -51,6 +54,7 @@ steps:
     number: 4
     text: IF STABILIZER RESPONDS TO ELECTRIC TRIM
     expect: DO NOT RE-ENGAGE A/P OR A/T
+    terms: ["A/P", "A/T", "P7"]
     controls:
       - apdis
     targets:
@@ -74,6 +78,7 @@ steps:
     number: 6
     text: LIGHT ON AFTER LANDING
     expect: THE FLIGHT CONTROL COMPUTER (FCC) TRIM MONITOR TRIPPED IN FLIGHT
+    terms: ["FCC", "P1"]
     controls:
       - stabout
     targets:

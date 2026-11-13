@@ -27,6 +27,7 @@ steps:
     number: 2
     text: EFIS CONTROL PANELS
     expect: "TERRAIN DISPLAY AS DESIRED"
+    terms: ["EFIS", "ND", "TERR", "P7"]
     controls:
       - efispanel
     targets:
@@ -43,6 +44,7 @@ steps:
   - id: ifly-737-max8.before-takeoff.pack-switches
     text: PACK SWITCHES
     expect: AUTO OR OFF PER PERFORMANCE DATA
+    terms: ["PACK", "P5", "Bleed air"]
     controls:
       - packs
     targets:

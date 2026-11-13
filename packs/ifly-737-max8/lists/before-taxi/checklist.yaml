@@ -12,6 +12,7 @@ steps:
   - id: ifly-737-max8.before-taxi.generators
     text: GENERATORS
     expect: "ON"
+    terms: ["P5"]
     controls:
       - engen
     targets:
@@ -27,6 +28,7 @@ steps:
   - id: ifly-737-max8.before-taxi.probe-heat-check
     text: PROBE HEAT
     expect: "ON, PROBE LIGHTS OUT"
+    terms: ["probe heat", "P5"]
     controls:
       - pheat
     targets:
@@ -62,6 +64,7 @@ steps:
   - id: ifly-737-max8.before-taxi.anti-ice-check
     text: ANTI-ICE
     expect: AS REQUIRED
+    terms: ["anti-ice", "P5"]
     controls:
       - aice
     targets:
@@ -69,6 +72,7 @@ steps:
       - at: "oh/aice/ENG 1/1"
       - at: "oh/aice/ENG 2/1"
     note: Turn ENG 1 and ENG 2 anti-ice ON when it is 10C or below with visible moisture. Otherwise leave them OFF.
+    note_caution: true
     why: Stops ice building in the engine inlets on the ground
     confirmed_by:
       - kind: vendor-docs
@@ -76,6 +80,7 @@ steps:
   - id: ifly-737-max8.before-taxi.isolation-valve-switch-check
     text: ISOLATION VALVE SWITCH
     expect: AUTO
+    terms: ["ISOLATION VALVE", "P5", "Bleed air"]
     controls:
       - iso
     targets:
@@ -89,6 +94,7 @@ steps:
   - id: ifly-737-max8.before-taxi.engine-start-switches-check
     text: ENGINE START SWITCHES
     expect: CONT
+    terms: ["CONT", "P5"]
     controls:
       - starts
     targets:
@@ -105,6 +111,7 @@ steps:
   - id: ifly-737-max8.before-taxi.recall-check
     text: RECALL
     expect: CHECKED
+    terms: ["RECALL", "P7"]
     controls:
       - recall
     targets:
@@ -128,6 +135,7 @@ steps:
   - id: ifly-737-max8.before-taxi.autobrake
     text: AUTOBRAKE
     expect: RTO
+    terms: ["autobrake", "RTO", "P9"]
     controls:
       - abrake
     targets:
@@ -166,6 +174,7 @@ steps:
   - id: ifly-737-max8.before-taxi.ground-equipment
     text: GROUND EQUIPMENT
     expect: "TOWING PIN REMOVED, EQUIPMENT CLEAR"
+    terms: ["EFB"]
     controls:
       - grnd
     why: "Nothing may be left attached before taxi."

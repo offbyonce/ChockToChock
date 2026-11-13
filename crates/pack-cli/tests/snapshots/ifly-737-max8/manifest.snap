@@ -7,7 +7,7 @@ assertion_line: 33
   "id": "ifly-737-max8",
   "name": "iFly 737 MAX 8",
   "version": "0.1.0",
-  "schemaVersion": 3,
+  "schemaVersion": 4,
   "kind": "aircraft",
   "engine": ">=0.1.0, <1.0.0",
   "dependencies": {},

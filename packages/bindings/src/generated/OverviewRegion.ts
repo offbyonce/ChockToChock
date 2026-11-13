@@ -15,6 +15,16 @@ code?: string | null, x: number, y: number, width: number, height: number,
  */
 top?: string | null, bottom?: string | null, left?: string | null, right?: string | null, 
 /**
+ * Short edge captions for the small step map ("AFT", "FORWARD", "CAPT", "F/O"); the
+ * long ones stay for the Flight deck page.
+ */
+top_short?: string | null, bottom_short?: string | null, left_short?: string | null, right_short?: string | null, 
+/**
  * Where to look from the seat, for "Where is this?".
  */
-locate?: string | null, };
+locate?: string | null, 
+/**
+ * The Where is this? title, as a whole question ("Where is the forward overhead
+ * panel?"), and the shorter one phones use ("Where is the forward overhead?").
+ */
+title?: string | null, short_title?: string | null, };

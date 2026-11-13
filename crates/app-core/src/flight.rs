@@ -37,13 +37,21 @@ pub struct Flight {
     pub timers: BTreeMap<StepId, Millis>,
 }
 
-/// A new flight for a pack, with each option at its default.
+/// A new flight for a pack, with each option at its default, except options a decision step
+/// asks: they stay unanswered until the pilot answers (decision 0022).
 pub fn new_flight(pack: &FlatPack) -> Flight {
+    let decided: Vec<&str> = pack
+        .lists
+        .iter()
+        .flat_map(|l| &l.steps)
+        .filter_map(|s| s.decide.as_deref())
+        .collect();
     let options = pack
         .content
         .phases
         .iter()
         .flat_map(|p| &p.options)
+        .filter(|o| !decided.contains(&o.id.as_str()))
         .map(|o| (o.id.clone(), o.default.clone()))
         .collect();
     Flight {
@@ -57,5 +65,27 @@ pub fn new_flight(pack: &FlatPack) -> Flight {
         blanks: BTreeMap::new(),
         notes: String::new(),
         timers: BTreeMap::new(),
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::test_support::ifly_pack;
+
+    #[test]
+    fn an_option_a_decision_step_asks_starts_unanswered() {
+        // An invented decision in memory: a step that asks the power option.
+        let mut pack = ifly_pack();
+        assert!(new_flight(&pack).options.contains_key("power"));
+        pack.lists[0].steps[0].decide = Some("power".into());
+        let flight = new_flight(&pack);
+        assert!(
+            !flight.options.contains_key("power"),
+            "{:?}",
+            flight.options
+        );
+        // Options no step decides keep their defaults.
+        assert!(!flight.options.is_empty());
     }
 }

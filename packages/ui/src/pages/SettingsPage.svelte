@@ -12,7 +12,7 @@ saves them on the device, and batch 7 adds the rest.
   let { settings, onChange }: { settings: Settings; onChange: (s: Settings) => void } = $props();
 
   type Row = {
-    key: "listView" | "essentials" | "detail" | "theme" | "textSize" | "dimming";
+    key: "listView" | "essentials" | "detail" | "theme" | "textSize" | "mapInSteps" | "dimming";
     title: string;
     text: string;
     choices: [string | number | boolean, string][];
@@ -66,6 +66,17 @@ saves them on the device, and batch 7 adds the rest.
       ],
     },
     {
+      key: "mapInSteps",
+      title: "Map in steps",
+      text: "When the location map shows in full. The drawing and Check, If not and Why always show.",
+      choices: [
+        ["always", "Always"],
+        ["new_panel", "New panel"],
+        ["on_request", "On request"],
+        ["off", "Off"],
+      ],
+    },
+    {
       key: "dimming",
       title: "Dimming",
       text: "Dims the whole screen for a dark room. Text stays readable at every step.",
@@ -95,7 +106,13 @@ saves them on the device, and batch 7 adds the rest.
             type="button"
             role="radio"
             aria-checked={settings[row.key] === value}
-            onclick={() => onChange({ ...settings, [row.key]: value })}>{label}</button
+            onclick={() =>
+              onChange({
+                ...settings,
+                [row.key]: value,
+                // A map choice made here is also what Show map restores after Hide map.
+                ...(row.key === "mapInSteps" && value !== "on_request" ? { mapBeforeHide: value as Settings["mapBeforeHide"] } : {}),
+              })}>{label}</button
           >
         {/each}
       </div>

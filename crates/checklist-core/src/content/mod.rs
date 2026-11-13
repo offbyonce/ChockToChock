@@ -23,7 +23,8 @@ pub use cdu::{
     CduStyled, CduText, CduWalkthrough, CduWhen, RouteLegCount, RouteLegPart,
 };
 pub use controls::{
-    Control, ControlsFile, Overview, OverviewArea, OverviewCaption, OverviewRegion, Zone,
+    Control, ControlsFile, LabelAnchor, Overview, OverviewArea, OverviewCaption, OverviewRegion,
+    OverviewViews, ViewFrame, ViewLabel, ViewPlace, ViewRole, ViewShape, Zone,
 };
 pub use faults::{Fault, FaultsFile};
 pub use glossary::{GlossaryEntry, GlossaryFile};

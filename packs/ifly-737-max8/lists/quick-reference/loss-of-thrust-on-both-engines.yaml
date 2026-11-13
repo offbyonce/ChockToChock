@@ -23,6 +23,7 @@ steps:
     number: 2
     text: START SWITCHES (BOTH)
     expect: FLT
+    terms: ["FLT", "P5"]
     controls:
       - starts
     targets:
@@ -49,6 +50,7 @@ steps:
     number: 4
     text: "ONCE EGT STARTS FALLING"
     expect: "BOTH START LEVERS TO IDLE"
+    terms: ["EGT"]
     controls:
       - slever
     targets:
@@ -60,6 +62,7 @@ steps:
     number: 5
     text: "EGT AT REDLINE, OR FLAT FOR 30 SECONDS"
     expect: "THAT START LEVER TO CUTOFF, THEN BACK TO IDLE. REPEAT IF NEEDED"
+    terms: ["EGT", "start lever"]
     controls:
       - engmon
       - slever
@@ -72,6 +75,7 @@ steps:
     number: 6
     text: ENGINE ACCELERATION
     expect: "MAY BE VERY SLOW. LEAVE THE START ALONE WHILE N2 CLIMBS AND EGT STAYS IN LIMITS"
+    terms: ["N2", "EGT"]
     controls:
       - engmon
     targets:
@@ -81,6 +85,7 @@ steps:
     number: 7
     text: APU (IF AVAILABLE)
     expect: START AND PUT ON BUSES. DO NOT WAIT FOR ENGINE START
+    terms: ["APU", "P5"]
     controls:
       - apusw
       - apugen

@@ -12,6 +12,7 @@ steps:
   - id: ifly-737-max8.climb.exterior-lights
     text: EXTERIOR LIGHTS
     expect: "LANDING, TURNOFF, WING AND LOGO OFF"
+    terms: ["P5"]
     controls:
       - landlt
       - turnoff
@@ -34,6 +35,7 @@ steps:
   - id: ifly-737-max8.climb.fasten-belts-selector-check
     text: FASTEN BELTS SELECTOR
     expect: AS DESIRED
+    terms: ["P5"]
     controls:
       - sblts
     targets:
@@ -45,6 +47,7 @@ steps:
   - id: ifly-737-max8.climb.altimeters
     text: ALTIMETERS
     expect: STD AT TRANSITION ALTITUDE
+    terms: ["STD", "TRANSITION ALTITUDE", "P7", "EFIS"]
     controls:
       - baro
     targets:

@@ -12,12 +12,14 @@ steps:
   - id: ifly-737-max8.descent.fmc-route
     text: FMC ROUTE
     expect: VERIFIED
+    terms: ["FMC", "P9"]
     controls:
       - cdu
     targets:
       - at: "con/cdul/CDU/1"
       - at: "con/cdur/CDU/1"
     note: Check the arrival and approach in the CDU match your clearance.
+    note_caution: true
     why: Confirms the route ahead
     check: Arrival and approach match the clearance
     confirmed_by:
@@ -27,6 +29,7 @@ steps:
     number: 1
     text: LAND ALT
     expect: DESTINATION ELEVATION SET
+    terms: ["LAND ALT", "P5"]
     controls:
       - ldgalt
     targets:
@@ -41,6 +44,7 @@ steps:
     number: 2
     text: CDU
     expect: SET LANDING FLAPS AND VREF
+    terms: ["CDU", "VREF", "P9"]
     controls:
       - vref
     targets:
@@ -56,6 +60,7 @@ steps:
     number: 3
     text: RECALL
     expect: "PRESS, NO UNEXPECTED ALERTS"
+    terms: ["RECALL", "P7"]
     controls:
       - recall
     targets:
@@ -81,6 +86,7 @@ steps:
     number: 4
     text: MINIMUMS
     expect: BARO OR RADIO SET PER CHART
+    terms: ["BARO", "P7", "EFIS"]
     controls:
       - mins
     targets:
@@ -88,6 +94,7 @@ steps:
       - at: "gl/efisr/MINS/1"
     quick: always
     note: Set the altitude at which you must see the runway or go around.
+    note_caution: true
     why: "At minimums you must see the runway, or go around"
     how: mins
     confirmed_by:
@@ -97,6 +104,7 @@ steps:
     number: 5
     text: AUTOBRAKE
     expect: "1, 2, 3 OR MAX AS NEEDED"
+    terms: ["autobrake", "P9"]
     controls:
       - abrake
     targets:

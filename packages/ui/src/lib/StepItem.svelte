@@ -115,7 +115,7 @@ with the words "Skipped, still open". The quick level shows the item and value o
         <!-- As 3.0: the details, where it is and the map on narrow screens (the side panel has
              them on wide ones), then Skip for now as a quiet button at the bottom. -->
         <div class="dtl">
-          <StepDetail {index} {step} />
+          <div class="inline-detail"><StepDetail {index} {step} /></div>
           {#if place?.control}
             <p class="narrow where"><b>Where</b> · {place.control.location}</p>
           {/if}
@@ -149,6 +149,13 @@ with the words "Skipped, still open". The quick level shows the item and value o
 </li>
 
 <style>
+  /* Beside a side pane (tablet landscape and up) the pane shows Check, If not and Why, so the
+     row does not repeat them (Checklist board). */
+  @media (min-width: 900px) {
+    :global(.app:not(.nopane):not(.flow)) .inline-detail {
+      display: none;
+    }
+  }
   /* Sizes and weights follow 3.0's step rows. */
   .it {
     position: relative;

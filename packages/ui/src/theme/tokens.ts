@@ -37,6 +37,7 @@ const SURFACES = new Set<string>([
   "segment-border",
   "segment-on",
   "toggle-off",
+  "popover-border",
 ]);
 const PANEL_SURFACES = new Set<string>(["bg", "frame", "fill", "fuselage", "seat", "glass", "changed-fill"]);
 /** Text on a signal fill, and lit lights, which keep their real color: they do not change. */

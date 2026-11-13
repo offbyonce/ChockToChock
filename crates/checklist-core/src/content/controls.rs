@@ -10,6 +10,10 @@ data_types! {
         pub area: String,
         pub title: String,
         pub short_title: String,
+        /// Where the zone sits in its area, for the step map's position line ("Captain side,
+        /// row nearest the windshield").
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        pub position: Option<String>,
     }
 
     /// A switch, lever or other control a step refers to.
@@ -63,9 +67,98 @@ data_types! {
         pub left: Option<String>,
         #[serde(default, skip_serializing_if = "Option::is_none")]
         pub right: Option<String>,
+        /// Short edge captions for the small step map ("AFT", "FORWARD", "CAPT", "F/O"); the
+        /// long ones stay for the Flight deck page.
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        pub top_short: Option<String>,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        pub bottom_short: Option<String>,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        pub left_short: Option<String>,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        pub right_short: Option<String>,
         /// Where to look from the seat, for "Where is this?".
         #[serde(default, skip_serializing_if = "Option::is_none")]
         pub locate: Option<String>,
+        /// The Where is this? title, as a whole question ("Where is the forward overhead
+        /// panel?"), and the shorter one phones use ("Where is the forward overhead?").
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        pub title: Option<String>,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        pub short_title: Option<String>,
+    }
+
+    /// How the renderer draws a shape in a side or seat view (decision 0023). Roles name no
+    /// aircraft part, so any pack can draw its own airplane.
+    #[derive(Copy, Eq)]
+    #[serde(rename_all = "snake_case")]
+    pub enum ViewRole {
+        /// The airplane's outline (fuselage, walls): filled with the fuselage color.
+        Structure,
+        /// Windshield and windows.
+        Glass,
+        /// The pilot's seat and head.
+        Seat,
+        /// Where the pilot's eyes are: one point. The side view's sight line starts here.
+        Eye,
+    }
+
+    /// One shape in a side or seat view: an outline through its points (a curve is given as many
+    /// points), closed when `closed`. An `eye` is one point.
+    pub struct ViewShape {
+        pub points: Vec<[f64; 2]>,
+        #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+        pub closed: bool,
+        pub role: ViewRole,
+    }
+
+    /// Which way a label runs from its point.
+    #[derive(Copy, Eq, Default)]
+    #[serde(rename_all = "snake_case")]
+    pub enum LabelAnchor {
+        Start,
+        #[default]
+        Middle,
+        End,
+    }
+
+    /// A fixed label in a side or seat view, e.g. "WINDSHIELD" or "CABIN →".
+    pub struct ViewLabel {
+        pub text: String,
+        pub x: f64,
+        pub y: f64,
+        #[serde(default)]
+        pub anchor: LabelAnchor,
+    }
+
+    /// Where one overview region sits in a side or seat view: one or more closed outlines.
+    pub struct ViewPlace {
+        /// The region's `name` on the overview.
+        pub region: String,
+        pub shapes: Vec<Vec<[f64; 2]>>,
+        /// Where the region's name goes when it is the one shown, if the view names it.
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        pub label_at: Option<[f64; 2]>,
+    }
+
+    /// A side or seat view of the flight deck, in its own units (decision 0023).
+    pub struct ViewFrame {
+        pub width: f64,
+        pub height: f64,
+        #[serde(default, skip_serializing_if = "Vec::is_empty")]
+        pub shapes: Vec<ViewShape>,
+        #[serde(default, skip_serializing_if = "Vec::is_empty")]
+        pub places: Vec<ViewPlace>,
+        #[serde(default, skip_serializing_if = "Vec::is_empty")]
+        pub labels: Vec<ViewLabel>,
+    }
+
+    /// The side and seat views for "Where is this?".
+    pub struct OverviewViews {
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        pub side: Option<ViewFrame>,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        pub seat: Option<ViewFrame>,
     }
 
     /// A schematic of the whole cockpit, in our own layout.
@@ -77,6 +170,9 @@ data_types! {
         pub areas: Vec<OverviewArea>,
         #[serde(default, skip_serializing_if = "Vec::is_empty")]
         pub regions: Vec<OverviewRegion>,
+        /// The side and seat views (decision 0023).
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        pub views: Option<OverviewViews>,
     }
 
     /// `controls.yaml`.

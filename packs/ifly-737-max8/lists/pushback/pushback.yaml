@@ -17,6 +17,7 @@ steps:
       - extins
     quick: always
     note: "If it is cold or wet, confirm the wings and tail are clear of frost and ice before you leave."
+    note_caution: true
     why: No frost or ice before you leave
     check: Wings and tail clear
   - id: ifly-737-max8.pushback.maintenance-log
@@ -26,6 +27,7 @@ steps:
     controls:
       - mlog
     note: Confirm the logbook is on board and there is nothing open that stops the flight.
+    note_caution: true
     why: Confirms the airplane is ready
     check: Log aboard
     check_detail: Nothing open that stops the flight
@@ -33,6 +35,7 @@ steps:
     number: 1
     text: TCAS AND TRANSPONDER
     expect: "SQUAWK SET, XPNDR AUTO"
+    terms: ["TCAS", "XPNDR"]
     controls:
       - xpndr
     targets:
@@ -79,6 +82,7 @@ steps:
   - id: ifly-737-max8.pushback.towing-pin-inserted
     text: "TOWING PIN (EFB)"
     expect: "INSERTED"
+    terms: ["EFB"]
     note: "The iFly has no ground crew, so the EFB stands in for them."
     why: "Cuts hydraulic pressure to the nose wheel steering so the tug can turn it."
     simulator_model: true
@@ -93,6 +97,7 @@ steps:
       - pushsim
     quick: always
     note: Start your pushback tool or the EFB pushback. Watch that the parking brake is released first.
+    note_caution: true
     why: "Moves the airplane back from the gate. A sim step, with no switch on the real panel"
     check: Airplane moving back
     simulator_model: true
@@ -116,6 +121,7 @@ steps:
   - id: ifly-737-max8.pushback.towing-pin-removed
     text: "TOWING PIN (EFB)"
     expect: "REMOVED"
+    terms: ["EFB"]
     note: "The iFly has no ground crew, so the EFB stands in for them."
     why: "Restores nose wheel steering after the push."
     simulator_model: true

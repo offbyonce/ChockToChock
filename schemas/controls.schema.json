@@ -65,6 +65,15 @@
         "function"
       ]
     },
+    "LabelAnchor": {
+      "description": "Which way a label runs from its point.",
+      "type": "string",
+      "enum": [
+        "start",
+        "middle",
+        "end"
+      ]
+    },
     "Overview": {
       "description": "A schematic of the whole cockpit, in our own layout.",
       "type": "object",
@@ -90,6 +99,17 @@
           "items": {
             "$ref": "#/$defs/OverviewRegion"
           }
+        },
+        "views": {
+          "description": "The side and seat views (decision 0023).",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/OverviewViews"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "width": {
           "type": "number",
@@ -176,6 +196,12 @@
             "null"
           ]
         },
+        "bottom_short": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
         "code": {
           "description": "A short reference shown after the name, e.g. \"P5\".",
           "type": [
@@ -188,6 +214,12 @@
           "format": "double"
         },
         "left": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "left_short": {
           "type": [
             "string",
             "null"
@@ -209,8 +241,34 @@
             "null"
           ]
         },
+        "right_short": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "short_title": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "title": {
+          "description": "The Where is this? title, as a whole question (\"Where is the forward overhead\npanel?\"), and the shorter one phones use (\"Where is the forward overhead?\").",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
         "top": {
           "description": "Captions for the edges, saying which way each faces.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "top_short": {
+          "description": "Short edge captions for the small step map (\"AFT\", \"FORWARD\", \"CAPT\", \"F/O\"); the\nlong ones stay for the Flight deck page.",
           "type": [
             "string",
             "null"
@@ -238,6 +296,194 @@
         "height"
       ]
     },
+    "OverviewViews": {
+      "description": "The side and seat views for \"Where is this?\".",
+      "type": "object",
+      "properties": {
+        "seat": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ViewFrame"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "side": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ViewFrame"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "ViewFrame": {
+      "description": "A side or seat view of the flight deck, in its own units (decision 0023).",
+      "type": "object",
+      "properties": {
+        "height": {
+          "type": "number",
+          "format": "double"
+        },
+        "labels": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ViewLabel"
+          }
+        },
+        "places": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ViewPlace"
+          }
+        },
+        "shapes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ViewShape"
+          }
+        },
+        "width": {
+          "type": "number",
+          "format": "double"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "width",
+        "height"
+      ]
+    },
+    "ViewLabel": {
+      "description": "A fixed label in a side or seat view, e.g. \"WINDSHIELD\" or \"CABIN →\".",
+      "type": "object",
+      "properties": {
+        "anchor": {
+          "$ref": "#/$defs/LabelAnchor",
+          "default": "middle"
+        },
+        "text": {
+          "type": "string"
+        },
+        "x": {
+          "type": "number",
+          "format": "double"
+        },
+        "y": {
+          "type": "number",
+          "format": "double"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "text",
+        "x",
+        "y"
+      ]
+    },
+    "ViewPlace": {
+      "description": "Where one overview region sits in a side or seat view: one or more closed outlines.",
+      "type": "object",
+      "properties": {
+        "label_at": {
+          "description": "Where the region's name goes when it is the one shown, if the view names it.",
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "number",
+            "format": "double"
+          },
+          "maxItems": 2,
+          "minItems": 2
+        },
+        "region": {
+          "description": "The region's `name` on the overview.",
+          "type": "string"
+        },
+        "shapes": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "number",
+                "format": "double"
+              },
+              "maxItems": 2,
+              "minItems": 2
+            }
+          }
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "region",
+        "shapes"
+      ]
+    },
+    "ViewRole": {
+      "description": "How the renderer draws a shape in a side or seat view (decision 0023). Roles name no\naircraft part, so any pack can draw its own airplane.",
+      "oneOf": [
+        {
+          "description": "The airplane's outline (fuselage, walls): filled with the fuselage color.",
+          "type": "string",
+          "const": "structure"
+        },
+        {
+          "description": "Windshield and windows.",
+          "type": "string",
+          "const": "glass"
+        },
+        {
+          "description": "The pilot's seat and head.",
+          "type": "string",
+          "const": "seat"
+        },
+        {
+          "description": "Where the pilot's eyes are: one point. The side view's sight line starts here.",
+          "type": "string",
+          "const": "eye"
+        }
+      ]
+    },
+    "ViewShape": {
+      "description": "One shape in a side or seat view: an outline through its points (a curve is given as many\npoints), closed when `closed`. An `eye` is one point.",
+      "type": "object",
+      "properties": {
+        "closed": {
+          "type": "boolean"
+        },
+        "points": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "number",
+              "format": "double"
+            },
+            "maxItems": 2,
+            "minItems": 2
+          }
+        },
+        "role": {
+          "$ref": "#/$defs/ViewRole"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "points",
+        "role"
+      ]
+    },
     "Zone": {
       "description": "An area of the cockpit.",
       "type": "object",
@@ -247,6 +493,13 @@
         },
         "id": {
           "type": "string"
+        },
+        "position": {
+          "description": "Where the zone sits in its area, for the step map's position line (\"Captain side,\nrow nearest the windshield\").",
+          "type": [
+            "string",
+            "null"
+          ]
         },
         "short_title": {
           "type": "string"

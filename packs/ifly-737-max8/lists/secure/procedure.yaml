@@ -13,6 +13,7 @@ steps:
     number: 1
     text: IRS
     expect: "OFF"
+    terms: ["IRS", "P5"]
     controls:
       - irs
     targets:
@@ -30,6 +31,7 @@ steps:
     number: 2
     text: EMERGENCY EXIT LIGHTS
     expect: "OFF"
+    terms: ["P5"]
     controls:
       - emerext
     targets:
@@ -45,6 +47,7 @@ steps:
   - id: ifly-737-max8.secure.window-heat-switches
     text: WINDOW HEAT SWITCHES
     expect: "OFF"
+    terms: ["window heat", "P5", "probe heat"]
     controls:
       - wheat
     targets:
@@ -69,6 +72,7 @@ steps:
     number: 3
     text: PACK SWITCHES
     expect: "OFF"
+    terms: ["PACK", "P5", "Bleed air"]
     controls:
       - packs
     targets:
@@ -84,6 +88,7 @@ steps:
     number: 4
     text: APU OR GROUND POWER
     expect: "OFF"
+    terms: ["APU", "AC", "P5"]
     controls:
       - apub
       - apusw
@@ -99,6 +104,7 @@ steps:
         open: true
     quick: always
     note: Do this just before the battery goes off.
+    note_caution: true
     why: Removes AC power from the airplane
     panel_lights:
       apub:
@@ -109,6 +115,7 @@ steps:
   - id: ifly-737-max8.secure.before-battery-off
     text: BEFORE BATTERY OFF
     expect: "IF THE APU RAN, WAIT ABOUT 5 MINUTES AFTER THE APU GEN OFF BUS LIGHT GOES OUT"
+    terms: ["APU", "GEN OFF BUS", "P5"]
     controls:
       - genbus
     targets:
@@ -132,6 +139,7 @@ steps:
     number: 5
     text: BATTERY
     expect: "OFF"
+    terms: ["P5"]
     controls:
       - bat
     targets:

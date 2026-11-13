@@ -140,6 +140,15 @@ every change to `.github/workflows/`. For those, prepare what the step needs and
    1. Lists (done): phase screen, Checklist and Flow, item states, open items, options, Full and
       Essentials, keyboard, saving progress on the device. Flight data was then begun: flight
       values, the compact SimBrief plan (decision 0019), Flight setup and the flight strip (PR #17).
+   The boards in docs/design/boards are the specification, not inspiration (maintainer,
+   2026-11-12): every screen, overlay, view, label, caption, legend, color, spacing and order
+   matches its board exactly, in both themes and at every size the boards show, with values from
+   tokens.json. The only exception is the panel control drawings, whose layout comes from the pack
+   and whose drawing quality may exceed the board's. "Drawn from pack data" means the pack stores
+   what the board draws, never a redrawing. Where a board cannot be matched exactly, stop and ask
+   the maintainer before building anything different. Every reviewer brief adds a side-by-side of
+   each changed screen against its board, both themes, with every difference listed; any
+   difference the maintainer has not approved is a finding.
    The remaining interface work follows the approved design, in these batches:
    1. Tokens, themes and scaling: `tokens.json` to CSS variables, light and dark, the scale and
       breakpoints, Settings text size, the raw-value lint, a contrast check for both themes in CI,
@@ -156,6 +165,9 @@ every change to `.github/workflows/`. For those, prepare what the step needs and
       Carried from batch 1's review: the "SET TO" caption (10 px, under the 11 px label rule)
       gives way to the changed-state drawing, and the orientation caption sits with its drawing,
       not below the "See the whole panel larger" button.
+      Pack format 4 lands here (decisions 0022 and 0023): decision steps and targets that depend
+      on them, and the side and seat frames for Where is this?; test fixtures are invented and
+      stay out of the shipped pack, and existing packs migrate with their content unchanged.
    3. Core components and the desktop checklist: header, stage and phase tracks with open-step
       dots, flight strip, step rows (to do, current, done, skipped, decision), row menu with Add
       to and Remove from Essentials, Check, If not, Why with How to do it and Terms, side pane
@@ -166,6 +178,7 @@ every change to `.github/workflows/`. For those, prepare what the step needs and
       drawing takes the side pane's remaining height so a whole panel no longer pushes the
       step's switches below the fold (the fuel pump switches today); term definitions and the
       Add to / Remove from Essentials action on the row.
+      The phase progress-bar track reaches 3:1 using the `todo-ring` color (owner, 2026-11-12).
    4. Flight strip panel and Flight pages: clearance, frequencies, notes, Import latest from
       SimBrief, Reset flight plan, All flight data; Flight sections with field descriptions,
       destination chips and the Descriptions toggle; Weather with Find it in your OFP and a plain
@@ -184,7 +197,15 @@ every change to `.github/workflows/`. For those, prepare what the step needs and
       Keep screen awake; the step timer chip (IRS); "Used in" links to the steps that use a
       control; every menu item in coverage.md (Flight deck, Practice, Glossary, Flight log,
       Tour, References, How procedures work). The coverage.md rows added for review apply.
-   7. Content: the center tank decision step (the pilot answers until the pack has a sourced
+   7. Content. First on the sourcing list (owner, 2026-11-12): the resting position of FLT
+      CONTROL A and B, which the pack rests at STBY RUD where they are normally guarded ON; and
+      the placards of the 11 positions not in capitals (`pack check` warns on each): "OFF to
+      BRIGHT" on eight lighting knobs, "Guarded" on generator DISCONNECT 1 and 2, and the air
+      temperature SOURCE selector's "Supply duct, passenger cabin, pack". On the validation list
+      under decision 0007: the 17 glossary entries written in batch 2 (P1, P2, P3, P5, P7, P9,
+      center tank, main tank, crossfeed, autobrake, start lever, probe heat, window heat, outflow
+      valve, standby power, yaw damper, trim air, anti-ice). Then
+      the center tank decision step (the pilot answers until the pack has a sourced
       wing-tank capacity; then the app may suggest an answer for the pilot to confirm) and every
       mockup wording in content-to-validate.md, sourced and validated under decision 0007 before
       it ships.

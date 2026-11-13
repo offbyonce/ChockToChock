@@ -12,6 +12,7 @@ steps:
   - id: ifly-737-max8.shutdown.fuel-pump-switches-check
     text: FUEL PUMP SWITCHES
     expect: "OFF"
+    terms: ["P5"]
     controls:
       - fuelpumps
     targets:
@@ -34,6 +35,7 @@ steps:
   - id: ifly-737-max8.shutdown.probe-heat
     text: PROBE HEAT
     expect: "AUTO"
+    terms: ["probe heat", "P5"]
     controls:
       - pheat
     targets:
@@ -42,6 +44,7 @@ steps:
       - at: "oh/heat/PROBE B/1"
         set: "AUTO"
     note: "The iFly tutorial's shutdown checklist says OFF, but the MAX probe heat switches have only AUTO and ON. AUTO turns the heat off once the engines are shut down."
+    note_caution: true
     why: "Not needed once the engines are stopped."
     confirmed_by:
       - kind: vendor-docs
@@ -49,6 +52,7 @@ steps:
   - id: ifly-737-max8.shutdown.hydraulic-pump-switches
     text: HYDRAULIC PUMP SWITCHES
     expect: ELEC 1 AND 2 OFF
+    terms: ["P5"]
     controls:
       - elechyd
     targets:
@@ -105,6 +109,7 @@ steps:
   - id: ifly-737-max8.shutdown.irs-check
     text: IRS
     expect: "OFF, OR LEAVE IN NAV FOR A QUICK TURNAROUND"
+    terms: ["IRS", "NAV", "P5"]
     controls:
       - irs
     targets:
@@ -114,6 +119,7 @@ steps:
   - id: ifly-737-max8.shutdown.weather-radar
     text: WEATHER RADAR
     expect: "OFF"
+    terms: ["P7", "EFIS"]
     controls:
       - efispanel
     targets:
@@ -127,6 +133,7 @@ steps:
   - id: ifly-737-max8.shutdown.fuel-quantity
     text: FUEL QUANTITY
     expect: CHECKED AGAINST THE CDU
+    terms: ["CDU"]
     controls:
       - fuelq
     targets:
@@ -136,6 +143,7 @@ steps:
   - id: ifly-737-max8.shutdown.outflow-valve-below-10c
     text: OUTFLOW VALVE (BELOW -10C)
     expect: "90% CLOSED"
+    terms: ["outflow valve", "P5"]
     controls:
       - outflow
     targets:

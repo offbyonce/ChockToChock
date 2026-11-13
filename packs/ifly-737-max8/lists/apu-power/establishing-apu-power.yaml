@@ -12,6 +12,7 @@ steps:
   - id: ifly-737-max8.apu-power.fire-switch-and-overheat-detector
     text: APU FIRE SWITCH AND OVERHEAT DETECTOR SWITCH
     expect: "IN, NORMAL"
+    terms: ["APU"]
     controls:
       - apufire
       - firetest
@@ -31,6 +32,7 @@ steps:
     number: 1
     text: FIRE TEST SWITCH
     expect: HOLD AT FAULT/INOP
+    terms: ["MASTER CAUTION", "APU"]
     controls:
       - firetest
     targets:
@@ -50,6 +52,7 @@ steps:
   - id: ifly-737-max8.apu-power.fire-test-switch-establishing-apu
     text: FIRE TEST SWITCH
     expect: HOLD AT OVHT/FIRE
+    terms: ["MASTER CAUTION", "APU", "ENG"]
     controls:
       - firetest
     targets:
@@ -84,6 +87,7 @@ steps:
   - id: ifly-737-max8.apu-power.left-forward-fuel-pump
     text: ONE LEFT FUEL PUMP
     expect: "ON (OPTIONAL)"
+    terms: ["APU", "P5"]
     controls:
       - fuelpumps
     targets:
@@ -108,6 +112,7 @@ steps:
     number: 2
     text: APU SWITCH
     expect: "START, THEN RELEASE TO ON"
+    terms: ["APU", "GEN OFF BUS", "P5"]
     controls:
       - apusw
     targets:
@@ -125,6 +130,7 @@ steps:
     number: 3
     text: APU GENERATOR SWITCHES
     expect: BOTH ON
+    terms: ["APU", "Transfer bus", "P5"]
     controls:
       - apugen
     targets:
@@ -143,6 +149,7 @@ steps:
   - id: ifly-737-max8.apu-power.left-forward-fuel-pump-establishing-apu
     text: ONE LEFT FUEL PUMP
     expect: "ON (OPTIONAL)"
+    terms: ["APU", "P5"]
     controls:
       - fuelpumps
     targets:
@@ -168,6 +175,7 @@ steps:
     number: 4
     text: GROUND POWER CART (EFB)
     expect: DISCONNECT
+    terms: ["EFB", "GRD", "APU", "P5"]
     controls:
       - grddisc
       - grdpwr
@@ -192,6 +200,7 @@ steps:
   - id: ifly-737-max8.apu-power.apu-bleed-switch
     text: APU BLEED SWITCH
     expect: "ON"
+    terms: ["APU", "P5", "Bleed air"]
     controls:
       - apubleed
     targets:
@@ -208,6 +217,7 @@ steps:
   - id: ifly-737-max8.apu-power.pack-switches
     text: PACK SWITCHES
     expect: AUTO OR HIGH
+    terms: ["PACK", "P5", "Bleed air"]
     controls:
       - packs
     targets:
@@ -225,6 +235,7 @@ steps:
   - id: ifly-737-max8.apu-power.isolation-valve-switch
     text: ISOLATION VALVE SWITCH
     expect: OPEN
+    terms: ["ISOLATION VALVE", "APU", "P5", "Bleed air"]
     controls:
       - iso
     targets:
@@ -240,6 +251,7 @@ steps:
   - id: ifly-737-max8.apu-power.pack-lights
     text: PACK LIGHTS
     expect: OUT
+    terms: ["PACK", "P5", "Bleed air"]
     controls:
       - packlts
     targets:

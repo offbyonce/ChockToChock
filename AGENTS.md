@@ -59,6 +59,20 @@ engine never names an aircraft. **The app never connects to the simulator** (dec
   copyright notice that a third-party license requires us to keep (for example on the copied
   Tabler icons, recorded in `REUSE.toml`) stays as written, even when it names a person.
 
+**Interface design** (decision 0021, `docs/design/`):
+
+- The boards in `docs/design/boards` are the specification, not inspiration. Every screen,
+  overlay, view, label, caption, legend, color, spacing and order matches its board exactly, in both
+  themes and at every size the boards show. Values come from `docs/design/tokens.json`.
+- One exception: panel control drawings (switches, knobs, selectors, guards, lights). Their layout
+  comes from the pack, and the renderer's drawing quality wins where it is better than the board's.
+- "Drawn from pack data" means the pack stores what the board draws; it never permits redrawing.
+- If a board cannot be matched exactly (missing data, a rule conflict, a page that does not exist
+  yet), stop and ask the maintainer before building anything different.
+- Every reviewer brief includes a side-by-side of each changed screen against its board, in both
+  themes, with every difference listed; any difference the maintainer has not approved is a
+  finding.
+
 ## How to work
 
 - **One step at a time.** Propose a step, do it, show the result (command output, test results),

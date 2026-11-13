@@ -12,6 +12,7 @@ steps:
   - id: ifly-737-max8.after-takeoff.engine-bleeds
     text: ENGINE BLEEDS
     expect: "ON"
+    terms: ["Bleed air", "P5"]
     controls:
       - engbleed
     targets:
@@ -26,6 +27,7 @@ steps:
   - id: ifly-737-max8.after-takeoff.pack-switches-check
     text: PACK SWITCHES
     expect: AUTO
+    terms: ["PACK", "P5", "Bleed air"]
     controls:
       - packs
     targets:
@@ -41,6 +43,7 @@ steps:
   - id: ifly-737-max8.after-takeoff.landing-gear
     text: LANDING GEAR
     expect: UP
+    terms: ["P2"]
     controls:
       - gearup
     targets:

@@ -12,7 +12,7 @@ use ts_rs::TS;
 
 use crate::flight::{FLIGHT_FORMAT, Flight};
 #[cfg(test)]
-use crate::settings::TextSize;
+use crate::settings::{MapInSteps, TextSize};
 use crate::settings::{SETTINGS_FORMAT, Settings};
 
 /// What reading saved data found.
@@ -38,7 +38,20 @@ pub(crate) type Migration = fn(Value) -> Result<Value, String>;
 /// Migrations for [`Flight`]: entry `i` turns format `i + 1` into format `i + 2`.
 const FLIGHT_MIGRATIONS: &[Migration] = &[];
 /// Migrations for [`Settings`], indexed the same way.
-const SETTINGS_MIGRATIONS: &[Migration] = &[settings_1_to_2];
+const SETTINGS_MIGRATIONS: &[Migration] = &[settings_1_to_2, settings_2_to_3];
+
+/// Format 3 replaces the map On/Off with Map in steps: On becomes Always, Off stays Off.
+fn settings_2_to_3(mut value: Value) -> Result<Value, String> {
+    let object = value.as_object_mut().ok_or("settings are not an object")?;
+    let on = object
+        .remove("flightDeckMap")
+        .and_then(|v| v.as_bool())
+        .unwrap_or(true);
+    let mode = if on { "always" } else { "off" };
+    object.insert("mapInSteps".into(), Value::from(mode));
+    object.insert("mapBeforeHide".into(), Value::from(mode));
+    Ok(value)
+}
 
 /// Format 2 adds Text and controls size, standard for settings saved before it.
 fn settings_1_to_2(mut value: Value) -> Result<Value, String> {
@@ -151,6 +164,27 @@ mod tests {
         assert_eq!(value.text_size, TextSize::Standard);
         assert_eq!(value.dimming, 2);
         assert_eq!(value.format, SETTINGS_FORMAT);
+    }
+
+    #[test]
+    fn settings_from_format_2_turn_the_map_switch_into_map_in_steps() {
+        for (on, mode) in [(true, MapInSteps::Always), (false, MapInSteps::Off)] {
+            let mut old = serde_json::to_value(Settings::default()).unwrap();
+            let object = old.as_object_mut().unwrap();
+            object.remove("mapInSteps");
+            object.remove("mapBeforeHide");
+            object.insert("flightDeckMap".into(), json!(on));
+            object.insert("format".into(), json!(2));
+            let Loaded::Ready {
+                value,
+                migrated_from,
+            } = load_settings(&old.to_string())
+            else {
+                panic!("format 2 settings did not load");
+            };
+            assert_eq!(migrated_from, Some(2));
+            assert_eq!(value.map_in_steps, mode);
+        }
     }
 
     #[test]

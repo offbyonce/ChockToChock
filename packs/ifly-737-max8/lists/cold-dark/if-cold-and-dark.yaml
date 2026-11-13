@@ -14,6 +14,7 @@ steps:
     number: 1
     text: BATTERY SWITCH
     expect: "ON, GUARD CLOSED"
+    terms: ["P5"]
     controls:
       - bat
     targets:
@@ -30,6 +31,7 @@ steps:
     number: 2
     text: STANDBY POWER SWITCH
     expect: "AUTO, GUARD CLOSED"
+    terms: ["standby power", "P5"]
     controls:
       - stby
     targets:
@@ -46,6 +48,7 @@ steps:
     number: 3
     text: ALTERNATE FLAPS MASTER SWITCH
     expect: "OFF, GUARD CLOSED"
+    terms: ["P5"]
     controls:
       - altflap
     targets:
@@ -60,6 +63,7 @@ steps:
     number: 4
     text: WIPER SELECTORS
     expect: PARK
+    terms: ["P5"]
     controls:
       - wiper
     targets:
@@ -75,6 +79,7 @@ steps:
     number: 5
     text: ELECTRIC HYDRAULIC PUMP SWITCHES
     expect: "OFF"
+    terms: ["AC", "APU", "P5"]
     controls:
       - elechyd
     targets:
@@ -92,6 +97,7 @@ steps:
     number: 6
     text: LANDING GEAR LEVER
     expect: DN
+    terms: ["P2"]
     controls:
       - gearlever
     targets:

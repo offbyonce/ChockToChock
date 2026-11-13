@@ -88,23 +88,27 @@ describe("PanelSchematic", () => {
     render(PanelSchematic, {
       panel,
       focus: ["elec"],
-      targets: [{ section: "elec", item: 0, position: 1, lit: false, open: false }],
+      targets: [{ section: "elec", item: 0, position: 1, lit: false, open: false, resolved: false }],
       guardClosed: true,
     });
 
     const svg = screen.getByRole("img");
     expect(svg.getAttribute("aria-label")).toBe("Electrical panel, schematic. This step: BATTERY set to ON.");
-    expect(screen.getByText("SET TO ON")).toBeTruthy();
+    // No "SET TO" caption (no board draws one): the target position's label is the one marked.
+    expect(screen.queryByText(/SET TO/)).toBeNull();
+    expect([...svg.querySelectorAll(".pos.target")].map((t) => t.textContent)).toEqual(["ON"]);
     // One knob at a position, for the battery; every other switch shows no position.
     expect(svg.querySelectorAll(".knob.set")).toHaveLength(1);
-    expect(svg.querySelectorAll(".unknown").length).toBeGreaterThan(0);
+    expect(svg.querySelectorAll(".knob")).toHaveLength(1);
+    // The battery is drawn changed: blue fill and outline.
+    expect(svg.querySelectorAll(".body.changed")).toHaveLength(1);
   });
 
   it("highlights a control without a target when the step names no single position", () => {
     render(PanelSchematic, {
       panel,
       focus: ["elec"],
-      targets: [{ section: "elec", item: 0, position: null, lit: false, open: false }],
+      targets: [{ section: "elec", item: 0, position: null, lit: false, open: false, resolved: false }],
     });
 
     expect(screen.queryByText(/SET TO/)).toBeNull();
@@ -114,16 +118,18 @@ describe("PanelSchematic", () => {
     );
   });
 
-  it("says to see the step for a control whose position the step leaves to a condition", () => {
-    // The center fuel pumps sat dimmed at rest with no caption, so they read as OFF.
+  it("draws a control whose position the step leaves to a condition dashed, with no caption", () => {
+    // The center fuel pumps sat dimmed at rest with no caption, so they read as OFF; then a
+    // "SEE STEP" caption stood in, replaced by the dashed outline (decision 0022).
     render(PanelSchematic, {
       panel,
       focus: ["elec"],
-      targets: [{ section: "elec", item: 0, position: null, lit: false, open: true }],
+      targets: [{ section: "elec", item: 0, position: null, lit: false, open: true, resolved: false }],
     });
 
-    expect(screen.getByText("SEE STEP")).toBeTruthy();
+    expect(screen.queryByText("SEE STEP")).toBeNull();
     expect(screen.queryByText(/SET TO/)).toBeNull();
+    expect(screen.getByRole("img").querySelectorAll(".body.conditional")).toHaveLength(1);
   });
 
   it("shows no position for it, not even its resting one", () => {
@@ -139,18 +145,18 @@ describe("PanelSchematic", () => {
     const { container } = render(PanelSchematic, {
       panel: rests,
       focus: ["elec"],
-      targets: [{ section: "elec", item: 0, position: null, lit: false, open: true }],
+      targets: [{ section: "elec", item: 0, position: null, lit: false, open: true, resolved: false }],
     });
 
-    expect(container.querySelector(".on .knob.rest")).toBeNull();
+    expect(container.querySelector(".on .knob")).toBeNull();
     expect(container.querySelector(".on .pos.at-rest")).toBeNull();
-    expect(container.querySelector(".on .knob.unknown")).not.toBeNull();
+    expect(container.querySelector(".on .body.conditional")).not.toBeNull();
   });
 
   it("draws neighboring small sections together in one drawing", () => {
     const targets = [
-      { section: "lwip", item: 0, position: 1, lit: false, open: false },
-      { section: "rwip", item: 0, position: 1, lit: false, open: false },
+      { section: "lwip", item: 0, position: 1, lit: false, open: false, resolved: false },
+      { section: "rwip", item: 0, position: 1, lit: false, open: false, resolved: false },
     ];
     render(PanelSchematic, { panel, focus: ["lwip", "rwip"], targets });
 
@@ -161,14 +167,14 @@ describe("PanelSchematic", () => {
     // Each section's title and its control's label.
     expect(screen.getAllByText("L WIPER")).toHaveLength(2);
     expect(screen.getAllByText("R WIPER")).toHaveLength(2);
-    expect(screen.getAllByText("SET TO ON")).toHaveLength(2);
+    expect(svg.querySelectorAll(".pos.target")).toHaveLength(2);
   });
 
   it("labels every selector position at its own tick, so the pointer and its label agree", () => {
     render(PanelSchematic, {
       panel: wiperPanel,
       focus: ["lwip"],
-      targets: [{ section: "lwip", item: 0, position: 0, lit: false, open: false }],
+      targets: [{ section: "lwip", item: 0, position: 0, lit: false, open: false, resolved: false }],
     });
 
     const svg = screen.getByRole("img");
@@ -177,7 +183,7 @@ describe("PanelSchematic", () => {
     expect(Number(screen.getByText("PARK").getAttribute("x"))).toBeLessThan(0);
     expect(Number(screen.getByText("HIGH").getAttribute("x"))).toBeGreaterThan(0);
     // 3.0's angle for the first of four positions.
-    expect(svg.querySelector(".pointer")?.getAttribute("transform")).toBe("rotate(-100)");
+    expect(svg.querySelector(".bar.set")?.getAttribute("transform")).toBe("rotate(-100)");
     expect(screen.getByText("PARK").classList.contains("target")).toBe(true);
   });
 
@@ -185,14 +191,14 @@ describe("PanelSchematic", () => {
     render(PanelSchematic, {
       panel: wiperPanel,
       focus: ["lwip"],
-      targets: [{ section: "lwip", item: 0, position: 0, lit: false, open: false }],
+      targets: [{ section: "lwip", item: 0, position: 0, lit: false, open: false, resolved: false }],
     });
 
     const frame = screen.getByRole("img").querySelector(".frame");
-    const setTo = screen.getByText("SET TO PARK");
+    const name = screen.getAllByText("L WIPER").find((t) => t.classList.contains("label"));
     const frameBottom = Number(frame?.getAttribute("y")) + Number(frame?.getAttribute("height"));
-    // The label sits in the control's group, which is placed at the control's y (50).
-    expect(50 + Number(setTo.getAttribute("y"))).toBeLessThan(frameBottom);
+    // The name sits in the control's group, which is placed at the control's y (50).
+    expect(50 + Number(name?.getAttribute("y"))).toBeLessThan(frameBottom);
   });
 
   it("draws an unused control at its resting position, dimmed and unlike the target", () => {
@@ -202,7 +208,7 @@ describe("PanelSchematic", () => {
     render(PanelSchematic, {
       panel: rested,
       focus: ["elec"],
-      targets: [{ section: "elec", item: 0, position: 1, lit: false, open: false }],
+      targets: [{ section: "elec", item: 0, position: 1, lit: false, open: false, resolved: false }],
     });
 
     const svg = screen.getByRole("img");
@@ -253,7 +259,7 @@ describe("PanelSchematic", () => {
     render(PanelSchematic, {
       panel: lights,
       focus: ["lo"],
-      targets: [{ section: "lo", item: 0, position: null, lit: true, open: false }],
+      targets: [{ section: "lo", item: 0, position: null, lit: true, open: false, resolved: false }],
     });
 
     const lamps = [...screen.getByRole("img").querySelectorAll("rect.lamp")];
@@ -294,7 +300,7 @@ describe("PanelSchematic", () => {
     render(PanelSchematic, {
       panel: handle,
       focus: ["lo"],
-      targets: [{ section: "lo", item: 0, position: 1, lit: false, open: false }],
+      targets: [{ section: "lo", item: 0, position: 1, lit: false, open: false, resolved: false }],
     });
 
     const grip = screen.getByRole("img").querySelector(".grip");
@@ -336,7 +342,7 @@ describe("PanelSchematic", () => {
     render(PanelSchematic, { panel: keys, focus: ["elec"], targets: [] });
 
     const sizes = [
-      ...screen.getByRole("img").querySelectorAll(".light rect.body, .push_button rect.body"),
+      ...screen.getByRole("img").querySelectorAll(".light rect.lamp, .push_button rect.body"),
     ].map((r) => `${r.getAttribute("width")}x${r.getAttribute("height")}`);
     expect(sizes).toHaveLength(3);
     expect(new Set(sizes).size).toBe(1);
@@ -416,7 +422,7 @@ describe("PanelSchematic", () => {
     const meters = render(PanelSchematic, {
       panel: tall,
       focus: ["meters"],
-      targets: [{ section: "meters", item: 3, position: 1, lit: false, open: false }],
+      targets: [{ section: "meters", item: 3, position: 1, lit: false, open: false, resolved: false }],
     });
     expect(screen.getByText("BATTERY")).toBeTruthy();
     expect(screen.getByText("DC METERS")).toBeTruthy();
@@ -427,7 +433,7 @@ describe("PanelSchematic", () => {
     render(PanelSchematic, {
       panel: tall,
       focus: ["fctl"],
-      targets: [{ section: "fctl", item: 0, position: 1, lit: false, open: false }],
+      targets: [{ section: "fctl", item: 0, position: 1, lit: false, open: false, resolved: false }],
     });
     expect(screen.getByText(/MACH/)).toBeTruthy();
   });
@@ -465,7 +471,7 @@ describe("PanelSchematic", () => {
     render(PanelSchematic, {
       panel,
       focus: ["cap"],
-      targets: [{ section: "cap", item: 0, position: null, lit: false, open: false }],
+      targets: [{ section: "cap", item: 0, position: null, lit: false, open: false, resolved: false }],
     });
     const label = screen.getByText("INBOARD DU: ND AND ENGINES") as unknown as SVGTextElement;
     // Every drawing uses one scale, 1.8 pixels per unit.
@@ -508,7 +514,7 @@ describe("PanelSchematic", () => {
     render(PanelSchematic, {
       panel,
       focus: ["elecu"],
-      targets: [{ section: "elecu", item: 3, position: 1, lit: false, open: false }],
+      targets: [{ section: "elecu", item: 3, position: 1, lit: false, open: false, resolved: false }],
     });
     const aux = screen.getByText("AUX BAT") as unknown as SVGTextElement;
     // Laid out at 1.8 pixels per unit.
@@ -540,7 +546,7 @@ describe("PanelSchematic", () => {
       const { container, unmount } = render(PanelSchematic, {
         panel: panel(width),
         focus: ["s"],
-        targets: [{ section: "s", item: 0, position: null, lit: false, open: false }],
+        targets: [{ section: "s", item: 0, position: null, lit: false, open: false, resolved: false }],
       });
       const svg = container.querySelector("svg") as SVGSVGElement;
       const [, , w] = (svg.getAttribute("viewBox") ?? "").split(" ").map(Number);
@@ -577,8 +583,8 @@ describe("PanelSchematic", () => {
       panel,
       focus: ["mcp"],
       targets: [
-        { section: "mcp", item: 0, position: null, lit: false, open: false },
-        { section: "mcp", item: 1, position: null, lit: false, open: false },
+        { section: "mcp", item: 0, position: null, lit: false, open: false, resolved: false },
+        { section: "mcp", item: 1, position: null, lit: false, open: false, resolved: false },
       ],
     });
     const svgs = [...container.querySelectorAll("svg.schematic")];
@@ -622,7 +628,7 @@ describe("PanelSchematic", () => {
     const { container } = render(PanelSchematic, {
       panel,
       focus: ["fuel"],
-      targets: [{ section: "fuel", item: 0, position: null, lit: false, open: false }],
+      targets: [{ section: "fuel", item: 0, position: null, lit: false, open: false, resolved: false }],
     });
     const knob = container.querySelector(".knob.rest");
     expect(knob).not.toBeNull();
@@ -653,7 +659,7 @@ describe("PanelSchematic", () => {
     render(PanelSchematic, {
       panel,
       focus: ["mcp"],
-      targets: [{ section: "mcp", item: 0, position: null, lit: false, open: false }],
+      targets: [{ section: "mcp", item: 0, position: null, lit: false, open: false, resolved: false }],
     });
     expect(screen.getByText("V/S")).toBeTruthy();
   });
@@ -682,7 +688,7 @@ describe("PanelSchematic", () => {
     const { container } = render(PanelSchematic, {
       panel,
       focus: ["cd"],
-      targets: [{ section: "cd", item: 1, position: null, lit: false, open: false }],
+      targets: [{ section: "cd", item: 1, position: null, lit: false, open: false, resolved: false }],
     });
     expect(container.querySelector("svg.schematic")?.textContent).toContain("INBD");
   });
@@ -713,11 +719,173 @@ describe("PanelSchematic", () => {
       panel,
       focus: ["efisl", "efisr"],
       targets: [
-        { section: "efisl", item: 0, position: null, lit: false, open: false },
-        { section: "efisr", item: 0, position: null, lit: false, open: false },
+        { section: "efisl", item: 0, position: null, lit: false, open: false, resolved: false },
+        { section: "efisr", item: 0, position: null, lit: false, open: false, resolved: false },
       ],
     });
     expect(container.querySelectorAll("svg.schematic")).toHaveLength(1);
     expect(container.textContent).toContain("VNAV");
+  });
+
+  it("draws a decided control resolved: at its position, as changed", () => {
+    render(PanelSchematic, {
+      panel,
+      focus: ["elec"],
+      targets: [{ section: "elec", item: 0, position: 0, lit: false, open: false, resolved: true }],
+    });
+    const svg = screen.getByRole("img");
+    expect(svg.querySelectorAll(".resolved")).toHaveLength(1);
+    expect(svg.querySelectorAll(".resolved .knob.set")).toHaveLength(1);
+    // The set position's label carries the decision's diamond.
+    expect(screen.getByText("◆ OFF").classList.contains("target")).toBe(true);
+    expect(svg.querySelector(".conditional")).toBeNull();
+  });
+
+  it("draws no SET TO caption under any control, as no board does", () => {
+    // The pane's fuel drawing grew past its card with a caption under every pump switch.
+    render(PanelSchematic, {
+      panel,
+      focus: ["elec", "lwip"],
+      targets: [
+        { section: "elec", item: 0, position: 1, lit: false, open: false, resolved: false },
+        { section: "lwip", item: 0, position: 1, lit: false, open: false, resolved: true },
+      ],
+    });
+    expect(screen.queryByText(/SET TO/)).toBeNull();
+    expect(screen.getByRole("img").querySelectorAll(".set-to")).toHaveLength(0);
+  });
+
+  it("draws a resting selector's pointing end, so it reads one way", () => {
+    // SYS DSPL rested as a bar across the knob, pointing at L and R at once.
+    const rested = structuredClone(wiperPanel);
+    const wiper = rested.sections[0]?.items[0];
+    if (wiper) wiper.rest = "PARK";
+    render(PanelSchematic, { panel: rested, focus: ["lwip"], targets: [] });
+    const svg = screen.getByRole("img");
+    expect(svg.querySelectorAll(".bar.rest")).toHaveLength(1);
+    expect(svg.querySelectorAll(".tip.rest")).toHaveLength(1);
+  });
+
+  it("opens the larger view on the step's controls, not the top of the panel", () => {
+    // The fuel pumps sit at the foot of their panel; the larger view opened at its top.
+    const item = (kind: string, label: string, x: number, y: number) =>
+      ({ kind, label, x, y, controls: ["c"], positions: "OFF, ON", description: "" }) as unknown;
+    const tall = {
+      id: "oh",
+      title: "Overhead",
+      width: 300,
+      height: 900,
+      sections: [
+        {
+          id: "fuel",
+          title: "Fuel",
+          x: 0,
+          y: 0,
+          width: 240,
+          height: 880,
+          items: [item("light", "FILTER BYPASS", 60, 60), item("toggle_switch", "AFT 1", 60, 840)],
+        },
+      ],
+    } as unknown as Panel;
+    const frames: FrameRequestCallback[] = [];
+    const raf = globalThis.requestAnimationFrame;
+    globalThis.requestAnimationFrame = (cb) => (frames.push(cb), frames.length);
+    const proto = HTMLDialogElement.prototype as unknown as { showModal: () => void };
+    const showModal = proto.showModal;
+    proto.showModal = function (this: HTMLDialogElement) {
+      this.setAttribute("open", "");
+    };
+    try {
+      render(PanelSchematic, {
+        panel: tall,
+        focus: ["fuel"],
+        targets: [{ section: "fuel", item: 1, position: 1, lit: false, open: false, resolved: false }],
+        around: true,
+      });
+      const sheet = document.querySelector("dialog.sheet") as HTMLDialogElement;
+      const box = (top: number, height: number) =>
+        ({
+          top,
+          bottom: top + height,
+          height,
+          left: 0,
+          right: 0,
+          width: 0,
+          x: 0,
+          y: top,
+          toJSON: () => ({}),
+        }) as DOMRect;
+      sheet.getBoundingClientRect = () => box(0, 800);
+      for (const g of sheet.querySelectorAll("g.item.on"))
+        (g as Element).getBoundingClientRect = () => box(1500, 100);
+      screen.getByRole("button", { name: "See the whole panel larger" }).click();
+      for (const cb of frames.splice(0)) cb(0);
+      expect(sheet.hasAttribute("open")).toBe(true);
+      // Titled as the pane card's caption.
+      expect(sheet.getAttribute("aria-label")).toBe("Fuel panel");
+      expect(sheet.querySelector(".sheet-head span")?.textContent).toBe("Fuel panel");
+      expect(sheet.scrollTop).toBe(1550 - 400);
+    } finally {
+      globalThis.requestAnimationFrame = raf;
+      proto.showModal = showModal;
+    }
+  });
+
+  it("draws the pane's one-section drawing without a frame, and a used screen as a bezel, not a blue box", () => {
+    // Flow's display unit read as one large blue rectangle, with its cut frame as stray lines.
+    const du = {
+      id: "mn",
+      title: "Main panel",
+      width: 300,
+      height: 200,
+      sections: [
+        {
+          id: "cd",
+          title: "Captain displays",
+          x: 0,
+          y: 0,
+          width: 300,
+          height: 200,
+          items: [
+            {
+              kind: "display_unit",
+              label: "INBOARD DU",
+              x: 150,
+              y: 100,
+              width: 120,
+              height: 90,
+              controls: ["c"],
+              description: "",
+            },
+          ],
+        },
+      ],
+    } as unknown as Panel;
+    const targets = [{ section: "cd", item: 0, position: null, lit: false, open: false, resolved: false }];
+    const pane = render(PanelSchematic, { panel: du, focus: ["cd"], targets, around: true });
+    const svg = screen.getByRole("img");
+    expect(svg.querySelector(".frame")?.classList.contains("bare")).toBe(true);
+    expect(svg.querySelectorAll(".screen.changed")).toHaveLength(1);
+    expect(svg.querySelectorAll(".display")).toHaveLength(1);
+    pane.unmount();
+    render(PanelSchematic, { panel: du, focus: ["cd"], targets });
+    expect(screen.getByRole("img").querySelector(".frame")?.classList.contains("bare")).toBe(false);
+  });
+
+  it("draws a guard shut over its switch, or raised clear of it on its hinge, so they read apart", () => {
+    // Shut and open guards differed only by a line along the base.
+    const t = { section: "elec", item: 0, position: 1, lit: false, open: false, resolved: false };
+    const cover = () =>
+      [...screen.getByRole("img").querySelectorAll(".cover")].map((c) =>
+        [...c.classList].filter((n) => !n.startsWith("svelte-")).join(" "),
+      );
+    const resting = render(PanelSchematic, { panel, focus: ["elec"], targets: [] });
+    expect(cover()).toEqual(["cover shut"]);
+    resting.unmount();
+    const opened = render(PanelSchematic, { panel, focus: ["elec"], targets: [t] });
+    expect(cover()).toEqual(["cover raised step"]);
+    opened.unmount();
+    render(PanelSchematic, { panel, focus: ["elec"], targets: [t], guardClosed: true });
+    expect(cover()).toEqual(["cover shut step"]);
   });
 });

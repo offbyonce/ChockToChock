@@ -40,6 +40,113 @@
     "phases"
   ],
   "$defs": {
+    "FillField": {
+      "description": "The fixed list of flight values the app can fill in. Packs cannot add names; a new one\nneeds an app release.",
+      "oneOf": [
+        {
+          "type": "string",
+          "enum": [
+            "origin",
+            "destination",
+            "flight_number",
+            "route",
+            "runway",
+            "sid",
+            "transition",
+            "initial_altitude",
+            "squawk",
+            "ground_frequency",
+            "departure_frequency",
+            "qnh",
+            "heading",
+            "takeoff_flaps",
+            "landing_flaps",
+            "v1",
+            "vr",
+            "v2",
+            "vref",
+            "cg",
+            "takeoff_trim",
+            "autobrake",
+            "minimums",
+            "landing_altitude",
+            "minimum_takeoff_fuel",
+            "fuel",
+            "zfw",
+            "takeoff_weight",
+            "passengers",
+            "cargo",
+            "reserves",
+            "cost_index",
+            "cruise_level",
+            "cruise_wind",
+            "assumed_temperature",
+            "thrust_reduction_altitude",
+            "acceleration_altitude",
+            "isa_deviation",
+            "transition_altitude",
+            "transition_level",
+            "utc_time",
+            "utc_date"
+          ]
+        },
+        {
+          "description": "A blank the pilot types in, with no linked value. Only valid in a step's `fill`.",
+          "type": "string",
+          "const": "manual"
+        },
+        {
+          "description": "`LB` or `KG`, for fuel and weights.",
+          "type": "string",
+          "const": "weight_unit"
+        },
+        {
+          "description": "`inHg` or `hPa`, for the QNH.",
+          "type": "string",
+          "const": "qnh_unit"
+        },
+        {
+          "description": "`BARO` or `RADIO`, for the minimums.",
+          "type": "string",
+          "const": "minimums_type"
+        },
+        {
+          "description": "Fuel in thousands, rounded up to the next tenth (calculated).",
+          "type": "string",
+          "const": "fuel_thousands"
+        },
+        {
+          "description": "Fuel plus zero fuel weight, in thousands (calculated).",
+          "type": "string",
+          "const": "gross_weight"
+        },
+        {
+          "description": "Outside air temperature at top of climb (calculated).",
+          "type": "string",
+          "const": "top_of_climb_oat"
+        },
+        {
+          "description": "Latitude and longitude of the departure airport.",
+          "type": "string",
+          "const": "origin_position"
+        },
+        {
+          "description": "The navigation database cycle (calculated).",
+          "type": "string",
+          "const": "nav_database"
+        },
+        {
+          "description": "The dates that cycle is active (calculated).",
+          "type": "string",
+          "const": "nav_active_dates"
+        },
+        {
+          "description": "One row of the route. Only valid in CDU text, with an `index` and a `part`.",
+          "type": "string",
+          "const": "route_leg"
+        }
+      ]
+    },
     "IntroParagraph": {
       "description": "One paragraph of a phase's introduction.",
       "type": "object",
@@ -271,6 +378,17 @@
         },
         "id": {
           "type": "string"
+        },
+        "suggests": {
+          "description": "A flight value that suggests the answer, for the pilot to confirm (decision 0022).",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/FillField"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "title": {
           "type": "string"

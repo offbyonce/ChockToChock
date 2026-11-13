@@ -16,6 +16,7 @@ steps:
     number: 1
     text: AUTOPILOT (IF ENGAGED)
     expect: DISENGAGE
+    terms: ["P7"]
     controls:
       - apdis
       - apdisc
@@ -39,6 +40,7 @@ steps:
     number: 3
     text: F/D SWITCHES (BOTH)
     expect: "OFF"
+    terms: ["F/D", "P7"]
     controls:
       - fd
     targets:
@@ -53,6 +55,7 @@ steps:
     number: 4
     text: IF FLAPS EXTENDED
     expect: "SET 10 DEGREES PITCH AND 80% N1"
+    terms: ["N1"]
     controls:
       - fltinst
     targets:
@@ -67,6 +70,7 @@ steps:
     number: 5
     text: IF FLAPS UP
     expect: "SET 4 DEGREES PITCH AND 75% N1"
+    terms: ["N1"]
     controls:
       - fltinst
     targets:
@@ -81,6 +85,7 @@ steps:
     number: 6
     text: PROBE HEAT SWITCHES
     expect: "CHECK ON"
+    terms: ["probe heat", "P5"]
     controls:
       - pheat
     targets:
@@ -96,6 +101,7 @@ steps:
     number: 7
     text: RELIABLE REFERENCES
     expect: "ATTITUDE, N1, GROUND SPEED AND RADIO ALTITUDE"
+    terms: ["N1"]
     controls:
       - fltinst
     targets:
@@ -105,6 +111,7 @@ steps:
       - at: "mn/fd/OUTBOARD DU: PFD/1"
     non_recall: true
     note: "Stick shaker, overspeed and low airspeed alerts may sound falsely, even together."
+    note_caution: true
     confirmed_by:
       - kind: vendor-docs
         date: 2026-11-10
@@ -127,6 +134,7 @@ steps:
     number: 9
     text: IF ONLY STANDBY AIRSPEED IS RELIABLE
     expect: "NO AUTOPILOT, AUTOTHROTTLE OR FLIGHT DIRECTORS"
+    terms: ["P2"]
     controls:
       - isfdc
       - mcpset
@@ -144,6 +152,7 @@ steps:
     number: 10
     text: IF CAPTAIN OR FO AIRSPEED IS RELIABLE
     expect: "USE THAT SIDE'S F/D AND AUTOPILOT IF NEEDED. KEEP AUTOTHROTTLE OFF"
+    terms: ["F/D", "P7"]
     controls:
       - fd
       - mcpset
@@ -171,6 +180,7 @@ steps:
       - at: "mn/fd/OUTBOARD DU: PFD/1"
     non_recall: true
     note: "Once trimmed and stable, compare each airspeed with the table. A gap above 20 knots or 0.03 Mach marks that indicator as unreliable."
+    note_caution: true
     confirmed_by:
       - kind: vendor-docs
         date: 2026-11-10
@@ -187,12 +197,14 @@ steps:
       - at: "con/atc/ALT SOURCE 2/1"
     non_recall: true
     note: "The airplane may no longer meet RVSM requirements."
+    note_caution: true
     confirmed_by:
       - kind: vendor-docs
         date: 2026-11-10
   - id: ifly-737-max8.memory.approach-and-go-around-airspeed-unreliable
     text: "APPROACH AND GO-AROUND"
     expect: "BARO MINIMUMS ON THE RELIABLE PFD ONLY. NO TO/GA IF ONLY STANDBY AIRSPEED IS RELIABLE"
+    terms: ["BARO", "PFD", "TO/GA"]
     non_recall: true
     confirmed_by:
       - kind: vendor-docs

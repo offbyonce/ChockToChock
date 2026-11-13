@@ -111,7 +111,7 @@ fn step_row(
         number: 0,
         state: StepState::ToDo,
         counts: counts(step),
-        targets: step_targets(pack, step),
+        targets: step_targets(pack, &flight.options, step),
         essential: in_essentials(step, &flight.options, shown),
         values: blank_values(flight, step),
         hint: hint(flight, step),

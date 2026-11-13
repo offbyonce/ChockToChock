@@ -34,9 +34,12 @@ const click = (selector, n = 0) => `document.querySelectorAll(${JSON.stringify(s
 /** Clicks `part` (".row" or ".chev") of the list step whose text contains `title`. */
 const stepNamed = (title, part) =>
   `[...document.querySelectorAll(".it")].find((it) => it.textContent.trim().toUpperCase().includes(${JSON.stringify(title)})).querySelector(${JSON.stringify(part)}).click(); true`;
+/** Clicks `part` of the list step whose name is exactly `name`. */
+const stepExact = (name, part) =>
+  `[...document.querySelectorAll(".it")].find((it) => [...(it.querySelector(".name")?.childNodes ?? [])].filter((c) => c.nodeType === 3).map((c) => c.textContent).join("").trim().toUpperCase() === ${JSON.stringify(name)}).querySelector(${JSON.stringify(part)}).click(); true`;
 /** Scrolls the side pane `pane` so its controls drawing starts at the top. */
 const paneToControls = (pane) =>
-  `(() => { const p = document.querySelector(${JSON.stringify(pane)}); const h = [...p.querySelectorAll("*")].find((e) => e.children.length === 0 && e.textContent.trim().toUpperCase() === "THE CONTROLS"); p.scrollTop += h.getBoundingClientRect().top - p.getBoundingClientRect().top; })(); true`;
+  `(() => { const p = document.querySelector(${JSON.stringify(pane)}); const h = [...p.querySelectorAll("*")].find((e) => e.children.length === 0 && e.textContent.trim().toUpperCase().startsWith("THE CONTROLS")); p.scrollTop += h.getBoundingClientRect().top - p.getBoundingClientRect().top; })(); true`;
 /** Types `value` into the input `selector`, as the pilot would. */
 const typeInto = (selector, value) =>
   `(() => { const el = document.querySelector(${JSON.stringify(selector)}); el.value = ${JSON.stringify(value)}; el.dispatchEvent(new Event("input", { bubbles: true })); el.dispatchEvent(new Event("change", { bubbles: true })); })(); true`;
@@ -70,6 +73,28 @@ const go = (hash) => `location.hash = ${JSON.stringify(hash)}; true`;
  * The screens to capture: a name, and for each app the address after `#` and an optional script
  * to run first. `base` is the matching 3.0 screen.
  */
+/** Skips the list step `title`: opens it if it is closed, then presses Skip for now. */
+const skipStep = (title) =>
+  `(() => { const it = [...document.querySelectorAll(".it")].find((i) => i.textContent.toUpperCase().includes(${JSON.stringify(title)})); const skip = () => [...it.querySelectorAll("button")].find((b) => b.textContent.includes("Skip for now")); if (!skip()) it.querySelector(".chev").click(); return new Promise((go) => setTimeout(() => { skip().click(); go(true); }, 300)); })()`;
+/**
+ * The approved boards' state for Before start: Landing gear pins to Door lights done, TERR skipped,
+ * so the fuel pump switches are the current step (the boards' center tank step is batch 7's).
+ */
+const BOARD_STATE = [
+  stepNamed("LANDING GEAR PINS", ".tick"),
+  stepNamed("N1 BUGS", ".tick"),
+  stepNamed("MCP", ".tick"),
+  stepNamed("DOOR LIGHTS", ".tick"),
+  skipStep("TERR (EFIS"),
+];
+/** Opens the list step `title` and its narrow-screen details (its chevron first if it is closed). */
+const openNarrow = (title) =>
+  `(() => { const it = [...document.querySelectorAll(".it")].find((i) => i.textContent.toUpperCase().includes(${JSON.stringify(title)})); if (!it.querySelector("button.narrow")) it.querySelector(".chev").click(); return new Promise((go) => setTimeout(() => { it.querySelector("button.narrow").click(); go(true); }, 300)); })()`;
+/** Show map on the pane's location line (where the drawing took the map figure's room). */
+const showMap = `[...document.querySelectorAll("aside.pane .line button")].find((b) => b.textContent.trim() === "Show map")?.click(); true`;
+/** The Flow view button in the top bar. */
+const toFlow = `[...document.querySelectorAll("header.top .tool")].find((b) => /flow/i.test(b.textContent)).click(); true`;
+
 const SHOTS = [
   { name: "phase", app: { hash: "" }, base: { hash: "#cold-dark" } },
   {
@@ -190,7 +215,7 @@ const SHOTS = [
     // Before start: fuel pumps (overhead). The app lists Landing gear pins first, so its rows run one ahead.
     // Both sides show the step opened.
     name: "panel-fuel",
-    only: ["desktop", "wide"],
+    only: ["desktop", "wide", "tablet-landscape"],
     app: { hash: "#/phase/before-start", before: [click(".it .row", 5), click(".it .chev", 5)] },
     base: { hash: "#before-start", before: [click(".it .chev", 4)] },
   },
@@ -217,10 +242,59 @@ const SHOTS = [
     base: { hash: "#preflight", before: [stepNamed("STAB OUT OF TRIM LIGHT", ".chev"), paneToControls("#pane")] },
   },
   {
+    // The fuel pumps' "See the whole panel larger" sheet, which opens on the step's controls.
+    name: "panel-fuel-larger",
+    only: ["desktop", "tablet-landscape"],
+    app: { hash: "#/phase/before-start", before: [click(".it .row", 5), click(".it .chev", 5), click("aside .larger")] },
+  },
+  {
+    // The aft overhead (IRS mode selectors; the pane unscrolled, title and Check in frame) and the pilot station (oxygen mask), so every panel in
+    // the pack has a drawing in the review set. No 3.0 counterpart is shot for these.
+    name: "panel-aft",
+    only: ["desktop", "wide"],
+    app: { hash: "#/phase/preflight", before: [stepExact("IRS", ".row"), stepExact("IRS", ".chev")] },
+  },
+  {
+    name: "panel-seat",
+    only: ["desktop", "wide"],
+    app: { hash: "#/phase/preflight", before: [stepExact("OXYGEN", ".row"), stepExact("OXYGEN", ".chev"), paneToControls("aside.pane")] },
+  },
+  {
+    // Where is this? for the fuel pumps: the side and seat views and the flight deck (decision 0023).
+    name: "where",
+    only: ["desktop", "wide", "tablet-landscape"],
+    app: { hash: "#/phase/before-start", before: [click(".it .row", 5), click(".it .chev", 5), click(".where-link, .where-btn")] },
+  },
+  {
+    // The map hidden (MapHidden board): Hide map turns Map in steps to On request.
+    name: "map-hidden",
+    only: ["desktop"],
+    app: { hash: "#/phase/before-start", before: [click(".it .row", 5), click(".it .chev", 5), showMap, click(".pane .hide")] },
+  },
+  {
+    // Tablet portrait and phone keep a dialog for Where is this? until batch 5.
+    name: "where-narrow",
+    only: ["phone", "tablet"],
+    app: { hash: "#/phase/before-start", before: [click(".it .chev", 5), click(".it button.narrow"), click(".where-btn")] },
+  },
+  {
     name: "panel-brake",
     only: ["desktop", "wide"],
     app: { hash: "#/phase/gpu-power", before: [stepNamed("PARKING BRAKE", ".row"), stepNamed("PARKING BRAKE", ".chev"), paneToControls("aside.pane")] },
     base: { hash: "#gpu-power", before: [stepNamed("PARKING BRAKE", ".chev"), paneToControls("#pane")] },
+  },
+  // Board pairs: each screen in its board's step and state, shot at the board's size and whole
+  // (the full page and the side pane top to bottom), for docs/design/boards side-by-sides.
+  { name: "board-checklist", full: true, only: ["desktop", "wide", "tablet-landscape"], app: { hash: "#/phase/before-start", before: BOARD_STATE } },
+  { name: "board-maphidden", full: true, only: ["desktop"], app: { hash: "#/phase/before-start", before: [...BOARD_STATE, showMap, click(".pane .hide")] } },
+  { name: "board-where", full: true, only: ["desktop", "tablet-landscape"], app: { hash: "#/phase/before-start", before: [...BOARD_STATE, click(".where-link, .where-btn")] } },
+  { name: "board-flow", full: true, only: ["desktop"], app: { hash: "#/phase/before-start", before: [...BOARD_STATE, toFlow] } },
+  { name: "board-settings", full: true, only: ["desktop"], app: { hash: "#/settings" } },
+  {
+    name: "board-phonewhere",
+    full: true,
+    only: ["phone"],
+    app: { hash: "#/phase/before-start", before: [...BOARD_STATE, openNarrow("FUEL PUMP SWITCHES"), click(".where-btn")] },
   },
   {
     name: "menu",
@@ -260,7 +334,7 @@ async function visit(browser, url, ready) {
   await browser.until(ready, "the page to be ready");
 }
 
-async function shoot(browser, url, ready, steps, file) {
+async function shoot(browser, url, ready, steps, file, full = false) {
   const { send, js, until, context } = browser;
   await send("browsingContext.navigate", { context, url, wait: "complete" });
   await until(ready, "the page to be ready");
@@ -274,6 +348,42 @@ async function shoot(browser, url, ready, steps, file) {
   if (await js("!!document.getElementById('update-ready')")) process.stderr.write(`update offer showing: ${file}\n`);
   const { data } = await send("browsingContext.captureScreenshot", { context });
   fs.writeFileSync(file, Buffer.from(data, "base64"));
+  if (full) await shootWhole(browser, file);
+}
+
+/**
+ * The whole screen, not only what the viewport shows: the full page (`-page.png`) and the side
+ * pane from top to bottom in viewport-high slices (`-pane-<n>.png`, with `-pane.json` giving each
+ * slice's scroll offset), so a drawing or legend below the fold shows up in review.
+ */
+async function shootWhole(browser, file) {
+  const { send, js, context } = browser;
+  const base = file.replace(/\.png$/, "");
+  const page = await send("browsingContext.captureScreenshot", { context, origin: "document" });
+  fs.writeFileSync(`${base}-page.png`, Buffer.from(page.data, "base64"));
+  const box = await js(
+    `(() => { const p = document.querySelector("aside.pane"); if (!p) return null; const r = p.getBoundingClientRect(); return JSON.stringify({ x: r.x, y: r.y, w: r.width, h: r.height, scroll: p.scrollHeight, view: p.clientHeight, top: p.scrollTop }); })()`,
+  );
+  if (!box) return;
+  const pane = JSON.parse(box);
+  // No side pane at this width (tablet portrait and phone).
+  if (!pane.w || !pane.h) return;
+  const offsets = [];
+  for (let at = 0; ; at += pane.view) {
+    const top = Math.min(at, pane.scroll - pane.view);
+    await js(`document.querySelector("aside.pane").scrollTop = ${top}; true`);
+    await sleep(250);
+    const real = await js(`document.querySelector("aside.pane").scrollTop`);
+    const shot = await send("browsingContext.captureScreenshot", {
+      context,
+      clip: { type: "box", x: pane.x, y: pane.y, width: pane.w, height: pane.h },
+    });
+    fs.writeFileSync(`${base}-pane-${offsets.length}.png`, Buffer.from(shot.data, "base64"));
+    offsets.push(real);
+    if (top >= pane.scroll - pane.view) break;
+  }
+  fs.writeFileSync(`${base}-pane.json`, JSON.stringify({ offsets, height: pane.scroll, view: pane.view }));
+  await js(`document.querySelector("aside.pane").scrollTop = ${pane.top}; true`);
 }
 
 /** One side-by-side image per screen: 3.0 on the left, the new app on the right. */
@@ -371,7 +481,9 @@ async function main() {
           const { firefox, browser } = await openAt(profile, prefs, viewport, target.url(""));
           try {
             for (const shot of shots) {
+              if (!shot[target.side]) continue;
               const { hash, before } = shot[target.side];
+              const full = target.side === "app" && !!shot.full;
               const key = `${shot.name}-${size}-${theme}`;
               // One retry, in case a page stalls once.
               for (let attempt = 1; ; attempt++) {
@@ -380,7 +492,7 @@ async function main() {
                     await visit(browser, target.url(hash), target.ready);
                     await browser.js(target.reset);
                   }
-                  await shoot(browser, target.url(hash), target.ready, before, path.join(target.dir, `${key}.png`));
+                  await shoot(browser, target.url(hash), target.ready, before, path.join(target.dir, `${key}.png`), full);
                   break;
                 } catch (e) {
                   if (attempt === 2) throw e;

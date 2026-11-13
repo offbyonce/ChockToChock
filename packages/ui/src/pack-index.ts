@@ -36,6 +36,12 @@ export type PackIndex = {
   panelOf(id: string): Panel | undefined;
   /** The overview region a zone is in, and the map areas that region shows. */
   region(zone: Zone): MapRegion | null;
+  /** A control by id. */
+  control(id: string): Control | undefined;
+  /** A glossary term's meaning. */
+  glossary(term: string): string | undefined;
+  /** A light's meaning (its note), by panel, section and item index. */
+  lightMeaning(panel: string, section: string, item: number): string | undefined;
 };
 
 export type MapRegion = { region: OverviewRegion | null; areas: OverviewArea[] };
@@ -70,8 +76,21 @@ export function indexPack(pack: FlatPack): PackIndex {
     }
   }
 
+  const glossary = new Map((pack.content.glossary?.terms ?? []).map((t) => [t.term, t.meaning]));
+  const lightNotes = new Map((pack.content.lights?.lights ?? []).map((n) => [n.locator, n.meaning]));
+
   return {
     name: pack.manifest.name,
+    control: (id) => controls.get(id),
+    glossary: (term) => glossary.get(term),
+    lightMeaning(panel, section, item) {
+      const items = sections.get(section)?.items ?? [];
+      const it = items[item];
+      if (!it) return undefined;
+      // The n-th item with that label in the section, counted from 1, as light notes name them.
+      const n = items.slice(0, item + 1).filter((o) => o.label === it.label).length;
+      return lightNotes.get(`${panel}/${section}/${it.label}/${n}`);
+    },
     step: (id) => steps.get(id),
     place(step) {
       for (const id of step.controls ?? []) {

@@ -22,7 +22,7 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
     type Settings,
   } from "@chocktochock/bindings";
   import { getHost, type SavedItem } from "./host";
-  import ContextPane from "./lib/ContextPane.svelte";
+  import StepPane from "./lib/StepPane.svelte";
   import Drawer from "./lib/Drawer.svelte";
   import FlightStrip from "./lib/FlightStrip.svelte";
   import FlowView from "./lib/FlowView.svelte";
@@ -42,6 +42,50 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
   const host = getHost();
   const route = currentRoute();
 
+  /**
+   * The list (the page) and the side pane scroll on their own with no scrollbar, as on the boards;
+   * edge fades show where there is more (the owner, batch 2). Wheel, trackpad, touch and keys
+   * scroll them as usual.
+   */
+  let pageMore = $state({ up: false, down: false });
+  let paneMore = $state({ up: false, down: false });
+  const edges = (top: number, view: number, whole: number) => ({ up: top > 1, down: top + view < whole - 1 });
+  $effect(() => {
+    const read = () => {
+      const d = document.documentElement;
+      pageMore = edges(d.scrollTop, d.clientHeight, d.scrollHeight);
+    };
+    read();
+    const watch = new ResizeObserver(read);
+    watch.observe(document.body);
+    window.addEventListener("scroll", read, { passive: true });
+    window.addEventListener("resize", read);
+    return () => {
+      watch.disconnect();
+      window.removeEventListener("scroll", read);
+      window.removeEventListener("resize", read);
+    };
+  });
+  function fades(el: HTMLElement) {
+    const read = () => (paneMore = edges(el.scrollTop, el.clientHeight, el.scrollHeight));
+    const watch = new ResizeObserver(read);
+    watch.observe(el);
+    for (const child of el.children) watch.observe(child);
+    const added = new MutationObserver(() => {
+      for (const child of el.children) watch.observe(child);
+      read();
+    });
+    added.observe(el, { childList: true });
+    el.addEventListener("scroll", read, { passive: true });
+    read();
+    return {
+      destroy: () => {
+        watch.disconnect();
+        added.disconnect();
+        el.removeEventListener("scroll", read);
+      },
+    };
+  }
   let info = $state<AppInfo | null>(null);
   let packId = $state("");
   let index = $state<PackIndex | null>(null);
@@ -204,8 +248,21 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
       .slice(at + 1, at + 9)
       .map((r) => ({ step: index?.step(r.id), state: r.state }))
       .filter((u): u is { step: NonNullable<typeof u.step>; state: typeof u.state } => !!u.step);
-    return { step, row, upcoming };
+    const list = view.lists.find((l) => l.steps.some((r) => r.id === row.id));
+    const previous = at > 0 ? index.step(rows[at - 1]?.id ?? "") : undefined;
+    return { step, row, upcoming, total: list?.steps.length ?? rows.length, previous };
   });
+
+  /** Hide map sets Map in steps to On request, keeping the choice for Show map to restore. */
+  function changeMap(how: "hide" | "show"): void {
+    if (!settings) return;
+    const now = settings.mapInSteps;
+    const next =
+      how === "hide"
+        ? { ...settings, mapInSteps: "on_request" as const, mapBeforeHide: now === "on_request" ? settings.mapBeforeHide : now }
+        : { ...settings, mapInSteps: settings.mapBeforeHide === "on_request" ? ("new_panel" as const) : settings.mapBeforeHide };
+    void changeSettings(next);
+  }
 
   /** The rail and open steps for the flight and settings. */
   async function refresh(): Promise<void> {
@@ -405,10 +462,23 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
           </p>
         </div>
       </main>
+      <div class="page-fade up" class:on={pageMore.up} aria-hidden="true"></div>
+      <div class="page-fade down" class:on={pageMore.down} aria-hidden="true"></div>
       {#if pane}
-        <aside class="pane" aria-label="About the step">
+        <aside class="pane" class:more-up={paneMore.up} class:more-down={paneMore.down} aria-label="About the step" use:fades>
           {#key pane.step.id}
-            <ContextPane {index} step={pane.step} targets={pane.row.targets} upcoming={pane.upcoming} />
+            <StepPane
+              {index}
+              step={pane.step}
+              targets={pane.row.targets}
+              number={pane.row.number}
+              total={pane.total}
+              previous={pane.previous}
+              upcoming={pane.upcoming}
+              mapMode={settings?.mapInSteps ?? "new_panel"}
+              onMap={changeMap}
+              {flow}
+            />
           {/key}
         </aside>
       {/if}
@@ -434,14 +504,59 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
     max-width: var(--size-content-max);
     margin: 0 auto;
   }
+  /* The Checklist board's side pane. */
   .pane {
     position: sticky;
     top: calc(var(--size-header) + var(--size-phase-row));
     height: calc(100vh - var(--size-header) - var(--size-phase-row));
-    padding: var(--space-6) var(--space-4);
+    padding: var(--space-4) var(--space-6);
+    /* It scrolls, but draws no scrollbar, as the Checklist board's pane. */
     overflow-y: auto;
-    border-left: var(--border-thin) solid var(--color-border);
-    background: var(--color-surface);
+    scrollbar-width: none;
+    border-left: var(--border-thin) solid var(--color-line);
+    background: var(--color-surface-2);
+  }
+  .pane::-webkit-scrollbar {
+    display: none;
+  }
+  .pane.more-up {
+    mask-image: linear-gradient(180deg, transparent, black var(--space-10));
+  }
+  .pane.more-down {
+    mask-image: linear-gradient(180deg, black calc(100% - var(--space-10)), transparent);
+  }
+  .pane.more-up.more-down {
+    mask-image: linear-gradient(180deg, transparent, black var(--space-10), black calc(100% - var(--space-10)), transparent);
+  }
+  /* The page draws no scrollbar either (the boards draw none). */
+  :global(html) {
+    scrollbar-width: none;
+  }
+  :global(html::-webkit-scrollbar) {
+    display: none;
+  }
+  /* Edge fades over the list where it scrolls on, above and below. */
+  .page-fade {
+    position: fixed;
+    left: 0;
+    width: calc(100% - var(--side-pane));
+    height: var(--space-10);
+    pointer-events: none;
+    opacity: 0;
+  }
+  .app.nopane .page-fade {
+    width: 100%;
+  }
+  .page-fade.on {
+    opacity: 1;
+  }
+  .page-fade.up {
+    top: calc(var(--size-header) + var(--size-phase-row));
+    background: linear-gradient(180deg, var(--color-bg), transparent);
+  }
+  .page-fade.down {
+    bottom: 0;
+    background: linear-gradient(0deg, var(--color-bg), transparent);
   }
   /* 3.0's toast: dark on light (light on dark), centered at the bottom. */
   .toast {
@@ -487,6 +602,9 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
     }
     .pane {
       display: none;
+    }
+    .page-fade {
+      width: 100%;
     }
   }
 </style>

@@ -11,20 +11,28 @@ import { em, widest } from "./text-width";
 
 /**
  * 3.0's rendered text sizes, in pixels: names and titles 11.8, positions and light words 10.8.
- * "SET TO …" sits under the name, a little smaller so the name reads first. A screen's label is
+ * "EXPECTED ON" under a light the step expects on is 11 (`setTo`). A screen's label is
  * 3.0's measured 12.6, its name size at the scale 3.0 draws a screen in the step pane.
  */
-export const PX = { name: 11.8, title: 11.8, pos: 11, lamp: 10.8, setTo: 10, screen: 12.6 } as const;
+export const PX = { name: 11.8, title: 11.8, pos: 11, lamp: 10.8, setTo: 11, screen: 12.6 } as const;
 /** Pixels per unit a drawing is laid out for: its text is drawn at the PX sizes at this scale. */
 export const K = 1.8;
-/** The smallest rendered sizes (decision 0021): labels 11 px, light legends 10 px. The "SET TO"
- * caption is not counted yet; batch 2 replaces it with the changed-state drawing. */
+/** The smallest rendered sizes (decision 0021): labels 11 px, light legends 10 px. */
 export const LABEL_MIN = 11;
 export const LEGEND_MIN = 10;
 /** The smallest scale that keeps every label and legend at its minimum. */
-export const MIN_SCALE = K * Math.max(LABEL_MIN / Math.min(PX.name, PX.title, PX.pos), LEGEND_MIN / PX.lamp);
+export const MIN_SCALE =
+  K * Math.max(LABEL_MIN / Math.min(PX.name, PX.title, PX.pos, PX.setTo), LEGEND_MIN / PX.lamp);
 /** The largest scale a drawing grows to, so a single switch does not fill the pane. */
 export const MAX_SCALE = 2 * K;
+
+/**
+ * Where a drawing wider than its card opens: scrolled so the step's controls (from `first` to
+ * `last`, in pixels from the drawing's left edge) sit centered in the card's `room`, at every size.
+ */
+export function openingScroll(first: number, last: number, room: number): number {
+  return Math.max(0, (first + last) / 2 - room / 2);
+}
 
 /**
  * The scale for a drawing `boxWidth` units wide in `room` pixels: as wide as the room, keeping its
@@ -55,6 +63,9 @@ export const positionsOf = (item: PanelItem): string[] =>
  * clear ring of track around it, so it never crowds the outline.
  */
 export const TOGGLE = { w: 8, h: 22, guard: 2.8, gap: 3.6, knob: 2 } as const;
+/** How far an open guard's cover rises above its hinge (room is kept for it whether it is open
+ * or shut, so a step that opens it never moves a label). */
+export const COVER_RAISE = 5.5;
 /** How far a toggle reaches either side of its center, guard included. */
 const toggleHalfWidth = (guarded: boolean) => TOGGLE.w / 2 + (guarded ? TOGGLE.guard : 0);
 
@@ -89,8 +100,6 @@ export function half(item: PanelItem): number {
 export const KEY = { w: 50, h: 20 } as const;
 /** A light: a key. */
 export const LAMP = KEY;
-/** Room kept below a caption ("SET TO ON", "SEE STEP"), so the item below never crowds it. */
-export const CAPTION_ROOM = 3;
 /** Every selector dial's body radius: one size for every dial, however many positions it has. */
 export const DIAL = 10.5;
 /**
@@ -118,12 +127,15 @@ export function lampText(
   width: number = LAMP.w,
 ): { lines: string[]; px: number } {
   const room = (width - 5) * k;
-  const words = item.label.split(" ");
-  const size = Math.min(px, room / widest(words));
+  // Words break at spaces and after a slash ("EMERGENCY/ TEST"), and a legend never goes under
+  // 10 px (decision 0021).
+  const words = item.label.split(" ").flatMap((w) => w.split(/(?<=\/)/));
+  const size = Math.max(LEGEND_MIN, Math.min(px, room / widest(words)));
   const out: string[] = [];
   for (const w of words) {
     const last = out[out.length - 1];
-    if (last !== undefined && em(`${last} ${w}`) * size <= room) out[out.length - 1] = `${last} ${w}`;
+    const joined = last?.endsWith("/") ? `${last}${w}` : `${last} ${w}`;
+    if (last !== undefined && em(joined) * size <= room) out[out.length - 1] = joined;
     else out.push(w);
   }
   return { lines: out.slice(0, 3), px: size };
@@ -274,15 +286,6 @@ export type SectionLayout = {
 };
 
 /**
- * The caption under a step's control: the position it is set to, or, when the step leaves the
- * position to a condition, a pointer to the step's wording.
- */
-export const caption = (positions: string[], t: number | null, open: boolean): string | null => {
-  if (t != null) return positions[t] === "SET" ? "SET" : `SET TO ${positions[t] ?? ""}`;
-  return open ? "SEE STEP" : null;
-};
-
-/**
  * Places every label in a section so none overlaps a control or another label, keeping all of
  * them, as 3.0 did (Phase 2 brief, step 7). Controls stay where the pack puts them and are
  * placed first. Then, the step's controls
@@ -295,7 +298,14 @@ export const caption = (positions: string[], t: number | null, open: boolean): s
 export function layoutSection(
   section: PanelSection,
   shown: number[],
-  target: (i: number) => { on: boolean; t: number | null; rest: number; lit?: boolean; open?: boolean },
+  target: (i: number) => {
+    on: boolean;
+    t: number | null;
+    rest: number;
+    lit?: boolean;
+    open?: boolean;
+    resolved?: boolean;
+  },
   k: number,
   titleTop: number,
   /** The part of the section drawn across (a wide section is cropped around the step). */
@@ -320,7 +330,14 @@ export function layoutSection(
 function place(
   section: PanelSection,
   shown: number[],
-  target: (i: number) => { on: boolean; t: number | null; rest: number; lit?: boolean; open?: boolean },
+  target: (i: number) => {
+    on: boolean;
+    t: number | null;
+    rest: number;
+    lit?: boolean;
+    open?: boolean;
+    resolved?: boolean;
+  },
   k: number,
   titleTop: number,
   scale: number,
@@ -344,7 +361,13 @@ function place(
     const lamp = it.kind === "light";
     const hw = lamp ? LAMP.w / 2 : halfWidth(it);
     const h = lamp ? LAMP.h / 2 : half(it);
-    return { x0: it.x - hw, y0: it.y - h, x1: it.x + hw, y1: it.y + h };
+    const raise = it.kind === "toggle_switch" && it.guarded ? COVER_RAISE + 1.5 : 0;
+    return {
+      x0: it.x - hw - (raise ? 1.5 : 0),
+      y0: it.y - h - raise,
+      x1: it.x + hw + (raise ? 1.5 : 0),
+      y1: it.y + h,
+    };
   };
   for (const i of shown) placed.push({ ...glyph(i), owner: i });
   const order = [...shown].sort((a, b) => {
@@ -446,18 +469,13 @@ function place(
     if (labelled(it)) {
       const fit = nameFit(it, moved, k);
       const px = fit.px * scale;
-      const setTo = on ? caption(pos, t, open ?? false) : null;
-      const extra = setTo ? 1 : 0;
       const line = (px * LINE) / k;
+      // A name and nothing under it: no board draws a "SET TO" caption; the set position shows on
+      // the control itself (the owner, batch 2).
       const boxFor = (dy: number): Box => {
-        const w = Math.max(widest(fit.lines) * px, em(setTo ?? "") * PX.setTo * scale) / k;
+        const w = (widest(fit.lines) * px) / k;
         const top = it.y + half(it) + 3 + dy * line;
-        return {
-          x0: it.x - w / 2,
-          y0: top,
-          x1: it.x + w / 2,
-          y1: top + (fit.lines.length + extra) * line + (extra ? CAPTION_ROOM : 0),
-        };
+        return { x0: it.x - w / 2, y0: top, x1: it.x + w / 2, y1: top + fit.lines.length * line };
       };
       const rowTop = rowTops?.get(Math.round(it.y));
       const base = rowTop === undefined ? 0 : Math.max(0, (rowTop - (it.y + half(it) + 3)) / line);

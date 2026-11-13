@@ -28,6 +28,7 @@ steps:
       - at: "mn/cd/INBOARD DU: ND AND ENGINES/1"
       - at: "con/ed/ENG/1"
     note: "Run the engines at or near idle before cutting them off, so they cool evenly."
+    note_caution: true
     why: So the engines cool evenly
     timer:
       seconds: 180

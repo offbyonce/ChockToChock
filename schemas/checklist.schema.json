@@ -391,6 +391,13 @@
             "type": "string"
           }
         },
+        "decide": {
+          "description": "A decision step: it asks the pilot this option (by id), and the answer sets it for the\nflight. Targets elsewhere may depend on the answer (decision 0022).",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
         "expect": {
           "description": "The expected response or position, e.g. \"NAV\". Always text, never a boolean.\n`___` marks a blank the pilot fills in.",
           "type": "string"
@@ -466,6 +473,10 @@
             "null"
           ]
         },
+        "note_caution": {
+          "description": "The note is a caution: it stays visible on the step (under If not) instead of in How\nto do it. Changes only where the note shows, never its wording.",
+          "type": "boolean"
+        },
         "number": {
           "description": "Printed number; absent for steps that are not numbered.",
           "type": [
@@ -532,6 +543,13 @@
           "type": "array",
           "items": {
             "$ref": "#/$defs/StepTarget"
+          }
+        },
+        "terms": {
+          "description": "Glossary terms the step uses, shown under Why (each must be in the glossary).",
+          "type": "array",
+          "items": {
+            "type": "string"
           }
         },
         "text": {
@@ -605,11 +623,39 @@
             "string",
             "null"
           ]
+        },
+        "when": {
+          "description": "Applies only when a decision step has answered an option with this value (decision\n0022). Until it is answered, the item's target without `when` (`open: true`) applies.",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/TargetWhen"
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "additionalProperties": false,
       "required": [
         "at"
+      ]
+    },
+    "TargetWhen": {
+      "description": "The answer a target depends on: an option and one of its values (decision 0022).",
+      "type": "object",
+      "properties": {
+        "equals": {
+          "type": "string"
+        },
+        "option": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "option",
+        "equals"
       ]
     },
     "Timer": {

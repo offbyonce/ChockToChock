@@ -12,6 +12,7 @@ steps:
   - id: ifly-737-max8.landing.engine-start-switches
     text: ENGINE START SWITCHES
     expect: CONT
+    terms: ["CONT", "P5"]
     controls:
       - starts
     targets:
@@ -30,6 +31,7 @@ steps:
   - id: ifly-737-max8.landing.speedbrake-lever-check
     text: SPEEDBRAKE LEVER
     expect: ARMED
+    terms: ["SPEEDBRAKE", "Spoilers"]
     controls:
       - speedbrake
     targets:
@@ -45,6 +47,7 @@ steps:
   - id: ifly-737-max8.landing.gear
     text: GEAR
     expect: "DOWN, 3 GREEN"
+    terms: ["P2"]
     controls:
       - gearlever
     targets:
@@ -84,5 +87,6 @@ steps:
     targets:
       - at: "con/r1/VHF RADIO 1/1"
     note: Confirm you are cleared to land on this runway.
+    note_caution: true
     why: Cleared to land on this runway
     check: Clearance received

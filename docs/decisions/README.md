@@ -30,6 +30,7 @@ Never rewrite an accepted record; add a new one that supersedes it.
 | [0019](0019-flight-data.md) | Flight data: values, units, saved plan and import | Proposed |
 | [0020](0020-design-system.md) | A design system, enforced, before more screens | Withdrawn; replaced by 0021 |
 | [0021](0021-design-system-and-layouts.md) | The design system and layouts | Proposed |
-| [0022](0022-conditional-controls-and-decision-steps.md) | Conditional controls and decision steps | Proposed |
+| [0022](0022-conditional-controls-and-decision-steps.md) | Conditional controls and decision steps | Accepted |
+| [0023](0023-side-and-seat-views.md) | Side and seat views from pack data | Accepted |
 
 Template: Context, Decision, Consequences. Keep it under a page.

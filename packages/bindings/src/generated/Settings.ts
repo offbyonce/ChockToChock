@@ -2,6 +2,7 @@
 import type { Detail } from "./Detail";
 import type { EssentialsChanges } from "./EssentialsChanges";
 import type { ListView } from "./ListView";
+import type { MapInSteps } from "./MapInSteps";
 import type { TextSize } from "./TextSize";
 import type { Theme } from "./Theme";
 
@@ -17,4 +18,8 @@ essentials: boolean,
 /**
  * Pack id to the pilot's changes to Essentials.
  */
-essentialsChanges: { [key in string]: EssentialsChanges }, flightDeckMap: boolean, chime: boolean, simbriefUser: string | null, loadPlanOnOpen: boolean, };
+essentialsChanges: { [key in string]: EssentialsChanges }, mapInSteps: MapInSteps, 
+/**
+ * The choice before Hide map, which Show map restores.
+ */
+mapBeforeHide: MapInSteps, chime: boolean, simbriefUser: string | null, loadPlanOnOpen: boolean, };

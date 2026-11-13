@@ -3,14 +3,14 @@
 
 //! Controls, panels and lights.
 
-use std::collections::BTreeMap;
+use std::collections::{BTreeMap, BTreeSet};
 
 use checklist_core::{PanelItem, PanelItemKind, named_position};
 
 use super::confirmations::check_confirmations;
 use super::ids::unique;
 use super::index::Index;
-use super::{Issue, error};
+use super::{Issue, error, warning};
 use crate::Pack;
 
 pub(super) fn check_panels_and_lights(pack: &Pack, idx: &Index, issues: &mut Vec<Issue>) {
@@ -55,6 +55,16 @@ pub(super) fn check_panels_and_lights(pack: &Pack, idx: &Index, issues: &mut Vec
                 ));
             }
         }
+        check_short_captions(overview, issues);
+        if let Some(views) = &overview.views {
+            let regions: BTreeSet<&str> =
+                overview.regions.iter().map(|r| r.name.as_str()).collect();
+            for (name, frame) in [("side", &views.side), ("seat", &views.seat)] {
+                if let Some(frame) = frame {
+                    check_view(name, frame, &regions, issues);
+                }
+            }
+        }
     }
     unique("panel", c.panels.iter().map(|p| p.id.as_str()), issues);
     let mut labels: BTreeMap<(&str, &str, &str), usize> = BTreeMap::new();
@@ -96,6 +106,15 @@ pub(super) fn check_panels_and_lights(pack: &Pack, idx: &Index, issues: &mut Vec
 
 fn check_panel_item(at: &str, item: &PanelItem, issues: &mut Vec<Issue>) {
     let label = &item.label;
+    // Drawings print positions as the panel's placards, which are in capitals.
+    if let Some(positions) = &item.positions
+        && positions.chars().any(|c| c.is_ascii_lowercase())
+    {
+        issues.push(warning(
+            at,
+            format!("`{label}`: positions `{positions}` are not in capitals; drawings print them as the placard"),
+        ));
+    }
     let is_light = item.kind == PanelItemKind::Light;
     if is_light && item.color.is_none() {
         issues.push(error(at, format!("light `{label}` needs a `color`")));
@@ -300,6 +319,92 @@ fn locator_resolves(locator: &str, labels: &BTreeMap<(&str, &str, &str), usize>)
             .is_some_and(|c| n <= *c)
 }
 
+/// The step map takes a region's short edge captions; a long caption without one warns, and the
+/// map falls back to the long one.
+fn check_short_captions(overview: &checklist_core::Overview, issues: &mut Vec<Issue>) {
+    for region in &overview.regions {
+        let pairs = [
+            ("top", &region.top, &region.top_short),
+            ("bottom", &region.bottom, &region.bottom_short),
+            ("left", &region.left, &region.left_short),
+            ("right", &region.right, &region.right_short),
+        ];
+        for (edge, long, short) in pairs {
+            if long.is_some() && short.is_none() {
+                issues.push(warning(
+                    &region.name,
+                    format!("has a {edge} caption but no `{edge}_short`; the step map falls back to the long one"),
+                ));
+            }
+        }
+    }
+}
+
+/// A side or seat view (decision 0023): every place names a real region, once, with closed
+/// outlines of three points or more; shapes, places and labels lie inside the frame; a side view
+/// with places has one `eye` point for its sight lines.
+fn check_view(
+    name: &str,
+    frame: &checklist_core::ViewFrame,
+    regions: &BTreeSet<&str>,
+    issues: &mut Vec<Issue>,
+) {
+    let at = format!("overview {name} view");
+    let inside =
+        |p: &[f64; 2]| p[0] >= 0.0 && p[1] >= 0.0 && p[0] <= frame.width && p[1] <= frame.height;
+    if frame.width <= 0.0 || frame.height <= 0.0 {
+        issues.push(error(&at, "the view must have a size"));
+    }
+    for shape in &frame.shapes {
+        if shape.points.is_empty() || !shape.points.iter().all(inside) {
+            issues.push(error(&at, "every shape needs points, all inside the view"));
+        }
+    }
+    unique(&at, frame.places.iter().map(|p| p.region.as_str()), issues);
+    for place in &frame.places {
+        if !regions.contains(place.region.as_str()) {
+            issues.push(error(
+                &at,
+                format!("place names no overview region `{}`", place.region),
+            ));
+        }
+        let fits = !place.shapes.is_empty()
+            && place
+                .shapes
+                .iter()
+                .all(|outline| outline.len() >= 3 && outline.iter().all(inside))
+            && place.label_at.as_ref().is_none_or(inside);
+        if !fits {
+            issues.push(error(
+                &at,
+                format!(
+                    "`{}` needs outlines of three points or more, inside the view",
+                    place.region
+                ),
+            ));
+        }
+    }
+    for label in &frame.labels {
+        if label.text.trim().is_empty() || !inside(&[label.x, label.y]) {
+            issues.push(error(
+                &at,
+                "every label needs text and a point inside the view",
+            ));
+        }
+    }
+    let eyes = frame
+        .shapes
+        .iter()
+        .filter(|s| s.role == checklist_core::ViewRole::Eye)
+        .count();
+    if name == "side" && !frame.places.is_empty() && eyes != 1 {
+        issues.push(error(
+            &at,
+            "a side view with places needs exactly one `eye` point for its sight lines",
+        ));
+    }
+}
+
 #[cfg(test)]
 pub(super) mod tests {
     use checklist_core::{
@@ -502,6 +607,7 @@ pub(super) mod tests {
                 captions: vec![],
                 areas: vec![area("overhead"), area("overhead"), area("ghost")],
                 regions: vec![],
+                views: None,
             });
         }
         let joined = messages(&p);
@@ -524,6 +630,12 @@ pub(super) mod tests {
             left: None,
             right: None,
             locate: None,
+            title: None,
+            short_title: None,
+            top_short: None,
+            bottom_short: None,
+            left_short: None,
+            right_short: None,
         };
         if let Some(file) = &mut p.content.controls {
             file.overview = Some(Overview {
@@ -536,11 +648,127 @@ pub(super) mod tests {
                     region("Overhead", 10.0),
                     region("Wide", 80.0),
                 ],
+                views: None,
             });
         }
         let joined = messages(&p);
         assert!(joined.contains("Overhead"), "{joined}");
         assert!(joined.contains("lie inside the overview"), "{joined}");
+    }
+
+    #[test]
+    fn side_and_seat_views_name_real_regions_inside_their_frames() {
+        use checklist_core::{OverviewViews, ViewFrame, ViewPlace, ViewRole, ViewShape};
+        let mut p = alias_pack(vec![]);
+        let place = |region: &str, x: f64| ViewPlace {
+            region: region.into(),
+            shapes: vec![vec![[x, 10.0], [x + 20.0, 10.0], [x + 20.0, 20.0]]],
+            label_at: None,
+        };
+        let shape = |role, points: Vec<[f64; 2]>| ViewShape {
+            points,
+            closed: false,
+            role,
+        };
+        let frame = |places, shapes| ViewFrame {
+            width: 100.0,
+            height: 60.0,
+            shapes,
+            places,
+            labels: vec![],
+        };
+        if let Some(file) = &mut p.content.controls {
+            file.overview = Some(Overview {
+                width: 100.0,
+                height: 100.0,
+                captions: vec![],
+                areas: vec![],
+                regions: vec![OverviewRegion {
+                    name: "Overhead".into(),
+                    code: None,
+                    x: 0.0,
+                    y: 0.0,
+                    width: 50.0,
+                    height: 50.0,
+                    top: None,
+                    bottom: None,
+                    left: None,
+                    right: None,
+                    locate: None,
+                    title: None,
+                    short_title: None,
+                    top_short: None,
+                    bottom_short: None,
+                    left_short: None,
+                    right_short: None,
+                }],
+                views: Some(OverviewViews {
+                    // No eye, a place outside the frame and an unknown region.
+                    side: Some(frame(
+                        vec![place("Overhead", 90.0), place("Galley", 0.0)],
+                        vec![shape(ViewRole::Glass, vec![[0.0, 0.0], [120.0, 10.0]])],
+                    )),
+                    seat: Some(frame(
+                        vec![place("Overhead", 10.0)],
+                        vec![shape(ViewRole::Structure, vec![[0.0, 0.0], [100.0, 60.0]])],
+                    )),
+                }),
+            });
+        }
+        let joined = messages(&p);
+        assert!(
+            joined.contains("overview side view: place names no overview region `Galley`"),
+            "{joined}"
+        );
+        assert!(
+            joined.contains("`Overhead` needs outlines of three points or more, inside the view"),
+            "{joined}"
+        );
+        assert!(
+            joined.contains("every shape needs points, all inside the view"),
+            "{joined}"
+        );
+        assert!(joined.contains("needs exactly one `eye` point"), "{joined}");
+        assert!(!joined.contains("overview seat view"), "{joined}");
+    }
+
+    #[test]
+    fn a_region_edge_without_a_short_caption_warns() {
+        let mut p = alias_pack(vec![]);
+        if let Some(file) = &mut p.content.controls {
+            file.overview = Some(Overview {
+                width: 100.0,
+                height: 100.0,
+                captions: vec![],
+                areas: vec![],
+                regions: vec![OverviewRegion {
+                    name: "Overhead".into(),
+                    code: None,
+                    x: 0.0,
+                    y: 0.0,
+                    width: 50.0,
+                    height: 50.0,
+                    top: Some("AFT, TOWARD THE CABIN".into()),
+                    bottom: Some("FORWARD".into()),
+                    left: None,
+                    right: None,
+                    locate: None,
+                    title: None,
+                    short_title: None,
+                    top_short: Some("AFT".into()),
+                    bottom_short: None,
+                    left_short: None,
+                    right_short: None,
+                }],
+                views: None,
+            });
+        }
+        let joined = messages(&p);
+        assert!(
+            joined.contains("warning: Overhead: has a bottom caption but no `bottom_short`"),
+            "{joined}"
+        );
+        assert!(!joined.contains("top caption"), "{joined}");
     }
 
     #[test]

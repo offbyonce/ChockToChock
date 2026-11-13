@@ -7,14 +7,17 @@ import {
   drawingScale,
   half,
   K,
+  KEY,
   knobY,
   LABEL_MIN,
   LEGEND_MIN,
+  lampText,
   layoutSection,
   leverY,
   MAX_SCALE,
   MIN_SCALE,
   nameFit,
+  openingScroll,
   PX,
   TOGGLE,
 } from "./panel-layout";
@@ -311,5 +314,23 @@ describe("drawingScale", () => {
 
   it("draws at the layout scale until the room is measured", () => {
     expect(drawingScale(0, 300)).toEqual({ k: K, overflow: false });
+  });
+});
+
+describe("lampText", () => {
+  it("breaks a legend after a slash and never sets it under 10 px", () => {
+    // EMERGENCY/TEST was squeezed to about 9 px on one line.
+    const item = { kind: "push_button", label: "EMERGENCY/TEST" } as unknown as PanelItem;
+    const words = lampText(item, K, PX.lamp, KEY.w);
+    expect(words.lines).toEqual(["EMERGENCY/", "TEST"]);
+    expect(words.px).toBeGreaterThanOrEqual(LEGEND_MIN);
+  });
+});
+
+describe("openingScroll", () => {
+  it("centers the step's controls in the card, even when the section starts far to their left", () => {
+    // Tablet landscape opened the fuel drawing at its section's left edge, cutting CTR R.
+    expect(openingScroll(300, 700, 400)).toBe(300);
+    expect(openingScroll(40, 200, 400)).toBe(0);
   });
 });

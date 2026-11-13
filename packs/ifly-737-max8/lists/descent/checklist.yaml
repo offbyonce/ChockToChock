@@ -12,6 +12,7 @@ steps:
   - id: ifly-737-max8.descent.pressurization
     text: PRESSURIZATION
     expect: LAND ALT ___
+    terms: ["LAND ALT", "P5"]
     controls:
       - ldgalt
     targets:
@@ -27,6 +28,7 @@ steps:
   - id: ifly-737-max8.descent.recall-check
     text: RECALL
     expect: CHECKED
+    terms: ["RECALL", "P7"]
     controls:
       - recall
     targets:
@@ -50,6 +52,7 @@ steps:
   - id: ifly-737-max8.descent.autobrake-check
     text: AUTOBRAKE
     expect: "___"
+    terms: ["autobrake", "P9"]
     controls:
       - abrake
     targets:
@@ -63,6 +66,7 @@ steps:
   - id: ifly-737-max8.descent.landing-data
     text: LANDING DATA
     expect: "VREF ___, MINIMUMS ___"
+    terms: ["VREF", "P9"]
     controls:
       - vref
       - mins

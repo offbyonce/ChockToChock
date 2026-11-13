@@ -4,7 +4,7 @@ SPDX-License-Identifier: MIT
 -->
 # 0022: Conditional controls and decision steps
 
-Date: 2026-11-12. Status: proposed. Replaces the "SEE STEP" caption in
+Date: 2026-11-12. Status: accepted (2026-11-12, with [0023](0023-side-and-seat-views.md) in the same format 4 change). Replaces the "SEE STEP" caption in
 [0018](0018-lights-and-switch-values.md); the rest of 0018 stands. Builds on the options of
 [0014](0014-pack-format-3.md).
 

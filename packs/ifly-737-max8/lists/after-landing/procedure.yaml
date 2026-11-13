@@ -13,6 +13,7 @@ steps:
     number: 1
     text: AUTOBRAKE
     expect: "OFF"
+    terms: ["autobrake", "P9"]
     controls:
       - abrake
     targets:
@@ -27,6 +28,7 @@ steps:
     number: 2
     text: SPEEDBRAKE LEVER
     expect: DOWN DETENT
+    terms: ["SPEEDBRAKE", "Spoilers"]
     controls:
       - speedbrake
     targets:
@@ -42,6 +44,7 @@ steps:
     number: 3
     text: PROBE HEAT
     expect: AUTO
+    terms: ["probe heat", "P5"]
     controls:
       - pheat
     targets:
@@ -59,6 +62,7 @@ steps:
     number: 4
     text: POSITION LIGHT
     expect: STEADY
+    terms: ["P5"]
     controls:
       - poslt
     targets:
@@ -73,6 +77,7 @@ steps:
     number: 5
     text: "WING LIGHT, LANDING LIGHT AND TURNOFF LIGHTS"
     expect: "OFF"
+    terms: ["P5"]
     controls:
       - winglt
       - landlt
@@ -94,6 +99,7 @@ steps:
     number: 6
     text: ENGINE START SWITCHES
     expect: "OFF"
+    terms: ["P5"]
     controls:
       - starts
     targets:
@@ -120,6 +126,7 @@ steps:
       - at: "con/st/FLAP LEVER/1"
     quick: always
     note: Retract once you are clear of the runway.
+    note_caution: true
     why: Flaps are not needed for taxi
     confirmed_by:
       - kind: vendor-docs
@@ -127,6 +134,7 @@ steps:
   - id: ifly-737-max8.after-landing.transponder
     text: "TRANSPONDER"
     expect: "MODE SELECTOR TO XPNDR"
+    terms: ["XPNDR", "TCAS"]
     why: "TCAS alerts are not needed on the ground, but airport surveillance can still track you."
     number: 8
     confirmed_by:
@@ -136,6 +144,7 @@ steps:
     number: 9
     text: EFIS
     expect: WXR AND TERR OFF
+    terms: ["EFIS", "WXR", "TERR", "P7"]
     controls:
       - efispanel
     targets:
@@ -155,6 +164,7 @@ steps:
     number: 10
     text: APU SWITCH
     expect: "START, THEN RELEASE TO ON"
+    terms: ["APU", "P5"]
     controls:
       - apusw
     targets:
