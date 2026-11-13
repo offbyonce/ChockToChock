@@ -42,6 +42,7 @@ steps:
       - at: "oh/heat/PROBE B/1"
         set: "AUTO"
     note: "The iFly tutorial's shutdown checklist says OFF, but the MAX probe heat switches have only AUTO and ON. AUTO turns the heat off once the engines are shut down."
+    note_caution: true
     why: "Not needed once the engines are stopped."
     confirmed_by:
       - kind: vendor-docs
@@ -49,6 +50,7 @@ steps:
   - id: ifly-737-max8.shutdown.hydraulic-pump-switches
     text: HYDRAULIC PUMP SWITCHES
     expect: ELEC 1 AND 2 OFF
+    terms: ["ELEC"]
     controls:
       - elechyd
     targets:
@@ -105,6 +107,7 @@ steps:
   - id: ifly-737-max8.shutdown.irs-check
     text: IRS
     expect: "OFF, OR LEAVE IN NAV FOR A QUICK TURNAROUND"
+    terms: ["IRS", "NAV"]
     controls:
       - irs
     targets:
@@ -127,6 +130,7 @@ steps:
   - id: ifly-737-max8.shutdown.fuel-quantity
     text: FUEL QUANTITY
     expect: CHECKED AGAINST THE CDU
+    terms: ["CDU"]
     controls:
       - fuelq
     targets:

@@ -45,6 +45,7 @@ steps:
   - id: ifly-737-max8.climb.altimeters
     text: ALTIMETERS
     expect: STD AT TRANSITION ALTITUDE
+    terms: ["TRANSITION ALTITUDE", "STD"]
     controls:
       - baro
     targets:

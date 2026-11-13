@@ -15,6 +15,7 @@ steps:
     number: 1
     text: APU FIRE SWITCH
     expect: "CONFIRM, PULL AND ROTATE"
+    terms: ["APU"]
     controls:
       - apufire
     targets:
@@ -23,6 +24,7 @@ steps:
     number: 2
     text: APU SWITCH
     expect: "OFF"
+    terms: ["APU"]
     controls:
       - apusw
     targets:

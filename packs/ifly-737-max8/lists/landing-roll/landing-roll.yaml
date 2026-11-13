@@ -20,12 +20,14 @@ steps:
     number: 1
     text: THRUST LEVERS
     expect: VERIFY CLOSED
+    terms: ["Spoilers"]
     controls:
       - thrust
     targets:
       - at: "con/st/THRUST LEVERS 1 AND 2/1"
     quick: always
     note: Confirm the levers are closed. The spoilers and autobrake rely on it.
+    note_caution: true
     why: Spoilers and autobrake rely on it
     check: Levers closed
     confirmed_by:
@@ -35,12 +37,14 @@ steps:
     number: 2
     text: SPEEDBRAKE
     expect: VERIFY UP
+    terms: ["SPEEDBRAKE", "Spoilers"]
     controls:
       - speedbrake
     targets:
       - at: "con/st/SPEEDBRAKE LEVER/1"
         set: "UP"
     note: "Confirm the lever moved to UP. If it did not, raise it by hand."
+    note_caution: true
     why: Spoilers slow you down
     check: Lever UP
     if_not: Not up
@@ -81,6 +85,7 @@ steps:
     targets:
       - at: "con/st/THRUST LEVERS 1 AND 2/1"
     note: Start reducing reverse so the engines reach reverse idle by taxi speed.
+    note_caution: true
     why: Limits debris thrown up at low speed
     confirmed_by:
       - kind: vendor-docs
@@ -95,6 +100,7 @@ steps:
       - at: "con/st/THRUST LEVERS 1 AND 2/1"
     quick: always
     note: Stow the reversers before you leave the runway.
+    note_caution: true
     why: Stowed before you leave the runway
     check: Reversers stowed
     confirmed_by:
@@ -109,6 +115,7 @@ steps:
     targets:
       - at: "con/ed/AUTO BRAKE/1"
     note: "Set the selector to OFF (pressing the toe brakes also disarms it), then brake with the toe brakes."
+    note_caution: true
     why: Take over with the toe brakes
     confirmed_by:
       - kind: vendor-docs

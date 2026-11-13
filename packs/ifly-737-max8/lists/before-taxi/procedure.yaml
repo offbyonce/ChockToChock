@@ -77,6 +77,7 @@ steps:
       - at: "oh/aice/ENG 2/1"
     quick: always
     note: Turn ENG 1 and ENG 2 anti-ice ON when it is 10C or below with visible moisture. Otherwise leave them OFF.
+    note_caution: true
     why: Stops ice building in the engine inlets on the ground
     confirmed_by:
       - kind: vendor-docs
@@ -85,6 +86,7 @@ steps:
     number: 4
     text: PACK SWITCHES
     expect: AUTO
+    terms: ["PACK"]
     controls:
       - packs
     targets:
@@ -102,6 +104,7 @@ steps:
     number: 5
     text: ISOLATION VALVE SWITCH
     expect: AUTO
+    terms: ["ISOLATION VALVE"]
     controls:
       - iso
     targets:
@@ -116,6 +119,7 @@ steps:
   - id: ifly-737-max8.before-taxi.engine-bleed-switches
     text: ENGINE BLEED SWITCHES
     expect: "ON"
+    terms: ["APU"]
     controls:
       - engbleed
     targets:
@@ -131,6 +135,7 @@ steps:
   - id: ifly-737-max8.before-taxi.engine-start-switches
     text: ENGINE START SWITCHES
     expect: CONT
+    terms: ["CONT"]
     controls:
       - starts
     targets:
@@ -149,6 +154,7 @@ steps:
     number: 6
     text: APU BLEED SWITCH
     expect: "OFF"
+    terms: ["APU"]
     controls:
       - apubleed
     targets:
@@ -163,6 +169,7 @@ steps:
     number: 7
     text: APU SWITCH
     expect: "OFF"
+    terms: ["APU"]
     controls:
       - apusw
     targets:
@@ -178,6 +185,7 @@ steps:
     number: 8
     text: FLAP LEVER
     expect: TAKEOFF FLAPS PER CDU AND PWB
+    terms: ["CDU", "PWB"]
     controls:
       - flaplever
     targets:
@@ -196,6 +204,7 @@ steps:
     number: 9
     text: SYS SWITCH
     expect: "PRESS, FLIGHT CONTROLS SHOWN"
+    terms: ["SYS"]
     controls:
       - sysp
     targets:
@@ -220,6 +229,7 @@ steps:
   - id: ifly-737-max8.taxi.transponder
     text: TRANSPONDER
     expect: MODE SELECTOR TO XPNDR
+    terms: ["XPNDR"]
     controls:
       - xpndr
     targets:
@@ -235,6 +245,7 @@ steps:
     number: 11
     text: RECALL
     expect: "HOLD, ALL 12 ANNUNCIATOR LIGHTS ON; RELEASE, ALL OUT"
+    terms: ["RECALL"]
     controls:
       - recall
     targets:

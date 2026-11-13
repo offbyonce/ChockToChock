@@ -13,6 +13,7 @@ steps:
     number: 1
     text: AUTOPILOT AND TO/GA
     expect: "DISENGAGE A/P, PUSH TO/GA"
+    terms: ["TO/GA", "A/P"]
     controls:
       - toga
       - apdisc
@@ -23,6 +24,7 @@ steps:
     number: 2
     text: THRUST
     expect: "MAXIMUM, DISENGAGE A/T"
+    terms: ["A/T"]
     controls:
       - thrust
       - apdisc
@@ -47,6 +49,7 @@ steps:
     number: 5
     text: FLIGHT DIRECTOR
     expect: FOLLOW TO/GA GUIDANCE IF AVAILABLE
+    terms: ["TO/GA"]
     controls:
       - fltinst
     targets:

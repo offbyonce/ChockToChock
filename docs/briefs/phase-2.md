@@ -140,6 +140,15 @@ every change to `.github/workflows/`. For those, prepare what the step needs and
    1. Lists (done): phase screen, Checklist and Flow, item states, open items, options, Full and
       Essentials, keyboard, saving progress on the device. Flight data was then begun: flight
       values, the compact SimBrief plan (decision 0019), Flight setup and the flight strip (PR #17).
+   The boards in docs/design/boards are the specification, not inspiration (maintainer,
+   2026-11-12): every screen, overlay, view, label, caption, legend, color, spacing and order
+   matches its board exactly, in both themes and at every size the boards show, with values from
+   tokens.json. The only exception is the panel control drawings, whose layout comes from the pack
+   and whose drawing quality may exceed the board's. "Drawn from pack data" means the pack stores
+   what the board draws, never a redrawing. Where a board cannot be matched exactly, stop and ask
+   the maintainer before building anything different. Every reviewer brief adds a side-by-side of
+   each changed screen against its board, both themes, with every difference listed; any
+   difference the maintainer has not approved is a finding.
    The remaining interface work follows the approved design, in these batches:
    1. Tokens, themes and scaling: `tokens.json` to CSS variables, light and dark, the scale and
       breakpoints, Settings text size, the raw-value lint, a contrast check for both themes in CI,

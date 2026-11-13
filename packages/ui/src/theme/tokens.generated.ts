@@ -49,7 +49,9 @@ export const COLOR = {
     "essentials-border": "#4a5361",
     "scrim": "rgba(6, 8, 12, 0.55)",
     "lit-amber": "#f2bd5c",
-    "on-lit-amber": "#3a2a00"
+    "on-lit-amber": "#3a2a00",
+    "popover-border": "#34404f",
+    "overlay-shadow": "0 24px 60px rgba(0, 0, 0, 0.55)"
   },
   "light": {
     "bg": "#f5f7fa",
@@ -95,7 +97,9 @@ export const COLOR = {
     "essentials-border": "#8a93a0",
     "scrim": "rgba(20, 26, 36, 0.35)",
     "lit-amber": "#f2bd5c",
-    "on-lit-amber": "#3a2a00"
+    "on-lit-amber": "#3a2a00",
+    "popover-border": "#d3d9e1",
+    "overlay-shadow": "0 24px 60px rgba(16, 24, 40, 0.18)"
   }
 } as const;
 

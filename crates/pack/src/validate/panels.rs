@@ -599,6 +599,8 @@ pub(super) mod tests {
             left: None,
             right: None,
             locate: None,
+            title: None,
+            short_title: None,
         };
         if let Some(file) = &mut p.content.controls {
             file.overview = Some(Overview {
@@ -658,6 +660,8 @@ pub(super) mod tests {
                     left: None,
                     right: None,
                     locate: None,
+                    title: None,
+                    short_title: None,
                 }],
                 views: Some(OverviewViews {
                     // No eye, a place outside the frame and an unknown region.

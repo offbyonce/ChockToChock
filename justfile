@@ -94,6 +94,7 @@ generated-check: schemas bindings tokens
 # Validate every pack, including the content rules.
 packs:
     cargo run -q -p pack-cli -- check packs
+    cargo run -q -p pack-cli -- terms packs/ifly-737-max8
 
 # Compare pack text with private reference files named by CHOCKTOCHOCK_OVERLAP_REFS.
 overlap:

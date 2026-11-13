@@ -13,6 +13,7 @@ steps:
     number: 1
     text: IRS
     expect: "OFF"
+    terms: ["IRS"]
     controls:
       - irs
     targets:
@@ -69,6 +70,7 @@ steps:
     number: 3
     text: PACK SWITCHES
     expect: "OFF"
+    terms: ["PACK"]
     controls:
       - packs
     targets:
@@ -84,6 +86,7 @@ steps:
     number: 4
     text: APU OR GROUND POWER
     expect: "OFF"
+    terms: ["APU", "AC"]
     controls:
       - apub
       - apusw
@@ -99,6 +102,7 @@ steps:
         open: true
     quick: always
     note: Do this just before the battery goes off.
+    note_caution: true
     why: Removes AC power from the airplane
     panel_lights:
       apub:
@@ -109,6 +113,7 @@ steps:
   - id: ifly-737-max8.secure.before-battery-off
     text: BEFORE BATTERY OFF
     expect: "IF THE APU RAN, WAIT ABOUT 5 MINUTES AFTER THE APU GEN OFF BUS LIGHT GOES OUT"
+    terms: ["GEN OFF BUS", "APU"]
     controls:
       - genbus
     targets:

@@ -86,6 +86,7 @@ steps:
     number: 8
     text: CABIN
     expect: "ON THE PA ANNOUNCE: EVACUATE, EVACUATE"
+    terms: ["PA"]
     controls:
       - pa
     targets:
@@ -103,6 +104,7 @@ steps:
     number: 10
     text: ENGINE AND APU FIRE SWITCHES (ALL)
     expect: OVERRIDE AND PULL
+    terms: ["APU"]
     controls:
       - firesw
       - apufire

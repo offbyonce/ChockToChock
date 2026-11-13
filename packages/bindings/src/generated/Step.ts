@@ -63,7 +63,16 @@ decide?: string | null,
 /**
  * Optional note shown under the step.
  */
-note?: string | null, why?: string | null, check?: string | null, check_detail?: string | null, if_not?: string | null, if_not_detail?: string | null, 
+note?: string | null, 
+/**
+ * The note is a caution: it stays visible on the step (under If not) instead of in How
+ * to do it. Changes only where the note shows, never its wording.
+ */
+note_caution?: boolean, 
+/**
+ * Glossary terms the step uses, shown under Why (each must be in the glossary).
+ */
+terms?: Array<string>, why?: string | null, check?: string | null, check_detail?: string | null, if_not?: string | null, if_not_detail?: string | null, 
 /**
  * Id of a shared "how to do it" note.
  */

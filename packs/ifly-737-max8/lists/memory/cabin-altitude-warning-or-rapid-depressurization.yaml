@@ -69,6 +69,7 @@ steps:
     number: 6
     text: "IF CABIN ALTITUDE IS ABOVE, OR EXPECTED TO GO ABOVE, 14,000 FT"
     expect: "PASS OXYGEN ON, GO TO EMERGENCY DESCENT"
+    terms: ["FT"]
     controls:
       - paxoxy
     targets:
@@ -81,6 +82,7 @@ steps:
     number: 7
     text: "IF THE CABIN ALTITUDE RESPONDS"
     expect: "STAY IN MANUAL. MASKS CAN COME OFF ONCE THE CABIN IS 10,000 FT OR LOWER"
+    terms: ["FT"]
     controls:
       - press
     targets:

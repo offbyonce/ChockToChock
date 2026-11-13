@@ -12,6 +12,7 @@ steps:
   - id: ifly-737-max8.approach.altimeters
     text: ALTIMETERS
     expect: SET QNH AT TRANSITION
+    terms: ["QNH"]
     controls:
       - baro
     targets:
@@ -22,6 +23,7 @@ steps:
         field: transition_level
     quick: always
     note: "Below the transition level, altimeters must read local QNH so you see your true altitude above sea level."
+    note_caution: true
     why: True altitude below transition
     how: baro
     confirmed_by:
@@ -63,6 +65,7 @@ steps:
     number: 3
     text: MULTI-MODE RECEIVER
     expect: TUNE THE ILS FOR THE LANDING RUNWAY
+    terms: ["ILS", "PFD"]
     controls:
       - mmr
     targets:
@@ -73,6 +76,7 @@ steps:
       option: approach
       equals: ils
     note: Tune the ILS and identify it before you rely on it.
+    note_caution: true
     why: Identify it before you rely on it
     check: "ILS ident shown on the PFD, or the Morse ident heard"
     how: ils
@@ -82,6 +86,7 @@ steps:
   - id: ifly-737-max8.approach.approach-in-the-cdu
     text: APPROACH IN THE CDU
     expect: CORRECT APPROACH ON THE LEGS PAGE
+    terms: ["RNAV", "LEGS", "CDU", "FMC"]
     controls:
       - fmc
     targets:
@@ -92,12 +97,14 @@ steps:
       option: approach
       equals: rnav
     note: "An RNAV approach follows the route in the FMC, so check it matches the chart."
+    note_caution: true
     why: An RNAV approach follows the FMC route
     check: Approach matches the chart
   - id: ifly-737-max8.approach.course-selectors
     number: 4
     text: COURSE SELECTORS
     expect: FINAL APPROACH COURSE SET
+    terms: ["ND"]
     controls:
       - crs
     targets:
@@ -112,6 +119,7 @@ steps:
   - id: ifly-737-max8.approach.app-mcp
     text: APP (MCP)
     expect: "ARM, VOR/LOC AND G/S ARMED ON THE FMA"
+    terms: ["VOR/LOC", "FMA", "MCP", "G/S", "APP"]
     controls:
       - appmode
     targets:

@@ -283,6 +283,13 @@ data_types! {
         /// Optional note shown under the step.
         #[serde(default, skip_serializing_if = "Option::is_none")]
         pub note: Option<String>,
+        /// The note is a caution: it stays visible on the step (under If not) instead of in How
+        /// to do it. Changes only where the note shows, never its wording.
+        #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+        pub note_caution: bool,
+        /// Glossary terms the step uses, shown under Why (each must be in the glossary).
+        #[serde(default, skip_serializing_if = "Vec::is_empty")]
+        pub terms: Vec<String>,
         #[serde(default, skip_serializing_if = "Option::is_none")]
         pub why: Option<String>,
         #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -368,6 +375,8 @@ impl Step {
             show_if: None,
             decide: None,
             note: None,
+            note_caution: false,
+            terms: Vec::new(),
             why: None,
             check: None,
             check_detail: None,

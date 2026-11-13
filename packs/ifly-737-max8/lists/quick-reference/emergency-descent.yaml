@@ -15,6 +15,7 @@ steps:
     number: 1
     text: EMERGENCY DESCENT
     expect: "TELL THE CREW, THEN WARN THE CABIN ON THE PA"
+    terms: ["PA"]
     controls:
       - pa
     targets:
@@ -33,6 +34,7 @@ steps:
     number: 3
     text: DESCENT
     expect: "NOW, TO THE GREATER OF 10,000 FT AND MINIMUM SAFE ALTITUDE"
+    terms: ["FT"]
     controls:
       - mcpalt
     targets:
@@ -41,6 +43,7 @@ steps:
     number: 4
     text: START SWITCHES
     expect: CONT
+    terms: ["CONT"]
     controls:
       - starts
     targets:
@@ -81,6 +84,7 @@ steps:
     number: 8
     text: ATC
     expect: ADVISE. SQUAWK 7700 IF UNABLE TO COMMUNICATE AT ONCE
+    terms: ["ATC"]
     controls:
       - xpndr
     targets:
@@ -99,6 +103,7 @@ steps:
     number: 10
     text: CREW OXYGEN REGULATORS
     expect: "NORMAL. USE OXYGEN WHEN CABIN IS ABOVE 10,000 FT"
+    terms: ["FT"]
     controls:
       - mask
     targets:

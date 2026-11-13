@@ -17,4 +17,9 @@ top?: string | null, bottom?: string | null, left?: string | null, right?: strin
 /**
  * Where to look from the seat, for "Where is this?".
  */
-locate?: string | null, };
+locate?: string | null, 
+/**
+ * The Where is this? title, as a whole question ("Where is the forward overhead
+ * panel?"), and the shorter one phones use ("Where is the forward overhead?").
+ */
+title?: string | null, short_title?: string | null, };

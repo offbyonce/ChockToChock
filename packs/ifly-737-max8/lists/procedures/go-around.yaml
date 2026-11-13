@@ -13,6 +13,7 @@ steps:
     number: 1
     text: TO/GA
     expect: PUSH
+    terms: ["TO/GA"]
     controls:
       - toga
     targets:
@@ -56,6 +57,7 @@ steps:
     number: 6
     text: ROLL MODE
     expect: SELECT ABOVE 400 FT
+    terms: ["FT"]
     controls:
       - rollmode
     targets:
@@ -81,6 +83,7 @@ steps:
     number: 8
     text: PITCH MODE
     expect: "AT FLAP SPEED, SELECT LVL CHG OR VNAV, VERIFY CLIMB THRUST"
+    terms: ["LVL CHG", "VNAV"]
     controls:
       - pitchmode
     targets:

@@ -12,6 +12,7 @@ steps:
   - id: ifly-737-max8.descent.pressurization
     text: PRESSURIZATION
     expect: LAND ALT ___
+    terms: ["LAND ALT"]
     controls:
       - ldgalt
     targets:
@@ -27,6 +28,7 @@ steps:
   - id: ifly-737-max8.descent.recall-check
     text: RECALL
     expect: CHECKED
+    terms: ["RECALL"]
     controls:
       - recall
     targets:
@@ -63,6 +65,7 @@ steps:
   - id: ifly-737-max8.descent.landing-data
     text: LANDING DATA
     expect: "VREF ___, MINIMUMS ___"
+    terms: ["VREF"]
     controls:
       - vref
       - mins

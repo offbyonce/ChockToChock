@@ -19,6 +19,7 @@ steps:
       - at: "mn/cd/INBOARD DU: ND AND ENGINES/1"
       - at: "con/ed/ENG/1"
     note: Cold engines need time at idle before takeoff thrust.
+    note_caution: true
     why: Cold engines need time at idle
     check: "3 minutes at idle"
     check_detail: Oil at least 31C
@@ -35,6 +36,7 @@ steps:
     number: 2
     text: ENGINE START SWITCHES
     expect: CONT
+    terms: ["CONT"]
     controls:
       - starts
     targets:
@@ -94,6 +96,7 @@ steps:
     number: 6
     text: TRANSPONDER
     expect: MODE SELECTOR TA/RA
+    terms: ["TCAS"]
     controls:
       - xpndr
     targets:
@@ -122,6 +125,7 @@ steps:
     number: 8
     text: RUNWAY AND ENTRY POINT
     expect: CORRECT RUNWAY AND ENTRY
+    terms: ["ND"]
     controls:
       - pfdhdg
     targets:
@@ -130,6 +134,7 @@ steps:
       - prefix: "RWY "
         field: runway
     note: "Check the runway signs and your position on the ND, to be sure you are lining up on the right runway."
+    note_caution: true
     why: Be sure it is the right runway
     check: Runway signs and ND agree
     confirmed_by:

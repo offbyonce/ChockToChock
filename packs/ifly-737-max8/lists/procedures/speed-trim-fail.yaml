@@ -13,6 +13,7 @@ steps:
     number: 1
     text: SPEED TRIM AND MCAS
     expect: INOPERATIVE FOR THE REMAINDER OF THE FLIGHT
+    terms: ["MCAS"]
     controls:
       - fctllts
     targets:

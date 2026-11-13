@@ -80,6 +80,7 @@ steps:
     number: 7
     text: IF RUNAWAY CONTINUES
     expect: BOTH STAB TRIM CUTOUT SWITCHES TO CUTOUT
+    terms: ["STAB TRIM CUTOUT"]
     controls:
       - stabcut
     targets:
@@ -127,6 +128,7 @@ steps:
       - at: "con/st/STAB TRIM WHEEL/2"
     non_recall: true
     note: "Anticipate trim changes, and keep the autopilot and autothrottle off."
+    note_caution: true
     confirmed_by:
       - kind: vendor-docs
         date: 2026-11-10

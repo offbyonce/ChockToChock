@@ -15,6 +15,7 @@ steps:
     number: 1
     text: AIRSPEED
     expect: "AT OR ABOVE FL270 SET 275 KT, BELOW FL270 SET 300 KT"
+    terms: ["KT"]
     controls:
       - speedt
     targets:
@@ -23,6 +24,7 @@ steps:
     number: 2
     text: START SWITCHES (BOTH)
     expect: FLT
+    terms: ["FLT"]
     controls:
       - starts
     targets:
@@ -49,6 +51,7 @@ steps:
     number: 4
     text: "ONCE EGT STARTS FALLING"
     expect: "BOTH START LEVERS TO IDLE"
+    terms: ["EGT"]
     controls:
       - slever
     targets:
@@ -60,6 +63,7 @@ steps:
     number: 5
     text: "EGT AT REDLINE, OR FLAT FOR 30 SECONDS"
     expect: "THAT START LEVER TO CUTOFF, THEN BACK TO IDLE. REPEAT IF NEEDED"
+    terms: ["EGT"]
     controls:
       - engmon
       - slever
@@ -72,6 +76,7 @@ steps:
     number: 6
     text: ENGINE ACCELERATION
     expect: "MAY BE VERY SLOW. LEAVE THE START ALONE WHILE N2 CLIMBS AND EGT STAYS IN LIMITS"
+    terms: ["EGT", "N2"]
     controls:
       - engmon
     targets:
@@ -81,6 +86,7 @@ steps:
     number: 7
     text: APU (IF AVAILABLE)
     expect: START AND PUT ON BUSES. DO NOT WAIT FOR ENGINE START
+    terms: ["APU"]
     controls:
       - apusw
       - apugen

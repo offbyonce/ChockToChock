@@ -13,12 +13,14 @@ steps:
     number: 1
     text: THRUST LEVERS
     expect: "ADVANCE TO ABOUT 40% N1, LET ENGINES STABILIZE"
+    terms: ["TO/GA", "N1"]
     controls:
       - thrust
     targets:
       - at: "con/st/THRUST LEVERS 1 AND 2/1"
     quick: always
     note: "Advance to about 40% N1 and let both engines settle before TO/GA."
+    note_caution: true
     why: Stable engines before TO/GA
     check: Both engines steady
     confirmed_by:
@@ -28,6 +30,7 @@ steps:
     number: 2
     text: TO/GA
     expect: PUSH
+    terms: ["TO/GA", "FMA", "N1"]
     controls:
       - toga
     targets:
@@ -44,6 +47,7 @@ steps:
     number: 3
     text: TAKEOFF THRUST
     expect: "TAKEOFF N1 SET, INDICATIONS NORMAL"
+    terms: ["N1"]
     controls:
       - engmon
     targets:
@@ -65,6 +69,7 @@ steps:
     targets:
       - at: "mn/cd/OUTBOARD DU: PFD/1"
     note: Both airspeed indicators should agree here. Below this speed you reject for more reasons than above it.
+    note_caution: true
     why: More reasons to reject below this speed
     check: Both airspeeds agree
     callout: "Pilot monitoring: \"80 knots.\""
@@ -72,22 +77,26 @@ steps:
     number: 5
     text: V1
     expect: HANDS OFF THRUST LEVERS
+    terms: ["V1"]
     controls:
       - speedt
     targets:
       - at: "mn/cd/OUTBOARD DU: PFD/1"
     note: "After V1, continue the takeoff. Hands come off the thrust levers so you do not reject by habit."
+    note_caution: true
     why: Hands off the levers so you do not reject out of habit after V1
   - id: ifly-737-max8.takeoff.vr
     number: 6
     text: VR
     expect: ROTATE TOWARD 15 DEGREES PITCH
+    terms: ["V2", "VR"]
     controls:
       - speedt
     targets:
       - at: "mn/cd/OUTBOARD DU: PFD/1"
     quick: always
     note: Rotate smoothly toward 15 degrees pitch.
+    note_caution: true
     why: A smooth rotation avoids a tail strike and lets the airplane reach V2 in the climb
     callout: "Pilot monitoring: \"Rotate.\""
     confirmed_by:
@@ -105,6 +114,7 @@ steps:
       - at: "mn/fd/INBOARD DU: ND/1"
       - at: "mn/fd/OUTBOARD DU: PFD/1"
     note: Confirm the airplane is climbing on two instruments before raising the gear.
+    note_caution: true
     why: Climb confirmed on two instruments
     check: Altimeter and vertical speed rising
     callout: "Pilot monitoring: \"Positive rate.\" Pilot flying: \"Gear up.\""

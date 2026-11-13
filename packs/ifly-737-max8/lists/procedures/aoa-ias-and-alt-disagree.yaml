@@ -13,6 +13,7 @@ steps:
     number: 1
     text: AOA DISAGREE
     expect: ACCOMPLISH AIRSPEED UNRELIABLE
+    terms: ["AOA"]
     controls:
       - fltinst
     targets:
@@ -27,6 +28,7 @@ steps:
     number: 2
     text: IAS DISAGREE
     expect: ACCOMPLISH AIRSPEED UNRELIABLE
+    terms: ["IAS"]
     controls:
       - fltinst
     targets:
@@ -41,6 +43,7 @@ steps:
     number: 3
     text: ALT DISAGREE WITH IAS DISAGREE
     expect: ACCOMPLISH AIRSPEED UNRELIABLE
+    terms: ["IAS"]
     controls:
       - fltinst
     targets:

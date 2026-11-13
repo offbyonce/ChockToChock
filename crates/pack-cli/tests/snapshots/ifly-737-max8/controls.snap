@@ -2054,7 +2054,9 @@ assertion_line: 36
         "bottom": "FORWARD, TOWARD THE WINDSHIELD",
         "left": "CAPTAIN SIDE",
         "right": "F/O SIDE",
-        "locate": "Above your head, on the back part of the overhead panel. Look up and slightly back from the seat."
+        "locate": "Above your head, on the back part of the overhead panel. Look up and slightly back from the seat.",
+        "title": "Where is the aft overhead panel?",
+        "short_title": "Where is the aft overhead?"
       },
       {
         "name": "Forward overhead",
@@ -2067,7 +2069,9 @@ assertion_line: 36
         "bottom": "FORWARD, TOWARD THE WINDSHIELD",
         "left": "CAPTAIN SIDE",
         "right": "F/O SIDE",
-        "locate": "Above the windshield, in front of your head. Look up from the seat."
+        "locate": "Above the windshield, in front of your head. Look up from the seat.",
+        "title": "Where is the forward overhead panel?",
+        "short_title": "Where is the forward overhead?"
       },
       {
         "name": "Glareshield",
@@ -2078,7 +2082,9 @@ assertion_line: 36
         "height": 40.0,
         "left": "CAPTAIN SIDE",
         "right": "F/O SIDE",
-        "locate": "Straight ahead at eye level, along the bottom of the windshield, above the main panel."
+        "locate": "Straight ahead at eye level, along the bottom of the windshield, above the main panel.",
+        "title": "Where is the glareshield?",
+        "short_title": "Where is the glareshield?"
       },
       {
         "name": "Main panel",
@@ -2089,7 +2095,9 @@ assertion_line: 36
         "height": 80.0,
         "left": "CAPTAIN SIDE",
         "right": "F/O SIDE",
-        "locate": "Straight ahead below the glareshield, behind the control column."
+        "locate": "Straight ahead below the glareshield, behind the control column.",
+        "title": "Where is the main panel?",
+        "short_title": "Where is the main panel?"
       },
       {
         "name": "Center console",
@@ -2102,7 +2110,9 @@ assertion_line: 36
         "bottom": "AFT, TOWARD THE CABIN",
         "left": "CAPTAIN SIDE",
         "right": "F/O SIDE",
-        "locate": "Between the two seats. From the front: the forward electronic panel (P9) with the CDUs, just below the main panel; the control stand with the thrust levers, at hand height; then the aft electronic panel (P8) by your knees, with the fire handles, radios and transponder."
+        "locate": "Between the two seats. From the front: the forward electronic panel (P9) with the CDUs, just below the main panel; the control stand with the thrust levers, at hand height; then the aft electronic panel (P8) by your knees, with the fire handles, radios and transponder.",
+        "title": "Where is the center console?",
+        "short_title": "Where is the center console?"
       },
       {
         "name": "Around the flight deck",
@@ -2110,7 +2120,9 @@ assertion_line: 36
         "y": 448.0,
         "width": 488.0,
         "height": 208.0,
-        "locate": "Elsewhere on the flight deck: the side walls and seats, the floor, and outside the airplane for the walk around."
+        "locate": "Elsewhere on the flight deck: the side walls and seats, the floor, and outside the airplane for the walk around.",
+        "title": "Where is this, around the flight deck?",
+        "short_title": "Where is this?"
       }
     ],
     "views": {

@@ -13,6 +13,7 @@ steps:
     number: 1
     text: STAB TRIM CUTOUT SWITCHES (BOTH)
     expect: CUTOUT
+    terms: ["STAB TRIM CUTOUT"]
     controls:
       - stabcut
     targets:
@@ -44,6 +45,7 @@ steps:
       - at: "con/st/STAB TRIM WHEEL/1"
       - at: "con/st/STAB TRIM WHEEL/2"
     note: "If ice could be the cause, descend to warmer air and try again."
+    note_caution: true
     confirmed_by:
       - kind: vendor-docs
         date: 2026-11-10
@@ -62,11 +64,13 @@ steps:
     number: 5
     text: LANDING
     expect: "PLAN FLAPS 15 AND VREF 15 + 10 KT, ESTABLISH CONFIGURATION EARLY"
+    terms: ["VREF", "KT"]
     controls:
       - flaplever
     targets:
       - at: "con/st/FLAP LEVER/1"
     note: "Keep any wind additive to 5 knots or less, and check the landing distance in an approved source."
+    note_caution: true
     confirmed_by:
       - kind: vendor-docs
         date: 2026-11-10

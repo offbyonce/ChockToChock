@@ -66,6 +66,12 @@ data_types! {
         /// Where to look from the seat, for "Where is this?".
         #[serde(default, skip_serializing_if = "Option::is_none")]
         pub locate: Option<String>,
+        /// The Where is this? title, as a whole question ("Where is the forward overhead
+        /// panel?"), and the shorter one phones use ("Where is the forward overhead?").
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        pub title: Option<String>,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        pub short_title: Option<String>,
     }
 
     /// How the renderer draws a shape in a side or seat view (decision 0023). Roles name no

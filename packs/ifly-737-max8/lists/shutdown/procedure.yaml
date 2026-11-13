@@ -13,6 +13,7 @@ steps:
     number: 1
     text: APU GENERATOR SWITCHES
     expect: BOTH ON
+    terms: ["GEN OFF BUS", "APU"]
     controls:
       - apugen
     targets:
@@ -22,6 +23,7 @@ steps:
         set: "ON"
     quick: always
     note: "Take power from the APU before you stop the engines, or you lose normal AC power."
+    note_caution: true
     why: Puts APU power on both transfer buses
     check: APU GEN OFF BUS light OUT
     how: gens2
@@ -133,6 +135,7 @@ steps:
     number: 7
     text: CAB/UTIL AND IFE/PASS SEAT SWITCHES
     expect: "OFF"
+    terms: ["CAB/UTIL"]
     controls:
       - cabutil
     targets:
@@ -182,6 +185,7 @@ steps:
     number: 10
     text: PACK SWITCHES
     expect: AUTO
+    terms: ["PACK"]
     controls:
       - packs
     targets:
@@ -198,6 +202,7 @@ steps:
     number: 11
     text: ISOLATION VALVE SWITCH
     expect: OPEN
+    terms: ["ISOLATION VALVE", "APU"]
     controls:
       - iso
     targets:
@@ -211,6 +216,7 @@ steps:
     number: 12
     text: "ENGINE AND APU BLEED SWITCHES"
     expect: "ON"
+    terms: ["APU"]
     controls:
       - apubleed
       - engbleed
@@ -244,6 +250,7 @@ steps:
   - id: ifly-737-max8.taxi-in.transponder
     text: TRANSPONDER
     expect: ALT OFF
+    terms: ["ALT OFF"]
     controls:
       - xpndr
     targets:
@@ -251,6 +258,7 @@ steps:
         set: "ALT OFF"
     quick: always
     note: Once parked, set the mode selector to ALT OFF.
+    note_caution: true
     why: The transponder stops reporting once the flight is over.
     confirmed_by:
       - kind: vendor-docs
@@ -262,6 +270,7 @@ steps:
     controls:
       - chocks
     note: "Without chocks, the airplane can creep as parking brake pressure bleeds away."
+    note_caution: true
     why: Holds the airplane without the brake
     check: "Chocks in place before the brake is released"
     confirmed_by:
@@ -270,6 +279,7 @@ steps:
   - id: ifly-737-max8.shutdown.ground-power
     text: GROUND POWER
     expect: "IF AVAILABLE, CONNECT AND VERIFY ACCEPTED, THEN APU OFF"
+    terms: ["APU"]
     controls:
       - grdpwr
       - apusw
@@ -285,6 +295,7 @@ steps:
     number: 15
     text: IRS
     expect: "OFF, OR LEAVE IN NAV FOR A QUICK TURNAROUND"
+    terms: ["IRS", "NAV"]
     controls:
       - irs
     targets:

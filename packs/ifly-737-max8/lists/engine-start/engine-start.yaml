@@ -21,6 +21,7 @@ steps:
   - id: ifly-737-max8.engine-start.secondary-engine-indications
     text: "SECONDARY ENGINE INDICATIONS"
     expect: "DISPLAYED"
+    terms: ["EGT", "N2"]
     why: "N2 and EGT are shown here, and both are watched during the start."
     confirmed_by:
       - kind: vendor-docs
@@ -29,6 +30,7 @@ steps:
     number: 2
     text: PACK SWITCHES
     expect: "OFF"
+    terms: ["PACK", "APU"]
     controls:
       - packs
     targets:
@@ -46,6 +48,7 @@ steps:
     number: 3
     text: APU BLEED SWITCH
     expect: "ON"
+    terms: ["APU"]
     controls:
       - apubleed
     targets:
@@ -66,6 +69,7 @@ steps:
         set: "BOTH"
     quick: always
     note: "Set in the preflight. Leave it at BOTH."
+    note_caution: true
     why: "BOTH fires both igniters for the start."
     panel_lights:
       starts:
@@ -78,6 +82,7 @@ steps:
     section: Engine 1
     text: ENGINE 1 START SWITCH
     expect: GRD
+    terms: ["GRD", "N2"]
     controls:
       - starts
     targets:
@@ -100,12 +105,14 @@ steps:
     number: 5
     text: MOTORING INDICATION
     expect: WAIT UNTIL IT CLEARS
+    terms: ["MOTORING"]
     controls:
       - motor
     targets:
       - at: "mn/cd/INBOARD DU: ND AND ENGINES/1"
     quick: always
     note: The MAX motors the engine first to straighten shafts bowed by heat from the last shutdown. Do not lift the start lever until this clears.
+    note_caution: true
     why: Straightens shafts bowed by heat
     check: Motoring indication cleared
     if_not: Still showing
@@ -117,6 +124,7 @@ steps:
     number: 6
     text: ENGINE 1 START LEVER
     expect: "IDLE AT ABOUT 25% N2"
+    terms: ["EGT", "N2"]
     controls:
       - slever
     targets:
@@ -129,16 +137,19 @@ steps:
     if_not_detail: Run the Aborted engine start checklist (Quick reference)
     explain: lever
     note: "If 25% N2 is not reached, move to IDLE at maximum motoring, but not below 20% N2. This comes from older 737 practice and is not confirmed for the MAX."
+    note_caution: true
   - id: ifly-737-max8.engine-start.fuel-flow-and-egt-engine-start
     number: 7
     text: FUEL FLOW AND EGT
     expect: VERIFY EGT RISES WITHIN 10 SECONDS OF START LEVER TO IDLE
+    terms: ["EGT"]
     controls:
       - engmon
     targets:
       - at: "mn/cd/INBOARD DU: ND AND ENGINES/1"
       - at: "con/ed/ENG/1"
     note: "During a short test, fuel flow reads zero and the ENG VALVE CLOSED light shows bright. Then fuel flow rises. EGT should rise within 10 seconds. If it does not, the EEC may stop the start. Otherwise, stop it yourself."
+    note_caution: true
     why: Confirms light-off
     check: EGT rises within 10 seconds
     check_detail: "First a short valve test: fuel flow zero and ENG VALVE CLOSED bright. Then fuel flow rises"
@@ -148,6 +159,7 @@ steps:
     number: 8
     text: ENGINE 1 START SWITCH
     expect: "VERIFY OFF AT ABOUT 63% N2"
+    terms: ["N2"]
     controls:
       - starts
     targets:
@@ -167,6 +179,7 @@ steps:
     number: 9
     text: ENGINE 1
     expect: VERIFY STABLE AT IDLE
+    terms: ["EGT", "N1", "N2"]
     controls:
       - engmon
     targets:
@@ -185,6 +198,7 @@ steps:
     section: Engine 2
     text: ENGINE 2 START SWITCH
     expect: GRD
+    terms: ["GRD", "N2"]
     controls:
       - starts
     targets:
@@ -207,12 +221,14 @@ steps:
     number: 11
     text: MOTORING INDICATION
     expect: WAIT UNTIL IT CLEARS
+    terms: ["MOTORING"]
     controls:
       - motor
     targets:
       - at: "mn/cd/INBOARD DU: ND AND ENGINES/1"
     quick: always
     note: The MAX motors the engine first to straighten shafts bowed by heat from the last shutdown. Do not lift the start lever until this clears.
+    note_caution: true
     why: Straightens shafts bowed by heat
     check: Motoring indication cleared
     if_not: Still showing
@@ -224,6 +240,7 @@ steps:
     number: 12
     text: ENGINE 2 START LEVER
     expect: "IDLE AT ABOUT 25% N2"
+    terms: ["EGT", "N2"]
     controls:
       - slever
     targets:
@@ -236,16 +253,19 @@ steps:
     if_not_detail: Run the Aborted engine start checklist (Quick reference)
     explain: lever
     note: "If 25% N2 is not reached, move to IDLE at maximum motoring, but not below 20% N2. This comes from older 737 practice and is not confirmed for the MAX."
+    note_caution: true
   - id: ifly-737-max8.engine-start.fuel-flow-and-egt
     number: 13
     text: FUEL FLOW AND EGT
     expect: VERIFY EGT RISES WITHIN 10 SECONDS OF START LEVER TO IDLE
+    terms: ["EGT"]
     controls:
       - engmon
     targets:
       - at: "mn/cd/INBOARD DU: ND AND ENGINES/1"
       - at: "con/ed/ENG/1"
     note: "During a short test, fuel flow reads zero and the ENG VALVE CLOSED light shows bright. Then fuel flow rises. EGT should rise within 10 seconds. If it does not, the EEC may stop the start. Otherwise, stop it yourself."
+    note_caution: true
     why: Confirms light-off
     check: EGT rises within 10 seconds
     check_detail: "First a short valve test: fuel flow zero and ENG VALVE CLOSED bright. Then fuel flow rises"
@@ -255,6 +275,7 @@ steps:
     number: 14
     text: ENGINE 2 START SWITCH
     expect: "VERIFY OFF AT ABOUT 63% N2"
+    terms: ["N2"]
     controls:
       - starts
     targets:
@@ -274,6 +295,7 @@ steps:
     number: 15
     text: ENGINE 2
     expect: VERIFY STABLE AT IDLE
+    terms: ["EGT", "N1", "N2"]
     controls:
       - engmon
     targets:
@@ -290,6 +312,7 @@ steps:
   - id: ifly-737-max8.engine-start.ground-support-items
     text: "GROUND SUPPORT ITEMS (EFB)"
     expect: "ALL REMOVED"
+    terms: ["EFB"]
     note: "The iFly has no ground crew, so the EFB stands in for them."
     why: "Nothing may be left attached before taxi."
     simulator_model: true

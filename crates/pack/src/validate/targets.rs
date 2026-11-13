@@ -24,9 +24,24 @@ pub(super) fn check_step_targets(pack: &Pack, issues: &mut Vec<Issue>) {
         .flat_map(|p| &p.options)
         .map(|o| (o.id.as_str(), o.values.iter().map(String::as_str).collect()))
         .collect();
+    let glossary: BTreeSet<&str> = pack
+        .content
+        .glossary
+        .iter()
+        .flat_map(|g| &g.terms)
+        .map(|t| t.term.as_str())
+        .collect();
     for step in pack.checklists.iter().flat_map(|l| &l.steps) {
         check_step(panels, step, issues);
         check_decision(&options, step, issues);
+        for term in &step.terms {
+            if !glossary.contains(term.as_str()) {
+                issues.push(error(
+                    step.id.as_str(),
+                    format!("term `{term}` is not in the glossary"),
+                ));
+            }
+        }
     }
 }
 
@@ -429,5 +444,23 @@ mod tests {
             &pack_with("ON IF ON GROUND POWER", vec![open(), open()]),
             "target `oh/elec/BATTERY/1` is listed twice",
         );
+    }
+
+    #[test]
+    fn a_steps_terms_are_in_the_glossary() {
+        let mut p = pack_with("ON", vec![target("oh/elec/BATTERY/1", Some("ON"), None)]);
+        p.content.glossary = Some(checklist_core::GlossaryFile {
+            terms: vec![checklist_core::GlossaryEntry {
+                term: "APU".into(),
+                meaning: "Auxiliary power unit.".into(),
+            }],
+        });
+        p.checklists[0].steps[0].terms = vec!["APU".into(), "XPDR".into()];
+        let joined = messages(&p);
+        assert!(
+            joined.contains("term `XPDR` is not in the glossary"),
+            "{joined}"
+        );
+        assert!(!joined.contains("term `APU`"), "{joined}");
     }
 }

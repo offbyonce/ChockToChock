@@ -20,6 +20,7 @@ steps:
     fill:
       - qnh
     note: "Below the transition level, altimeters must read local QNH so you see your true altitude above sea level."
+    note_caution: true
     why: True altitude below transition
     confirmed_by:
       - kind: vendor-docs

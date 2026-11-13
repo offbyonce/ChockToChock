@@ -25,6 +25,7 @@ steps:
     number: 1
     text: IRS
     expect: BOTH NAV
+    terms: ["IRS", "NAV"]
     controls:
       - irs
     targets:
@@ -47,6 +48,7 @@ steps:
     number: 2
     text: ELT SWITCH
     expect: "GUARD CLOSED, LIGHT OUT"
+    terms: ["ELT"]
     controls:
       - elt
     targets:
@@ -80,6 +82,7 @@ steps:
     number: 4
     text: "GPS, ILS, GLS AND MAINT LIGHTS"
     expect: OUT
+    terms: ["MAINT", "GLS", "GPS", "ILS"]
     controls:
       - gpslts
     targets:
@@ -100,6 +103,7 @@ steps:
     number: 5
     text: EEC SWITCHES
     expect: "ON, ENGINE CONTROL, REVERSER LIMITED, REVERSER COMMAND AND REVERSER AIR/GRD LIGHTS OUT"
+    terms: ["EEC"]
     controls:
       - eec
     targets:
@@ -120,6 +124,7 @@ steps:
       - at: "aft/eng/REVERSER AIR/GRD/1"
         light: out
     note: "The electronic engine control protects the engine limits. Check that both show ON, with no ALTN light."
+    note_caution: true
     why: Protects the engine limits
     check: Both EEC buttons show ON
     check_detail: "No ALTN shown"
@@ -137,6 +142,7 @@ steps:
       - at: "aft/oxy/PASS OXY ON/1"
         light: out
     note: Check that the guard is closed so the cabin masks cannot be dropped by accident.
+    note_caution: true
     why: Stops cabin masks dropping by accident
     check: Guard closed
     check_detail: PASS OXY ON light OUT
@@ -192,6 +198,7 @@ steps:
     number: 10
     text: MACH AIRSPEED WARNING TEST
     expect: "TEST EACH, CLACKER SOUNDS"
+    terms: ["MACH"]
     controls:
       - mach
     targets:
@@ -231,6 +238,7 @@ steps:
     number: 12
     text: CDU
     expect: PROGRAM FOR FLIGHT
+    terms: ["TAKEOFF REF", "CDU", "N1"]
     controls:
       - cdu
     targets:
@@ -257,6 +265,7 @@ steps:
       - at: "oh/fctl/FLT CONTROL B/1"
         set: "B ON"
     note: These give hydraulic power to the flight controls. Both must be on for flight.
+    note_caution: true
     why: Hydraulic power to the flight controls
     check: LOW PRESSURE lights ON
     check_detail: Normal until hydraulic pressure is up
@@ -291,6 +300,7 @@ steps:
         set: "ON"
     quick: always
     note: Check that the amber YAW DAMPER light goes out. The yaw damper engages only with the B FLT CONTROL switch ON.
+    note_caution: true
     why: Must be on for flight
     check: YAW DAMPER light OUT
     if_not: Light stays on
@@ -335,6 +345,7 @@ steps:
     number: 18
     text: "FEEL DIFF PRESS, SPEED TRIM FAIL, MACH TRIM FAIL, AUTO SLAT FAIL AND SPOILERS LIGHTS"
     expect: OUT
+    terms: ["MACH"]
     controls:
       - fctllts
     targets:
@@ -366,6 +377,7 @@ steps:
     number: 19
     text: NAVIGATION TRANSFER SWITCHES
     expect: "VHF NAV, IRS AND FMC NORMAL"
+    terms: ["FMC", "IRS", "NAV"]
     controls:
       - navsw
     targets:
@@ -397,6 +409,7 @@ steps:
   - id: ifly-737-max8.preflight.fuel-valve-and-filter-lights
     text: "ENG VALVE CLOSED, SPAR VALVE CLOSED AND FILTER BYPASS LIGHTS"
     expect: "VALVE LIGHTS ON, FILTER BYPASS OUT"
+    terms: ["ENG"]
     controls:
       - fuellts
     targets:
@@ -437,6 +450,7 @@ steps:
     number: 22
     text: FUEL PUMP SWITCHES
     expect: ALL OFF
+    terms: ["APU"]
     controls:
       - fuelpumps
     targets:
@@ -466,6 +480,7 @@ steps:
   - id: ifly-737-max8.preflight.fuel-pump-switches-preliminary-prefligh
     text: "FUEL PUMP SWITCHES"
     expect: "ONE LEFT PUMP MAY BE ON FOR THE APU (OPTIONAL), OTHERS OFF"
+    terms: ["APU"]
     controls:
       - fuelpumps
     targets:
@@ -495,6 +510,7 @@ steps:
     number: 23
     text: CAB/UTIL AND IFE/PASS SEAT SWITCHES
     expect: "ON"
+    terms: ["CAB/UTIL"]
     controls:
       - cabutil
     targets:
@@ -513,6 +529,7 @@ steps:
     number: 24
     text: "BAT DISCHARGE, TR UNIT AND ELEC LIGHTS"
     expect: OUT
+    terms: ["ELEC", "TR"]
     controls:
       - eleclts
     targets:
@@ -536,6 +553,7 @@ steps:
     number: 25
     text: GENERATOR DRIVE DISCONNECT SWITCHES
     expect: "GUARDS CLOSED, DRIVE LIGHTS ON BEFORE START"
+    terms: ["DRIVE"]
     controls:
       - gendrive
     targets:
@@ -546,6 +564,7 @@ steps:
       - at: "oh/elecm/DISCONNECT 1/1"
       - at: "oh/elecm/DISCONNECT 2/1"
     note: Check that the guards are closed. The amber DRIVE lights are normal before start because the engines are not turning.
+    note_caution: true
     why: The DRIVE lights are normal before start because the engines are not turning
     check: Guards closed
     check_detail: DRIVE lights ON
@@ -565,6 +584,7 @@ steps:
     number: 26
     text: ENGINE GEN OFF BUS LIGHTS
     expect: "ON"
+    terms: ["GEN OFF BUS"]
     controls:
       - genbus
     targets:
@@ -715,6 +735,7 @@ steps:
     number: 34
     text: "HYDRAULIC PUMP SWITCHES"
     expect: "ENG 1 AND 2 ON, ELEC 1 AND 2 OFF"
+    terms: ["ELEC", "ENG"]
     controls:
       - elechyd
       - hydpumps
@@ -735,6 +756,7 @@ steps:
   - id: ifly-737-max8.preflight.high-alt-landing-switch
     text: HIGH ALT LANDING SWITCH
     expect: "OFF UNLESS THE DESTINATION IS ABOVE 10,000 FT"
+    terms: ["FT"]
     controls:
       - hal
     why: "Raises the altitude at which the cabin altitude warning sounds, for very high airports."
@@ -799,6 +821,7 @@ steps:
     number: 40
     text: PACK SWITCHES
     expect: AUTO OR HIGH
+    terms: ["PACK"]
     controls:
       - packs
     targets:
@@ -820,6 +843,7 @@ steps:
     number: 41
     text: ISOLATION VALVE SWITCH
     expect: OPEN
+    terms: ["ISOLATION VALVE", "APU"]
     controls:
       - iso
     targets:
@@ -839,6 +863,7 @@ steps:
     number: 42
     text: APU BLEED SWITCH
     expect: "ON"
+    terms: ["APU"]
     controls:
       - apubleed
     targets:
@@ -858,6 +883,7 @@ steps:
   - id: ifly-737-max8.preflight.engine-bleed-switches
     text: ENGINE BLEED SWITCHES
     expect: "ON"
+    terms: ["DUAL BLEED"]
     controls:
       - engbleed
     targets:
@@ -877,6 +903,7 @@ steps:
     number: 43
     text: PACK LIGHTS
     expect: OUT
+    terms: ["PACK"]
     controls:
       - packlts
     targets:
@@ -899,6 +926,7 @@ steps:
     number: 44
     text: CABIN PRESSURIZATION PANEL
     expect: "FLT ALT AND LAND ALT SET, MODE AUTO"
+    terms: ["LAND ALT", "FLT ALT"]
     controls:
       - press
       - ldgalt
@@ -960,6 +988,7 @@ steps:
       - at: "oh/start/ENGINE START 2/1"
         set: "OFF"
     note: "Leave both start switches OFF and turn the ignition selector to BOTH."
+    note_caution: true
     why: Igniter choice is set before start
     confirmed_by:
       - kind: vendor-docs
@@ -1005,6 +1034,7 @@ steps:
     section: EFIS and MCP
     text: FLIGHT DIRECTOR SWITCHES
     expect: "LEFT ON, THEN RIGHT ON"
+    terms: ["MA"]
     controls:
       - fd
     targets:
@@ -1022,6 +1052,7 @@ steps:
     number: 51
     text: BANK ANGLE SELECTOR
     expect: "25 DEGREES"
+    terms: ["HDG SEL"]
     controls:
       - hdgsel
     targets:
@@ -1048,6 +1079,7 @@ steps:
     number: 53
     text: EFIS CONTROL PANELS
     expect: "BARO, MINIMUMS AND MAP OPTIONS SET"
+    terms: ["BARO", "EFIS", "QNH"]
     controls:
       - efispanel
     targets:
@@ -1103,6 +1135,7 @@ steps:
     number: 55
     text: STAB OUT OF TRIM LIGHT
     expect: OUT
+    terms: ["STAB"]
     controls:
       - stabout
     targets:
@@ -1117,6 +1150,7 @@ steps:
     number: 56
     text: FLIGHT INSTRUMENTS (PFD AND ND)
     expect: "NO FLAGS, HEADING AND ALTITUDE CORRECT"
+    terms: ["PFD", "ND"]
     controls:
       - fltinst
     targets:
@@ -1133,6 +1167,7 @@ steps:
   - id: ifly-737-max8.preflight.pfd-mfd-selectors
     text: PFD/MFD SELECTORS
     expect: NORM
+    terms: ["PFD", "MFD"]
     controls:
       - dsel
     targets:
@@ -1155,6 +1190,7 @@ steps:
     number: 57
     text: GPWS SYS TEST
     expect: COMPLETE
+    terms: ["GPWS", "G/S", "SYS"]
     controls:
       - gpwssw
     targets:
@@ -1168,6 +1204,7 @@ steps:
     number: 58
     text: INTEGRATED STANDBY FLIGHT DISPLAY
     expect: "BARO SET, INDICATIONS NORMAL"
+    terms: ["BARO", "QNH"]
     controls:
       - isfdc
     targets:
@@ -1236,6 +1273,7 @@ steps:
     number: 61
     text: AUTOBRAKE SELECTOR
     expect: RTO
+    terms: ["RTO"]
     controls:
       - abrake
     targets:
@@ -1251,6 +1289,7 @@ steps:
     number: 62
     text: C/R SWITCH
     expect: "PRESS, THEN CHECK THAT NO AUTOLAND FAULT SHOWS"
+    terms: ["C/R"]
     controls:
       - cr
     targets:
@@ -1281,6 +1320,7 @@ steps:
     number: 64
     text: SPEEDBRAKE LEVER
     expect: DOWN DETENT
+    terms: ["SPEEDBRAKE"]
     controls:
       - speedbrake
     targets:
@@ -1303,6 +1343,7 @@ steps:
       - at: "con/st/THRUST LEVERS 1 AND 2/1"
     quick: turnaround
     note: Check that the levers are closed and the reverse levers are down.
+    note_caution: true
     why: Engines start at idle with reversers stowed
     check: Levers closed
     check_detail: Reverse levers down
@@ -1433,6 +1474,7 @@ steps:
     number: 72
     text: MULTI-MODE RECEIVER
     expect: ILS FREQUENCY AND COURSE FOR THE DEPARTURE RUNWAY
+    terms: ["ILS"]
     controls:
       - mmr
     targets:
@@ -1446,6 +1488,7 @@ steps:
     number: 73
     text: ADF SELECTOR PANEL
     expect: SET IF NEEDED
+    terms: ["ADF"]
     controls:
       - adf
     targets:
@@ -1477,6 +1520,7 @@ steps:
     number: 75
     text: TRANSPONDER
     expect: SQUAWK CODE SET
+    terms: ["ATC"]
     controls:
       - xpndr
     targets:
@@ -1486,6 +1530,7 @@ steps:
         field: squawk
     quick: always
     note: Enter the squawk code from your ATC clearance.
+    note_caution: true
     why: Code from your ATC clearance
     confirmed_by:
       - kind: vendor-docs

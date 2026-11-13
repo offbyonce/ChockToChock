@@ -23,6 +23,7 @@ steps:
     number: 2
     text: PITCH
     expect: ADJUST SMOOTHLY TO SATISFY THE RA
+    terms: ["RA"]
     controls:
       - column
   - id: ifly-737-max8.procedures.lateral-path
@@ -40,6 +41,7 @@ steps:
     number: 4
     text: CLIMB RA IN LANDING CONFIGURATION
     expect: "MAXIMUM THRUST, FLAPS 15, GEAR UP AFTER POSITIVE RATE"
+    terms: ["RA"]
     controls:
       - thrust
       - flaplever
@@ -54,6 +56,7 @@ steps:
     number: 5
     text: NEAR THE GROUND
     expect: "NO DESCEND RA BELOW ABOUT 1,100 FT AGL, NO RA AT ALL BELOW ABOUT 1,000 FT AGL"
+    terms: ["AGL", "RA", "FT"]
     controls:
       - fltinst
     targets:
@@ -65,6 +68,7 @@ steps:
     number: 6
     text: ATC
     expect: YOU MAY DEVIATE FROM THE CLEARANCE TO COMPLY WITH THE RA. TELL ATC
+    terms: ["ATC", "RA"]
     controls:
       - atcclr
     targets:

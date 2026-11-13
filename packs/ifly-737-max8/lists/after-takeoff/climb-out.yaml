@@ -13,6 +13,7 @@ steps:
     number: 1
     text: ROLL MODE
     expect: LNAV OR HDG SEL ABOVE 400 FT
+    terms: ["HDG SEL", "LNAV", "FMA", "FMC", "FT"]
     controls:
       - rollmode
     targets:
@@ -20,6 +21,7 @@ steps:
       - at: "gl/mcp/LNAV/1"
     quick: always
     note: Select the lateral mode above 400 ft.
+    note_caution: true
     why: LNAV follows the FMC route. HDG SEL flies a heading you set
     check: FMA shows the mode
     panel_lights:
@@ -51,12 +53,14 @@ steps:
     number: 2
     text: CLIMB THRUST
     expect: "VERIFY AT ABOUT 1,500 FT"
+    terms: ["N1", "FT"]
     controls:
       - engmon
     targets:
       - at: "mn/cd/INBOARD DU: ND AND ENGINES/1"
       - at: "con/ed/ENG/1"
     note: Thrust reduces automatically to climb thrust. Check N1 agrees.
+    note_caution: true
     why: Thrust reduces to climb automatically
     check: N1 matches the CLB N1 limit
     confirmed_by:
@@ -66,6 +70,7 @@ steps:
     number: 3
     text: AUTOPILOT
     expect: "CMD A OR B"
+    terms: ["FMA", "PFD", "CMD"]
     controls:
       - ap
     targets:
@@ -74,6 +79,7 @@ steps:
     why: The autopilot then flies the modes shown on the FMA
     check: "CMD shown on the PFD"
     note: "The autopilot refuses to engage unless the airplane is trimmed and you are not pushing on the controls. There is a minimum height after takeoff below which the autopilot should not be engaged."
+    note_caution: true
     confirmed_by:
       - kind: vendor-docs
         date: 2026-11-09
@@ -81,6 +87,7 @@ steps:
     number: 4
     text: AUTOBRAKE
     expect: OFF AFTER FLAP RETRACTION
+    terms: ["RTO"]
     controls:
       - abrake
     targets:
@@ -88,11 +95,13 @@ steps:
         set: "OFF"
     quick: always
     note: "RTO is for the takeoff roll only. Turn it OFF after takeoff. Left at RTO, autobrake will not work on landing."
+    note_caution: true
     why: "Left at RTO, autobrake will not work on landing"
   - id: ifly-737-max8.after-takeoff.engine-start-switches
     number: 5
     text: ENGINE START SWITCHES
     expect: OFF OR CONT AS CONDITIONS REQUIRE
+    terms: ["CONT"]
     controls:
       - starts
     targets:

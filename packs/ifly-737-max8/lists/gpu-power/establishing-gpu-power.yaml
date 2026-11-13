@@ -25,6 +25,7 @@ steps:
     check: Parking brake light ON
     how: pb
     note: "In the iFly, ground power cannot be connected until the parking brake is set."
+    note_caution: true
     simulator_model: true
     confirmed_by:
       - kind: vendor-docs
@@ -33,6 +34,7 @@ steps:
     number: 2
     text: GROUND POWER CART (EFB)
     expect: CONNECT
+    terms: ["EFB", "GRD"]
     controls:
       - efbelec
       - grdpwr
@@ -52,6 +54,7 @@ steps:
     number: 3
     text: GROUND POWER SWITCH
     expect: "ON"
+    terms: ["GRD", "AC"]
     controls:
       - grdpwr
     targets:

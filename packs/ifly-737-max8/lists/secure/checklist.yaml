@@ -26,6 +26,7 @@ steps:
   - id: ifly-737-max8.secure.irs-check
     text: IRS
     expect: "OFF"
+    terms: ["IRS"]
     controls:
       - irs
     targets:
@@ -73,6 +74,7 @@ steps:
   - id: ifly-737-max8.secure.pack-switches-check
     text: PACK SWITCHES
     expect: "OFF"
+    terms: ["PACK"]
     controls:
       - packs
     targets:
@@ -87,6 +89,7 @@ steps:
   - id: ifly-737-max8.secure.apu-or-ground-power-check
     text: APU OR GROUND POWER
     expect: "OFF"
+    terms: ["APU", "AC"]
     controls:
       - apub
       - apusw
@@ -101,6 +104,7 @@ steps:
       - at: "oh/elecl/GRD PWR/1"
         open: true
     note: Do this just before the battery goes off.
+    note_caution: true
     why: Removes AC power from the airplane
     panel_lights:
       apub:

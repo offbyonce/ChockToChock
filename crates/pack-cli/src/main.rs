@@ -9,6 +9,9 @@
 //! reference files. The folder can also come from `CHOCKTOCHOCK_OVERLAP_REFS`.
 //! `pack suggest-targets <pack-dir>`  draft each step's targets from its wording, as JSON, with
 //! every place the reading was not certain (decision 0018). An author checks and keeps them.
+//! `pack terms <pack-dir>`  list steps whose name, value, Check, If not or Why use a glossary term
+//! their `terms` list lacks (3.0's whole-word rule), so the lists stay current; fails if any.
+//! With `--json`, print every step's full list as JSON instead, for an author to write in.
 //!
 //! Output goes to stdout/stderr on purpose: this is a command-line tool.
 #![allow(clippy::print_stdout, clippy::print_stderr)]
@@ -22,7 +25,7 @@ use pack_overlap::{
     AllowList, REFS_VARIABLE, check_refs_location, find_overlaps, load_references, repo_roots,
 };
 
-const USAGE: &str = "usage:\n  pack check <pack-dir | packs-dir>...\n  pack schema <out-dir>\n  pack build <pack-dir | packs-dir> <out-dir>\n  pack overlap <pack-dir | packs-dir> [--refs <folder>] [--allow <file>]\n  pack suggest-targets <pack-dir>";
+const USAGE: &str = "usage:\n  pack check <pack-dir | packs-dir>...\n  pack schema <out-dir>\n  pack build <pack-dir | packs-dir> <out-dir>\n  pack overlap <pack-dir | packs-dir> [--refs <folder>] [--allow <file>]\n  pack suggest-targets <pack-dir>\n  pack terms [--json] <pack-dir>";
 
 fn main() -> ExitCode {
     match run() {
@@ -43,6 +46,10 @@ fn run() -> Result<bool> {
         Some((cmd, [packs, out])) if cmd == "build" => build(packs, Path::new(out)),
         Some((cmd, rest)) if cmd == "overlap" && !rest.is_empty() => overlap(rest),
         Some((cmd, [dir])) if cmd == "suggest-targets" => suggest_targets(Path::new(dir)),
+        Some((cmd, [dir])) if cmd == "terms" => terms(Path::new(dir)),
+        Some((cmd, [flag, dir])) if cmd == "terms" && flag == "--json" => {
+            terms_json(Path::new(dir))
+        }
         _ => bail!("{USAGE}"),
     }
 }
@@ -57,6 +64,54 @@ fn suggest_targets(dir: &Path) -> Result<bool> {
         }
         let s = pack::suggest::suggest(&pack.content.panels, step);
         out.insert(step.id.to_string(), serde_json::to_value(s)?);
+    }
+    println!("{}", serde_json::to_string_pretty(&out)?);
+    Ok(true)
+}
+
+fn terms(dir: &Path) -> Result<bool> {
+    let pack = load_pack_dir(dir).map_err(|e| anyhow::anyhow!("{e}"))?;
+    let glossary: Vec<&str> = pack
+        .content
+        .glossary
+        .iter()
+        .flat_map(|g| &g.terms)
+        .map(|t| t.term.as_str())
+        .collect();
+    let mut clean = true;
+    for step in pack.checklists.iter().flat_map(|l| &l.steps) {
+        let missing = pack::terms::missing_terms(step, &glossary);
+        if !missing.is_empty() {
+            clean = false;
+            println!(
+                "{}: uses {} but its terms list lacks it",
+                step.id,
+                missing.join(", ")
+            );
+        }
+    }
+    if clean {
+        println!("every step's terms list covers its wording");
+    }
+    Ok(clean)
+}
+
+fn terms_json(dir: &Path) -> Result<bool> {
+    let pack = load_pack_dir(dir).map_err(|e| anyhow::anyhow!("{e}"))?;
+    let glossary: Vec<&str> = pack
+        .content
+        .glossary
+        .iter()
+        .flat_map(|g| &g.terms)
+        .map(|t| t.term.as_str())
+        .collect();
+    let mut out = serde_json::Map::new();
+    for step in pack.checklists.iter().flat_map(|l| &l.steps) {
+        let mut all = step.terms.clone();
+        all.extend(pack::terms::missing_terms(step, &glossary));
+        if !all.is_empty() {
+            out.insert(step.id.to_string(), serde_json::to_value(all)?);
+        }
     }
     println!("{}", serde_json::to_string_pretty(&out)?);
     Ok(true)

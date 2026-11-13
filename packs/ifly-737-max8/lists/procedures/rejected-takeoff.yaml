@@ -13,6 +13,7 @@ steps:
     number: 1
     text: BELOW 80 KNOTS
     expect: "STOP FOR ANY OF THE ABOVE, OR: MASTER CAUTION, A SYSTEM FAILURE, ODD NOISE OR SHAKING, A BLOWN TIRE, SLUGGISH ACCELERATION, A CONFIG WARNING, OR A WINDOW COMING OPEN"
+    terms: ["MASTER CAUTION"]
     controls:
       - speedt
     targets:
@@ -21,6 +22,7 @@ steps:
     number: 2
     text: "80 KNOTS TO V1"
     expect: "STOP ONLY FOR: ENGINE FAILURE, A FIRE OR ITS WARNING, A WINDSHEAR ALERT, OR AN AIRPLANE THAT CANNOT FLY SAFELY"
+    terms: ["V1"]
     controls:
       - speedt
     targets:
@@ -29,6 +31,7 @@ steps:
     number: 3
     text: V1
     expect: DECISION MUST ALLOW THE REJECT TO START BY V1
+    terms: ["V1"]
     controls:
       - speedt
     targets:
@@ -37,6 +40,7 @@ steps:
     number: 4
     text: THRUST LEVERS AND BRAKES
     expect: "CLOSE THRUST LEVERS, DISENGAGE A/T, MAX MANUAL BRAKES OR VERIFY RTO AUTOBRAKE"
+    terms: ["A/T", "RTO"]
     controls:
       - thrust
       - apdisc
@@ -49,6 +53,7 @@ steps:
     number: 5
     text: SPEEDBRAKE
     expect: "RAISE LEVER, VERIFY UP"
+    terms: ["SPEEDBRAKE"]
     controls:
       - speedbrake
     targets:

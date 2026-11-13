@@ -1456,6 +1456,8 @@ overview:
       left: CAPTAIN SIDE
       right: F/O SIDE
       locate: Above your head, on the back part of the overhead panel. Look up and slightly back from the seat.
+      title: "Where is the aft overhead panel?"
+      short_title: "Where is the aft overhead?"
     - name: Forward overhead
       code: P5
       x: 16
@@ -1467,6 +1469,8 @@ overview:
       left: CAPTAIN SIDE
       right: F/O SIDE
       locate: Above the windshield, in front of your head. Look up from the seat.
+      title: "Where is the forward overhead panel?"
+      short_title: "Where is the forward overhead?"
     - name: Glareshield
       code: P7
       x: 16
@@ -1476,6 +1480,8 @@ overview:
       left: CAPTAIN SIDE
       right: F/O SIDE
       locate: Straight ahead at eye level, along the bottom of the windshield, above the main panel.
+      title: "Where is the glareshield?"
+      short_title: "Where is the glareshield?"
     - name: Main panel
       code: P1–P3
       x: 16
@@ -1485,6 +1491,8 @@ overview:
       left: CAPTAIN SIDE
       right: F/O SIDE
       locate: Straight ahead below the glareshield, behind the control column.
+      title: "Where is the main panel?"
+      short_title: "Where is the main panel?"
     - name: Center console
       code: P9 · CONTROL STAND · P8
       x: 126
@@ -1496,12 +1504,16 @@ overview:
       left: CAPTAIN SIDE
       right: F/O SIDE
       locate: "Between the two seats. From the front: the forward electronic panel (P9) with the CDUs, just below the main panel; the control stand with the thrust levers, at hand height; then the aft electronic panel (P8) by your knees, with the fire handles, radios and transponder."
+      title: "Where is the center console?"
+      short_title: "Where is the center console?"
     - name: Around the flight deck
       x: 16
       "y": 448
       width: 488
       height: 208
       locate: "Elsewhere on the flight deck: the side walls and seats, the floor, and outside the airplane for the walk around."
+      title: "Where is this, around the flight deck?"
+      short_title: "Where is this?"
   # Where is this? (decision 0023): the approved design's side and seat views (the WherePop
   # board in docs/design/boards), carried over as pack data. Our own schematic, not to scale.
   views:
