@@ -39,7 +39,7 @@ const stepExact = (name, part) =>
   `[...document.querySelectorAll(".it")].find((it) => [...(it.querySelector(".name")?.childNodes ?? [])].filter((c) => c.nodeType === 3).map((c) => c.textContent).join("").trim().toUpperCase() === ${JSON.stringify(name)}).querySelector(${JSON.stringify(part)}).click(); true`;
 /** Scrolls the side pane `pane` so its controls drawing starts at the top. */
 const paneToControls = (pane) =>
-  `(() => { const p = document.querySelector(${JSON.stringify(pane)}); const h = [...p.querySelectorAll("*")].find((e) => e.children.length === 0 && e.textContent.trim().toUpperCase() === "THE CONTROLS"); p.scrollTop += h.getBoundingClientRect().top - p.getBoundingClientRect().top; })(); true`;
+  `(() => { const p = document.querySelector(${JSON.stringify(pane)}); const h = [...p.querySelectorAll("*")].find((e) => e.children.length === 0 && e.textContent.trim().toUpperCase().startsWith("THE CONTROLS")); p.scrollTop += h.getBoundingClientRect().top - p.getBoundingClientRect().top; })(); true`;
 /** Types `value` into the input `selector`, as the pilot would. */
 const typeInto = (selector, value) =>
   `(() => { const el = document.querySelector(${JSON.stringify(selector)}); el.value = ${JSON.stringify(value)}; el.dispatchEvent(new Event("input", { bubbles: true })); el.dispatchEvent(new Event("change", { bubbles: true })); })(); true`;
@@ -235,7 +235,7 @@ const SHOTS = [
     // Where is this? for the fuel pumps: the side and seat views and the flight deck (decision 0023).
     name: "where",
     only: ["desktop", "wide", "tablet-landscape"],
-    app: { hash: "#/phase/before-start", before: [click(".it .row", 5), click(".it .chev", 5), click(".where-btn")] },
+    app: { hash: "#/phase/before-start", before: [click(".it .row", 5), click(".it .chev", 5), click(".where-link, .where-btn")] },
   },
   {
     name: "panel-brake",

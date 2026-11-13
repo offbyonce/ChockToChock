@@ -23,7 +23,7 @@ smallest size that keeps 11 px labels, scrolls sideways, and offers a full-width
     guardClosed = false,
     large = false,
     index,
-    picked = $bindable(null),
+    picked = $bindable(),
   }: {
     /** The panel the sections are on. */
     panel: Panel;
