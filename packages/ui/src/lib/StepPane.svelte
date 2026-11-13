@@ -47,9 +47,14 @@ A step with no control on the map shows the steps coming up below its details.
     flow?: boolean;
   } = $props();
 
-  /** "FUEL PUMP SWITCHES" as "Fuel pump switches"; mixed case stays. */
-  const sentence = (text: string) =>
-    text === text.toUpperCase() ? text.charAt(0) + text.slice(1).toLowerCase() : text;
+  /** "FUEL PUMP SWITCHES" as "Fuel pump switches", keeping glossary terms and codes ("MCP",
+   * "TERR (EFIS control panel)", "N1"); mixed case stays. */
+  const sentence = (text: string) => {
+    if (text !== text.toUpperCase()) return text;
+    const words = text.split(/(\s+|[(),])/).map((w) => (index.glossary(w) !== undefined || /\d|\//.test(w) ? w : w.toLowerCase()));
+    const out = words.join("");
+    return out.charAt(0).toUpperCase() + out.slice(1);
+  };
 
   let place = $derived(index.place(step));
   let before = $derived(previous ? index.place(previous) : null);
@@ -195,7 +200,7 @@ A step with no control on the map shows the steps coming up below its details.
       </figure>
     {:else}
       <div class="line">
-        <span>{#if (flow || !desktop) && newPanel}New panel · {/if}{where} · {place.zone.title}</span>
+        <span>{#if (flow || !desktop) && newPanel}New panel{" · "}{/if}{where} · {place.zone.title}</span>
         <Locator {index} zone={place.zone} link />
         {#if flow || !desktop}
           <!-- Flow and tablet landscape keep to the location line. -->
@@ -210,9 +215,9 @@ A step with no control on the map shows the steps coming up below its details.
     {#each cards as card (card.panel.id)}
       <figure class="controls">
         <span class="cap">The controls · {panelCaption(card.focus.map((id) => index.section(id)?.title ?? id))}</span>
-        <PanelSchematic panel={card.panel} focus={card.focus} {targets} {guardClosed} {index} around bind:picked={picked[card.panel.id]} />
+        <PanelSchematic panel={card.panel} focus={card.focus} {targets} {guardClosed} {index} around named={`${check ?? ""} ${ifNot ?? ""}`} bind:picked={picked[card.panel.id]} />
         <figcaption>
-          Blue: set by this step · lights drawn unlit · tap a light for its meaning{#if targets.some((t) => t.open)}{" "}· dashed: only if the step's condition applies{/if}
+          Blue: set by this step · lights drawn unlit · tap a light for its meaning{#if targets.some((t) => t.open)}{" "}· dashed: only if the step's condition applies{/if}{#if targets.some((t) => t.resolved)}{" "}· ◆ set by a decision step{/if}
         </figcaption>
       </figure>
     {/each}

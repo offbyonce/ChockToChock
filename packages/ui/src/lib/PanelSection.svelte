@@ -116,14 +116,16 @@ What the step asks for, never the simulator's state (decision 0006).
       {#if on && (byItem.get(i)?.resolved ?? false)}
         <!-- Resolved: set by a decision step's answer (decision 0022), marked with a small diamond
              to its left, so it is told apart from a setting the step always asks for. -->
-        <path class="decided" d="M {-halfWidth(item) - 8} -3 l 3 3 l -3 3 l -3 -3 z" />
+        <path class="decided" d="M {-halfWidth(item) - 6} {-half(item) - 6} l 3 3 l -3 3 l -3 -3 z" />
       {/if}
       {#if item.kind === "toggle_switch"}
         {#if item.guarded}
           <!-- A guard: an open frame around the switch, with its hinge at the top; closed, a lid
                line across it. -->
           <path class="guard" d="M {-gw} {gh} V {-gh + 2} Q {-gw} {-gh} {-gw + 2} {-gh} H {gw - 2} Q {gw} {-gh} {gw} {-gh + 2} V {gh}" />
-          {#if on && guardClosed}<line class="guard lid" x1={-gw - 1.5} x2={gw + 1.5} y1={gh} y2={gh} />{/if}
+          <!-- A guard the step does not touch rests closed, as on the airplane; the step's guard
+               shows closed (blue lid) when the step closes it, open otherwise. -->
+          {#if !on}<line class="guard lid rest" x1={-gw} x2={gw} y1={gh} y2={gh} />{:else if guardClosed}<line class="guard lid" x1={-gw - 1.5} x2={gw + 1.5} y1={gh} y2={gh} />{/if}
         {/if}
         <rect class="body track" class:changed={on && !open} class:conditional={open} x={-TOGGLE.w / 2} y={-TOGGLE.h / 2} width={TOGGLE.w} height={TOGGLE.h} rx={TOGGLE.w / 2} />
         {#if on && t != null}
@@ -312,6 +314,10 @@ What the step asks for, never the simulator's state (decision 0006).
     fill: none;
     stroke: var(--panel-resting);
     stroke-width: 1.1;
+  }
+  .guard.lid.rest {
+    stroke: var(--panel-resting);
+    stroke-width: 1.6;
   }
   .guard.lid {
     stroke: var(--panel-changed);

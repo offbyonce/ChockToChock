@@ -28,6 +28,7 @@ deck" until the Flight deck page exists (batch 6). All from the pack, in the pan
 
   let dialog = $state<HTMLDialogElement | null>(null);
   let trigger = $state<HTMLButtonElement | null>(null);
+  let heading = $state<HTMLHeadingElement | null>(null);
   let open = $state(false);
   let popover = $state(false);
   let deck = $state(false);
@@ -54,6 +55,7 @@ deck" until the Flight deck page exists (batch 6). All from the pack, in the pan
       dialog.showModal();
     }
     open = true;
+    heading?.focus();
   }
   /** Beside the pane, its arrow on the link: the board's arrow sits 168 + 6 px from the top. */
   function position(pane: Element) {
@@ -102,7 +104,8 @@ deck" until the Flight deck page exists (batch 6). All from the pack, in the pan
   >
     {#if popover}<span class="arrow" aria-hidden="true" style:top="{place.arrow}px"></span>{/if}
     <div class="head">
-      <h2 id="locator-title">{title}</h2>
+      <!-- Focus lands on the title, not the close button, so no focus ring shows on opening. -->
+      <h2 id="locator-title" tabindex="-1" bind:this={heading}>{title}</h2>
       <button class="close" type="button" aria-label="Close" onclick={close}><Icon name="x" /></button>
     </div>
     {#if region?.locate}<p class="locate">{region.locate}</p>{/if}
@@ -211,6 +214,7 @@ deck" until the Flight deck page exists (batch 6). All from the pack, in the pan
     justify-content: space-between;
   }
   h2 {
+    outline: none;
     margin: 0;
     font-size: var(--font-size-panel-title);
     font-weight: var(--weight-bold);
@@ -230,7 +234,7 @@ deck" until the Flight deck page exists (batch 6). All from the pack, in the pan
     display: grid;
     gap: var(--space-3);
   }
-  @media (min-width: 900px) {
+  @media (min-width: 600px) {
     .views {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }

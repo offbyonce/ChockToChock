@@ -93,6 +93,8 @@ both themes, sized by width.
 
 <style>
   .view {
+    display: flex;
+    flex-direction: column;
     margin: 0;
     padding: var(--space-3);
     border: var(--border-thin) solid var(--panel-frame);
@@ -160,7 +162,8 @@ both themes, sized by width.
     dominant-baseline: central;
   }
   .note {
-    margin: var(--space-2) 0 0;
+    margin: auto 0 0;
+    padding-top: var(--space-2);
     color: var(--color-text-muted);
     font-size: var(--font-size-caption);
   }

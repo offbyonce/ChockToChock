@@ -59,7 +59,7 @@ unlabeled; the marked area is always named.
     }
     const list = [...out.entries()].map(([name, g]) => ({ name, ...g })).sort((a, b) => a.y0 - b.y0);
     const stacked = list.length > 1 && list.every((g, n) => n === 0 || g.y0 >= (list[n - 1]?.y1 ?? 0) - 1);
-    return stacked
+    return stacked && !compact
       ? list.map((g) => {
           const [name, code] = splitArea(g.name);
           const words = name.toUpperCase().replace(/ PANEL$/, "").split(" ");
@@ -174,6 +174,7 @@ unlabeled; the marked area is always named.
   }
   .map {
     display: block;
+    overflow: visible;
     width: 100%;
     height: auto;
     margin: 0 auto;

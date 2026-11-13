@@ -193,7 +193,7 @@ const SHOTS = [
     // Before start: fuel pumps (overhead). The app lists Landing gear pins first, so its rows run one ahead.
     // Both sides show the step opened.
     name: "panel-fuel",
-    only: ["desktop", "wide"],
+    only: ["desktop", "wide", "tablet-landscape"],
     app: { hash: "#/phase/before-start", before: [click(".it .row", 5), click(".it .chev", 5)] },
     base: { hash: "#before-start", before: [click(".it .chev", 4)] },
   },

@@ -25,6 +25,7 @@ smallest size that keeps 11 px labels, scrolls sideways, and offers a full-width
     index,
     picked = $bindable(),
     around = false,
+    named = "",
   }: {
     /** The panel the sections are on. */
     panel: Panel;
@@ -41,6 +42,9 @@ smallest size that keeps 11 px labels, scrolls sideways, and offers a full-width
     /** The side pane's drawing (Checklist board): a section drawn alone shows the rows around the
      * step's controls, whole across; the larger view shows the whole section. */
     around?: boolean | undefined;
+    /** Text naming more controls to keep in the step's rows (its Check and If not: "ALIGN light
+     * on, then off"). */
+    named?: string | undefined;
     /** The control whose card is open. */
     picked?: { section: string; item: number } | null | undefined;
   } = $props();
@@ -80,7 +84,12 @@ smallest size that keeps 11 px labels, scrolls sideways, and offers a full-width
   let band = $derived.by((): Band | null => {
     const only = drawn.length === 1 ? drawn[0] : undefined;
     if (!around || large || !only) return null;
-    const ys = only.items.flatMap((it, i) => (targets.some((t) => t.section === only.id && t.item === i) ? [it.y] : []));
+    const words = ` ${named.toUpperCase().replace(/[^A-Z0-9/ ]+/g, " ")} `;
+    const ys = only.items.flatMap((it, i) =>
+      targets.some((t) => t.section === only.id && t.item === i) || (it.label && words.includes(` ${it.label.toUpperCase()} `))
+        ? [it.y]
+        : [],
+    );
     if (!ys.length) return null;
     const y0 = Math.max(0, Math.min(...ys) - 62);
     const y1 = Math.min(only.height, Math.max(...ys) + 24);
@@ -209,7 +218,7 @@ smallest size that keeps 11 px labels, scrolls sideways, and offers a full-width
   let title = $derived(focused.map((s) => s.title).join(" and "));
 </script>
 
-<div class="wrap" bind:clientWidth={width} bind:this={wrap}>
+<div class="wrap" class:more={scale.overflow} bind:clientWidth={width} bind:this={wrap}>
   <svg
     class="schematic"
     viewBox="{view.box.x} {view.box.y} {view.box.w} {view.box.h}"
@@ -248,6 +257,10 @@ smallest size that keeps 11 px labels, scrolls sideways, and offers a full-width
   .wrap {
     width: 100%;
     overflow-x: auto;
+  }
+  /* A drawing wider than its card fades at its edges, so it is clear there is more. */
+  .wrap.more {
+    mask-image: linear-gradient(90deg, transparent, black var(--space-6), black calc(100% - var(--space-6)), transparent);
   }
   .schematic {
     display: block;
