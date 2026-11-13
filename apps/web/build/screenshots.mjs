@@ -34,6 +34,9 @@ const click = (selector, n = 0) => `document.querySelectorAll(${JSON.stringify(s
 /** Clicks `part` (".row" or ".chev") of the list step whose text contains `title`. */
 const stepNamed = (title, part) =>
   `[...document.querySelectorAll(".it")].find((it) => it.textContent.trim().toUpperCase().includes(${JSON.stringify(title)})).querySelector(${JSON.stringify(part)}).click(); true`;
+/** Clicks `part` of the list step whose name is exactly `name`. */
+const stepExact = (name, part) =>
+  `[...document.querySelectorAll(".it")].find((it) => [...(it.querySelector(".name")?.childNodes ?? [])].filter((c) => c.nodeType === 3).map((c) => c.textContent).join("").trim().toUpperCase() === ${JSON.stringify(name)}).querySelector(${JSON.stringify(part)}).click(); true`;
 /** Scrolls the side pane `pane` so its controls drawing starts at the top. */
 const paneToControls = (pane) =>
   `(() => { const p = document.querySelector(${JSON.stringify(pane)}); const h = [...p.querySelectorAll("*")].find((e) => e.children.length === 0 && e.textContent.trim().toUpperCase() === "THE CONTROLS"); p.scrollTop += h.getBoundingClientRect().top - p.getBoundingClientRect().top; })(); true`;
@@ -217,6 +220,18 @@ const SHOTS = [
     base: { hash: "#preflight", before: [stepNamed("STAB OUT OF TRIM LIGHT", ".chev"), paneToControls("#pane")] },
   },
   {
+    // The aft overhead (IRS mode selectors) and the pilot station (oxygen mask), so every panel in
+    // the pack has a drawing in the review set. No 3.0 counterpart is shot for these.
+    name: "panel-aft",
+    only: ["desktop", "wide"],
+    app: { hash: "#/phase/preflight", before: [stepExact("IRS", ".row"), stepExact("IRS", ".chev"), paneToControls("aside.pane")] },
+  },
+  {
+    name: "panel-seat",
+    only: ["desktop", "wide"],
+    app: { hash: "#/phase/preflight", before: [stepExact("OXYGEN", ".row"), stepExact("OXYGEN", ".chev"), paneToControls("aside.pane")] },
+  },
+  {
     name: "panel-brake",
     only: ["desktop", "wide"],
     app: { hash: "#/phase/gpu-power", before: [stepNamed("PARKING BRAKE", ".row"), stepNamed("PARKING BRAKE", ".chev"), paneToControls("aside.pane")] },
@@ -371,6 +386,7 @@ async function main() {
           const { firefox, browser } = await openAt(profile, prefs, viewport, target.url(""));
           try {
             for (const shot of shots) {
+              if (!shot[target.side]) continue;
               const { hash, before } = shot[target.side];
               const key = `${shot.name}-${size}-${theme}`;
               // One retry, in case a page stalls once.

@@ -4,12 +4,15 @@ SPDX-License-Identifier: MIT
 
 Where a control is, as in 3.0: the pack's flight deck overview (our own layout) cut down to the
 region the zone is in, with the region's edge captions ("AFT, TOWARD THE CABIN", "CAPTAIN SIDE")
-from the pack, and the zone marked by a thicker outline, fill and bold label as well as color.
+from the pack, and the zone marked by a thicker outline, fill and label as well as color. Panel
+palette, labels at 11 px or more (decision 0021): an area whose name cannot fit at 11 px goes
+unlabeled; the marked area is always named.
 -->
 <script lang="ts">
   import type { Zone } from "@chocktochock/bindings";
   import { type PackIndex, splitArea } from "../pack-index";
   import { fitSize, labelLines } from "./map-labels";
+  import { LABEL_MIN } from "./panel-layout";
 
   let { index, zone }: { index: PackIndex; zone: Zone } = $props();
 
@@ -67,7 +70,7 @@ from the pack, and the zone marked by a thicker outline, fill and bold label as 
    * they grow with the map, and a map is at most 230px tall, or 360px for a tall one such as the
    * center console. Edge captions keep 3.0's measured 9.3px. `width` is the map's width on screen.
    */
-  const PX = { edge: 9.3 };
+  const PX = { edge: LABEL_MIN };
   const LABEL = 11.6;
   let width = $state(0);
   /** The page's own scale (wide screens and Text size): the map's limits grow with the page. */
@@ -86,8 +89,10 @@ from the pack, and the zone marked by a thicker outline, fill and bold label as 
   let cx = $derived((bounds.x0 + bounds.x1) / 2);
   let cy = $derived((bounds.y0 + bounds.y1) / 2);
 
-  /** Labels shrink to stay inside their boxes, as 3.0's do, never below 6.5px. */
-  const size = (text: string[], width: number, height: number) => Math.max((6.5 * page) / k, fitSize(text, width, height, LABEL));
+  /** An area's label size in map units: as large as fits its box, up to 3.0's size. */
+  const size = (text: string[], width: number, height: number) => fitSize(text, width, height, LABEL);
+  /** A label is drawn only at 11 px or more on screen; the marked area's never smaller. */
+  const shows = (fs: number) => (fs * k) / page >= LABEL_MIN - 0.01;
 </script>
 
 {#if map && map.areas.length}
@@ -104,10 +109,11 @@ from the pack, and the zone marked by a thicker outline, fill and bold label as 
       {@const z = byId.get(area.zone)}
       {@const on = area.zone === zone.id}
       {@const text = labelLines(area.label ?? z?.short_title ?? "", area.width, area.height, LABEL)}
-      {@const fs = size(text, area.width, area.height)}
+      {@const fit = size(text, area.width, area.height)}
+      {@const fs = on ? Math.max(fit, (LABEL_MIN * page) / k) : fit}
       <g class:on>
         <rect x={area.x} y={area.y} width={area.width} height={area.height} rx="3" />
-        {#each text as line, n (n)}
+        {#each on || shows(fit) ? text : [] as line, n (n)}
           <text
             x={area.x + area.width / 2}
             y={area.y + area.height / 2 + (n - (text.length - 1) / 2) * fs * 1.1}
@@ -154,28 +160,28 @@ from the pack, and the zone marked by a thicker outline, fill and bold label as 
     height: auto;
     margin: 0 auto;
   }
+  /* Panel palette (decision 0021). */
   rect {
-    fill: var(--color-surface);
-    stroke: var(--color-text-muted);
+    fill: var(--panel-fill);
+    stroke: var(--panel-stroke);
     stroke-width: 1;
   }
   text {
     font-family: var(--font-sans);
-    font-weight: 600;
-    fill: var(--color-text);
+    font-weight: var(--weight-semibold);
+    fill: var(--panel-text);
     text-anchor: middle;
     dominant-baseline: central;
   }
   .edge {
-    letter-spacing: 0.05em;
-    fill: var(--color-text-muted);
+    fill: var(--panel-label);
   }
   .on rect {
-    fill: var(--color-accent-soft);
-    stroke: var(--color-accent);
+    fill: var(--panel-changed-fill);
+    stroke: var(--panel-changed);
     stroke-width: 2.5;
   }
   .on text {
-    fill: var(--color-accent);
+    fill: var(--panel-changed-text);
   }
 </style>

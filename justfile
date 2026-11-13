@@ -70,6 +70,11 @@ update-test: site
 screenshots out: site
     node apps/web/build/screenshots.mjs {{out}}
 
+# The drawing renderer's review images (gallery, each control state, the board's drawings), both
+# themes, into <out>, outside the repo. Needs Firefox; not part of `just ci`.
+drawing-shots out: site
+    node apps/web/build/drawing-shots.mjs {{out}}
+
 # Regenerate the pack JSON Schemas from the Rust types.
 schemas:
     cargo run -q -p pack-cli -- schema schemas

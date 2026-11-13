@@ -18,18 +18,22 @@ const SOURCES: Record<string, string> = Object.fromEntries(
   ),
 );
 
-/** The panel drawings: they take their sizes from their own templates in SVG units
- * (panel-layout.ts), and are the only files that may draw SVG. Batch 2 moves them into the
- * shared renderer and onto the panel colors. */
+/** The shared drawing renderer (decision 0021): the only files that may draw SVG. Their sizes
+ * inside a drawing come from their templates in SVG units (panel-layout.ts); their colors and
+ * every size outside the drawing are tokens, like everywhere else. */
 const DRAWINGS = new Set([
   "lib/PanelSection.svelte",
   "lib/PanelSchematic.svelte",
   "lib/Locator.svelte",
   "lib/OverviewMap.svelte",
+  "lib/ViewDrawing.svelte",
 ]);
 
-/** The generated token file, and the drawings. */
-const EXEMPT = new Set(["theme/tokens.generated.css", ...DRAWINGS]);
+/** The generated token file. Font sizes in map units inside a drawing ("11.5px" in Locator) are
+ * SVG units, not screen sizes. */
+const EXEMPT = new Set(["theme/tokens.generated.css"]);
+/** Sizes in SVG units allowed inside drawing stylesheets. */
+const SVG_UNITS = /^(font-size: \d+(\.\d+)?px)$/;
 
 /** The first width of each layout class above phone (docs/design/tokens.json). */
 export const BREAKPOINTS = [600, 900, 1440];
@@ -96,7 +100,11 @@ describe("design tokens", () => {
   it("keeps every size and color in the token files", () => {
     const found = all
       .filter((f) => !EXEMPT.has(f))
-      .flatMap((f) => violations(css(f)).map((v) => `${f}: ${v}`));
+      .flatMap((f) =>
+        violations(css(f))
+          .filter((v) => !(DRAWINGS.has(f) && SVG_UNITS.test(v)))
+          .map((v) => `${f}: ${v}`),
+      );
     expect(found).toEqual([]);
   });
 

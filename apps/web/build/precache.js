@@ -14,7 +14,7 @@ export const WORKER = "app/sw.js";
 
 /** Built pages outside the app that the worker does not precache. */
 const OUTSIDE_APP = new Set(["index.html", "simbrief-probe.html"]);
-/** The design system's review page and its script: never part of the app a pilot installs. */
+/** The drawing gallery (design/) and its script: for review only, never part of the app a pilot installs. */
 const DESIGN = (file) => file.startsWith("design/") || /^assets\/design-[^/]*$/.test(file);
 
 function filesIn(dir, base = dir) {

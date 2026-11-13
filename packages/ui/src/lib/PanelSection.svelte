@@ -5,16 +5,21 @@ SPDX-FileCopyrightText: 2026 offbyonce
 SPDX-License-Identifier: MIT
 
 One panel section inside a panel drawing (PanelSchematic): its frame and title and our own control
-glyphs, drawn from scratch and never traced from a real panel, at the pack's own positions. The
-controls a step uses are highlighted and show the step's target position, labeled "SET TO …"
-(Phase 2 brief, step 7): what the step asks for, never the simulator's state (decision 0006).
-Other controls show no position. Text sizes come from the parent, so text stays at 3.0's sizes
-however large the drawing is.
+glyphs, drawn from scratch and never traced from a real panel, at the pack's own positions, in the
+panel palette (decision 0021). Each control is in one state:
+- changed: the step sets it; blue fill and outline, the knob at the target, "SET TO …" under it;
+- resolved: changed, with the position from a decision step's answer (decision 0022);
+- conditional: the step sets it only if a condition applies that the app does not know yet;
+  a dashed blue outline and no position;
+- resting: a control the step does not use, a neutral outline at its resting position;
+- lit or unlit: a light the step expects on takes its real color; every other light is an outline
+  and its legend, with no fill.
+What the step asks for, never the simulator's state (decision 0006).
 -->
 <script lang="ts">
   import type { ItemTarget, PanelItem, PanelSection } from "@chocktochock/bindings";
   import { em } from "./text-width";
-  import { angleOf, BUTTON, caption, DIAL, withinAcross, knobY, LAMP, TOGGLE, labelled, lampText, layoutSection, leverY, PX, positionsOf, slotY } from "./panel-layout";
+  import { angleOf, BUTTON, DIAL, withinAcross, knobY, LAMP, TOGGLE, labelled, lampText, layoutSection, leverY, PX, positionsOf, slotY } from "./panel-layout";
 
   let {
     section,
@@ -101,36 +106,35 @@ however large the drawing is.
          (its caption says to see the step): drawn at rest, it read as set to that position. -->
     {@const open = on && (byItem.get(i)?.open ?? false)}
     {@const r = (!on || (t == null && !open)) && item.rest ? positions.indexOf(item.rest) : -1}
-    <g class="item {item.kind}" class:on transform="translate({item.x} {item.y})">
+    <g class="item {item.kind}" class:on class:resolved={on && (byItem.get(i)?.resolved ?? false)} class:conditional={open} transform="translate({item.x} {item.y})">
       {#if item.kind === "toggle_switch"}
         {#if item.guarded}
-          <rect class="guard" class:closed={on && guardClosed} x={-gw} y={-gh} width={2 * gw} height={2 * gh} rx="4" />
+          <!-- A guard: an open frame around the switch, with its hinge at the top; closed, a lid
+               line across it. -->
+          <path class="guard" d="M {-gw} {gh} V {-gh + 2} Q {-gw} {-gh} {-gw + 2} {-gh} H {gw - 2} Q {gw} {-gh} {gw} {-gh + 2} V {gh}" />
+          {#if on && guardClosed}<line class="guard lid" x1={-gw} x2={gw} y1={gh} y2={gh} />{/if}
         {/if}
-        <rect class="body track" x={-TOGGLE.w / 2} y={-TOGGLE.h / 2} width={TOGGLE.w} height={TOGGLE.h} rx={TOGGLE.w / 2} />
+        <rect class="body track" class:changed={on && !open} class:conditional={open} x={-TOGGLE.w / 2} y={-TOGGLE.h / 2} width={TOGGLE.w} height={TOGGLE.h} rx={TOGGLE.w / 2} />
         {#if on && t != null}
-          <circle class="knob set" cy={knobY(t, positions.length)} r={TOGGLE.knob} />
+          <circle class="knob set" cy={knobY(t, positions.length)} r={TOGGLE.knob + 0.3} />
         {:else if r >= 0}
-          <circle class="knob rest" cy={knobY(r, positions.length)} r={TOGGLE.knob - 0.5} />
-        {:else}
-          <circle class="knob unknown" r={TOGGLE.knob - 0.7} />
+          <circle class="knob rest" cy={knobY(r, positions.length)} r={TOGGLE.knob} />
         {/if}
         {#each layout.items.get(i)?.positions ?? [] as l (l.n)}
           <text class="pos" class:target={on && l.n === t} class:at-rest={l.n === r} x={l.x} y={l.y} text-anchor={l.anchor} style:font-size={fs(PX.pos * layout.scale)}>{positions[l.n]}</text>
         {/each}
       {:else if item.kind === "selector"}
-        <!-- A tick for each labelled position, so no tick is left without a name. -->
+        <!-- A rotary selector: a tick for each labelled position, a round body and a pointer bar
+             across the knob, turned to the target (or resting) position. -->
         {#each layout.items.get(i)?.positions.map((l) => l.n) ?? [] as n (n)}
           <line class="tick" class:target={on && n === t} x1="0" y1={-DIAL - 1.5} x2="0" y2={-DIAL - 5} transform="rotate({angleOf(item, n)})" />
         {/each}
-        <circle class="body" r={DIAL} />
+        <circle class="body" class:changed={on && !open} class:conditional={open} r={DIAL} />
         {#if on && t != null}
-          <line class="pointer" x1="0" y1="0" x2="0" y2={-DIAL + 1.5} transform="rotate({angleOf(item, t)})" />
-          <circle class="knob set" r="2.4" />
+          <rect class="bar set" x="-1.6" y={-DIAL + 1.5} width="3.2" height={2 * DIAL - 3} rx="1.6" transform="rotate({angleOf(item, t)})" />
+          <circle class="tip set" cy={-DIAL + 3.2} r="1.3" transform="rotate({angleOf(item, t)})" />
         {:else if r >= 0}
-          <line class="pointer rest" x1="0" y1="0" x2="0" y2={-DIAL + 2.5} transform="rotate({angleOf(item, r)})" />
-          <circle class="knob-ring" r="2.2" />
-        {:else}
-          <circle class="knob-ring" r="4.5" />
+          <rect class="bar rest" x="-1.6" y={-DIAL + 2.5} width="3.2" height={2 * DIAL - 5} rx="1.6" transform="rotate({angleOf(item, r)})" />
         {/if}
         <!-- Each label sits at its own tick, so the pointer and its label always agree. -->
         {#each layout.items.get(i)?.positions ?? [] as l (l.n)}
@@ -140,9 +144,9 @@ however large the drawing is.
         <!-- As 3.0 draws a push button: a key with its name inside and a line along its bottom. -->
         {@const words = lampText(item, k, PX.lamp * layout.scale, BUTTON.w)}
         {#if item.guarded}
-          <rect class="guard" class:closed={on && guardClosed} x={-BUTTON.w / 2 - 2} y={-BUTTON.h / 2 - 2} width={BUTTON.w + 4} height={BUTTON.h + 4} rx="4" />
+          <rect class="guard" x={-BUTTON.w / 2 - 2} y={-BUTTON.h / 2 - 2} width={BUTTON.w + 4} height={BUTTON.h + 4} rx="4" />
         {/if}
-        <rect class="body" class:pressed={on && t != null} x={-BUTTON.w / 2} y={-BUTTON.h / 2} width={BUTTON.w} height={BUTTON.h} rx="3" />
+        <rect class="body key" class:changed={on && !open} class:conditional={open} x={-BUTTON.w / 2} y={-BUTTON.h / 2} width={BUTTON.w} height={BUTTON.h} rx="3" />
         <line class="key-line" x1={-BUTTON.w / 2 + 2} x2={BUTTON.w / 2 - 2} y1={BUTTON.h / 2 - 1.3} y2={BUTTON.h / 2 - 1.3} />
         {#each words.lines as line, n (n)}
           <text
@@ -156,7 +160,7 @@ however large the drawing is.
              expects on is filled in its color and says so; it is never the simulator's state. -->
         {@const words = lampText(item, k, PX.lamp * layout.scale)}
         {@const lit = byItem.get(i)?.lit ?? false}
-        <rect class="body lamp {item.color ?? ''}" class:lit x={-LAMP.w / 2} y={-LAMP.h / 2} width={LAMP.w} height={LAMP.h} rx="2.6" />
+        <rect class="lamp {item.color ?? ''}" class:lit class:focus={on && !lit} x={-LAMP.w / 2} y={-LAMP.h / 2} width={LAMP.w} height={LAMP.h} rx="2.6" />
         {#each words.lines as line, n (n)}
           <text
             class="lamp-text {item.color ?? ''}"
@@ -170,13 +174,11 @@ however large the drawing is.
         {/if}
       {:else if item.kind === "lever"}
         <!-- A slot and the lever's knob at the target or resting position. -->
-        <rect class="body slot" x="-3" y="-16" width="6" height="32" rx="3" />
+        <rect class="body slot" class:changed={on && !open} class:conditional={open} x="-3" y="-16" width="6" height="32" rx="3" />
         {#if on && t != null}
           <rect class="knob set" x="-8" y={slotY(t, positions.length) - 3} width="16" height="6" rx="2" />
         {:else if r >= 0}
           <rect class="knob rest" x="-8" y={slotY(r, positions.length) - 3} width="16" height="6" rx="2" />
-        {:else}
-          <rect class="knob unknown" x="-6" y="-2.5" width="12" height="5" rx="2" />
         {/if}
         {#each layout.items.get(i)?.positions ?? [] as l (l.n)}
           <text class="pos" class:target={on && l.n === t} class:at-rest={l.n === r} x={l.x} y={l.y} text-anchor={l.anchor} style:font-size={fs(PX.pos * layout.scale)}>{positions[l.n]}</text>
@@ -188,17 +190,17 @@ however large the drawing is.
         {@const at = on && t != null ? t : r >= 0 ? r : -1}
         {@const gy = at >= 0 ? leverY(at, positions.length) : 0}
         <rect class="body stem" x="-2" y="-12" width="4" height={gy + 8} rx="1" />
-        <rect class="body grip" class:pressed={on && t != null} x="-13" y={gy - 5} width="26" height="10" rx="4" />
+        <rect class="body grip" class:changed={on && !open} class:conditional={open} x="-13" y={gy - 5} width="26" height="10" rx="4" />
         {#each layout.items.get(i)?.positions ?? [] as l (l.n)}
           <text class="pos" class:target={on && l.n === t} class:at-rest={l.n === r} x={l.x} y={l.y} text-anchor={l.anchor} style:font-size={fs(PX.pos * layout.scale)}>{positions[l.n]}</text>
         {/each}
       {:else if item.kind === "gauge"}
-        <circle class="body" r="14" />
+        <circle class="body" class:changed={on} r="14" />
         <path class="scale" d="M -9 6 A 11 11 0 1 1 9 6" />
       {:else}
         {@const w = item.width ?? 60}
         {@const hh = item.height ?? 30}
-        <rect class="body screen" x={-w / 2} y={-hh / 2} width={w} height={hh} rx="3" />
+        <rect class="body screen" class:changed={on} x={-w / 2} y={-hh / 2} width={w} height={hh} rx="3" />
         <text class="lamp-text" y="2" style:font-size={screenFs(item.label, w)}>{item.label}</text>
       {/if}
       {#if labelled(item)}
@@ -207,10 +209,9 @@ however large the drawing is.
           {#each name.lines as line, n (n)}
             <text class="label" y={name.y + (n * name.px * 1.15) / k} style:font-size={fs(name.px)}>{line}</text>
           {/each}
-          {@const set = on ? caption(positions, t, byItem.get(i)?.open ?? false) : null}
-          {#if set}
-            <text class="set-to" y={name.y + (name.lines.length * name.px * 1.15) / k} style:font-size={fs(PX.setTo * layout.scale)}>{set}</text>
-          {/if}
+          {#each name.caption as line, n (n)}
+            <text class="set-to" y={name.y + ((name.lines.length + n) * name.px * 1.15) / k} style:font-size={fs(PX.setTo * layout.scale)}>{line}</text>
+          {/each}
         {/if}
       {/if}
     </g>
@@ -218,161 +219,145 @@ however large the drawing is.
 </g>
 
 <style>
+  /* Panel palette only (decision 0021): outlines, switch bodies and lens rims at 3:1 or better
+     against the panel, labels at 4.5:1, in both themes. */
   .frame {
-    fill: none;
-    stroke: var(--color-border);
+    fill: var(--panel-fill);
+    stroke: var(--panel-stroke);
+    stroke-width: 1;
   }
   .title {
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    fill: var(--color-text-muted);
-  }
-  .body,
-  .guard,
-  .knob-ring,
-  .scale,
-  .tick {
-    fill: none;
-    stroke: var(--color-text-muted);
-    stroke-width: 1.4;
-  }
-  .key-line {
-    stroke: var(--color-border);
-    stroke-width: 1;
-  }
-  /* A toggle's slim track and guard take 3.0's thinner lines. */
-  .track {
-    stroke-width: 1.1;
-  }
-  .guard {
-    stroke: var(--color-danger-text);
-    stroke-width: 1;
-    stroke-dasharray: 2.2 1.6;
-  }
-  /* Resting positions of controls the step does not use: hollow and muted, so they never look
-     like the step's target (solid, in the accent color). */
-  .knob.rest {
-    fill: none;
-    stroke: var(--color-text-muted);
-    stroke-width: 1.4;
-    opacity: 0.75;
-  }
-  .pointer.rest {
-    stroke: var(--color-text-muted);
-    stroke-width: 1.4;
-    opacity: 0.75;
-  }
-  .unknown {
-    fill: none;
-    stroke: var(--color-text-muted);
-    stroke-width: 1.2;
-  }
-  /* Unlit lights and push buttons the step does not use are quiet outlines of one weight, as in
-     3.0, so the step's controls stand out. */
-  .push_button:not(.on) .body,
-  .lamp {
-    fill: none;
-    stroke-width: 1;
-    opacity: 0.8;
-  }
-  .lamp.lit {
-    opacity: 1;
-  }
-  .screen {
-    fill: var(--color-surface-2);
-  }
-  .on .lamp-text {
-    fill: var(--color-accent);
-  }
-  .knob.rest:is(rect) {
-    fill: none;
-  }
-  /* A light the step expects on: filled in its color, with its words in that color. */
-  .lamp.lit {
-    stroke-width: 1.8;
-  }
-  .lamp.lit.amber {
-    fill: var(--color-open-bg);
-    stroke: var(--color-open-text);
-  }
-  .lamp.lit.red {
-    fill: var(--color-danger-soft);
-    stroke: var(--color-danger-text);
-  }
-  .lamp.lit.green {
-    fill: var(--color-surface-2);
-    stroke: var(--color-done);
-  }
-  .lamp.lit.blue {
-    fill: var(--color-accent-soft);
-    stroke: var(--color-accent);
-  }
-  .lamp-on.amber {
-    fill: var(--color-open-text);
-  }
-  .lamp-on.red {
-    fill: var(--color-danger-text);
-  }
-  .lamp-on.green {
-    fill: var(--color-done);
-  }
-  .lamp-text.lit.amber {
-    fill: var(--color-open-text);
-  }
-  .lamp-text.lit.red {
-    fill: var(--color-danger-text);
-  }
-  .lamp-text.lit.green {
-    fill: var(--color-done);
-  }
-  .lamp-text.lit.blue {
-    fill: var(--color-accent);
-  }
-  .on .grip.pressed {
-    fill: var(--color-accent-soft);
+    font-weight: var(--weight-semibold);
+    fill: var(--panel-label);
   }
   text {
     font-family: var(--font-sans);
-    fill: var(--color-text-secondary);
+    fill: var(--panel-text);
   }
   .label {
-    font-weight: 600;
-    text-anchor: middle;
-  }
-  .lamp-text {
-    font-weight: 600;
+    font-weight: var(--weight-semibold);
     text-anchor: middle;
   }
   .pos {
-    fill: var(--color-text-muted);
+    fill: var(--panel-label);
   }
-  /* As 3.0, color alone marks the controls the step uses: outlines keep their weight, nothing is
-     boxed or bolded. Without color, the knob still tells them apart: only they show a position. */
-  .on .body,
-  .on .knob-ring,
-  .on .scale,
-  .on .tick.target {
-    stroke: var(--color-accent);
-  }
-  .on .body.pressed {
-    stroke-width: 2;
-  }
-  .pointer {
-    stroke: var(--color-accent);
-    stroke-width: 1.8;
-    stroke-linecap: round;
-  }
-  .set {
-    fill: var(--color-accent);
-  }
-  .on .label,
+  /* The target position reads first by weight; color stays on the drawing (rules.md §4). */
   .pos.target {
-    fill: var(--color-accent);
+    font-weight: var(--weight-bold);
+    fill: var(--panel-text);
   }
   .set-to {
-    font-weight: 600;
+    font-weight: var(--weight-semibold);
     text-anchor: middle;
+    fill: var(--panel-text);
+  }
+  /* Resting: a control the step does not use, a neutral outline. */
+  .body,
+  .tick,
+  .scale {
+    fill: none;
+    stroke: var(--panel-resting);
+    stroke-width: 1.4;
+  }
+  .track {
+    stroke-width: 1.2;
+  }
+  .key {
+    fill: var(--panel-fill);
+  }
+  .key-line {
+    stroke: var(--panel-resting);
+    stroke-width: 0.8;
+  }
+  .knob.rest,
+  .bar.rest {
+    fill: none;
+    stroke: var(--panel-resting);
+    stroke-width: 1.3;
+  }
+  .guard {
+    fill: none;
+    stroke: var(--panel-resting);
+    stroke-width: 1.1;
+  }
+  .guard.lid {
+    stroke-width: 2;
+  }
+  .screen {
+    fill: var(--panel-glass);
+    stroke: var(--panel-stroke);
+  }
+  /* Changed (and resolved): blue fill and outline, the knob or pointer at the target. */
+  .body.changed,
+  .on .tick.target {
+    fill: var(--panel-changed-fill);
+    stroke: var(--panel-changed);
+    stroke-width: 2;
+  }
+  .on .tick.target {
+    fill: none;
+  }
+  .set,
+  .bar.set {
+    fill: var(--panel-changed);
+    stroke: none;
+  }
+  .tip.set {
+    fill: var(--panel-changed-fill);
+  }
+  .on .lamp-text {
+    fill: var(--panel-changed-text);
+  }
+  /* Conditional: a dashed blue outline and no position, until the condition is known. */
+  .body.conditional {
+    fill: none;
+    stroke: var(--panel-changed);
+    stroke-width: 1.6;
+    stroke-dasharray: 3 2;
+  }
+  /* Lights: unlit is an outline and its legend, no fill; lit takes its real color. */
+  .lamp {
+    fill: none;
+    stroke: var(--panel-stroke);
+    stroke-width: 1.2;
+  }
+  .lamp.focus {
+    stroke: var(--panel-changed);
+    stroke-width: 2;
+  }
+  .lamp-text {
+    font-weight: var(--weight-semibold);
+    text-anchor: middle;
+    fill: var(--panel-label);
+  }
+  .lamp.lit {
+    stroke: none;
+  }
+  .lamp.lit.amber {
+    fill: var(--color-lit-amber);
+  }
+  .lamp.lit.red {
+    fill: var(--color-danger);
+  }
+  .lamp.lit.green {
+    fill: var(--color-done);
+  }
+  .lamp.lit.blue {
     fill: var(--color-accent);
-    letter-spacing: 0.02em;
+  }
+  .lamp-text.lit.amber {
+    fill: var(--color-on-lit-amber);
+  }
+  .lamp-text.lit.red {
+    fill: var(--color-on-accent);
+  }
+  .lamp-text.lit.green {
+    fill: var(--color-on-done);
+  }
+  .lamp-text.lit.blue {
+    fill: var(--color-on-accent);
+  }
+  .lamp-on {
+    fill: var(--panel-text);
   }
 </style>

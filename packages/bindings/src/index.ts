@@ -26,6 +26,7 @@ export type { OptionChoice } from "./generated/OptionChoice";
 export type { Overview } from "./generated/Overview";
 export type { OverviewArea } from "./generated/OverviewArea";
 export type { OverviewRegion } from "./generated/OverviewRegion";
+export type { OverviewViews } from "./generated/OverviewViews";
 export type { PackSummary } from "./generated/PackSummary";
 export type { Panel } from "./generated/Panel";
 export type { PanelItem } from "./generated/PanelItem";
@@ -49,6 +50,10 @@ export type { StepState } from "./generated/StepState";
 export type { StripPart } from "./generated/StripPart";
 export type { Theme } from "./generated/Theme";
 export type { UserOption } from "./generated/UserOption";
+export type { ViewFrame } from "./generated/ViewFrame";
+export type { ViewPlace } from "./generated/ViewPlace";
+export type { ViewRole } from "./generated/ViewRole";
+export type { ViewShape } from "./generated/ViewShape";
 export type { Zone } from "./generated/Zone";
 export type { AppError, AppInfo, Checklist };
 

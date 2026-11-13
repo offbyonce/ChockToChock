@@ -1502,3 +1502,96 @@ overview:
       width: 488
       height: 208
       locate: "Elsewhere on the flight deck: the side walls and seats, the floor, and outside the airplane for the walk around."
+  # Where is this? (decision 0023): our own schematic of the flight deck, from the regions'
+  # "locate" sentences above, not to scale and not traced from any manual or image.
+  views:
+    # From the captain's left: the cabin to the left, the nose to the right.
+    side:
+      width: 400
+      height: 240
+      shapes:
+        - role: structure
+          label: CABIN
+          points: [[20, 30], [20, 214]]
+        - role: structure
+          points: [[20, 30], [282, 30]]
+        - role: glass
+          label: WINDSHIELD
+          points: [[282, 30], [338, 110]]
+        - role: structure
+          points: [[338, 110], [352, 214]]
+        - role: structure
+          points: [[20, 214], [352, 214]]
+        - role: seat
+          closed: true
+          points: [[84, 104], [100, 104], [108, 176], [150, 176], [150, 196], [92, 196]]
+        - role: eye
+          label: YOU
+          points: [[118, 96]]
+      places:
+        - region: Aft overhead
+          x: 130
+          "y": 30
+          width: 86
+          height: 12
+        - region: Forward overhead
+          x: 218
+          "y": 30
+          width: 62
+          height: 18
+        - region: Glareshield
+          x: 300
+          "y": 102
+          width: 36
+          height: 10
+        - region: Main panel
+          x: 316
+          "y": 112
+          width: 22
+          height: 56
+        - region: Center console
+          x: 170
+          "y": 172
+          width: 150
+          height: 38
+    # From the captain's seat, looking forward.
+    seat:
+      width: 400
+      height: 260
+      shapes:
+        - role: structure
+          label: CAPTAIN SIDE
+          points: [[10, 4], [10, 256]]
+        - role: structure
+          label: F/O SIDE
+          points: [[390, 4], [390, 256]]
+        - role: glass
+          label: WINDSHIELD
+          closed: true
+          points: [[44, 74], [356, 74], [376, 148], [24, 148]]
+      places:
+        - region: Aft overhead
+          x: 110
+          "y": 4
+          width: 180
+          height: 12
+        - region: Forward overhead
+          x: 56
+          "y": 18
+          width: 288
+          height: 50
+        - region: Glareshield
+          x: 24
+          "y": 152
+          width: 352
+          height: 14
+        - region: Main panel
+          x: 24
+          "y": 168
+          width: 352
+          height: 40
+        - region: Center console
+          x: 156
+          "y": 210
+          width: 88
+          height: 46

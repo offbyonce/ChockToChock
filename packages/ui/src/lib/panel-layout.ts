@@ -14,15 +14,16 @@ import { em, widest } from "./text-width";
  * "SET TO …" sits under the name, a little smaller so the name reads first. A screen's label is
  * 3.0's measured 12.6, its name size at the scale 3.0 draws a screen in the step pane.
  */
-export const PX = { name: 11.8, title: 11.8, pos: 11, lamp: 10.8, setTo: 10, screen: 12.6 } as const;
+export const PX = { name: 11.8, title: 11.8, pos: 11, lamp: 10.8, setTo: 11, screen: 12.6 } as const;
 /** Pixels per unit a drawing is laid out for: its text is drawn at the PX sizes at this scale. */
 export const K = 1.8;
 /** The smallest rendered sizes (decision 0021): labels 11 px, light legends 10 px. The "SET TO"
- * caption is not counted yet; batch 2 replaces it with the changed-state drawing. */
+ * caption is a label too, at 11 px. */
 export const LABEL_MIN = 11;
 export const LEGEND_MIN = 10;
 /** The smallest scale that keeps every label and legend at its minimum. */
-export const MIN_SCALE = K * Math.max(LABEL_MIN / Math.min(PX.name, PX.title, PX.pos), LEGEND_MIN / PX.lamp);
+export const MIN_SCALE =
+  K * Math.max(LABEL_MIN / Math.min(PX.name, PX.title, PX.pos, PX.setTo), LEGEND_MIN / PX.lamp);
 /** The largest scale a drawing grows to, so a single switch does not fill the pane. */
 export const MAX_SCALE = 2 * K;
 
@@ -258,7 +259,7 @@ export const leverY = (index: number, count: number) => (count < 2 ? 0 : -9.5 + 
 export type PositionLabel = { n: number; x: number; y: number; anchor: "start" | "middle" | "end" };
 export type ItemLayout = {
   /** The name's lines, size in pixels, and the first line's baseline below the control's center. */
-  name: { lines: string[]; px: number; y: number } | null;
+  name: { lines: string[]; px: number; y: number; caption: string[] } | null;
   /** Position labels, relative to the control's center. */
   positions: PositionLabel[];
 };
@@ -274,12 +275,20 @@ export type SectionLayout = {
 };
 
 /**
- * The caption under a step's control: the position it is set to, or, when the step leaves the
- * position to a condition, a pointer to the step's wording.
+ * The caption under a step's control: the position it is set to. A control whose position the
+ * step leaves to a condition has none; it is drawn dashed instead (decision 0022).
  */
-export const caption = (positions: string[], t: number | null, open: boolean): string | null => {
-  if (t != null) return positions[t] === "SET" ? "SET" : `SET TO ${positions[t] ?? ""}`;
-  return open ? "SEE STEP" : null;
+export const caption = (positions: string[], t: number | null): string | null => {
+  if (t == null) return null;
+  return positions[t] === "SET" ? "SET" : `SET TO ${positions[t] ?? ""}`;
+};
+
+/** The ways a caption may be set: on one line, or "SET TO" above the position when that is too
+ * wide for its place. */
+export const captionLines = (text: string | null): string[][] => {
+  if (!text) return [[]];
+  const rest = text.startsWith("SET TO ") ? text.slice("SET TO ".length) : null;
+  return rest ? [[text], ["SET TO", rest]] : [[text]];
 };
 
 /**
@@ -446,29 +455,39 @@ function place(
     if (labelled(it)) {
       const fit = nameFit(it, moved, k);
       const px = fit.px * scale;
-      const setTo = on ? caption(pos, t, open ?? false) : null;
-      const extra = setTo ? 1 : 0;
+      const setTo = on ? caption(pos, t) : null;
       const line = (px * LINE) / k;
-      const boxFor = (dy: number): Box => {
-        const w = Math.max(widest(fit.lines) * px, em(setTo ?? "") * PX.setTo * scale) / k;
+      const boxFor = (dy: number, cap: string[]): Box => {
+        const w = Math.max(widest(fit.lines) * px, widest(cap) * PX.setTo * scale) / k;
         const top = it.y + half(it) + 3 + dy * line;
         return {
           x0: it.x - w / 2,
           y0: top,
           x1: it.x + w / 2,
-          y1: top + (fit.lines.length + extra) * line + (extra ? CAPTION_ROOM : 0),
+          y1: top + (fit.lines.length + cap.length) * line + (cap.length ? CAPTION_ROOM : 0),
         };
       };
       const rowTop = rowTops?.get(Math.round(it.y));
       const base = rowTop === undefined ? 0 : Math.max(0, (rowTop - (it.y + half(it) + 3)) / line);
-      let dy = [base, base + 1, base + 2].find((d) => free(boxFor(d)));
-      if (dy === undefined) {
+      // The caption on one line where it stays within half the way to the nearest control in its
+      // row, so it never takes the room a neighbor's name needs; otherwise "SET TO" above the
+      // position.
+      const near = Math.min(
+        ...moved.items.filter((o) => o !== it && Math.abs(o.y - it.y) < 10).map((o) => Math.abs(o.x - it.x)),
+      );
+      const fitsRow = (cap: string[]) => (widest(cap) * PX.setTo * scale) / k / 2 <= near / 2 - 2;
+      const ways = captionLines(setTo);
+      const usable = ways.filter((cap, n) => n === ways.length - 1 || fitsRow(cap));
+      const tries = usable.flatMap((cap) => [base, base + 1, base + 2].map((d) => ({ d, cap })));
+      let pick = tries.find(({ d, cap }) => free(boxFor(d, cap)));
+      if (!pick) {
         clear = false;
-        dy = base;
+        pick = { d: base, cap: captionLines(setTo)[0] ?? [] };
       }
-      layout.name = { lines: fit.lines, px, y: half(it) + 3 + dy * line + line * 0.82 };
-      placed.push(boxFor(dy));
-      tops.set(i, boxFor(dy).y0);
+      const { d: dy, cap } = pick;
+      layout.name = { lines: fit.lines, px, y: half(it) + 3 + dy * line + line * 0.82, caption: cap };
+      placed.push(boxFor(dy, cap));
+      tops.set(i, boxFor(dy, cap).y0);
     }
     items.set(i, layout);
   }

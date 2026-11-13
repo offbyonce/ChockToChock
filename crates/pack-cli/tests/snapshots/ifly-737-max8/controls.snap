@@ -1,5 +1,6 @@
 ---
 source: crates/pack-cli/tests/snapshot.rs
+assertion_line: 36
 ---
 {
   "zones": [
@@ -2111,6 +2112,252 @@ source: crates/pack-cli/tests/snapshot.rs
         "height": 208.0,
         "locate": "Elsewhere on the flight deck: the side walls and seats, the floor, and outside the airplane for the walk around."
       }
-    ]
+    ],
+    "views": {
+      "side": {
+        "width": 400.0,
+        "height": 240.0,
+        "shapes": [
+          {
+            "points": [
+              [
+                20.0,
+                30.0
+              ],
+              [
+                20.0,
+                214.0
+              ]
+            ],
+            "role": "structure",
+            "label": "CABIN"
+          },
+          {
+            "points": [
+              [
+                20.0,
+                30.0
+              ],
+              [
+                282.0,
+                30.0
+              ]
+            ],
+            "role": "structure"
+          },
+          {
+            "points": [
+              [
+                282.0,
+                30.0
+              ],
+              [
+                338.0,
+                110.0
+              ]
+            ],
+            "role": "glass",
+            "label": "WINDSHIELD"
+          },
+          {
+            "points": [
+              [
+                338.0,
+                110.0
+              ],
+              [
+                352.0,
+                214.0
+              ]
+            ],
+            "role": "structure"
+          },
+          {
+            "points": [
+              [
+                20.0,
+                214.0
+              ],
+              [
+                352.0,
+                214.0
+              ]
+            ],
+            "role": "structure"
+          },
+          {
+            "points": [
+              [
+                84.0,
+                104.0
+              ],
+              [
+                100.0,
+                104.0
+              ],
+              [
+                108.0,
+                176.0
+              ],
+              [
+                150.0,
+                176.0
+              ],
+              [
+                150.0,
+                196.0
+              ],
+              [
+                92.0,
+                196.0
+              ]
+            ],
+            "closed": true,
+            "role": "seat"
+          },
+          {
+            "points": [
+              [
+                118.0,
+                96.0
+              ]
+            ],
+            "role": "eye",
+            "label": "YOU"
+          }
+        ],
+        "places": [
+          {
+            "region": "Aft overhead",
+            "x": 130.0,
+            "y": 30.0,
+            "width": 86.0,
+            "height": 12.0
+          },
+          {
+            "region": "Forward overhead",
+            "x": 218.0,
+            "y": 30.0,
+            "width": 62.0,
+            "height": 18.0
+          },
+          {
+            "region": "Glareshield",
+            "x": 300.0,
+            "y": 102.0,
+            "width": 36.0,
+            "height": 10.0
+          },
+          {
+            "region": "Main panel",
+            "x": 316.0,
+            "y": 112.0,
+            "width": 22.0,
+            "height": 56.0
+          },
+          {
+            "region": "Center console",
+            "x": 170.0,
+            "y": 172.0,
+            "width": 150.0,
+            "height": 38.0
+          }
+        ]
+      },
+      "seat": {
+        "width": 400.0,
+        "height": 260.0,
+        "shapes": [
+          {
+            "points": [
+              [
+                10.0,
+                4.0
+              ],
+              [
+                10.0,
+                256.0
+              ]
+            ],
+            "role": "structure",
+            "label": "CAPTAIN SIDE"
+          },
+          {
+            "points": [
+              [
+                390.0,
+                4.0
+              ],
+              [
+                390.0,
+                256.0
+              ]
+            ],
+            "role": "structure",
+            "label": "F/O SIDE"
+          },
+          {
+            "points": [
+              [
+                44.0,
+                74.0
+              ],
+              [
+                356.0,
+                74.0
+              ],
+              [
+                376.0,
+                148.0
+              ],
+              [
+                24.0,
+                148.0
+              ]
+            ],
+            "closed": true,
+            "role": "glass",
+            "label": "WINDSHIELD"
+          }
+        ],
+        "places": [
+          {
+            "region": "Aft overhead",
+            "x": 110.0,
+            "y": 4.0,
+            "width": 180.0,
+            "height": 12.0
+          },
+          {
+            "region": "Forward overhead",
+            "x": 56.0,
+            "y": 18.0,
+            "width": 288.0,
+            "height": 50.0
+          },
+          {
+            "region": "Glareshield",
+            "x": 24.0,
+            "y": 152.0,
+            "width": 352.0,
+            "height": 14.0
+          },
+          {
+            "region": "Main panel",
+            "x": 24.0,
+            "y": 168.0,
+            "width": 352.0,
+            "height": 40.0
+          },
+          {
+            "region": "Center console",
+            "x": 156.0,
+            "y": 210.0,
+            "width": 88.0,
+            "height": 46.0
+          }
+        ]
+      }
+    }
   }
 }

@@ -108,8 +108,9 @@ the list on wide screens and inside the step on narrow ones.
         </figure>
       {/each}
       <p class="tiny">
-        {#if setTo.length}Highlighted: what this step asks for ({setTo.join("; ")}). Not the simulator's live state.{/if}
-        Schematic, not to scale.
+        {#if setTo.length}Blue: set by this step ({setTo.join("; ")}). Not the simulator's live state.{/if}
+        {#if targets.some((t) => t.open)}Dashed: only if the step's condition applies.{/if}
+        Lights are drawn unlit unless the step expects them on. Schematic, not to scale.
       </p>
     {/if}
     {#if !targets.length && place.control}
@@ -194,6 +195,11 @@ the list on wide screens and inside the step on narrow ones.
   figure {
     margin: 0;
   }
+  /* The drawing sits on the panel background, in both themes (decision 0021). */
+  figure.card {
+    border-color: var(--panel-frame);
+    background: var(--panel-bg);
+  }
   figcaption {
     padding: var(--space-3) var(--space-3);
     border-bottom: var(--border-thin) solid var(--color-border);
@@ -207,7 +213,7 @@ the list on wide screens and inside the step on narrow ones.
   /* The region's orientation captions around the panel, as 3.0 shows them. */
   .edge {
     padding-top: var(--space-2);
-    color: var(--color-text-muted);
+    color: var(--panel-label);
     font-size: var(--font-size-caption);
     font-weight: var(--weight-semibold);
     text-align: center;

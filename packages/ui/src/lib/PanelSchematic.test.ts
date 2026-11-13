@@ -97,7 +97,9 @@ describe("PanelSchematic", () => {
     expect(screen.getByText("SET TO ON")).toBeTruthy();
     // One knob at a position, for the battery; every other switch shows no position.
     expect(svg.querySelectorAll(".knob.set")).toHaveLength(1);
-    expect(svg.querySelectorAll(".unknown").length).toBeGreaterThan(0);
+    expect(svg.querySelectorAll(".knob")).toHaveLength(1);
+    // The battery is drawn changed: blue fill and outline.
+    expect(svg.querySelectorAll(".body.changed")).toHaveLength(1);
   });
 
   it("highlights a control without a target when the step names no single position", () => {
@@ -114,16 +116,18 @@ describe("PanelSchematic", () => {
     );
   });
 
-  it("says to see the step for a control whose position the step leaves to a condition", () => {
-    // The center fuel pumps sat dimmed at rest with no caption, so they read as OFF.
+  it("draws a control whose position the step leaves to a condition dashed, with no caption", () => {
+    // The center fuel pumps sat dimmed at rest with no caption, so they read as OFF; then a
+    // "SEE STEP" caption stood in, replaced by the dashed outline (decision 0022).
     render(PanelSchematic, {
       panel,
       focus: ["elec"],
       targets: [{ section: "elec", item: 0, position: null, lit: false, open: true, resolved: false }],
     });
 
-    expect(screen.getByText("SEE STEP")).toBeTruthy();
+    expect(screen.queryByText("SEE STEP")).toBeNull();
     expect(screen.queryByText(/SET TO/)).toBeNull();
+    expect(screen.getByRole("img").querySelectorAll(".body.conditional")).toHaveLength(1);
   });
 
   it("shows no position for it, not even its resting one", () => {
@@ -142,9 +146,9 @@ describe("PanelSchematic", () => {
       targets: [{ section: "elec", item: 0, position: null, lit: false, open: true, resolved: false }],
     });
 
-    expect(container.querySelector(".on .knob.rest")).toBeNull();
+    expect(container.querySelector(".on .knob")).toBeNull();
     expect(container.querySelector(".on .pos.at-rest")).toBeNull();
-    expect(container.querySelector(".on .knob.unknown")).not.toBeNull();
+    expect(container.querySelector(".on .body.conditional")).not.toBeNull();
   });
 
   it("draws neighboring small sections together in one drawing", () => {
@@ -177,7 +181,7 @@ describe("PanelSchematic", () => {
     expect(Number(screen.getByText("PARK").getAttribute("x"))).toBeLessThan(0);
     expect(Number(screen.getByText("HIGH").getAttribute("x"))).toBeGreaterThan(0);
     // 3.0's angle for the first of four positions.
-    expect(svg.querySelector(".pointer")?.getAttribute("transform")).toBe("rotate(-100)");
+    expect(svg.querySelector(".bar.set")?.getAttribute("transform")).toBe("rotate(-100)");
     expect(screen.getByText("PARK").classList.contains("target")).toBe(true);
   });
 
@@ -336,7 +340,7 @@ describe("PanelSchematic", () => {
     render(PanelSchematic, { panel: keys, focus: ["elec"], targets: [] });
 
     const sizes = [
-      ...screen.getByRole("img").querySelectorAll(".light rect.body, .push_button rect.body"),
+      ...screen.getByRole("img").querySelectorAll(".light rect.lamp, .push_button rect.body"),
     ].map((r) => `${r.getAttribute("width")}x${r.getAttribute("height")}`);
     expect(sizes).toHaveLength(3);
     expect(new Set(sizes).size).toBe(1);
@@ -719,5 +723,52 @@ describe("PanelSchematic", () => {
     });
     expect(container.querySelectorAll("svg.schematic")).toHaveLength(1);
     expect(container.textContent).toContain("VNAV");
+  });
+
+  it("draws a decided control resolved: at its position, as changed", () => {
+    render(PanelSchematic, {
+      panel,
+      focus: ["elec"],
+      targets: [{ section: "elec", item: 0, position: 0, lit: false, open: false, resolved: true }],
+    });
+    const svg = screen.getByRole("img");
+    expect(svg.querySelectorAll(".resolved")).toHaveLength(1);
+    expect(svg.querySelectorAll(".resolved .knob.set")).toHaveLength(1);
+    expect(screen.getByText("SET TO OFF")).toBeTruthy();
+    expect(svg.querySelector(".conditional")).toBeNull();
+  });
+
+  it("sets SET TO above a long position when one line would crowd the next switch", () => {
+    // POSITION's "SET TO STROBE & STEADY" ran into LOGO's name at 11 px.
+    const tog = (label: string, x: number, positions: string) =>
+      ({ kind: "toggle_switch", label, x, y: 46, controls: ["c"], positions, description: "" }) as unknown;
+    const lights = {
+      id: "oh",
+      title: "Overhead",
+      width: 320,
+      height: 100,
+      sections: [
+        {
+          id: "lte",
+          title: "Exterior lights",
+          x: 0,
+          y: 0,
+          width: 294,
+          height: 90,
+          items: [
+            tog("LOGO", 24, "OFF, ON"),
+            tog("POSITION", 70, "STROBE & STEADY, OFF, STEADY"),
+            tog("WING", 214, "OFF, ON"),
+          ],
+        },
+      ],
+    } as unknown as Panel;
+    render(PanelSchematic, {
+      panel: lights,
+      focus: ["lte"],
+      targets: [{ section: "lte", item: 1, position: 0, lit: false, open: false, resolved: false }],
+    });
+    const captions = [...screen.getByRole("img").querySelectorAll(".set-to")].map((t) => t.textContent);
+    expect(captions).toEqual(["SET TO", "STROBE & STEADY"]);
   });
 });
