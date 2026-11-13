@@ -27,7 +27,7 @@ the zone marked, all from the pack, in the panel palette.
   </button>
   <dialog bind:this={dialog} aria-labelledby="locator-title" onclick={(e) => e.target === dialog && dialog?.close()}>
     <div class="head">
-      <h2 id="locator-title">{region?.name ?? zone.area}{#if region?.code}<span class="code"> · {region.code}</span>{/if}</h2>
+      <h2 id="locator-title">Where is the {(region?.name ?? zone.area).toLowerCase()}?{#if region?.code}<span class="code"> · {region.code}</span>{/if}</h2>
       <button class="close" type="button" aria-label="Close" onclick={() => dialog?.close()}><Icon name="x" /></button>
     </div>
     {#if region?.locate}<p>{region.locate}</p>{/if}
@@ -37,9 +37,10 @@ the zone marked, all from the pack, in the panel palette.
           <ViewDrawing frame={overview.views.side} region={region?.name ?? null} kind="side" title="From the side: how high, how far" />
         {/if}
         {#if overview.views?.seat}
-          <ViewDrawing frame={overview.views.seat} region={region?.name ?? null} kind="seat" title="From the captain's seat: which side" />
+          <ViewDrawing frame={overview.views.seat} region={region?.name ?? null} kind="seat" title="From the captain seat: which side" />
         {/if}
       </div>
+      <p class="legend"><span class="sw here"></span>This area<span class="sw other"></span>Other panels</p>
     {/if}
     <p class="zone">{zone.title}, marked on the map.</p>
     <svg class="deck" viewBox="0 0 {overview.width} {overview.height}" role="img" aria-label="The whole flight deck, {zone.title} marked">
@@ -123,6 +124,28 @@ the zone marked, all from the pack, in the panel palette.
     .views {
       grid-template-columns: 1fr 1fr;
     }
+  }
+  .legend {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-caption);
+  }
+  .sw {
+    width: var(--space-4);
+    height: var(--space-3);
+    border: var(--size-focus-ring) solid var(--panel-stroke);
+    border-radius: var(--radius-small);
+    background: var(--panel-fill);
+  }
+  .sw.here {
+    border: var(--border-thick) solid var(--panel-changed);
+    background: var(--panel-changed-fill);
+  }
+  .sw.other {
+    margin-left: var(--space-4);
+    border-width: var(--size-focus-ring);
   }
   .zone {
     color: var(--color-text-muted);

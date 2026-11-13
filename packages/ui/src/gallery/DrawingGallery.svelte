@@ -151,7 +151,7 @@ each region. `?theme=dark|light` picks the theme.
         {#if views.side?.places?.some((p) => p.region === region.name) || views.seat?.places?.some((p) => p.region === region.name)}
           <div class="row views" data-region={region.name}>
             {#if views.side}<ViewDrawing frame={views.side} region={region.name} kind="side" title="{region.name}: from the side" />{/if}
-            {#if views.seat}<ViewDrawing frame={views.seat} region={region.name} kind="seat" title="{region.name}: from the captain's seat" />{/if}
+            {#if views.seat}<ViewDrawing frame={views.seat} region={region.name} kind="seat" title="{region.name}: from the captain seat" />{/if}
           </div>
         {/if}
       {/each}

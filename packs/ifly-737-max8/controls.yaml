@@ -1502,96 +1502,111 @@ overview:
       width: 488
       height: 208
       locate: "Elsewhere on the flight deck: the side walls and seats, the floor, and outside the airplane for the walk around."
-  # Where is this? (decision 0023): our own schematic of the flight deck, from the regions'
-  # "locate" sentences above, not to scale and not traced from any manual or image.
+  # Where is this? (decision 0023): the approved design's side and seat views (the WherePop
+  # board in docs/design/boards), carried over as pack data. Our own schematic, not to scale.
   views:
-    # From the captain's left: the cabin to the left, the nose to the right.
+    # From the side: the nose to the left, the cabin to the right.
     side:
       width: 400
-      height: 240
+      height: 210
       shapes:
         - role: structure
-          label: CABIN
-          points: [[20, 30], [20, 214]]
-        - role: structure
-          points: [[20, 30], [282, 30]]
+          points: [[400, 30], [206, 30], [187.8, 30.6], [170.8, 32.2], [154.8, 34.9], [140, 38.5], [126.3, 43.1], [113.8, 48.6], [102.3, 54.9], [92, 62], [82, 69.4], [71.7, 76.7], [61.4, 84], [51.2, 91.2], [41.6, 98.6], [32.7, 106.2], [24.7, 113.9], [18, 122], [14.2, 128.8], [12, 135.7], [11.1, 142.5], [11.8, 149], [13.8, 155.2], [17.2, 160.8], [21.9, 165.8], [28, 170], [36.4, 174.1], [46.6, 177.6], [58.3, 180.3], [71.5, 182.5], [86, 184.1], [101.7, 185.2], [118.4, 185.8], [136, 186], [400, 186]]
         - role: glass
-          label: WINDSHIELD
-          points: [[282, 30], [338, 110]]
-        - role: structure
-          points: [[338, 110], [352, 214]]
-        - role: structure
-          points: [[20, 214], [352, 214]]
+          closed: true
+          points: [[70, 80], [112, 50], [120, 55], [80, 85]]
         - role: seat
           closed: true
-          points: [[84, 104], [100, 104], [108, 176], [150, 176], [150, 196], [92, 196]]
+          points: [[282, 150], [328, 150], [329.7, 150.2], [331.2, 150.7], [332.3, 151.5], [333.1, 152.5], [333.6, 153.7], [333.8, 155.1], [333.6, 156.5], [333, 158], [331, 162], [280, 162]]
+        - role: seat
+          closed: true
+          points: [[318, 150], [326, 82], [326.8, 79.4], [328.3, 77.5], [330.2, 76.4], [332.4, 76], [334.5, 76.4], [336.3, 77.5], [337.5, 79.4], [338, 82], [334, 154]]
+        - role: seat
+          closed: true
+          points: [[300, 162], [309, 162], [309, 178], [300, 178]]
+        - role: seat
+          closed: true
+          points: [[317, 92], [316.2, 96.2], [313.8, 99.8], [310.2, 102.2], [306, 103], [301.8, 102.2], [298.2, 99.8], [295.8, 96.2], [295, 92], [295.8, 87.8], [298.2, 84.2], [301.8, 81.8], [306, 81], [310.2, 81.8], [313.8, 84.2], [316.2, 87.8]]
         - role: eye
-          label: YOU
-          points: [[118, 96]]
+          points: [[296, 88]]
       places:
-        - region: Aft overhead
-          x: 130
-          "y": 30
-          width: 86
-          height: 12
         - region: Forward overhead
-          x: 218
-          "y": 30
-          width: 62
-          height: 18
+          shapes:
+            - [[124, 46], [198, 33], [200, 43], [128, 57]]
+        - region: Aft overhead
+          shapes:
+            - [[206, 32], [264, 31], [264, 41], [206, 42]]
         - region: Glareshield
-          x: 300
-          "y": 102
-          width: 36
-          height: 10
+          shapes:
+            - [[86, 86], [132, 84], [134, 93], [90, 95]]
         - region: Main panel
-          x: 316
-          "y": 112
-          width: 22
-          height: 56
+          shapes:
+            - [[92, 96], [99, 95], [110, 150], [103, 151]]
         - region: Center console
-          x: 170
-          "y": 172
-          width: 150
-          height: 38
+          shapes:
+            - [[112, 178], [112, 156], [146, 138], [148, 178]]
+            - [[148, 178], [148, 138], [194, 138], [200, 154], [200, 178]]
+            - [[200, 178], [200, 154], [256, 154], [256, 178]]
+      labels:
+        - text: WINDSHIELD
+          x: 4
+          "y": 40
+          anchor: start
+        - text: CABIN →
+          x: 396
+          "y": 204
+          anchor: end
+        - text: YOU
+          x: 306
+          "y": 68
+          anchor: middle
     # From the captain's seat, looking forward.
     seat:
       width: 400
-      height: 260
+      height: 270
       shapes:
-        - role: structure
-          label: CAPTAIN SIDE
-          points: [[10, 4], [10, 256]]
-        - role: structure
-          label: F/O SIDE
-          points: [[390, 4], [390, 256]]
         - role: glass
-          label: WINDSHIELD
           closed: true
-          points: [[44, 74], [356, 74], [376, 148], [24, 148]]
+          points: [[22, 96], [60, 92], [64, 150], [30, 154]]
+        - role: glass
+          closed: true
+          points: [[70, 92], [194, 90], [194, 150], [74, 150]]
+        - role: glass
+          closed: true
+          points: [[206, 90], [330, 92], [326, 150], [206, 150]]
+        - role: glass
+          closed: true
+          points: [[340, 92], [378, 96], [370, 154], [336, 150]]
       places:
         - region: Aft overhead
-          x: 110
-          "y": 4
-          width: 180
-          height: 12
+          shapes:
+            - [[70, 4], [330, 4], [314, 34], [86, 34]]
+          label_at: [200, 20]
         - region: Forward overhead
-          x: 56
-          "y": 18
-          width: 288
-          height: 50
+          shapes:
+            - [[86, 38], [314, 38], [294, 86], [106, 86]]
+          label_at: [200, 62]
         - region: Glareshield
-          x: 24
-          "y": 152
-          width: 352
-          height: 14
+          shapes:
+            - [[40, 158], [360, 158], [360, 176], [40, 176]]
+          label_at: [200, 167]
         - region: Main panel
-          x: 24
-          "y": 168
-          width: 352
-          height: 40
+          shapes:
+            - [[40, 180], [148, 180], [148, 228], [40, 228]]
+            - [[152, 180], [248, 180], [248, 228], [152, 228]]
+            - [[252, 180], [360, 180], [360, 228], [252, 228]]
+          label_at: [200, 204]
         - region: Center console
-          x: 156
-          "y": 210
-          width: 88
-          height: 46
+          shapes:
+            - [[162, 232], [238, 232], [238, 268], [162, 268]]
+          label_at: [200, 250]
+      labels:
+        - text: CAPTAIN SIDE
+          x: 94
+          "y": 252
+        - text: F/O SIDE
+          x: 306
+          "y": 252
+        - text: WINDSHIELD
+          x: 200
+          "y": 126

@@ -232,6 +232,12 @@ const SHOTS = [
     app: { hash: "#/phase/preflight", before: [stepExact("OXYGEN", ".row"), stepExact("OXYGEN", ".chev"), paneToControls("aside.pane")] },
   },
   {
+    // Where is this? for the fuel pumps: the side and seat views and the flight deck (decision 0023).
+    name: "where",
+    only: ["desktop", "wide", "tablet-landscape"],
+    app: { hash: "#/phase/before-start", before: [click(".it .row", 5), click(".it .chev", 5), click(".where-btn")] },
+  },
+  {
     name: "panel-brake",
     only: ["desktop", "wide"],
     app: { hash: "#/phase/gpu-power", before: [stepNamed("PARKING BRAKE", ".row"), stepNamed("PARKING BRAKE", ".chev"), paneToControls("aside.pane")] },

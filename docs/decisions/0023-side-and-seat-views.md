@@ -17,19 +17,24 @@ depth or seat.
 
 ## Decision
 - The overview may have `views` with a `side` and a `seat` frame. Each frame has a `width` and
-  `height`, `shapes` and `places`, all in the frame's own units.
-- A shape is a list of `points` (one point is a dot, two a line, more a path, `closed` to close
-  it), a `role` (`structure`, `glass`, `seat`, `eye` or `sight`) and an optional `label`. Roles
-  set only how the renderer colors and draws a shape; they name no aircraft part, so any pack can
-  draw its own airplane.
-- A place puts one overview region (by its `name`) in the frame as a rectangle. The renderer
-  highlights the place of the step's region; in the side view it draws a sight line from the `eye`
-  shape to it.
+  `height`, `shapes`, `places` and `labels`, all in the frame's own units.
+- A shape is an outline through its `points` (a curve is given as many points), `closed` or not,
+  with a `role`: `structure` (the airplane's outline, filled), `glass`, `seat` or `eye` (one point,
+  where the side view's sight line starts). Roles set only how the renderer colors a shape; they
+  name no aircraft part, so any pack can draw its own airplane.
+- A place puts one overview region (by its `name`) in the frame as one or more closed outlines,
+  with an optional `label_at` for its name. The renderer highlights the step's region (blue, a heavy
+  outline), names it there when the view does, and in the side view draws a dashed sight line from
+  the eye to it, ending in a dot.
+- A label is fixed text at a point, with an `anchor` (start, middle or end): "WINDSHIELD",
+  "CABIN →", "YOU", "CAPTAIN SIDE".
 - Both views carry the caption "Schematic, not to scale", as 3.0's flight deck drawings did.
-- `pack check` holds the frames to the pack: every place names a real region, no region twice, and
-  every shape and place lies inside its frame; a side frame with places has an `eye`.
-- The iFly pack's frames are our own schematic, written from the regions' `locate` sentences and
-  the overview's arrangement, never traced from any manual or image.
+- `pack check` holds the frames to the pack: every place names a real region, once, with outlines of
+  three points or more; every shape, outline and label lies inside its frame; a side frame with
+  places has one `eye`.
+- The iFly pack's frames are the approved design's side and seat views (the WherePop board in
+  [docs/design/boards](../design/boards)), carried over shape for shape: the design is the
+  reference, never a manual or image.
 - Pack format 4, with 0022. All new fields are optional.
 
 ## Consequences

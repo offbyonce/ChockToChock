@@ -4,4 +4,4 @@
  * How the renderer draws a shape in a side or seat view (decision 0023). Roles name no
  * aircraft part, so any pack can draw its own airplane.
  */
-export type ViewRole = "structure" | "glass" | "seat" | "eye" | "sight";
+export type ViewRole = "structure" | "glass" | "seat" | "eye";

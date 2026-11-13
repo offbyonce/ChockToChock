@@ -65,6 +65,15 @@
         "function"
       ]
     },
+    "LabelAnchor": {
+      "description": "Which way a label runs from its point.",
+      "type": "string",
+      "enum": [
+        "start",
+        "middle",
+        "end"
+      ]
+    },
     "Overview": {
       "description": "A schematic of the whole cockpit, in our own layout.",
       "type": "object",
@@ -284,6 +293,12 @@
           "type": "number",
           "format": "double"
         },
+        "labels": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ViewLabel"
+          }
+        },
         "places": {
           "type": "array",
           "items": {
@@ -307,21 +322,16 @@
         "height"
       ]
     },
-    "ViewPlace": {
-      "description": "Where one overview region sits in a side or seat view.",
+    "ViewLabel": {
+      "description": "A fixed label in a side or seat view, e.g. \"WINDSHIELD\" or \"CABIN →\".",
       "type": "object",
       "properties": {
-        "height": {
-          "type": "number",
-          "format": "double"
+        "anchor": {
+          "$ref": "#/$defs/LabelAnchor",
+          "default": "middle"
         },
-        "region": {
-          "description": "The region's `name` on the overview.",
+        "text": {
           "type": "string"
-        },
-        "width": {
-          "type": "number",
-          "format": "double"
         },
         "x": {
           "type": "number",
@@ -334,18 +344,59 @@
       },
       "additionalProperties": false,
       "required": [
-        "region",
+        "text",
         "x",
-        "y",
-        "width",
-        "height"
+        "y"
+      ]
+    },
+    "ViewPlace": {
+      "description": "Where one overview region sits in a side or seat view: one or more closed outlines.",
+      "type": "object",
+      "properties": {
+        "label_at": {
+          "description": "Where the region's name goes when it is the one shown, if the view names it.",
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "number",
+            "format": "double"
+          },
+          "maxItems": 2,
+          "minItems": 2
+        },
+        "region": {
+          "description": "The region's `name` on the overview.",
+          "type": "string"
+        },
+        "shapes": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "number",
+                "format": "double"
+              },
+              "maxItems": 2,
+              "minItems": 2
+            }
+          }
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "region",
+        "shapes"
       ]
     },
     "ViewRole": {
       "description": "How the renderer draws a shape in a side or seat view (decision 0023). Roles name no\naircraft part, so any pack can draw its own airplane.",
       "oneOf": [
         {
-          "description": "Walls, floor, ceiling, panels: outlines.",
+          "description": "The airplane's outline (fuselage, walls): filled with the fuselage color.",
           "type": "string",
           "const": "structure"
         },
@@ -355,7 +406,7 @@
           "const": "glass"
         },
         {
-          "description": "The pilot's seat.",
+          "description": "The pilot's seat and head.",
           "type": "string",
           "const": "seat"
         },
@@ -363,26 +414,15 @@
           "description": "Where the pilot's eyes are: one point. The side view's sight line starts here.",
           "type": "string",
           "const": "eye"
-        },
-        {
-          "description": "A fixed line of sight drawn as part of the frame.",
-          "type": "string",
-          "const": "sight"
         }
       ]
     },
     "ViewShape": {
-      "description": "One shape in a side or seat view: one point is a dot, two a line, more a path.",
+      "description": "One shape in a side or seat view: an outline through its points (a curve is given as many\npoints), closed when `closed`. An `eye` is one point.",
       "type": "object",
       "properties": {
         "closed": {
           "type": "boolean"
-        },
-        "label": {
-          "type": [
-            "string",
-            "null"
-          ]
         },
         "points": {
           "type": "array",

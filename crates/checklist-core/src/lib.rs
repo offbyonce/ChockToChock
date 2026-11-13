@@ -29,11 +29,11 @@ pub use content::{
     Alias, AliasKind, AliasesFile, BriefItem, Briefing, BriefingsFile, CduField, CduFile,
     CduInline, CduPage, CduPart, CduRouteCount, CduRow, CduScreen, CduStyle, CduStyled, CduText,
     CduWalkthrough, CduWhen, Control, ControlsFile, ExplainNote, Fault, FaultsFile, GlossaryEntry,
-    GlossaryFile, HowNote, IntroParagraph, LightColor, LightNote, LightsFile, NotesFile,
-    OptionChoice, Overview, OverviewArea, OverviewCaption, OverviewRegion, OverviewViews, Panel,
-    PanelItem, PanelItemKind, PanelSection, Phase, PhasesFile, RouteLegCount, RouteLegPart, Stage,
-    StagePhase, StartState, StartStatesFile, UserOption, ViewFrame, ViewPlace, ViewRole, ViewShape,
-    Zone,
+    GlossaryFile, HowNote, IntroParagraph, LabelAnchor, LightColor, LightNote, LightsFile,
+    NotesFile, OptionChoice, Overview, OverviewArea, OverviewCaption, OverviewRegion,
+    OverviewViews, Panel, PanelItem, PanelItemKind, PanelSection, Phase, PhasesFile, RouteLegCount,
+    RouteLegPart, Stage, StagePhase, StartState, StartStatesFile, UserOption, ViewFrame, ViewLabel,
+    ViewPlace, ViewRole, ViewShape, Zone,
 };
 pub use model::{
     AutoStart, AutoStartPick, Checklist, Confirmation, ConfirmationKind, FillField, HintPart,

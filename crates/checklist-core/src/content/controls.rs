@@ -73,36 +73,52 @@ data_types! {
     #[derive(Copy, Eq)]
     #[serde(rename_all = "snake_case")]
     pub enum ViewRole {
-        /// Walls, floor, ceiling, panels: outlines.
+        /// The airplane's outline (fuselage, walls): filled with the fuselage color.
         Structure,
         /// Windshield and windows.
         Glass,
-        /// The pilot's seat.
+        /// The pilot's seat and head.
         Seat,
         /// Where the pilot's eyes are: one point. The side view's sight line starts here.
         Eye,
-        /// A fixed line of sight drawn as part of the frame.
-        Sight,
     }
 
-    /// One shape in a side or seat view: one point is a dot, two a line, more a path.
+    /// One shape in a side or seat view: an outline through its points (a curve is given as many
+    /// points), closed when `closed`. An `eye` is one point.
     pub struct ViewShape {
         pub points: Vec<[f64; 2]>,
         #[serde(default, skip_serializing_if = "std::ops::Not::not")]
         pub closed: bool,
         pub role: ViewRole,
-        #[serde(default, skip_serializing_if = "Option::is_none")]
-        pub label: Option<String>,
     }
 
-    /// Where one overview region sits in a side or seat view.
+    /// Which way a label runs from its point.
+    #[derive(Copy, Eq, Default)]
+    #[serde(rename_all = "snake_case")]
+    pub enum LabelAnchor {
+        Start,
+        #[default]
+        Middle,
+        End,
+    }
+
+    /// A fixed label in a side or seat view, e.g. "WINDSHIELD" or "CABIN →".
+    pub struct ViewLabel {
+        pub text: String,
+        pub x: f64,
+        pub y: f64,
+        #[serde(default)]
+        pub anchor: LabelAnchor,
+    }
+
+    /// Where one overview region sits in a side or seat view: one or more closed outlines.
     pub struct ViewPlace {
         /// The region's `name` on the overview.
         pub region: String,
-        pub x: f64,
-        pub y: f64,
-        pub width: f64,
-        pub height: f64,
+        pub shapes: Vec<Vec<[f64; 2]>>,
+        /// Where the region's name goes when it is the one shown, if the view names it.
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        pub label_at: Option<[f64; 2]>,
     }
 
     /// A side or seat view of the flight deck, in its own units (decision 0023).
@@ -113,6 +129,8 @@ data_types! {
         pub shapes: Vec<ViewShape>,
         #[serde(default, skip_serializing_if = "Vec::is_empty")]
         pub places: Vec<ViewPlace>,
+        #[serde(default, skip_serializing_if = "Vec::is_empty")]
+        pub labels: Vec<ViewLabel>,
     }
 
     /// The side and seat views for "Where is this?".

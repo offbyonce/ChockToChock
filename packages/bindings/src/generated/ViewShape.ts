@@ -2,6 +2,7 @@
 import type { ViewRole } from "./ViewRole";
 
 /**
- * One shape in a side or seat view: one point is a dot, two a line, more a path.
+ * One shape in a side or seat view: an outline through its points (a curve is given as many
+ * points), closed when `closed`. An `eye` is one point.
  */
-export type ViewShape = { points: Array<[number, number]>, closed?: boolean, role: ViewRole, label?: string | null, };
+export type ViewShape = { points: Array<[number, number]>, closed?: boolean, role: ViewRole, };

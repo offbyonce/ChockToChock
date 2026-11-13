@@ -309,8 +309,9 @@ fn locator_resolves(locator: &str, labels: &BTreeMap<(&str, &str, &str), usize>)
             .is_some_and(|c| n <= *c)
 }
 
-/// A side or seat view (decision 0023): every place names a real region, once; shapes and places
-/// lie inside the frame; a side view with places has one `eye` point for its sight lines.
+/// A side or seat view (decision 0023): every place names a real region, once, with closed
+/// outlines of three points or more; shapes, places and labels lie inside the frame; a side view
+/// with places has one `eye` point for its sight lines.
 fn check_view(
     name: &str,
     frame: &checklist_core::ViewFrame,
@@ -318,12 +319,13 @@ fn check_view(
     issues: &mut Vec<Issue>,
 ) {
     let at = format!("overview {name} view");
-    let inside = |x: f64, y: f64| x >= 0.0 && y >= 0.0 && x <= frame.width && y <= frame.height;
+    let inside =
+        |p: &[f64; 2]| p[0] >= 0.0 && p[1] >= 0.0 && p[0] <= frame.width && p[1] <= frame.height;
     if frame.width <= 0.0 || frame.height <= 0.0 {
         issues.push(error(&at, "the view must have a size"));
     }
     for shape in &frame.shapes {
-        if shape.points.is_empty() || !shape.points.iter().all(|[x, y]| inside(*x, *y)) {
+        if shape.points.is_empty() || !shape.points.iter().all(inside) {
             issues.push(error(&at, "every shape needs points, all inside the view"));
         }
     }
@@ -335,17 +337,27 @@ fn check_view(
                 format!("place names no overview region `{}`", place.region),
             ));
         }
-        let fits = place.width > 0.0
-            && place.height > 0.0
-            && inside(place.x, place.y)
-            && inside(place.x + place.width, place.y + place.height);
+        let fits = !place.shapes.is_empty()
+            && place
+                .shapes
+                .iter()
+                .all(|outline| outline.len() >= 3 && outline.iter().all(inside))
+            && place.label_at.as_ref().is_none_or(inside);
         if !fits {
             issues.push(error(
                 &at,
                 format!(
-                    "`{}` must have a size and lie inside the view",
+                    "`{}` needs outlines of three points or more, inside the view",
                     place.region
                 ),
+            ));
+        }
+    }
+    for label in &frame.labels {
+        if label.text.trim().is_empty() || !inside(&[label.x, label.y]) {
+            issues.push(error(
+                &at,
+                "every label needs text and a point inside the view",
             ));
         }
     }
@@ -613,22 +625,20 @@ pub(super) mod tests {
         let mut p = alias_pack(vec![]);
         let place = |region: &str, x: f64| ViewPlace {
             region: region.into(),
-            x,
-            y: 10.0,
-            width: 20.0,
-            height: 10.0,
+            shapes: vec![vec![[x, 10.0], [x + 20.0, 10.0], [x + 20.0, 20.0]]],
+            label_at: None,
         };
         let shape = |role, points: Vec<[f64; 2]>| ViewShape {
             points,
             closed: false,
             role,
-            label: None,
         };
         let frame = |places, shapes| ViewFrame {
             width: 100.0,
             height: 60.0,
             shapes,
             places,
+            labels: vec![],
         };
         if let Some(file) = &mut p.content.controls {
             file.overview = Some(Overview {
@@ -668,7 +678,7 @@ pub(super) mod tests {
             "{joined}"
         );
         assert!(
-            joined.contains("`Overhead` must have a size and lie inside the view"),
+            joined.contains("`Overhead` needs outlines of three points or more, inside the view"),
             "{joined}"
         );
         assert!(
