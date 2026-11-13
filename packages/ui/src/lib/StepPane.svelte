@@ -219,7 +219,7 @@ and a caution note under If not. A step with no control shows the steps coming u
     display: flex;
     align-items: center;
     gap: var(--space-2);
-    padding: var(--space-2) var(--space-1) var(--space-2) var(--space-4);
+    padding: var(--space-1) var(--space-1) var(--space-1) var(--space-4);
     border: var(--border-thin) solid var(--color-border);
     border-radius: var(--radius-control);
     background: var(--color-surface);

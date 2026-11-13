@@ -555,7 +555,7 @@ surface, opening with the step's controls in view; nothing inside scrolls up and
   .links {
     display: flex;
     flex-wrap: wrap;
-    gap: 0 var(--space-2);
+    gap: var(--space-1) var(--space-2);
   }
   .lk {
     display: inline-flex;

@@ -384,11 +384,13 @@ column until batch 4 (owner). On narrow screens a chevron opens the step's detai
   /* The row menu (Checklist board): pop-over tokens. */
   .menu {
     position: absolute;
-    top: calc(var(--size-touch-min) + var(--space-2));
+    top: calc(var(--size-touch-min) + var(--space-1));
     right: 0;
     z-index: 3;
+    box-sizing: content-box;
     display: flex;
     flex-direction: column;
+    /* The board's 248 px is the content width; padding and border add to it. */
     width: calc(10 * var(--space-6) + var(--space-2));
     padding: calc(var(--space-1) + var(--border-thick) / 2);
     border: var(--border-thin) solid var(--color-border);

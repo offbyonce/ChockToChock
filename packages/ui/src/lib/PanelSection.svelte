@@ -316,6 +316,11 @@ What the step asks for, never the simulator's state (decision 0006).
   .textless :global(*) {
     vector-effect: non-scaling-stroke;
   }
+  /* A 1 px outline between two screen pixels would be drawn half as dark (under 3:1), so the
+     preview's rectangles snap to whole pixels. */
+  .textless :global(rect) {
+    shape-rendering: crispEdges;
+  }
   .frame {
     fill: var(--panel-bg);
     stroke: var(--panel-stroke);
