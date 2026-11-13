@@ -52,6 +52,7 @@ path = [
     "docs/design/content-to-validate.md",
     "docs/design/boards/**",
     "docs/design/review/**",
+    "docs/design/round6/**",
 ]
 precedence = "aggregate"
 SPDX-FileCopyrightText = "2026 offbyonce"

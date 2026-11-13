@@ -24,6 +24,7 @@ const SOURCES: Record<string, string> = Object.fromEntries(
 const DRAWINGS = new Set([
   "lib/PanelSection.svelte",
   "lib/PanelSchematic.svelte",
+  "lib/PanelPreview.svelte",
   "lib/Locator.svelte",
   "lib/OverviewMap.svelte",
   "lib/ViewDrawing.svelte",

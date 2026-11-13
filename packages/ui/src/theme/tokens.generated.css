@@ -59,6 +59,8 @@
   --size-progress-bar: 0.1875rem; /* 3 */
   --size-flow-button: 3.5rem; /* 56 */
   --size-map-figure: 17.5rem; /* 280 */
+  --size-slideout: 52.5rem; /* 840 */
+  --size-slideout-tablet: 43.75rem; /* 700 */
   --size-toggle-width: 3.25rem; /* 52 */
   --size-toggle-height: 1.875rem; /* 30 */
   --size-toggle-knob: 1.5rem; /* 24 */
@@ -115,6 +117,7 @@
   --color-on-lit-amber: #3a2a00;
   --color-popover-border: #34404f;
   --color-overlay-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+  --color-slideout-scrim: rgba(6, 8, 12, 0.45);
   --panel-bg: #161b23;
   --panel-frame: #2a323e;
   --panel-fill: #1b212b;
@@ -177,6 +180,7 @@
     --color-on-lit-amber: #3a2a00;
     --color-popover-border: #d3d9e1;
     --color-overlay-shadow: 0 24px 60px rgba(16, 24, 40, 0.18);
+    --color-slideout-scrim: rgba(20, 26, 36, 0.28);
     --panel-bg: #ffffff;
     --panel-frame: #d3d9e1;
     --panel-fill: #e3e7ec;

@@ -10,11 +10,12 @@ Every 3.0 feature and where it lives at each size. Use this as a release check: 
 | Make Essentials your own | Row menu: Add to / Remove from Essentials | Row menu | Row menu | Row menu |
 | Essentials marker (E) | Every Essentials row | Every row | Every row | Every row |
 | Detailed or Simple | Mode pill, menu | Same | Same | Menu |
-| Step map and panel views | Side pane map and controls | Side pane controls, map in Where pop-over | Inline controls, map in Where pop-over | Inline controls, map in Where sheet and Flight deck |
+| Step map and panel views (round 6) | Panel preview in the side pane and Flow; the full labeled panel in the slide-out | Panel preview in the side pane and Flow; the full panel in the slide-out | Panel preview card in the expanded step; the full panel in the sheet | Panel preview card in the expanded step; the sheet's preview and controls list upright; the full labeled panel sideways |
 | Flight deck page | Menu › Flight deck | Menu › Flight deck | Menu › Flight deck | Menu › Flight deck |
-| Light meanings | Tap a light; Flight deck | Same | Same | Same |
-| Where is this? | Pop-over (side and seat views) | Pop-over (side, seat, area map) | Same | Sheet (side and seat views) |
-| Map on or off | Hide map / Show map; Settings › Map in steps | Hide; Settings | Hide drawing; Settings | Settings |
+| Light meanings (round 6) | Control card in the slide-out (tap the light); Flight deck | Same | Control card in the sheet; Flight deck | Control card from the sheet's controls list upright, or the panel sideways; Flight deck |
+| Control details: tap any control (round 6) | Control card in the slide-out | Same | Control card in the sheet | Control card from the sheet's controls list upright, or the panel sideways |
+| Where is this? (round 6) | Slide-out, Where it is section (side, seat, area map) | Same | Sheet, Where it is section | Sheet, Where it is section |
+| Map on or off (round 6) | Settings › Panel preview in steps (On / Off); Show panel and Where is this? always work | Same | Same | Same |
 | Check, If not, Why | Side pane, never hidden | Side pane | Inline | Inline |
 | How to do it | Why row | Why row | Why row | Why row |
 | Terms a step uses | Terms ⌄ and tappable terms | Same | Same | Same |
@@ -58,6 +59,6 @@ No board draws them, so each home is the closest match to the boards and is flag
 | Keep screen awake (On / Off) **(to review)** | Settings, a row beside Timer chime | Same | Same | Same |
 | Your Essentials: Reset to default, and how many steps you changed **(to review)** | Settings, a row under Text and controls size; changes themselves through the row menu (Add to / Remove from Essentials row) | Same | Same | Same |
 | Start setting: Cold and dark or Turnaround **(to review)** | Flight › Start options › Turnaround toggle (the same choice as the Turnaround row above); also a Settings row, as in 3.0 | Same | Same | Same |
-| Map setting: On / Off **(to review)** | Settings › Map in steps (Always, New panel, On request, Off), which replaces 3.0's On / Off (see the Map on or off row above) | Same | Same | Same |
+| Map setting: On / Off | Settings › Panel preview in steps (On / Off), round 6 (see the Map on or off row above) | Same | Same | Same |
 | "Used in" chips: the steps that use a control, each a link to the step **(to review)** | Flight deck › selected panel › Steps that use this panel (Deck board); in the step's side pane under the controls drawing, as 3.0 shows them | Side pane, under the controls drawing | Under the inline controls drawing | Flight deck page, "Used by" (Mobile board, deck screen); in the step, under the controls drawing |
 | Coming up: the next steps, on a step with no control (approved by the owner 2026-11-12) | Side pane, below the step's details | Side pane, below the step's details | Below the opened step's details **(to review)** | Below the opened step's details **(to review)** |

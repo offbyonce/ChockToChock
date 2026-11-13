@@ -31,6 +31,7 @@ What the step asks for, never the simulator's state (decision 0006).
     frame,
     titled = true,
     framed = true,
+    textless = false,
     k,
     hit = 0,
     onPick,
@@ -47,6 +48,9 @@ What the step asks for, never the simulator's state (decision 0006).
     /** Its outline is drawn; the side pane's card is the outline of a drawing of one section, as
      * on the boards, so a cut frame never shows as stray lines across it. */
     framed?: boolean;
+    /** The label-free panel preview (round 6): the same geometry, glyphs and states, no text, and
+     * every light outline only. */
+    textless?: boolean;
     /** Screen pixels per drawing unit, for the fixed text sizes. */
     k: number;
     /** The smallest hit area, in drawing units (44 px on screen); 0 draws none. */
@@ -110,7 +114,7 @@ What the step asks for, never the simulator's state (decision 0006).
   let right = $derived(frame?.x1 ?? band.x1);
 </script>
 
-<g transform="translate({section.x} {section.y})">
+<g class:textless transform="translate({section.x} {section.y})">
   <rect class="frame" class:bare={!framed} x={left} y={top} width={right - left} height={frameBottom - top} rx="3" />
   {#if titled}<text class="title" x={left + 8} y={top + 13} style:font-size={fs(PX.title * layout.scale)}>{section.title.toUpperCase()}</text>{/if}
   {#each shown as { item, i } (i)}
@@ -183,7 +187,7 @@ What the step asks for, never the simulator's state (decision 0006).
              expects on is filled in its color and says so; it is never the simulator's state. -->
         {@const words = lampText(item, k, PX.lamp * layout.scale)}
         {@const lit = byItem.get(i)?.lit ?? false}
-        <rect class="lamp {item.color ?? ''}" class:lit class:focus={on && !lit} x={-LAMP.w / 2} y={-LAMP.h / 2} width={LAMP.w} height={LAMP.h} rx="2.6" />
+        <rect class="lamp {item.color ?? ''}" class:lit={lit && !textless} class:focus={on && (!lit || textless)} x={-LAMP.w / 2} y={-LAMP.h / 2} width={LAMP.w} height={LAMP.h} rx="2.6" />
         {#each words.lines as line, n (n)}
           <text
             class="lamp-text {item.color ?? ''}"
@@ -263,6 +267,10 @@ What the step asks for, never the simulator's state (decision 0006).
      against the panel, labels at 4.5:1, in both themes. */
   /* Sections sit on the panel background, as on the boards, so the blue of a changed control
      stands out against it (design review F2). */
+  /* The preview draws no text at all. */
+  .textless text {
+    display: none;
+  }
   .frame {
     fill: var(--panel-bg);
     stroke: var(--panel-stroke);

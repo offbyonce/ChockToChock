@@ -51,7 +51,8 @@ export const COLOR = {
     "lit-amber": "#f2bd5c",
     "on-lit-amber": "#3a2a00",
     "popover-border": "#34404f",
-    "overlay-shadow": "0 24px 60px rgba(0, 0, 0, 0.55)"
+    "overlay-shadow": "0 24px 60px rgba(0, 0, 0, 0.55)",
+    "slideout-scrim": "rgba(6, 8, 12, 0.45)"
   },
   "light": {
     "bg": "#f5f7fa",
@@ -99,7 +100,8 @@ export const COLOR = {
     "lit-amber": "#f2bd5c",
     "on-lit-amber": "#3a2a00",
     "popover-border": "#d3d9e1",
-    "overlay-shadow": "0 24px 60px rgba(16, 24, 40, 0.18)"
+    "overlay-shadow": "0 24px 60px rgba(16, 24, 40, 0.18)",
+    "slideout-scrim": "rgba(20, 26, 36, 0.28)"
   }
 } as const;
 
