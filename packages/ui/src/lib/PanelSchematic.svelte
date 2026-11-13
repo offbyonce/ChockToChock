@@ -125,29 +125,37 @@ smallest size that keeps 11 px labels, scrolls sideways, and offers a full-width
   let wrap = $state<HTMLDivElement | null>(null);
   $effect(() => {
     if (!wrap || !scale.overflow) return;
-    // The step's controls, edge to edge (a screen wider than the card counts from its left edge).
+    const el = wrap;
+    void width;
+    // After the drawing has taken its new size (wide screens rescale it after the first frame).
+    const frame = requestAnimationFrame(() => openOnTargets(el));
+    return () => cancelAnimationFrame(frame);
+  });
+  function openOnTargets(wrap: HTMLDivElement) {
+    // The step's controls, edge to edge (a screen wider than the card counts from its left edge),
+    // with the left edge of the section each is in.
     const spans = drawn.flatMap((s) =>
       s.items.flatMap((it, i) =>
         targets.some((t) => t.section === s.id && t.item === i)
-          ? [[s.x + it.x - halfWidth(it), s.x + it.x + halfWidth(it)] as const]
+          ? [{ x0: s.x + it.x - halfWidth(it), x1: s.x + it.x + halfWidth(it), section: s.x }]
           : [],
       ),
     );
     if (!spans.length) return;
-    // Centered when they fit across; otherwise the first of them at the left edge, so the view
-    // opens on a control the step asks for, never on empty panel.
-    const [first, last] = [Math.min(...spans.map((x) => x[0])), Math.max(...spans.map((x) => x[1]))];
     const room = wrap.clientWidth;
-    // From the left edge when that already shows all of them, so no control is cut at the left.
-    if ((last - view.box.x) * scale.k <= room) {
-      wrap.scrollLeft = 0;
-      return;
-    }
-    const fits = (last - first) * scale.k <= room;
-    const at = fits ? (first + last) / 2 : first;
-    const px = (at - view.box.x) * scale.k;
-    wrap.scrollLeft = fits ? px - room / 2 : px - 24;
-  });
+    const px = (x: number) => (x - view.box.x) * scale.k;
+    const [first, last] = [Math.min(...spans.map((x) => x.x0)), Math.max(...spans.map((x) => x.x1))];
+    const lead = spans.find((x) => x.x0 === first) ?? spans[0];
+    // In order: the whole drawing from its left edge; the step's controls centered; the first
+    // control's whole section from its left edge (so no control of it is cut at the left); the
+    // first control itself.
+    let left: number;
+    if (px(last) <= room) left = 0;
+    else if (px(last) - px(first) <= room) left = (px(first) + px(last)) / 2 - room / 2;
+    else if (lead && px(lead.x1) - px(lead.section) <= room) left = px(lead.section) - 8;
+    else left = px(first) - 24;
+    wrap.scrollLeft = Math.max(0, left);
+  }
 
   let sheet = $state<HTMLDialogElement | null>(null);
 
