@@ -92,6 +92,10 @@ const openNarrow = (title) =>
   `(() => { const it = [...document.querySelectorAll(".it")].find((i) => i.textContent.toUpperCase().includes(${JSON.stringify(title)})); if (!it.querySelector("button.narrow")) it.querySelector(".chev").click(); return new Promise((go) => setTimeout(() => { it.querySelector("button.narrow").click(); go(true); }, 300)); })()`;
 /** Show map on the pane's location line (where the drawing took the map figure's room). */
 const showMap = `[...document.querySelectorAll("aside.pane .line button")].find((b) => b.textContent.trim() === "Show map")?.click(); true`;
+/** Taps an element that has no click() of its own (an SVG control's tap target). */
+const tap = (selector) => `document.querySelector(${JSON.stringify(selector)}).dispatchEvent(new MouseEvent("click", { bubbles: true })); true`;
+/** Presses a key on the page, as the pilot would. */
+const press = (key) => `window.dispatchEvent(new KeyboardEvent("keydown", { key: ${JSON.stringify(key)}, bubbles: true })); true`;
 /** The Flow view button in the top bar. */
 const toFlow = `[...document.querySelectorAll("header.top .tool")].find((b) => /flow/i.test(b.textContent)).click(); true`;
 
@@ -192,7 +196,7 @@ const SHOTS = [
     // Both sides show the step opened.
     name: "panel-mcp",
     only: ["desktop", "wide"],
-    app: { hash: "#/phase/before-start", before: [click(".it .row", 2), click(".it .chev", 2)] },
+    app: { hash: "#/phase/before-start", before: [click(".it .row", 2), click(".it .chev", 2), press("p")] },
     base: { hash: "#before-start", before: [click(".it .chev", 1)] },
   },
   {
@@ -200,7 +204,7 @@ const SHOTS = [
     // Both sides show the step opened.
     name: "panel-doors",
     only: "desktop",
-    app: { hash: "#/phase/before-start", before: [click(".it .row", 3), click(".it .chev", 3)] },
+    app: { hash: "#/phase/before-start", before: [click(".it .row", 3), click(".it .chev", 3), press("p")] },
     base: { hash: "#before-start", before: [click(".it .chev", 2)] },
   },
   {
@@ -208,7 +212,7 @@ const SHOTS = [
     // Both sides show the step opened.
     name: "panel-terr",
     only: "desktop",
-    app: { hash: "#/phase/before-start", before: [click(".it .row", 4), click(".it .chev", 4)] },
+    app: { hash: "#/phase/before-start", before: [click(".it .row", 4), click(".it .chev", 4), press("p")] },
     base: { hash: "#before-start", before: [click(".it .chev", 3)] },
   },
   {
@@ -216,7 +220,7 @@ const SHOTS = [
     // Both sides show the step opened.
     name: "panel-fuel",
     only: ["desktop", "wide", "tablet-landscape"],
-    app: { hash: "#/phase/before-start", before: [click(".it .row", 5), click(".it .chev", 5)] },
+    app: { hash: "#/phase/before-start", before: [click(".it .row", 5), click(".it .chev", 5), press("p")] },
     base: { hash: "#before-start", before: [click(".it .chev", 4)] },
   },
   {
@@ -228,7 +232,7 @@ const SHOTS = [
       before: [
         stepNamed("BAT DISCHARGE, TR UNIT", ".row"),
         stepNamed("BAT DISCHARGE, TR UNIT", ".chev"),
-        paneToControls("aside.pane"),
+        press("p"),
       ],
     },
     base: { hash: "#preflight", before: [stepNamed("BAT DISCHARGE, TR UNIT", ".chev"), paneToControls("#pane")] },
@@ -238,38 +242,20 @@ const SHOTS = [
     // parking brake and start levers (control stand, 725).
     name: "panel-lights",
     only: ["desktop", "wide"],
-    app: { hash: "#/phase/preflight", before: [stepNamed("STAB OUT OF TRIM LIGHT", ".row"), stepNamed("STAB OUT OF TRIM LIGHT", ".chev"), paneToControls("aside.pane")] },
+    app: { hash: "#/phase/preflight", before: [stepNamed("STAB OUT OF TRIM LIGHT", ".row"), stepNamed("STAB OUT OF TRIM LIGHT", ".chev"), press("p")] },
     base: { hash: "#preflight", before: [stepNamed("STAB OUT OF TRIM LIGHT", ".chev"), paneToControls("#pane")] },
-  },
-  {
-    // The fuel pumps' "See the whole panel larger" sheet, which opens on the step's controls.
-    name: "panel-fuel-larger",
-    only: ["desktop", "tablet-landscape"],
-    app: { hash: "#/phase/before-start", before: [click(".it .row", 5), click(".it .chev", 5), click("aside .larger")] },
   },
   {
     // The aft overhead (IRS mode selectors; the pane unscrolled, title and Check in frame) and the pilot station (oxygen mask), so every panel in
     // the pack has a drawing in the review set. No 3.0 counterpart is shot for these.
     name: "panel-aft",
     only: ["desktop", "wide"],
-    app: { hash: "#/phase/preflight", before: [stepExact("IRS", ".row"), stepExact("IRS", ".chev")] },
+    app: { hash: "#/phase/preflight", before: [stepExact("IRS", ".row"), stepExact("IRS", ".chev"), press("p")] },
   },
   {
     name: "panel-seat",
     only: ["desktop", "wide"],
-    app: { hash: "#/phase/preflight", before: [stepExact("OXYGEN", ".row"), stepExact("OXYGEN", ".chev"), paneToControls("aside.pane")] },
-  },
-  {
-    // Where is this? for the fuel pumps: the side and seat views and the flight deck (decision 0023).
-    name: "where",
-    only: ["desktop", "wide", "tablet-landscape"],
-    app: { hash: "#/phase/before-start", before: [click(".it .row", 5), click(".it .chev", 5), click(".where-link, .where-btn")] },
-  },
-  {
-    // The map hidden (MapHidden board): Hide map turns Map in steps to On request.
-    name: "map-hidden",
-    only: ["desktop"],
-    app: { hash: "#/phase/before-start", before: [click(".it .row", 5), click(".it .chev", 5), showMap, click(".pane .hide")] },
+    app: { hash: "#/phase/preflight", before: [stepExact("OXYGEN", ".row"), stepExact("OXYGEN", ".chev"), press("p")] },
   },
   {
     // Tablet portrait and phone keep a dialog for Where is this? until batch 5.
@@ -280,14 +266,21 @@ const SHOTS = [
   {
     name: "panel-brake",
     only: ["desktop", "wide"],
-    app: { hash: "#/phase/gpu-power", before: [stepNamed("PARKING BRAKE", ".row"), stepNamed("PARKING BRAKE", ".chev"), paneToControls("aside.pane")] },
+    app: { hash: "#/phase/gpu-power", before: [stepNamed("PARKING BRAKE", ".row"), stepNamed("PARKING BRAKE", ".chev"), press("p")] },
     base: { hash: "#gpu-power", before: [stepNamed("PARKING BRAKE", ".chev"), paneToControls("#pane")] },
   },
   // Board pairs: each screen in its board's step and state, shot at the board's size and whole
   // (the full page and the side pane top to bottom), for docs/design/boards side-by-sides.
   { name: "board-checklist", full: true, only: ["desktop", "wide", "tablet-landscape"], app: { hash: "#/phase/before-start", before: BOARD_STATE } },
-  { name: "board-maphidden", full: true, only: ["desktop"], app: { hash: "#/phase/before-start", before: [...BOARD_STATE, showMap, click(".pane .hide")] } },
-  { name: "board-where", full: true, only: ["desktop", "tablet-landscape"], app: { hash: "#/phase/before-start", before: [...BOARD_STATE, click(".where-link, .where-btn")] } },
+  // Round 6's slide-out: Show panel (P), Where is this? (W), and a control's card (tap CTR L).
+  { name: "board-panel", full: true, only: ["desktop", "wide", "tablet-landscape"], app: { hash: "#/phase/before-start", before: [...BOARD_STATE, press("p")] } },
+  { name: "board-where", full: true, only: ["desktop", "tablet-landscape"], app: { hash: "#/phase/before-start", before: [...BOARD_STATE, press("w")] } },
+  {
+    name: "board-control",
+    full: true,
+    only: ["desktop", "tablet-landscape"],
+    app: { hash: "#/phase/before-start", before: [...BOARD_STATE, press("p"), tap('.slide-box rect.hit[aria-label="CTR L: what it is"]')] },
+  },
   { name: "board-flow", full: true, only: ["desktop"], app: { hash: "#/phase/before-start", before: [...BOARD_STATE, toFlow] } },
   { name: "board-settings", full: true, only: ["desktop"], app: { hash: "#/settings" } },
   {

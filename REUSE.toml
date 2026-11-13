@@ -42,6 +42,13 @@ precedence = "override"
 SPDX-FileCopyrightText = "2020-2026 Paweł Kuna"
 SPDX-License-Identifier = "MIT"
 
+# Icons drawn on the approved boards (docs/design/round6), copied as drawn.
+[[annotations]]
+path = ["packages/ui/src/icons/board/*.svg"]
+precedence = "override"
+SPDX-FileCopyrightText = "2026 offbyonce"
+SPDX-License-Identifier = "MIT"
+
 # The approved interface design handoff (docs/design), kept as delivered, without comment headers.
 [[annotations]]
 path = [

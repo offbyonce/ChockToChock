@@ -12,7 +12,7 @@ use ts_rs::TS;
 
 use crate::flight::{FLIGHT_FORMAT, Flight};
 #[cfg(test)]
-use crate::settings::{MapInSteps, TextSize};
+use crate::settings::TextSize;
 use crate::settings::{SETTINGS_FORMAT, Settings};
 
 /// What reading saved data found.
@@ -38,7 +38,18 @@ pub(crate) type Migration = fn(Value) -> Result<Value, String>;
 /// Migrations for [`Flight`]: entry `i` turns format `i + 1` into format `i + 2`.
 const FLIGHT_MIGRATIONS: &[Migration] = &[];
 /// Migrations for [`Settings`], indexed the same way.
-const SETTINGS_MIGRATIONS: &[Migration] = &[settings_1_to_2, settings_2_to_3];
+const SETTINGS_MIGRATIONS: &[Migration] = &[settings_1_to_2, settings_2_to_3, settings_3_to_4];
+
+/// Format 4 replaces Map in steps with Panel preview in steps (round 6): Off stays Off, every
+/// other choice becomes On.
+fn settings_3_to_4(mut value: Value) -> Result<Value, String> {
+    let object = value.as_object_mut().ok_or("settings are not an object")?;
+    let mode = object.remove("mapInSteps");
+    object.remove("mapBeforeHide");
+    let off = mode.as_ref().and_then(Value::as_str) == Some("off");
+    object.insert("panelPreview".into(), Value::from(!off));
+    Ok(value)
+}
 
 /// Format 3 replaces the map On/Off with Map in steps: On becomes Always, Off stays Off.
 fn settings_2_to_3(mut value: Value) -> Result<Value, String> {
@@ -167,12 +178,11 @@ mod tests {
     }
 
     #[test]
-    fn settings_from_format_2_turn_the_map_switch_into_map_in_steps() {
-        for (on, mode) in [(true, MapInSteps::Always), (false, MapInSteps::Off)] {
+    fn settings_from_format_2_turn_the_map_switch_into_the_panel_preview() {
+        for (on, preview) in [(true, true), (false, false)] {
             let mut old = serde_json::to_value(Settings::default()).unwrap();
             let object = old.as_object_mut().unwrap();
-            object.remove("mapInSteps");
-            object.remove("mapBeforeHide");
+            object.remove("panelPreview");
             object.insert("flightDeckMap".into(), json!(on));
             object.insert("format".into(), json!(2));
             let Loaded::Ready {
@@ -183,7 +193,33 @@ mod tests {
                 panic!("format 2 settings did not load");
             };
             assert_eq!(migrated_from, Some(2));
-            assert_eq!(value.map_in_steps, mode);
+            assert_eq!(value.panel_preview, preview);
+        }
+    }
+
+    #[test]
+    fn settings_from_format_3_keep_off_and_turn_every_other_map_choice_on() {
+        for (mode, preview) in [
+            ("always", true),
+            ("new_panel", true),
+            ("on_request", true),
+            ("off", false),
+        ] {
+            let mut old = serde_json::to_value(Settings::default()).unwrap();
+            let object = old.as_object_mut().unwrap();
+            object.remove("panelPreview");
+            object.insert("mapInSteps".into(), json!(mode));
+            object.insert("mapBeforeHide".into(), json!("new_panel"));
+            object.insert("format".into(), json!(3));
+            let Loaded::Ready {
+                value,
+                migrated_from,
+            } = load_settings(&old.to_string())
+            else {
+                panic!("format 3 settings did not load");
+            };
+            assert_eq!(migrated_from, Some(3));
+            assert_eq!(value.panel_preview, preview, "{mode}");
         }
     }
 

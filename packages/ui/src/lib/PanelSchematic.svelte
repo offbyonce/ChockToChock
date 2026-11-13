@@ -31,6 +31,7 @@ smallest size that keeps 11 px labels, scrolls sideways, and offers a full-width
     fits = $bindable(),
     ownButton = true,
     room,
+    ownCard = true,
     wider = $bindable(),
     scroller = $bindable(),
   }: {
@@ -65,6 +66,9 @@ smallest size that keeps 11 px labels, scrolls sideways, and offers a full-width
      * 11 px labels or more, at its own height (taller than the room, the slide-out's body
      * scrolls); wider than the room, it scrolls sideways (round 6, gate reviews). */
     room?: { width: number; height: number } | undefined;
+    /** Shows its own control card under the drawing; the slide-out shows round 6's instead and
+     * reads `picked`. */
+    ownCard?: boolean | undefined;
     /** Out: the drawing is wider than its room (the slide-out shows a navigator). */
     wider?: boolean | undefined;
     /** Out: the element that scrolls the drawing, for the navigator. */
@@ -294,11 +298,11 @@ smallest size that keeps 11 px labels, scrolls sideways, and offers a full-width
     aria-label="{title} panel, schematic.{described ? ` This step: ${described}.` : ''}"
   >
     {#each drawn as s (s.id)}
-      <PanelSection section={s} {targets} {guardClosed} band={bandOf(s)} frame={view.frames.get(s.id)} titled={view.titled} framed={large || !around || view.titled} k={K} hit={index ? (44 * pageScale) / scale.k : 0} onPick={index ? (section, item) => (picked = { section, item }) : undefined} />
+      <PanelSection section={s} {targets} {guardClosed} band={bandOf(s)} frame={view.frames.get(s.id)} titled={view.titled} framed={large || !around || view.titled} k={K} hit={index ? (44 * pageScale) / scale.k : 0} onPick={index ? (section, item) => (picked = { section, item }) : undefined} selected={picked?.section === s.id ? picked.item : null} />
     {/each}
   </svg>
 </div>
-{#if card}
+{#if card && ownCard}
   <div class="control-card" role="region" aria-label="{card.item.label}">
     <div class="card-head">
       <b>{card.item.label}</b>

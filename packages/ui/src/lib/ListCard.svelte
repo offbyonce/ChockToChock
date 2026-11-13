@@ -2,15 +2,17 @@
 SPDX-FileCopyrightText: 2026 offbyonce
 SPDX-License-Identifier: MIT
 
-One list as a card, as in 3.0: kind and title, the steps, and at the end the completion call
-(step 7). The call shows only when no step is still open; skipped steps keep a list open and say
-so instead.
+One list as a card (Checklist board): the title with its done and skipped counts and, once a step
+is ticked, Clear ticks (Undo after, owner); the steps, the done ones at the top folded to one line
+with Show; and at the end the completion call (3.0). A challenge-and-response checklist stays
+folded to one line with its count until the phase's procedure is done.
 -->
 <script lang="ts">
   import type { Checklist, Detail, Flight, PhaseList } from "@chocktochock/bindings";
   import { marksStep } from "./marked-step";
   import type { PackIndex } from "../pack-index";
   import Icon from "./Icon.svelte";
+  import { stepTitle } from "./sentence";
   import StepItem from "./StepItem.svelte";
 
   let {
@@ -29,6 +31,8 @@ so instead.
     onBlank,
     onSelect,
     onClear,
+    onEssentials,
+    folded = false,
   }: {
     index: PackIndex;
     list: PhaseList;
@@ -47,39 +51,51 @@ so instead.
     onBlank: (id: string, index: number, value: string) => void;
     onSelect: (id: string) => void;
     onClear: (list: string) => void;
+    /** Adds a step to Essentials or removes it (the row menu). */
+    onEssentials?: ((id: string, add: boolean) => void) | undefined;
+    /** A checklist whose procedure is not done yet: folded to one line until opened. */
+    folded?: boolean;
   } = $props();
 
-  /** Clear asks once: the first press turns it into "Clear all?" for a few seconds. */
-  let confirming = $state(false);
-  let timer: ReturnType<typeof setTimeout> | undefined;
-  function clear(): void {
-    if (!confirming) {
-      confirming = true;
-      timer = setTimeout(() => (confirming = false), 4000);
-      return;
-    }
-    clearTimeout(timer);
-    confirming = false;
-    onClear(list.id);
-  }
   let touched = $derived(list.progress.done + list.progress.skipped > 0);
   /** Showing the whole list in Essentials, as 3.0's "Show 3 more steps from Full". */
   let more = $state(false);
   let rows = $derived(more && fullList ? fullList.steps : list.steps);
 
-  const KIND = { checklist: "Checklist", flow: "Procedure", "non-normal": "Non-normal" } as const;
+  /** The done steps at the top fold into one line, with Show (Checklist board). */
+  let lead = $derived.by(() => {
+    let n = 0;
+    while (rows[n]?.state === "done") n++;
+    return n;
+  });
+  let showDone = $state(false);
+  let shown = $derived(showDone || lead < 2 ? rows : rows.slice(lead));
+  let first = $derived(lead ? index.step(rows[0]?.id ?? "") : undefined);
+  let last = $derived(lead ? index.step(rows[lead - 1]?.id ?? "") : undefined);
+  // svelte-ignore state_referenced_locally
+  let openList = $state(!folded);
+  $effect(() => {
+    if (!folded) openList = true;
+  });
+  let counts = $derived(
+    `${list.progress.done} of ${list.progress.total} done${list.progress.skipped ? ` · ${list.progress.skipped} skipped` : ""}`,
+  );
 </script>
 
+{#if !openList}
+  <!-- Folded until the procedure is done (Checklist board): one line with its count. -->
+  <button class="card folded" type="button" aria-expanded="false" onclick={() => (openList = true)}>
+    <span class="ft">{list.title}</span>
+    <span class="fd">Challenge and response · opens when the procedure is done</span>
+    <span class="fill"></span>
+    <span class="fd">{list.progress.done} of {list.progress.total} ⌄</span>
+  </button>
+{:else}
 <section class="card" aria-labelledby="list-{list.id}">
   <header>
-    <span class="tag {list.kind}">{KIND[list.kind]}</span>
     <h2 id="list-{list.id}">{list.title}</h2>
-    <span class="count mono" aria-label="{list.progress.done} of {list.progress.total} done">
-      {list.progress.done}/{list.progress.total}
-    </span>
-    <button class="clear" class:confirming type="button" disabled={!touched} onclick={clear}>
-      {confirming ? "Clear all?" : "Clear"}
-    </button>
+    <span class="count">{counts}</span>
+    {#if touched}<button class="clear" type="button" onclick={() => onClear(list.id)}>Clear ticks</button>{/if}
   </header>
   {#if source?.when || source?.why}
     <div class="when">
@@ -87,8 +103,15 @@ so instead.
       {#if source?.why}<p><b>Why</b> · {source.why}</p>{/if}
     </div>
   {/if}
+  {#if lead >= 2}
+    <div class="done-group">
+      <span class="ok"><Icon name="check" /></span>
+      <span class="dg">{lead} done · {first ? stepTitle(index, first) : ""} to {last ? stepTitle(index, last) : ""}</span>
+      <button class="show" type="button" aria-expanded={showDone} onclick={() => (showDone = !showDone)}>{showDone ? "Hide" : "Show"}</button>
+    </div>
+  {/if}
   <ol class="items">
-    {#each rows as row (row.id)}
+    {#each shown as row (row.id)}
       {@const step = index.step(row.id)}
       {#if step}
         <StepItem
@@ -106,6 +129,7 @@ so instead.
           onUnskip={() => onUnskip(row.id)}
           onBlank={(n, v) => onBlank(row.id, n, v)}
           onSelect={() => onSelect(row.id)}
+          onEssentials={onEssentials ? (add) => onEssentials(row.id, add) : undefined}
         />
       {/if}
     {/each}
@@ -124,63 +148,86 @@ so instead.
     </p>
   {/if}
 </section>
+{/if}
 
 <style>
+  /* The card header (Checklist board): 52 tall, title and counts. */
   header {
     display: flex;
     align-items: center;
     gap: var(--space-3);
-    padding: var(--space-3) var(--space-4);
-    border-bottom: var(--border-thin) solid var(--color-border);
+    min-height: calc(var(--size-touch-min) + var(--space-2));
+    padding: 0 var(--space-4) 0 calc(var(--space-4) + var(--space-1));
+    border-bottom: var(--border-thin) solid var(--color-line);
   }
   h2 {
+    flex: 1;
     margin: 0;
     font-size: var(--font-size-body);
     font-weight: var(--weight-semibold);
   }
-  .tag {
-    padding: var(--space-1) var(--space-2);
-    border-radius: var(--radius-pill);
-    background: var(--color-surface-2);
-    color: var(--color-text-secondary);
-    font-size: var(--font-size-caption);
-    font-weight: var(--weight-semibold);
-    white-space: nowrap;
-  }
-  .tag.checklist {
-    background: var(--color-surface-2);
-    color: var(--color-done);
-  }
-  .tag.non-normal {
-    background: var(--color-danger-soft);
-    color: var(--color-danger-text);
+  .count {
+    color: var(--color-text-muted);
+    font-size: var(--font-size-secondary);
   }
   .clear {
-    position: relative;
+    min-height: var(--size-touch-min);
+    padding: 0 var(--space-1);
+    border: 0;
+    background: none;
+    color: var(--color-link);
+    font: inherit;
+    font-size: var(--font-size-secondary);
+  }
+  .done-group {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    min-height: var(--size-touch-min);
+    padding: 0 var(--space-4) 0 calc(var(--space-4) + var(--space-1));
+    border-bottom: var(--border-thin) solid var(--color-line);
     color: var(--color-text-muted);
     font-size: var(--font-size-secondary);
   }
-  .clear:hover:not(:disabled) {
+  .ok {
+    display: inline-flex;
+    color: var(--color-done);
+  }
+  .ok :global(svg) {
+    width: var(--size-icon-small);
+    height: var(--size-icon-small);
+  }
+  .dg {
+    flex: 1;
+  }
+  .show {
+    min-height: var(--size-touch-min);
+    border: 0;
+    background: none;
+    color: var(--color-link);
+    font: inherit;
+  }
+  .folded {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    width: 100%;
+    min-height: calc(var(--size-touch-min) + var(--space-2));
+    padding: 0 var(--space-4) 0 calc(var(--space-4) + var(--space-1));
     color: var(--color-text);
+    font: inherit;
+    text-align: left;
   }
-  .clear:disabled {
-    cursor: default;
-  }
-  .clear.confirming {
-    color: var(--color-danger-text);
+  .ft {
+    font-size: var(--font-size-body);
     font-weight: var(--weight-semibold);
   }
-  .clear::after {
-    position: absolute;
-    inset: 50% calc(-1 * var(--space-2)) auto;
-    height:  var(--size-touch-min);
-    content: "";
-    transform: translateY(-50%);
-  }
-  .count {
-    margin-left: auto;
+  .fd {
     color: var(--color-text-muted);
     font-size: var(--font-size-secondary);
+  }
+  .fill {
+    flex: 1;
   }
   .when {
     margin: 0;

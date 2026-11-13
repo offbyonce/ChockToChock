@@ -69,6 +69,7 @@
   --size-focus-ring: 1.5px;
   --gutter: 1rem; /* 16, phone */
   --side-pane: 27.5rem; /* tablet landscape; desktop below */
+  --slideout: 43.75rem; /* tablet landscape; desktop below */
 }
 
 /* Colors before theme/tokens.ts applies the chosen theme and dimming: the device's theme. */
@@ -121,6 +122,7 @@
   --color-overlay-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
   --color-slideout-scrim: rgba(6, 8, 12, 0.45);
   --color-popover-surface: #1b212b;
+  --color-toggle-knob: #ffffff;
   --panel-bg: #161b23;
   --panel-frame: #2a323e;
   --panel-fill: #1b212b;
@@ -185,6 +187,7 @@
     --color-overlay-shadow: 0 24px 60px rgba(16, 24, 40, 0.18);
     --color-slideout-scrim: rgba(20, 26, 36, 0.28);
     --color-popover-surface: #ffffff;
+    --color-toggle-knob: #ffffff;
     --panel-bg: #ffffff;
     --panel-frame: #d3d9e1;
     --panel-fill: #e3e7ec;
@@ -209,5 +212,6 @@
   :root {
     --gutter: 2rem; /* 32 */
     --side-pane: 32.5rem; /* 520 */
+    --slideout: 52.5rem; /* 840 */
   }
 }

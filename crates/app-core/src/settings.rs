@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize};
 use ts_rs::TS;
 
 /// The saved format of [`Settings`]. Raise it, with a migration and tests, when the shape changes.
-pub const SETTINGS_FORMAT: u32 = 3;
+pub const SETTINGS_FORMAT: u32 = 4;
 
 /// The highest dimming step; 0 is full brightness.
 pub const MAX_DIMMING: u8 = 4;
@@ -49,22 +49,6 @@ impl TextSize {
             Self::Largest => 130,
         }
     }
-}
-
-/// When a step's side pane shows the flight deck map (Settings › Map in steps).
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Default, Serialize, Deserialize, TS)]
-#[serde(rename_all = "snake_case")]
-#[ts(export)]
-pub enum MapInSteps {
-    /// On every step with a control.
-    Always,
-    /// When the step's panel differs from the previous step's.
-    #[default]
-    NewPanel,
-    /// Only when the pilot asks (Show map); Hide map sets this.
-    OnRequest,
-    /// Never; Where is this? still opens.
-    Off,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Default, Serialize, Deserialize, TS)]
@@ -115,9 +99,9 @@ pub struct Settings {
     pub essentials: bool,
     /// Pack id to the pilot's changes to Essentials.
     pub essentials_changes: BTreeMap<String, EssentialsChanges>,
-    pub map_in_steps: MapInSteps,
-    /// The choice before Hide map, which Show map restores.
-    pub map_before_hide: MapInSteps,
+    /// Settings › Panel preview in steps (round 6): the label-free panel beside each step. Show
+    /// panel and Where is this? always work.
+    pub panel_preview: bool,
     pub chime: bool,
     pub simbrief_user: Option<String>,
     pub load_plan_on_open: bool,
@@ -134,8 +118,7 @@ impl Default for Settings {
             list_view: ListView::default(),
             essentials: false,
             essentials_changes: BTreeMap::new(),
-            map_in_steps: MapInSteps::default(),
-            map_before_hide: MapInSteps::default(),
+            panel_preview: true,
             chime: true,
             simbrief_user: None,
             load_plan_on_open: false,

@@ -36,6 +36,7 @@ What the step asks for, never the simulator's state (decision 0006).
     k,
     hit = 0,
     onPick,
+    selected,
   }: {
     section: PanelSection;
     targets: ItemTarget[];
@@ -61,6 +62,8 @@ What the step asks for, never the simulator's state (decision 0006).
     hit?: number;
     /** Tapping a control opens its detail card. */
     onPick?: ((section: string, item: number) => void) | undefined;
+    /** The tapped control, ringed while its card is open (solid, never dashed). */
+    selected?: number | null | undefined;
   } = $props();
 
   /** Room above a cut-down section for its title, so it never overlaps the top row. */
@@ -249,6 +252,23 @@ What the step asks for, never the simulator's state (decision 0006).
           {/each}
         {/if}
       {/if}
+      {#if selected === i}
+        {@const hw = item.kind === "light" ? LAMP.w / 2 : halfWidth(item)}
+        {@const hh = item.kind === "light" ? LAMP.h / 2 : half(item)}
+        {@const name = layout.items.get(i)?.name}
+        {@const low = name ? name.y + name.lines.length * ((name.px * 1.15) / k) : hh}
+        <!-- Around the control, its position labels and its name, as the board rings CTR L. -->
+        {@const labels = layout.items.get(i)?.positions ?? []}
+        {@const px = (PX.pos * layout.scale) / k}
+        {@const reach = (l: { x: number; anchor: string; n: number }) => {
+          const w = em(positionsOf(item)[l.n] ?? "") * px;
+          return l.anchor === "start" ? [l.x, l.x + w] : l.anchor === "end" ? [l.x - w, l.x] : [l.x - w / 2, l.x + w / 2];
+        }}
+        {@const nameW = name ? Math.max(...name.lines.map((line) => em(line))) * (name.px / k) : 0}
+        {@const x0 = Math.min(-hw, -nameW / 2, ...labels.map((l) => reach(l)[0] ?? 0)) - 4}
+        {@const x1 = Math.max(hw, nameW / 2, ...labels.map((l) => reach(l)[1] ?? 0)) + 4}
+        <rect class="selection" x={x0} y={-hh - 5} width={x1 - x0} height={low + hh + 8} rx="4" />
+      {/if}
       {#if hit > 0 && onPick}
         {@const hw = Math.max(halfWidth(item), hit / 2)}
         {@const hh = Math.max(half(item), hit / 2)}
@@ -276,6 +296,12 @@ What the step asks for, never the simulator's state (decision 0006).
      against the panel, labels at 4.5:1, in both themes. */
   /* Sections sit on the panel background, as on the boards, so the blue of a changed control
      stands out against it (design review F2). */
+  /* The tapped control's selection ring (round 6, R6Control): solid. */
+  .selection {
+    fill: none;
+    stroke: var(--panel-changed);
+    stroke-width: 2;
+  }
   .halo {
     fill: none;
     stroke: var(--panel-changed);

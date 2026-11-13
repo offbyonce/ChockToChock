@@ -101,7 +101,7 @@ pack (its `at` locators read here, for review only). `?view=gate&theme=dark|ligh
           <section class="row" data-slideout="{r.section?.id}-{room.name === '1440' ? 'desktop' : 'tablet'}">
             <h2>Slide-out, {room.name} ({room.width} × {room.height}) · {r.step.text}</h2>
             <div class="slot" style:width="{room.width}px" style:height="{room.height}px">
-              <Slideout {index} step={r.step} number={(r.step.number ?? 1)} targets={r.targets} onClose={() => {}} />
+              <Slideout {index} step={r.step} number={r.step.number ?? 1} targets={r.targets} opening={{ entry: "panel" }} onClose={() => {}} onGo={() => {}} />
             </div>
           </section>
         {/each}

@@ -42,6 +42,10 @@ export type PackIndex = {
   glossary(term: string): string | undefined;
   /** A light's meaning (its note), by panel, section and item index. */
   lightMeaning(panel: string, section: string, item: number): string | undefined;
+  /** The phase a step's list is in, by id. */
+  phaseOf(stepId: string): string | undefined;
+  /** The steps whose targets name a panel item, each with its phase's title, in pack order. */
+  usedIn(panel: string, section: string, item: number): { step: Step; phase: string }[];
 };
 
 export type MapRegion = { region: OverviewRegion | null; areas: OverviewArea[] };
@@ -79,17 +83,43 @@ export function indexPack(pack: FlatPack): PackIndex {
   const glossary = new Map((pack.content.glossary?.terms ?? []).map((t) => [t.term, t.meaning]));
   const lightNotes = new Map((pack.content.lights?.lights ?? []).map((n) => [n.locator, n.meaning]));
 
+  /** The locator a step target uses for an item: "oh/fuel/AFT 1/1", the n-th of its label. */
+  const locator = (panel: string, section: string, item: number) => {
+    const items = sections.get(section)?.items ?? [];
+    const it = items[item];
+    if (!it) return null;
+    const n = items.slice(0, item + 1).filter((o) => o.label === it.label).length;
+    return `${panel}/${section}/${it.label}/${n}`;
+  };
+  const phaseOfList = new Map<string, string>();
+  const phaseIdOfList = new Map<string, string>();
+  for (const phase of pack.content.phases?.phases ?? []) {
+    for (const list of phase.lists) {
+      phaseOfList.set(list, phase.title);
+      phaseIdOfList.set(list, phase.id);
+    }
+  }
+  const listOfStep = new Map<string, string>();
+  for (const list of pack.lists) for (const step of list.steps) listOfStep.set(step.id, list.id);
+
   return {
     name: pack.manifest.name,
+    phaseOf: (stepId) => phaseIdOfList.get(listOfStep.get(stepId) ?? ""),
+    usedIn(panel, section, item) {
+      const at = locator(panel, section, item);
+      if (!at) return [];
+      return pack.lists.flatMap((list) =>
+        list.steps
+          .filter((step) => (step.targets ?? []).some((t) => t.at === at))
+          .map((step) => ({ step, phase: phaseOfList.get(list.id) ?? list.title })),
+      );
+    },
     control: (id) => controls.get(id),
     glossary: (term) => glossary.get(term),
     lightMeaning(panel, section, item) {
-      const items = sections.get(section)?.items ?? [];
-      const it = items[item];
-      if (!it) return undefined;
       // The n-th item with that label in the section, counted from 1, as light notes name them.
-      const n = items.slice(0, item + 1).filter((o) => o.label === it.label).length;
-      return lightNotes.get(`${panel}/${section}/${it.label}/${n}`);
+      const at = locator(panel, section, item);
+      return at ? lightNotes.get(at) : undefined;
     },
     step: (id) => steps.get(id),
     place(step) {

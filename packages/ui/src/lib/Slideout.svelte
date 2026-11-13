@@ -7,36 +7,57 @@ the step's panel, labeled at 11 px or more, and where it is. It fills the box it
 (beside the side pane, over the step list, below the flight strip). In order: a switcher when the
 step's controls are on several panels; the header (the step, the panel's name, where it is, Esc
 and close); The panel, with a navigator above it when it is wider than the slide-out (owner,
-gate reviews); then Where it is, folded to one line. A panel taller than the room keeps its
-height and the body scrolls as one surface, opening with the step's controls in view; nothing
-inside scrolls up and down on its own.
+gate reviews); a tapped control's card under it; then Where it is (folded to one line, or
+expanded: the plain-language line, the side and seat views and the area map). How it opens depends
+on the entry point: the panel (Show panel, a preview, P), Where it is expanded (the location line,
+W), or a control's card. A panel taller than the room keeps its height and the body scrolls as one
+surface, opening with the step's controls in view; nothing inside scrolls up and down on its own.
 -->
 <script lang="ts">
   import type { ItemTarget, Step } from "@chocktochock/bindings";
   import type { PackIndex } from "../pack-index";
   import Icon from "./Icon.svelte";
+  import type { Opening } from "./opening";
+  import OverviewMap from "./OverviewMap.svelte";
   import PanelNavigator from "./PanelNavigator.svelte";
+  import { positionsOf } from "./panel-layout";
   import PanelSchematic from "./PanelSchematic.svelte";
   import { panelCaption } from "./panel-name";
   import { stepTitle } from "./sentence";
+  import ViewDrawing from "./ViewDrawing.svelte";
+  import WholeDeck from "./WholeDeck.svelte";
 
   let {
     index,
     step,
     number,
     targets,
+    opening,
     panel: chosen = $bindable(),
     onClose,
+    onGo,
   }: {
     index: PackIndex;
     step: Step;
     /** The step's number in its list ("Step 7"). */
     number: number;
     targets: ItemTarget[];
+    /** How it opened: which section shows first. */
+    opening: Opening;
     /** The panel shown, by id, when the step's controls are on several. */
     panel?: string | undefined;
     onClose: () => void;
+    /** Goes to a step (the control card's Used in links). */
+    onGo: (stepId: string) => void;
   } = $props();
+
+  // svelte-ignore state_referenced_locally
+  let whereOpen = $state(opening.entry === "where");
+  // svelte-ignore state_referenced_locally
+  let picked = $state<{ section: string; item: number } | null>(opening.entry === "control" ? (opening.control ?? null) : null);
+  let deck = $state(false);
+  // svelte-ignore state_referenced_locally
+  if (opening.panel && !chosen) chosen = opening.panel;
 
   let place = $derived(index.place(step));
   /** One entry per panel the step's controls are on, its own control's first. */
@@ -61,6 +82,29 @@ inside scrolls up and down on its own.
   let region = $derived(zone ? (index.region(zone)?.region ?? null) : null);
   /** The plain-language line, folded: its first sentence. */
   let locate = $derived(region?.locate ? region.locate.split(/(?<=\.)\s/)[0]?.replace(/\.$/, "") : "");
+  /** The tapped control's card (round 6, R6Control). */
+  let card = $derived.by(() => {
+    if (!picked || !shown) return null;
+    const { section, item } = picked;
+    const it = index.section(section)?.items[item];
+    if (!it) return null;
+    const control = (it.controls ?? []).map((id) => index.control(id)).find(Boolean);
+    const positions = positionsOf(it);
+    // A switch reads top to bottom: its first position is up (decision 0021, the real direction).
+    const ways = positions.length === 2 ? ["up", "down"] : positions.length === 3 ? ["up", "center", "down"] : [];
+    const across = it.kind === "toggle_switch" && ways.length ? positions.map((p, n) => `${p} (${ways[n]})`) : positions;
+    const target = targets.find((t) => t.section === section && t.item === item);
+    const setTo = target && target.position != null ? positions[target.position] : null;
+    return {
+      title: control ? `${it.label} · ${control.name.charAt(0).toLowerCase()}${control.name.slice(1)}` : it.label,
+      where: [index.section(section)?.title ? panelCaption([index.section(section)?.title ?? ""]) : null, zone?.area].filter(Boolean).join(" · "),
+      positions: across.join(" · "),
+      inStep: target ? (setTo ? `${setTo}${target.resolved ? " ◆" : ""}` : target.lit ? "Expected on" : target.open ? "Only if the step's condition applies" : "Used by this step") : null,
+      does: it.description || control?.function || null,
+      lit: it.kind === "light" ? index.lightMeaning(shown.panel.id, section, item) : undefined,
+      usedIn: index.usedIn(shown.panel.id, section, item),
+    };
+  });
   /** The decision a resolved control's position came from, for the legend's ◆ entry. */
   let decided = $derived.by(() => {
     if (!targets.some((t) => t.resolved)) return null;
@@ -75,6 +119,7 @@ inside scrolls up and down on its own.
   let legendHeight = $state(0);
   let navHeight = $state(0);
   let rowHeight = $state(0);
+  /** The Where it is row's height (folded, or its heading when expanded): the room leaves it. */
   let foldHeight = $state(0);
   /** The body's own padding, top and bottom. */
   let bodyPad = $state(0);
@@ -133,6 +178,13 @@ inside scrolls up and down on its own.
     void shown;
     if (!el) return;
     const frame = requestAnimationFrame(() => {
+      // Opened from Where is this?: Where it is in view.
+      const whereAt = opening.entry === "where" ? el.querySelector(".where-it-is") : null;
+      if (whereAt) {
+        el.scrollTop += whereAt.getBoundingClientRect().top - el.getBoundingClientRect().top - Number.parseFloat(getComputedStyle(el).paddingTop || "0");
+        edges();
+        return;
+      }
       const on = [...el.querySelectorAll("g.item.on")].map((g) => g.getBoundingClientRect());
       if (on.length) {
         const box = el.getBoundingClientRect();
@@ -179,7 +231,9 @@ inside scrolls up and down on its own.
     <section class="panel" aria-labelledby="so-panel">
       <div class="row" bind:clientHeight={rowHeight}>
         <h3 id="so-panel">The panel</h3>
+        <button class="deck-toggle" type="button" aria-expanded={deck} onclick={() => (deck = !deck)}>Whole flight deck <Icon name="chevron-down" /></button>
       </div>
+      {#if deck && zone}<WholeDeck {index} {zone} />{/if}
       {#if wider && scroller && shown}
         <div class="nav" bind:clientHeight={navHeight}>
           <PanelNavigator panel={shown.panel} focus={shown.focus} {targets} {scroller} title={caption} />
@@ -187,18 +241,71 @@ inside scrolls up and down on its own.
       {/if}
       {#if shown}
         <figure class="figure" bind:this={figure}>
-          <PanelSchematic panel={shown.panel} focus={shown.focus} {targets} large {room} bind:wider bind:scroller />
+          <PanelSchematic panel={shown.panel} focus={shown.focus} {targets} {index} large ownCard={false} {room} bind:picked bind:wider bind:scroller />
           <figcaption bind:clientHeight={legendHeight}>
             Blue: set by this step{#if decided}{" "}· ◆ set by your {decided.toLowerCase()} answer{/if} · lights drawn unlit · tap a control for details
           </figcaption>
         </figure>
       {/if}
     </section>
-    <button class="fold" type="button" aria-expanded="false" bind:clientHeight={foldHeight}>
-      <strong>Where it is</strong>
-      <span>{locate}</span>
-      <Icon name="chevron-down" />
-    </button>
+    {#if card}
+      <section class="card" aria-labelledby="so-card">
+        <div class="card-head">
+          <div class="titles">
+            <h3 id="so-card">{card.title}</h3>
+            <span class="sub">{card.where}</span>
+          </div>
+          <button class="close small" type="button" aria-label="Close control details" onclick={() => (picked = null)}><Icon name="x" /></button>
+        </div>
+        <dl>
+          {#if card.positions}<dt>Positions</dt><dd class="mono">{card.positions}</dd>{/if}
+          {#if card.inStep}<dt>In this step</dt><dd class="mono">{card.inStep}</dd>{/if}
+          {#if card.lit}<dt>When lit</dt><dd>{card.lit}</dd>{/if}
+          {#if card.does}<dt>What it does</dt><dd>{card.does}</dd>{/if}
+          {#if card.usedIn.length}
+            <dt>Used in</dt>
+            <dd class="links">
+              {#each card.usedIn as u (u.step.id)}
+                <button class="lk" type="button" onclick={() => onGo(u.step.id)}>{stepTitle(index, u.step)} · {u.phase}</button>
+              {/each}
+            </dd>
+          {/if}
+        </dl>
+      </section>
+    {/if}
+    {#if whereOpen}
+      <section class="where-it-is" aria-labelledby="so-where">
+        <button id="so-where" class="where-head" type="button" aria-expanded="true" bind:clientHeight={foldHeight} onclick={() => (whereOpen = false)}>
+          <span>Where it is</span>
+          <span class="up"><Icon name="chevron-down" /></span>
+        </button>
+        {#if region?.locate}<p class="locate">{region.locate}</p>{/if}
+        <div class="views">
+          {#if index.overview?.views?.side}
+            <ViewDrawing frame={index.overview.views.side} region={region?.name ?? null} kind="side" title="From the side: how high, how far" />
+          {/if}
+          {#if index.overview?.views?.seat}
+            <ViewDrawing frame={index.overview.views.seat} region={region?.name ?? null} kind="seat" title="From the captain seat: which side" />
+          {/if}
+          {#if zone}
+            <figure class="area-map">
+              <figcaption>On the {(region?.name ?? zone.area).toLowerCase()}</figcaption>
+              <OverviewMap {index} {zone} compact />
+            </figure>
+          {/if}
+        </div>
+        <div class="key" aria-hidden="true">
+          <span><i class="sw here"></i>This area</span>
+          <span><i class="sw other"></i>Other panels</span>
+        </div>
+      </section>
+    {:else}
+      <button class="fold" type="button" aria-expanded="false" bind:clientHeight={foldHeight} onclick={() => (whereOpen = true)}>
+        <strong>Where it is</strong>
+        <span>{locate}</span>
+        <Icon name="chevron-down" />
+      </button>
+    {/if}
   </div>
 </div>
 
@@ -366,5 +473,163 @@ inside scrolls up and down on its own.
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+  }
+  .row h3 {
+    flex: 1;
+  }
+  .deck-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    min-height: var(--size-touch-min);
+    border: 0;
+    background: none;
+    color: var(--color-link);
+    font: inherit;
+    font-size: var(--font-size-secondary);
+  }
+  .deck-toggle[aria-expanded="true"] :global(.icon) {
+    transform: rotate(180deg);
+  }
+  /* The control card (R6Control). */
+  .card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-2) var(--space-3) var(--space-4);
+    border: var(--border-thin) solid var(--color-popover-border);
+    border-radius: var(--radius-control);
+    background: var(--color-surface-2);
+  }
+  .card-head {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-2);
+  }
+  .card h3 {
+    margin: 0;
+    font-size: var(--font-size-body);
+    font-weight: var(--weight-semibold);
+  }
+  .sub {
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-secondary);
+  }
+  .close.small {
+    margin-top: calc(-1 * var(--space-2));
+  }
+  dl {
+    display: grid;
+    grid-template-columns: max-content minmax(0, 1fr);
+    gap: var(--space-1) var(--space-4);
+    margin: 0;
+    font-size: var(--font-size-secondary);
+    line-height: var(--leading-snug);
+  }
+  dt {
+    color: var(--color-text-muted);
+  }
+  dd {
+    margin: 0;
+  }
+  .mono {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-value-mono);
+  }
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 var(--space-2);
+  }
+  .lk {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--size-touch-min);
+    border: 0;
+    background: none;
+    color: var(--color-link);
+    font: inherit;
+    text-align: left;
+  }
+  /* Where it is, expanded (R6Where). */
+  .where-it-is {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+  .where-head {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: var(--size-touch-min);
+    margin: 0 calc(-1 * var(--space-2));
+    padding: 0 var(--space-2);
+    border: 0;
+    border-radius: var(--radius-small);
+    background: none;
+    color: var(--color-text);
+    font: inherit;
+    font-size: var(--font-size-secondary);
+    font-weight: var(--weight-semibold);
+    text-align: left;
+  }
+  .where-head span:first-child {
+    flex: 1;
+  }
+  .up {
+    display: inline-flex;
+    color: var(--color-text-secondary);
+    transform: rotate(180deg);
+  }
+  .locate {
+    margin: 0;
+    font-size: var(--font-size-body);
+    line-height: var(--leading-normal);
+  }
+  .views {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-3);
+  }
+  .area-map {
+    margin: 0;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    padding: var(--space-2) var(--space-3);
+    border: var(--border-thin) solid var(--panel-frame);
+    border-radius: var(--radius-control);
+    background: var(--panel-bg);
+  }
+  .area-map figcaption {
+    font-weight: var(--weight-semibold);
+  }
+  .key {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-1) var(--space-6);
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-caption);
+  }
+  .key span {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+  .sw {
+    display: inline-block;
+    width: var(--space-4);
+    height: calc(var(--space-2) + var(--border-thick));
+    border-radius: var(--border-thick);
+  }
+  .sw.here {
+    border: var(--border-thick) solid var(--panel-changed);
+    background: var(--panel-changed-fill);
+  }
+  .sw.other {
+    border: var(--border-thin) solid var(--panel-stroke);
+    background: var(--panel-fill);
   }
 </style>

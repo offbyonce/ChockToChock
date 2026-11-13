@@ -22,6 +22,8 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
     type Settings,
   } from "@chocktochock/bindings";
   import { getHost, type SavedItem } from "./host";
+  import type { Opening } from "./lib/opening";
+  import Slideout from "./lib/Slideout.svelte";
   import StepPane from "./lib/StepPane.svelte";
   import Drawer from "./lib/Drawer.svelte";
   import FlightStrip from "./lib/FlightStrip.svelte";
@@ -30,13 +32,12 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
   import TopBar from "./lib/TopBar.svelte";
   import { indexPack, type PackIndex } from "./pack-index";
   import KeptNotice from "./lib/KeptNotice.svelte";
-  import OpenStepsCard from "./lib/OpenStepsCard.svelte";
   import OpenStepsPage from "./pages/OpenStepsPage.svelte";
   import PhasePage from "./pages/PhasePage.svelte";
   import ReferencePage from "./pages/ReferencePage.svelte";
   import SettingsPage from "./pages/SettingsPage.svelte";
   import SetupPage from "./pages/SetupPage.svelte";
-  import { currentRoute } from "./route.svelte";
+  import { currentRoute, phaseHref } from "./route.svelte";
   import { applyPalette, applyScale } from "./theme/tokens";
 
   const host = getHost();
@@ -96,7 +97,6 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
   let rail = $state<Rail | null>(null);
   let open = $state<OpenStep[]>([]);
   /** Open steps from the phases before the one on screen. */
-  let behind = $state<OpenStep[]>([]);
   /** When progress or settings were last saved on this device. */
   let savedAt = $state<number | null>(null);
   /** Saved data the app could not use, kept until the pilot decides (decision 0012). */
@@ -187,9 +187,6 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
     let stale = false;
     const s = settings;
     if (!s) return;
-    host.openSteps(packId, f, s, id).then((b) => {
-      if (!stale) behind = b;
-    });
     if (s.essentials) {
       host.phaseView(packId, f, { ...s, essentials: false }, id).then((v) => {
         if (!stale) fullView = v;
@@ -253,16 +250,54 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
     return { step, row, upcoming, total: list?.steps.length ?? rows.length, previous };
   });
 
-  /** Hide map sets Map in steps to On request, keeping the choice for Show map to restore. */
-  function changeMap(how: "hide" | "show"): void {
-    if (!settings) return;
-    const now = settings.mapInSteps;
-    const next =
-      how === "hide"
-        ? { ...settings, mapInSteps: "on_request" as const, mapBeforeHide: now === "on_request" ? settings.mapBeforeHide : now }
-        : { ...settings, mapInSteps: settings.mapBeforeHide === "on_request" ? ("new_panel" as const) : settings.mapBeforeHide };
-    void changeSettings(next);
+  /**
+   * The slide-out (round 6): open beside the side pane, over the step list, below the flight
+   * strip. It closes on the scrim, its X or Esc; P toggles the panel and W opens Where it is.
+   * Focus moves into it when it opens and back to what opened it when it closes.
+   */
+  let slide = $state<Opening | null>(null);
+  let opener: HTMLElement | null = null;
+  function openSlide(how: Opening): void {
+    opener = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    slide = how;
   }
+  function closeSlide(): void {
+    slide = null;
+    opener?.focus();
+    opener = null;
+  }
+  function slideKeys(e: KeyboardEvent): void {
+    const t = e.target instanceof Element ? e.target : null;
+    if (t?.closest("input, textarea, select, [contenteditable]") || e.ctrlKey || e.metaKey || e.altKey) return;
+    if (e.key === "Escape" && slide) {
+      e.preventDefault();
+      closeSlide();
+    } else if ((e.key === "p" || e.key === "P") && pane) {
+      e.preventDefault();
+      if (slide) closeSlide();
+      else openSlide({ entry: "panel" });
+    } else if ((e.key === "w" || e.key === "W") && pane) {
+      e.preventDefault();
+      openSlide({ entry: "where" });
+    }
+  }
+  /** Goes to a step from the control card's Used in: its phase, that step chosen. */
+  function goToStep(id: string): void {
+    const phase = index?.phaseOf(id);
+    slide = null;
+    if (!phase) return;
+    location.hash = phaseHref(phase);
+    selected = id;
+  }
+  // A different step closes the slide-out.
+  let slideStep: string | undefined;
+  $effect(() => {
+    const id = pane?.step.id;
+    if (id !== slideStep) {
+      slideStep = id;
+      slide = null;
+    }
+  });
 
   /** The rail and open steps for the flight and settings. */
   async function refresh(): Promise<void> {
@@ -313,7 +348,27 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
     if (!flight) return;
     const before = flight;
     await act({ type: "clear" });
-    offerUndo("Flight cleared.", before);
+    offerUndo("Flight plan reset.", before);
+  }
+  /** Adds a step to Essentials or takes it out (the row menu), as the pilot's own change. */
+  function toggleEssentials(id: string, add: boolean): void {
+    if (!settings) return;
+    const mine = settings.essentialsChanges[packId] ?? { added: [], removed: [] };
+    const added = new Set(mine.added);
+    const removed = new Set(mine.removed);
+    if (add) {
+      if (removed.has(id)) removed.delete(id);
+      else added.add(id);
+    } else if (added.has(id)) added.delete(id);
+    else removed.add(id);
+    void changeSettings({ ...settings, essentialsChanges: { ...settings.essentialsChanges, [packId]: { added: [...added], removed: [...removed] } } });
+  }
+  /** Clear ticks on one list (its card header), with Undo instead of asking first (owner). */
+  async function clearTicks(list: string): Promise<void> {
+    if (!flight) return;
+    const before = flight;
+    await act({ type: "clearList", list });
+    offerUndo("Ticks cleared.", before);
   }
 
   async function changeSettings(next: Settings): Promise<void> {
@@ -346,6 +401,7 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
   };
 </script>
 
+<svelte:window onkeydown={slideKeys} />
 <div class="shell" data-app-ready={rail && (view || screen === "settings" || screen === "setup" || screen === "open") ? "" : undefined}>
   <TopBar
     aircraft={index?.name ?? ""}
@@ -353,6 +409,7 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
     {stage}
     view={settings && view && (screen === "phase" || screen === "start") ? listView : null}
     {menuOpen}
+    open={open.map((o) => o.phase)}
     onMenu={() => (menuOpen = !menuOpen)}
     onView={changeView}
   />
@@ -361,7 +418,7 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
   {:else if !rail || !settings || !flight || !index}
     <p class="msg">Loading…</p>
   {:else}
-    <PhaseChips phases={stagePhases} current={phaseId} {detail} essentials={settings.essentials} {total} {savedAt} />
+    <PhaseChips phases={stagePhases} current={phaseId} {detail} essentials={settings.essentials} {total} {savedAt} open={open.map((o) => o.phase)} />
     <Drawer
       open={menuOpen}
       {rail}
@@ -373,7 +430,16 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
       version={info?.version ?? null}
       onClose={() => (menuOpen = false)}
     />
-    <div class="app" class:nopane={!pane} class:flow={flow && screen !== "settings" && screen !== "setup"}>
+    {#if view && screen !== "settings" && screen !== "setup" && screen !== "open" && screen !== "reference"}
+      <FlightStrip
+        values={flight.values ?? {}}
+        notes={flight.notes ?? ""}
+        onSet={(field, value) => act({ type: "setValue", field, value })}
+        onNotes={(notes) => act({ type: "setNotes", notes })}
+        onClear={clearFlight}
+      />
+    {/if}
+    <div class="app" class:strip={!!view && screen !== "settings" && screen !== "setup" && screen !== "open" && screen !== "reference"} class:nopane={!pane} class:flow={flow && screen !== "settings" && screen !== "setup"}>
       <main>
         <div class="inner">
           {#each kept as k (k.what)}
@@ -410,21 +476,9 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
               onUnskip={(id) => act({ type: "unskip", step: id })}
               onBlank={(step, index, value) => act({ type: "setBlank", step, index, value })}
               onSelect={(id) => (selected = id)}
-              onClear={(list) => act({ type: "clearList", list })}
+              onClear={(list) => void clearTicks(list)}
             />
           {:else if view}
-            <FlightStrip
-              parts={view.strip}
-              note={view.note}
-              values={flight.values}
-              notes={flight.notes}
-              onSet={(field, value) => act({ type: "setValue", field, value })}
-              onNotes={(notes) => act({ type: "setNotes", notes })}
-              onClear={clearFlight}
-            />
-            {#if !flow}
-              <OpenStepsCard {index} open={behind} onTick={(id) => act({ type: "tick", step: id, at: Date.now() })} />
-            {/if}
             {#if flow}
               <FlowView {index} {view} {cursor} {detail} onConfirm={confirm} onSkip={skip} onMove={(id) => (cursor = id)} onBlank={(step, index, value) => act({ type: "setBlank", step, index, value })} />
             {:else}
@@ -440,7 +494,10 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
                 onUnskip={(id) => act({ type: "unskip", step: id })}
                 onBlank={(step, index, value) => act({ type: "setBlank", step, index, value })}
                 onSelect={(id) => (selected = id)}
-                onClear={(list) => act({ type: "clearList", list })}
+                onClear={(list) => void clearTicks(list)}
+                {open}
+                onGo={goToStep}
+                onEssentials={toggleEssentials}
                 full={!settings.essentials}
                 {fullView}
                 onOption={(option, value) => act({ type: "setOption", option, value })}
@@ -473,24 +530,36 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
               targets={pane.row.targets}
               number={pane.row.number}
               total={pane.total}
-              previous={pane.previous}
               upcoming={pane.upcoming}
-              mapMode={settings?.mapInSteps ?? "new_panel"}
-              onMap={changeMap}
+              preview={settings?.panelPreview ?? true}
+              onOpen={openSlide}
               {flow}
             />
           {/key}
         </aside>
+        {#if slide}
+          <button class="slide-scrim" type="button" aria-label="Close the panel" tabindex="-1" onclick={closeSlide}></button>
+          <div class="slide-box">
+            {#key pane.step.id}
+              <Slideout {index} step={pane.step} number={pane.row.number} targets={pane.row.targets} opening={slide} onClose={closeSlide} onGo={goToStep} />
+            {/key}
+          </div>
+        {/if}
       {/if}
     </div>
   {/if}
 </div>
 
 <style>
+  /* The bars at the top that stay in place: header, phase track and, on a phase, the strip. */
   .app {
+    --bars: calc(var(--size-header) + var(--size-phase-row));
     display: grid;
     grid-template-columns: minmax(0, 1fr) var(--side-pane);
     align-items: start;
+  }
+  .app.strip {
+    --bars: calc(var(--size-header) + var(--size-phase-row) + var(--size-flight-strip));
   }
   .app.nopane {
     grid-template-columns: minmax(0, 1fr);
@@ -504,11 +573,32 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
     max-width: var(--size-content-max);
     margin: 0 auto;
   }
+  /* The slide-out (round6/boards/Locator.dc.html): beside the side pane, over the step list, from
+     below the bars at the top to the foot of the window; the scrim dims only the step list. */
+  .slide-scrim {
+    position: fixed;
+    top: var(--bars);
+    bottom: 0;
+    left: 0;
+    width: calc(100% - var(--side-pane));
+    padding: 0;
+    border: 0;
+    background: var(--color-slideout-scrim);
+    z-index: 15;
+  }
+  .slide-box {
+    position: fixed;
+    top: var(--bars);
+    bottom: 0;
+    right: var(--side-pane);
+    width: var(--slideout);
+    z-index: 16;
+  }
   /* The Checklist board's side pane. */
   .pane {
     position: sticky;
-    top: calc(var(--size-header) + var(--size-phase-row));
-    height: calc(100vh - var(--size-header) - var(--size-phase-row));
+    top: var(--bars);
+    height: calc(100vh - var(--bars));
     padding: var(--space-4) var(--space-6);
     /* It scrolls, but draws no scrollbar, as the Checklist board's pane. */
     overflow-y: auto;
@@ -551,7 +641,7 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
     opacity: 1;
   }
   .page-fade.up {
-    top: calc(var(--size-header) + var(--size-phase-row));
+    top: var(--bars);
     background: linear-gradient(180deg, var(--color-bg), transparent);
   }
   .page-fade.down {
