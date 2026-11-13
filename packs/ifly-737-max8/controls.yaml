@@ -8,198 +8,247 @@ zones:
     area: Aft overhead (P5)
     title: ELT panel
     short_title: ELT
+    position: Captain side, middle row
   - id: airs
     area: Aft overhead (P5)
     title: IRS display and mode selectors
     short_title: IRS
+    position: Captain side, aft row
   - id: aoxy
     area: Aft overhead (P5)
     title: Oxygen panel
     short_title: OXYGEN
+    position: Center, middle row
   - id: arec
     area: Aft overhead (P5)
     title: Flight recorder panel
     short_title: RECORDER
+    position: F/O side, aft row
   - id: alights
     area: Aft overhead (P5)
     title: Status lights and gear indicators
     short_title: GEAR / GPS LTS
+    position: Captain side, middle row
   - id: aeng
     area: Aft overhead (P5)
     title: Engine panel
     short_title: ENGINE / EEC
+    position: Center, aft row
   - id: atest
     area: Aft overhead (P5)
     title: Test switches and elevator jam
     short_title: MACH TEST / ELEV JAM
+    position: F/O side, middle row
   - id: wipe
     area: Forward overhead (P5)
     title: Wiper selectors
     short_title: WIPER
+    position: Center, row nearest the windshield
   - id: fctl
     area: Forward overhead (P5)
     title: Flight control panel
     short_title: FLT CONTROL
+    position: Captain side, aft row
   - id: nav
     area: Forward overhead (P5)
     title: Navigation and display source
     short_title: NAV / DISPLAY
+    position: Captain side, middle row
   - id: fuel
     area: Forward overhead (P5)
     title: Fuel panel
     short_title: FUEL
+    position: Captain side, row nearest the windshield
   - id: elecu
     area: Forward overhead (P5)
     title: "Electrical, upper section"
     short_title: ELEC (BAT)
+    position: Captain side, aft row
   - id: elecl
     area: Forward overhead (P5)
     title: "Electrical, lower section"
     short_title: ELEC (GEN)
+    position: Captain side, middle row
   - id: cool
     area: Forward overhead (P5)
     title: "Cooling, exit lights and signs"
     short_title: COOL / SIGNS
+    position: Center, middle row
   - id: heat
     area: Forward overhead (P5)
     title: Window and probe heat
     short_title: WINDOW / PROBE HEAT
+    position: Center, aft row
   - id: aice
     area: Forward overhead (P5)
     title: Anti-ice panel
     short_title: ANTI-ICE
+    position: Center, aft row
   - id: hyd
     area: Forward overhead (P5)
     title: Hydraulic panel
     short_title: HYD
+    position: Center, middle row
   - id: door
     area: Forward overhead (P5)
     title: Door warning panel
     short_title: DOORS
+    position: Center, middle row
   - id: air
     area: Forward overhead (P5)
     title: Air conditioning panel
     short_title: AIR COND
+    position: F/O side, aft row
   - id: bleed
     area: Forward overhead (P5)
     title: Bleed air panel
     short_title: BLEED
+    position: F/O side, middle row
   - id: press
     area: Forward overhead (P5)
     title: Cabin pressure panel
     short_title: PRESS
+    position: F/O side, middle row
   - id: ltl
     area: Forward overhead (P5)
     title: "Landing, turnoff and taxi lights"
     short_title: LANDING / TAXI LTS
+    position: Captain side, row nearest the windshield
   - id: apu
     area: Forward overhead (P5)
     title: APU switch
     short_title: APU
+    position: Center, row nearest the windshield
   - id: start
     area: Forward overhead (P5)
     title: Engine start panel
     short_title: ENGINE START
+    position: Center, row nearest the windshield
   - id: lte
     area: Forward overhead (P5)
     title: Exterior light switches
     short_title: EXT LIGHTS
+    position: F/O side, row nearest the windshield
   - id: efis
     area: Glareshield (P7)
     title: EFIS control panels
     short_title: EFIS
+    position: Captain side
   - id: ann
     area: Glareshield (P7)
     title: "Fire, caution and system annunciators"
     short_title: ANNUN
+    position: Captain side
   - id: mcp
     area: Glareshield (P7)
     title: Mode control panel
     short_title: MCP
+    position: Center
   - id: p1
     area: Captain panel (P1)
     title: Lights test and warning lights
     short_title: TEST
+    position: Captain side, upper part
   - id: du
     area: Main instrument panel
     title: MAX Display System display units
     short_title: DISPLAY UNITS
+    position: Captain side, upper part
   - id: isfd
     area: Center panel (P2)
     title: Integrated standby flight display
     short_title: STANDBY
+    position: Center, upper part
   - id: gear
     area: Center panel (P2)
     title: Landing gear panel
     short_title: GEAR
+    position: Center, lower part
   - id: gpws
     area: First officer panel (P3)
     title: "Ground proximity panel, below the F/O displays"
     short_title: GROUND PROXIMITY
+    position: F/O side, lower part
   - id: cdu
     area: Forward electronic panel (P9)
     title: Control display units
     short_title: CDU
+    position: Captain side, forward part, nearest the main panel
   - id: edcp
     area: Forward electronic panel (P9)
     title: "Fuel flow, autobrake and display control panel"
     short_title: AUTO BRAKE
+    position: Center, forward part, nearest the main panel
   - id: sb
     area: Control stand
     title: Speedbrake lever
     short_title: SPDBRK
+    position: Captain side, forward part, nearest the main panel
   - id: thr
     area: Control stand
     title: Thrust and reverse levers
     short_title: THRUST
+    position: Center, forward part, nearest the main panel
   - id: flap
     area: Control stand
     title: Flap lever
     short_title: FLAP LEVER
+    position: F/O side, forward part, nearest the main panel
   - id: pb
     area: Control stand
     title: Parking brake
     short_title: P/BRAKE
+    position: Captain side, middle, at hand height
   - id: sl
     area: Control stand
     title: Engine start levers
     short_title: START LEVERS
+    position: Center, middle, at hand height
   - id: stab
     area: Control stand
     title: Stabilizer trim
     short_title: STAB TRIM
+    position: F/O side, middle, at hand height
   - id: radio
     area: Aft electronic panel (P8)
     title: Radio tuning panel
     short_title: RADIO
+    position: Captain side, middle, at hand height
   - id: xpdr
     area: Aft electronic panel (P8)
     title: ATC/TCAS panel
     short_title: ATC
+    position: Center, aft part, by your knees
   - id: wxr
     area: Aft electronic panel (P8)
     title: Weather radar panel
     short_title: WXR
+    position: Center, middle, at hand height
   - id: navr
     area: Aft electronic panel (P8)
     title: Navigation and ADF panels
     short_title: NAV / ADF
+    position: Captain side, middle, at hand height
   - id: fire
     area: Aft electronic panel (P8)
     title: Overheat/fire protection panel
     short_title: FIRE
+    position: Center, middle, at hand height
   - id: cargo
     area: Aft electronic panel (P8)
     title: Cargo fire panel
     short_title: CARGO FIRE
+    position: Center, middle, at hand height
   - id: trim
     area: Aft electronic panel (P8)
     title: "Aileron, rudder and stab trim panel"
     short_title: TRIM
+    position: Center, aft part, by your knees
   - id: dkdoor
     area: Aft electronic panel (P8)
     title: Flight deck door panel
     short_title: FLT DK DOOR
+    position: F/O side, aft part, by your knees
   - id: side
     area: Pilot side walls
     title: Windows and oxygen masks
@@ -224,34 +273,42 @@ zones:
     area: Aft electronic panel (P8)
     title: Audio control panels
     short_title: AUDIO
+    position: Captain side, aft part, by your knees
   - id: adfp
     area: Aft electronic panel (P8)
     title: ADF panel
     short_title: ADF
+    position: Center, aft part, by your knees
   - id: stabo
     area: Aft electronic panel (P8)
     title: Stab trim override switch
     short_title: STAB TRIM OVRD
+    position: F/O side, aft part, by your knees
   - id: agear
     area: Aft overhead (P5)
     title: Overhead gear lights
     short_title: GEAR LTS
+    position: F/O side, row nearest the windshield
   - id: ajam
     area: Aft overhead (P5)
     title: Elevator jam landing assist
     short_title: ELEV JAM
+    position: Captain side, row nearest the windshield
   - id: cvr
     area: Forward overhead (P5)
     title: Cockpit voice recorder panel
     short_title: CVR
+    position: Center, row nearest the windshield
   - id: dselp
     area: Main panel lower strip
     title: Display select and lighting panels
     short_title: DISPLAY SELECT
+    position: Captain side, lower part
   - id: vrecz
     area: Forward overhead (P5)
     title: Voice recorder switch
     short_title: VOICE REC
+    position: F/O side, aft row
 controls:
   - id: bat
     name: Battery switch

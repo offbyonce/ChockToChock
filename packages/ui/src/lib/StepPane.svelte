@@ -173,7 +173,7 @@ A step with no control on the map shows the steps coming up below its details.
         <div class="info">
           {#if newPanel}<span class="new">New panel</span>{/if}
           <span class="area">{where}</span>
-          {#if place.control?.location}<span class="at">{place.control.location}</span>{/if}
+          {#if place.zone.position ?? place.control?.location}<span class="at">{place.zone.position ?? place.control?.location}</span>{/if}
           <Locator {index} zone={place.zone} link />
           <button class="hide" type="button" onclick={() => onMap("hide")}>Hide map</button>
         </div>
@@ -195,7 +195,7 @@ A step with no control on the map shows the steps coming up below its details.
     {#each cards as card (card.panel.id)}
       <figure class="controls">
         <span class="cap">The controls · {panelCaption(card.focus.map((id) => index.section(id)?.title ?? id))}</span>
-        <PanelSchematic panel={card.panel} focus={card.focus} {targets} {guardClosed} {index} bind:picked={picked[card.panel.id]} />
+        <PanelSchematic panel={card.panel} focus={card.focus} {targets} {guardClosed} {index} around bind:picked={picked[card.panel.id]} />
         <figcaption>
           Blue: set by this step · lights drawn unlit · tap a light for its meaning{#if targets.some((t) => t.open)}{" "}· dashed: only if the step's condition applies{/if}
         </figcaption>

@@ -494,6 +494,13 @@
         "id": {
           "type": "string"
         },
+        "position": {
+          "description": "Where the zone sits in its area, for the step map's position line (\"Captain side,\nrow nearest the windshield\").",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
         "short_title": {
           "type": "string"
         },

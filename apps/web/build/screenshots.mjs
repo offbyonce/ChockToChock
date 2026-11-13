@@ -238,6 +238,18 @@ const SHOTS = [
     app: { hash: "#/phase/before-start", before: [click(".it .row", 5), click(".it .chev", 5), click(".where-link, .where-btn")] },
   },
   {
+    // The map hidden (MapHidden board): Hide map turns Map in steps to On request.
+    name: "map-hidden",
+    only: ["desktop"],
+    app: { hash: "#/phase/before-start", before: [click(".it .row", 5), click(".it .chev", 5), click(".pane .hide")] },
+  },
+  {
+    // Tablet portrait and phone keep a dialog for Where is this? until batch 5.
+    name: "where-narrow",
+    only: ["phone", "tablet"],
+    app: { hash: "#/phase/before-start", before: [click(".it .chev", 5), click(".it button.narrow"), click(".where-btn")] },
+  },
+  {
     name: "panel-brake",
     only: ["desktop", "wide"],
     app: { hash: "#/phase/gpu-power", before: [stepNamed("PARKING BRAKE", ".row"), stepNamed("PARKING BRAKE", ".chev"), paneToControls("aside.pane")] },

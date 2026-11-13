@@ -24,6 +24,7 @@ smallest size that keeps 11 px labels, scrolls sideways, and offers a full-width
     large = false,
     index,
     picked = $bindable(),
+    around = false,
   }: {
     /** The panel the sections are on. */
     panel: Panel;
@@ -37,6 +38,9 @@ smallest size that keeps 11 px labels, scrolls sideways, and offers a full-width
     large?: boolean | undefined;
     /** With the pack's index, tapping a control opens its card: what it is and what it does. */
     index?: PackIndex | undefined;
+    /** The side pane's drawing (Checklist board): a section drawn alone shows the rows around the
+     * step's controls, whole across; the larger view shows the whole section. */
+    around?: boolean | undefined;
     /** The control whose card is open. */
     picked?: { section: string; item: number } | null | undefined;
   } = $props();
@@ -69,12 +73,28 @@ smallest size that keeps 11 px labels, scrolls sideways, and offers a full-width
   type Band = { y0: number; y1: number; x0: number; x1: number };
   const wholeOf = (s: Section): Band => ({ y0: 0, y1: s.height, x0: 0, x1: s.width });
 
+  /**
+   * The rows a lone section shows in the side pane: from the step's highest control, with room
+   * above for its lights and labels, to its lowest, whole across. The whole section otherwise.
+   */
+  let band = $derived.by((): Band | null => {
+    const only = drawn.length === 1 ? drawn[0] : undefined;
+    if (!around || large || !only) return null;
+    const ys = only.items.flatMap((it, i) => (targets.some((t) => t.section === only.id && t.item === i) ? [it.y] : []));
+    if (!ys.length) return null;
+    const y0 = Math.max(0, Math.min(...ys) - 62);
+    const y1 = Math.min(only.height, Math.max(...ys) + 24);
+    return y0 <= 0 && y1 >= only.height ? null : { x0: 0, x1: only.width, y0, y1 };
+  });
+  const bandOf = (s: Section): Band => (band && drawn.length === 1 ? band : wholeOf(s));
+
   /** How a section's labels lay out, title at `titleTop`. */
   function layoutFor(s: Section, titleTop: number) {
     const on = (i: number) => targets.find((t) => t.section === s.id && t.item === i);
+    const b = bandOf(s);
     return layoutSection(
       s,
-      s.items.map((_, i) => i),
+      s.items.flatMap((it, i) => (it.y >= b.y0 + 10 && it.y <= b.y1 - 10 ? [i] : [])),
       (i) => {
         const item = s.items[i] as (typeof s.items)[number];
         return {
@@ -198,7 +218,7 @@ smallest size that keeps 11 px labels, scrolls sideways, and offers a full-width
     aria-label="{title} panel, schematic.{described ? ` This step: ${described}.` : ''}"
   >
     {#each drawn as s (s.id)}
-      <PanelSection section={s} {targets} {guardClosed} band={wholeOf(s)} frame={view.frames.get(s.id)} titled={view.titled} k={K} hit={index ? (44 * pageScale) / scale.k : 0} onPick={index ? (section, item) => (picked = { section, item }) : undefined} />
+      <PanelSection section={s} {targets} {guardClosed} band={bandOf(s)} frame={view.frames.get(s.id)} titled={view.titled} k={K} hit={index ? (44 * pageScale) / scale.k : 0} onPick={index ? (section, item) => (picked = { section, item }) : undefined} />
     {/each}
   </svg>
 </div>
@@ -213,7 +233,7 @@ smallest size that keeps 11 px labels, scrolls sideways, and offers a full-width
     {#if card.does}<p><b>What it does</b> {card.does}</p>{/if}
   </div>
 {/if}
-{#if scale.overflow && !large}
+{#if (scale.overflow || band) && !large}
   <button type="button" class="btn larger" onclick={() => sheet?.showModal()}>See the whole panel larger</button>
   <dialog class="sheet" bind:this={sheet} aria-label="{title} panel">
     <div class="sheet-head">

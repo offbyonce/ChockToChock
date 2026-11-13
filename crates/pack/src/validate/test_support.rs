@@ -134,6 +134,7 @@ pub(super) fn alias_pack(aliases: Vec<Alias>) -> Pack {
             area: "Overhead".into(),
             title: "Overhead".into(),
             short_title: "OH".into(),
+            position: None,
         }],
         controls: vec![],
         overview: None,

@@ -10,6 +10,10 @@ data_types! {
         pub area: String,
         pub title: String,
         pub short_title: String,
+        /// Where the zone sits in its area, for the step map's position line ("Captain side,
+        /// row nearest the windshield").
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        pub position: Option<String>,
     }
 
     /// A switch, lever or other control a step refers to.
