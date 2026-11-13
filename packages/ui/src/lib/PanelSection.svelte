@@ -19,7 +19,7 @@ What the step asks for, never the simulator's state (decision 0006).
 <script lang="ts">
   import type { ItemTarget, PanelItem, PanelSection } from "@chocktochock/bindings";
   import { em } from "./text-width";
-  import { angleOf, BUTTON, DIAL, half, withinAcross, knobY, LAMP, TOGGLE, labelled, lampText, layoutSection, leverY, PX, positionsOf, slotY } from "./panel-layout";
+  import { angleOf, BUTTON, DIAL, halfWidth, withinAcross, knobY, LAMP, TOGGLE, labelled, lampText, layoutSection, leverY, PX, positionsOf, slotY } from "./panel-layout";
 
   let {
     section,
@@ -109,8 +109,8 @@ What the step asks for, never the simulator's state (decision 0006).
     <g class="item {item.kind}" class:on class:resolved={on && (byItem.get(i)?.resolved ?? false)} class:conditional={open} transform="translate({item.x} {item.y})">
       {#if on && (byItem.get(i)?.resolved ?? false)}
         <!-- Resolved: set by a decision step's answer (decision 0022), marked with a small diamond
-             so it is told apart from a setting the step always asks for. -->
-        <path class="decided" d="M 0 {-11 - half(item)} l 3 3 l -3 3 l -3 -3 z" />
+             to its left, so it is told apart from a setting the step always asks for. -->
+        <path class="decided" d="M {-halfWidth(item) - 8} -3 l 3 3 l -3 3 l -3 -3 z" />
       {/if}
       {#if item.kind === "toggle_switch"}
         {#if item.guarded}
@@ -141,7 +141,7 @@ What the step asks for, never the simulator's state (decision 0006).
         {:else if r >= 0}
           <rect class="bar rest" x="-1.6" y={-DIAL + 2.5} width="3.2" height={2 * DIAL - 5} rx="1.6" transform="rotate({angleOf(item, r)})" />
           <!-- The pointing end, so a resting knob reads one way (SYS DSPL L or R). -->
-          <circle class="tip rest" cy={-DIAL + 3.6} r="1.4" transform="rotate({angleOf(item, r)})" />
+          <circle class="tip rest" cy={-DIAL + 3.4} r="2.1" transform="rotate({angleOf(item, r)})" />
         {/if}
         <!-- Each label sits at its own tick, so the pointer and its label always agree. -->
         {#each layout.items.get(i)?.positions ?? [] as l (l.n)}
@@ -317,7 +317,7 @@ What the step asks for, never the simulator's state (decision 0006).
     fill: var(--panel-changed-fill);
   }
   .tip.rest {
-    fill: var(--panel-resting);
+    fill: var(--panel-text);
   }
   .decided {
     fill: var(--panel-changed);

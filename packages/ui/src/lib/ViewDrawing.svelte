@@ -49,13 +49,14 @@ caption says it is a schematic.
     `M ${points.map(([x, y]) => `${x} ${y}`).join(" L ")}${closed ? " Z" : ""}`;
   /** Where a shape's label goes: inside a closed shape, just above a dot, at the foot of a
    * vertical line (reading inward), and off a sloping or level line on the side away from the
-   * frame's middle. */
+   * frame's middle; a dot's to its left. */
   const labelAt = (points: number[][], closed: boolean) => {
     const xs = points.map((p) => p[0] ?? 0);
     const ys = points.map((p) => p[1] ?? 0);
     const x = (Math.min(...xs) + Math.max(...xs)) / 2;
     const y = (Math.min(...ys) + Math.max(...ys)) / 2;
-    if (points.length === 1) return { x, y: y - fs * 1.1, anchor: "middle" };
+    // A dot's label to its left, clear of sight lines, which leave the eye forward.
+    if (points.length === 1) return { x: x - fs * 0.8, y, anchor: "end" };
     if (closed) return { x, y, anchor: "middle" };
     if (xs.every((v) => v === xs[0])) {
       const left = x < frame.width / 2;
@@ -68,24 +69,61 @@ caption says it is a schematic.
   };
   type Box = { x0: number; y0: number; x1: number; y1: number };
   const overlaps = (a: Box, b: Box) => a.x0 < b.x1 && b.x0 < a.x1 && a.y0 < b.y1 && b.y0 < a.y1;
-  /** The highlighted region's name: inside its place when it fits, else the first of below, above,
-   * right and left that clears every other place. */
+  /** Where the sight line meets the region's place: its edge, on the way from the eye. */
+  let sightEnd = $derived.by(() => {
+    if (!eye || !here) return null;
+    const [ex, ey] = [eye[0] ?? 0, eye[1] ?? 0];
+    const [cx, cy] = [here.x + here.width / 2, here.y + here.height / 2];
+    const [dx, dy] = [cx - ex, cy - ey];
+    const t = Math.min(
+      dx === 0 ? Number.POSITIVE_INFINITY : Math.abs(here.width / 2 / dx),
+      dy === 0 ? Number.POSITIVE_INFINITY : Math.abs(here.height / 2 / dy),
+    );
+    return { x: cx - dx * t, y: cy - dy * t };
+  });
+  /** Thin boxes along a line, so labels can keep clear of it. */
+  const segments = (points: number[][]): Box[] =>
+    points.slice(1).flatMap((p, n) => {
+      const q = points[n] ?? p;
+      const steps = Math.max(1, Math.ceil(Math.hypot((p[0] ?? 0) - (q[0] ?? 0), (p[1] ?? 0) - (q[1] ?? 0)) / 6));
+      return Array.from({ length: steps + 1 }, (_, i) => {
+        const x = (q[0] ?? 0) + (((p[0] ?? 0) - (q[0] ?? 0)) * i) / steps;
+        const y = (q[1] ?? 0) + (((p[1] ?? 0) - (q[1] ?? 0)) * i) / steps;
+        return { x0: x - 1.5, y0: y - 1.5, x1: x + 1.5, y1: y + 1.5 };
+      });
+    });
+  /** The highlighted region's name: inside its place when it fits, else the first spot around it
+   * that stays inside the frame and clears every other place, every line and the sight line. */
   let nameAt = $derived.by(() => {
     if (!here || !region) return null;
-    const w = region.length * fs * 0.62;
+    const w = region.length * fs * 0.64;
     const cx = here.x + here.width / 2;
-    if (here.height >= fs * 1.6 && here.width >= w + fs) return { x: cx, y: here.y + here.height / 2, inside: true };
-    const others: Box[] = places
-      .filter((p) => p !== here)
-      .map((p) => ({ x0: p.x, y0: p.y, x1: p.x + p.width, y1: p.y + p.height }));
-    const at = (x: number, y: number) => ({ x, y, box: { x0: x - w / 2, y0: y - fs / 2, x1: x + w / 2, y1: y + fs / 2 } });
-    const tries = [
-      at(cx, here.y + here.height + fs * 0.9),
-      at(cx, here.y - fs * 0.8),
-      at(here.x + here.width + w / 2 + fs * 0.4, here.y + here.height / 2),
-      at(here.x - w / 2 - fs * 0.4, here.y + here.height / 2),
+    const cy = here.y + here.height / 2;
+    if (here.height >= fs * 1.15 && here.width >= w + fs) return { x: cx, y: cy, inside: true };
+    const blocked: Box[] = [
+      ...places.filter((p) => p !== here).map((p) => ({ x0: p.x, y0: p.y, x1: p.x + p.width, y1: p.y + p.height })),
+      ...shapes.flatMap((sh) => segments(sh.closed ? [...sh.points, sh.points[0] ?? [0, 0]] : sh.points)),
+      ...(eye && sightEnd ? segments([eye, [sightEnd.x, sightEnd.y]]) : []),
     ];
-    const free = tries.find((t) => !others.some((o) => overlaps(o, t.box))) ?? tries[0];
+    const pad = fs * 0.3;
+    const at = (x: number, y: number) => ({
+      x,
+      y,
+      box: { x0: x - w / 2 - pad, y0: y - fs / 2 - pad, x1: x + w / 2 + pad, y1: y + fs / 2 + pad },
+    });
+    const gap = fs * 0.9;
+    const tries = [
+      at(cx, here.y + here.height + gap),
+      at(cx, here.y - gap),
+      at(here.x - w / 2 - gap, cy),
+      at(here.x + here.width + w / 2 + gap, cy),
+      at(here.x + here.width - w / 2, here.y + here.height + gap),
+      at(here.x + w / 2, here.y + here.height + gap),
+      at(here.x - w / 2 - gap, here.y + here.height + gap),
+      at(cx, here.y + here.height + gap * 2.2),
+    ];
+    const inFrame = (b: Box) => b.x0 >= 0 && b.y0 >= 0 && b.x1 <= frame.width && b.y1 <= frame.height;
+    const free = tries.find((t) => inFrame(t.box) && !blocked.some((o) => overlaps(o, t.box))) ?? tries[0];
     return free ? { x: free.x, y: free.y, inside: false } : null;
   });
 </script>
@@ -106,7 +144,7 @@ caption says it is a schematic.
         {/if}
       {/each}
       {#if kind === "side" && eye && here}
-        <line class="sight" x1={eye[0]} y1={eye[1]} x2={here.x + here.width / 2} y2={here.y + here.height / 2} />
+        <line class="sight" x1={eye[0]} y1={eye[1]} x2={sightEnd?.x ?? here.x} y2={sightEnd?.y ?? here.y} />
       {/if}
       {#each shapes.filter((s) => s.label) as shape, n (n)}
         {@const at = labelAt(shape.points, shape.closed ?? false)}
