@@ -56,7 +56,22 @@ A step with no control on the map shows the steps coming up below its details.
   let newPanel = $derived(!!place && before?.zone.id !== place.zone.id);
   /** Show map in New panel mode on a step whose panel did not change: for this step only. */
   let forced = $state(false);
-  let showMap = $derived(!flow && !!place && (mapMode === "always" || (mapMode === "new_panel" && (newPanel || forced))));
+  /** Desktop (1440 and up) shows the map figure; tablet landscape keeps the location line and
+   * the map lives in Where is this? (rules.md §6, TabL board). */
+  let desktop = $state(true);
+  $effect(() => {
+    const query = window.matchMedia?.("(min-width: 1440px)");
+    if (!query) return;
+    const read = () => {
+      desktop = query.matches;
+    };
+    read();
+    query.addEventListener("change", read);
+    return () => query.removeEventListener("change", read);
+  });
+  let showMap = $derived(
+    !flow && desktop && !!place && (mapMode === "always" || (mapMode === "new_panel" && (newPanel || forced))),
+  );
 
   let how = $derived(step.how ? index.how(step.how) : undefined);
   let explain = $derived(step.explain ? index.explain(step.explain) : undefined);
@@ -180,10 +195,10 @@ A step with no control on the map shows the steps coming up below its details.
       </figure>
     {:else}
       <div class="line">
-        <span>{#if flow && newPanel}New panel · {/if}{where} · {place.zone.title}</span>
+        <span>{#if (flow || !desktop) && newPanel}New panel · {/if}{where} · {place.zone.title}</span>
         <Locator {index} zone={place.zone} link />
-        {#if flow}
-          <!-- Flow keeps to the location line. -->
+        {#if flow || !desktop}
+          <!-- Flow and tablet landscape keep to the location line. -->
         {:else if mapMode === "on_request"}
           <button class="lk" type="button" onclick={() => onMap("show")}>Show map</button>
         {:else if mapMode === "new_panel"}
