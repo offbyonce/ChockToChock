@@ -30,14 +30,15 @@ pub use content::{
     CduInline, CduPage, CduPart, CduRouteCount, CduRow, CduScreen, CduStyle, CduStyled, CduText,
     CduWalkthrough, CduWhen, Control, ControlsFile, ExplainNote, Fault, FaultsFile, GlossaryEntry,
     GlossaryFile, HowNote, IntroParagraph, LightColor, LightNote, LightsFile, NotesFile,
-    OptionChoice, Overview, OverviewArea, OverviewCaption, OverviewRegion, Panel, PanelItem,
-    PanelItemKind, PanelSection, Phase, PhasesFile, RouteLegCount, RouteLegPart, Stage, StagePhase,
-    StartState, StartStatesFile, UserOption, Zone,
+    OptionChoice, Overview, OverviewArea, OverviewCaption, OverviewRegion, OverviewViews, Panel,
+    PanelItem, PanelItemKind, PanelSection, Phase, PhasesFile, RouteLegCount, RouteLegPart, Stage,
+    StagePhase, StartState, StartStatesFile, UserOption, ViewFrame, ViewPlace, ViewRole, ViewShape,
+    Zone,
 };
 pub use model::{
     AutoStart, AutoStartPick, Checklist, Confirmation, ConfirmationKind, FillField, HintPart,
     LightState, ListKind, MAX_ROUTE_LEG, OptionTest, Quick, ShowIf, Step, StepId, StepTarget,
-    Timer, WalkaroundPoint,
+    TargetWhen, Timer, WalkaroundPoint,
 };
 pub use positions::{
     clauses, locate, locator, named_position, names, names_position, says_light_on, says_on,

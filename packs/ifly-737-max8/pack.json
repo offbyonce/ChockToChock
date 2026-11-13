@@ -3,7 +3,7 @@
   "id": "ifly-737-max8",
   "name": "iFly 737 MAX 8",
   "version": "0.1.0",
-  "schemaVersion": 3,
+  "schemaVersion": 4,
   "kind": "aircraft",
   "engine": ">=0.1.0, <1.0.0",
   "license": "CC-BY-NC-SA-4.0",

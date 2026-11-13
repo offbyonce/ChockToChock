@@ -91,6 +91,17 @@
             "$ref": "#/$defs/OverviewRegion"
           }
         },
+        "views": {
+          "description": "The side and seat views (decision 0023).",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/OverviewViews"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
         "width": {
           "type": "number",
           "format": "double"
@@ -236,6 +247,163 @@
         "y",
         "width",
         "height"
+      ]
+    },
+    "OverviewViews": {
+      "description": "The side and seat views for \"Where is this?\".",
+      "type": "object",
+      "properties": {
+        "seat": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ViewFrame"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "side": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ViewFrame"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "ViewFrame": {
+      "description": "A side or seat view of the flight deck, in its own units (decision 0023).",
+      "type": "object",
+      "properties": {
+        "height": {
+          "type": "number",
+          "format": "double"
+        },
+        "places": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ViewPlace"
+          }
+        },
+        "shapes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ViewShape"
+          }
+        },
+        "width": {
+          "type": "number",
+          "format": "double"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "width",
+        "height"
+      ]
+    },
+    "ViewPlace": {
+      "description": "Where one overview region sits in a side or seat view.",
+      "type": "object",
+      "properties": {
+        "height": {
+          "type": "number",
+          "format": "double"
+        },
+        "region": {
+          "description": "The region's `name` on the overview.",
+          "type": "string"
+        },
+        "width": {
+          "type": "number",
+          "format": "double"
+        },
+        "x": {
+          "type": "number",
+          "format": "double"
+        },
+        "y": {
+          "type": "number",
+          "format": "double"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "region",
+        "x",
+        "y",
+        "width",
+        "height"
+      ]
+    },
+    "ViewRole": {
+      "description": "How the renderer draws a shape in a side or seat view (decision 0023). Roles name no\naircraft part, so any pack can draw its own airplane.",
+      "oneOf": [
+        {
+          "description": "Walls, floor, ceiling, panels: outlines.",
+          "type": "string",
+          "const": "structure"
+        },
+        {
+          "description": "Windshield and windows.",
+          "type": "string",
+          "const": "glass"
+        },
+        {
+          "description": "The pilot's seat.",
+          "type": "string",
+          "const": "seat"
+        },
+        {
+          "description": "Where the pilot's eyes are: one point. The side view's sight line starts here.",
+          "type": "string",
+          "const": "eye"
+        },
+        {
+          "description": "A fixed line of sight drawn as part of the frame.",
+          "type": "string",
+          "const": "sight"
+        }
+      ]
+    },
+    "ViewShape": {
+      "description": "One shape in a side or seat view: one point is a dot, two a line, more a path.",
+      "type": "object",
+      "properties": {
+        "closed": {
+          "type": "boolean"
+        },
+        "label": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "points": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "number",
+              "format": "double"
+            },
+            "maxItems": 2,
+            "minItems": 2
+          }
+        },
+        "role": {
+          "$ref": "#/$defs/ViewRole"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "points",
+        "role"
       ]
     },
     "Zone": {

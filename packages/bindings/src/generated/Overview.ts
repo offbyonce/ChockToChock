@@ -2,8 +2,13 @@
 import type { OverviewArea } from "./OverviewArea";
 import type { OverviewCaption } from "./OverviewCaption";
 import type { OverviewRegion } from "./OverviewRegion";
+import type { OverviewViews } from "./OverviewViews";
 
 /**
  * A schematic of the whole cockpit, in our own layout.
  */
-export type Overview = { width: number, height: number, captions?: Array<OverviewCaption>, areas: Array<OverviewArea>, regions?: Array<OverviewRegion>, };
+export type Overview = { width: number, height: number, captions?: Array<OverviewCaption>, areas: Array<OverviewArea>, regions?: Array<OverviewRegion>, 
+/**
+ * The side and seat views (decision 0023).
+ */
+views?: OverviewViews | null, };

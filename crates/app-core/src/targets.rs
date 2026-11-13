@@ -5,7 +5,9 @@
 //! the pack states for the step (decision 0018). Nothing here reads a step's wording, and none of
 //! it is the simulator's state, which the app does not know (decision 0006).
 
-use checklist_core::{LightState, Step, locate};
+use std::collections::BTreeMap;
+
+use checklist_core::{LightState, Step, StepTarget, locate};
 use pack::FlatPack;
 use serde::Serialize;
 use ts_rs::TS;
@@ -23,15 +25,50 @@ pub struct ItemTarget {
     pub position: Option<usize>,
     /// A light the step expects on.
     pub lit: bool,
-    /// The step's wording names a position but leaves it to a condition ("CENTER PUMPS ON IF MORE
-    /// THAN 1,000 LB"), so the drawing shows the item at rest and says to see the step.
+    /// The step leaves the position to a condition the app does not know yet ("CENTER PUMPS ON IF
+    /// MORE THAN 1,000 LB"): the drawing shows it dashed, with no position (decision 0022).
     pub open: bool,
+    /// The position comes from a decision step's answer (decision 0022): the drawing shows it
+    /// resolved, and the step can link to the decision.
+    pub resolved: bool,
 }
 
-/// The panel items a step involves, from its targets in the pack.
-pub fn step_targets(pack: &FlatPack, step: &Step) -> Vec<ItemTarget> {
-    step.targets
-        .iter()
+/// The panel items a step involves, from its targets in the pack, for the flight's answers: an
+/// item whose targets depend on a decision takes the target for the answer, and until there is
+/// one, its `open` target.
+pub fn step_targets(
+    pack: &FlatPack,
+    options: &BTreeMap<String, String>,
+    step: &Step,
+) -> Vec<ItemTarget> {
+    let mut shown: Vec<&StepTarget> = vec![];
+    for t in &step.targets {
+        let answered = t
+            .when
+            .as_ref()
+            .map(|w| options.get(&w.option) == Some(&w.equals));
+        match answered {
+            Some(true) => {
+                // The answer's target replaces the item's target for before the answer.
+                shown.retain(|s| s.at != t.at);
+                shown.push(t);
+            }
+            Some(false) => {}
+            None => {
+                let decided = step.targets.iter().any(|o| {
+                    o.at == t.at
+                        && o.when
+                            .as_ref()
+                            .is_some_and(|w| options.get(&w.option) == Some(&w.equals))
+                });
+                if !decided {
+                    shown.push(t);
+                }
+            }
+        }
+    }
+    shown
+        .into_iter()
         .filter_map(|t| {
             let (section, item) = locate(&pack.content.panels, &t.at)?;
             let entry = section.items.get(item)?;
@@ -48,6 +85,7 @@ pub fn step_targets(pack: &FlatPack, step: &Step) -> Vec<ItemTarget> {
                 position,
                 lit: t.light == Some(LightState::On),
                 open: t.open,
+                resolved: t.when.is_some(),
             })
         })
         .collect()
@@ -90,7 +128,7 @@ mod tests {
             .flat_map(|l| &l.steps)
             .find(|s| s.controls.iter().any(|c| c == "pbrake") && s.expect == "SET")
             .unwrap();
-        let targets = step_targets(&pack, step);
+        let targets = step_targets(&pack, &BTreeMap::new(), step);
         let section = pack
             .content
             .panels
@@ -122,7 +160,7 @@ mod tests {
             .flat_map(|l| &l.steps)
             .find(|s| s.id.as_str() == "ifly-737-max8.before-start.fuel-pump-switches")
             .unwrap();
-        let targets = step_targets(&pack, step);
+        let targets = step_targets(&pack, &BTreeMap::new(), step);
         let section = pack
             .content
             .panels
@@ -154,7 +192,7 @@ mod tests {
             .flat_map(|l| &l.steps)
             .find(|s| s.text.starts_with("TERR ("))
             .unwrap();
-        let targets = step_targets(&pack, step);
+        let targets = step_targets(&pack, &BTreeMap::new(), step);
         let labels: Vec<&str> = targets
             .iter()
             .map(|t| {
@@ -183,7 +221,7 @@ mod tests {
             .flat_map(|l| &l.steps)
             .find(|s| s.id.as_str() == "ifly-737-max8.before-start.fuel-pump-switches")
             .unwrap();
-        let targets = step_targets(&pack, step);
+        let targets = step_targets(&pack, &BTreeMap::new(), step);
         assert!(
             targets.iter().any(|t| t.position.is_some()),
             "the switches are set ON"
@@ -222,7 +260,7 @@ mod tests {
         // "VALVE LIGHTS ON, FILTER BYPASS OUT": the valve lights on, FILTER BYPASS not.
         let pack = ifly_pack();
         let step = step_where(&pack, |s| s.expect == "VALVE LIGHTS ON, FILTER BYPASS OUT");
-        for t in step_targets(&pack, step) {
+        for t in step_targets(&pack, &BTreeMap::new(), step) {
             let (label, _) = label_of(&pack, &t);
             assert_eq!(t.lit, label.contains("VALVE"), "{label}");
         }
@@ -233,7 +271,7 @@ mod tests {
         // "ELT SWITCH — GUARD CLOSED, LIGHT OUT": the light is the step's, and out.
         let pack = ifly_pack();
         let step = step_where(&pack, |s| s.text == "ELT SWITCH");
-        let lights: Vec<ItemTarget> = step_targets(&pack, step)
+        let lights: Vec<ItemTarget> = step_targets(&pack, &BTreeMap::new(), step)
             .into_iter()
             .filter(|t| label_of(&pack, t).1 == PanelItemKind::Light)
             .collect();
@@ -247,7 +285,7 @@ mod tests {
         let step = step_where(&pack, |s| {
             s.text == "LANDING GEAR LEVER" && s.expect == "DN"
         });
-        let lit: Vec<&str> = step_targets(&pack, step)
+        let lit: Vec<&str> = step_targets(&pack, &BTreeMap::new(), step)
             .iter()
             .filter(|t| t.lit)
             .map(|t| label_of(&pack, t).0)
@@ -260,7 +298,10 @@ mod tests {
         // Across every step: a lit light's own clause in the value never says OUT or OFF.
         let pack = ifly_pack();
         for step in pack.lists.iter().flat_map(|l| &l.steps) {
-            for t in step_targets(&pack, step).iter().filter(|t| t.lit) {
+            for t in step_targets(&pack, &BTreeMap::new(), step)
+                .iter()
+                .filter(|t| t.lit)
+            {
                 let (label, _) = label_of(&pack, t);
                 for clause in checklist_core::clauses(&step.expect) {
                     // A clause saying both OFF and ON ("OFF WHEN BOTH LOW PRESSURE LIGHTS COME
@@ -299,7 +340,7 @@ mod tests {
             if !has_lights {
                 continue;
             }
-            let kept = step_targets(&pack, step)
+            let kept = step_targets(&pack, &BTreeMap::new(), step)
                 .iter()
                 .any(|t| label_of(&pack, t).1 == PanelItemKind::Light);
             assert!(kept, "{} speaks of lights but shows none", step.id);
@@ -327,7 +368,7 @@ mod tests {
                     .any(|i| i.controls.iter().any(|c| s.controls.contains(c)));
                 ["memory", "quick-reference", "procedures"].contains(&phase)
                     && drawn
-                    && step_targets(&pack, s).is_empty()
+                    && step_targets(&pack, &BTreeMap::new(), s).is_empty()
             })
             .map(|s| s.id.as_str())
             .collect();
@@ -353,7 +394,7 @@ mod tests {
             .unwrap();
         for (label, name) in [("FLT CONTROL A", "A ON"), ("FLT CONTROL B", "B ON")] {
             let item = section.items.iter().position(|i| i.label == label).unwrap();
-            let target = step_targets(&pack, step)
+            let target = step_targets(&pack, &BTreeMap::new(), step)
                 .into_iter()
                 .find(|t| t.section == "fctl" && t.item == item)
                 .unwrap();
@@ -384,7 +425,7 @@ mod tests {
             .flat_map(|l| &l.steps)
             .find(|s| s.id.0 == "ifly-737-max8.cold-dark.battery-switch")
             .unwrap();
-        let targets = step_targets(&pack, step);
+        let targets = step_targets(&pack, &BTreeMap::new(), step);
         let battery = targets.iter().find(|t| t.section == "elecu").unwrap();
         let item = &pack
             .content
@@ -396,5 +437,69 @@ mod tests {
             .items[battery.item];
         assert_eq!(item.label, "BATTERY");
         assert_eq!(battery.position, Some(1), "ON of OFF, ON");
+    }
+
+    /// The fuel pump step with an invented decision, built in memory for the test only (the
+    /// shipped pack has none until the center tank step is sourced): option `invented_center`,
+    /// `more` or `less`, with CTR L drawn ON or OFF by the answer.
+    fn with_invented_decision() -> (FlatPack, checklist_core::Step) {
+        let pack = ifly_pack();
+        let mut step = pack
+            .lists
+            .iter()
+            .flat_map(|l| &l.steps)
+            .find(|s| s.id.as_str() == "ifly-737-max8.before-start.fuel-pump-switches")
+            .unwrap()
+            .clone();
+        let ctr = step
+            .targets
+            .iter()
+            .find(|t| t.at == "oh/fuel/CTR L/1")
+            .unwrap()
+            .clone();
+        for (set, equals) in [("ON", "more"), ("OFF", "less")] {
+            step.targets.push(checklist_core::StepTarget {
+                set: Some(set.into()),
+                open: false,
+                when: Some(checklist_core::TargetWhen {
+                    option: "invented_center".into(),
+                    equals: equals.into(),
+                }),
+                ..ctr.clone()
+            });
+        }
+        (pack, step)
+    }
+
+    #[test]
+    fn a_decided_target_is_drawn_resolved_and_until_then_conditional() {
+        let (pack, step) = with_invented_decision();
+        let ctr_l = |options: &BTreeMap<String, String>| {
+            let targets = step_targets(&pack, options, &step);
+            let section = pack
+                .content
+                .panels
+                .iter()
+                .flat_map(|p| &p.sections)
+                .find(|s| s.id == "fuel")
+                .unwrap();
+            let found: Vec<ItemTarget> = targets
+                .into_iter()
+                .filter(|t| t.section == "fuel" && section.items[t.item].label == "CTR L")
+                .collect();
+            assert_eq!(found.len(), 1, "one target per item: {found:?}");
+            found[0].clone()
+        };
+        // Unanswered: conditional, no position.
+        let before = ctr_l(&BTreeMap::new());
+        assert!(before.open && !before.resolved && before.position.is_none());
+        // Answered "less": resolved at OFF (the first position).
+        let options = BTreeMap::from([("invented_center".to_string(), "less".to_string())]);
+        let after = ctr_l(&options);
+        assert!(after.resolved && !after.open);
+        assert_eq!(after.position, Some(0));
+        // The other answer draws ON.
+        let options = BTreeMap::from([("invented_center".to_string(), "more".to_string())]);
+        assert_eq!(ctr_l(&options).position, Some(1));
     }
 }

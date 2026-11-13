@@ -3,7 +3,7 @@
 
 //! `phases.yaml`: options, stages and phases.
 
-use crate::model::ShowIf;
+use crate::model::{FillField, ShowIf};
 
 data_types! {
     /// A choice the pilot makes that decides what is shown, e.g. the power source.
@@ -22,6 +22,9 @@ data_types! {
         /// Phases that show the choice above their lists.
         #[serde(default, skip_serializing_if = "Vec::is_empty")]
         pub ask_in: Vec<String>,
+        /// A flight value that suggests the answer, for the pilot to confirm (decision 0022).
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        pub suggests: Option<FillField>,
     }
 
     /// How one value of an option is shown, e.g. "Ground power at the gate".

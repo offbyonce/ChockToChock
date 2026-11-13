@@ -68,6 +68,61 @@ data_types! {
         pub locate: Option<String>,
     }
 
+    /// How the renderer draws a shape in a side or seat view (decision 0023). Roles name no
+    /// aircraft part, so any pack can draw its own airplane.
+    #[derive(Copy, Eq)]
+    #[serde(rename_all = "snake_case")]
+    pub enum ViewRole {
+        /// Walls, floor, ceiling, panels: outlines.
+        Structure,
+        /// Windshield and windows.
+        Glass,
+        /// The pilot's seat.
+        Seat,
+        /// Where the pilot's eyes are: one point. The side view's sight line starts here.
+        Eye,
+        /// A fixed line of sight drawn as part of the frame.
+        Sight,
+    }
+
+    /// One shape in a side or seat view: one point is a dot, two a line, more a path.
+    pub struct ViewShape {
+        pub points: Vec<[f64; 2]>,
+        #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+        pub closed: bool,
+        pub role: ViewRole,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        pub label: Option<String>,
+    }
+
+    /// Where one overview region sits in a side or seat view.
+    pub struct ViewPlace {
+        /// The region's `name` on the overview.
+        pub region: String,
+        pub x: f64,
+        pub y: f64,
+        pub width: f64,
+        pub height: f64,
+    }
+
+    /// A side or seat view of the flight deck, in its own units (decision 0023).
+    pub struct ViewFrame {
+        pub width: f64,
+        pub height: f64,
+        #[serde(default, skip_serializing_if = "Vec::is_empty")]
+        pub shapes: Vec<ViewShape>,
+        #[serde(default, skip_serializing_if = "Vec::is_empty")]
+        pub places: Vec<ViewPlace>,
+    }
+
+    /// The side and seat views for "Where is this?".
+    pub struct OverviewViews {
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        pub side: Option<ViewFrame>,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        pub seat: Option<ViewFrame>,
+    }
+
     /// A schematic of the whole cockpit, in our own layout.
     pub struct Overview {
         pub width: f64,
@@ -77,6 +132,9 @@ data_types! {
         pub areas: Vec<OverviewArea>,
         #[serde(default, skip_serializing_if = "Vec::is_empty")]
         pub regions: Vec<OverviewRegion>,
+        /// The side and seat views (decision 0023).
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        pub views: Option<OverviewViews>,
     }
 
     /// `controls.yaml`.

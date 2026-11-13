@@ -60,6 +60,7 @@ pub(super) fn phases() -> PhasesFile {
             description: None,
             choices: vec![],
             ask_in: vec![],
+            suggests: None,
         }],
         stages: vec![Stage {
             title: "Preflight".into(),

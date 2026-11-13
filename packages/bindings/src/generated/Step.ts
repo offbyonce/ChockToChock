@@ -56,6 +56,11 @@ opens?: string | null,
  */
 non_recall?: boolean, quick?: Quick | null, show_if?: ShowIf | null, 
 /**
+ * A decision step: it asks the pilot this option (by id), and the answer sets it for the
+ * flight. Targets elsewhere may depend on the answer (decision 0022).
+ */
+decide?: string | null, 
+/**
  * Optional note shown under the step.
  */
 note?: string | null, why?: string | null, check?: string | null, check_detail?: string | null, if_not?: string | null, if_not_detail?: string | null, 

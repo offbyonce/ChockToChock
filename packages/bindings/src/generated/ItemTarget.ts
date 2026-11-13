@@ -21,7 +21,12 @@ position: number | null,
  */
 lit: boolean, 
 /**
- * The step's wording names a position but leaves it to a condition ("CENTER PUMPS ON IF MORE
- * THAN 1,000 LB"), so the drawing shows the item at rest and says to see the step.
+ * The step leaves the position to a condition the app does not know yet ("CENTER PUMPS ON IF
+ * MORE THAN 1,000 LB"): the drawing shows it dashed, with no position (decision 0022).
  */
-open: boolean, };
+open: boolean, 
+/**
+ * The position comes from a decision step's answer (decision 0022): the drawing shows it
+ * resolved, and the step can link to the decision.
+ */
+resolved: boolean, };

@@ -230,6 +230,7 @@ pub fn suggest(panels: &[Panel], step: &Step) -> Suggestion {
                     set: set[n].clone(),
                     light: None,
                     open: false,
+                    when: None,
                 },
             ));
             continue;
@@ -252,6 +253,7 @@ pub fn suggest(panels: &[Panel], step: &Step) -> Suggestion {
                 set: None,
                 light,
                 open: false,
+                when: None,
             },
         ));
     }

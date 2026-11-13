@@ -156,6 +156,9 @@ every change to `.github/workflows/`. For those, prepare what the step needs and
       Carried from batch 1's review: the "SET TO" caption (10 px, under the 11 px label rule)
       gives way to the changed-state drawing, and the orientation caption sits with its drawing,
       not below the "See the whole panel larger" button.
+      Pack format 4 lands here (decisions 0022 and 0023): decision steps and targets that depend
+      on them, and the side and seat frames for Where is this?; test fixtures are invented and
+      stay out of the shipped pack, and existing packs migrate with their content unchanged.
    3. Core components and the desktop checklist: header, stage and phase tracks with open-step
       dots, flight strip, step rows (to do, current, done, skipped, decision), row menu with Add
       to and Remove from Essentials, Check, If not, Why with How to do it and Terms, side pane
@@ -166,6 +169,7 @@ every change to `.github/workflows/`. For those, prepare what the step needs and
       drawing takes the side pane's remaining height so a whole panel no longer pushes the
       step's switches below the fold (the fuel pump switches today); term definitions and the
       Add to / Remove from Essentials action on the row.
+      The phase progress-bar track reaches 3:1 using the `todo-ring` color (owner, 2026-11-12).
    4. Flight strip panel and Flight pages: clearance, frequencies, notes, Import latest from
       SimBrief, Reset flight plan, All flight data; Flight sections with field descriptions,
       destination chips and the Descriptions toggle; Weather with Find it in your OFP and a plain

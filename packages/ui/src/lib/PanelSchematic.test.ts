@@ -88,7 +88,7 @@ describe("PanelSchematic", () => {
     render(PanelSchematic, {
       panel,
       focus: ["elec"],
-      targets: [{ section: "elec", item: 0, position: 1, lit: false, open: false }],
+      targets: [{ section: "elec", item: 0, position: 1, lit: false, open: false, resolved: false }],
       guardClosed: true,
     });
 
@@ -104,7 +104,7 @@ describe("PanelSchematic", () => {
     render(PanelSchematic, {
       panel,
       focus: ["elec"],
-      targets: [{ section: "elec", item: 0, position: null, lit: false, open: false }],
+      targets: [{ section: "elec", item: 0, position: null, lit: false, open: false, resolved: false }],
     });
 
     expect(screen.queryByText(/SET TO/)).toBeNull();
@@ -119,7 +119,7 @@ describe("PanelSchematic", () => {
     render(PanelSchematic, {
       panel,
       focus: ["elec"],
-      targets: [{ section: "elec", item: 0, position: null, lit: false, open: true }],
+      targets: [{ section: "elec", item: 0, position: null, lit: false, open: true, resolved: false }],
     });
 
     expect(screen.getByText("SEE STEP")).toBeTruthy();
@@ -139,7 +139,7 @@ describe("PanelSchematic", () => {
     const { container } = render(PanelSchematic, {
       panel: rests,
       focus: ["elec"],
-      targets: [{ section: "elec", item: 0, position: null, lit: false, open: true }],
+      targets: [{ section: "elec", item: 0, position: null, lit: false, open: true, resolved: false }],
     });
 
     expect(container.querySelector(".on .knob.rest")).toBeNull();
@@ -149,8 +149,8 @@ describe("PanelSchematic", () => {
 
   it("draws neighboring small sections together in one drawing", () => {
     const targets = [
-      { section: "lwip", item: 0, position: 1, lit: false, open: false },
-      { section: "rwip", item: 0, position: 1, lit: false, open: false },
+      { section: "lwip", item: 0, position: 1, lit: false, open: false, resolved: false },
+      { section: "rwip", item: 0, position: 1, lit: false, open: false, resolved: false },
     ];
     render(PanelSchematic, { panel, focus: ["lwip", "rwip"], targets });
 
@@ -168,7 +168,7 @@ describe("PanelSchematic", () => {
     render(PanelSchematic, {
       panel: wiperPanel,
       focus: ["lwip"],
-      targets: [{ section: "lwip", item: 0, position: 0, lit: false, open: false }],
+      targets: [{ section: "lwip", item: 0, position: 0, lit: false, open: false, resolved: false }],
     });
 
     const svg = screen.getByRole("img");
@@ -185,7 +185,7 @@ describe("PanelSchematic", () => {
     render(PanelSchematic, {
       panel: wiperPanel,
       focus: ["lwip"],
-      targets: [{ section: "lwip", item: 0, position: 0, lit: false, open: false }],
+      targets: [{ section: "lwip", item: 0, position: 0, lit: false, open: false, resolved: false }],
     });
 
     const frame = screen.getByRole("img").querySelector(".frame");
@@ -202,7 +202,7 @@ describe("PanelSchematic", () => {
     render(PanelSchematic, {
       panel: rested,
       focus: ["elec"],
-      targets: [{ section: "elec", item: 0, position: 1, lit: false, open: false }],
+      targets: [{ section: "elec", item: 0, position: 1, lit: false, open: false, resolved: false }],
     });
 
     const svg = screen.getByRole("img");
@@ -253,7 +253,7 @@ describe("PanelSchematic", () => {
     render(PanelSchematic, {
       panel: lights,
       focus: ["lo"],
-      targets: [{ section: "lo", item: 0, position: null, lit: true, open: false }],
+      targets: [{ section: "lo", item: 0, position: null, lit: true, open: false, resolved: false }],
     });
 
     const lamps = [...screen.getByRole("img").querySelectorAll("rect.lamp")];
@@ -294,7 +294,7 @@ describe("PanelSchematic", () => {
     render(PanelSchematic, {
       panel: handle,
       focus: ["lo"],
-      targets: [{ section: "lo", item: 0, position: 1, lit: false, open: false }],
+      targets: [{ section: "lo", item: 0, position: 1, lit: false, open: false, resolved: false }],
     });
 
     const grip = screen.getByRole("img").querySelector(".grip");
@@ -416,7 +416,7 @@ describe("PanelSchematic", () => {
     const meters = render(PanelSchematic, {
       panel: tall,
       focus: ["meters"],
-      targets: [{ section: "meters", item: 3, position: 1, lit: false, open: false }],
+      targets: [{ section: "meters", item: 3, position: 1, lit: false, open: false, resolved: false }],
     });
     expect(screen.getByText("BATTERY")).toBeTruthy();
     expect(screen.getByText("DC METERS")).toBeTruthy();
@@ -427,7 +427,7 @@ describe("PanelSchematic", () => {
     render(PanelSchematic, {
       panel: tall,
       focus: ["fctl"],
-      targets: [{ section: "fctl", item: 0, position: 1, lit: false, open: false }],
+      targets: [{ section: "fctl", item: 0, position: 1, lit: false, open: false, resolved: false }],
     });
     expect(screen.getByText(/MACH/)).toBeTruthy();
   });
@@ -465,7 +465,7 @@ describe("PanelSchematic", () => {
     render(PanelSchematic, {
       panel,
       focus: ["cap"],
-      targets: [{ section: "cap", item: 0, position: null, lit: false, open: false }],
+      targets: [{ section: "cap", item: 0, position: null, lit: false, open: false, resolved: false }],
     });
     const label = screen.getByText("INBOARD DU: ND AND ENGINES") as unknown as SVGTextElement;
     // Every drawing uses one scale, 1.8 pixels per unit.
@@ -508,7 +508,7 @@ describe("PanelSchematic", () => {
     render(PanelSchematic, {
       panel,
       focus: ["elecu"],
-      targets: [{ section: "elecu", item: 3, position: 1, lit: false, open: false }],
+      targets: [{ section: "elecu", item: 3, position: 1, lit: false, open: false, resolved: false }],
     });
     const aux = screen.getByText("AUX BAT") as unknown as SVGTextElement;
     // Laid out at 1.8 pixels per unit.
@@ -540,7 +540,7 @@ describe("PanelSchematic", () => {
       const { container, unmount } = render(PanelSchematic, {
         panel: panel(width),
         focus: ["s"],
-        targets: [{ section: "s", item: 0, position: null, lit: false, open: false }],
+        targets: [{ section: "s", item: 0, position: null, lit: false, open: false, resolved: false }],
       });
       const svg = container.querySelector("svg") as SVGSVGElement;
       const [, , w] = (svg.getAttribute("viewBox") ?? "").split(" ").map(Number);
@@ -577,8 +577,8 @@ describe("PanelSchematic", () => {
       panel,
       focus: ["mcp"],
       targets: [
-        { section: "mcp", item: 0, position: null, lit: false, open: false },
-        { section: "mcp", item: 1, position: null, lit: false, open: false },
+        { section: "mcp", item: 0, position: null, lit: false, open: false, resolved: false },
+        { section: "mcp", item: 1, position: null, lit: false, open: false, resolved: false },
       ],
     });
     const svgs = [...container.querySelectorAll("svg.schematic")];
@@ -622,7 +622,7 @@ describe("PanelSchematic", () => {
     const { container } = render(PanelSchematic, {
       panel,
       focus: ["fuel"],
-      targets: [{ section: "fuel", item: 0, position: null, lit: false, open: false }],
+      targets: [{ section: "fuel", item: 0, position: null, lit: false, open: false, resolved: false }],
     });
     const knob = container.querySelector(".knob.rest");
     expect(knob).not.toBeNull();
@@ -653,7 +653,7 @@ describe("PanelSchematic", () => {
     render(PanelSchematic, {
       panel,
       focus: ["mcp"],
-      targets: [{ section: "mcp", item: 0, position: null, lit: false, open: false }],
+      targets: [{ section: "mcp", item: 0, position: null, lit: false, open: false, resolved: false }],
     });
     expect(screen.getByText("V/S")).toBeTruthy();
   });
@@ -682,7 +682,7 @@ describe("PanelSchematic", () => {
     const { container } = render(PanelSchematic, {
       panel,
       focus: ["cd"],
-      targets: [{ section: "cd", item: 1, position: null, lit: false, open: false }],
+      targets: [{ section: "cd", item: 1, position: null, lit: false, open: false, resolved: false }],
     });
     expect(container.querySelector("svg.schematic")?.textContent).toContain("INBD");
   });
@@ -713,8 +713,8 @@ describe("PanelSchematic", () => {
       panel,
       focus: ["efisl", "efisr"],
       targets: [
-        { section: "efisl", item: 0, position: null, lit: false, open: false },
-        { section: "efisr", item: 0, position: null, lit: false, open: false },
+        { section: "efisl", item: 0, position: null, lit: false, open: false, resolved: false },
+        { section: "efisr", item: 0, position: null, lit: false, open: false, resolved: false },
       ],
     });
     expect(container.querySelectorAll("svg.schematic")).toHaveLength(1);

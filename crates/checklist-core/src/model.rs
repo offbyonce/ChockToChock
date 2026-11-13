@@ -225,6 +225,16 @@ data_types! {
         /// something else. The drawing claims no position, and `pack check` accepts the wording.
         #[serde(default, skip_serializing_if = "std::ops::Not::not")]
         pub open: bool,
+        /// Applies only when a decision step has answered an option with this value (decision
+        /// 0022). Until it is answered, the item's target without `when` (`open: true`) applies.
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        pub when: Option<TargetWhen>,
+    }
+
+    /// The answer a target depends on: an option and one of its values (decision 0022).
+    pub struct TargetWhen {
+        pub option: String,
+        pub equals: String,
     }
 
     /// One challenge and response line.
@@ -266,6 +276,10 @@ data_types! {
         pub quick: Option<Quick>,
         #[serde(default, skip_serializing_if = "Option::is_none")]
         pub show_if: Option<ShowIf>,
+        /// A decision step: it asks the pilot this option (by id), and the answer sets it for the
+        /// flight. Targets elsewhere may depend on the answer (decision 0022).
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        pub decide: Option<String>,
         /// Optional note shown under the step.
         #[serde(default, skip_serializing_if = "Option::is_none")]
         pub note: Option<String>,
@@ -352,6 +366,7 @@ impl Step {
             non_recall: false,
             quick: None,
             show_if: None,
+            decide: None,
             note: None,
             why: None,
             check: None,
