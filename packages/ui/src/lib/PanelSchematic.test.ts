@@ -839,6 +839,9 @@ describe("PanelSchematic", () => {
       screen.getByRole("button", { name: "See the whole panel larger" }).click();
       for (const cb of frames.splice(0)) cb(0);
       expect(sheet.hasAttribute("open")).toBe(true);
+      // Titled as the pane card's caption.
+      expect(sheet.getAttribute("aria-label")).toBe("Fuel panel");
+      expect(sheet.querySelector(".sheet-head span")?.textContent).toBe("Fuel panel");
       expect(sheet.scrollTop).toBe(1550 - 400);
     } finally {
       globalThis.requestAnimationFrame = raf;

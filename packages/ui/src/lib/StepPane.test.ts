@@ -72,4 +72,34 @@ describe("StepPane", () => {
     await fireEvent.click(button);
     for (const t of withTerms.terms ?? []) expect(screen.getByText(t)).toBeTruthy();
   });
+
+  it("names dashed and ◆ in a drawing's legend only when that drawing has them", () => {
+    const t = (item: number, open: boolean, resolved: boolean, section = "fuel") => ({
+      section,
+      item,
+      position: 1,
+      lit: false,
+      open,
+      resolved,
+    });
+    const pane = (targets: ReturnType<typeof t>[]) =>
+      render(StepPane, {
+        index,
+        step: step("before-start.fuel-pump-switches")!,
+        targets,
+        number: 6,
+        total: 9,
+        mapMode: "off",
+        onMap: () => {},
+      });
+    const legend = () => document.querySelector(".controls figcaption")?.textContent ?? "";
+    // A dashed control on another panel (the aft overhead) stays out of the fuel drawing's legend.
+    const plain = pane([t(17, false, false), t(0, true, true, "elt")]);
+    expect(document.querySelectorAll(".controls")).toHaveLength(2);
+    expect(legend()).not.toMatch(/dashed|◆/);
+    plain.unmount();
+    pane([t(11, true, false), t(17, false, true)]);
+    expect(legend()).toMatch(/dashed: only if the step's condition applies/);
+    expect(legend()).toMatch(/◆ set by a decision step/);
+  });
 });

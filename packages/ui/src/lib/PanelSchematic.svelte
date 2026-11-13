@@ -10,8 +10,9 @@ keeping its proportions, unless that would draw a label under 11 px; then it is 
 smallest size that keeps 11 px labels, scrolls sideways, and offers a full-width view.
 -->
 <script lang="ts">
+  import { panelCaption } from "./panel-name";
   import type { ItemTarget, Panel, PanelSection as Section } from "@chocktochock/bindings";
-  import { drawingScale, halfWidth, K, layoutSection, positionsOf } from "./panel-layout";
+  import { drawingScale, halfWidth, K, layoutSection, openingScroll, positionsOf } from "./panel-layout";
   import PanelSection from "./PanelSection.svelte";
   import Self from "./PanelSchematic.svelte";
   import type { PackIndex } from "../pack-index";
@@ -169,12 +170,11 @@ smallest size that keeps 11 px labels, scrolls sideways, and offers a full-width
     return () => cancelAnimationFrame(frame);
   });
   function openOnTargets(wrap: HTMLDivElement) {
-    // The step's controls, edge to edge (a screen wider than the card counts from its left edge),
-    // with the left edge of the section each is in.
+    // The step's controls, edge to edge.
     const spans = drawn.flatMap((s) =>
       s.items.flatMap((it, i) =>
         targets.some((t) => t.section === s.id && t.item === i)
-          ? [{ x0: s.x + it.x - halfWidth(it), x1: s.x + it.x + halfWidth(it), section: s.x }]
+          ? [{ x0: s.x + it.x - halfWidth(it), x1: s.x + it.x + halfWidth(it) }]
           : [],
       ),
     );
@@ -182,16 +182,7 @@ smallest size that keeps 11 px labels, scrolls sideways, and offers a full-width
     const room = wrap.clientWidth;
     const px = (x: number) => (x - view.box.x) * scale.k;
     const [first, last] = [Math.min(...spans.map((x) => x.x0)), Math.max(...spans.map((x) => x.x1))];
-    const lead = spans.find((x) => x.x0 === first) ?? spans[0];
-    // In order: the whole drawing from its left edge; the step's controls centered; the first
-    // control's whole section from its left edge (so no control of it is cut at the left); the
-    // first control itself.
-    let left: number;
-    if (px(last) <= room) left = 0;
-    else if (px(last) - px(first) <= room) left = (px(first) + px(last)) / 2 - room / 2;
-    else if (lead && px(lead.x1) - px(lead.section) <= room) left = px(lead.section) - 8;
-    else left = px(first) - 24;
-    wrap.scrollLeft = Math.max(0, left);
+    wrap.scrollLeft = openingScroll(px(first), px(last), room);
   }
 
   let sheet = $state<HTMLDialogElement | null>(null);
@@ -239,6 +230,8 @@ smallest size that keeps 11 px labels, scrolls sideways, and offers a full-width
       .join("; "),
   );
   let title = $derived(focused.map((s) => s.title).join(" and "));
+  /** The larger view's title: the pane card's caption ("Fuel panel"). */
+  let caption = $derived(panelCaption(focused.map((s) => s.title)));
 </script>
 
 <div class="wrap" class:more={scale.overflow} bind:clientWidth={width} bind:this={wrap}>
@@ -267,9 +260,9 @@ smallest size that keeps 11 px labels, scrolls sideways, and offers a full-width
 {/if}
 {#if (scale.overflow || band) && !large}
   <button type="button" class="btn larger" onclick={openLarger}>See the whole panel larger</button>
-  <dialog class="sheet" bind:this={sheet} aria-label="{title} panel">
+  <dialog class="sheet" bind:this={sheet} aria-label={caption}>
     <div class="sheet-head">
-      <span>{title}</span>
+      <span>{caption}</span>
       <button type="button" class="btn" onclick={() => sheet?.close()}>Close</button>
     </div>
     <Self {panel} {focus} {targets} {guardClosed} large />

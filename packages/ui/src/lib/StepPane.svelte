@@ -107,6 +107,9 @@ A step with no control on the map shows the steps coming up below its details.
     }
     return [...byPanel.values()].slice(0, 3);
   });
+  /** The step's targets drawn in this card: its legend names dashed and ◆ only when they appear. */
+  const inCard = (card: { panel: { sections: { id: string }[] } }) =>
+    targets.filter((t) => card.panel.sections.some((s) => s.id === t.section));
   let picked = $state<Record<string, { section: string; item: number } | null>>({});
   /** The step's own control in the first drawing, for How to do it's link to its card. */
   let own = $derived.by(() => {
@@ -217,7 +220,7 @@ A step with no control on the map shows the steps coming up below its details.
         <span class="cap">The controls · {panelCaption(card.focus.map((id) => index.section(id)?.title ?? id))}</span>
         <PanelSchematic panel={card.panel} focus={card.focus} {targets} {guardClosed} {index} around named={`${check ?? ""} ${ifNot ?? ""}`} bind:picked={picked[card.panel.id]} />
         <figcaption>
-          Blue: set by this step · lights drawn unlit · tap a light for its meaning{#if targets.some((t) => t.open)}{" "}· dashed: only if the step's condition applies{/if}{#if targets.some((t) => t.resolved)}{" "}· ◆ set by a decision step{/if}
+          Blue: set by this step · lights drawn unlit · tap a light for its meaning{#if inCard(card).some((t) => t.open)}{" "}· dashed: only if the step's condition applies{/if}{#if inCard(card).some((t) => t.resolved)}{" "}· ◆ set by a decision step{/if}
         </figcaption>
       </figure>
     {/each}

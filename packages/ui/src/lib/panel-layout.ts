@@ -28,6 +28,14 @@ export const MIN_SCALE =
 export const MAX_SCALE = 2 * K;
 
 /**
+ * Where a drawing wider than its card opens: scrolled so the step's controls (from `first` to
+ * `last`, in pixels from the drawing's left edge) sit centered in the card's `room`, at every size.
+ */
+export function openingScroll(first: number, last: number, room: number): number {
+  return Math.max(0, (first + last) / 2 - room / 2);
+}
+
+/**
  * The scale for a drawing `boxWidth` units wide in `room` pixels: as wide as the room, keeping its
  * proportions, but never so small that a label drops under its minimum. `overflow` says the
  * drawing is then wider than the room (it scrolls, and a larger view is offered). `page` is the

@@ -17,6 +17,7 @@ import {
   MAX_SCALE,
   MIN_SCALE,
   nameFit,
+  openingScroll,
   PX,
   TOGGLE,
 } from "./panel-layout";
@@ -323,5 +324,13 @@ describe("lampText", () => {
     const words = lampText(item, K, PX.lamp, KEY.w);
     expect(words.lines).toEqual(["EMERGENCY/", "TEST"]);
     expect(words.px).toBeGreaterThanOrEqual(LEGEND_MIN);
+  });
+});
+
+describe("openingScroll", () => {
+  it("centers the step's controls in the card, even when the section starts far to their left", () => {
+    // Tablet landscape opened the fuel drawing at its section's left edge, cutting CTR R.
+    expect(openingScroll(300, 700, 400)).toBe(300);
+    expect(openingScroll(40, 200, 400)).toBe(0);
   });
 });
