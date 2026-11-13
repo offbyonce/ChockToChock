@@ -42,6 +42,50 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
   const host = getHost();
   const route = currentRoute();
 
+  /**
+   * The list (the page) and the side pane scroll on their own with no scrollbar, as on the boards;
+   * edge fades show where there is more (the owner, batch 2). Wheel, trackpad, touch and keys
+   * scroll them as usual.
+   */
+  let pageMore = $state({ up: false, down: false });
+  let paneMore = $state({ up: false, down: false });
+  const edges = (top: number, view: number, whole: number) => ({ up: top > 1, down: top + view < whole - 1 });
+  $effect(() => {
+    const read = () => {
+      const d = document.documentElement;
+      pageMore = edges(d.scrollTop, d.clientHeight, d.scrollHeight);
+    };
+    read();
+    const watch = new ResizeObserver(read);
+    watch.observe(document.body);
+    window.addEventListener("scroll", read, { passive: true });
+    window.addEventListener("resize", read);
+    return () => {
+      watch.disconnect();
+      window.removeEventListener("scroll", read);
+      window.removeEventListener("resize", read);
+    };
+  });
+  function fades(el: HTMLElement) {
+    const read = () => (paneMore = edges(el.scrollTop, el.clientHeight, el.scrollHeight));
+    const watch = new ResizeObserver(read);
+    watch.observe(el);
+    for (const child of el.children) watch.observe(child);
+    const added = new MutationObserver(() => {
+      for (const child of el.children) watch.observe(child);
+      read();
+    });
+    added.observe(el, { childList: true });
+    el.addEventListener("scroll", read, { passive: true });
+    read();
+    return {
+      destroy: () => {
+        watch.disconnect();
+        added.disconnect();
+        el.removeEventListener("scroll", read);
+      },
+    };
+  }
   let info = $state<AppInfo | null>(null);
   let packId = $state("");
   let index = $state<PackIndex | null>(null);
@@ -418,8 +462,10 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
           </p>
         </div>
       </main>
+      <div class="page-fade up" class:on={pageMore.up} aria-hidden="true"></div>
+      <div class="page-fade down" class:on={pageMore.down} aria-hidden="true"></div>
       {#if pane}
-        <aside class="pane" aria-label="About the step">
+        <aside class="pane" class:more-up={paneMore.up} class:more-down={paneMore.down} aria-label="About the step" use:fades>
           {#key pane.step.id}
             <StepPane
               {index}
@@ -473,6 +519,45 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
   .pane::-webkit-scrollbar {
     display: none;
   }
+  .pane.more-up {
+    mask-image: linear-gradient(180deg, transparent, black var(--space-10));
+  }
+  .pane.more-down {
+    mask-image: linear-gradient(180deg, black calc(100% - var(--space-10)), transparent);
+  }
+  .pane.more-up.more-down {
+    mask-image: linear-gradient(180deg, transparent, black var(--space-10), black calc(100% - var(--space-10)), transparent);
+  }
+  /* The page draws no scrollbar either (the boards draw none). */
+  :global(html) {
+    scrollbar-width: none;
+  }
+  :global(html::-webkit-scrollbar) {
+    display: none;
+  }
+  /* Edge fades over the list where it scrolls on, above and below. */
+  .page-fade {
+    position: fixed;
+    left: 0;
+    width: calc(100% - var(--side-pane));
+    height: var(--space-10);
+    pointer-events: none;
+    opacity: 0;
+  }
+  .app.nopane .page-fade {
+    width: 100%;
+  }
+  .page-fade.on {
+    opacity: 1;
+  }
+  .page-fade.up {
+    top: calc(var(--size-header) + var(--size-phase-row));
+    background: linear-gradient(180deg, var(--color-bg), transparent);
+  }
+  .page-fade.down {
+    bottom: 0;
+    background: linear-gradient(0deg, var(--color-bg), transparent);
+  }
   /* 3.0's toast: dark on light (light on dark), centered at the bottom. */
   .toast {
     position: fixed;
@@ -517,6 +602,9 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
     }
     .pane {
       display: none;
+    }
+    .page-fade {
+      width: 100%;
     }
   }
 </style>

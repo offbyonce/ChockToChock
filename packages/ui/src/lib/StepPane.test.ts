@@ -35,8 +35,8 @@ describe("StepPane", () => {
       ["head", "check", "ifnot", "why", "map", "controls"].find((c) => e.classList.contains(c)),
     );
     expect(order.filter(Boolean)).toEqual(["head", "check", "ifnot", "why", "map", "controls"]);
-    // A new panel since the step before: the map figure says so.
-    expect(screen.getByText("New panel")).toBeTruthy();
+    // No "New panel" tag anywhere (the owner, round 6).
+    expect(screen.queryByText(/New panel/)).toBeNull();
   });
 
   it("shows the one-line location instead of the map when the panel did not change", async () => {
@@ -145,9 +145,7 @@ describe("StepPane", () => {
       const view = render(StepPane, props);
       await Promise.resolve();
       expect(document.querySelector(".map")).toBeNull();
-      expect(document.querySelector(".line")?.textContent).toMatch(
-        /^New panel · Forward overhead \(P5\) · Fuel panel/,
-      );
+      expect(document.querySelector(".line")?.textContent).toMatch(/^Forward overhead \(P5\) · Fuel panel/);
       await fireEvent.click(screen.getByRole("button", { name: "Show map" }));
       expect(document.querySelector(".map")).not.toBeNull();
       // Hide map (Map in steps turns On request): the MapHidden board's line, with no New panel.

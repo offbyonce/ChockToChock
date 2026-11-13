@@ -209,7 +209,6 @@ A step with no control on the map shows the steps coming up below its details.
       <figure class="map">
         <div class="mapdraw"><OverviewMap {index} zone={place.zone} compact /></div>
         <div class="info">
-          {#if newPanel}<span class="new">New panel</span>{/if}
           <span class="area">{where}</span>
           {#if place.zone.position ?? place.control?.location}<span class="at">{place.zone.position ?? place.control?.location}</span>{/if}
           <Locator {index} zone={place.zone} link />
@@ -218,7 +217,7 @@ A step with no control on the map shows the steps coming up below its details.
       </figure>
     {:else}
       <div class="line">
-        <span>{#if (flow || !desktop || (squeezed && wantMap)) && newPanel}New panel{" · "}{/if}{where} · {place.zone.title}</span>
+        <span>{where} · {place.zone.title}</span>
         <Locator {index} zone={place.zone} link />
         {#if flow || !desktop}
           <!-- Flow and tablet landscape keep to the location line. -->
@@ -411,11 +410,6 @@ A step with no control on the map shows the steps coming up below its details.
     flex-direction: column;
     align-items: flex-start;
     gap: var(--border-thick);
-  }
-  .new {
-    color: var(--color-accent-text);
-    font-size: var(--font-size-caption);
-    font-weight: var(--weight-semibold);
   }
   .area {
     color: var(--panel-text);

@@ -21,7 +21,7 @@ What the step asks for, never the simulator's state (decision 0006).
 <script lang="ts">
   import type { ItemTarget, PanelItem, PanelSection } from "@chocktochock/bindings";
   import { em } from "./text-width";
-  import { angleOf, BUTTON, DIAL, half, halfWidth, withinAcross, knobY, LAMP, TOGGLE, labelled, lampText, layoutSection, leverY, PX, positionsOf, slotY } from "./panel-layout";
+  import { angleOf, BUTTON, COVER_RAISE, DIAL, half, halfWidth, withinAcross, knobY, LAMP, TOGGLE, labelled, lampText, layoutSection, leverY, PX, positionsOf, slotY } from "./panel-layout";
 
   let {
     section,
@@ -60,6 +60,9 @@ What the step asks for, never the simulator's state (decision 0006).
   const fs = (px: number) => `${(px / k).toFixed(2)}px`;
   /** Half the guard's width and height around a toggle's track. */
   const gw = TOGGLE.w / 2 + TOGGLE.guard;
+  /** A guard is shut when the step does not touch its switch (as on the airplane) or the step
+   * closes it; open while the step sets the switch. */
+  const guardShut = (on: boolean) => !on || guardClosed;
   const gh = TOGGLE.h / 2 + TOGGLE.guard;
   /** Light words shrink only if they would not fit inside the light. */
   /** A screen's label: 3.0's size, smaller only if it would not fit across the screen. */
@@ -122,19 +125,21 @@ What the step asks for, never the simulator's state (decision 0006).
     <g class="item {item.kind}" class:on class:resolved={on && (byItem.get(i)?.resolved ?? false)} class:conditional={open} transform="translate({item.x} {item.y})">
 
       {#if item.kind === "toggle_switch"}
-        {#if item.guarded}
-          <!-- A guard: an open frame around the switch, with its hinge at the top; closed, a lid
-               line across it. -->
-          <path class="guard" d="M {-gw} {gh} V {-gh + 2} Q {-gw} {-gh} {-gw + 2} {-gh} H {gw - 2} Q {gw} {-gh} {gw} {-gh + 2} V {gh}" />
-          <!-- A guard the step does not touch rests closed, as on the airplane; the step's guard
-               shows closed (blue lid) when the step closes it, open otherwise. -->
-          {#if !on}<line class="guard lid rest" x1={-gw} x2={gw} y1={gh} y2={gh} />{:else if guardClosed}<line class="guard lid" x1={-gw - 1.5} x2={gw + 1.5} y1={gh} y2={gh} />{/if}
+        {#if item.guarded && !guardShut(on)}
+          <!-- An open guard: its cover raised on the hinge at the top, clear of the switch. -->
+          <path class="cover raised" class:step={on} d="M {-gw} {-gh} L {gw} {-gh} L {gw + 1.5} {-gh - COVER_RAISE} L {-gw - 1.5} {-gh - COVER_RAISE} Z" />
+          <line class="hinge" class:step={on} x1={-gw} x2={gw} y1={-gh} y2={-gh} />
         {/if}
         <rect class="body track" class:changed={on && !open} class:conditional={open} x={-TOGGLE.w / 2} y={-TOGGLE.h / 2} width={TOGGLE.w} height={TOGGLE.h} rx={TOGGLE.w / 2} />
         {#if on && t != null}
           <circle class="knob set" cy={knobY(t, positions.length)} r={TOGGLE.knob + 0.3} />
         {:else if r >= 0}
           <circle class="knob rest" cy={knobY(r, positions.length)} r={TOGGLE.knob} />
+        {/if}
+        {#if item.guarded && guardShut(on)}
+          <!-- A closed guard: its cover down over the switch, hinged at the top. -->
+          <rect class="cover shut" class:step={on} x={-gw} y={-gh} width={2 * gw} height={2 * gh} rx="2" />
+          <line class="hinge" class:step={on} x1={-gw} x2={gw} y1={-gh} y2={-gh} />
         {/if}
         {#each layout.items.get(i)?.positions ?? [] as l (l.n)}
           <text class="pos" class:target={on && l.n === t} class:at-rest={l.n === r} x={l.x} y={l.y} text-anchor={l.anchor} style:font-size={fs(PX.pos * layout.scale)}>{on && l.n === t && byItem.get(i)?.resolved ? "◆ " : ""}{positions[l.n]}</text>
@@ -323,19 +328,33 @@ What the step asks for, never the simulator's state (decision 0006).
     stroke: var(--panel-resting);
     stroke-width: 1.3;
   }
+  /* A guard's cover: down over the switch when shut, raised clear of it on its hinge when open;
+     the step's guard in blue. */
+  .cover {
+    fill: var(--panel-fill);
+    stroke: var(--panel-resting);
+    stroke-width: 1.1;
+  }
+  .cover.shut {
+    fill-opacity: 0.82;
+  }
+  .cover.step {
+    fill: var(--panel-changed-fill);
+    stroke: var(--panel-changed);
+    stroke-width: 1.6;
+  }
+  .hinge {
+    stroke: var(--panel-resting);
+    stroke-width: 2.2;
+    stroke-linecap: round;
+  }
+  .hinge.step {
+    stroke: var(--panel-changed);
+  }
   .guard {
     fill: none;
     stroke: var(--panel-resting);
     stroke-width: 1.1;
-  }
-  .guard.lid.rest {
-    stroke: var(--panel-resting);
-    stroke-width: 1.6;
-  }
-  .guard.lid {
-    stroke: var(--panel-changed);
-    stroke-width: 2.4;
-    stroke-linecap: round;
   }
   .screen {
     fill: var(--panel-fill);

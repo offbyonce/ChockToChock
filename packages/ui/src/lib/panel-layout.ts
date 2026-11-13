@@ -63,6 +63,9 @@ export const positionsOf = (item: PanelItem): string[] =>
  * clear ring of track around it, so it never crowds the outline.
  */
 export const TOGGLE = { w: 8, h: 22, guard: 2.8, gap: 3.6, knob: 2 } as const;
+/** How far an open guard's cover rises above its hinge (room is kept for it whether it is open
+ * or shut, so a step that opens it never moves a label). */
+export const COVER_RAISE = 5.5;
 /** How far a toggle reaches either side of its center, guard included. */
 const toggleHalfWidth = (guarded: boolean) => TOGGLE.w / 2 + (guarded ? TOGGLE.guard : 0);
 
@@ -358,7 +361,13 @@ function place(
     const lamp = it.kind === "light";
     const hw = lamp ? LAMP.w / 2 : halfWidth(it);
     const h = lamp ? LAMP.h / 2 : half(it);
-    return { x0: it.x - hw, y0: it.y - h, x1: it.x + hw, y1: it.y + h };
+    const raise = it.kind === "toggle_switch" && it.guarded ? COVER_RAISE + 1.5 : 0;
+    return {
+      x0: it.x - hw - (raise ? 1.5 : 0),
+      y0: it.y - h - raise,
+      x1: it.x + hw + (raise ? 1.5 : 0),
+      y1: it.y + h,
+    };
   };
   for (const i of shown) placed.push({ ...glyph(i), owner: i });
   const order = [...shown].sort((a, b) => {

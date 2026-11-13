@@ -871,4 +871,21 @@ describe("PanelSchematic", () => {
     render(PanelSchematic, { panel: du, focus: ["cd"], targets });
     expect(screen.getByRole("img").querySelector(".frame")?.classList.contains("bare")).toBe(false);
   });
+
+  it("draws a guard shut over its switch, or raised clear of it on its hinge, so they read apart", () => {
+    // Shut and open guards differed only by a line along the base.
+    const t = { section: "elec", item: 0, position: 1, lit: false, open: false, resolved: false };
+    const cover = () =>
+      [...screen.getByRole("img").querySelectorAll(".cover")].map((c) =>
+        [...c.classList].filter((n) => !n.startsWith("svelte-")).join(" "),
+      );
+    const resting = render(PanelSchematic, { panel, focus: ["elec"], targets: [] });
+    expect(cover()).toEqual(["cover shut"]);
+    resting.unmount();
+    const opened = render(PanelSchematic, { panel, focus: ["elec"], targets: [t] });
+    expect(cover()).toEqual(["cover raised step"]);
+    opened.unmount();
+    render(PanelSchematic, { panel, focus: ["elec"], targets: [t], guardClosed: true });
+    expect(cover()).toEqual(["cover shut step"]);
+  });
 });
