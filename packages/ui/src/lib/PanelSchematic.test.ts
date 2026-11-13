@@ -734,7 +734,8 @@ describe("PanelSchematic", () => {
     const svg = screen.getByRole("img");
     expect(svg.querySelectorAll(".resolved")).toHaveLength(1);
     expect(svg.querySelectorAll(".resolved .knob.set")).toHaveLength(1);
-    expect(screen.getByText("SET TO OFF")).toBeTruthy();
+    // The caption carries the decision's diamond, which layout keeps clear of other labels.
+    expect(screen.getByText("◆ SET TO OFF")).toBeTruthy();
     expect(svg.querySelector(".conditional")).toBeNull();
   });
 

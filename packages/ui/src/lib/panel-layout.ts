@@ -281,17 +281,20 @@ export type SectionLayout = {
  * The caption under a step's control: the position it is set to. A control whose position the
  * step leaves to a condition has none; it is drawn dashed instead (decision 0022).
  */
-export const caption = (positions: string[], t: number | null): string | null => {
+export const caption = (positions: string[], t: number | null, resolved = false): string | null => {
   if (t == null) return null;
-  return positions[t] === "SET" ? "SET" : `SET TO ${positions[t] ?? ""}`;
+  // A position set by a decision step's answer carries a diamond (decision 0022).
+  const mark = resolved ? "◆ " : "";
+  return positions[t] === "SET" ? `${mark}SET` : `${mark}SET TO ${positions[t] ?? ""}`;
 };
 
 /** The ways a caption may be set: on one line, or "SET TO" above the position when that is too
  * wide for its place. */
 export const captionLines = (text: string | null): string[][] => {
   if (!text) return [[]];
-  const rest = text.startsWith("SET TO ") ? text.slice("SET TO ".length) : null;
-  return rest ? [[text], ["SET TO", rest]] : [[text]];
+  const head = text.startsWith("◆ ") ? "◆ SET TO " : "SET TO ";
+  const rest = text.startsWith(head) ? text.slice(head.length) : null;
+  return rest ? [[text], [head.trim(), rest]] : [[text]];
 };
 
 /**
@@ -307,7 +310,14 @@ export const captionLines = (text: string | null): string[][] => {
 export function layoutSection(
   section: PanelSection,
   shown: number[],
-  target: (i: number) => { on: boolean; t: number | null; rest: number; lit?: boolean; open?: boolean },
+  target: (i: number) => {
+    on: boolean;
+    t: number | null;
+    rest: number;
+    lit?: boolean;
+    open?: boolean;
+    resolved?: boolean;
+  },
   k: number,
   titleTop: number,
   /** The part of the section drawn across (a wide section is cropped around the step). */
@@ -332,7 +342,14 @@ export function layoutSection(
 function place(
   section: PanelSection,
   shown: number[],
-  target: (i: number) => { on: boolean; t: number | null; rest: number; lit?: boolean; open?: boolean },
+  target: (i: number) => {
+    on: boolean;
+    t: number | null;
+    rest: number;
+    lit?: boolean;
+    open?: boolean;
+    resolved?: boolean;
+  },
   k: number,
   titleTop: number,
   scale: number,
@@ -371,7 +388,7 @@ function place(
   const items = new Map<number, ItemLayout>();
   for (const i of order) {
     const it = moved.items[i] as PanelItem;
-    const { on, t, rest, lit, open } = target(i);
+    const { on, t, rest, lit, open, resolved } = target(i);
     const layout: ItemLayout = { name: null, positions: [] };
     if (it.kind === "light" && lit) {
       // "EXPECTED ON" under a light the step expects on.
@@ -458,7 +475,7 @@ function place(
     if (labelled(it)) {
       const fit = nameFit(it, moved, k);
       const px = fit.px * scale;
-      const setTo = on ? caption(pos, t) : null;
+      const setTo = on ? caption(pos, t, resolved ?? false) : null;
       const line = (px * LINE) / k;
       const boxFor = (dy: number, cap: string[]): Box => {
         const w = Math.max(widest(fit.lines) * px, widest(cap) * PX.setTo * scale) / k;

@@ -86,6 +86,7 @@ What the step asks for, never the simulator's state (decision 0006).
           rest: !on && item.rest ? positionsOf(item).indexOf(item.rest) : -1,
           lit: byItem.get(i)?.lit ?? false,
           open: byItem.get(i)?.open ?? false,
+          resolved: byItem.get(i)?.resolved ?? false,
         };
       },
       k,
@@ -113,11 +114,7 @@ What the step asks for, never the simulator's state (decision 0006).
     {@const open = on && (byItem.get(i)?.open ?? false)}
     {@const r = (!on || (t == null && !open)) && item.rest ? positions.indexOf(item.rest) : -1}
     <g class="item {item.kind}" class:on class:resolved={on && (byItem.get(i)?.resolved ?? false)} class:conditional={open} transform="translate({item.x} {item.y})">
-      {#if on && (byItem.get(i)?.resolved ?? false)}
-        <!-- Resolved: set by a decision step's answer (decision 0022), marked with a small diamond
-             to its left, so it is told apart from a setting the step always asks for. -->
-        <path class="decided" d="M {-halfWidth(item) - 6} {-half(item) - 6} l 3 3 l -3 3 l -3 -3 z" />
-      {/if}
+
       {#if item.kind === "toggle_switch"}
         {#if item.guarded}
           <!-- A guard: an open frame around the switch, with its hinge at the top; closed, a lid
@@ -349,9 +346,7 @@ What the step asks for, never the simulator's state (decision 0006).
   .tip.rest {
     fill: var(--panel-text);
   }
-  .decided {
-    fill: var(--panel-changed);
-  }
+
   .on .lamp-text {
     fill: var(--panel-changed-text);
   }

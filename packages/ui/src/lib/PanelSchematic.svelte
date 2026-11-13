@@ -111,6 +111,7 @@ smallest size that keeps 11 px labels, scrolls sideways, and offers a full-width
           t: on(i)?.position ?? null,
           rest: !on(i) && item.rest ? positionsOf(item).indexOf(item.rest) : -1,
           lit: on(i)?.lit ?? false,
+          resolved: on(i)?.resolved ?? false,
         };
       },
       K,
@@ -260,7 +261,7 @@ smallest size that keeps 11 px labels, scrolls sideways, and offers a full-width
   }
   /* A drawing wider than its card fades at its edges, so it is clear there is more. */
   .wrap.more {
-    mask-image: linear-gradient(90deg, transparent, black var(--space-6), black calc(100% - var(--space-6)), transparent);
+    mask-image: linear-gradient(90deg, transparent, black var(--space-10), black calc(100% - var(--space-10)), transparent);
   }
   .schematic {
     display: block;
