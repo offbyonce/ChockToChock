@@ -151,6 +151,11 @@ folded to one line with its count until the phase's procedure is done.
 {/if}
 
 <style>
+  /* An open row menu reaches past the card's bottom (the Checklist board), so the card stops
+     clipping while one is open. */
+  section.card:has(:global(.menu)) {
+    overflow: visible;
+  }
   /* The card header (Checklist board): 52 tall, title and counts. */
   header {
     display: flex;

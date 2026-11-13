@@ -65,4 +65,17 @@ describe("Slideout", () => {
     expect(document.querySelectorAll(".selection")).toHaveLength(1);
     expect(screen.getByRole("button", { name: /^Where it is/ }).getAttribute("aria-expanded")).toBe("false");
   });
+
+  it("lists Used in once per step, in flight order, as 'Step · Phase'", () => {
+    render(Slideout, props("control"));
+    const links = [...document.querySelectorAll(".links .lk")].map((b) => b.textContent ?? "");
+    expect(links.length).toBeGreaterThan(0);
+    expect(new Set(links).size).toBe(links.length);
+    for (const l of links) expect(l).toMatch(/^.+ · .+$/);
+    // Phases appear in the pack's flight order, never going back to an earlier one.
+    const order = (pack.content.phases?.phases ?? []).map((p) => p.title);
+    const at = links.map((l) => order.indexOf(l.split(" · ").at(-1) ?? ""));
+    expect(at.every((p) => p >= 0)).toBe(true);
+    expect([...at].sort((a, b) => a - b)).toEqual(at);
+  });
 });

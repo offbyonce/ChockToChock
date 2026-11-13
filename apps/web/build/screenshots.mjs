@@ -76,11 +76,18 @@ const go = (hash) => `location.hash = ${JSON.stringify(hash)}; true`;
 /** Skips the list step `title`: opens it if it is closed, then presses Skip for now. */
 const skipStep = (title) =>
   `(() => { const it = [...document.querySelectorAll(".it")].find((i) => i.textContent.toUpperCase().includes(${JSON.stringify(title)})); const skip = () => [...it.querySelectorAll("button")].find((b) => b.textContent.includes("Skip for now")); if (!skip()) it.querySelector(".chev").click(); return new Promise((go) => setTimeout(() => { skip().click(); go(true); }, 300)); })()`;
+/** Ticks every step of phase `id`, its checklist too once it unfolds, then goes to phase `then`. */
+const finishPhase = (id, then) =>
+  `(async () => { const wait = (ms) => new Promise((go) => setTimeout(go, ms)); location.hash = "#/phase/${id}"; await wait(500); for (let i = 0; i < 200; i++) { const b = [...document.querySelectorAll(".it .tick")].find((t) => t.getAttribute("aria-pressed") !== "true"); if (!b) break; b.click(); await wait(80); } location.hash = "#/phase/${then}"; await wait(500); return true; })()`;
+/** Opens the row menu ("···") of the list step whose name is exactly `name`. */
+const rowMenu = (name) =>
+  `[...document.querySelectorAll(".it")].find((it) => it.querySelector(".nm")?.textContent.trim() === ${JSON.stringify(name)}).querySelector("button.more").click(); true`;
 /**
  * The approved boards' state for Before start: Landing gear pins to Door lights done, TERR skipped,
  * so the fuel pump switches are the current step (the boards' center tank step is batch 7's).
  */
 const BOARD_STATE = [
+  finishPhase("apu-power", "before-start"),
   stepNamed("LANDING GEAR PINS", ".tick"),
   stepNamed("N1 BUGS", ".tick"),
   stepNamed("MCP", ".tick"),
@@ -275,7 +282,13 @@ const SHOTS = [
   },
   // Board pairs: each screen in its board's step and state, shot at the board's size and whole
   // (the full page and the side pane top to bottom), for docs/design/boards side-by-sides.
-  { name: "board-checklist", full: true, only: ["desktop", "wide", "tablet-landscape"], app: { hash: "#/phase/before-start", before: BOARD_STATE } },
+  // The Checklist board also draws the row menu open on Anti-collision light.
+  {
+    name: "board-checklist",
+    full: true,
+    only: ["desktop", "wide", "tablet-landscape"],
+    app: { hash: "#/phase/before-start", before: [...BOARD_STATE, rowMenu("Anti-collision light")] },
+  },
   // Round 6's slide-out: Show panel (P), Where is this? (W), and a control's card (tap CTR L).
   { name: "board-panel", full: true, only: ["desktop", "wide", "tablet-landscape"], app: { hash: "#/phase/before-start", before: [...BOARD_STATE, press("p")] } },
   { name: "board-where", full: true, only: ["desktop", "tablet-landscape"], app: { hash: "#/phase/before-start", before: [...BOARD_STATE, press("w")] } },

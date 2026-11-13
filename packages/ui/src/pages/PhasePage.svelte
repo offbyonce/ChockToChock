@@ -148,13 +148,13 @@ step at a time (lib/FlowView.svelte).
 
 <nav class="nav" aria-label="Phases either side">
   {#if view.previous}
-    <a class="btn" href={phaseHref(view.previous.id)}><Icon name="arrow-left" /> {view.previous.title}</a>
+    <a class="btn secondary" href={phaseHref(view.previous.id)}><Icon name="arrow-left" /> {view.previous.title}</a>
   {:else}
     <!-- The first phase leads back to Flight setup, as in 3.0. -->
-    <a class="btn" href="#/setup"><Icon name="arrow-left" /> Flight setup</a>
+    <a class="btn secondary" href="#/setup"><Icon name="arrow-left" /> Flight setup</a>
   {/if}
   {#if view.next}
-    <a class="btn primary" href={phaseHref(view.next.id)}>{view.next.title} <Icon name="arrow-right" /></a>
+    <a class="btn secondary" href={phaseHref(view.next.id)}>{view.next.title} <Icon name="arrow-right" /></a>
   {/if}
 </nav>
 

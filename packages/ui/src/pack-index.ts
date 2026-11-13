@@ -44,7 +44,11 @@ export type PackIndex = {
   lightMeaning(panel: string, section: string, item: number): string | undefined;
   /** The phase a step's list is in, by id. */
   phaseOf(stepId: string): string | undefined;
-  /** The steps whose targets name a panel item, each with its phase's title, in pack order. */
+  /**
+   * The steps whose targets name a panel item, each with its phase's title: in flight order (the
+   * phases' order, then their lists'), each step once. A step that two lists repeat in the same
+   * phase (a flow and its checklist) is listed once, at its first place.
+   */
   usedIn(panel: string, section: string, item: number): { step: Step; phase: string }[];
 };
 
@@ -99,6 +103,12 @@ export function indexPack(pack: FlatPack): PackIndex {
       phaseIdOfList.set(list, phase.id);
     }
   }
+  // Lists in flight order: each phase's lists in turn, then any list no phase holds.
+  const listsById = new Map(pack.lists.map((l) => [l.id, l]));
+  const flightOrder = [
+    ...(pack.content.phases?.phases ?? []).flatMap((p) => p.lists.flatMap((id) => listsById.get(id) ?? [])),
+    ...pack.lists.filter((l) => !phaseOfList.has(l.id)),
+  ].filter((l, i, all) => all.indexOf(l) === i);
   const listOfStep = new Map<string, string>();
   for (const list of pack.lists) for (const step of list.steps) listOfStep.set(step.id, list.id);
 
@@ -108,11 +118,19 @@ export function indexPack(pack: FlatPack): PackIndex {
     usedIn(panel, section, item) {
       const at = locator(panel, section, item);
       if (!at) return [];
-      return pack.lists.flatMap((list) =>
-        list.steps
-          .filter((step) => (step.targets ?? []).some((t) => t.at === at))
-          .map((step) => ({ step, phase: phaseOfList.get(list.id) ?? list.title })),
-      );
+      const seen = new Set<string>();
+      const used: { step: Step; phase: string }[] = [];
+      for (const list of flightOrder) {
+        const phase = phaseOfList.get(list.id) ?? list.title;
+        for (const step of list.steps) {
+          if (!(step.targets ?? []).some((t) => t.at === at)) continue;
+          const key = `${step.text}\u0000${phase}`;
+          if (seen.has(key)) continue;
+          seen.add(key);
+          used.push({ step, phase });
+        }
+      }
+      return used;
     },
     control: (id) => controls.get(id),
     glossary: (term) => glossary.get(term),
