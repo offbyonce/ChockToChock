@@ -1452,9 +1452,13 @@ overview:
       width: 408
       height: 82
       top: AFT, TOWARD THE CABIN
+      top_short: AFT
       bottom: FORWARD, TOWARD THE WINDSHIELD
+      bottom_short: FORWARD
       left: CAPTAIN SIDE
+      left_short: CAPT
       right: F/O SIDE
+      right_short: F/O
       locate: Above your head, on the back part of the overhead panel. Look up and slightly back from the seat.
       title: "Where is the aft overhead panel?"
       short_title: "Where is the aft overhead?"
@@ -1465,9 +1469,13 @@ overview:
       width: 488
       height: 188
       top: AFT, TOWARD THE CABIN
+      top_short: AFT
       bottom: FORWARD, TOWARD THE WINDSHIELD
+      bottom_short: FORWARD
       left: CAPTAIN SIDE
+      left_short: CAPT
       right: F/O SIDE
+      right_short: F/O
       locate: Above the windshield, in front of your head. Look up from the seat.
       title: "Where is the forward overhead panel?"
       short_title: "Where is the forward overhead?"
@@ -1478,7 +1486,9 @@ overview:
       width: 488
       height: 40
       left: CAPTAIN SIDE
+      left_short: CAPT
       right: F/O SIDE
+      right_short: F/O
       locate: Straight ahead at eye level, along the bottom of the windshield, above the main panel.
       title: "Where is the glareshield?"
       short_title: "Where is the glareshield?"
@@ -1489,7 +1499,9 @@ overview:
       width: 488
       height: 80
       left: CAPTAIN SIDE
+      left_short: CAPT
       right: F/O SIDE
+      right_short: F/O
       locate: Straight ahead below the glareshield, behind the control column.
       title: "Where is the main panel?"
       short_title: "Where is the main panel?"
@@ -1500,9 +1512,13 @@ overview:
       width: 268
       height: 322
       top: FORWARD, TOWARD THE MAIN PANEL
+      top_short: FORWARD
       bottom: AFT, TOWARD THE CABIN
+      bottom_short: AFT
       left: CAPTAIN SIDE
+      left_short: CAPT
       right: F/O SIDE
+      right_short: F/O
       locate: "Between the two seats. From the front: the forward electronic panel (P9) with the CDUs, just below the main panel; the control stand with the thrust levers, at hand height; then the aft electronic panel (P8) by your knees, with the fire handles, radios and transponder."
       title: "Where is the center console?"
       short_title: "Where is the center console?"

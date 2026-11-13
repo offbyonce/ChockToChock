@@ -22,7 +22,7 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
     type Settings,
   } from "@chocktochock/bindings";
   import { getHost, type SavedItem } from "./host";
-  import ContextPane from "./lib/ContextPane.svelte";
+  import StepPane from "./lib/StepPane.svelte";
   import Drawer from "./lib/Drawer.svelte";
   import FlightStrip from "./lib/FlightStrip.svelte";
   import FlowView from "./lib/FlowView.svelte";
@@ -204,8 +204,21 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
       .slice(at + 1, at + 9)
       .map((r) => ({ step: index?.step(r.id), state: r.state }))
       .filter((u): u is { step: NonNullable<typeof u.step>; state: typeof u.state } => !!u.step);
-    return { step, row, upcoming };
+    const list = view.lists.find((l) => l.steps.some((r) => r.id === row.id));
+    const previous = at > 0 ? index.step(rows[at - 1]?.id ?? "") : undefined;
+    return { step, row, upcoming, total: list?.steps.length ?? rows.length, previous };
   });
+
+  /** Hide map sets Map in steps to On request, keeping the choice for Show map to restore. */
+  function changeMap(how: "hide" | "show"): void {
+    if (!settings) return;
+    const now = settings.mapInSteps;
+    const next =
+      how === "hide"
+        ? { ...settings, mapInSteps: "on_request" as const, mapBeforeHide: now === "on_request" ? settings.mapBeforeHide : now }
+        : { ...settings, mapInSteps: settings.mapBeforeHide === "on_request" ? ("new_panel" as const) : settings.mapBeforeHide };
+    void changeSettings(next);
+  }
 
   /** The rail and open steps for the flight and settings. */
   async function refresh(): Promise<void> {
@@ -408,7 +421,18 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
       {#if pane}
         <aside class="pane" aria-label="About the step">
           {#key pane.step.id}
-            <ContextPane {index} step={pane.step} targets={pane.row.targets} upcoming={pane.upcoming} />
+            <StepPane
+              {index}
+              step={pane.step}
+              targets={pane.row.targets}
+              number={pane.row.number}
+              total={pane.total}
+              previous={pane.previous}
+              upcoming={pane.upcoming}
+              mapMode={settings?.mapInSteps ?? "new_panel"}
+              onMap={changeMap}
+              {flow}
+            />
           {/key}
         </aside>
       {/if}
@@ -434,14 +458,15 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
     max-width: var(--size-content-max);
     margin: 0 auto;
   }
+  /* The Checklist board's side pane. */
   .pane {
     position: sticky;
     top: calc(var(--size-header) + var(--size-phase-row));
     height: calc(100vh - var(--size-header) - var(--size-phase-row));
-    padding: var(--space-6) var(--space-4);
+    padding: var(--space-4) var(--space-6);
     overflow-y: auto;
-    border-left: var(--border-thin) solid var(--color-border);
-    background: var(--color-surface);
+    border-left: var(--border-thin) solid var(--color-line);
+    background: var(--color-surface-2);
   }
   /* 3.0's toast: dark on light (light on dark), centered at the bottom. */
   .toast {

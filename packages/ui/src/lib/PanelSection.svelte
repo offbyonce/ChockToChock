@@ -19,7 +19,7 @@ What the step asks for, never the simulator's state (decision 0006).
 <script lang="ts">
   import type { ItemTarget, PanelItem, PanelSection } from "@chocktochock/bindings";
   import { em } from "./text-width";
-  import { angleOf, BUTTON, DIAL, halfWidth, withinAcross, knobY, LAMP, TOGGLE, labelled, lampText, layoutSection, leverY, PX, positionsOf, slotY } from "./panel-layout";
+  import { angleOf, BUTTON, DIAL, half, halfWidth, withinAcross, knobY, LAMP, TOGGLE, labelled, lampText, layoutSection, leverY, PX, positionsOf, slotY } from "./panel-layout";
 
   let {
     section,
@@ -29,6 +29,8 @@ What the step asks for, never the simulator's state (decision 0006).
     frame,
     titled = true,
     k,
+    hit = 0,
+    onPick,
   }: {
     section: PanelSection;
     targets: ItemTarget[];
@@ -41,6 +43,10 @@ What the step asks for, never the simulator's state (decision 0006).
     titled?: boolean;
     /** Screen pixels per drawing unit, for the fixed text sizes. */
     k: number;
+    /** The smallest hit area, in drawing units (44 px on screen); 0 draws none. */
+    hit?: number;
+    /** Tapping a control opens its detail card. */
+    onPick?: ((section: string, item: number) => void) | undefined;
   } = $props();
 
   /** Room above a cut-down section for its title, so it never overlaps the top row. */
@@ -221,6 +227,24 @@ What the step asks for, never the simulator's state (decision 0006).
           {/each}
         {/if}
       {/if}
+      {#if hit > 0 && onPick}
+        {@const hw = Math.max(halfWidth(item), hit / 2)}
+        {@const hh = Math.max(half(item), hit / 2)}
+        <!-- A tap target of 44 px or more around the control (rules.md §3); the step's controls
+             are in the tab order, the rest open by pointer. -->
+        <rect
+          class="hit"
+          x={-hw}
+          y={-hh}
+          width={2 * hw}
+          height={2 * hh}
+          role="button"
+          tabindex={on ? 0 : -1}
+          aria-label="{item.label}: what it is"
+          onclick={() => onPick(section.id, i)}
+          onkeydown={(e) => (e.key === "Enter" || e.key === " ") && (e.preventDefault(), onPick(section.id, i))}
+        />
+      {/if}
     </g>
   {/each}
 </g>
@@ -373,6 +397,16 @@ What the step asks for, never the simulator's state (decision 0006).
   }
   .lamp-text.lit.blue {
     fill: var(--color-on-accent);
+  }
+  .hit {
+    fill: transparent;
+    cursor: pointer;
+  }
+  .hit:focus-visible {
+    outline: none;
+    stroke: var(--panel-changed);
+    stroke-width: 1.5;
+    stroke-dasharray: 2 2;
   }
   .lamp-on {
     fill: var(--panel-text);

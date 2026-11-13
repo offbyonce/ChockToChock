@@ -216,7 +216,12 @@ describe("App", () => {
     render(App, { context: hostContext(host({ phaseView: async () => view(states) })) });
 
     await fireEvent.click(await screen.findByRole("button", { name: "Show details for BATTERY" }));
-    expect(screen.getAllByText(/First power\./)).toHaveLength(1);
+    // Once in the opened step; beside a side pane CSS hides that copy, and the pane shows them
+    // (Checklist board), so the text is in the page once per place.
+    const row = document.querySelector(".inline-detail") as HTMLElement;
+    expect(within(row).getAllByText(/First power\./)).toHaveLength(1);
+    const pane = document.querySelector(".pane-step") as HTMLElement;
+    expect(within(pane).getAllByText(/First power\./)).toHaveLength(1);
     expect(screen.getByText("CHECK")).toBeTruthy();
     expect(screen.getByText("Find it later in Open steps.")).toBeTruthy();
     const skip = screen.getByRole("button", { name: "Skip for now" });

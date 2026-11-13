@@ -63,6 +63,16 @@ data_types! {
         pub left: Option<String>,
         #[serde(default, skip_serializing_if = "Option::is_none")]
         pub right: Option<String>,
+        /// Short edge captions for the small step map ("AFT", "FORWARD", "CAPT", "F/O"); the
+        /// long ones stay for the Flight deck page.
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        pub top_short: Option<String>,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        pub bottom_short: Option<String>,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        pub left_short: Option<String>,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        pub right_short: Option<String>,
         /// Where to look from the seat, for "Where is this?".
         #[serde(default, skip_serializing_if = "Option::is_none")]
         pub locate: Option<String>,

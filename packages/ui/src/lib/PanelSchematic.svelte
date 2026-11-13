@@ -14,6 +14,7 @@ smallest size that keeps 11 px labels, scrolls sideways, and offers a full-width
   import { drawingScale, halfWidth, K, layoutSection, positionsOf } from "./panel-layout";
   import PanelSection from "./PanelSection.svelte";
   import Self from "./PanelSchematic.svelte";
+  import type { PackIndex } from "../pack-index";
 
   let {
     panel,
@@ -21,6 +22,8 @@ smallest size that keeps 11 px labels, scrolls sideways, and offers a full-width
     targets,
     guardClosed = false,
     large = false,
+    index,
+    picked = $bindable(null),
   }: {
     /** The panel the sections are on. */
     panel: Panel;
@@ -32,6 +35,10 @@ smallest size that keeps 11 px labels, scrolls sideways, and offers a full-width
     guardClosed?: boolean;
     /** Drawn in the full-width view, which offers no larger one. */
     large?: boolean | undefined;
+    /** With the pack's index, tapping a control opens its card: what it is and what it does. */
+    index?: PackIndex | undefined;
+    /** The control whose card is open. */
+    picked?: { section: string; item: number } | null | undefined;
   } = $props();
 
   /** How far beside the step's sections a neighbor may sit and still be drawn. */
@@ -159,6 +166,16 @@ smallest size that keeps 11 px labels, scrolls sideways, and offers a full-width
 
   let sheet = $state<HTMLDialogElement | null>(null);
 
+  /** The open control card: the item, its light meaning, and what its control does. */
+  let card = $derived.by(() => {
+    if (!picked || !index) return null;
+    const item = panel.sections.find((s) => s.id === picked?.section)?.items[picked.item];
+    if (!item) return null;
+    const meaning = item.kind === "light" ? index.lightMeaning(panel.id, picked.section, picked.item) : undefined;
+    const does = (item.controls ?? []).map((c) => index?.control(c)?.function).find(Boolean);
+    return { item, meaning, does };
+  });
+
   let described = $derived(
     targets
       .map((t) => {
@@ -181,10 +198,21 @@ smallest size that keeps 11 px labels, scrolls sideways, and offers a full-width
     aria-label="{title} panel, schematic.{described ? ` This step: ${described}.` : ''}"
   >
     {#each drawn as s (s.id)}
-      <PanelSection section={s} {targets} {guardClosed} band={wholeOf(s)} frame={view.frames.get(s.id)} titled={view.titled} k={K} />
+      <PanelSection section={s} {targets} {guardClosed} band={wholeOf(s)} frame={view.frames.get(s.id)} titled={view.titled} k={K} hit={index ? (44 * pageScale) / scale.k : 0} onPick={index ? (section, item) => (picked = { section, item }) : undefined} />
     {/each}
   </svg>
 </div>
+{#if card}
+  <div class="control-card" role="region" aria-label="{card.item.label}">
+    <div class="card-head">
+      <b>{card.item.label}</b>
+      <button type="button" class="card-close" aria-label="Close" onclick={() => (picked = null)}>×</button>
+    </div>
+    {#if card.item.description}<p>{card.item.description}</p>{/if}
+    {#if card.meaning}<p><b>When lit</b> {card.meaning}</p>{/if}
+    {#if card.does}<p><b>What it does</b> {card.does}</p>{/if}
+  </div>
+{/if}
 {#if scale.overflow && !large}
   <button type="button" class="btn larger" onclick={() => sheet?.showModal()}>See the whole panel larger</button>
   <dialog class="sheet" bind:this={sheet} aria-label="{title} panel">
@@ -205,6 +233,27 @@ smallest size that keeps 11 px labels, scrolls sideways, and offers a full-width
     display: block;
     height: auto;
     margin: 0 auto;
+  }
+  .control-card {
+    margin-top: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    border: var(--border-thin) solid var(--panel-frame);
+    border-radius: var(--radius-control);
+    background: var(--panel-fill);
+    color: var(--panel-text);
+    font-size: var(--font-size-secondary);
+  }
+  .control-card p {
+    margin: var(--space-1) 0 0;
+  }
+  .card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .card-close {
+    color: var(--panel-label);
+    font-size: var(--font-size-panel-title);
   }
   .larger {
     margin-top: var(--space-2);

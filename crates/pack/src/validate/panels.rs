@@ -10,7 +10,7 @@ use checklist_core::{PanelItem, PanelItemKind, named_position};
 use super::confirmations::check_confirmations;
 use super::ids::unique;
 use super::index::Index;
-use super::{Issue, error};
+use super::{Issue, error, warning};
 use crate::Pack;
 
 pub(super) fn check_panels_and_lights(pack: &Pack, idx: &Index, issues: &mut Vec<Issue>) {
@@ -55,6 +55,7 @@ pub(super) fn check_panels_and_lights(pack: &Pack, idx: &Index, issues: &mut Vec
                 ));
             }
         }
+        check_short_captions(overview, issues);
         if let Some(views) = &overview.views {
             let regions: BTreeSet<&str> =
                 overview.regions.iter().map(|r| r.name.as_str()).collect();
@@ -307,6 +308,27 @@ fn locator_resolves(locator: &str, labels: &BTreeMap<(&str, &str, &str), usize>)
         && labels
             .get(&(panel, section, label))
             .is_some_and(|c| n <= *c)
+}
+
+/// The step map takes a region's short edge captions; a long caption without one warns, and the
+/// map falls back to the long one.
+fn check_short_captions(overview: &checklist_core::Overview, issues: &mut Vec<Issue>) {
+    for region in &overview.regions {
+        let pairs = [
+            ("top", &region.top, &region.top_short),
+            ("bottom", &region.bottom, &region.bottom_short),
+            ("left", &region.left, &region.left_short),
+            ("right", &region.right, &region.right_short),
+        ];
+        for (edge, long, short) in pairs {
+            if long.is_some() && short.is_none() {
+                issues.push(warning(
+                    &region.name,
+                    format!("has a {edge} caption but no `{edge}_short`; the step map falls back to the long one"),
+                ));
+            }
+        }
+    }
 }
 
 /// A side or seat view (decision 0023): every place names a real region, once, with closed
@@ -601,6 +623,10 @@ pub(super) mod tests {
             locate: None,
             title: None,
             short_title: None,
+            top_short: None,
+            bottom_short: None,
+            left_short: None,
+            right_short: None,
         };
         if let Some(file) = &mut p.content.controls {
             file.overview = Some(Overview {
@@ -662,6 +688,10 @@ pub(super) mod tests {
                     locate: None,
                     title: None,
                     short_title: None,
+                    top_short: None,
+                    bottom_short: None,
+                    left_short: None,
+                    right_short: None,
                 }],
                 views: Some(OverviewViews {
                     // No eye, a place outside the frame and an unknown region.
@@ -691,6 +721,45 @@ pub(super) mod tests {
         );
         assert!(joined.contains("needs exactly one `eye` point"), "{joined}");
         assert!(!joined.contains("overview seat view"), "{joined}");
+    }
+
+    #[test]
+    fn a_region_edge_without_a_short_caption_warns() {
+        let mut p = alias_pack(vec![]);
+        if let Some(file) = &mut p.content.controls {
+            file.overview = Some(Overview {
+                width: 100.0,
+                height: 100.0,
+                captions: vec![],
+                areas: vec![],
+                regions: vec![OverviewRegion {
+                    name: "Overhead".into(),
+                    code: None,
+                    x: 0.0,
+                    y: 0.0,
+                    width: 50.0,
+                    height: 50.0,
+                    top: Some("AFT, TOWARD THE CABIN".into()),
+                    bottom: Some("FORWARD".into()),
+                    left: None,
+                    right: None,
+                    locate: None,
+                    title: None,
+                    short_title: None,
+                    top_short: Some("AFT".into()),
+                    bottom_short: None,
+                    left_short: None,
+                    right_short: None,
+                }],
+                views: None,
+            });
+        }
+        let joined = messages(&p);
+        assert!(
+            joined.contains("warning: Overhead: has a bottom caption but no `bottom_short`"),
+            "{joined}"
+        );
+        assert!(!joined.contains("top caption"), "{joined}");
     }
 
     #[test]

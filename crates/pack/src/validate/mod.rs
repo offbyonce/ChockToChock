@@ -72,6 +72,14 @@ fn error(at: impl Into<String>, message: impl Into<String>) -> Issue {
     }
 }
 
+fn warning(at: impl Into<String>, message: impl Into<String>) -> Issue {
+    Issue {
+        severity: Severity::Warning,
+        at: at.into(),
+        message: message.into(),
+    }
+}
+
 /// Run every semantic check. An empty list, or warnings only, means the pack may ship.
 pub fn validate_pack(pack: &Pack) -> Vec<Issue> {
     validate_with_allow_list(pack, ALLOWED_LINKS)

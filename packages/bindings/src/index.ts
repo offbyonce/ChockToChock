@@ -22,6 +22,7 @@ export type { LabelAnchor } from "./generated/LabelAnchor";
 export type { ListKind } from "./generated/ListKind";
 export type { ListView } from "./generated/ListView";
 export type { Loaded } from "./generated/Loaded";
+export type { MapInSteps } from "./generated/MapInSteps";
 export type { OpenStep } from "./generated/OpenStep";
 export type { OptionChoice } from "./generated/OptionChoice";
 export type { Overview } from "./generated/Overview";

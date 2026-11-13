@@ -196,6 +196,12 @@
             "null"
           ]
         },
+        "bottom_short": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
         "code": {
           "description": "A short reference shown after the name, e.g. \"P5\".",
           "type": [
@@ -208,6 +214,12 @@
           "format": "double"
         },
         "left": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "left_short": {
           "type": [
             "string",
             "null"
@@ -229,6 +241,12 @@
             "null"
           ]
         },
+        "right_short": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
         "short_title": {
           "type": [
             "string",
@@ -244,6 +262,13 @@
         },
         "top": {
           "description": "Captions for the edges, saying which way each faces.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "top_short": {
+          "description": "Short edge captions for the small step map (\"AFT\", \"FORWARD\", \"CAPT\", \"F/O\"); the\nlong ones stay for the Flight deck page.",
           "type": [
             "string",
             "null"

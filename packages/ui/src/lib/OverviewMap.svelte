@@ -14,11 +14,28 @@ unlabeled; the marked area is always named.
   import { fitSize, labelLines } from "./map-labels";
   import { LABEL_MIN } from "./panel-layout";
 
-  let { index, zone }: { index: PackIndex; zone: Zone } = $props();
+  let {
+    index,
+    zone,
+    compact = false,
+  }: {
+    index: PackIndex;
+    zone: Zone;
+    /** The small step map in the side pane (Checklist board): only the marked area is named, and
+     * the edges take the region's short captions ("AFT", "CAPT"), or the long ones if it has none. */
+    compact?: boolean;
+  } = $props();
 
   let byId = $derived(new Map(index.zones.map((z) => [z.id, z])));
   let map = $derived(index.region(zone));
   let region = $derived(map?.region ?? null);
+  /** The edge captions this map shows: short on the step map, long elsewhere. */
+  let edges = $derived({
+    top: (compact ? region?.top_short : null) ?? region?.top ?? null,
+    bottom: (compact ? region?.bottom_short : null) ?? region?.bottom ?? null,
+    left: (compact ? region?.left_short : null) ?? region?.left ?? null,
+    right: (compact ? region?.right_short : null) ?? region?.right ?? null,
+  });
   let bounds = $derived.by(() => {
     const areas = map?.areas ?? [];
     return {
@@ -50,12 +67,12 @@ unlabeled; the marked area is always named.
         })
       : [];
   });
-  let sides = $derived(!!(region?.left || region?.right));
+  let sides = $derived(!!(edges.left || edges.right));
   // Room around the areas for the captions, as 3.0 lays them out (its 20 + 2 at the sides and
   // 22 + 2 at the top and bottom), so the areas fill as much of the map as in 3.0.
   let pad = $derived({
-    top: region?.top || (sides && short) ? 24 : 6,
-    bottom: region?.bottom ? 24 : 6,
+    top: edges.top || (sides && short) ? 24 : 6,
+    bottom: edges.bottom ? 24 : 6,
     left: (sides && !short ? 22 : 6) + (groups.length ? 62 : 0),
     right: sides && !short ? 22 : 6,
   });
@@ -101,8 +118,8 @@ unlabeled; the marked area is always named.
   <svg
     class="map"
     viewBox="{box.x} {box.y} {box.w} {box.h}"
-    style:max-width="min({Math.round(box.w * 1.4 * page)}px, 32rem)"
-    style:max-height="{cap}px"
+    style:max-width={compact ? undefined : `min(${Math.round(box.w * 1.4 * page)}px, 32rem)`}
+    style:max-height={compact ? undefined : `${cap}px`}
     role="img"
     aria-label="Flight deck map, {region?.name ?? zone.area}: {zone.title} marked"
   >
@@ -114,7 +131,7 @@ unlabeled; the marked area is always named.
       {@const fs = on ? Math.max(fit, (LABEL_MIN * page) / k) : fit}
       <g class:on>
         <rect x={area.x} y={area.y} width={area.width} height={area.height} rx="3" />
-        {#each on || shows(fit) ? text : [] as line, n (n)}
+        {#each on || (!compact && shows(fit)) ? text : [] as line, n (n)}
           <text
             x={area.x + area.width / 2}
             y={area.y + area.height / 2 + (n - (text.length - 1) / 2) * fs * 1.1}
@@ -134,18 +151,18 @@ unlabeled; the marked area is always named.
         >
       {/each}
     {/each}
-    {#if region?.top}
-      <text class="edge" x={cx} y={bounds.y0 - 13} style:font-size="{(PX.edge * page) / k}px">↑ {region.top}</text>
+    {#if edges.top}
+      <text class="edge" x={cx} y={bounds.y0 - 13} style:font-size="{(PX.edge * page) / k}px">↑ {edges.top}</text>
     {/if}
-    {#if region?.bottom}
-      <text class="edge" x={cx} y={bounds.y1 + 15} style:font-size="{(PX.edge * page) / k}px">↓ {region.bottom}</text>
+    {#if edges.bottom}
+      <text class="edge" x={cx} y={bounds.y1 + 15} style:font-size="{(PX.edge * page) / k}px">↓ {edges.bottom}</text>
     {/if}
     {#if sides && short}
-      {#if region?.left}<text class="edge" x={bounds.x0} y={bounds.y0 - 13} style:text-anchor="start" style:font-size="{(PX.edge * page) / k}px">{region.left}</text>{/if}
-      {#if region?.right}<text class="edge" x={bounds.x1} y={bounds.y0 - 13} style:text-anchor="end" style:font-size="{(PX.edge * page) / k}px">{region.right}</text>{/if}
+      {#if edges.left}<text class="edge" x={bounds.x0} y={bounds.y0 - 13} style:text-anchor="start" style:font-size="{(PX.edge * page) / k}px">{edges.left}</text>{/if}
+      {#if edges.right}<text class="edge" x={bounds.x1} y={bounds.y0 - 13} style:text-anchor="end" style:font-size="{(PX.edge * page) / k}px">{edges.right}</text>{/if}
     {:else if sides}
-      {#if region?.left}<text class="edge" transform="translate({bounds.x0 - 10} {cy}) rotate(-90)" style:font-size="{(PX.edge * page) / k}px">{region.left}</text>{/if}
-      {#if region?.right}<text class="edge" transform="translate({bounds.x1 + 10} {cy}) rotate(90)" style:font-size="{(PX.edge * page) / k}px">{region.right}</text>{/if}
+      {#if edges.left}<text class="edge" transform="translate({bounds.x0 - 10} {cy}) rotate(-90)" style:font-size="{(PX.edge * page) / k}px">{edges.left}</text>{/if}
+      {#if edges.right}<text class="edge" transform="translate({bounds.x1 + 10} {cy}) rotate(90)" style:font-size="{(PX.edge * page) / k}px">{edges.right}</text>{/if}
     {/if}
   </svg>
   </div>
