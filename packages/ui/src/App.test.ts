@@ -154,6 +154,17 @@ function host(overrides: Partial<Host> = {}): Host {
     setAside: async () => {},
     defaultSettings: async () =>
       ({ theme: "dark", dimming: 0, detail: "expanded", listView: "checklist" }) as Settings,
+    fetchPlan: async () => {
+      throw new Error("no network in tests");
+    },
+    readPlanFile: async () => {
+      throw new Error("no plan file in tests");
+    },
+    planValues: async () => ({ values: {}, filled: 0, origin: "", destination: "", checkClearance: false }),
+    loadPlan: async () => null,
+    savePlan: async () => {},
+    decodeMetar: async () => ({ station: null, time: null, groups: [], rows: [] }),
+    decodeTaf: async () => ({ station: null, time: null, groups: [], rows: [] }),
     ...overrides,
   };
 }

@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize};
 use ts_rs::TS;
 
 /// The saved format of [`Settings`]. Raise it, with a migration and tests, when the shape changes.
-pub const SETTINGS_FORMAT: u32 = 4;
+pub const SETTINGS_FORMAT: u32 = 5;
 
 /// The highest dimming step; 0 is full brightness.
 pub const MAX_DIMMING: u8 = 4;
@@ -102,6 +102,10 @@ pub struct Settings {
     /// Settings › Panel preview in steps (round 6): the label-free panel beside each step. Show
     /// panel and Where is this? always work.
     pub panel_preview: bool,
+    /// The Flight pages' Descriptions On/Off (batch 4): each field's description under its value.
+    /// Off keeps the label, the value and the chip; ? keeps the longer note. Set only from the
+    /// Flight header.
+    pub descriptions: bool,
     pub chime: bool,
     pub simbrief_user: Option<String>,
     pub load_plan_on_open: bool,
@@ -119,6 +123,7 @@ impl Default for Settings {
             essentials: false,
             essentials_changes: BTreeMap::new(),
             panel_preview: true,
+            descriptions: true,
             chime: true,
             simbrief_user: None,
             load_plan_on_open: false,

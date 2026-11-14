@@ -31,7 +31,7 @@ pub use packs::load_pack;
 pub use phase_view::{PhaseLink, PhaseList, PhaseView, StepRow, phase_view};
 pub use plans::{PLAN_FORMAT, PlanValues, SavedPlan, parse_plan, plan_url, plan_values};
 pub use rail::{Rail, RailPhase, RailStage, rail};
-pub use saved::{Loaded, load_flight, load_settings};
+pub use saved::{Loaded, load_flight, load_plan, load_settings};
 pub use settings::{
     Detail, EssentialsChanges, ListView, MAX_DIMMING, SETTINGS_FORMAT, Settings, TextSize, Theme,
 };

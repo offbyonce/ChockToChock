@@ -46,7 +46,19 @@ fn flight_1_to_2(value: Value) -> Result<Value, String> {
     Ok(value)
 }
 /// Migrations for [`Settings`], indexed the same way.
-const SETTINGS_MIGRATIONS: &[Migration] = &[settings_1_to_2, settings_2_to_3, settings_3_to_4];
+const SETTINGS_MIGRATIONS: &[Migration] = &[
+    settings_1_to_2,
+    settings_2_to_3,
+    settings_3_to_4,
+    settings_4_to_5,
+];
+
+/// Format 5 adds the Flight pages' Descriptions On/Off, On to start with.
+fn settings_4_to_5(mut value: Value) -> Result<Value, String> {
+    let object = value.as_object_mut().ok_or("settings are not an object")?;
+    object.insert("descriptions".into(), Value::from(true));
+    Ok(value)
+}
 
 /// Format 4 replaces Map in steps with Panel preview in steps (round 6): Off stays Off, every
 /// other choice becomes On.
@@ -138,6 +150,11 @@ pub(crate) fn load_with<T: DeserializeOwned>(
 /// Read a saved flight.
 pub fn load_flight(json: &str) -> Loaded<Flight> {
     load_with(json, FLIGHT_FORMAT, FLIGHT_MIGRATIONS)
+}
+
+/// Read the saved SimBrief plan (decision 0019).
+pub fn load_plan(json: &str) -> Loaded<crate::SavedPlan> {
+    load_with(json, crate::PLAN_FORMAT, &[])
 }
 
 /// Read saved settings.
@@ -254,6 +271,22 @@ mod tests {
             assert_eq!(migrated_from, Some(3));
             assert_eq!(value.panel_preview, preview, "{mode}");
         }
+    }
+
+    #[test]
+    fn settings_from_format_4_get_descriptions_on() {
+        let mut old = serde_json::to_value(Settings::default()).unwrap();
+        old["format"] = json!(4);
+        old.as_object_mut().unwrap().remove("descriptions");
+        let Loaded::Ready {
+            value,
+            migrated_from,
+        } = load_settings(&old.to_string())
+        else {
+            panic!("not ready");
+        };
+        assert_eq!(migrated_from, Some(4));
+        assert!(value.descriptions);
     }
 
     #[test]

@@ -163,6 +163,18 @@ pub fn plan_values(plan: &str) -> String {
     reply((|| app_core::plan_values(&read("plan", plan)?))())
 }
 
+/// Read the saved SimBrief plan: ready (migrated if older), newer or unreadable.
+#[wasm_bindgen]
+pub fn load_plan(json: &str) -> String {
+    reply(Ok::<_, AppError>(app_core::load_plan(json)))
+}
+
+/// The saved plan's format number, for a plan the host keeps.
+#[wasm_bindgen]
+pub fn plan_format() -> u32 {
+    app_core::PLAN_FORMAT
+}
+
 /// A METAR decoded from the code table (batch 4).
 #[wasm_bindgen]
 pub fn decode_metar(text: &str) -> String {

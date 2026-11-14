@@ -126,6 +126,10 @@
   --color-toast-text: #0f1218;
   --color-toast-link: #1d4fd8;
   --color-toast-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+  --color-paper: #1b212b;
+  --color-paper-block: #3a4351;
+  --color-paper-highlight: rgba(76, 141, 255, 0.35);
+  --color-paper-text: #d5dae2;
   --panel-bg: #161b23;
   --panel-frame: #2a323e;
   --panel-fill: #1b212b;
@@ -194,6 +198,10 @@
     --color-toast-text: #ffffff;
     --color-toast-link: #7fb0ff;
     --color-toast-shadow: 0 12px 32px rgba(16, 24, 40, 0.28);
+    --color-paper: #ffffff;
+    --color-paper-block: #c3cad4;
+    --color-paper-highlight: rgba(37, 99, 235, 0.3);
+    --color-paper-text: #2b313b;
     --panel-bg: #ffffff;
     --panel-frame: #d3d9e1;
     --panel-fill: #e3e7ec;
