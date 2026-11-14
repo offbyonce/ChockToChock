@@ -58,7 +58,7 @@ the "Find it in your OFP" panel at it. Descriptions Off keeps the label, the val
       if (!Number.isFinite(n) || t.replace(/[^0-9.]/g, "") === "") return "";
       return weight === "thousands" ? String(Number((n / 1000).toFixed(1))) : String(Math.round(n));
     }
-    if (numeric || row.show) return t.replace(/^FL/i, "").replace(/[°\s]/g, "");
+    if (numeric || row.show) return t.replace(/^FL/i, "").replace(/[°%,+\s]/g, "");
     return t.toUpperCase();
   }
   let readOnly = $derived(!!row.read || !!row.link);
@@ -117,7 +117,7 @@ the "Find it in your OFP" panel at it. Descriptions Off keeps the label, the val
           data-field={field}
           value={shown(field, row.weight)}
           placeholder={row.placeholder ?? (empty ? "Enter" : "")}
-          maxlength={row.weight ? undefined : row.max}
+          maxlength={row.weight || row.show ? undefined : row.max}
           inputmode={row.mode === "text" ? "text" : row.mode}
           autocomplete="off"
           onchange={(e) => onSet(field, stored(e.currentTarget.value, row.weight, row.mode === "numeric" || row.mode === "decimal"))}
@@ -308,5 +308,18 @@ the "Find it in your OFP" panel at it. Descriptions Off keeps the label, the val
       var(--color-segment-shadow);
     color: var(--color-text-strong);
     font-weight: var(--weight-semibold);
+  }
+  /* Phone: the label, then the value, then the description and chip, each the row's width
+     (batch 5 brings the phone boards). */
+  @media (max-width: 599px) {
+    .frow {
+      grid-template-columns: minmax(0, 1fr);
+      row-gap: var(--space-2);
+    }
+    .label,
+    .ro,
+    .about {
+      padding-top: 0;
+    }
   }
 </style>

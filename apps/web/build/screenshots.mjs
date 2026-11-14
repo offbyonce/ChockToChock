@@ -337,7 +337,7 @@ const SHOTS = [
     name: "board-checklist",
     full: true,
     only: ["desktop", "wide"],
-    app: { hash: "#/phase/before-start", before: [...BOARD_STATE, rowMenu("Anti-collision light")] },
+    app: { hash: "#/phase/before-start", before: [...BOARD_FLIGHT, go("#/phase/before-start"), ...BOARD_STATE, rowMenu("Anti-collision light")] },
   },
   // The flight strip with values and a note: its Notes chip against the Checklist board's (color.chip).
   {
@@ -345,16 +345,25 @@ const SHOTS = [
     full: true,
     only: ["desktop"],
     app: {
-      hash: "#/flight/clearance",
+      hash: "#/phase/before-start",
       before: [
-        inFlight(CLEARANCE),
+        ...BOARD_FLIGHT,
         go("#/phase/before-start"),
+        ...BOARD_STATE,
         click(".fsline"),
         typeInto("#sp-notes", "Expect runway 16L"),
         click(".fsline"),
         "document.activeElement?.blur(); true",
       ],
     },
+  },
+  // A step's blank linked to its Flight field: Before takeoff's stabilizer trim, still empty,
+  // reads "— enter takeoff trim" (Checklist board), with the board flight imported.
+  {
+    name: "board-blanks",
+    full: true,
+    only: ["desktop"],
+    app: { hash: "#/phase/before-takeoff", before: [...BOARD_FLIGHT, go("#/phase/before-takeoff"), unfold] },
   },
   // Batch 4: the Flight pages, each section in the boards' state.
   ...["overview", "route", "fuel", "cruise", "weather", "clearance", "takeoff", "approach", "start", "simbrief"].map((section) => ({
@@ -467,19 +476,24 @@ async function shootWhole(browser, file) {
   const base = file.replace(/\.png$/, "");
   const page = await send("browsingContext.captureScreenshot", { context, origin: "document" });
   fs.writeFileSync(`${base}-page.png`, Buffer.from(page.data, "base64"));
-  const box = await js(
-    `(() => { const p = document.querySelector("aside.pane"); if (!p) return null; const r = p.getBoundingClientRect(); return JSON.stringify({ x: r.x, y: r.y, w: r.width, h: r.height, scroll: p.scrollHeight, view: p.clientHeight, top: p.scrollTop }); })()`,
+  // What scrolls on its own: the side pane, or on the Flight pages the section column (the whole
+  // body on narrow screens), sliced top to bottom.
+  const sel = await js(
+    `["aside.pane", "main.fmain", ".flight .cols"].find((s) => { const e = document.querySelector(s); return e && e.clientHeight > 0 && (s === "aside.pane" || e.scrollHeight > e.clientHeight + 1); }) ?? null`,
   );
-  if (!box) return;
+  if (!sel) return;
+  const q = JSON.stringify(sel);
+  const box = await js(
+    `(() => { const p = document.querySelector(${q}); const r = p.getBoundingClientRect(); return JSON.stringify({ x: r.x, y: r.y, w: r.width, h: r.height, scroll: p.scrollHeight, view: p.clientHeight, top: p.scrollTop }); })()`,
+  );
   const pane = JSON.parse(box);
-  // No side pane at this width (tablet portrait and phone).
   if (!pane.w || !pane.h) return;
   const offsets = [];
   for (let at = 0; ; at += pane.view) {
     const top = Math.min(at, pane.scroll - pane.view);
-    await js(`document.querySelector("aside.pane").scrollTop = ${top}; true`);
+    await js(`document.querySelector(${q}).scrollTop = ${top}; true`);
     await sleep(250);
-    const real = await js(`document.querySelector("aside.pane").scrollTop`);
+    const real = await js(`document.querySelector(${q}).scrollTop`);
     const shot = await send("browsingContext.captureScreenshot", {
       context,
       clip: { type: "box", x: pane.x, y: pane.y, width: pane.w, height: pane.h },
@@ -488,8 +502,8 @@ async function shootWhole(browser, file) {
     offsets.push(real);
     if (top >= pane.scroll - pane.view) break;
   }
-  fs.writeFileSync(`${base}-pane.json`, JSON.stringify({ offsets, height: pane.scroll, view: pane.view }));
-  await js(`document.querySelector("aside.pane").scrollTop = ${pane.top}; true`);
+  fs.writeFileSync(`${base}-pane.json`, JSON.stringify({ offsets, height: pane.scroll, view: pane.view, what: sel }));
+  await js(`document.querySelector(${q}).scrollTop = ${pane.top}; true`);
 }
 
 /** One side-by-side image per screen: 3.0 on the left, the new app on the right. */

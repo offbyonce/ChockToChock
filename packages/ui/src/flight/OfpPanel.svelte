@@ -117,6 +117,7 @@ OFP on SimBrief is a plain link: it opens SimBrief and sends nothing from this a
   .title {
     font-size: var(--font-size-panel-title);
     font-weight: var(--weight-bold);
+    line-height: calc(var(--leading-tight) + 0.1);
   }
   .body,
   .notin span {
@@ -186,6 +187,7 @@ OFP on SimBrief is a plain link: it opens SimBrief and sends nothing from this a
     display: flex;
     flex-direction: column;
     gap: var(--space-2);
+    line-height: calc(var(--leading-tight) + 0.1);
     margin: 0;
     padding: 0 0 0 calc(var(--space-4) + var(--border-thick));
     color: var(--color-text-secondary);

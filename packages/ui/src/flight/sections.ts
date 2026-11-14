@@ -89,6 +89,8 @@ export type Section = { id: FlightSection; title: string; sub: string; groups: G
 const v = (c: Ctx, f: FillField) => c.values[f] ?? "";
 const dash = (s: string | undefined | null) => (s ? s : "—");
 const grouped = (n: number) => Math.round(n).toLocaleString("en-US");
+/** "+2" for a positive deviation, as the boards print it. */
+const signed = (x: string) => (x && Number(x) > 0 && !x.startsWith("+") ? `+${x}` : x);
 
 /** A plan figure in the flight's unit, or a dash without a plan. */
 const planWeight = (c: Ctx, n: number | undefined) => (c.plan && n != null ? `${grouped(n)} ${c.unit}` : "—");
@@ -126,7 +128,7 @@ const header = (
     ["level", `${fl}  `],
     ["ci", `CI ${dash(v(c, "cost_index"))}`],
     ["wind", `  AVG WIND ${dash(v(c, "cruise_wind"))}`],
-    ["isa", `  ISA ${dash(v(c, "isa_deviation"))}`],
+    ["isa", `  ISA ${dash(signed(v(c, "isa_deviation")))}`],
   ];
   if (["level", "ci", "wind", "isa"].includes(hi)) return parts.map(([k, text]) => ({ text, hi: k === hi }));
   if (hi === "ta" || hi === "tl")
@@ -161,11 +163,12 @@ const fuelPlan = (c: Ctx, hi: "trip" | "reserve" | "taxi" | "block" | "min"): Pa
   const f = c.plan?.plan.fuel;
   const line = (k: string, label: string, n: number | string | undefined, last = false): Part => ({
     text: `${label.padEnd(9)}${String(n ?? "—").padStart(6)}`,
-    hi: k === hi,
+    hi: k === hi || (hi === "reserve" && k === "altn"),
     br: !last,
   });
   return [
     line("trip", "TRIP", f?.trip),
+    line("altn", "ALTN", f?.alternate),
     line("reserve", "RESERVE", f?.reserve),
     line("taxi", "TAXI", f?.taxi),
     line("min", "MIN T/O", f?.minTakeoff),
@@ -490,6 +493,7 @@ export const SECTIONS: Section[] = [
             id: "cg",
             label: "ZFW CG",
             field: "cg",
+            show: (x) => `${x}%`,
             mode: "decimal",
             desc: "Center of gravity without fuel, used for takeoff trim.",
             chip: "CDU · TAKEOFF REF",
@@ -540,6 +544,7 @@ export const SECTIONS: Section[] = [
             id: "cruise_level",
             label: "Cruise level",
             field: "cruise_level",
+            show: (x) => `FL${x}`,
             max: 3,
             mode: "numeric",
             desc: "The level you plan to cruise at.",
@@ -584,6 +589,7 @@ export const SECTIONS: Section[] = [
             id: "isa_deviation",
             label: "ISA deviation",
             field: "isa_deviation",
+            show: signed,
             max: 3,
             mode: "numeric",
             desc: "How much warmer than standard the air is at cruise.",
@@ -603,6 +609,7 @@ export const SECTIONS: Section[] = [
             id: "transition_altitude",
             label: "Transition altitude",
             field: "transition_altitude",
+            show: (x) => (Number.isFinite(Number(x)) ? grouped(Number(x)) : x),
             max: 5,
             mode: "numeric",
             desc: "Where you set standard pressure on the way up.",

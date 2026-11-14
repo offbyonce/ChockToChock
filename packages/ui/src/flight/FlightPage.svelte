@@ -145,7 +145,7 @@ it. Every field of the old Flight setup lives in one section.
         </a>
       {/each}
     </nav>
-    <main class="fmain" class:wide={section === "start" || section === "simbrief"}>
+    <main class="fmain" class:wide={section === "start" || section === "simbrief"} class:weather={section === "weather"}>
       {#if section !== "weather"}
         <div class="title">
           <h2>{def?.title ?? NAMES[section]}</h2>
@@ -342,10 +342,16 @@ it. Every field of the old Flight setup lives in one section.
     margin: 0;
     font-size: var(--font-size-section-title);
     font-weight: var(--weight-bold);
+    line-height: var(--leading-tight);
   }
   .sub {
     color: var(--color-text-secondary);
     font-size: var(--font-size-secondary);
+    line-height: var(--leading-tight);
+  }
+  /* Weather's own padding (Weather.dc.html: 20 and 32). */
+  .fmain.weather {
+    padding: calc(var(--space-4) + var(--space-1)) var(--space-8);
   }
   /* Tablet portrait and phone keep every section reachable until batch 5's layouts: the
      section list becomes a row, and the OFP panel follows the section. */

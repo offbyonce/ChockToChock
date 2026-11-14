@@ -238,7 +238,7 @@ not cover shows as printed, "Not decoded". Descriptions are the boards' stand-in
     body: "The OFP is the document SimBrief prints for the flight. Its sections come in the same order every time.",
     cap: "Close-up, one navigation log line",
     close: () => {
-      const cruise = fixes.filter((f) => f.windDir != null && (f.stage ?? "").toUpperCase().startsWith("C")).slice(0, 2);
+      const cruise = fixes.filter((f) => f.windDir != null && (f.stage ?? "").toUpperCase() === "CRZ").slice(0, 2);
       if (!cruise.length) return [{ text: "—" }];
       return cruise.flatMap((f, n) => {
         const t = f.oat == null ? "—" : f.oat < 0 ? `M${-f.oat}` : `${f.oat}`;
@@ -468,12 +468,12 @@ not cover shows as printed, "Not decoded". Descriptions are the boards' stand-in
   .groups {
     display: flex;
     flex-wrap: wrap;
-    gap: calc(var(--space-1) + var(--border-thick) / 2);
+    gap: calc(var(--space-1) + var(--border-thick));
     font-family: var(--font-mono);
     font-size: var(--font-size-panel-title);
   }
   .groups span {
-    padding: var(--border-thick) calc(var(--space-1) + var(--border-thick) / 2);
+    padding: var(--border-thick) calc(var(--space-1) + var(--border-thick));
     border-radius: var(--radius-small);
     color: var(--color-text-secondary);
   }
@@ -684,5 +684,30 @@ not cover shows as printed, "Not decoded". Descriptions are the boards' stand-in
     font-family: inherit;
     font-size: var(--font-size-caption);
     font-weight: var(--weight-semibold);
+  }
+  @media (max-width: 899px) {
+    .xrow,
+    .wrow {
+      grid-template-columns: minmax(0, 1fr) var(--size-touch-min);
+      row-gap: var(--space-2);
+    }
+    .xrow > :not(.q),
+    .wrow > * {
+      grid-column: 1;
+    }
+    .xrow .q {
+      grid-column: 2;
+      grid-row: 1;
+    }
+    .trow {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+    .trow .mark,
+    .trow.head span:last-child {
+      grid-column: 1 / -1;
+    }
+    .tabs {
+      flex-wrap: wrap;
+    }
   }
 </style>

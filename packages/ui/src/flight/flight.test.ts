@@ -186,6 +186,37 @@ describe("FlightPage", () => {
     expect(sets.at(-1)).toEqual(["weight_unit", "KG"]);
   });
 
+  it("prints values as the boards do (FL350, +2, 18,000, 24.0%) and reads them back", async () => {
+    const { sets } = page({
+      section: "cruise",
+      flight: flight({ cruise_level: "350", isa_deviation: "2", transition_altitude: "18000" }),
+    });
+    const val = (f: string) => document.querySelector<HTMLInputElement>(`[data-field="${f}"]`)?.value;
+    expect([val("cruise_level"), val("isa_deviation"), val("transition_altitude")]).toEqual([
+      "FL350",
+      "+2",
+      "18,000",
+    ]);
+    await fireEvent.change(document.querySelector('[data-field="transition_altitude"]') as HTMLElement, {
+      target: { value: "10,000" },
+    });
+    expect(sets.at(-1)).toEqual(["transition_altitude", "10000"]);
+  });
+
+  it("marks both parts of Reserves in the fuel plan close-up, so it agrees with the field", async () => {
+    const withFuel = {
+      ...plan,
+      plan: {
+        ...plan.plan,
+        fuel: { trip: 8100, alternate: 2000, reserve: 1400, taxi: 400, planRamp: 12400 },
+      },
+    } as SavedPlan;
+    page({ section: "fuel", plan: withFuel, flight: flight({ reserves: "3.4", fuel: "12400" }) });
+    await fireEvent.click(document.querySelector('[data-row="reserves"]') as HTMLElement);
+    const marked = [...document.querySelectorAll(".printed .mark")].map((m) => m.textContent?.trim());
+    expect(marked).toEqual(["ALTN       2000", "RESERVE    1400"]);
+  });
+
   it("draws a value still needed amber, a choice as a menu, and a cross-section row as a link", async () => {
     const { sets } = page({ section: "takeoff", flight: flight({ runway: "16L" }) });
     const v2 = document.querySelector<HTMLInputElement>('[data-field="v2"]');

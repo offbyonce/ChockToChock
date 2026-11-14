@@ -149,8 +149,9 @@ its field; "This flight" holds the key values, each linking to its section.
     font-size: var(--font-size-value-mono);
     overflow-wrap: anywhere;
   }
+  /* Ink, as the board draws it; the section link under the description is the blue one. */
   .enter {
-    color: var(--color-link);
+    color: var(--color-text);
     text-decoration: none;
   }
   .about {
@@ -169,5 +170,17 @@ its field; "This flight" holds the key values, each linking to its section.
     color: var(--color-link);
     font-size: var(--font-size-secondary);
     text-decoration: none;
+  }
+  @media (max-width: 599px) {
+    .orow {
+      grid-template-columns: minmax(0, 1fr);
+      row-gap: var(--space-2);
+    }
+    .label,
+    .ro,
+    .enter,
+    .about {
+      padding-top: 0;
+    }
   }
 </style>

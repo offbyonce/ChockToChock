@@ -188,7 +188,7 @@ flight plan (Undo after, in the shared toast) and All flight data, the Flight pa
         </div>
         <label class="notesbox">
           Notes from ATC
-          <textarea id="sp-notes" value={notes} oninput={(e) => onNotes(e.currentTarget.value)}></textarea>
+          <textarea id="sp-notes" value={notes} placeholder="Jot down what ATC says: frequency changes, re-clearances, taxi route" oninput={(e) => onNotes(e.currentTarget.value)}></textarea>
         </label>
       </div>
       <div class="foot">
@@ -420,5 +420,38 @@ flight plan (Undo after, in the shared toast) and All flight data, the Flight pa
     font-size: var(--font-size-body);
     font-weight: var(--weight-semibold);
     text-decoration: none;
+  }
+  /* Tablet portrait and phone (batch 5 brings their own boards): the notes go under the
+     clearance, the fields wrap three or two to a row, and the footer wraps. */
+  @media (max-width: 899px) {
+    .body {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--space-4);
+      padding: var(--space-4) var(--gutter);
+    }
+    .spf {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .foot {
+      flex-wrap: wrap;
+      height: auto;
+      padding: var(--space-2) var(--gutter);
+    }
+    .foot .fill {
+      display: none;
+    }
+    .from {
+      flex-basis: 100%;
+      order: 1;
+    }
+    .panel {
+      max-height: calc(100dvh - var(--size-header) - var(--size-phase-row) - var(--size-flight-strip));
+      overflow-y: auto;
+    }
+  }
+  @media (max-width: 599px) {
+    .spf {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
   }
 </style>
