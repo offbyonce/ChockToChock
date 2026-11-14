@@ -68,7 +68,7 @@ only the compact plan is kept, decision 0019), the last import, and Reset flight
     <button class="primary" type="submit" disabled={busy}>Import latest flight</button>
   </form>
   {#if problem}<p class="problem" role="alert">{problem}</p>{/if}
-  <span class="d">No password. The username is saved on this device only, and the import reads your newest SimBrief plan.</span>
+  <span class="d">No password. The username is saved on this device only, and the import reads your newest SimBrief plan. SimBrief import is the only part of the checklist that uses the internet.</span>
   <div class="two">
     <div class="pair">
       <span class="k">What's brought in</span>
@@ -168,7 +168,7 @@ only the compact plan is kept, decision 0019), the last import, and Reset flight
     height: var(--size-touch-min);
     box-sizing: border-box;
     padding: 0 var(--space-3);
-    border: var(--border-thin) solid var(--color-border);
+    border: var(--border-thin) solid var(--color-field-border);
     border-radius: calc(var(--radius-small) + var(--border-thick));
     background: var(--color-field);
     color: var(--color-text-strong);

@@ -49,7 +49,7 @@ const METAR: Decoded = {
       element: "altimeter",
       raw: ["A3012"],
       lines: ["30.12 inHg"],
-      source: "US · altimeter in inches of mercury",
+      source: "US · 3.1.5.11",
     },
   ],
 };
@@ -203,6 +203,14 @@ describe("FlightPage", () => {
     expect(sets.at(-1)).toEqual(["transition_altitude", "10000"]);
   });
 
+  it("names each of a row's two boxes, and shows a value outside 3.0's range under its box", async () => {
+    page({ section: "takeoff", flight: flight({ thrust_rating: "26K", v2: "40" }) });
+    expect(screen.getByLabelText("Thrust: rating")).toBeTruthy();
+    expect(screen.getByLabelText("Thrust: assumed temperature")).toBeTruthy();
+    expect(screen.getByRole("alert").textContent).toBe("Use 100 to 250 knots");
+    expect(document.querySelector('[data-field="v2"]')?.getAttribute("aria-invalid")).toBe("true");
+  });
+
   it("marks both parts of Reserves in the fuel plan close-up, so it agrees with the field", async () => {
     const withFuel = {
       ...plan,
@@ -221,7 +229,7 @@ describe("FlightPage", () => {
     const { sets } = page({ section: "takeoff", flight: flight({ runway: "16L" }) });
     const v2 = document.querySelector<HTMLInputElement>('[data-field="v2"]');
     expect(v2?.classList.contains("need")).toBe(true);
-    expect(v2?.placeholder).toBe("Enter from the FMC");
+    expect(v2?.placeholder).toBe("From the FMC");
     await fireEvent.click(document.querySelector('[data-field="takeoff_flaps"]') as HTMLElement);
     await fireEvent.click(screen.getByRole("button", { name: "5" }));
     expect(sets.at(-1)).toEqual(["takeoff_flaps", "5"]);
@@ -251,6 +259,17 @@ describe("FlightPage", () => {
     );
     // The OFP panel follows the selected row.
     expect(screen.getByText("Wind is in the weather section")).toBeTruthy();
+  });
+
+  it("Weather's ? says where the code is defined, in plain words", async () => {
+    page({ section: "weather", plan, flight: flight({ origin: "KSEA", qnh: "30.12", qnh_unit: "inHg" }) });
+    await screen.findByText("Observed 17:53 UTC");
+    await fireEvent.click(screen.getByRole("button", { name: "More about wind" }));
+    expect(screen.getByText(/Defined in the WMO's METAR code \(FM 15\), regulation 15\.5\./)).toBeTruthy();
+    await fireEvent.click(screen.getByRole("button", { name: "More about the altimeter setting" }));
+    expect(
+      screen.getByText(/US practice, defined in the FAA's aviation weather guidance, section 3\.1\.5\.11\./),
+    ).toBeTruthy();
   });
 
   it("Weather without a plan: the empty state, and the Altimeter still to enter", async () => {

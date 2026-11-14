@@ -159,7 +159,7 @@ panel state, and Turnaround. The descriptions are the board's, on batch 7's vali
     height: var(--size-touch-min);
     min-width: calc(6 * var(--space-10));
     padding: 0 var(--space-10) 0 var(--space-3);
-    border: var(--border-thin) solid var(--color-border);
+    border: var(--border-thin) solid var(--color-field-border);
     border-radius: calc(var(--radius-small) + var(--border-thick));
     background: var(--color-field);
     box-shadow: var(--color-button-shadow);

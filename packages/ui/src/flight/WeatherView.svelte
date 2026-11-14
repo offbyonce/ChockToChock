@@ -13,7 +13,7 @@ not cover shows as printed, "Not decoded". Descriptions are the boards' stand-in
   import type { Decoded, DecodedRow, Element, FillField, Flight, SavedPlan } from "@chocktochock/bindings";
   import { getHost } from "../host";
   import { flightHref } from "../route.svelte";
-  import type { Ofp, Part } from "./sections";
+  import { rangeMessage, type Ofp, type Part } from "./sections";
 
   let {
     flight,
@@ -76,6 +76,7 @@ not cover shows as printed, "Not decoded". Descriptions are the boards' stand-in
   let field = $derived<FillField | null>(tab === "departure" ? "qnh" : tab === "destination" ? "destination_qnh" : null);
   let unit = $derived(vals.qnh_unit ?? (altRow?.r.raw[0]?.startsWith("Q") ? "hPa" : "inHg"));
   let more = $state<number | null>(null);
+  let altMessage = $derived(field ? rangeMessage(field, { values: vals, plan, notes: "", unit: "" }) : null);
   let tafOpen = $state(false);
 
   const LABELS: Partial<Record<Element, string>> = {
@@ -113,6 +114,20 @@ not cover shows as printed, "Not decoded". Descriptions are the boards' stand-in
     not_decoded: "This group isn't in the app's code table, so it's shown as printed, not guessed.",
   };
   const CHIP: Partial<Record<Element, string>> = { wind: "CDU · TAKEOFF REF", temperature: "CDU · TAKEOFF REF", altimeter: "EFIS · BARO KNOB" };
+  /**
+   * Where a row's code is defined, in plain words (the code table's verified section, owner
+   * 2026-11-14): "FM 15 · 15.5" is regulation 15.5 of the WMO's METAR code; "US · 3.1.5.6" is that
+   * section of the FAA's aviation weather guidance. A row with no verified section says nothing.
+   */
+  function definedIn(source: string): string {
+    const [code, section] = source.split(" · ");
+    if (!section) return "";
+    const part = section.startsWith("note") ? `${section} to the code` : `regulation ${section}`;
+    if (code === "FM 15") return `Defined in the WMO's METAR code (FM 15), ${part}.`;
+    if (code === "FM 51") return `Defined in the WMO's TAF code (FM 51), ${part}.`;
+    if (code === "US") return `US practice, defined in the FAA's aviation weather guidance, section ${section}.`;
+    return "";
+  }
   const ORDINAL = ["first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "ninth", "tenth", "eleventh", "twelfth"];
 
   /** The METAR as printed: each group, highlighted when the selected row reads it. */
@@ -336,7 +351,7 @@ not cover shows as printed, "Not decoded". Descriptions are the boards' stand-in
                 {#if r.lines.length}<span class="mono">{#each r.lines as l, n (n)}{l}{#if n < r.lines.length - 1}<br />{/if}{/each}</span>{:else}<span class="mono">Not decoded</span>{/if}
                 <span class="raw">{r.raw.join(" ")}</span>
               </span>
-              <span class="desc">{descriptions || more === i ? (DESC[r.element] ?? "") : ""}{#if more === i && r.source}<span class="src"> Code table: {r.source}.</span>{/if}</span>
+              <span class="desc">{descriptions || more === i ? (DESC[r.element] ?? "") : ""}{#if more === i && r.source}<span class="src"> {definedIn(r.source)}</span>{/if}</span>
               {#if CHIP[r.element]}<span class="chip">{CHIP[r.element]}</span>{:else}<span></span>{/if}
               <span
                 class="q"
@@ -377,9 +392,10 @@ not cover shows as printed, "Not decoded". Descriptions are the boards' stand-in
     <span class="val">
       <input id="wx-alt" class="box" data-field={field} class:need={!vals[field ?? "qnh"]} value={vals[field ?? "qnh"] ?? ""} placeholder="Enter" inputmode="decimal" onchange={(e) => setAltimeter(e.currentTarget.value)} />
       {#if r}<span class="raw">From METAR {r.raw.join(" ")}</span>{/if}
+      {#if field && altMessage}<span class="err" role="alert">{altMessage}</span>{/if}
     </span>
     <span class="about">
-      {#if descriptions || more === i}<span class="desc">{DESC.altimeter}</span>{/if}
+      {#if descriptions || more === i}<span class="desc">{DESC.altimeter}{#if more === i && r?.source}<span class="src"> {definedIn(r.source)}</span>{/if}</span>{/if}
       <span class="seg" role="group" aria-label="Altimeter unit">
         {#each ["inHg", "hPa"] as u (u)}
           <button type="button" aria-pressed={unit === u} onclick={() => setUnit(u as "inHg" | "hPa")}>{u}</button>
@@ -580,7 +596,7 @@ not cover shows as printed, "Not decoded". Descriptions are the boards' stand-in
     height: var(--size-touch-min);
     box-sizing: border-box;
     padding: 0 calc(var(--space-2) + var(--border-thick));
-    border: var(--border-thin) solid var(--color-border);
+    border: var(--border-thin) solid var(--color-field-border);
     border-radius: calc(var(--radius-small) + var(--border-thick));
     background: var(--color-field);
     color: var(--color-text);
@@ -589,6 +605,10 @@ not cover shows as printed, "Not decoded". Descriptions are the boards' stand-in
   }
   .box.need {
     border-color: var(--color-open-text);
+  }
+  .err {
+    color: var(--color-danger-text);
+    font-size: var(--font-size-caption);
   }
   .taf {
     align-self: flex-start;

@@ -88,28 +88,60 @@ pub struct Altimeter {
     pub raw: String,
 }
 
-// The code table: the section each kind of group comes from.
+// The code table: where each kind of group is defined. Every entry was checked on 2026-11-14
+// against the current editions of the WMO Manual on Codes, Volume I.1 (FM 15 METAR, FM 51 TAF)
+// and the FAA's aviation weather services guidance (US practice); the full references are kept
+// outside the repository (decisions 0007 and 0013). "FM 15 · 15.5" is regulation 15.5 of code form
+// FM 15; "US · 3.1.5.6" is that section of the US guidance.
 const SRC_KIND_METAR: &str = "FM 15 · 15.1";
-const SRC_STATION: &str = "FM 15 · 15.2";
-const SRC_TIME: &str = "FM 15 · 15.3";
-const SRC_AUTO: &str = "FM 15 · 15.4";
-const SRC_WIND: &str = "FM 15 · 15.5";
-const SRC_VIS: &str = "FM 15 · 15.6";
-const SRC_VIS_SM: &str = "US · visibility in statute miles";
-const SRC_RVR: &str = "FM 15 · 15.7";
-const SRC_WX: &str = "FM 15 · 15.8";
-const SRC_CLOUD: &str = "FM 15 · 15.9";
-const SRC_CAVOK: &str = "FM 15 · 15.10";
-const SRC_TEMP: &str = "FM 15 · 15.11";
-const SRC_QNH: &str = "FM 15 · 15.12";
-const SRC_ALT_A: &str = "US · altimeter in inches of mercury";
-const SRC_TREND: &str = "FM 15 · 15.14";
-const SRC_RMK: &str = "US · remarks";
 const SRC_KIND_TAF: &str = "FM 51 · 51.1";
-const SRC_VALIDITY: &str = "FM 51 · 51.3";
+const SRC_COR_METAR: &str = "FM 15 · note 2";
+const SRC_COR_TAF: &str = "FM 51 · note 5";
+const SRC_AMD: &str = "FM 51 · 51.11";
+const SRC_STATION_METAR: &str = "FM 15 · 15.2";
+const SRC_STATION_TAF: &str = "FM 51 · 51.2";
+const SRC_TIME_METAR: &str = "FM 15 · 15.3";
+const SRC_TIME_TAF: &str = "FM 51 · 51.1.2";
+const SRC_AUTO: &str = "FM 15 · 15.4";
+const SRC_VALIDITY: &str = "FM 51 · 51.1.4";
+const SRC_WIND_METAR: &str = "FM 15 · 15.5";
+const SRC_WIND_TAF: &str = "FM 51 · 51.3";
+const SRC_VIS_METAR: &str = "FM 15 · 15.6";
+const SRC_VIS_TAF: &str = "FM 51 · 51.4";
+const SRC_VIS_SM_METAR: &str = "US · 3.1.5.6";
+const SRC_VIS_SM_TAF: &str = "US · 5.13.2.6";
+const SRC_RVR: &str = "FM 15 · 15.7";
+const SRC_RVR_FT: &str = "US · 3.1.5.7";
+const SRC_WX_METAR: &str = "FM 15 · 15.8";
+const SRC_WX_TAF: &str = "FM 51 · 51.5";
+const SRC_RECENT: &str = "FM 15 · 15.13.2";
+const SRC_CLOUD_METAR: &str = "FM 15 · 15.9.1";
+const SRC_CLOUD_TAF: &str = "FM 51 · 51.6.1";
+const SRC_VV_METAR: &str = "FM 15 · 15.9.2";
+const SRC_VV_TAF: &str = "FM 51 · 51.6.2";
+const SRC_CLEAR_US: &str = "US · 3.1.5.9";
+const SRC_CAVOK_METAR: &str = "FM 15 · 15.10";
+const SRC_CAVOK_TAF: &str = "FM 51 · 51.7";
+const SRC_TEMP: &str = "FM 15 · 15.11";
+const SRC_TAF_TX: &str = "FM 51 · 51.10";
+const SRC_QNH: &str = "FM 15 · 15.12";
+const SRC_ALT_A: &str = "US · 3.1.5.11";
+const SRC_TREND: &str = "FM 15 · 15.14";
+const SRC_NOSIG: &str = "FM 15 · 15.14.15";
+const SRC_NSW_METAR: &str = "FM 15 · 15.14.13";
+const SRC_NSW_TAF: &str = "FM 51 · 51.5.2";
 const SRC_TAF_CHANGE: &str = "FM 51 · 51.8";
-const SRC_TAF_TX: &str = "FM 51 · 51.7";
-const SRC_NSW: &str = "FM 51 · 51.6";
+const SRC_PROB: &str = "FM 51 · 51.9";
+const SRC_RMK: &str = "US · 3.1.5.12";
+const SRC_RMK_STATION: &str = "US · 3.1.5.13.3";
+const SRC_RMK_SLP: &str = "US · 3.1.5.13.25";
+const SRC_RMK_TEMP: &str = "US · 3.1.5.13.31";
+const SRC_RMK_MAINT: &str = "US · 3.1.5.14.1";
+
+/// One of two sources: the METAR's, or the TAF's.
+const fn by(taf: bool, metar: &'static str, forecast: &'static str) -> &'static str {
+    if taf { forecast } else { metar }
+}
 
 const COVER: [(&str, &str); 4] = [
     ("FEW", "Few"),
@@ -396,7 +428,7 @@ fn cloud(g: &str) -> Option<String> {
         "NSC" => return Some("No significant cloud".into()),
         "NCD" => return Some("No cloud detected".into()),
         "SKC" => return Some("Sky clear".into()),
-        "CLR" => return Some("No cloud below 12,000 ft".into()),
+        "CLR" => return Some("No cloud detected at or below 12,000 ft".into()),
         _ => {}
     }
     if let Some(h) = g.strip_prefix("VV") {
@@ -544,8 +576,8 @@ fn change(g: &str) -> Option<String> {
 /// What a US remark says, for the remarks the table covers; the rest stay as printed.
 fn remark(g: &str) -> Option<String> {
     match g {
-        "AO1" => return Some("Automated station without a precipitation sensor".into()),
-        "AO2" => return Some("Automated station with a precipitation sensor".into()),
+        "AO1" => return Some("Automated station without a precipitation discriminator".into()),
+        "AO2" => return Some("Automated station with a precipitation discriminator".into()),
         "$" => return Some("The station needs maintenance".into()),
         _ => {}
     }
@@ -647,13 +679,21 @@ fn read_header(group: &str, taf: bool, place: &mut Place) -> Option<Read> {
         return Some(Read::one(
             Element::Kind,
             what,
-            if taf { SRC_KIND_TAF } else { SRC_KIND_METAR },
+            match group {
+                "AMD" => SRC_AMD,
+                "COR" | "CCA" => by(taf, SRC_COR_METAR, SRC_COR_TAF),
+                _ => by(taf, SRC_KIND_METAR, SRC_KIND_TAF),
+            },
         ));
     }
     if !place.station && group.len() == 4 && group.bytes().all(|b| b.is_ascii_uppercase()) {
         place.station = true;
         place.stage = Stage::Station;
-        return Some(Read::one(Element::Station, group, SRC_STATION));
+        return Some(Read::one(
+            Element::Station,
+            group,
+            by(taf, SRC_STATION_METAR, SRC_STATION_TAF),
+        ));
     }
     let before = place.stage;
     place.stage = place.stage.max(Stage::Body);
@@ -663,17 +703,21 @@ fn read_header(group: &str, taf: bool, place: &mut Place) -> Option<Read> {
         return Some(Read::one(
             Element::Time,
             format!("Day {day}, {hour:02}:{minute:02} UTC"),
-            SRC_TIME,
+            by(taf, SRC_TIME_METAR, SRC_TIME_TAF),
         ));
     }
     None
 }
 
 /// Words that stand alone: AUTO, COR, RMK, NOSIG, NSW, CAVOK.
-fn read_word(group: &str, place: &mut Place) -> Option<Read> {
+fn read_word(group: &str, taf: bool, place: &mut Place) -> Option<Read> {
     Some(match group {
         "AUTO" => Read::one(Element::Auto, "Automated report, no observer", SRC_AUTO),
-        "COR" => Read::one(Element::Kind, "Corrected", SRC_KIND_METAR),
+        "COR" => Read::one(
+            Element::Kind,
+            "Corrected",
+            by(taf, SRC_COR_METAR, SRC_COR_TAF),
+        ),
         "RMK" => {
             place.stage = Stage::Remarks;
             Read::one(Element::Remarks, "Remarks follow", SRC_RMK)
@@ -681,13 +725,17 @@ fn read_word(group: &str, place: &mut Place) -> Option<Read> {
         "NOSIG" => Read::one(
             Element::NoChange,
             "No significant change expected",
-            SRC_TREND,
+            SRC_NOSIG,
         ),
-        "NSW" => Read::one(Element::NoWeather, "No significant weather", SRC_NSW),
+        "NSW" => Read::one(
+            Element::NoWeather,
+            "No significant weather",
+            by(taf, SRC_NSW_METAR, SRC_NSW_TAF),
+        ),
         "CAVOK" => Read::one(
             Element::Cavok,
             "Visibility 10 km or more, no cloud below 5,000 ft or CB, no significant weather",
-            SRC_CAVOK,
+            by(taf, SRC_CAVOK_METAR, SRC_CAVOK_TAF),
         ),
         _ => return None,
     })
@@ -707,7 +755,13 @@ fn read_change(tokens: &[&str], at: usize, taf: bool) -> Option<Read> {
         lines.push(p);
         taken += 1;
     }
-    let source = if taf { SRC_TAF_CHANGE } else { SRC_TREND };
+    let source = if !taf {
+        SRC_TREND
+    } else if group.starts_with("PROB") {
+        SRC_PROB
+    } else {
+        SRC_TAF_CHANGE
+    };
     Some(Read {
         element: Element::Change,
         lines,
@@ -721,10 +775,14 @@ fn read_change(tokens: &[&str], at: usize, taf: bool) -> Option<Read> {
 fn read_body(tokens: &[&str], at: usize, taf: bool) -> Option<Read> {
     let group = tokens[at];
     if let Some(w) = wind(group) {
-        return Some(Read::one(Element::Wind, w, SRC_WIND));
+        return Some(Read::one(
+            Element::Wind,
+            w,
+            by(taf, SRC_WIND_METAR, SRC_WIND_TAF),
+        ));
     }
     if let Some(v) = variation(group) {
-        return Some(Read::one(Element::Wind, v, SRC_WIND).joining());
+        return Some(Read::one(Element::Wind, v, by(taf, SRC_WIND_METAR, SRC_WIND_TAF)).joining());
     }
     // "1 1/2SM": a whole number, then a fraction in statute miles.
     if group.len() == 1
@@ -734,24 +792,42 @@ fn read_body(tokens: &[&str], at: usize, taf: bool) -> Option<Read> {
         return Some(Read {
             element: Element::Visibility,
             lines: vec![v],
-            source: SRC_VIS_SM,
+            source: by(taf, SRC_VIS_SM_METAR, SRC_VIS_SM_TAF),
             taken: 2,
             joins: false,
         });
     }
     if let Some(v) = visibility_sm(group, None) {
-        return Some(Read::one(Element::Visibility, v, SRC_VIS_SM));
+        return Some(Read::one(
+            Element::Visibility,
+            v,
+            by(taf, SRC_VIS_SM_METAR, SRC_VIS_SM_TAF),
+        ));
     }
     if (4..=7).contains(&group.len())
         && let Some(v) = visibility_m(group)
     {
-        return Some(Read::one(Element::Visibility, v, SRC_VIS).joining());
+        return Some(
+            Read::one(Element::Visibility, v, by(taf, SRC_VIS_METAR, SRC_VIS_TAF)).joining(),
+        );
     }
     if let Some(v) = rvr(group) {
-        return Some(Read::one(Element::RunwayVisualRange, v, SRC_RVR).joining());
+        let source = if group.ends_with("FT") {
+            SRC_RVR_FT
+        } else {
+            SRC_RVR
+        };
+        return Some(Read::one(Element::RunwayVisualRange, v, source).joining());
     }
     if let Some(c) = cloud(group) {
-        return Some(Read::one(Element::Clouds, c, SRC_CLOUD).joining());
+        let source = if matches!(group, "CLR" | "SKC") {
+            SRC_CLEAR_US
+        } else if group.starts_with("VV") {
+            by(taf, SRC_VV_METAR, SRC_VV_TAF)
+        } else {
+            by(taf, SRC_CLOUD_METAR, SRC_CLOUD_TAF)
+        };
+        return Some(Read::one(Element::Clouds, c, source).joining());
     }
     if let Some(t) = extreme(group) {
         return Some(Read::one(Element::TemperatureExtreme, t, SRC_TAF_TX).joining());
@@ -762,7 +838,12 @@ fn read_body(tokens: &[&str], at: usize, taf: bool) -> Option<Read> {
     if let Some((_, line, source)) = altimeter_group(group) {
         return Some(Read::one(Element::Altimeter, line, source));
     }
-    weather(group).map(|w| Read::one(Element::Weather, w, SRC_WX).joining())
+    let source = if group.starts_with("RE") {
+        SRC_RECENT
+    } else {
+        by(taf, SRC_WX_METAR, SRC_WX_TAF)
+    };
+    weather(group).map(|w| Read::one(Element::Weather, w, source).joining())
 }
 
 /// Adds a read to the report: a new row, or the row before when it joins one of its kind.
@@ -803,10 +884,18 @@ fn decode(text: &str, taf: bool) -> Decoded {
     while at < tokens.len() {
         let group = tokens[at];
         let read = if place.stage == Stage::Remarks {
-            remark(group).map(|line| Read::one(Element::Remarks, line, SRC_RMK))
+            remark(group).map(|line| {
+                let source = match group {
+                    "AO1" | "AO2" => SRC_RMK_STATION,
+                    "$" => SRC_RMK_MAINT,
+                    g if g.starts_with("SLP") => SRC_RMK_SLP,
+                    _ => SRC_RMK_TEMP,
+                };
+                Read::one(Element::Remarks, line, source)
+            })
         } else {
             read_header(group, taf, &mut place)
-                .or_else(|| read_word(group, &mut place))
+                .or_else(|| read_word(group, taf, &mut place))
                 .or_else(|| {
                     if taf {
                         period(group).map(|p| Read::one(Element::Validity, p, SRC_VALIDITY))
@@ -951,7 +1040,7 @@ mod tests {
             lines(&d, Element::Remarks),
             [
                 "Remarks follow",
-                "Automated station with a precipitation sensor",
+                "Automated station with a precipitation discriminator",
                 "Sea level pressure 1013.2 hPa",
                 "Temperature -1.1 °C · dew point -1.7 °C"
             ]
@@ -1025,6 +1114,50 @@ mod tests {
         );
         assert_eq!(lines(&d, Element::NoWeather), ["No significant weather"]);
         assert!(lines(&d, Element::Change).contains(&"From day 14 08:00 UTC".to_owned()));
+    }
+
+    #[test]
+    fn each_row_names_where_its_code_is_defined_for_its_report() {
+        let source = |d: &Decoded, e: Element| {
+            d.rows
+                .iter()
+                .find(|r| r.element == e)
+                .map(|r| r.source.clone())
+        };
+        let m = decode_metar("KSFO 140156Z 24004KT 1 1/2SM RERA CLR 14/11 A2968 RMK AO2 SLP049");
+        assert_eq!(source(&m, Element::Wind).as_deref(), Some("FM 15 · 15.5"));
+        assert_eq!(
+            source(&m, Element::Visibility).as_deref(),
+            Some("US · 3.1.5.6")
+        );
+        assert_eq!(
+            source(&m, Element::Weather).as_deref(),
+            Some("FM 15 · 15.13.2")
+        );
+        assert_eq!(source(&m, Element::Clouds).as_deref(), Some("US · 3.1.5.9"));
+        assert_eq!(
+            source(&m, Element::Altimeter).as_deref(),
+            Some("US · 3.1.5.11")
+        );
+        let t = decode_taf(
+            "TAF AMD EDDF 132300Z 1400/1506 VRB03KT 9999 NSW BKN006 PROB30 1403/1408 0800 FZFG TX09/1414Z",
+        );
+        assert_eq!(source(&t, Element::Kind).as_deref(), Some("FM 51 · 51.1"));
+        assert_eq!(
+            source(&t, Element::Validity).as_deref(),
+            Some("FM 51 · 51.1.4")
+        );
+        assert_eq!(source(&t, Element::Wind).as_deref(), Some("FM 51 · 51.3"));
+        assert_eq!(
+            source(&t, Element::NoWeather).as_deref(),
+            Some("FM 51 · 51.5.2")
+        );
+        assert_eq!(source(&t, Element::Change).as_deref(), Some("FM 51 · 51.9"));
+        assert_eq!(
+            source(&t, Element::TemperatureExtreme).as_deref(),
+            Some("FM 51 · 51.10")
+        );
+        assert!(t.rows.iter().any(|r| r.source == "FM 51 · 51.11"), "AMD");
     }
 
     #[test]

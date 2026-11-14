@@ -13,6 +13,7 @@ flight plan (Undo after, in the shared toast) and All flight data, the Flight pa
 <script lang="ts">
   import type { FillField } from "@chocktochock/bindings";
   import Icon from "./Icon.svelte";
+  import { rangeMessage } from "../flight/sections";
 
   let {
     values,
@@ -67,6 +68,10 @@ flight plan (Undo after, in the shared toast) and All flight data, the Flight pa
   let noteCount = $derived(notes.split("\n").filter((l) => l.trim()).length);
 
   let open = $state(false);
+  /** Opened with a pointer: the cursor goes to Runway, but its ring shows only once a key is
+   * pressed (owner: the ring is for keyboard focus). */
+  let quiet = $state(false);
+  const message = (field: FillField) => rangeMessage(field, { values, plan: null, notes, unit: "" });
   let freqOpen = $state(false);
   let strip: HTMLElement | undefined = $state();
   let line: HTMLButtonElement | undefined = $state();
@@ -86,6 +91,8 @@ flight plan (Undo after, in the shared toast) and All flight data, the Flight pa
   }
   function toggle(e: MouseEvent): void {
     if (open) return hide();
+    // A click has a detail (the click count); Enter or Space on the button has none.
+    quiet = e.detail > 0;
     const part = (e.target as HTMLElement).closest<HTMLElement>("[data-field]");
     show((part?.dataset.field as FillField | undefined) ?? null);
   }
@@ -94,6 +101,7 @@ flight plan (Undo after, in the shared toast) and All flight data, the Flight pa
     if (open && strip && !strip.contains(e.target as Node)) open = false;
   }
   function key(e: KeyboardEvent): void {
+    if (open && e.key !== "Escape") quiet = false;
     if (open && e.key === "Escape") {
       e.preventDefault();
       hide();
@@ -153,13 +161,16 @@ flight plan (Undo after, in the shared toast) and All flight data, the Flight pa
                 {f.label}
                 <input
                   id="sp-{f.field}"
+                  class:quiet
                   value={values[f.field] ?? ""}
                   maxlength={f.max}
                   inputmode={f.mode}
                   autocomplete="off"
+                  aria-invalid={message(f.field) ? "true" : undefined}
                   oninput={(e) => onSet(f.field, e.currentTarget.value)}
                   onchange={(e) => trimmed(f.field, e.currentTarget)}
                 />
+                {#if message(f.field)}<span class="err" role="alert">{message(f.field)}</span>{/if}
               </label>
             {/each}
           </div>
@@ -178,9 +189,11 @@ flight plan (Undo after, in the shared toast) and All flight data, the Flight pa
                     inputmode={f.mode}
                     placeholder="Enter"
                     autocomplete="off"
+                    aria-invalid={message(f.field) ? "true" : undefined}
                     oninput={(e) => onSet(f.field, e.currentTarget.value)}
                     onchange={(e) => trimmed(f.field, e.currentTarget)}
                   />
+                  {#if message(f.field)}<span class="err" role="alert">{message(f.field)}</span>{/if}
                 </label>
               {/each}
             </div>
@@ -349,12 +362,22 @@ flight plan (Undo after, in the shared toast) and All flight data, the Flight pa
     height: var(--size-touch-min);
     box-sizing: border-box;
     padding: 0 var(--space-3);
-    border: var(--border-thin) solid var(--color-border-strong);
+    border: var(--border-thin) solid var(--color-field-border);
     border-radius: calc(var(--radius-small) + var(--border-thick));
     background: var(--color-field);
     color: var(--color-text-strong);
     font-family: var(--font-mono);
     font-size: var(--font-size-value-mono);
+  }
+  .quiet:focus-visible {
+    outline: none;
+  }
+  input[aria-invalid="true"] {
+    border-color: var(--color-danger-text);
+  }
+  .err {
+    color: var(--color-danger-text);
+    font-size: var(--font-size-caption);
   }
   .freq {
     align-self: flex-start;

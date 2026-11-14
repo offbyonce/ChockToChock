@@ -133,6 +133,7 @@
   --color-strip-panel: #121720;
   --color-drop-zone: #121720;
   --color-drop-zone-border: #6b7482;
+  --color-field-border: #6b7482;
   --panel-bg: #161b23;
   --panel-frame: #2a323e;
   --panel-fill: #1b212b;
@@ -208,6 +209,7 @@
     --color-strip-panel: #ffffff;
     --color-drop-zone: #f5f7fa;
     --color-drop-zone-border: #7a8391;
+    --color-field-border: #7a8391;
     --panel-bg: #ffffff;
     --panel-frame: #d3d9e1;
     --panel-fill: #e3e7ec;

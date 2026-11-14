@@ -61,7 +61,7 @@ const ARRIVAL = [
 const CLEARANCE = [
   ["runway", "rwy", "16L"],
   ["sid", "sid", "SUMMA2"],
-  ["transition", "trans", "SEA"],
+  ["transition", "trans", "SUMMA"],
   ["initial_altitude", "alt", "5000"],
   ["squawk", "sq", "4521"],
 ];

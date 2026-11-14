@@ -66,7 +66,7 @@ its field; "This flight" holds the key values, each linking to its section.
     {@const s = sectionOf(row.id)}
     <div class="orow">
       <span class="label">{row.label}</span>
-      <a class="enter" href={s ? flightHref(s.id, row.field) : "#"}>— {(row.placeholder ?? "Enter").replace(/^Enter/, "enter")}</a>
+      <a class="enter" href={s ? flightHref(s.id, row.field) : "#"}>— enter{row.placeholder && row.placeholder !== "Enter" ? ` ${row.placeholder.charAt(0).toLowerCase()}${row.placeholder.slice(1)}` : ""}</a>
       <span class="about">
         {#if descriptions}<span class="desc">{first(row.desc)}</span>{/if}
         {#if s}<a class="go" href={flightHref(s.id)}>{s.title} ›</a>{/if}

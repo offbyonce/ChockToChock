@@ -59,10 +59,14 @@ export type Row = {
   second?: {
     field: FillField;
     placeholder: string;
+    /** Its own accessible name ("assumed temperature"). */
+    name: string;
     max: number;
     mode?: "numeric" | "decimal";
     weight?: "thousands";
   };
+  /** The first box's own name when a row has two ("rating", "passengers"). */
+  firstName?: string;
   /** The flight's notes from ATC (Clearance), not a fill field. */
   notes?: boolean;
   /** How a value reads: "FL180", "163°". */
@@ -509,7 +513,15 @@ export const SECTIONS: Section[] = [
             field: "passengers",
             max: 3,
             mode: "numeric",
-            second: { field: "cargo", placeholder: "Cargo", max: 7, mode: "decimal", weight: "thousands" },
+            firstName: "passengers",
+            second: {
+              field: "cargo",
+              placeholder: "Cargo",
+              name: "cargo",
+              max: 7,
+              mode: "decimal",
+              weight: "thousands",
+            },
             desc: "Payload in the load sheet.",
             ofp: fromWeights("The payload is in the weights section", "pax", "Passengers, then cargo."),
           },
@@ -798,7 +810,14 @@ export const SECTIONS: Section[] = [
             label: "Thrust",
             field: "thrust_rating",
             max: 4,
-            second: { field: "assumed_temperature", placeholder: "Assumed", max: 3, mode: "numeric" },
+            firstName: "rating",
+            second: {
+              field: "assumed_temperature",
+              placeholder: "Temp",
+              name: "assumed temperature",
+              max: 3,
+              mode: "numeric",
+            },
             desc: "Takeoff thrust rating and any assumed temperature.",
             chip: "CDU · N1 LIMIT",
             ofp: takeoffOfp,
@@ -829,7 +848,7 @@ export const SECTIONS: Section[] = [
             field: "v2",
             max: 3,
             mode: "numeric",
-            placeholder: "Enter from the FMC",
+            placeholder: "From the FMC",
             desc: "Takeoff safety speed for your takeoff flaps.",
             chip: "CDU · TAKEOFF REF",
             ofp: takeoffOfp,
@@ -840,7 +859,7 @@ export const SECTIONS: Section[] = [
             field: "takeoff_trim",
             max: 5,
             mode: "decimal",
-            placeholder: "Enter from the FMC",
+            placeholder: "From the FMC",
             desc: "Takeoff trim for your weight and balance.",
             chip: "CDU · TAKEOFF REF",
             ofp: takeoffOfp,
@@ -915,7 +934,7 @@ export const SECTIONS: Section[] = [
             field: "vref",
             max: 3,
             mode: "numeric",
-            placeholder: "Enter from the FMC",
+            placeholder: "From the FMC",
             desc: "VREF for your landing flaps, plus any wind additive.",
             chip: "CDU · APPROACH REF",
             ofp: chartOfp("Landing speed comes from the FMC"),
@@ -1002,4 +1021,68 @@ export function blankLinks(fill: FillField[]): ({ href: string; name: string } |
     const at = home(field);
     return at ? { href: `#/flight/${at.section}/${field}`, name } : null;
   });
+}
+
+/** A number from a field's text, or NaN. */
+const number = (v: string) => (v.trim() === "" ? Number.NaN : Number(v));
+const within = (lo: number, hi: number, message: string) => (v: string) => {
+  const n = number(v);
+  return Number.isFinite(n) && n >= lo && n <= hi ? null : message;
+};
+const pattern = (re: RegExp, message: string) => (v: string) => (re.test(v) ? null : message);
+const RUNWAY = pattern(/^(0[1-9]|[12][0-9]|3[0-6])[LCR]?$/, "Use 01 to 36, with L, C or R");
+const ICAO = pattern(/^[A-Z0-9]{4}$/, "Use a 4-letter ICAO code");
+const FREQUENCY = within(118, 136.975, "Use 118.000 to 136.975");
+
+/**
+ * The ranges 3.0's Flight setup gave each field ("FL100 to FL410"), as checks: a value outside one
+ * shows a short message under its box (owner, batch 4). Weights are checked in the flight's unit,
+ * in thousands where the flight stores thousands.
+ */
+export const RANGES: Partial<Record<FillField, (value: string, c: Ctx) => string | null>> = {
+  origin: ICAO,
+  destination: ICAO,
+  alternate: ICAO,
+  cruise_level: within(100, 410, "Use FL100 to FL410"),
+  runway: RUNWAY,
+  arrival_runway: RUNWAY,
+  initial_altitude: within(0, 41000, "Use 0 to 41,000 ft"),
+  squawk: pattern(/^[0-7]{4}$/, "Use 4 digits, 0 to 7"),
+  ground_frequency: FREQUENCY,
+  tower_frequency: FREQUENCY,
+  departure_frequency: FREQUENCY,
+  heading: within(1, 360, "Use 001 to 360 degrees"),
+  qnh: (v, c) =>
+    c.values.qnh_unit === "hPa"
+      ? within(948, 1050, "Use 948 to 1050 hPa")(v)
+      : within(28, 31, "Use 28.00 to 31.00 inHg")(v),
+  destination_qnh: (v, c) =>
+    c.values.qnh_unit === "hPa"
+      ? within(948, 1050, "Use 948 to 1050 hPa")(v)
+      : within(28, 31, "Use 28.00 to 31.00 inHg")(v),
+  v1: within(80, 250, "Use 80 to 250 knots"),
+  vr: within(80, 250, "Use 80 to 250 knots"),
+  v2: within(100, 250, "Use 100 to 250 knots"),
+  vref: within(100, 250, "Use 100 to 250 knots"),
+  cg: within(0, 50, "Use 0 to 50 % MAC"),
+  takeoff_trim: within(0, 15, "Use 0.00 to 15.00 units"),
+  fuel: within(0, 999999, "Use a weight of 0 or more"),
+  zfw: (v, c) => within(0, 400, `Use 0 to 400,000 ${c.unit}`)(v),
+  reserves: (v, c) => within(0, 100, `Use 0 to 100,000 ${c.unit}`)(v),
+  takeoff_weight: (v, c) => within(0, 400, `Use 0 to 400,000 ${c.unit}`)(v),
+  cargo: (v, c) => within(0, 100, `Use 0 to 100,000 ${c.unit}`)(v),
+  passengers: within(0, 500, "Use 0 to 500"),
+  cost_index: within(0, 9999, "Use 0 to 9999"),
+  cruise_wind: pattern(/^\d{3}\/\d{2,3}$/, "Use direction/speed, as 270/045"),
+  isa_deviation: within(-60, 60, "Use −60 to +60"),
+  transition_altitude: within(1000, 20000, "Use 1,000 to 20,000 ft"),
+  transition_level: within(10, 600, "Use FL10 to FL600"),
+  landing_altitude: within(-1000, 14000, "Use −1,000 to 14,000 ft"),
+  minimums: within(0, 14000, "Use 0 to 14,000 ft"),
+};
+
+/** The message for a field's value, or null when it's in range or empty. */
+export function rangeMessage(field: FillField, c: Ctx): string | null {
+  const value = c.values[field] ?? "";
+  return value ? (RANGES[field]?.(value, c) ?? null) : null;
 }

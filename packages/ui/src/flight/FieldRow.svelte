@@ -13,7 +13,7 @@ the "Find it in your OFP" panel at it. Descriptions Off keeps the label, the val
   import type { FillField } from "@chocktochock/bindings";
   import { flightHref, phaseHref } from "../route.svelte";
   import Icon from "../lib/Icon.svelte";
-  import { type Ctx, type Row } from "./sections";
+  import { type Ctx, type Row, rangeMessage } from "./sections";
 
   let {
     row,
@@ -62,6 +62,9 @@ the "Find it in your OFP" panel at it. Descriptions Off keeps the label, the val
     return t.toUpperCase();
   }
   let readOnly = $derived(!!row.read || !!row.link);
+  /** 3.0's range for the field, as a short message under the box when the value is outside it. */
+  let message = $derived(row.field && !row.read && !row.link ? rangeMessage(row.field, ctx) : null);
+  let secondMessage = $derived(row.second ? rangeMessage(row.second.field, ctx) : null);
   let readValue = $derived.by(() => {
     if (row.read) return row.read(ctx);
     if (row.field) return shown(row.field) || "—";
@@ -113,7 +116,10 @@ the "Find it in your OFP" panel at it. Descriptions Off keeps the label, the val
         <input
           class="box"
           class:need={empty}
-          aria-labelledby="lab-{row.id}"
+          aria-labelledby={row.firstName ? undefined : `lab-${row.id}`}
+          aria-label={row.firstName ? `${row.label}: ${row.firstName}` : undefined}
+          aria-invalid={message ? "true" : undefined}
+          aria-describedby={message ? `err-${row.id}` : undefined}
           data-field={field}
           value={shown(field, row.weight)}
           placeholder={row.placeholder ?? (empty ? "Enter" : "")}
@@ -126,7 +132,8 @@ the "Find it in your OFP" panel at it. Descriptions Off keeps the label, the val
           {@const two = row.second}
           <input
             class="box"
-            aria-label="{row.label}: {two.placeholder}"
+            aria-label="{row.label}: {two.name}"
+            aria-invalid={secondMessage ? "true" : undefined}
             data-field={two.field}
             value={shown(two.field, two.weight)}
             placeholder={two.placeholder}
@@ -136,6 +143,7 @@ the "Find it in your OFP" panel at it. Descriptions Off keeps the label, the val
           />
         {/if}
       </span>
+      {#if message || secondMessage}<span class="err" id="err-{row.id}" role="alert">{message ?? secondMessage}</span>{/if}
     {/if}
   </span>
   <span class="about">
@@ -199,7 +207,7 @@ the "Find it in your OFP" panel at it. Descriptions Off keeps the label, the val
     height: var(--size-touch-min);
     box-sizing: border-box;
     padding: 0 calc(var(--space-2) + var(--border-thick));
-    border: var(--border-thin) solid var(--color-border);
+    border: var(--border-thin) solid var(--color-field-border);
     border-radius: calc(var(--radius-small) + var(--border-thick));
     background: var(--color-field);
     color: var(--color-text);
@@ -208,6 +216,15 @@ the "Find it in your OFP" panel at it. Descriptions Off keeps the label, the val
   }
   .box.need {
     border-color: var(--color-open-text);
+  }
+  .box[aria-invalid="true"] {
+    border-color: var(--color-danger-text);
+  }
+  .err {
+    display: block;
+    margin-top: var(--space-1);
+    color: var(--color-danger-text);
+    font-size: var(--font-size-caption);
   }
   .box::placeholder {
     color: var(--color-text-muted);
