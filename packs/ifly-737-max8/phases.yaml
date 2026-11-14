@@ -49,6 +49,18 @@ options:
     ask_in:
       - descent
       - approach
+  - id: exterior
+    title: Exterior inspection
+    values:
+      - "on"
+      - "off"
+    default: "on"
+    description: The walk around the airplane before you board. Off skips the stage; anything you ticked is kept.
+    choices:
+      - value: "on"
+        label: "On"
+      - value: "off"
+        label: "Off"
 # Steps in Essentials only on a turnaround (quick: turnaround) count when this holds.
 turnaround:
   option: start
@@ -75,6 +87,9 @@ stages:
             - option: start
               equals: cold
       - phase: exterior
+        show_if:
+          option: exterior
+          equals: "on"
       - phase: preflight
   - title: Departure
     phases:

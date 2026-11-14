@@ -19,7 +19,7 @@ steps:
       - at: "gl/efisl/BARO/1"
       - at: "gl/efisr/BARO/1"
     fill:
-      - qnh
+      - destination_qnh
     note: "Below the transition level, altimeters must read local QNH so you see your true altitude above sea level."
     note_caution: true
     why: True altitude below transition

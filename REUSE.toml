@@ -44,6 +44,12 @@ SPDX-License-Identifier = "MIT"
 
 # Icons drawn on the approved boards (docs/design/round6), copied as drawn.
 [[annotations]]
+path = ["crates/app-core/tests/fixtures/weather/*.txt"]
+precedence = "override"
+SPDX-FileCopyrightText = "2026 offbyonce"
+SPDX-License-Identifier = "MIT"
+
+[[annotations]]
 path = ["packages/ui/src/icons/board/*.svg"]
 precedence = "override"
 SPDX-FileCopyrightText = "2026 offbyonce"

@@ -75,6 +75,8 @@ fn phase_entry(pack: &FlatPack, flight: &Flight, shown: Shown, id: &str) -> Opti
 
 /// The rail for this flight, counting the steps the pilot chose to see (Full or Essentials).
 pub fn rail(pack: &FlatPack, flight: &Flight, settings: &Settings) -> Rail {
+    let filled = crate::flight::with_defaults(pack, flight);
+    let flight = &filled;
     let shown = Shown::new(pack, settings);
     let Some(file) = &pack.content.phases else {
         return Rail {

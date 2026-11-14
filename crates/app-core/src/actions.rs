@@ -66,12 +66,80 @@ pub enum Action {
     SetNotes {
         notes: String,
     },
+    /// The iFly panel state the flight starts from, or none. It sets the state's options and
+    /// ticks and skips the steps it has already set; picking another state, or none, takes back
+    /// only the marks the earlier state made. The pilot's own ticks and skips are never changed.
+    SetStartState {
+        state: Option<String>,
+        #[ts(type = "number")]
+        at: Millis,
+    },
     /// A new flight: ticks, values, notes and timers are cleared; option choices are kept.
     Clear,
 }
 
 fn invalid(message: impl Into<String>) -> AppError {
     AppError::InvalidAction(message.into())
+}
+
+/// Takes back the earlier state's own marks, then applies the new state's options, ticks and
+/// skips to steps the pilot has not marked.
+fn set_start_state(
+    pack: &FlatPack,
+    flight: &mut Flight,
+    state: Option<String>,
+    at: Millis,
+) -> Result<(), AppError> {
+    let list_of = |step: &StepId| pack.lists.iter().find(|l| l.contains(step));
+    let chosen = match &state {
+        Some(id) => Some(
+            pack.content
+                .start_states
+                .iter()
+                .flat_map(|f| &f.states)
+                .find(|s| &s.id == id)
+                .ok_or_else(|| invalid(format!("no panel state `{id}`")))?
+                .clone(),
+        ),
+        None => None,
+    };
+    for step in std::mem::take(&mut flight.state_ticks) {
+        if let Some(list) = list_of(&step) {
+            let _ = flight.session.untick(list, &step);
+        }
+    }
+    for step in std::mem::take(&mut flight.state_skips) {
+        if let Some(list) = list_of(&step) {
+            let _ = flight.session.unskip(list, &step);
+        }
+    }
+    if let Some(s) = chosen {
+        for (option, value) in &s.set {
+            set_option(pack, flight, option.clone(), value.clone())?;
+        }
+        for step in &s.done {
+            let Some(list) = list_of(step) else { continue };
+            if flight.session.done_at(step).is_none() && !flight.session.is_skipped(step) {
+                flight
+                    .session
+                    .tick(list, step, at)
+                    .map_err(|e| invalid(e.to_string()))?;
+                flight.state_ticks.insert(step.clone());
+            }
+        }
+        for step in &s.skip {
+            let Some(list) = list_of(step) else { continue };
+            if flight.session.done_at(step).is_none() && !flight.session.is_skipped(step) {
+                flight
+                    .session
+                    .skip(list, step, at)
+                    .map_err(|e| invalid(e.to_string()))?;
+                flight.state_skips.insert(step.clone());
+            }
+        }
+    }
+    flight.start_state = state;
+    Ok(())
 }
 
 fn set_value(flight: &mut Flight, field: FillField, value: &str) -> Result<(), AppError> {
@@ -162,6 +230,9 @@ pub fn apply(pack: &FlatPack, mut flight: Flight, action: Action) -> Result<Flig
     match action {
         Action::Tick { step, at } => {
             let list = list_of(&step)?;
+            // A mark the pilot makes is theirs: a later state change leaves it alone.
+            flight.state_ticks.remove(&step);
+            flight.state_skips.remove(&step);
             flight
                 .session
                 .tick(list, &step, at)
@@ -169,6 +240,7 @@ pub fn apply(pack: &FlatPack, mut flight: Flight, action: Action) -> Result<Flig
         }
         Action::Untick { step } => {
             let list = list_of(&step)?;
+            flight.state_ticks.remove(&step);
             flight
                 .session
                 .untick(list, &step)
@@ -176,6 +248,8 @@ pub fn apply(pack: &FlatPack, mut flight: Flight, action: Action) -> Result<Flig
         }
         Action::Skip { step, at } => {
             let list = list_of(&step)?;
+            flight.state_ticks.remove(&step);
+            flight.state_skips.remove(&step);
             flight
                 .session
                 .skip(list, &step, at)
@@ -183,6 +257,7 @@ pub fn apply(pack: &FlatPack, mut flight: Flight, action: Action) -> Result<Flig
         }
         Action::Unskip { step } => {
             let list = list_of(&step)?;
+            flight.state_skips.remove(&step);
             flight
                 .session
                 .unskip(list, &step)
@@ -207,8 +282,11 @@ pub fn apply(pack: &FlatPack, mut flight: Flight, action: Action) -> Result<Flig
             set_blank(pack, &mut flight, &step, index, &value)?;
         }
         Action::SetNotes { notes } => flight.notes = notes,
+        Action::SetStartState { state, at } => set_start_state(pack, &mut flight, state, at)?,
         Action::Clear => {
             flight.start_state = None;
+            flight.state_ticks.clear();
+            flight.state_skips.clear();
             flight.session.clear();
             flight.values.clear();
             flight.blanks.clear();
@@ -223,6 +301,100 @@ pub fn apply(pack: &FlatPack, mut flight: Flight, action: Action) -> Result<Flig
 mod tests {
     use super::*;
     use crate::flight::new_flight;
+
+    #[test]
+    fn a_panel_state_marks_its_steps_and_a_change_takes_back_only_its_own() {
+        let pack = crate::test_support::ifly_pack();
+        let states = &pack.content.start_states.as_ref().unwrap().states;
+        let cd = states.iter().find(|s| s.id == "cd").unwrap().clone();
+        let gpu = states.iter().find(|s| s.id == "gpu").unwrap().clone();
+        let hand = cd.done[0].clone();
+        // The pilot ticks one of the state's steps by hand first.
+        let f = apply(
+            &pack,
+            new_flight(&pack),
+            Action::Tick {
+                step: hand.clone(),
+                at: 1,
+            },
+        )
+        .unwrap();
+        let f = apply(
+            &pack,
+            f,
+            Action::SetStartState {
+                state: Some("gpu".into()),
+                at: 2,
+            },
+        )
+        .unwrap();
+        assert_eq!(f.start_state.as_deref(), Some("gpu"));
+        assert_eq!(f.options["power"], "gpu");
+        for step in &gpu.done {
+            assert!(f.session.done_at(step).is_some(), "{step} ticked");
+        }
+        assert!(
+            !f.state_ticks.contains(&hand),
+            "the pilot's own tick is not the state's"
+        );
+        assert_eq!(f.session.done_at(&hand), Some(1));
+        // Back to Cold & Dark: the steps only GPU set are open again; the pilot's tick stays.
+        let only_gpu: Vec<_> = gpu
+            .done
+            .iter()
+            .filter(|s| !cd.done.contains(s))
+            .cloned()
+            .collect();
+        assert_ne!(only_gpu.len(), 0);
+        let f = apply(
+            &pack,
+            f,
+            Action::SetStartState {
+                state: Some("cd".into()),
+                at: 3,
+            },
+        )
+        .unwrap();
+        for step in &only_gpu {
+            assert!(f.session.done_at(step).is_none(), "{step} taken back");
+        }
+        assert_eq!(f.session.done_at(&hand), Some(1));
+        // A step the state ticked and the pilot then ticks again by hand becomes theirs.
+        let other = cd.done.iter().find(|s| **s != hand).unwrap().clone();
+        let f = apply(
+            &pack,
+            f,
+            Action::Untick {
+                step: other.clone(),
+            },
+        )
+        .unwrap();
+        let f = apply(
+            &pack,
+            f,
+            Action::Tick {
+                step: other.clone(),
+                at: 4,
+            },
+        )
+        .unwrap();
+        let f = apply(&pack, f, Action::SetStartState { state: None, at: 5 }).unwrap();
+        assert_eq!(f.start_state, None);
+        assert_eq!(f.session.done_at(&other), Some(4));
+        assert_eq!(f.session.done_at(&hand), Some(1));
+        assert!(f.state_ticks.is_empty() && f.state_skips.is_empty());
+        assert!(
+            apply(
+                &pack,
+                f,
+                Action::SetStartState {
+                    state: Some("nope".into()),
+                    at: 6
+                }
+            )
+            .is_err()
+        );
+    }
     use crate::test_support::example_pack;
 
     fn step() -> StepId {

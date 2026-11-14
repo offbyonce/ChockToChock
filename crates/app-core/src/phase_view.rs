@@ -124,6 +124,21 @@ pub fn phase_view(
     settings: &Settings,
     id: &str,
 ) -> Result<PhaseView, AppError> {
+    view(
+        pack,
+        &crate::flight::with_defaults(pack, flight),
+        settings,
+        id,
+    )
+}
+
+/// [`phase_view`] for a flight with every option at a value.
+fn view(
+    pack: &FlatPack,
+    flight: &Flight,
+    settings: &Settings,
+    id: &str,
+) -> Result<PhaseView, AppError> {
     let shown = Shown::new(pack, settings);
     let phase = pack
         .content

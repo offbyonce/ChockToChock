@@ -36,7 +36,15 @@ pub enum Loaded<T> {
 pub(crate) type Migration = fn(Value) -> Result<Value, String>;
 
 /// Migrations for [`Flight`]: entry `i` turns format `i + 1` into format `i + 2`.
-const FLIGHT_MIGRATIONS: &[Migration] = &[];
+const FLIGHT_MIGRATIONS: &[Migration] = &[flight_1_to_2];
+
+/// Format 2 adds the steps a panel state ticked or skipped (none yet in an older flight) and new
+/// fill fields (destination QNH, arrival runway, STAR, alternate, tower frequency, thrust
+/// rating), which are only new keys. Nothing older changes.
+fn flight_1_to_2(value: Value) -> Result<Value, String> {
+    value.as_object().ok_or("the flight is not an object")?;
+    Ok(value)
+}
 /// Migrations for [`Settings`], indexed the same way.
 const SETTINGS_MIGRATIONS: &[Migration] = &[settings_1_to_2, settings_2_to_3, settings_3_to_4];
 
@@ -143,6 +151,31 @@ mod tests {
     use serde_json::json;
 
     use super::*;
+
+    #[test]
+    fn a_format_1_flight_loads_as_format_2_unchanged() {
+        let pack = crate::test_support::ifly_pack();
+        let mut flight = crate::new_flight(&pack);
+        flight
+            .values
+            .insert(checklist_core::FillField::Qnh, "29.92".into());
+        let mut old = serde_json::to_value(&flight).unwrap();
+        old["format"] = json!(1);
+        let Loaded::Ready {
+            value,
+            migrated_from,
+        } = load_flight(&old.to_string())
+        else {
+            panic!("did not load");
+        };
+        assert_eq!(migrated_from, Some(1));
+        assert_eq!(value.format, 2);
+        assert_eq!(
+            value.values, flight.values,
+            "the departure QNH stays; the destination's is new"
+        );
+        assert!(value.state_ticks.is_empty());
+    }
 
     #[test]
     fn current_settings_read_back() {

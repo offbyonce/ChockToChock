@@ -10,9 +10,13 @@ import type { AppInfo } from "./generated/AppInfo";
 import type { Checklist } from "./generated/Checklist";
 
 export type { Action } from "./generated/Action";
+export type { Altimeter } from "./generated/Altimeter";
 export type { Control } from "./generated/Control";
 export type { ControlsFile } from "./generated/ControlsFile";
+export type { Decoded } from "./generated/Decoded";
+export type { DecodedRow } from "./generated/DecodedRow";
 export type { Detail } from "./generated/Detail";
+export type { Element } from "./generated/Element";
 export type { ExplainNote } from "./generated/ExplainNote";
 export type { FillField } from "./generated/FillField";
 export type { FlatPack } from "./generated/FlatPack";

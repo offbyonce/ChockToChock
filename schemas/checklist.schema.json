@@ -131,8 +131,8 @@
             "initial_altitude",
             "squawk",
             "ground_frequency",
+            "tower_frequency",
             "departure_frequency",
-            "qnh",
             "heading",
             "takeoff_flaps",
             "landing_flaps",
@@ -169,6 +169,36 @@
           "description": "A blank the pilot types in, with no linked value. Only valid in a step's `fill`.",
           "type": "string",
           "const": "manual"
+        },
+        {
+          "description": "The first alternate airport (decision 0019 amendment, batch 4).",
+          "type": "string",
+          "const": "alternate"
+        },
+        {
+          "description": "The departure airport's altimeter setting.",
+          "type": "string",
+          "const": "qnh"
+        },
+        {
+          "description": "The destination airport's altimeter setting.",
+          "type": "string",
+          "const": "destination_qnh"
+        },
+        {
+          "description": "The runway the pilot expects to land on.",
+          "type": "string",
+          "const": "arrival_runway"
+        },
+        {
+          "description": "The arrival procedure.",
+          "type": "string",
+          "const": "star"
+        },
+        {
+          "description": "The takeoff thrust rating, e.g. `26K`.",
+          "type": "string",
+          "const": "thrust_rating"
         },
         {
           "description": "`LB` or `KG`, for fuel and weights.",

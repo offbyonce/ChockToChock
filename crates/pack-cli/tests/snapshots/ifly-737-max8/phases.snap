@@ -1,6 +1,5 @@
 ---
 source: crates/pack-cli/tests/snapshot.rs
-assertion_line: 35
 ---
 {
   "options": [
@@ -76,6 +75,26 @@ assertion_line: 35
         "descent",
         "approach"
       ]
+    },
+    {
+      "id": "exterior",
+      "title": "Exterior inspection",
+      "values": [
+        "on",
+        "off"
+      ],
+      "default": "on",
+      "description": "The walk around the airplane before you board. Off skips the stage; anything you ticked is kept.",
+      "choices": [
+        {
+          "value": "on",
+          "label": "On"
+        },
+        {
+          "value": "off",
+          "label": "Off"
+        }
+      ]
     }
   ],
   "turnaround": {
@@ -124,7 +143,11 @@ assertion_line: 35
           }
         },
         {
-          "phase": "exterior"
+          "phase": "exterior",
+          "show_if": {
+            "option": "exterior",
+            "equals": "on"
+          }
         },
         {
           "phase": "preflight"

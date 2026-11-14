@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Flight, weather</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="width: 1440px; height: 900px; box-sizing: border-box; background: {{t.bg}}; color: {{t.text}}; font-family: Geist, system-ui, sans-serif; display: flex; flex-direction: column; overflow: hidden">
+
+  <header style="height: 60px; flex: none; display: flex; align-items: center; gap: 16px; padding: 0 16px; border-bottom: 1px solid {{t.line}}">
+    <a href="Checklist.dc.html" style="height: 44px; display: flex; align-items: center; gap: 8px; padding: 0 12px; border: 1px solid {{t.border}}; border-radius: 10px; background: {{t.btnBg}}; box-shadow: {{t.btnShadow}}; color: {{t.text}}; text-decoration: none; font-size: 16px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"></path></svg>Checklist</a>
+    <div style="display: flex; flex-direction: column; line-height: 1.2"><h1 style="margin: 0; font-size: 20px; font-weight: 700">Flight</h1><span style="font-family: 'Geist Mono', monospace; font-size: 12px; color: {{t.muted}}">KSEA → KSFO · alternate KOAK</span></div>
+    <div style="flex: 1"></div>
+    <span style="font-size: 12px; color: {{t.muted}}">From SimBrief, 10:02</span>
+    <div role="group" aria-label="Field descriptions" style="display: flex; align-items: center; gap: 8px; font-size: 14px; color: {{t.sub}}">Descriptions
+      <div style="display: flex; background: {{t.segTrack}}; border: 1px solid {{t.segBorder}}; border-radius: 12px; padding: 2px">
+        <button aria-pressed="true" style="height: 44px; padding: 0 14px; border: 0; border-radius: 10px; background: {{t.segOn}}; box-shadow: inset 0 0 0 1.5px {{t.accent}}, {{t.segShadow}}; color: {{t.strong}}; font: inherit; font-size: 14px; font-weight: 600">On</button>
+        <button aria-pressed="false" style="height: 44px; padding: 0 14px; border: 0; border-radius: 10px; background: transparent; color: {{t.muted}}; font: inherit; font-size: 14px">Off</button>
+      </div>
+    </div>
+  </header>
+
+  <div style="flex: 1; min-height: 0; display: flex">
+    <nav aria-label="Flight sections" style="width: 232px; flex: none; box-sizing: border-box; border-right: 1px solid {{t.line}}; padding: 16px 12px; display: flex; flex-direction: column; gap: 2px">
+      <a href="#" style="height: 44px; display: flex; align-items: center; padding: 0 12px; border-radius: 8px; color: {{t.sub}}; text-decoration: none; font-size: 16px">Overview</a>
+      <a href="#" style="height: 44px; display: flex; align-items: center; padding: 0 12px; border-radius: 8px; color: {{t.sub}}; text-decoration: none; font-size: 16px">Route</a>
+      <a href="#" style="height: 44px; display: flex; align-items: center; padding: 0 12px; border-radius: 8px; color: {{t.sub}}; text-decoration: none; font-size: 16px">Fuel and weights</a>
+      <a href="#" style="height: 44px; display: flex; align-items: center; padding: 0 12px; border-radius: 8px; color: {{t.sub}}; text-decoration: none; font-size: 16px">Cruise and levels</a>
+      <a href="#" aria-current="true" style="height: 44px; display: flex; align-items: center; padding: 0 12px; border-radius: 8px; background: {{t.accentSoft}}; box-shadow: inset 0 0 0 1.5px {{t.accent}}; color: {{t.strong}}; text-decoration: none; font-size: 16px; font-weight: 600">Weather</a>
+      <a href="#" style="height: 44px; display: flex; align-items: center; padding: 0 12px; border-radius: 8px; color: {{t.sub}}; text-decoration: none; font-size: 16px">Clearance</a>
+      <a href="#" style="height: 44px; display: flex; align-items: center; justify-content: space-between; padding: 0 12px; border-radius: 8px; color: {{t.sub}}; text-decoration: none; font-size: 16px">Takeoff<span style="font-size: 12px; color: {{t.amber}}">2 to enter</span></a>
+      <a href="#" style="height: 44px; display: flex; align-items: center; padding: 0 12px; border-radius: 8px; color: {{t.sub}}; text-decoration: none; font-size: 16px">Approach</a>
+      <div style="height: 1px; background: {{t.line}}; margin: 8px 4px"></div>
+      <a href="Start.dc.html" style="height: 44px; display: flex; align-items: center; padding: 0 12px; border-radius: 8px; color: {{t.sub}}; text-decoration: none; font-size: 16px">Start options</a>
+      <a href="SimBrief.dc.html" style="height: 44px; display: flex; align-items: center; padding: 0 12px; border-radius: 8px; color: {{t.sub}}; text-decoration: none; font-size: 16px">SimBrief and OFP file</a>
+    </nav>
+
+    <main style="flex: 1; min-width: 0; padding: 20px 32px; display: flex; flex-direction: column; gap: 16px; overflow: hidden">
+      <div style="display: flex; align-items: center; justify-content: space-between">
+        <div role="tablist" aria-label="Airport" style="display: flex; background: {{t.segTrack}}; border: 1px solid {{t.segBorder}}; border-radius: 12px; padding: 2px">
+          <sc-if value="{{isAirport}}" hint-placeholder-val="{{ true }}"><button role="tab" aria-selected="true" style="height: 44px; padding: 0 14px; border: 0; border-radius: 10px; background: {{t.segOn}}; box-shadow: inset 0 0 0 1.5px {{t.accent}}, {{t.segShadow}}; color: {{t.strong}}; font: inherit; font-size: 14px; font-weight: 600">Departure KSEA</button></sc-if><sc-if value="{{isWinds}}" hint-placeholder-val="{{ false }}"><button role="tab" aria-selected="false" style="height: 44px; padding: 0 14px; border: 0; border-radius: 10px; background: transparent; color: {{t.muted}}; font: inherit; font-size: 14px">Departure KSEA</button></sc-if>
+          <button role="tab" aria-selected="false" style="height: 44px; padding: 0 14px; border: 0; border-radius: 10px; background: transparent; color: {{t.muted}}; font: inherit; font-size: 14px">Destination KSFO</button>
+          <button role="tab" aria-selected="false" style="height: 44px; padding: 0 14px; border: 0; border-radius: 10px; background: transparent; color: {{t.muted}}; font: inherit; font-size: 14px">Alternate KOAK</button>
+          <sc-if value="{{isAirport}}" hint-placeholder-val="{{ true }}"><button role="tab" aria-selected="false" style="height: 44px; padding: 0 14px; border: 0; border-radius: 10px; background: transparent; color: {{t.muted}}; font: inherit; font-size: 14px">En route winds</button></sc-if><sc-if value="{{isWinds}}" hint-placeholder-val="{{ false }}"><button role="tab" aria-selected="true" style="height: 44px; padding: 0 14px; border: 0; border-radius: 10px; background: {{t.segOn}}; box-shadow: inset 0 0 0 1.5px {{t.accent}}, {{t.segShadow}}; color: {{t.strong}}; font: inherit; font-size: 14px; font-weight: 600">En route winds</button></sc-if>
+        </div>
+        <sc-if value="{{isAirport}}" hint-placeholder-val="{{ true }}"><span style="font-size: 12px; color: {{t.muted}}">Observed 17:53 UTC</span></sc-if><sc-if value="{{isWinds}}" hint-placeholder-val="{{ false }}"><span style="font-size: 12px; color: {{t.muted}}">Forecast from the plan, 10:02</span></sc-if>
+      </div><sc-if value="{{isAirport}}" hint-placeholder-val="{{ true }}">
+
+      <section style="background: {{t.surface}}; border: 1px solid {{t.border}}; border-radius: 12px; padding: 16px 20px; display: flex; flex-direction: column; gap: 8px">
+        <span style="font-size: 14px; font-weight: 600; color: {{t.sub}}">METAR, the current report as printed</span>
+        <div style="display: flex; flex-wrap: wrap; gap: 6px; font-family: 'Geist Mono', monospace; font-size: 20px">
+          <span style="padding: 2px 6px; color: {{t.sub}}">KSEA</span><span style="padding: 2px 6px; color: {{t.sub}}">121753Z</span><span style="padding: 2px 6px; border-radius: 6px; background: {{t.accentSoft}}; box-shadow: inset 0 0 0 1.5px {{t.accent}}; color: {{t.strong}}">18008KT</span><span style="padding: 2px 6px; color: {{t.sub}}">10SM</span><span style="padding: 2px 6px; color: {{t.sub}}">FEW040</span><span style="padding: 2px 6px; color: {{t.sub}}">BKN250</span><span style="padding: 2px 6px; color: {{t.sub}}">09/04</span><span style="padding: 2px 6px; color: {{t.sub}}">A3012</span>
+        </div>
+      </section>
+
+      <section style="background: {{t.surface}}; border: 1px solid {{t.border}}; border-radius: 12px; display: flex; flex-direction: column; overflow: hidden">
+        <button aria-pressed="true" style="display: grid; grid-template-columns: 136px 160px minmax(0, 1fr) 176px 44px; column-gap: 16px; align-items: start; padding: 12px 4px 12px 20px; border: 0; border-bottom: 1px solid {{t.line}}; background: {{t.current}}; box-shadow: inset 4px 0 0 {{t.accent}}; color: inherit; font: inherit; text-align: left">
+          <span style="font-size: 16px; font-weight: 600">Wind</span>
+          <span style="display: flex; flex-direction: column; gap: 2px"><span style="font-family: 'Geist Mono', monospace; font-size: 15px">180° at 8 kt</span><span style="font-family: 'Geist Mono', monospace; font-size: 12px; color: {{t.muted}}">18008KT</span></span>
+          <span style="font-size: 14px; line-height: 1.5; color: {{t.sub}}">Where the wind blows from, in degrees true, then its speed in knots. It decides the runway in use and your crosswind on takeoff.</span>
+          <span style="justify-self: start; font-family: 'Geist Mono', monospace; font-size: 12px; font-weight: 600; color: {{t.sub}}; background: {{t.chip}}; border: 1px solid {{t.border}}; padding: 4px 8px; border-radius: 6px">CDU · TAKEOFF REF</span>
+          <span aria-label="More about wind" style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; color: {{t.muted}}; font-size: 14px; font-weight: 600">?</span>
+        </button>
+        <button aria-pressed="false" style="display: grid; grid-template-columns: 136px 160px minmax(0, 1fr) 176px 44px; column-gap: 16px; align-items: start; padding: 12px 4px 12px 20px; border: 0; border-bottom: 1px solid {{t.line}}; background: transparent; color: inherit; font: inherit; text-align: left">
+          <span style="font-size: 16px; font-weight: 600">Visibility</span>
+          <span style="display: flex; flex-direction: column; gap: 2px"><span style="font-family: 'Geist Mono', monospace; font-size: 15px">10 statute miles</span><span style="font-family: 'Geist Mono', monospace; font-size: 12px; color: {{t.muted}}">10SM</span></span>
+          <span style="font-size: 14px; line-height: 1.5; color: {{t.sub}}">How far you can see along the ground. 10 SM is the most a US report shows.</span>
+          <span></span>
+          <span aria-label="More about visibility" style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; color: {{t.muted}}; font-size: 14px; font-weight: 600">?</span>
+        </button>
+        <button aria-pressed="false" style="display: grid; grid-template-columns: 136px 160px minmax(0, 1fr) 176px 44px; column-gap: 16px; align-items: start; padding: 12px 4px 12px 20px; border: 0; border-bottom: 1px solid {{t.line}}; background: transparent; color: inherit; font: inherit; text-align: left">
+          <span style="font-size: 16px; font-weight: 600">Clouds</span>
+          <span style="display: flex; flex-direction: column; gap: 2px"><span style="font-family: 'Geist Mono', monospace; font-size: 15px">Few 4,000 ft<br>Broken 25,000 ft</span><span style="font-family: 'Geist Mono', monospace; font-size: 12px; color: {{t.muted}}">FEW040 BKN250</span></span>
+          <span style="font-size: 14px; line-height: 1.5; color: {{t.sub}}">Sky cover and the base above the airport, in hundreds of feet. Broken or overcast is the first layer that counts as a ceiling.</span>
+          <span></span>
+          <span aria-label="More about clouds" style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; color: {{t.muted}}; font-size: 14px; font-weight: 600">?</span>
+        </button>
+        <button aria-pressed="false" style="display: grid; grid-template-columns: 136px 160px minmax(0, 1fr) 176px 44px; column-gap: 16px; align-items: start; padding: 12px 4px 12px 20px; border: 0; border-bottom: 1px solid {{t.line}}; background: transparent; color: inherit; font: inherit; text-align: left">
+          <span style="font-size: 16px; font-weight: 600">Temperature</span>
+          <span style="display: flex; flex-direction: column; gap: 2px"><span style="font-family: 'Geist Mono', monospace; font-size: 15px">9 °C · dew point 4 °C</span><span style="font-family: 'Geist Mono', monospace; font-size: 12px; color: {{t.muted}}">09/04</span></span>
+          <span style="font-size: 14px; line-height: 1.5; color: {{t.sub}}">Feeds takeoff performance and the engine anti-ice decision. When the two get close, fog and low cloud become likely.</span>
+          <span style="justify-self: start; font-family: 'Geist Mono', monospace; font-size: 12px; font-weight: 600; color: {{t.sub}}; background: {{t.chip}}; border: 1px solid {{t.border}}; padding: 4px 8px; border-radius: 6px">CDU · TAKEOFF REF</span>
+          <span aria-label="More about temperature" style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; color: {{t.muted}}; font-size: 14px; font-weight: 600">?</span>
+        </button>
+        <div style="display: grid; grid-template-columns: 136px 160px minmax(0, 1fr) 176px 44px; column-gap: 16px; align-items: start; padding: 12px 4px 12px 20px"><label for="wx-alt" style="font-size: 16px; font-weight: 600; padding-top: 10px">Altimeter</label><span style="display: flex; flex-direction: column; gap: 4px"><input id="wx-alt" value="30.12" inputmode="decimal" style="height: 44px; box-sizing: border-box; width: 100%; padding: 0 10px; border: 1px solid {{t.border}}; border-radius: 8px; background: {{t.surface}}; color: {{t.text}}; font-family: 'Geist Mono', monospace; font-size: 15px"><span style="font-family: 'Geist Mono', monospace; font-size: 12px; color: {{t.muted}}">From METAR A3012</span></span><span style="display: flex; flex-direction: column; align-items: flex-start; gap: 8px"><span style="font-size: 14px; line-height: 1.5; color: {{t.sub}}">The pressure setting that makes the altimeters read height above sea level here. Filled from the METAR; type a newer one from the ATIS. Used by the altimeter step.</span><div role="group" aria-label="Altimeter unit" style="display: inline-flex; background: {{t.segTrack}}; border: 1px solid {{t.segBorder}}; border-radius: 10px; padding: 2px"><button aria-pressed="true" style="height: 40px; min-width: 44px; padding: 0 10px; border: 0; border-radius: 8px; background: {{t.segOn}}; box-shadow: inset 0 0 0 1.5px {{t.accent}}, {{t.segShadow}}; color: {{t.strong}}; font: inherit; font-size: 14px; font-weight: 600">inHg</button><button aria-pressed="false" style="height: 40px; min-width: 44px; padding: 0 10px; border: 0; border-radius: 8px; background: transparent; color: {{t.muted}}; font: inherit; font-size: 14px">hPa</button></div></span><span style="justify-self: start; font-family: 'Geist Mono', monospace; font-size: 12px; font-weight: 600; color: {{t.sub}}; background: {{t.chip}}; border: 1px solid {{t.border}}; padding: 4px 8px; border-radius: 6px">EFIS · BARO KNOB</span><span aria-label="More about the altimeter setting" style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; color: {{t.muted}}; font-size: 14px; font-weight: 600">?</span></div>
+      </section>
+      <a href="#" style="min-height: 44px; display: inline-flex; align-items: center; align-self: flex-start; font-size: 14px; color: {{t.link}}; text-decoration: none">TAF: the forecast for KSEA ⌄</a>
+</sc-if><sc-if value="{{isWinds}}" hint-placeholder-val="{{ false }}"><div style="display: flex; flex-direction: column; gap: 4px"><h2 style="margin: 0; font-size: 20px; font-weight: 700">Winds along your route</h2><span style="font-size: 14px; color: {{t.sub}}">Forecast winds and temperatures at your planned levels. The FMC can update them in flight.</span></div><section style="background: {{t.surface}}; border: 1px solid {{t.border}}; border-radius: 12px; overflow: hidden"><div style="min-height: 44px; display: flex; align-items: center; padding: 0 20px"><h3 style="margin: 0; font-size: 14px; font-weight: 600; color: {{t.sub}}">Where these go</h3></div><div style="display: grid; grid-template-columns: 200px 160px minmax(0, 1fr) 176px; column-gap: 16px; align-items: start; padding: 12px 20px; border-top: 1px solid {{t.line}}"><span style="font-size: 16px; font-weight: 600">Cruise wind</span><span style="font-family: 'Geist Mono', monospace; font-size: 15px">270/045</span><span style="font-size: 14px; line-height: 1.5; color: {{t.sub}}">The average at cruise level, for the CDU’s performance page. Also in Cruise and levels.</span><span style="justify-self: start; font-family: 'Geist Mono', monospace; font-size: 12px; font-weight: 600; color: {{t.sub}}; background: {{t.chip}}; border: 1px solid {{t.border}}; padding: 4px 8px; border-radius: 6px">CDU · PERF INIT</span></div><div style="display: grid; grid-template-columns: 200px 160px minmax(0, 1fr) 176px; column-gap: 16px; align-items: start; padding: 12px 20px; border-top: 1px solid {{t.line}}"><span style="font-size: 16px; font-weight: 600">Descent forecast</span><span style="font-family: 'Geist Mono', monospace; font-size: 15px">FL350 270/052 · FL240 280/038 · FL100 285/020</span><span style="font-size: 14px; line-height: 1.5; color: {{t.sub}}">Winds at three levels on the way down, so the descent path is planned with them.</span><span style="justify-self: start; font-family: 'Geist Mono', monospace; font-size: 12px; font-weight: 600; color: {{t.sub}}; background: {{t.chip}}; border: 1px solid {{t.border}}; padding: 4px 8px; border-radius: 6px">CDU · DES FORECAST</span></div></section><section aria-label="Wind at each fix" style="background: {{t.surface}}; border: 1px solid {{t.border}}; border-radius: 12px; overflow: hidden"><div style="min-height: 44px; display: flex; align-items: center; padding: 0 20px"><h3 style="margin: 0; font-size: 14px; font-weight: 600; color: {{t.sub}}">Wind at each fix, from the navigation log</h3></div><div style="display: grid; grid-template-columns: 120px 120px 140px 120px minmax(0, 1fr); column-gap: 16px; align-items: center; min-height: 44px; padding: 0 20px; border-bottom: 1px solid {{t.line}}; "><span style="font-size: 12px; font-weight: 600; color: {{t.muted}}">FIX</span><span style="font-size: 12px; font-weight: 600; color: {{t.muted}}">LEVEL</span><span style="font-size: 12px; font-weight: 600; color: {{t.muted}}">WIND</span><span style="font-size: 12px; font-weight: 600; color: {{t.muted}}">TEMP °C</span><span style="font-size: 12px; font-weight: 600; color: {{t.muted}}"></span></div><div style="display: grid; grid-template-columns: 120px 120px 140px 120px minmax(0, 1fr); column-gap: 16px; align-items: center; min-height: 44px; padding: 0 20px; border-bottom: 1px solid {{t.line}}; "><span style="font-family: 'Geist Mono', monospace; font-size: 15px">KSEA</span><span style="font-family: 'Geist Mono', monospace; font-size: 15px">—</span><span style="font-family: 'Geist Mono', monospace; font-size: 15px">180/08</span><span style="font-family: 'Geist Mono', monospace; font-size: 15px">+9</span><span style="font-family: 'Geist Mono', monospace; font-size: 15px">Departure surface wind</span></div><div style="display: grid; grid-template-columns: 120px 120px 140px 120px minmax(0, 1fr); column-gap: 16px; align-items: center; min-height: 44px; padding: 0 20px; border-bottom: 1px solid {{t.line}}; "><span style="font-family: 'Geist Mono', monospace; font-size: 15px">SUMMA</span><span style="font-family: 'Geist Mono', monospace; font-size: 15px">FL180</span><span style="font-family: 'Geist Mono', monospace; font-size: 15px">250/032</span><span style="font-family: 'Geist Mono', monospace; font-size: 15px">−18</span><span style="font-family: 'Geist Mono', monospace; font-size: 15px"></span></div><div style="display: grid; grid-template-columns: 120px 120px 140px 120px minmax(0, 1fr); column-gap: 16px; align-items: center; min-height: 44px; padding: 0 20px; border-bottom: 1px solid {{t.line}}; "><span style="font-family: 'Geist Mono', monospace; font-size: 15px">ETCHY</span><span style="font-family: 'Geist Mono', monospace; font-size: 15px">FL350</span><span style="font-family: 'Geist Mono', monospace; font-size: 15px">265/048</span><span style="font-family: 'Geist Mono', monospace; font-size: 15px">−51</span><span style="font-family: 'Geist Mono', monospace; font-size: 15px">Top of climb</span></div><div style="display: grid; grid-template-columns: 120px 120px 140px 120px minmax(0, 1fr); column-gap: 16px; align-items: center; min-height: 44px; padding: 0 20px; border-bottom: 1px solid {{t.line}}; "><span style="font-family: 'Geist Mono', monospace; font-size: 15px">MLBEC</span><span style="font-family: 'Geist Mono', monospace; font-size: 15px">FL350</span><span style="font-family: 'Geist Mono', monospace; font-size: 15px">270/052</span><span style="font-family: 'Geist Mono', monospace; font-size: 15px">−52</span><span style="font-family: 'Geist Mono', monospace; font-size: 15px"></span></div><div style="display: grid; grid-template-columns: 120px 120px 140px 120px minmax(0, 1fr); column-gap: 16px; align-items: center; min-height: 44px; padding: 0 20px; border-bottom: 1px solid {{t.line}}; "><span style="font-family: 'Geist Mono', monospace; font-size: 15px">BDEGA</span><span style="font-family: 'Geist Mono', monospace; font-size: 15px">FL240</span><span style="font-family: 'Geist Mono', monospace; font-size: 15px">280/038</span><span style="font-family: 'Geist Mono', monospace; font-size: 15px">−31</span><span style="font-family: 'Geist Mono', monospace; font-size: 15px">Top of descent</span></div><div style="display: grid; grid-template-columns: 120px 120px 140px 120px minmax(0, 1fr); column-gap: 16px; align-items: center; min-height: 44px; padding: 0 20px; "><span style="font-family: 'Geist Mono', monospace; font-size: 15px">KSFO</span><span style="font-family: 'Geist Mono', monospace; font-size: 15px">—</span><span style="font-family: 'Geist Mono', monospace; font-size: 15px">290/12</span><span style="font-family: 'Geist Mono', monospace; font-size: 15px">+14</span><span style="font-family: 'Geist Mono', monospace; font-size: 15px">Destination surface wind</span></div></section></sc-if>
+    </main>
+
+<sc-if value="{{isAirport}}" hint-placeholder-val="{{ true }}">
+    <aside aria-label="Find it in your OFP" style="width: 400px; flex: none; box-sizing: border-box; border-left: 1px solid {{t.line}}; background: {{t.surface2}}; padding: 20px 24px; display: flex; flex-direction: column; gap: 14px; overflow: hidden">
+      <div style="display: flex; flex-direction: column; gap: 4px">
+        <span style="font-size: 14px; font-weight: 600; color: {{t.sub}}">Find it in your OFP</span>
+        <span style="font-size: 20px; font-weight: 700">Wind is in the weather section</span>
+        <span style="font-size: 14px; line-height: 1.5; color: {{t.sub}}">The OFP is the document SimBrief prints for the flight. Its sections come in the same order every time.</span>
+      </div>
+      <div style="display: grid; grid-template-columns: 132px minmax(0, 1fr); gap: 14px; align-items: start">
+        <figure role="img" aria-label="Schematic of an OFP page with the weather section highlighted" style="margin: 0; background: {{t.paper}}; border: 1px solid {{t.border}}; border-radius: 6px; padding: 10px; display: flex; flex-direction: column; gap: 6px">
+          <span style="height: 16px; border-radius: 2px; background: {{t.paperBlock}}"></span><span style="height: 28px; border-radius: 2px; background: {{t.paperBlock}}"></span><span style="height: 14px; border-radius: 2px; background: {{t.paperBlock}}"></span><span style="height: 64px; border-radius: 2px; background: {{t.paperBlock}}"></span><span style="height: 16px; border-radius: 2px; background: {{t.paperBlock}}"></span><span style="height: 32px; border-radius: 2px; background: {{t.paperHi}}; box-shadow: 0 0 0 2px {{t.accent}}"></span><span style="height: 20px; border-radius: 2px; background: {{t.paperBlock}}"></span>
+        </figure>
+        <ol style="margin: 0; padding: 0 0 0 18px; display: flex; flex-direction: column; gap: 8px; font-size: 14px; color: {{t.sub}}">
+          <li>Header and times</li><li>Fuel plan</li><li>Weights</li><li>Navigation log, with the wind at each fix</li><li>Alternate</li><li style="color: {{t.strong}}; font-weight: 700">Weather: METAR and TAF</li><li>NOTAMs</li>
+        </ol>
+      </div>
+      <figure style="margin: 0; background: {{t.paper}}; border: 1px solid {{t.border}}; border-radius: 8px; padding: 12px 14px; display: flex; flex-direction: column; gap: 8px">
+        <span style="font-size: 12px; font-weight: 600; color: {{t.muted}}">Close-up, weather section</span>
+        <span style="font-family: 'Geist Mono', monospace; font-size: 14px; line-height: 1.6; color: {{t.paperText}}">KSEA 121753Z <span style="background: {{t.paperHi}}; box-shadow: 0 0 0 1.5px {{t.accent}}; border-radius: 2px; padding: 0 2px; color: {{t.strong}}">18008KT</span> 10SM<br>FEW040 BKN250 09/04 A3012</span>
+        <span style="font-size: 12px; color: {{t.muted}}">Wind is the third group, after the airport and the time.</span>
+      </figure>
+      <span style="font-size: 12px; line-height: 1.5; color: {{t.muted}}">Section order depends on the OFP layout chosen in SimBrief.</span>
+      <a href="#" style="min-height: 44px; display: inline-flex; align-items: center; font-size: 14px; color: {{t.link}}; text-decoration: none">Open my OFP on SimBrief ↗</a>
+    </aside>
+</sc-if>
+<sc-if value="{{isWinds}}" hint-placeholder-val="{{ false }}">
+    <aside aria-label="Find it in your OFP" style="width: 400px; flex: none; box-sizing: border-box; border-left: 1px solid {{t.line}}; background: {{t.surface2}}; padding: 20px 24px; display: flex; flex-direction: column; gap: 14px; overflow: hidden">
+      <div style="display: flex; flex-direction: column; gap: 4px">
+        <span style="font-size: 14px; font-weight: 600; color: {{t.sub}}">Find it in your OFP</span>
+        <span style="font-size: 20px; font-weight: 700">Winds are in the navigation log</span>
+        <span style="font-size: 14px; line-height: 1.5; color: {{t.sub}}">The OFP is the document SimBrief prints for the flight. Its sections come in the same order every time.</span>
+      </div>
+      <div style="display: grid; grid-template-columns: 132px minmax(0, 1fr); gap: 14px; align-items: start">
+        <figure role="img" aria-label="Schematic of an OFP page with the navigation log highlighted" style="margin: 0; background: {{t.paper}}; border: 1px solid {{t.border}}; border-radius: 6px; padding: 10px; display: flex; flex-direction: column; gap: 6px">
+          <span style="height: 16px; border-radius: 2px; background: {{t.paperBlock}}"></span><span style="height: 28px; border-radius: 2px; background: {{t.paperBlock}}"></span><span style="height: 14px; border-radius: 2px; background: {{t.paperBlock}}"></span><span style="height: 64px; border-radius: 2px; background: {{t.paperBlock}}"></span><span style="height: 16px; border-radius: 2px; background: {{t.paperBlock}}"></span><span style="height: 32px; border-radius: 2px; background: {{t.paperHi}}; box-shadow: 0 0 0 2px {{t.accent}}"></span><span style="height: 20px; border-radius: 2px; background: {{t.paperBlock}}"></span>
+        </figure>
+        <ol style="margin: 0; padding: 0 0 0 18px; display: flex; flex-direction: column; gap: 8px; font-size: 14px; color: {{t.sub}}">
+          <li>Header and times</li><li>Fuel plan</li><li>Weights</li><li style="color: {{t.strong}}; font-weight: 700">Navigation log, with the wind at each fix</li><li>Alternate</li><li>Weather: METAR and TAF</li><li>NOTAMs</li>
+        </ol>
+      </div>
+      <figure style="margin: 0; background: {{t.paper}}; border: 1px solid {{t.border}}; border-radius: 8px; padding: 12px 14px; display: flex; flex-direction: column; gap: 8px">
+        <span style="font-size: 12px; font-weight: 600; color: {{t.muted}}">Close-up, one navigation log line</span>
+        <span style="font-family: 'Geist Mono', monospace; font-size: 14px; line-height: 1.6; color: {{t.paperText}}">ETCHY  FL350  <span style="background: {{t.paperHi}}; box-shadow: 0 0 0 1.5px {{t.accent}}; border-radius: 2px; padding: 0 2px; color: {{t.strong}}">265/048</span>  M51<br>MLBEC  FL350  270/052  M52</span><span style="font-size: 12px; color: {{t.muted}}">Each fix shows its level, then the wind (direction/speed), then the temperature. M means minus.</span>
+      </figure>
+      <span style="font-size: 12px; line-height: 1.5; color: {{t.muted}}">Section order depends on the OFP layout chosen in SimBrief.</span>
+      <a href="#" style="min-height: 44px; display: inline-flex; align-items: center; font-size: 14px; color: {{t.link}}; text-decoration: none">Open my OFP on SimBrief ↗</a>
+    </aside>
+</sc-if>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["dark","light"],"default":"dark"},"tab":{"editor":"enum","options":["airport","winds"],"default":"airport"},"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const T = {
+      dark: { bg: '#0f1218', surface: '#161b23', surface2: '#121720', border: '#2a323e', line: '#222934', chip: '#2a323e', text: '#e6e9ee', sub: '#b7bec9', muted: '#8b94a3', strong: '#ffffff', accent: '#4c8dff', accentSoft: '#14243c', current: '#132036', link: '#7fb0ff', amber: '#f2bd5c', segTrack: '#121720', segBorder: '#2a323e', segOn: '#2a323e', segShadow: '0 0 0 0 transparent', btnBg: 'transparent', btnShadow: 'none', paper: '#1b212b', paperBlock: '#3a4351', paperHi: 'rgba(76, 141, 255, 0.35)', paperText: '#d5dae2' },
+      light: { bg: '#f5f7fa', surface: '#ffffff', surface2: '#eef1f5', border: '#d3d9e1', line: '#e2e6ec', chip: '#e2e6ec', text: '#1a1f27', sub: '#3d4552', muted: '#5b6472', strong: '#0b0f14', accent: '#2563eb', accentSoft: '#e4ecfd', current: '#eaf1fe', link: '#1d4fd8', amber: '#8a5a00', segTrack: '#e6eaf0', segBorder: '#dde2e8', segOn: '#ffffff', segShadow: '0 1px 2px rgba(16, 24, 40, 0.14)', btnBg: '#ffffff', btnShadow: '0 1px 2px rgba(16, 24, 40, 0.10)', paper: '#ffffff', paperBlock: '#c3cad4', paperHi: 'rgba(37, 99, 235, 0.3)', paperText: '#2b313b' }
+    };
+    const w = this.props.tab === 'winds';
+    return { t: this.props.theme === 'light' ? T.light : T.dark, isWinds: w, isAirport: !w };
+  }
+}
+</script>
+</body>
+</html>

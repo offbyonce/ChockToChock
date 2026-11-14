@@ -36,6 +36,8 @@ pub fn open_steps(
     settings: &Settings,
     before: Option<&str>,
 ) -> Vec<OpenStep> {
+    let filled = crate::flight::with_defaults(pack, flight);
+    let flight = &filled;
     let shown = Shown::new(pack, settings);
     let Some(file) = &pack.content.phases else {
         return vec![];

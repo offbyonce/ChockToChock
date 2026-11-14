@@ -20,6 +20,7 @@ mod targets;
 mod test_support;
 mod values;
 mod visibility;
+mod weather;
 
 pub use actions::{Action, apply};
 pub use app::{AppInfo, app_info, example_checklist};
@@ -36,3 +37,4 @@ pub use settings::{
 };
 pub use targets::{ItemTarget, step_targets};
 pub use visibility::{Shown, in_essentials, passes, shown_steps, step_shows, visible_steps};
+pub use weather::{Altimeter, Decoded, DecodedRow, Element, altimeter, decode_metar, decode_taf};

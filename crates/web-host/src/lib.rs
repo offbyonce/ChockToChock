@@ -163,6 +163,18 @@ pub fn plan_values(plan: &str) -> String {
     reply((|| app_core::plan_values(&read("plan", plan)?))())
 }
 
+/// A METAR decoded from the code table (batch 4).
+#[wasm_bindgen]
+pub fn decode_metar(text: &str) -> String {
+    reply(Ok::<_, app_core::AppError>(app_core::decode_metar(text)))
+}
+
+/// A TAF decoded from the code table (batch 4).
+#[wasm_bindgen]
+pub fn decode_taf(text: &str) -> String {
+    reply(Ok::<_, app_core::AppError>(app_core::decode_taf(text)))
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

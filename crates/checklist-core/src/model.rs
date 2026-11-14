@@ -100,6 +100,8 @@ data_types! {
         Manual,
         Origin,
         Destination,
+        /// The first alternate airport (decision 0019 amendment, batch 4).
+        Alternate,
         FlightNumber,
         Route,
         Runway,
@@ -108,8 +110,12 @@ data_types! {
         InitialAltitude,
         Squawk,
         GroundFrequency,
+        TowerFrequency,
         DepartureFrequency,
+        /// The departure airport's altimeter setting.
         Qnh,
+        /// The destination airport's altimeter setting.
+        DestinationQnh,
         Heading,
         TakeoffFlaps,
         LandingFlaps,
@@ -122,6 +128,10 @@ data_types! {
         Autobrake,
         Minimums,
         LandingAltitude,
+        /// The runway the pilot expects to land on.
+        ArrivalRunway,
+        /// The arrival procedure.
+        Star,
         MinimumTakeoffFuel,
         Fuel,
         Zfw,
@@ -132,6 +142,8 @@ data_types! {
         CostIndex,
         CruiseLevel,
         CruiseWind,
+        /// The takeoff thrust rating, e.g. `26K`.
+        ThrustRating,
         AssumedTemperature,
         ThrustReductionAltitude,
         AccelerationAltitude,
