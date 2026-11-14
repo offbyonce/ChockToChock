@@ -137,9 +137,9 @@ panel state, and Turnaround. The descriptions are the board's, on batch 7's vali
   }
   .seg button[aria-pressed="true"] {
     background: var(--color-segment-on);
-    box-shadow:
-      inset 0 0 0 calc(var(--border-thick) * 3 / 4) var(--color-accent),
-      var(--color-segment-shadow);
+    outline: var(--size-focus-ring) solid var(--color-accent);
+    outline-offset: calc(-1 * var(--size-focus-ring));
+    box-shadow: var(--color-segment-shadow);
     color: var(--color-text-strong);
     font-weight: var(--weight-semibold);
   }

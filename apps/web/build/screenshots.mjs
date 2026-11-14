@@ -147,8 +147,10 @@ const openNarrow = (title) =>
   `(() => { const it = [...document.querySelectorAll(".it")].find((i) => i.textContent.toUpperCase().includes(${JSON.stringify(title)})); const chev = it.querySelector(".chev"); if (chev.getAttribute("aria-expanded") !== "true") chev.click(); return new Promise((go) => setTimeout(() => { [...it.querySelectorAll("button")].find((b) => b.textContent.includes("Show on map")).click(); go(true); }, 300)); })()`;
 /** Show map on the pane's location line (where the drawing took the map figure's room). */
 const showMap = `[...document.querySelectorAll("aside.pane .line button")].find((b) => b.textContent.trim() === "Show map")?.click(); true`;
-/** Taps an element that has no click() of its own (an SVG control's tap target). */
-const tap = (selector) => `document.querySelector(${JSON.stringify(selector)}).dispatchEvent(new MouseEvent("click", { bubbles: true })); true`;
+/** Taps an element as a pointer does (detail 1): an SVG control's tap target, or a button whose focus
+ * differs for the keyboard (element.click() reports detail 0, which the app reads as a keyboard press). */
+const tap = (selector) =>
+  `document.querySelector(${JSON.stringify(selector)}).dispatchEvent(new MouseEvent("click", { detail: 1, bubbles: true })); true`;
 /** Opens the checklists still folded until their procedure is done. */
 const unfold = `[...document.querySelectorAll("button.folded")].forEach((b) => b.click()); true`;
 /** Presses a key on the page, as the pilot would. */
@@ -245,7 +247,7 @@ const SHOTS = [
     name: "strip",
     app: {
       hash: "#/flight/clearance",
-      before: [inFlight(CLEARANCE), go("#/phase/cold-dark"), click(".fsline")],
+      before: [inFlight(CLEARANCE), go("#/phase/cold-dark"), tap(".fsline")],
     },
     base: {
       hash: "#setup",
@@ -350,9 +352,9 @@ const SHOTS = [
         ...BOARD_FLIGHT,
         go("#/phase/before-start"),
         ...BOARD_STATE,
-        click(".fsline"),
+        tap(".fsline"),
         typeInto("#sp-notes", "Expect runway 16L"),
-        click(".fsline"),
+        tap(".fsline"),
         "document.activeElement?.blur(); true",
       ],
     },
@@ -372,6 +374,13 @@ const SHOTS = [
     only: ["desktop", "wide", "tablet-landscape"],
     app: { hash: "#/phase/before-start", before: [...BOARD_FLIGHT, go(`#/flight/${section}`)] },
   })),
+  // Every placeholder fits at the narrow sizes too (owner, batch 4 review).
+  ...["takeoff", "approach"].map((section) => ({
+    name: `flight-${section}`,
+    full: true,
+    only: ["phone", "tablet"],
+    app: { hash: "#/phase/before-start", before: [...BOARD_FLIGHT, go(`#/flight/${section}`)] },
+  })),
   {
     name: "board-flight-winds",
     full: true,
@@ -383,13 +392,13 @@ const SHOTS = [
     name: "board-strip-open",
     full: true,
     only: ["desktop", "wide", "tablet-landscape"],
-    app: { hash: "#/phase/before-start", before: [...BOARD_FLIGHT, go("#/phase/before-start"), ...BOARD_STATE, click(".fsline")] },
+    app: { hash: "#/phase/before-start", before: [...BOARD_FLIGHT, go("#/phase/before-start"), ...BOARD_STATE, tap(".fsline")] },
   },
   {
     name: "board-strip-freq",
     full: true,
     only: ["desktop"],
-    app: { hash: "#/phase/before-start", before: [...BOARD_FLIGHT, go("#/phase/before-start"), ...BOARD_STATE, click(".fsline"), click("button.freq")] },
+    app: { hash: "#/phase/before-start", before: [...BOARD_FLIGHT, go("#/phase/before-start"), ...BOARD_STATE, tap(".fsline"), click("button.freq")] },
   },
   // The tablet landscape board draws no menu.
   { name: "board-checklist", full: true, only: ["tablet-landscape"], app: { hash: "#/phase/before-start", before: BOARD_STATE } },

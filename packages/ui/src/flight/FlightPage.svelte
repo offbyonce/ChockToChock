@@ -258,9 +258,9 @@ it. Every field of the old Flight setup lives in one section.
   }
   .seg button[aria-pressed="true"] {
     background: var(--color-segment-on);
-    box-shadow:
-      inset 0 0 0 calc(var(--border-thick) * 3 / 4) var(--color-accent),
-      var(--color-segment-shadow);
+    outline: var(--size-focus-ring) solid var(--color-accent);
+    outline-offset: calc(-1 * var(--size-focus-ring));
+    box-shadow: var(--color-segment-shadow);
     color: var(--color-text-strong);
     font-weight: var(--weight-semibold);
   }
@@ -359,6 +359,7 @@ it. Every field of the old Flight setup lives in one section.
     .cols {
       flex-direction: column;
       overflow-y: auto;
+      scrollbar-width: none;
     }
     nav {
       flex-direction: row;

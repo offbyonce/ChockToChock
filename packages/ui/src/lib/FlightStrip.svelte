@@ -369,6 +369,10 @@ flight plan (Undo after, in the shared toast) and All flight data, the Flight pa
     font-family: var(--font-mono);
     font-size: var(--font-size-value-mono);
   }
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--color-text-muted);
+  }
   .quiet:focus-visible {
     outline: none;
   }

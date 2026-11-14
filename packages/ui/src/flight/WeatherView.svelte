@@ -438,9 +438,9 @@ not cover shows as printed, "Not decoded". Descriptions are the boards' stand-in
   .tabs button[aria-selected="true"],
   .seg button[aria-pressed="true"] {
     background: var(--color-segment-on);
-    box-shadow:
-      inset 0 0 0 calc(var(--border-thick) * 3 / 4) var(--color-accent),
-      var(--color-segment-shadow);
+    outline: var(--size-focus-ring) solid var(--color-accent);
+    outline-offset: calc(-1 * var(--size-focus-ring));
+    box-shadow: var(--color-segment-shadow);
     color: var(--color-text-strong);
     font-weight: var(--weight-semibold);
   }
@@ -485,6 +485,7 @@ not cover shows as printed, "Not decoded". Descriptions are the boards' stand-in
     display: flex;
     flex-wrap: wrap;
     gap: calc(var(--space-1) + var(--border-thick));
+    line-height: var(--leading-tight);
     font-family: var(--font-mono);
     font-size: var(--font-size-panel-title);
   }
@@ -577,6 +578,7 @@ not cover shows as printed, "Not decoded". Descriptions are the boards' stand-in
     font-family: var(--font-mono);
     font-size: var(--font-size-caption);
     font-weight: var(--weight-semibold);
+    white-space: nowrap;
   }
   .q {
     display: flex;
@@ -704,6 +706,35 @@ not cover shows as printed, "Not decoded". Descriptions are the boards' stand-in
     font-family: inherit;
     font-size: var(--font-size-caption);
     font-weight: var(--weight-semibold);
+  }
+  @media (max-width: 1439px) {
+    /* Tablet landscape: label, value and ? on the first line; the description and chip under them,
+     * full width. */
+    .top {
+      flex-wrap: wrap;
+      gap: var(--space-2);
+    }
+    .xrow {
+      grid-template-columns:
+        calc(3 * var(--space-10) + var(--space-4))
+        minmax(0, 1fr)
+        var(--size-touch-min);
+      row-gap: var(--space-2);
+    }
+    .wrow {
+      grid-template-columns: calc(5 * var(--space-10)) minmax(0, 1fr);
+      row-gap: var(--space-2);
+    }
+    .xrow > :nth-child(3),
+    .xrow > :nth-child(4),
+    .wrow > .desc,
+    .wrow > .chip {
+      grid-column: 1 / 3;
+    }
+    .xrow .q {
+      grid-column: 3;
+      grid-row: 1;
+    }
   }
   @media (max-width: 899px) {
     .xrow,
