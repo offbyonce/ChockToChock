@@ -161,6 +161,11 @@ const SHOTS = [
   ["FSClearance", { section: "clearance" }, 1440, 900, "FlightSection", round6],
   ["FSTakeoff", { section: "takeoff" }, 1440, 900, "FlightSection", round6],
   ["FSApproach", { section: "approach" }, 1440, 900, "FlightSection", round6],
+  // Batch 4 additions: tablet landscape and a value out of range.
+  ["WxTabL", { layout: "tabletL" }, 1180, 820, "Weather", round6],
+  ["WindsTabL", { tab: "winds", layout: "tabletL" }, 1180, 820, "Weather", round6],
+  ["FSTakeoffTabL", { section: "takeoff", layout: "tabletL" }, 1180, 820, "FlightSection", round6],
+  ["FSInvalid", { section: "cruiseInvalid" }, 1440, 900, "FlightSection", round6],
 ];
 
 async function main() {

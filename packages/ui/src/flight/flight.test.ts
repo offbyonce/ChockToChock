@@ -203,12 +203,43 @@ describe("FlightPage", () => {
     expect(sets.at(-1)).toEqual(["transition_altitude", "10000"]);
   });
 
-  it("names each of a row's two boxes, and shows a value outside 3.0's range under its box", async () => {
-    page({ section: "takeoff", flight: flight({ thrust_rating: "26K", v2: "40" }) });
-    expect(screen.getByLabelText("Thrust: rating")).toBeTruthy();
-    expect(screen.getByLabelText("Thrust: assumed temperature")).toBeTruthy();
-    expect(screen.getByRole("alert").textContent).toBe("Use 100 to 250 knots");
-    expect(document.querySelector('[data-field="v2"]')?.getAttribute("aria-invalid")).toBe("true");
+  it("names each of a row's two boxes", () => {
+    page({ section: "fuel", flight: flight({ passengers: "162", cargo: "5.2" }) });
+    expect(screen.getByLabelText("Passengers and cargo: passengers")).toBeTruthy();
+    expect(screen.getByLabelText("Passengers and cargo: cargo")).toBeTruthy();
+  });
+
+  it("shows takeoff thrust as a pick list and the assumed temperature as its own row", async () => {
+    page({ section: "takeoff", flight: flight({ thrust_rating: "TO-1", assumed_temperature: "45" }) });
+    const pick = document.querySelector('[data-field="thrust_rating"]') as HTMLElement;
+    expect(pick.textContent?.trim()).toBe("TO-1");
+    await fireEvent.click(pick);
+    expect(screen.getAllByRole("option").map((o) => o.textContent?.trim())).toEqual(["TO", "TO-1", "TO-2"]);
+    const temp = screen.getByLabelText("Assumed temperature (SEL)") as HTMLInputElement;
+    expect(temp.value).toBe("45 °C");
+  });
+
+  it("shows a value outside 3.0's range as an alert under its box, tied to the box", () => {
+    page({ section: "takeoff", flight: flight({ v2: "40" }) });
+    const alert = screen.getByRole("alert");
+    expect(alert.textContent?.trim()).toBe("Enter 100 to 250 knots");
+    expect(alert.querySelector(".icon")).toBeTruthy();
+    const box = document.querySelector('[data-field="v2"]');
+    expect(box?.getAttribute("aria-invalid")).toBe("true");
+    expect(box?.getAttribute("aria-describedby")).toBe(alert.id);
+  });
+
+  it("checks only the fields 3.0 gave a range", () => {
+    page({ section: "clearance", flight: flight({ squawk: "7800", ground_frequency: "99.1" }) });
+    expect(screen.queryByRole("alert")).toBeNull();
+  });
+
+  it("says where each value goes as a plain line, with no badge", () => {
+    page({ section: "cruise", flight: flight({ cruise_level: "350" }) });
+    expect(document.querySelector(".chip")).toBeNull();
+    expect([...document.querySelectorAll(".loc")].map((l) => l.textContent)).toContain(
+      "Enter on the CDU › PERF INIT",
+    );
   });
 
   it("marks both parts of Reserves in the fuel plan close-up, so it agrees with the field", async () => {

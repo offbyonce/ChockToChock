@@ -23,7 +23,9 @@ control around them carries the words.
   import settings from "../icons/tabler/settings.svg?raw";
   import x from "../icons/tabler/x.svg?raw";
   import decision from "../icons/board/decision.svg?raw";
+  import fieldAlert from "../icons/board/field-alert.svg?raw";
   import fileUpload from "../icons/board/file-upload.svg?raw";
+  import globe from "../icons/board/globe.svg?raw";
   import notice from "../icons/board/notice.svg?raw";
   import panel from "../icons/board/panel.svg?raw";
   import pin from "../icons/board/pin.svg?raw";
@@ -37,7 +39,9 @@ control around them carries the words.
     "chevron-left": chevronLeft,
     "chevron-right": chevronRight,
     decision,
+    "field-alert": fieldAlert,
     "file-upload": fileUpload,
+    globe,
     "map-pin": mapPin,
     notice,
     panel,

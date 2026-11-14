@@ -68,7 +68,8 @@ only the compact plan is kept, decision 0019), the last import, and Reset flight
     <button class="primary" type="submit" disabled={busy}>Import latest flight</button>
   </form>
   {#if problem}<p class="problem" role="alert">{problem}</p>{/if}
-  <span class="d">No password. The username is saved on this device only, and the import reads your newest SimBrief plan. SimBrief import is the only part of the checklist that uses the internet.</span>
+  <span class="d">No password. The username is saved on this device only, and the import reads your newest SimBrief plan.</span>
+  <span class="d net"><Icon name="globe" />SimBrief import is the only part of the checklist that uses the internet.</span>
   <div class="two">
     <div class="pair">
       <span class="k">What's brought in</span>
@@ -267,5 +268,17 @@ only the compact plan is kept, decision 0019), the last import, and Reset flight
     color: var(--color-danger-text);
     font: inherit;
     font-size: var(--font-size-secondary);
+  }
+  /* SimBrief.dc.html: the globe (18 px) and the line, 8 px apart. */
+  .net {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-2);
+  }
+  .net :global(.icon) {
+    flex: none;
+    width: calc(var(--size-icon-small) + var(--border-thick));
+    height: calc(var(--size-icon-small) + var(--border-thick));
+    margin-top: var(--border-thick);
   }
 </style>

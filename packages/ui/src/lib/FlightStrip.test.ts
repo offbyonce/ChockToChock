@@ -39,9 +39,23 @@ describe("FlightStrip", () => {
     expect(runway?.classList.contains("quiet")).toBe(false);
   });
 
-  it("shows a squawk outside 0 to 7 as a short message under the field", async () => {
-    render(FlightStrip, props({ squawk: "7800" }));
+  it("opened from the keyboard, puts the cursor in Runway with its focus ring", async () => {
+    render(FlightStrip, props({ runway: "16L" }));
+    // Enter or Space on a button clicks it with detail 0.
+    await fireEvent.click(document.querySelector(".fsline") as HTMLElement, { detail: 0 });
+    await new Promise((go) => setTimeout(go, 0));
+    const runway = document.getElementById("sp-runway");
+    expect(document.activeElement).toBe(runway);
+    expect(runway?.classList.contains("quiet")).toBe(false);
+  });
+
+  it("shows an initial altitude outside 3.0's range under the field, tied to it", async () => {
+    render(FlightStrip, props({ initial_altitude: "45000" }));
     await fireEvent.click(document.querySelector(".fsline") as HTMLElement);
-    expect(document.querySelector(".err")?.textContent).toBe("Use 4 digits, 0 to 7");
+    const err = document.querySelector(".err");
+    expect(err?.textContent?.trim()).toBe("Enter 0 to 41,000 ft");
+    const input = document.getElementById("sp-initial_altitude");
+    expect(input?.getAttribute("aria-invalid")).toBe("true");
+    expect(input?.getAttribute("aria-describedby")).toBe(err?.id);
   });
 });

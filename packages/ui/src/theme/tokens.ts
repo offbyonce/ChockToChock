@@ -76,8 +76,10 @@ export const GRAPHIC_PAIRS: [ColorName, ColorName][] = [
   ["on-done", "done"],
   // The OFP file drop zone's dashed outline (SimBrief and OFP file).
   ["drop-zone-border", "drop-zone"],
-  // Every boxed field's outline (owner, batch 4): 3:1 against the field's fill.
+  // Every boxed field's outline (batch 4 additions): 3:1 against the field's fill and the
+  // surface around it.
   ["field-border", "field"],
+  ["field-border", "surface"],
 ];
 
 /** Inside drawings: labels at 4.5:1, outlines, switch bodies and lens rims at 3:1. */

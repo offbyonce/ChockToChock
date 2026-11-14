@@ -117,7 +117,6 @@ OFP on SimBrief is a plain link: it opens SimBrief and sends nothing from this a
   .title {
     font-size: var(--font-size-panel-title);
     font-weight: var(--weight-bold);
-    line-height: calc(var(--leading-tight) + 0.1);
   }
   .body,
   .notin span {
@@ -187,7 +186,6 @@ OFP on SimBrief is a plain link: it opens SimBrief and sends nothing from this a
     display: flex;
     flex-direction: column;
     gap: var(--space-2);
-    line-height: calc(var(--leading-tight) + 0.1);
     margin: 0;
     padding: 0 0 0 calc(var(--space-4) + var(--border-thick));
     color: var(--color-text-secondary);
@@ -283,5 +281,15 @@ OFP on SimBrief is a plain link: it opens SimBrief and sends nothing from this a
     color: var(--color-link);
     font-size: var(--font-size-secondary);
     text-decoration: none;
+  }
+  /* Tablet landscape (WxTabL, FSTakeoffTabL): a 320 px column with the page outline at 88 px. */
+  @media (min-width: 900px) and (max-width: 1439px) {
+    .ofp {
+      width: calc(8 * var(--space-10));
+      padding: calc(var(--space-4) + var(--space-1));
+    }
+    .outline {
+      grid-template-columns: calc(2 * var(--space-10) + var(--space-2)) minmax(0, 1fr);
+    }
   }
 </style>

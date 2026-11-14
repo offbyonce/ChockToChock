@@ -175,9 +175,12 @@ it. Every field of the old Flight setup lives in one section.
 </div>
 
 <style>
+  /* The Flight boards set no line height on their root, so text without its own takes the
+     font's normal one (the app's body uses 1.5). */
   .flight {
     display: flex;
     flex-direction: column;
+    line-height: normal;
     height: 100vh;
     height: 100dvh;
     background: var(--color-bg);
@@ -207,8 +210,8 @@ it. Every field of the old Flight setup lives in one section.
     text-decoration: none;
   }
   .back :global(.icon) {
-    width: var(--size-icon-small);
-    height: var(--size-icon-small);
+    width: calc(var(--size-icon-small) + var(--border-thick));
+    height: calc(var(--size-icon-small) + var(--border-thick));
   }
   .ttl {
     display: flex;
@@ -342,16 +345,25 @@ it. Every field of the old Flight setup lives in one section.
     margin: 0;
     font-size: var(--font-size-section-title);
     font-weight: var(--weight-bold);
-    line-height: var(--leading-tight);
   }
   .sub {
     color: var(--color-text-secondary);
     font-size: var(--font-size-secondary);
-    line-height: var(--leading-tight);
   }
   /* Weather's own padding (Weather.dc.html: 20 and 32). */
   .fmain.weather {
     padding: calc(var(--space-4) + var(--space-1)) var(--space-8);
+  }
+  /* Tablet landscape (WxTabL, FSTakeoffTabL): a 200 px section list and 20 / 24 padding. */
+  @media (min-width: 900px) and (max-width: 1439px) {
+    nav {
+      width: calc(5 * var(--space-10));
+    }
+    .fmain,
+    .fmain.wide,
+    .fmain.weather {
+      padding: calc(var(--space-4) + var(--space-1)) var(--space-6);
+    }
   }
   /* Tablet portrait and phone keep every section reachable until batch 5's layouts: the
      section list becomes a row, and the OFP panel follows the section. */

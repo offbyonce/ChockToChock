@@ -2,12 +2,12 @@
 SPDX-FileCopyrightText: 2026 offbyonce
 SPDX-License-Identifier: MIT
 
-One Flight field row (FlightSection boards): the label, the value, then the description with the
-destination chip under it. An editable value is always a visible 44 px box; a value still needed
+One Flight field row (FlightSection boards): the label, the value, then the description with the line
+that says where the value goes under it. An editable value is always a visible 44 px box; a value still needed
 is an empty box with an amber border and a placeholder; a choice is a field-styled button that
 opens a menu in place; read-only values and rows that belong to another section are plain mono
-text, with a "Section ›" link where the chip would be. Selecting the row (a click or focus) points
-the "Find it in your OFP" panel at it. Descriptions Off keeps the label, the value and the chip.
+text, with a "Section ›" link under the description. Selecting the row (a click or focus) points
+the "Find it in your OFP" panel at it. Descriptions Off keeps the label, the value and the location line.
 -->
 <script lang="ts">
   import type { FillField } from "@chocktochock/bindings";
@@ -134,6 +134,7 @@ the "Find it in your OFP" panel at it. Descriptions Off keeps the label, the val
             class="box"
             aria-label="{row.label}: {two.name}"
             aria-invalid={secondMessage ? "true" : undefined}
+            aria-describedby={secondMessage ? `err-${row.id}` : undefined}
             data-field={two.field}
             value={shown(two.field, two.weight)}
             placeholder={two.placeholder}
@@ -143,16 +144,12 @@ the "Find it in your OFP" panel at it. Descriptions Off keeps the label, the val
           />
         {/if}
       </span>
-      {#if message || secondMessage}<span class="err" id="err-{row.id}" role="alert">{message ?? secondMessage}</span>{/if}
+      {#if message || secondMessage}<span class="err" id="err-{row.id}" role="alert"><Icon name="field-alert" />{message ?? secondMessage}</span>{/if}
     {/if}
   </span>
   <span class="about">
     {#if descriptions}<span class="desc">{row.desc}</span>{/if}
-    {#if chipLink}
-      <a class="go" href={chipLink}>{chipText}</a>
-    {:else if row.chip}
-      <span class="chip">{row.chip}</span>
-    {/if}
+    {#if row.loc}<span class="loc">{row.loc}</span>{/if}
     {#if row.seg}
       {@const seg = row.seg}
       <span class="seg" role="group" aria-label={seg.label}>
@@ -162,6 +159,7 @@ the "Find it in your OFP" panel at it. Descriptions Off keeps the label, the val
         {/each}
       </span>
     {/if}
+    {#if chipLink}<a class="go" href={chipLink}>{chipText}</a>{/if}
   </span>
 </div>
 
@@ -220,11 +218,26 @@ the "Find it in your OFP" panel at it. Descriptions Off keeps the label, the val
   .box[aria-invalid="true"] {
     border-color: var(--color-danger-text);
   }
+  .value {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--space-1) + var(--border-thick));
+    min-width: 0;
+  }
+  /* FSInvalid: the alert icon and "Enter X to Y", 12 px, in the red text color. */
   .err {
-    display: block;
-    margin-top: var(--space-1);
+    display: flex;
+    align-items: flex-start;
+    gap: calc(var(--space-1) + var(--border-thick));
     color: var(--color-danger-text);
     font-size: var(--font-size-caption);
+    line-height: var(--leading-snug);
+  }
+  .err :global(.icon) {
+    flex: none;
+    width: calc(var(--size-icon-small) - var(--border-thick));
+    height: calc(var(--size-icon-small) - var(--border-thick));
+    margin-top: var(--border-thin);
   }
   .box::placeholder {
     color: var(--color-text-muted);
@@ -277,7 +290,7 @@ the "Find it in your OFP" panel at it. Descriptions Off keeps the label, the val
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: calc(var(--space-1) + var(--border-thick) / 2);
+    gap: calc(var(--space-1) + var(--border-thick));
     padding-top: calc(var(--space-3) - var(--border-thin));
   }
   .desc {
@@ -285,15 +298,10 @@ the "Find it in your OFP" panel at it. Descriptions Off keeps the label, the val
     font-size: var(--font-size-secondary);
     line-height: var(--leading-normal);
   }
-  .chip {
-    padding: var(--space-1) var(--space-2);
-    border: var(--border-thin) solid var(--color-border);
-    border-radius: var(--radius-small);
-    background: var(--color-chip);
-    color: var(--color-text-secondary);
-    font-family: var(--font-mono);
-    font-size: var(--font-size-caption);
-    font-weight: var(--weight-semibold);
+  .loc {
+    color: var(--color-text-muted);
+    font-size: var(--font-size-secondary);
+    line-height: var(--leading-normal);
   }
   .go {
     color: var(--color-link);
@@ -325,6 +333,20 @@ the "Find it in your OFP" panel at it. Descriptions Off keeps the label, the val
     box-shadow: var(--color-segment-shadow);
     color: var(--color-text-strong);
     font-weight: var(--weight-semibold);
+  }
+  /* Tablet landscape (FSTakeoffTabL): label (140) and field (200) on the first line, the
+     description, location line and link under them at full width. */
+  @media (min-width: 900px) and (max-width: 1439px) {
+    .frow {
+      grid-template-columns: calc(3 * var(--space-10) + var(--space-6) - var(--space-1)) calc(5 * var(--space-10)) minmax(0, 1fr);
+      column-gap: var(--space-3);
+      row-gap: var(--space-1);
+      padding: var(--space-3) var(--space-4);
+    }
+    .about {
+      grid-column: 1 / -1;
+      padding-top: var(--space-1);
+    }
   }
   /* Phone: the label, then the value, then the description and chip, each the row's width
      (batch 5 brings the phone boards). */

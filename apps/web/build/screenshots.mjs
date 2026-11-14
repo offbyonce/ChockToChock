@@ -112,7 +112,7 @@ const BOARD_FLIGHT = [
     ["clearance", "tower_frequency", "119.900"],
     ["takeoff", "heading", "163"],
     ["takeoff", "takeoff_flaps", "5"],
-    ["takeoff", "thrust_rating", "26K"],
+    ["takeoff", "thrust_rating", "TO-1"],
     ["takeoff", "assumed_temperature", "45"],
     ["takeoff", "v1", "142"],
     ["takeoff", "vr", "144"],
@@ -381,10 +381,17 @@ const SHOTS = [
     only: ["phone", "tablet"],
     app: { hash: "#/phase/before-start", before: [...BOARD_FLIGHT, go(`#/flight/${section}`)] },
   })),
+  // A value out of range (FSInvalid): Cruise level at FL450.
+  {
+    name: "board-flight-invalid",
+    full: true,
+    only: ["desktop", "tablet-landscape", "phone"],
+    app: { hash: "#/phase/before-start", before: [...BOARD_FLIGHT, typed([["cruise", "cruise_level", "FL450"]]), click('[data-row="cruise_level"] .label')] },
+  },
   {
     name: "board-flight-winds",
     full: true,
-    only: ["desktop"],
+    only: ["desktop", "tablet-landscape"],
     app: { hash: "#/phase/before-start", before: [...BOARD_FLIGHT, go("#/flight/weather"), click('[role="tab"]', 3)] },
   },
   // The strip panel, open, with the plan imported (StripOpen) and with Frequencies open (StripFreq).

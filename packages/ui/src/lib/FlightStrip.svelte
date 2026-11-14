@@ -167,10 +167,11 @@ flight plan (Undo after, in the shared toast) and All flight data, the Flight pa
                   inputmode={f.mode}
                   autocomplete="off"
                   aria-invalid={message(f.field) ? "true" : undefined}
+                  aria-describedby={message(f.field) ? `sp-err-${f.field}` : undefined}
                   oninput={(e) => onSet(f.field, e.currentTarget.value)}
                   onchange={(e) => trimmed(f.field, e.currentTarget)}
                 />
-                {#if message(f.field)}<span class="err" role="alert">{message(f.field)}</span>{/if}
+                {#if message(f.field)}<span class="err" id="sp-err-{f.field}" role="alert"><Icon name="field-alert" />{message(f.field)}</span>{/if}
               </label>
             {/each}
           </div>
@@ -190,10 +191,11 @@ flight plan (Undo after, in the shared toast) and All flight data, the Flight pa
                     placeholder="Enter"
                     autocomplete="off"
                     aria-invalid={message(f.field) ? "true" : undefined}
+                  aria-describedby={message(f.field) ? `sp-err-${f.field}` : undefined}
                     oninput={(e) => onSet(f.field, e.currentTarget.value)}
                     onchange={(e) => trimmed(f.field, e.currentTarget)}
                   />
-                  {#if message(f.field)}<span class="err" role="alert">{message(f.field)}</span>{/if}
+                  {#if message(f.field)}<span class="err" id="sp-err-{f.field}" role="alert"><Icon name="field-alert" />{message(f.field)}</span>{/if}
                 </label>
               {/each}
             </div>
@@ -379,9 +381,21 @@ flight plan (Undo after, in the shared toast) and All flight data, the Flight pa
   input[aria-invalid="true"] {
     border-color: var(--color-danger-text);
   }
+  /* FSInvalid: the alert icon and "Enter X to Y", 12 px, in the red text color. */
   .err {
+    display: flex;
+    align-items: flex-start;
+    gap: calc(var(--space-1) + var(--border-thick));
     color: var(--color-danger-text);
     font-size: var(--font-size-caption);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+  }
+  .err :global(.icon) {
+    flex: none;
+    width: calc(var(--size-icon-small) - var(--border-thick));
+    height: calc(var(--size-icon-small) - var(--border-thick));
+    margin-top: var(--border-thin);
   }
   .freq {
     align-self: flex-start;

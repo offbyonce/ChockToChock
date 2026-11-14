@@ -65,7 +65,7 @@ export const COLOR = {
     "strip-panel": "#121720",
     "drop-zone": "#121720",
     "drop-zone-border": "#6b7482",
-    "field-border": "#6b7482"
+    "field-border": "#66727f"
   },
   "light": {
     "bg": "#f5f7fa",
@@ -127,7 +127,7 @@ export const COLOR = {
     "strip-panel": "#ffffff",
     "drop-zone": "#f5f7fa",
     "drop-zone-border": "#7a8391",
-    "field-border": "#7a8391"
+    "field-border": "#828b99"
   }
 } as const;
 

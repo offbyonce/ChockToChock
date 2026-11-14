@@ -4,7 +4,7 @@ SPDX-License-Identifier: MIT
 
 Weather (Weather.dc.html, Winds.dc.html): airport tabs, the METAR as printed with the selected
 row's groups highlighted, the decoded rows as buttons (value, groups as printed, description,
-destination chip, ?), the Altimeter as an editable field on the Departure and Destination tabs
+where the value goes, ?), the Altimeter as an editable field on the Departure and Destination tabs
 (filled from the METAR, overwritable, inHg / hPa), and the TAF as printed under its disclosure.
 En route winds come from the plan's navigation log. Decoding is Rust's code table; a group it does
 not cover shows as printed, "Not decoded". Descriptions are the boards' stand-ins (batch 7).
@@ -12,6 +12,7 @@ not cover shows as printed, "Not decoded". Descriptions are the boards' stand-in
 <script lang="ts">
   import type { Decoded, DecodedRow, Element, FillField, Flight, SavedPlan } from "@chocktochock/bindings";
   import { getHost } from "../host";
+  import Icon from "../lib/Icon.svelte";
   import { flightHref } from "../route.svelte";
   import { rangeMessage, type Ofp, type Part } from "./sections";
 
@@ -113,7 +114,8 @@ not cover shows as printed, "Not decoded". Descriptions are the boards' stand-in
     remarks: "Extra notes the station adds. Some are decoded; the rest are shown as printed.",
     not_decoded: "This group isn't in the app's code table, so it's shown as printed, not guessed.",
   };
-  const CHIP: Partial<Record<Element, string>> = { wind: "CDU · TAKEOFF REF", temperature: "CDU · TAKEOFF REF", altimeter: "EFIS · BARO KNOB" };
+  /** Where a decoded value goes in the cockpit, as the Weather board words it. */
+  const LOC: Partial<Record<Element, string>> = { wind: "Enter on the CDU › TAKEOFF REF", temperature: "Enter on the CDU › TAKEOFF REF" };
   /**
    * Where a row's code is defined, in plain words (the code table's verified section, owner
    * 2026-11-14): "FM 15 · 15.5" is regulation 15.5 of the WMO's METAR code; "US · 3.1.5.6" is that
@@ -303,13 +305,13 @@ not cover shows as printed, "Not decoded". Descriptions are the boards' stand-in
           <span class="label">Cruise wind</span>
           <span class="mono">{vals.cruise_wind || "—"}</span>
           <span class="desc">{descriptions ? "The average at cruise level, for the CDU’s performance page. Also in Cruise and levels." : ""}</span>
-          <span class="chip">CDU · PERF INIT</span>
+          <span class="loc">Enter on the CDU › PERF INIT</span>
         </div>
         <div class="wrow">
           <span class="label">Descent forecast</span>
           <span class="mono">{descent}</span>
           <span class="desc">{descriptions ? "Winds at three levels on the way down, so the descent path is planned with them." : ""}</span>
-          <span class="chip">CDU · DES FORECAST</span>
+          <span class="loc">Enter on the CDU › DES FORECAST</span>
         </div>
       </section>
       <section class="card" aria-label="Wind at each fix">
@@ -352,7 +354,7 @@ not cover shows as printed, "Not decoded". Descriptions are the boards' stand-in
                 <span class="raw">{r.raw.join(" ")}</span>
               </span>
               <span class="desc">{descriptions || more === i ? (DESC[r.element] ?? "") : ""}{#if more === i && r.source}<span class="src"> {definedIn(r.source)}</span>{/if}</span>
-              {#if CHIP[r.element]}<span class="chip">{CHIP[r.element]}</span>{:else}<span></span>{/if}
+              <span class="loc">{LOC[r.element] ?? ""}</span>
               <span
                 class="q"
                 role="button"
@@ -390,9 +392,9 @@ not cover shows as printed, "Not decoded". Descriptions are the boards' stand-in
   <div class="xrow alt" class:sel={selected === i && i >= 0}>
     <label class="label" for="wx-alt">Altimeter</label>
     <span class="val">
-      <input id="wx-alt" class="box" data-field={field} class:need={!vals[field ?? "qnh"]} value={vals[field ?? "qnh"] ?? ""} placeholder="Enter" inputmode="decimal" onchange={(e) => setAltimeter(e.currentTarget.value)} />
+      <input id="wx-alt" class="box" data-field={field} class:need={!vals[field ?? "qnh"]} value={vals[field ?? "qnh"] ?? ""} placeholder="Enter" inputmode="decimal" aria-invalid={field && altMessage ? "true" : undefined} aria-describedby={field && altMessage ? "wx-alt-err" : undefined} onchange={(e) => setAltimeter(e.currentTarget.value)} />
       {#if r}<span class="raw">From METAR {r.raw.join(" ")}</span>{/if}
-      {#if field && altMessage}<span class="err" role="alert">{altMessage}</span>{/if}
+      {#if field && altMessage}<span class="err" id="wx-alt-err" role="alert"><Icon name="field-alert" />{altMessage}</span>{/if}
     </span>
     <span class="about">
       {#if descriptions || more === i}<span class="desc">{DESC.altimeter}{#if more === i && r?.source}<span class="src"> {definedIn(r.source)}</span>{/if}</span>{/if}
@@ -402,7 +404,7 @@ not cover shows as printed, "Not decoded". Descriptions are the boards' stand-in
         {/each}
       </span>
     </span>
-    <span class="chip">EFIS · BARO KNOB</span>
+    <span class="loc">Set on the EFIS › BARO</span>
     <button class="q" type="button" aria-label="More about the altimeter setting" aria-expanded={more === i} onclick={() => (more = more === i ? null : i)}>?</button>
   </div>
 {/snippet}
@@ -485,7 +487,6 @@ not cover shows as printed, "Not decoded". Descriptions are the boards' stand-in
     display: flex;
     flex-wrap: wrap;
     gap: calc(var(--space-1) + var(--border-thick));
-    line-height: var(--leading-tight);
     font-family: var(--font-mono);
     font-size: var(--font-size-panel-title);
   }
@@ -506,13 +507,15 @@ not cover shows as printed, "Not decoded". Descriptions are the boards' stand-in
   .xrow {
     flex: none;
     display: grid;
+    /* Weather.dc.html: 136, 160, the description, 44; the location line under the description. */
     grid-template-columns:
       calc(3 * var(--space-10) + var(--space-4))
       calc(4 * var(--space-10))
       minmax(0, 1fr)
-      calc(4 * var(--space-10) + var(--space-4))
       var(--size-touch-min);
+    grid-template-areas: "l v d q" ". . c .";
     column-gap: var(--space-4);
+    row-gap: var(--space-1);
     align-items: start;
     padding: var(--space-3) var(--space-1) var(--space-3) calc(var(--space-4) + var(--space-1));
     border: 0;
@@ -568,17 +571,27 @@ not cover shows as printed, "Not decoded". Descriptions are the boards' stand-in
     align-items: flex-start;
     gap: var(--space-2);
   }
-  .chip {
-    justify-self: start;
-    padding: var(--space-1) var(--space-2);
-    border: var(--border-thin) solid var(--color-border);
-    border-radius: var(--radius-small);
-    background: var(--color-chip);
-    color: var(--color-text-secondary);
-    font-family: var(--font-mono);
-    font-size: var(--font-size-caption);
-    font-weight: var(--weight-semibold);
-    white-space: nowrap;
+  .xrow > .label,
+  .wrow > .label {
+    grid-area: l;
+  }
+  .xrow > .val,
+  .wrow > .mono {
+    grid-area: v;
+  }
+  .xrow > .desc,
+  .xrow > .about,
+  .wrow > .desc {
+    grid-area: d;
+  }
+  .loc {
+    grid-area: c;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-secondary);
+    line-height: var(--leading-normal);
+  }
+  .xrow > .q {
+    grid-area: q;
   }
   .q {
     display: flex;
@@ -608,9 +621,23 @@ not cover shows as printed, "Not decoded". Descriptions are the boards' stand-in
   .box.need {
     border-color: var(--color-open-text);
   }
+  .box[aria-invalid="true"] {
+    border-color: var(--color-danger-text);
+  }
+  /* FSInvalid: the alert icon and "Enter X to Y", 12 px, in the red text color. */
   .err {
+    display: flex;
+    align-items: flex-start;
+    gap: calc(var(--space-1) + var(--border-thick));
     color: var(--color-danger-text);
     font-size: var(--font-size-caption);
+    line-height: var(--leading-snug);
+  }
+  .err :global(.icon) {
+    flex: none;
+    width: calc(var(--size-icon-small) - var(--border-thick));
+    height: calc(var(--size-icon-small) - var(--border-thick));
+    margin-top: var(--border-thin);
   }
   .taf {
     align-self: flex-start;
@@ -681,8 +708,10 @@ not cover shows as printed, "Not decoded". Descriptions are the boards' stand-in
   }
   .wrow {
     display: grid;
-    grid-template-columns: calc(5 * var(--space-10)) calc(4 * var(--space-10)) minmax(0, 1fr) calc(4 * var(--space-10) + var(--space-4));
+    grid-template-columns: calc(5 * var(--space-10)) calc(4 * var(--space-10)) minmax(0, 1fr);
+    grid-template-areas: "l v d" ". . c";
     column-gap: var(--space-4);
+    row-gap: var(--space-1);
     align-items: start;
     padding: var(--space-3) calc(var(--space-4) + var(--space-1));
     border-top: var(--border-thin) solid var(--color-line);
@@ -692,7 +721,8 @@ not cover shows as printed, "Not decoded". Descriptions are the boards' stand-in
     grid-template-columns: repeat(2, calc(3 * var(--space-10))) calc(3 * var(--space-10) + var(--space-4) + var(--space-1)) calc(3 * var(--space-10)) minmax(0, 1fr);
     column-gap: var(--space-4);
     align-items: center;
-    min-height: var(--size-touch-min);
+    /* The board's 44 px rows plus their 1 px line. */
+    min-height: calc(var(--size-touch-min) + var(--border-thin));
     padding: 0 calc(var(--space-4) + var(--space-1));
     border-bottom: var(--border-thin) solid var(--color-line);
     font-family: var(--font-mono);
@@ -707,48 +737,38 @@ not cover shows as printed, "Not decoded". Descriptions are the boards' stand-in
     font-size: var(--font-size-caption);
     font-weight: var(--weight-semibold);
   }
-  @media (max-width: 1439px) {
-    /* Tablet landscape: label, value and ? on the first line; the description and chip under them,
-     * full width. */
+  /* Tablet landscape (WxTabL, WindsTabL): "Observed" under the tabs; label (120), value (200) and
+     ? on the first line, the description and location line under them at full width. */
+  @media (min-width: 900px) and (max-width: 1439px) {
     .top {
-      flex-wrap: wrap;
+      flex-direction: column;
+      align-items: flex-start;
       gap: var(--space-2);
     }
     .xrow {
-      grid-template-columns:
-        calc(3 * var(--space-10) + var(--space-4))
-        minmax(0, 1fr)
-        var(--size-touch-min);
+      grid-template-columns: calc(3 * var(--space-10)) calc(5 * var(--space-10)) minmax(0, 1fr) var(--size-touch-min);
+      grid-template-areas: "l v . q" "d d d d" "c c c c";
+      column-gap: var(--space-3);
       row-gap: var(--space-2);
+      padding: var(--space-3) var(--space-1) var(--space-3) var(--space-4);
     }
     .wrow {
-      grid-template-columns: calc(5 * var(--space-10)) minmax(0, 1fr);
+      grid-template-columns: calc(4 * var(--space-10)) minmax(0, 1fr);
+      grid-template-areas: "l v" "d d" "c c";
+      column-gap: var(--space-3);
       row-gap: var(--space-2);
+      padding: var(--space-3) var(--space-4);
     }
-    .xrow > :nth-child(3),
-    .xrow > :nth-child(4),
-    .wrow > .desc,
-    .wrow > .chip {
-      grid-column: 1 / 3;
-    }
-    .xrow .q {
-      grid-column: 3;
-      grid-row: 1;
+    .trow {
+      grid-template-columns: repeat(2, calc(2 * var(--space-10) + var(--space-2))) calc(2 * var(--space-10) + var(--space-6)) calc(2 * var(--space-10) + var(--space-2)) minmax(0, 1fr);
     }
   }
   @media (max-width: 899px) {
     .xrow,
     .wrow {
       grid-template-columns: minmax(0, 1fr) var(--size-touch-min);
+      grid-template-areas: "l q" "v v" "d d" "c c";
       row-gap: var(--space-2);
-    }
-    .xrow > :not(.q),
-    .wrow > * {
-      grid-column: 1;
-    }
-    .xrow .q {
-      grid-column: 2;
-      grid-row: 1;
     }
     .trow {
       grid-template-columns: repeat(4, minmax(0, 1fr));

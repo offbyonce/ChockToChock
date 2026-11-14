@@ -55,7 +55,7 @@ export type Row = {
   link?: FlightSection;
   /** A read-only row whose chip links to the phase that uses it ("Before start ›"). */
   phase?: string;
-  /** A second field in the same row (Thrust: rating and assumed temperature). */
+  /** A second field in the same row (Passengers and cargo). */
   second?: {
     field: FillField;
     placeholder: string;
@@ -81,6 +81,10 @@ export type Row = {
   max?: number;
   mode?: "numeric" | "decimal" | "text";
   desc: string;
+  /** Where the value goes in the cockpit, a plain muted line under the description ("Enter on
+   * the CDU › PERF INIT"). */
+  loc?: string;
+  /** The link text of a row whose value belongs to a phase ("Before start ›"). */
   chip?: string;
   /** A two-way control under the description (Minimums: BARO / RADIO). */
   seg?: { field: FillField; values: [string, string]; label: string };
@@ -260,6 +264,8 @@ const chartOfp = (title: string): Ofp => ({
 
 export const FLAPS = ["1", "5", "10", "15", "25"];
 export const LANDING_FLAPS = ["15", "30", "40"];
+/** The takeoff thrust ratings on the CDU's N1 LIMIT page (FSTakeoff board). */
+export const THRUST = ["TO", "TO-1", "TO-2"];
 export const AUTOBRAKE = ["OFF", "1", "2", "3", "MAX"];
 
 /** Fields the steps' blanks use, and the STAR: what "N to enter" and Still to enter count. */
@@ -298,7 +304,7 @@ export const SECTIONS: Section[] = [
             field: "origin",
             max: 4,
             desc: "The airport you depart from. Its weather is on the Weather page.",
-            chip: "CDU · RTE",
+            loc: "Enter on the CDU › RTE",
             ofp: fromHeader(
               "The airports are in the header",
               (c) => header(c, "airports"),
@@ -311,7 +317,7 @@ export const SECTIONS: Section[] = [
             field: "destination",
             max: 4,
             desc: "Where you plan to land.",
-            chip: "CDU · RTE",
+            loc: "Enter on the CDU › RTE",
             ofp: fromHeader(
               "The airports are in the header",
               (c) => header(c, "airports"),
@@ -324,7 +330,7 @@ export const SECTIONS: Section[] = [
             field: "alternate",
             max: 4,
             desc: "Where you'd divert if you couldn't land at the destination.",
-            chip: "CDU · RTE 2",
+            loc: "Enter on the CDU › RTE 2",
             ofp: {
               section: 4,
               title: "The alternate has its own section",
@@ -340,7 +346,7 @@ export const SECTIONS: Section[] = [
             field: "flight_number",
             max: 7,
             desc: "Your flight's number, as filed.",
-            chip: "CDU · RTE",
+            loc: "Enter on the CDU › RTE",
             ofp: fromHeader(
               "The flight number opens the header",
               (c) => header(c, "fn"),
@@ -359,7 +365,7 @@ export const SECTIONS: Section[] = [
             max: 400,
             mode: "text",
             desc: "The filed route from the SID to the arrival, as you enter it in the CDU.",
-            chip: "CDU · RTE",
+            loc: "Enter on the CDU › RTE",
             ofp: {
               ...fromHeader(
                 "The route is in the header",
@@ -413,7 +419,7 @@ export const SECTIONS: Section[] = [
             weight: "full",
             mode: "numeric",
             desc: "All the fuel on board before engine start.",
-            chip: "FUEL GAUGES",
+            loc: "Check on the fuel gauges",
             ofp: fromFuel(
               "Block fuel is in the fuel plan",
               "block",
@@ -439,7 +445,7 @@ export const SECTIONS: Section[] = [
             weight: "thousands",
             mode: "decimal",
             desc: "Alternate plus final reserve: what must be left at landing.",
-            chip: "CDU · PERF INIT",
+            loc: "Enter on the CDU › PERF INIT",
             ofp: fromFuel(
               "Reserves are in the fuel plan",
               "reserve",
@@ -486,7 +492,7 @@ export const SECTIONS: Section[] = [
             weight: "thousands",
             mode: "decimal",
             desc: "The airplane's weight without fuel.",
-            chip: "CDU · PERF INIT",
+            loc: "Enter on the CDU › PERF INIT",
             ofp: fromWeights(
               "Zero fuel weight is in the weights section",
               "zfw",
@@ -500,7 +506,7 @@ export const SECTIONS: Section[] = [
             show: (x) => `${x}%`,
             mode: "decimal",
             desc: "Center of gravity without fuel, used for takeoff trim.",
-            chip: "CDU · TAKEOFF REF",
+            loc: "Enter on the CDU › TAKEOFF REF",
             ofp: fromWeights(
               "The CG is in the weights section",
               "zfw",
@@ -532,7 +538,7 @@ export const SECTIONS: Section[] = [
             weight: "thousands",
             mode: "decimal",
             desc: "Zero fuel weight plus fuel at takeoff, from the plan.",
-            chip: "CDU · PERF INIT",
+            loc: "Enter on the CDU › PERF INIT",
             ofp: fromWeights(
               "The takeoff weight is in the weights section",
               "tow",
@@ -560,7 +566,7 @@ export const SECTIONS: Section[] = [
             max: 3,
             mode: "numeric",
             desc: "The level you plan to cruise at.",
-            chip: "CDU · PERF INIT",
+            loc: "Enter on the CDU › PERF INIT",
             ofp: fromHeader(
               "The cruise level is in the header",
               (c) => header(c, "level"),
@@ -574,7 +580,7 @@ export const SECTIONS: Section[] = [
             max: 4,
             mode: "numeric",
             desc: "Trades fuel against time. Lower saves fuel.",
-            chip: "CDU · PERF INIT",
+            loc: "Enter on the CDU › PERF INIT",
             ofp: {
               ...fromHeader(
                 "Cost index and cruise level are in the header",
@@ -590,7 +596,7 @@ export const SECTIONS: Section[] = [
             field: "cruise_wind",
             max: 7,
             desc: "Average wind at cruise level, from the plan.",
-            chip: "CDU · PERF INIT",
+            loc: "Enter on the CDU › PERF INIT",
             ofp: fromHeader(
               "The average wind is in the header",
               (c) => header(c, "wind"),
@@ -605,7 +611,7 @@ export const SECTIONS: Section[] = [
             max: 3,
             mode: "numeric",
             desc: "How much warmer than standard the air is at cruise.",
-            chip: "CDU · PERF INIT",
+            loc: "Enter on the CDU › PERF INIT",
             ofp: fromHeader(
               "The ISA deviation is in the header",
               (c) => header(c, "isa"),
@@ -625,7 +631,7 @@ export const SECTIONS: Section[] = [
             max: 5,
             mode: "numeric",
             desc: "Where you set standard pressure on the way up.",
-            chip: "CDU · PERF INIT",
+            loc: "Enter on the CDU › PERF INIT",
             ofp: fromHeader(
               "The transition altitude is in the header",
               (c) => header(c, "ta"),
@@ -665,7 +671,7 @@ export const SECTIONS: Section[] = [
             field: "runway",
             max: 4,
             desc: "The runway you depart from.",
-            chip: "CDU · DEP/ARR",
+            loc: "Enter on the CDU › DEP/ARR",
             ofp: clearanceOfp(),
           },
           {
@@ -674,7 +680,7 @@ export const SECTIONS: Section[] = [
             field: "sid",
             max: 8,
             desc: "The departure procedure.",
-            chip: "CDU · DEP/ARR",
+            loc: "Enter on the CDU › DEP/ARR",
             ofp: clearanceOfp(),
           },
           {
@@ -683,7 +689,7 @@ export const SECTIONS: Section[] = [
             field: "transition",
             max: 8,
             desc: "Where the SID joins your route.",
-            chip: "CDU · DEP/ARR",
+            loc: "Enter on the CDU › DEP/ARR",
             ofp: clearanceOfp(),
           },
           {
@@ -693,7 +699,7 @@ export const SECTIONS: Section[] = [
             max: 5,
             mode: "numeric",
             desc: "The altitude you're cleared to climb to first.",
-            chip: "MCP · ALTITUDE",
+            loc: "Set on the MCP › ALTITUDE",
             ofp: clearanceOfp(),
           },
           {
@@ -703,7 +709,7 @@ export const SECTIONS: Section[] = [
             max: 4,
             mode: "numeric",
             desc: "Your transponder code.",
-            chip: "TRANSPONDER",
+            loc: "Set on the transponder",
             ofp: clearanceOfp("Your squawk comes from ATC"),
           },
         ],
@@ -718,7 +724,7 @@ export const SECTIONS: Section[] = [
             max: 7,
             mode: "decimal",
             desc: "For pushback and taxi.",
-            chip: "RADIO",
+            loc: "Set on the radio panel",
             ofp: clearanceOfp("Frequencies come from the chart and ATIS"),
           },
           {
@@ -728,7 +734,7 @@ export const SECTIONS: Section[] = [
             max: 7,
             mode: "decimal",
             desc: "For takeoff.",
-            chip: "RADIO",
+            loc: "Set on the radio panel",
             ofp: clearanceOfp("Frequencies come from the chart and ATIS"),
           },
           {
@@ -739,7 +745,7 @@ export const SECTIONS: Section[] = [
             mode: "decimal",
             placeholder: "Enter",
             desc: "The frequency to call after takeoff.",
-            chip: "RADIO",
+            loc: "Set on the radio panel",
             ofp: clearanceOfp("Frequencies come from the chart and ATIS"),
           },
         ],
@@ -788,7 +794,7 @@ export const SECTIONS: Section[] = [
             mode: "numeric",
             show: (x) => `${x}°`,
             desc: "Set on the MCP heading before takeoff.",
-            chip: "MCP · HEADING",
+            loc: "Set on the MCP › HEADING",
             ofp: takeoffOfp,
           },
         ],
@@ -802,24 +808,27 @@ export const SECTIONS: Section[] = [
             field: "takeoff_flaps",
             choices: FLAPS,
             desc: "Takeoff flaps for your weight and runway.",
-            chip: "CDU · TAKEOFF REF",
+            loc: "Enter on the CDU › TAKEOFF REF",
             ofp: takeoffOfp,
           },
           {
-            id: "thrust",
-            label: "Thrust",
+            id: "thrust_rating",
+            label: "Takeoff thrust",
             field: "thrust_rating",
-            max: 4,
-            firstName: "rating",
-            second: {
-              field: "assumed_temperature",
-              placeholder: "Temp",
-              name: "assumed temperature",
-              max: 3,
-              mode: "numeric",
-            },
-            desc: "Takeoff thrust rating and any assumed temperature.",
-            chip: "CDU · N1 LIMIT",
+            choices: THRUST,
+            desc: "The rating from your takeoff performance in the EFB. TO is full thrust; TO-1 and TO-2 are fixed derates that give less.",
+            loc: "Enter on the CDU › N1 LIMIT",
+            ofp: takeoffOfp,
+          },
+          {
+            id: "assumed_temperature",
+            label: "Assumed temperature (SEL)",
+            field: "assumed_temperature",
+            max: 3,
+            mode: "numeric",
+            show: (x) => `${x} °C`,
+            desc: "From your takeoff performance in the EFB. A temperature hotter than the real one, so the FMC sets less thrust and saves the engines.",
+            loc: "Enter on the CDU › N1 LIMIT",
             ofp: takeoffOfp,
           },
           {
@@ -829,7 +838,7 @@ export const SECTIONS: Section[] = [
             max: 3,
             mode: "numeric",
             desc: "Decision speed. Before it you can stop; after it you go.",
-            chip: "CDU · TAKEOFF REF",
+            loc: "Enter on the CDU › TAKEOFF REF",
             ofp: takeoffOfp,
           },
           {
@@ -839,7 +848,7 @@ export const SECTIONS: Section[] = [
             max: 3,
             mode: "numeric",
             desc: "Rotation speed.",
-            chip: "CDU · TAKEOFF REF",
+            loc: "Enter on the CDU › TAKEOFF REF",
             ofp: takeoffOfp,
           },
           {
@@ -850,7 +859,7 @@ export const SECTIONS: Section[] = [
             mode: "numeric",
             placeholder: "From the FMC",
             desc: "Takeoff safety speed for your takeoff flaps.",
-            chip: "CDU · TAKEOFF REF",
+            loc: "Enter on the CDU › TAKEOFF REF",
             ofp: takeoffOfp,
           },
           {
@@ -861,7 +870,7 @@ export const SECTIONS: Section[] = [
             mode: "decimal",
             placeholder: "From the FMC",
             desc: "Takeoff trim for your weight and balance.",
-            chip: "CDU · TAKEOFF REF",
+            loc: "Enter on the CDU › TAKEOFF REF",
             ofp: takeoffOfp,
           },
         ],
@@ -883,7 +892,7 @@ export const SECTIONS: Section[] = [
             field: "arrival_runway",
             max: 4,
             desc: "The runway you expect to land on. Check it against the ATIS before you brief.",
-            chip: "CDU · DEP/ARR",
+            loc: "Enter on the CDU › DEP/ARR",
             ofp: approachRoute,
           },
           {
@@ -893,7 +902,7 @@ export const SECTIONS: Section[] = [
             max: 8,
             placeholder: "Enter",
             desc: "The published route from the airway to the approach.",
-            chip: "CDU · DEP/ARR",
+            loc: "Enter on the CDU › DEP/ARR",
             ofp: approachRoute,
           },
           {
@@ -904,7 +913,7 @@ export const SECTIONS: Section[] = [
             mode: "numeric",
             show: (x) => `FL${x}`,
             desc: "Where you switch the altimeters to the local setting on the way down.",
-            chip: "CDU · DESCENT",
+            loc: "Enter on the CDU › DESCENT",
             ofp: fromHeader(
               "The transition level is in the header",
               (c) => header(c, "tl"),
@@ -924,7 +933,7 @@ export const SECTIONS: Section[] = [
             mode: "numeric",
             placeholder: "Enter",
             desc: "The height where you must see the runway to continue, from the approach chart. BARO for most approaches; RADIO when the chart gives a radio altimeter height.",
-            chip: "EFIS · MINS",
+            loc: "Set on the EFIS › MINS",
             seg: { field: "minimums_type", values: ["BARO", "RADIO"], label: "Minimums type" },
             ofp: chartOfp("Minimums come from the approach chart"),
           },
@@ -936,7 +945,7 @@ export const SECTIONS: Section[] = [
             mode: "numeric",
             placeholder: "From the FMC",
             desc: "VREF for your landing flaps, plus any wind additive.",
-            chip: "CDU · APPROACH REF",
+            loc: "Enter on the CDU › APPROACH REF",
             ofp: chartOfp("Landing speed comes from the FMC"),
           },
           {
@@ -945,7 +954,7 @@ export const SECTIONS: Section[] = [
             field: "landing_flaps",
             choices: LANDING_FLAPS,
             desc: "The flaps you land with. Landing speed is VREF for this setting.",
-            chip: "CDU · APPROACH REF",
+            loc: "Enter on the CDU › APPROACH REF",
             ofp: chartOfp("Landing flaps come from the FMC"),
           },
           {
@@ -954,7 +963,7 @@ export const SECTIONS: Section[] = [
             field: "autobrake",
             choices: AUTOBRAKE,
             desc: "How hard the brakes apply on touchdown.",
-            chip: "AUTOBRAKE",
+            loc: "Set on the autobrake selector",
             ofp: chartOfp("Autobrake is your choice for the runway"),
           },
           {
@@ -964,7 +973,7 @@ export const SECTIONS: Section[] = [
             max: 5,
             mode: "numeric",
             desc: "The destination field elevation, from the plan. Set on the pressurization panel.",
-            chip: "PRESS · LAND ALT",
+            loc: "Set on the pressurization panel › LAND ALT",
             ofp: {
               ...approachRoute,
               title: "The destination elevation is in the header",
@@ -1029,56 +1038,35 @@ const within = (lo: number, hi: number, message: string) => (v: string) => {
   const n = number(v);
   return Number.isFinite(n) && n >= lo && n <= hi ? null : message;
 };
-const pattern = (re: RegExp, message: string) => (v: string) => (re.test(v) ? null : message);
-const RUNWAY = pattern(/^(0[1-9]|[12][0-9]|3[0-6])[LCR]?$/, "Use 01 to 36, with L, C or R");
-const ICAO = pattern(/^[A-Z0-9]{4}$/, "Use a 4-letter ICAO code");
-const FREQUENCY = within(118, 136.975, "Use 118.000 to 136.975");
+const QNH = (v: string, c: Ctx) =>
+  c.values.qnh_unit === "hPa"
+    ? within(948, 1050, "Enter 948 to 1050 hPa")(v)
+    : within(28, 31, "Enter 28.00 to 31.00 inHg")(v);
 
 /**
- * The ranges 3.0's Flight setup gave each field ("FL100 to FL410"), as checks: a value outside one
- * shows a short message under its box (owner, batch 4). Weights are checked in the flight's unit,
- * in thousands where the flight stores thousands.
+ * The ranges 3.0's Flight setup gave its number fields, as checks (FSInvalid board): a value
+ * outside one shows "Enter X to Y" under its box while it stays out of range. Fields 3.0 gave no
+ * range have no check.
  */
 export const RANGES: Partial<Record<FillField, (value: string, c: Ctx) => string | null>> = {
-  origin: ICAO,
-  destination: ICAO,
-  alternate: ICAO,
-  cruise_level: within(100, 410, "Use FL100 to FL410"),
-  runway: RUNWAY,
-  arrival_runway: RUNWAY,
-  initial_altitude: within(0, 41000, "Use 0 to 41,000 ft"),
-  squawk: pattern(/^[0-7]{4}$/, "Use 4 digits, 0 to 7"),
-  ground_frequency: FREQUENCY,
-  tower_frequency: FREQUENCY,
-  departure_frequency: FREQUENCY,
-  heading: within(1, 360, "Use 001 to 360 degrees"),
-  qnh: (v, c) =>
-    c.values.qnh_unit === "hPa"
-      ? within(948, 1050, "Use 948 to 1050 hPa")(v)
-      : within(28, 31, "Use 28.00 to 31.00 inHg")(v),
-  destination_qnh: (v, c) =>
-    c.values.qnh_unit === "hPa"
-      ? within(948, 1050, "Use 948 to 1050 hPa")(v)
-      : within(28, 31, "Use 28.00 to 31.00 inHg")(v),
-  v1: within(80, 250, "Use 80 to 250 knots"),
-  vr: within(80, 250, "Use 80 to 250 knots"),
-  v2: within(100, 250, "Use 100 to 250 knots"),
-  vref: within(100, 250, "Use 100 to 250 knots"),
-  cg: within(0, 50, "Use 0 to 50 % MAC"),
-  takeoff_trim: within(0, 15, "Use 0.00 to 15.00 units"),
-  fuel: within(0, 999999, "Use a weight of 0 or more"),
-  zfw: (v, c) => within(0, 400, `Use 0 to 400,000 ${c.unit}`)(v),
-  reserves: (v, c) => within(0, 100, `Use 0 to 100,000 ${c.unit}`)(v),
-  takeoff_weight: (v, c) => within(0, 400, `Use 0 to 400,000 ${c.unit}`)(v),
-  cargo: (v, c) => within(0, 100, `Use 0 to 100,000 ${c.unit}`)(v),
-  passengers: within(0, 500, "Use 0 to 500"),
-  cost_index: within(0, 9999, "Use 0 to 9999"),
-  cruise_wind: pattern(/^\d{3}\/\d{2,3}$/, "Use direction/speed, as 270/045"),
-  isa_deviation: within(-60, 60, "Use −60 to +60"),
-  transition_altitude: within(1000, 20000, "Use 1,000 to 20,000 ft"),
-  transition_level: within(10, 600, "Use FL10 to FL600"),
-  landing_altitude: within(-1000, 14000, "Use −1,000 to 14,000 ft"),
-  minimums: within(0, 14000, "Use 0 to 14,000 ft"),
+  cruise_level: within(100, 410, "Enter FL100 to FL410"),
+  initial_altitude: within(0, 41000, "Enter 0 to 41,000 ft"),
+  heading: within(1, 360, "Enter 001 to 360"),
+  qnh: QNH,
+  destination_qnh: QNH,
+  v1: within(80, 250, "Enter 80 to 250 knots"),
+  vr: within(80, 250, "Enter 80 to 250 knots"),
+  v2: within(100, 250, "Enter 100 to 250 knots"),
+  vref: within(100, 250, "Enter 100 to 250 knots"),
+  cg: within(0, 50, "Enter 0 to 50% MAC"),
+  takeoff_trim: within(0, 15, "Enter 0.00 to 15.00 units"),
+  passengers: within(0, 500, "Enter 0 to 500"),
+  cost_index: within(0, 9999, "Enter 0 to 9999"),
+  isa_deviation: within(-60, 60, "Enter −60 to +60"),
+  transition_altitude: within(1000, 20000, "Enter 1,000 to 20,000 ft"),
+  transition_level: within(10, 600, "Enter FL10 to FL600"),
+  landing_altitude: within(-1000, 14000, "Enter −1,000 to 14,000 ft"),
+  minimums: within(0, 14000, "Enter 0 to 14,000 ft"),
 };
 
 /** The message for a field's value, or null when it's in range or empty. */
