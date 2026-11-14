@@ -1,0 +1,50 @@
+name: SayIntentions data (Beta) feedback
+description: Tell us how the SayIntentions ATC data worked in Involo.
+title: "SayIntentions (Beta): "
+labels: ["sayintentions", "beta"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for trying the SayIntentions ATC data. Nobody on the project has a SayIntentions
+        account, so your report is how we find out whether it works.
+
+        **Before you paste anything: remove your api_key.** SayIntentions' flight.json contains
+        your personal API key. Use the app's "Copy what Involo read" button instead; it
+        copies only the flight fields the app used. If you paste flight.json itself, delete the
+        api_key line first.
+  - type: dropdown
+    id: worked
+    attributes:
+      label: Did the ATC values show up in Involo?
+      options:
+        - "Yes, and they matched what ATC gave me"
+        - "Yes, but some values were wrong or missing"
+        - "No, nothing came through"
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: Which values (runway, SID, STAR, gate, clearance status) were right, wrong or missing, and when.
+    validations:
+      required: true
+  - type: textarea
+    id: read
+    attributes:
+      label: What Involo read
+      description: Paste the result of "Copy what Involo read" (Settings › Outside data). It contains no key or account details.
+      render: json
+  - type: input
+    id: versions
+    attributes:
+      label: Versions
+      description: Involo version (Settings › About), SayIntentions version, simulator.
+  - type: checkboxes
+    id: key
+    attributes:
+      label: Privacy check
+      options:
+        - label: I removed my api_key and any personal details from everything I pasted.
+          required: true

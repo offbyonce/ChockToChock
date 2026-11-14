@@ -1,0 +1,53 @@
+name: SimBrief or OFP file import problem
+description: A value from your SimBrief plan or OFP file came in wrong, missing or in the wrong place.
+title: "SimBrief import: "
+labels: ["simbrief"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting this. Involo reads only the flight fields it uses from your
+        plan (route, runways, fuel, weights, levels, weather, winds) and keeps nothing personal.
+
+        **Please don't attach or paste your whole OFP.** The SimBrief file also holds your pilot
+        ID, name and account settings. Instead, copy only the lines that matter (for example the
+        fuel block or the METAR line) and remove anything that identifies you.
+  - type: dropdown
+    id: how
+    attributes:
+      label: How did you bring the plan in?
+      options:
+        - "Import latest flight (SimBrief username)"
+        - "OFP file (drop zone or Choose file)"
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: Which value was wrong, missing or in the wrong field, what it showed, and what your OFP prints for it.
+    validations:
+      required: true
+  - type: input
+    id: route
+    attributes:
+      label: Flight
+      description: Departure, destination and aircraft (for example KSEA → KSFO, 737 MAX 8). No flight number or callsign needed.
+  - type: textarea
+    id: lines
+    attributes:
+      label: The OFP lines that matter (optional)
+      description: Only the part of the OFP for this value, with your name and pilot ID removed.
+      render: text
+  - type: input
+    id: versions
+    attributes:
+      label: Versions
+      description: Involo version (Settings › About), browser, and whether the app is installed.
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Privacy check
+      options:
+        - label: I removed my name, pilot ID and any account details from everything I pasted.
+          required: true
