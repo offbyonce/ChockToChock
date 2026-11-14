@@ -34,9 +34,30 @@ wins.
 landscape and the panes behind the slide-out) and in the tablet portrait expanded step; the Show
 panel button is gone from every board. `Decision.dc.html` adds the decision step (decision 0022):
 `DecUnanswered`, `DecSuggested`, `DecAnswered`, `DecChanging`, `DecChanged` and `DecPhone`, dark
-and light. Its location line ("Main panel (P2) · fuel quantity on the upper display") and "about
-0 lb" are stand-ins until the center tank step is sourced (Phase 2 step 7, batch 7). The toast on
+and light. Its location line ("Main panel (P2) · fuel quantity on the upper display") and "0 lb" are stand-ins until the center tank step is sourced (Phase 2 step 7, batch 7). The toast on
 `DecChanged` is the one every Undo uses (color.toast-text, color.toast-link, color.toast-shadow).
+
+**Flight sections and the strip (approved 2026-11-13, batch 4).** `FlightSection.dc.html` (with
+`FSOverview`, `FSRoute`, `FSFuel`, `FSCruise`, `FSClearance`, `FSTakeoff` and `FSApproach`, dark and
+light) draws the Flight pages' sections with the Approach board's field row and "Find it in your
+OFP" beside each; `FSApproach` replaces the round 5 `Descent` board. `Weather.dc.html` (round 6,
+with `Winds` for the en route winds tab), `StripOpen` and `StripFreq` (the strip panel with
+Frequencies open) supersede their round 5 copies; `SimBrief` and `Start` (round 5) stand. Editable
+values are always boxed fields (color.field, outlined in color.field-border), values still needed
+are amber, and read-only and cross-section rows are plain text. Values, descriptions, the location
+lines and OFP close-ups are stand-ins for batch 7's validation list. The center tank row stays
+hidden until batch 7, when it shows the exact figure.
+
+**Batch 4 additions (approved 2026-11-13).** `WxTabL` and `WindsTabL` (Weather and the en route
+winds at tablet landscape, 1180 × 820), `FSTakeoffTabL` (every section page at tablet landscape,
+shown with Takeoff) and `FSInvalid` (a value out of range: red border, alert icon and "Enter X to
+Y" under the field, for every field 3.0 gave a range), each dark and light, come from the `layout`
+and `cruiseInvalid` options added to `Weather.dc.html` and `FlightSection.dc.html`. The gray
+location badges are gone: each value says where it goes in a plain muted line under its
+description ("Enter on the CDU › PERF INIT"). Takeoff thrust is a pick list (TO, TO-1, TO-2) with
+the assumed temperature as its own row. Every boxed field uses color.field and color.field-border;
+"From the FMC" is the placeholder for values the FMC gives; SimBrief and OFP file says the import is
+the only part of the checklist that uses the internet; Transition reads SUMMA on every board.
 
 ## Read in this order
 

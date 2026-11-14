@@ -4091,7 +4091,7 @@ source: crates/pack-cli/tests/snapshot.rs
           }
         ],
         "fill": [
-          "heading",
+          "manual",
           "qnh"
         ],
         "why": "Confirms the instruments before flight",
@@ -8614,7 +8614,7 @@ source: crates/pack-cli/tests/snapshot.rs
           }
         ],
         "fill": [
-          "qnh"
+          "destination_qnh"
         ],
         "note": "Below the transition level, altimeters must read local QNH so you see your true altitude above sea level.",
         "note_caution": true,

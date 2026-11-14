@@ -9,13 +9,16 @@
 import type {
   Action,
   AppInfo,
+  Decoded,
   FlatPack,
   Flight,
   Loaded,
   OpenStep,
   PackSummary,
   PhaseView,
+  PlanValues,
   Rail,
+  SavedPlan,
   Settings,
 } from "@chocktochock/bindings";
 import { getContext } from "svelte";
@@ -46,6 +49,22 @@ export interface Host {
   /** Moves saved text the app cannot use aside (kept, not deleted), so a new save can start. */
   setAside(pack: string, what: "flight" | "settings"): Promise<void>;
   defaultSettings(): Promise<Settings>;
+  /**
+   * The latest SimBrief plan for a username or Pilot ID, fetched from the pilot's browser and
+   * read into the compact plan (decision 0019); nothing else is kept.
+   */
+  fetchPlan(user: string): Promise<SavedPlan>;
+  /** A saved OFP file the pilot chose, read once on this device into the compact plan. */
+  readPlanFile(text: string): Promise<SavedPlan>;
+  /** The flight values a plan fills in. */
+  planValues(plan: SavedPlan): Promise<PlanValues>;
+  /** The plan kept on this device for a pack, or null. */
+  loadPlan(pack: string): Promise<SavedPlan | null>;
+  /** Keeps the plan on this device, or forgets it (null). */
+  savePlan(pack: string, plan: SavedPlan | null): Promise<void>;
+  /** A METAR or TAF decoded from the code table. */
+  decodeMetar(text: string): Promise<Decoded>;
+  decodeTaf(text: string): Promise<Decoded>;
 }
 
 export type SavedItem<T> = { loaded: Loaded<T>; text: string } | null;

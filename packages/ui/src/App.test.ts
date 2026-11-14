@@ -154,6 +154,17 @@ function host(overrides: Partial<Host> = {}): Host {
     setAside: async () => {},
     defaultSettings: async () =>
       ({ theme: "dark", dimming: 0, detail: "expanded", listView: "checklist" }) as Settings,
+    fetchPlan: async () => {
+      throw new Error("no network in tests");
+    },
+    readPlanFile: async () => {
+      throw new Error("no plan file in tests");
+    },
+    planValues: async () => ({ values: {}, filled: 0, origin: "", destination: "", checkClearance: false }),
+    loadPlan: async () => null,
+    savePlan: async () => {},
+    decodeMetar: async () => ({ station: null, time: null, groups: [], rows: [] }),
+    decodeTaf: async () => ({ station: null, time: null, groups: [], rows: [] }),
     ...overrides,
   };
 }
@@ -256,7 +267,7 @@ describe("App", () => {
     ).toBe("true");
   });
 
-  it("keeps flight values in Flight setup and leads there from the first phase", async () => {
+  it("keeps flight values in the Flight pages and leads there from the first phase", async () => {
     const actions: Action[] = [];
     const h = host({
       apply: async (_pack, flight, action) => {
@@ -270,26 +281,32 @@ describe("App", () => {
     });
     render(App, { context: hostContext(h) });
 
-    const back = await screen.findByRole("link", { name: "Flight setup" });
-    expect(back.getAttribute("href")).toBe("#/setup");
+    const back = await screen.findByRole("link", { name: "Flight" });
+    expect(back.getAttribute("href")).toBe("#/flight/overview");
     window.location.hash = "#/setup";
     window.dispatchEvent(new HashChangeEvent("hashchange"));
-    expect(await screen.findByRole("heading", { level: 1, name: "Flight setup" })).toBeTruthy();
-    await fireEvent.input(screen.getByLabelText("Runway"), { target: { value: "16L" } });
+    // Flight setup's address leads to the Flight pages' Overview.
+    expect(await screen.findByRole("heading", { level: 1, name: "Flight" })).toBeTruthy();
+    expect(screen.getByRole("heading", { level: 2, name: "Overview" })).toBeTruthy();
+    const nav = screen.getByRole("navigation", { name: "Flight sections" });
+    expect(within(nav).getByRole("link", { name: /^Takeoff/ }).textContent).toMatch(/to enter/);
+
+    window.location.hash = "#/flight/clearance";
+    window.dispatchEvent(new HashChangeEvent("hashchange"));
+    expect(await screen.findByRole("heading", { level: 2, name: "Clearance" })).toBeTruthy();
+    await fireEvent.change(screen.getByLabelText("Runway"), { target: { value: "16l" } });
     expect(actions.at(-1)).toEqual({ type: "setValue", field: "runway", value: "16L" });
-    expect((screen.getByLabelText("Runway") as HTMLInputElement).value).toBe("16L");
-    // A unit choice is a flight value too, and relabels its field's range.
-    await fireEvent.click(screen.getByRole("radio", { name: "hPa" }));
-    expect(actions.at(-1)).toEqual({ type: "setValue", field: "qnh_unit", value: "hPa" });
-    expect(await screen.findByText("948 to 1050 hPa")).toBeTruthy();
-    await fireEvent.click(screen.getByRole("radio", { name: "Turnaround" }));
+
+    window.location.hash = "#/flight/start";
+    window.dispatchEvent(new HashChangeEvent("hashchange"));
+    await fireEvent.click(await screen.findByRole("switch", { name: "Turnaround" }));
     expect(actions.at(-1)).toEqual({ type: "setOption", option: "start", value: "turn" });
-    expect(screen.getByRole("link", { name: "Start at Power up →" }).getAttribute("href")).toBe(
-      "#/phase/power-up",
-    );
+    // An option the flight has no value for yet reads as on (the pack's default in Rust).
+    await fireEvent.click(screen.getByRole("switch", { name: "Exterior inspection" }));
+    expect(actions.at(-1)).toEqual({ type: "setOption", option: "exterior", value: "off" });
   });
 
-  it("shows the clearance in the flight strip, edits it in the pop-out, and clears with Undo", async () => {
+  it("shows the clearance in the flight strip, edits it in the strip panel, and resets with Undo", async () => {
     const actions: Action[] = [];
     const h = host({
       apply: async (_pack, flight, action) => {
@@ -303,24 +320,25 @@ describe("App", () => {
     });
     render(App, { context: hostContext(h) });
 
-    // Nothing entered yet: the strip asks for the flight (owner, batch 3).
+    // Nothing entered yet: the strip asks for the flight (owner, batch 3), and opens the panel.
     const prompt = await screen.findByRole("button", {
       name: "Add your flight: import from SimBrief or enter the clearance",
     });
     await fireEvent.click(prompt);
-    expect(screen.getByRole("dialog", { name: "Flight details" })).toBeTruthy();
+    expect(screen.getByRole("region", { name: "Clearance and notes" })).toBeTruthy();
     await fireEvent.input(screen.getByLabelText("Squawk"), { target: { value: "7000" } });
     expect(actions.at(-1)).toEqual({ type: "setValue", field: "squawk", value: "7000" });
-    // Once a value exists, the strip shows the board's fields, a dash for each empty one.
-    const strip = document.querySelector<HTMLElement>(".fsline");
-    expect(strip?.textContent).toMatch(/— → —.*Runway—.*Squawk7000/);
-    // Reset flight plan asks first, then offers Undo, which brings the flight back.
-    await fireEvent.click(screen.getByRole("button", { name: "Reset flight plan" }));
-    expect(screen.getByText("Reset the flight plan?")).toBeTruthy();
+    // Frequencies open in place: ground, tower and departure (StripFreq).
+    await fireEvent.click(screen.getByRole("button", { name: /^Frequencies: ground, tower, departure/ }));
+    expect(screen.getByLabelText("Tower")).toBeTruthy();
+    expect(screen.getByRole("link", { name: /^All flight data/ }).getAttribute("href")).toBe(
+      "#/flight/overview",
+    );
+    // Reset flight plan resets at once and offers Undo, which brings the flight back.
     await fireEvent.click(screen.getByRole("button", { name: "Reset flight plan" }));
     expect(actions.at(-1)).toEqual({ type: "clear" });
     await fireEvent.click(await screen.findByRole("button", { name: "Undo" }));
-    expect(document.querySelector<HTMLElement>(".fsline")?.textContent).toMatch(/Squawk7000/);
+    expect(document.querySelector<HTMLElement>(".fsline")?.textContent).toMatch(/— → —.*Runway—.*Squawk7000/);
   });
 
   it("fills a step's blanks from flight values, keeps what the pilot types, and shows hints", async () => {
@@ -352,22 +370,11 @@ describe("App", () => {
     expect(screen.getByText("GND 121.700")).toBeTruthy();
   });
 
-  it("asks for arrival data on the phase the core names", async () => {
-    const actions: Action[] = [];
-    const h = host({
-      phaseView: async () => ({ ...view(["current", "to_do"]), arrival: true }),
-      apply: async (_pack, flight, action) => {
-        actions.push(action);
-        return flight;
-      },
-    });
+  it("leads to Flight › Approach for arrival data on the phase the core names", async () => {
+    const h = host({ phaseView: async () => ({ ...view(["current", "to_do"]), arrival: true }) });
     render(App, { context: hostContext(h) });
-
-    expect(await screen.findByText("Arrival data")).toBeTruthy();
-    await fireEvent.input(screen.getByLabelText("VREF"), { target: { value: "142" } });
-    expect(actions.at(-1)).toEqual({ type: "setValue", field: "vref", value: "142" });
-    await fireEvent.click(screen.getByRole("radio", { name: "RADIO" }));
-    expect(actions.at(-1)).toEqual({ type: "setValue", field: "minimums_type", value: "RADIO" });
+    const link = await screen.findByRole("link", { name: /^Arrival data is in Flight › Approach/ });
+    expect(link.getAttribute("href")).toBe("#/flight/approach");
   });
 
   it("shows what a control does on a step without a Why, where the side panel is hidden", async () => {

@@ -61,10 +61,27 @@ const ARRIVAL = [
 const CLEARANCE = [
   ["runway", "rwy", "16L"],
   ["sid", "sid", "SUMMA2"],
-  ["transition", "trans", "SEA"],
+  ["transition", "trans", "SUMMA"],
   ["initial_altitude", "alt", "5000"],
   ["squawk", "sq", "4521"],
 ];
+/** Where each field lives in the Flight pages (batch 4), for typing the same data as 3.0. */
+const SECTION_OF = {
+  runway: "clearance",
+  sid: "clearance",
+  transition: "clearance",
+  initial_altitude: "clearance",
+  squawk: "clearance",
+  takeoff_flaps: "takeoff",
+  v2: "takeoff",
+  takeoff_trim: "takeoff",
+  landing_altitude: "approach",
+  vref: "approach",
+  autobrake: "approach",
+  minimums: "approach",
+};
+/** Our side: the values typed in their Flight sections. */
+const inFlight = (list) => typed(list.map(([ours, , v]) => [SECTION_OF[ours], ours, v]));
 const pressText = (text) =>
   `[...document.querySelectorAll("button")].find((b) => b.textContent.trim() === ${JSON.stringify(text)}).click(); true`;
 const go = (hash) => `location.hash = ${JSON.stringify(hash)}; true`;
@@ -76,6 +93,37 @@ const go = (hash) => `location.hash = ${JSON.stringify(hash)}; true`;
 /** Skips the list step `title`: opens it if it is closed, then presses Skip for now. */
 const skipStep = (title) =>
   `(() => { const it = [...document.querySelectorAll(".it")].find((i) => i.textContent.toUpperCase().includes(${JSON.stringify(title)})); const skip = () => [...it.querySelectorAll("button")].find((b) => b.textContent.includes("Skip for now")); if (!skip()) it.querySelector(".chev").click(); return new Promise((go) => setTimeout(() => { skip().click(); go(true); }, 300)); })()`;
+/**
+ * The Flight pages in the boards' state (batch 4): the invented KSEA to KSFO OFP dropped on SimBrief
+ * and OFP file, as a pilot would, then the values the boards show typed in. The import's Undo toast
+ * is left to time out (10 s) so it is not in the shot.
+ */
+const OFP = fs.readFileSync(path.join(import.meta.dirname, "fixtures/board-ofp.json"), "utf8");
+const dropOfp = `(() => { const dt = new DataTransfer(); dt.items.add(new File([${JSON.stringify(OFP)}], "ofp.json", { type: "application/json" })); document.querySelector(".drop").dispatchEvent(new DragEvent("drop", { dataTransfer: dt, bubbles: true, cancelable: true })); return new Promise((go) => setTimeout(() => go(true), 1200)); })()`;
+const typed = (pairs) =>
+  `(async () => { const wait = (ms) => new Promise((go) => setTimeout(go, ms)); for (const [section, field, value] of ${JSON.stringify(pairs)}) { if (!location.hash.startsWith("#/flight/" + section)) { location.hash = "#/flight/" + section; await wait(400); } const el = document.querySelector('[data-field="' + field + '"]'); if (!el) continue; if (el.tagName === "BUTTON") { el.click(); await wait(100); [...document.querySelectorAll('[role="option"] button')].find((b) => b.textContent.trim() === value)?.click(); } else { el.value = value; el.dispatchEvent(new Event("change", { bubbles: true })); } await wait(120); } return true; })()`;
+const BOARD_FLIGHT = [
+  go("#/flight/simbrief"),
+  dropOfp,
+  typed([
+    ["clearance", "initial_altitude", "5000"],
+    ["clearance", "squawk", "4521"],
+    ["clearance", "ground_frequency", "121.700"],
+    ["clearance", "tower_frequency", "119.900"],
+    ["takeoff", "heading", "163"],
+    ["takeoff", "takeoff_flaps", "5"],
+    ["takeoff", "thrust_rating", "TO-1"],
+    ["takeoff", "assumed_temperature", "45"],
+    ["takeoff", "v1", "142"],
+    ["takeoff", "vr", "144"],
+    ["approach", "landing_flaps", "30"],
+    ["approach", "autobrake", "2"],
+    ["fuel", "cg", "24.0"],
+  ]),
+  `(() => { location.hash = "#/flight/clearance"; return new Promise((go) => setTimeout(() => { const el = document.querySelector('[data-row="notes"] input'); el.value = "Expect FL370 ten minutes after departure"; el.dispatchEvent(new Event("change", { bubbles: true })); go(true); }, 400)); })()`,
+  "new Promise((go) => setTimeout(() => go(true), 10500))",
+];
+
 /** Ticks every step of phase `id`, its checklist too once it unfolds, then goes to phase `then`. */
 const finishPhase = (id, then) =>
   `(async () => { const wait = (ms) => new Promise((go) => setTimeout(go, ms)); location.hash = "#/phase/${id}"; await wait(500); for (let i = 0; i < 200; i++) { const b = [...document.querySelectorAll(".it .tick")].find((t) => t.getAttribute("aria-pressed") !== "true"); if (!b) break; b.click(); await wait(80); } location.hash = "#/phase/${then}"; await wait(500); return true; })()`;
@@ -99,8 +147,10 @@ const openNarrow = (title) =>
   `(() => { const it = [...document.querySelectorAll(".it")].find((i) => i.textContent.toUpperCase().includes(${JSON.stringify(title)})); const chev = it.querySelector(".chev"); if (chev.getAttribute("aria-expanded") !== "true") chev.click(); return new Promise((go) => setTimeout(() => { [...it.querySelectorAll("button")].find((b) => b.textContent.includes("Show on map")).click(); go(true); }, 300)); })()`;
 /** Show map on the pane's location line (where the drawing took the map figure's room). */
 const showMap = `[...document.querySelectorAll("aside.pane .line button")].find((b) => b.textContent.trim() === "Show map")?.click(); true`;
-/** Taps an element that has no click() of its own (an SVG control's tap target). */
-const tap = (selector) => `document.querySelector(${JSON.stringify(selector)}).dispatchEvent(new MouseEvent("click", { bubbles: true })); true`;
+/** Taps an element as a pointer does (detail 1): an SVG control's tap target, or a button whose focus
+ * differs for the keyboard (element.click() reports detail 0, which the app reads as a keyboard press). */
+const tap = (selector) =>
+  `document.querySelector(${JSON.stringify(selector)}).dispatchEvent(new MouseEvent("click", { detail: 1, bubbles: true })); true`;
 /** Opens the checklists still folded until their procedure is done. */
 const unfold = `[...document.querySelectorAll("button.folded")].forEach((b) => b.click()); true`;
 /** Presses a key on the page, as the pilot would. */
@@ -170,13 +220,14 @@ const SHOTS = [
   },
   { name: "settings", app: { hash: "#/settings" }, base: { hash: "#settings" } },
   // Flight setup, empty on both sides.
-  { name: "setup", app: { hash: "#/setup" }, base: { hash: "#setup" } },
+  // Flight setup's place: the Flight pages' Overview on our side.
+  { name: "setup", app: { hash: "#/flight/overview" }, base: { hash: "#setup" } },
   {
     // Before takeoff with takeoff data from Flight setup: the blanks filled in on both sides.
     name: "values",
     app: {
-      hash: "#/setup",
-      before: [...TAKEOFF.map(([ours, , v]) => typeInto(`#s-${ours}`, v)), go("#/phase/before-takeoff")],
+      hash: "#/flight/overview",
+      before: [inFlight(TAKEOFF), go("#/phase/before-takeoff")],
     },
     base: {
       hash: "#setup",
@@ -184,18 +235,19 @@ const SHOTS = [
     },
   },
   {
-    // Descent with the same arrival data typed into the Arrival data box on both sides.
+    // Descent with the same arrival data: in Flight › Approach on our side (the Arrival data box
+    // is a link there since batch 4), in 3.0's box on the other.
     name: "arrival",
     only: "desktop",
-    app: { hash: "#/phase/descent", before: ARRIVAL.map(([ours, , v]) => typeInto(`#a-${ours}`, v)) },
+    app: { hash: "#/flight/approach", before: [inFlight(ARRIVAL), go("#/phase/descent")] },
     base: { hash: "#descent", before: ARRIVAL.map(([, theirs, v]) => typeInto(`#s-${theirs}`, v)) },
   },
   {
-    // The flight strip with a clearance from Flight setup, its pop-out open on both sides.
+    // The flight strip with a clearance, its panel (3.0's pop-out) open on both sides.
     name: "strip",
     app: {
-      hash: "#/setup",
-      before: [...CLEARANCE.map(([ours, , v]) => typeInto(`#s-${ours}`, v)), go("#/phase/cold-dark"), click(".fsline")],
+      hash: "#/flight/clearance",
+      before: [inFlight(CLEARANCE), go("#/phase/cold-dark"), tap(".fsline")],
     },
     base: {
       hash: "#setup",
@@ -287,7 +339,7 @@ const SHOTS = [
     name: "board-checklist",
     full: true,
     only: ["desktop", "wide"],
-    app: { hash: "#/phase/before-start", before: [...BOARD_STATE, rowMenu("Anti-collision light")] },
+    app: { hash: "#/phase/before-start", before: [...BOARD_FLIGHT, go("#/phase/before-start"), ...BOARD_STATE, rowMenu("Anti-collision light")] },
   },
   // The flight strip with values and a note: its Notes chip against the Checklist board's (color.chip).
   {
@@ -295,16 +347,65 @@ const SHOTS = [
     full: true,
     only: ["desktop"],
     app: {
-      hash: "#/setup",
+      hash: "#/phase/before-start",
       before: [
-        ...CLEARANCE.map(([ours, , v]) => typeInto(`#s-${ours}`, v)),
+        ...BOARD_FLIGHT,
         go("#/phase/before-start"),
-        click(".fsline"),
+        ...BOARD_STATE,
+        tap(".fsline"),
         typeInto("#sp-notes", "Expect runway 16L"),
-        click(".fsline"),
+        tap(".fsline"),
         "document.activeElement?.blur(); true",
       ],
     },
+  },
+  // A step's blank linked to its Flight field: Before takeoff's stabilizer trim, still empty,
+  // reads "— enter takeoff trim" (Checklist board), with the board flight imported.
+  {
+    name: "board-blanks",
+    full: true,
+    only: ["desktop"],
+    app: { hash: "#/phase/before-takeoff", before: [...BOARD_FLIGHT, go("#/phase/before-takeoff"), unfold] },
+  },
+  // Batch 4: the Flight pages, each section in the boards' state.
+  ...["overview", "route", "fuel", "cruise", "weather", "clearance", "takeoff", "approach", "start", "simbrief"].map((section) => ({
+    name: `board-flight-${section}`,
+    full: true,
+    only: ["desktop", "wide", "tablet-landscape"],
+    app: { hash: "#/phase/before-start", before: [...BOARD_FLIGHT, go(`#/flight/${section}`)] },
+  })),
+  // Every placeholder fits at the narrow sizes too (owner, batch 4 review).
+  ...["takeoff", "approach"].map((section) => ({
+    name: `flight-${section}`,
+    full: true,
+    only: ["phone", "tablet"],
+    app: { hash: "#/phase/before-start", before: [...BOARD_FLIGHT, go(`#/flight/${section}`)] },
+  })),
+  // A value out of range (FSInvalid): Cruise level at FL450.
+  {
+    name: "board-flight-invalid",
+    full: true,
+    only: ["desktop", "tablet-landscape", "phone"],
+    app: { hash: "#/phase/before-start", before: [...BOARD_FLIGHT, typed([["cruise", "cruise_level", "FL450"]]), click('[data-row="cruise_level"] .label')] },
+  },
+  {
+    name: "board-flight-winds",
+    full: true,
+    only: ["desktop", "tablet-landscape"],
+    app: { hash: "#/phase/before-start", before: [...BOARD_FLIGHT, go("#/flight/weather"), click('[role="tab"]', 3)] },
+  },
+  // The strip panel, open, with the plan imported (StripOpen) and with Frequencies open (StripFreq).
+  {
+    name: "board-strip-open",
+    full: true,
+    only: ["desktop", "wide", "tablet-landscape"],
+    app: { hash: "#/phase/before-start", before: [...BOARD_FLIGHT, go("#/phase/before-start"), ...BOARD_STATE, tap(".fsline")] },
+  },
+  {
+    name: "board-strip-freq",
+    full: true,
+    only: ["desktop"],
+    app: { hash: "#/phase/before-start", before: [...BOARD_FLIGHT, go("#/phase/before-start"), ...BOARD_STATE, tap(".fsline"), click("button.freq")] },
   },
   // The tablet landscape board draws no menu.
   { name: "board-checklist", full: true, only: ["tablet-landscape"], app: { hash: "#/phase/before-start", before: BOARD_STATE } },
@@ -391,19 +492,24 @@ async function shootWhole(browser, file) {
   const base = file.replace(/\.png$/, "");
   const page = await send("browsingContext.captureScreenshot", { context, origin: "document" });
   fs.writeFileSync(`${base}-page.png`, Buffer.from(page.data, "base64"));
-  const box = await js(
-    `(() => { const p = document.querySelector("aside.pane"); if (!p) return null; const r = p.getBoundingClientRect(); return JSON.stringify({ x: r.x, y: r.y, w: r.width, h: r.height, scroll: p.scrollHeight, view: p.clientHeight, top: p.scrollTop }); })()`,
+  // What scrolls on its own: the side pane, or on the Flight pages the section column (the whole
+  // body on narrow screens), sliced top to bottom.
+  const sel = await js(
+    `["aside.pane", "main.fmain", ".flight .cols"].find((s) => { const e = document.querySelector(s); return e && e.clientHeight > 0 && (s === "aside.pane" || e.scrollHeight > e.clientHeight + 1); }) ?? null`,
   );
-  if (!box) return;
+  if (!sel) return;
+  const q = JSON.stringify(sel);
+  const box = await js(
+    `(() => { const p = document.querySelector(${q}); const r = p.getBoundingClientRect(); return JSON.stringify({ x: r.x, y: r.y, w: r.width, h: r.height, scroll: p.scrollHeight, view: p.clientHeight, top: p.scrollTop }); })()`,
+  );
   const pane = JSON.parse(box);
-  // No side pane at this width (tablet portrait and phone).
   if (!pane.w || !pane.h) return;
   const offsets = [];
   for (let at = 0; ; at += pane.view) {
     const top = Math.min(at, pane.scroll - pane.view);
-    await js(`document.querySelector("aside.pane").scrollTop = ${top}; true`);
+    await js(`document.querySelector(${q}).scrollTop = ${top}; true`);
     await sleep(250);
-    const real = await js(`document.querySelector("aside.pane").scrollTop`);
+    const real = await js(`document.querySelector(${q}).scrollTop`);
     const shot = await send("browsingContext.captureScreenshot", {
       context,
       clip: { type: "box", x: pane.x, y: pane.y, width: pane.w, height: pane.h },
@@ -412,8 +518,8 @@ async function shootWhole(browser, file) {
     offsets.push(real);
     if (top >= pane.scroll - pane.view) break;
   }
-  fs.writeFileSync(`${base}-pane.json`, JSON.stringify({ offsets, height: pane.scroll, view: pane.view }));
-  await js(`document.querySelector("aside.pane").scrollTop = ${pane.top}; true`);
+  fs.writeFileSync(`${base}-pane.json`, JSON.stringify({ offsets, height: pane.scroll, view: pane.view, what: sel }));
+  await js(`document.querySelector(${q}).scrollTop = ${pane.top}; true`);
 }
 
 /** One side-by-side image per screen: 3.0 on the left, the new app on the right. */

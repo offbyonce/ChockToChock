@@ -42,7 +42,14 @@ precedence = "override"
 SPDX-FileCopyrightText = "2020-2026 Paweł Kuna"
 SPDX-License-Identifier = "MIT"
 
-# Icons drawn on the approved boards (docs/design/round6), copied as drawn.
+# Real public weather reports used as test fixtures.
+[[annotations]]
+path = ["crates/app-core/tests/fixtures/weather/*.txt"]
+precedence = "override"
+SPDX-FileCopyrightText = "2026 offbyonce"
+SPDX-License-Identifier = "MIT"
+
+# Icons drawn on the approved boards (docs/design), copied as drawn.
 [[annotations]]
 path = ["packages/ui/src/icons/board/*.svg"]
 precedence = "override"

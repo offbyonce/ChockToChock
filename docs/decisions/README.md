@@ -32,5 +32,6 @@ Never rewrite an accepted record; add a new one that supersedes it.
 | [0021](0021-design-system-and-layouts.md) | The design system and layouts | Proposed |
 | [0022](0022-conditional-controls-and-decision-steps.md) | Conditional controls and decision steps | Accepted |
 | [0023](0023-side-and-seat-views.md) | Side and seat views from pack data | Accepted |
+| [0024](0024-outside-flight-data.md) | Outside flight data, starting with SayIntentions (Beta) | Accepted; a phase after step 7, not started |
 
 Template: Context, Decision, Consequences. Keep it under a page.

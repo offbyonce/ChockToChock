@@ -22,4 +22,10 @@ essentialsChanges: { [key in string]: EssentialsChanges },
  * Settings › Panel preview in steps (round 6): the label-free panel beside each step. Show
  * panel and Where is this? always work.
  */
-panelPreview: boolean, chime: boolean, simbriefUser: string | null, loadPlanOnOpen: boolean, };
+panelPreview: boolean, 
+/**
+ * The Flight pages' Descriptions On/Off (batch 4): each field's description under its value.
+ * Off keeps the label, the value and the chip; ? keeps the longer note. Set only from the
+ * Flight header.
+ */
+descriptions: boolean, chime: boolean, simbriefUser: string | null, loadPlanOnOpen: boolean, };

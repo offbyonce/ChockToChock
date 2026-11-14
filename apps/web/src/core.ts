@@ -9,6 +9,7 @@ import type {
   Action,
   AppInfo,
   Checklist,
+  Decoded,
   FlatPack,
   Flight,
   Loaded,
@@ -18,6 +19,7 @@ import type {
   PlanValues,
   Rail,
   Reply,
+  SavedPlan,
   Settings,
 } from "@chocktochock/bindings";
 import init, * as wasm from "./wasm/web_host.js";
@@ -116,6 +118,30 @@ export async function planUrl(user: string): Promise<string> {
 export async function parsePlan(text: string): Promise<Plan> {
   await load();
   return unwrap<Plan>(wasm.parse_plan(text));
+}
+
+/** Reads the saved SimBrief plan (decision 0019). */
+export async function loadPlan(json: string): Promise<Loaded<SavedPlan>> {
+  await load();
+  return unwrap<Loaded<SavedPlan>>(wasm.load_plan(json));
+}
+
+/** The saved plan's format number. */
+export async function planFormat(): Promise<number> {
+  await load();
+  return wasm.plan_format();
+}
+
+/** A METAR decoded from the code table. */
+export async function decodeMetar(text: string): Promise<Decoded> {
+  await load();
+  return unwrap<Decoded>(wasm.decode_metar(text));
+}
+
+/** A TAF decoded from the code table. */
+export async function decodeTaf(text: string): Promise<Decoded> {
+  await load();
+  return unwrap<Decoded>(wasm.decode_taf(text));
 }
 
 /** The flight values a plan fills in (decision 0019). */

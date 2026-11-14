@@ -4,7 +4,7 @@
 // An invented fixture for the decision step (Decision.dc.html), for the design gallery and tests
 // only: never part of a shipped pack or the app's runtime. It carries what pack format 4 cannot
 // yet say, the fuel step's value for each answer and a plan suggestion; batch 7 proposes the pack
-// field and the suggestion rule (with a 0022 amendment). The location line and "about 0 lb" are
+// field and the suggestion rule (with a 0022 amendment). The location line and "0 lb" are
 // the board's stand-ins.
 
 import type { FlatPack, PhaseList, Step, StepRow, StepState, UserOption } from "@chocktochock/bindings";
@@ -29,7 +29,7 @@ export const FUEL_VALUE: Record<string, string> = {
 };
 
 /** The plan's suggestion (the board's stand-in figure). */
-export const SUGGESTION = { value: "low", amount: "about 0 lb" };
+export const SUGGESTION = { value: "low", amount: "0 lb" };
 
 const ID = "fixture.before-start";
 const step = (id: string, text: string, expect: string, more: Partial<Step> = {}): Step => ({

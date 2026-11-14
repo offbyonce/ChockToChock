@@ -232,7 +232,56 @@ every change to `.github/workflows/`. For those, prepare what the step needs and
       - Propose, and ask before adding: the pack-format rule (an option suggests from block fuel
         less the wing capacity), the pack field for the fuel step's value for each answer, and
         the decision 0022 amendment.
-      - Replace the boards' stand-ins: the decision step's location line and "about 0 lb".
+      - Replace the boards' stand-ins: the decision step's location line and "0 lb".
+      Also on the validation list from batch 4: the Flight pages' field labels, descriptions,
+      destination chips and "Find it in your OFP" close-ups (all stand-ins from the boards); the
+      ZFW CG help text ("% MAC, from the iFly EFB"); the Preflight instruments' heading blank,
+      now the pilot's own; and the weather code table: each entry's source section checked
+      against the WMO and FAA documents, and the plain-language descriptions of the decoded rows.
+      Show the center tank row on Fuel and weights then, with the exact figure (block fuel less
+      the wing capacity, never below 0, never "about").
+
+**After step 7: outside flight data, starting with SayIntentions (a separate phase; recorded
+2026-11-13, not started).** Decision [0024](../decisions/0024-outside-flight-data.md). While
+SayIntentions (an AI ATC add-on for the simulator) runs on the pilot's computer, the app reads the
+ATC-assigned runway, SID, STAR, gate and clearance status, fills them in the strip and the Flight
+pages, and flags anything that differs from the plan or from what the pilot already briefed, so
+briefings become interactive. The boards and rules are in `~/private/design-sources/` (SIStrip,
+SIPanel, SIBriefing, SISettings, dark and light; read its README first); copy the boards to
+`docs/design/sources/` when the phase starts.
+   - **Architecture:** a separate, independently versioned module, not part of the engine. A
+     provider-neutral Rust crate (`flight-sources`): types for a value from an outside source
+     (value, source, time), the merge rule into the flight, and change detection against the
+     plan and against what was briefed; no network code and no provider names. One adapter
+     package per provider in the web layer, starting with `packages/source-sayintentions`,
+     reading SayIntentions' local `flight.json` (served on the pilot's computer during a flight,
+     as SayIntentions documents it): only the flight fields (runway, SID, STAR, gate, clearance
+     status). It never stores or sends the pilot's api_key, which that file contains, or anything
+     personal, and uses no developer key (none may be in this public repository, per
+     SayIntentions' terms), so their cloud API is out of scope. Later adapters (another ATC
+     add-on, a SimConnect companion for live aircraft state) plug into the same crate without
+     touching the engine.
+   - **ATC's clearance always wins.** A value from SayIntentions replaces the planned value and
+     anything the pilot typed, shown as "From ATC · time" and "Changed from X" each time. The
+     pilot can still edit a field in case the data is wrong or stale; the next ATC value replaces
+     it again.
+   - **A change to a briefed item** reopens that briefing step as an open step (amber dots on its
+     stage and phase, the open-steps list, the Flight log), with "Re-brief: N changes", each
+     changed row marked "Changed since you briefed: was X", and "Briefed again". The strip also
+     shows an amber notice, which can be dismissed; the open step can't.
+   - **Source tags** are neutral grey, never blue: "ATC · time", "From your plan", "Your entry",
+     "FMC".
+   - **Beta:** off by default behind Settings › Outside data, "Use SayIntentions ATC data
+     (Beta)", with a note that it hasn't been tested against a live SayIntentions flight and a
+     link to give feedback. The adapter follows SayIntentions' published `flight.json`
+     description and tolerates missing, renamed or extra fields; it never breaks the app, and with
+     SayIntentions not running the checklist works exactly as without it. "Copy what Chock to
+     Chock read" copies only the flight fields the app used. A GitHub issue template for
+     SayIntentions feedback (warning people to remove their api_key if they paste `flight.json`)
+     is drafted for the owner to add. The integration is unverified until users confirm it, and
+     the Beta label stays until they do.
+   - Phone and tablet versions come with boards after batch 5.
+
 8. **Saved progress, export and import.** Keep progress in browser storage behind the host
    adapter, and ask the browser for persistent storage. Export writes a file in a versioned format
    defined in Rust. Import validates the file, applies aliases for old ids, and never silently

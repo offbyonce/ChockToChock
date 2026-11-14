@@ -1,0 +1,228 @@
+{
+  "fetch": {
+    "status": "Success"
+  },
+  "params": {
+    "request_id": "20001",
+    "sequence_id": "board-1",
+    "time_generated": "1763027000",
+    "units": "lbs",
+    "airac": "2511"
+  },
+  "general": {
+    "icao_airline": {},
+    "flight_number": "1234",
+    "initial_altitude": "35000",
+    "route": "SUMMA2 SUMMA Q1 ETCHY MLBEC BDEGA4",
+    "costindex": "30",
+    "sid_ident": "SUMMA2",
+    "sid_trans": "SUMMA",
+    "star_ident": {},
+    "star_trans": {},
+    "avg_wind_dir": "270",
+    "avg_wind_spd": "45",
+    "avg_temp_dev": "2",
+    "air_distance": "590",
+    "route_distance": "601"
+  },
+  "origin": {
+    "icao_code": "KSEA",
+    "iata_code": "SEA",
+    "name": "Board Origin",
+    "elevation": "433",
+    "pos_lat": "47.449",
+    "pos_long": "-122.309",
+    "plan_rwy": "16L",
+    "trans_alt": "18000",
+    "trans_level": "18000",
+    "metar": "KSEA 121753Z 18008KT 10SM FEW040 BKN250 09/04 A3012",
+    "taf": "TAF KSEA 121720Z 1218/1324 18008KT P6SM FEW040 BKN250 FM130200 20010KT P6SM BKN040"
+  },
+  "destination": {
+    "icao_code": "KSFO",
+    "iata_code": "SFO",
+    "name": "Board Destination",
+    "elevation": "10",
+    "pos_lat": "37.619",
+    "pos_long": "-122.375",
+    "plan_rwy": "28R",
+    "trans_alt": "18000",
+    "trans_level": "18000",
+    "metar": "KSFO 121756Z 29012KT 10SM FEW015 SCT200 17/11 A3008",
+    "taf": "TAF KSFO 121720Z 1218/1324 29012KT P6SM FEW015 SCT200"
+  },
+  "alternate": {
+    "icao_code": "KOAK",
+    "iata_code": "OAK",
+    "name": "Board Alternate",
+    "elevation": "9",
+    "pos_lat": "37.721",
+    "pos_long": "-122.221",
+    "plan_rwy": "30",
+    "trans_alt": "18000",
+    "trans_level": "18000"
+  },
+  "weather": {
+    "altn_metar": "KOAK 121753Z 30010KT 10SM FEW020 17/10 A3008",
+    "altn_taf": "TAF KOAK 121720Z 1218/1318 30010KT P6SM FEW020"
+  },
+  "navlog": {
+    "fix": [
+      {
+        "ident": "SUMMA",
+        "type": "wpt",
+        "via_airway": "SUMMA2",
+        "is_sid_star": "0",
+        "stage": "CLB",
+        "pos_lat": "47.0",
+        "pos_long": "-122.0",
+        "altitude_feet": "18000",
+        "distance": "38",
+        "wind_dir": "250",
+        "wind_spd": "32",
+        "oat": "-18",
+        "fuel_plan_onboard": "11600",
+        "time_total": "540"
+      },
+      {
+        "ident": "TOC",
+        "type": "ltlg",
+        "via_airway": "Q1",
+        "is_sid_star": "0",
+        "stage": "CLB",
+        "pos_lat": "47.0",
+        "pos_long": "-122.0",
+        "altitude_feet": "35000",
+        "distance": "180",
+        "wind_dir": "262",
+        "wind_spd": "46",
+        "oat": "-50",
+        "fuel_plan_onboard": "10200",
+        "time_total": "1800",
+        "name": "TOP OF CLIMB"
+      },
+      {
+        "ident": "ETCHY",
+        "type": "wpt",
+        "via_airway": "Q1",
+        "is_sid_star": "0",
+        "stage": "CRZ",
+        "pos_lat": "47.0",
+        "pos_long": "-122.0",
+        "altitude_feet": "35000",
+        "distance": "180",
+        "wind_dir": "265",
+        "wind_spd": "48",
+        "oat": "-51",
+        "fuel_plan_onboard": "10200",
+        "time_total": "1800"
+      },
+      {
+        "ident": "MLBEC",
+        "type": "wpt",
+        "via_airway": "Q1",
+        "is_sid_star": "0",
+        "stage": "CRZ",
+        "pos_lat": "47.0",
+        "pos_long": "-122.0",
+        "altitude_feet": "35000",
+        "distance": "420",
+        "wind_dir": "270",
+        "wind_spd": "52",
+        "oat": "-52",
+        "fuel_plan_onboard": "6900",
+        "time_total": "4500"
+      },
+      {
+        "ident": "TOD",
+        "type": "ltlg",
+        "via_airway": "DCT",
+        "is_sid_star": "0",
+        "stage": "DSC",
+        "pos_lat": "47.0",
+        "pos_long": "-122.0",
+        "altitude_feet": "35000",
+        "distance": "470",
+        "wind_dir": "270",
+        "wind_spd": "52",
+        "oat": "-52",
+        "fuel_plan_onboard": "6400",
+        "time_total": "5000"
+      },
+      {
+        "ident": "BDEGA",
+        "type": "wpt",
+        "via_airway": "BDEGA4",
+        "is_sid_star": "0",
+        "stage": "DSC",
+        "pos_lat": "47.0",
+        "pos_long": "-122.0",
+        "altitude_feet": "24000",
+        "distance": "520",
+        "wind_dir": "280",
+        "wind_spd": "38",
+        "oat": "-31",
+        "fuel_plan_onboard": "5900",
+        "time_total": "5600"
+      },
+      {
+        "ident": "ARCHI",
+        "type": "wpt",
+        "via_airway": "BDEGA4",
+        "is_sid_star": "0",
+        "stage": "DSC",
+        "pos_lat": "47.0",
+        "pos_long": "-122.0",
+        "altitude_feet": "10000",
+        "distance": "570",
+        "wind_dir": "285",
+        "wind_spd": "20",
+        "oat": "-2",
+        "fuel_plan_onboard": "5000",
+        "time_total": "6300"
+      }
+    ]
+  },
+  "alternate_navlog": {
+    "fix": []
+  },
+  "fuel": {
+    "taxi": "400",
+    "enroute_burn": "8100",
+    "contingency": "400",
+    "alternate_burn": "2000",
+    "reserve": "1400",
+    "etops": "0",
+    "extra": "100",
+    "min_takeoff": "12000",
+    "plan_takeoff": "12000",
+    "plan_ramp": "12400",
+    "plan_landing": "3900"
+  },
+  "weights": {
+    "oew": "99000",
+    "pax_count": "162",
+    "cargo": "5200",
+    "payload": "27500",
+    "est_zfw": "126500",
+    "max_zfw": "143300",
+    "est_tow": "138500",
+    "max_tow": "181200",
+    "est_ldw": "130400",
+    "max_ldw": "152800"
+  },
+  "times": {
+    "sched_out": "1763028000",
+    "sched_off": "1763028600",
+    "sched_on": "1763035320",
+    "sched_in": "1763035800",
+    "est_time_enroute": "6720",
+    "est_block": "7800",
+    "taxi_out": "600",
+    "taxi_in": "480"
+  },
+  "aircraft": {
+    "icaocode": "B38M",
+    "name": "737 MAX 8"
+  }
+}

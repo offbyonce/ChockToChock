@@ -127,6 +127,21 @@ describe("design tokens", () => {
     expect([...new Set(found)]).toEqual([]);
   });
 
+  it("never lists a shadow token that can be none beside another shadow", () => {
+    // "inset … , none" is invalid CSS, so the browser drops the whole box-shadow (the dark
+    // segment control lost its accent ring this way).
+    const none = [...css("theme/tokens.generated.css").matchAll(/(--[a-z0-9-]+):\s*none;/g)].map(
+      (m) => m[1] ?? "",
+    );
+    const found = all.flatMap((f) =>
+      [...css(f).matchAll(/box-shadow:([^;]*);/g)]
+        .filter((m) => (m[1] ?? "").includes(",") && none.some((n) => m[1]?.includes(`var(${n})`)))
+        .map(() => f),
+    );
+    expect(none.length).toBeGreaterThan(0);
+    expect(found).toEqual([]);
+  });
+
   it("draws SVG only in the drawing renderer", () => {
     const found = all.filter(
       (f) => f.endsWith(".svelte") && !DRAWINGS.has(f) && /<svg[\s>]/.test(SOURCES[f] ?? ""),

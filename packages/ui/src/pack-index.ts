@@ -13,6 +13,7 @@ import type {
   OverviewRegion,
   Panel,
   PanelSection,
+  StartState,
   Step,
   UserOption,
   Zone,
@@ -26,6 +27,8 @@ export type PackIndex = {
   zones: Zone[];
   overview: Overview | null;
   options: UserOption[];
+  /** The iFly panel states (start states) the pack offers. */
+  startStates: StartState[];
   /** A shared "how to do it" note's steps, by id. */
   how(id: string): string[] | undefined;
   /** A shared explanation, by id. */
@@ -158,6 +161,7 @@ export function indexPack(pack: FlatPack): PackIndex {
     zones: [...zones.values()],
     overview: pack.content.controls?.overview ?? null,
     options: pack.content.phases?.options ?? [],
+    startStates: pack.content.start_states?.states ?? [],
     section: (id) => sections.get(id),
     panelOf: (id) => panels.get(id),
     how: (id) => pack.content.notes?.how?.find((n) => n.id === id)?.steps,

@@ -50,6 +50,58 @@ const evaluate = (expr, vals) => {
   }
 };
 
+/** The index just past the `</tag>` that closes the block opening at `from`, counting nested blocks. */
+function closeOf(body, tag, from) {
+  const re = new RegExp(`<${tag}[\\s>]|</${tag}>`, "g");
+  re.lastIndex = from + 1;
+  let depth = 1;
+  for (let m = re.exec(body); m; m = re.exec(body)) {
+    depth += m[0].startsWith("</") ? -1 : 1;
+    if (depth === 0) return { inner: body.indexOf(">", from) + 1, end: m.index, after: m.index + m[0].length };
+  }
+  throw new Error(`unclosed <${tag}>`);
+}
+
+/**
+ * Fills a template: <sc-for list="{{ … }}" as="x"> repeats its body for each item (with x in
+ * scope), <sc-if value="{{ … }}"> keeps or drops its body, outermost first so loop variables
+ * reach the blocks inside; then <dc-import>ed boards and the {{ … }} holes.
+ */
+function fill(body, vals, dir) {
+  let out = "";
+  for (;;) {
+    const m = /<sc-(for|if)\s([^>]*)>/.exec(body);
+    if (!m) break;
+    const head = body.slice(0, m.index);
+    out += plain(head, vals, dir);
+    const tag = `sc-${m[1]}`;
+    const { inner, end, after } = closeOf(body, tag, m.index);
+    const block = body.slice(inner, end);
+    const attr = (k) => new RegExp(`${k}="([^"]*)"`).exec(m[2])?.[1] ?? "";
+    const expr = attr(m[1] === "for" ? "list" : "value").replace(/^\{\{\s*|\s*\}\}$/g, "");
+    if (m[1] === "for") {
+      const list = evaluate(expr, vals);
+      const as = attr("as");
+      for (const item of Array.isArray(list) ? list : []) out += fill(block, { ...vals, [as]: item }, dir);
+    } else if (evaluate(expr, vals)) {
+      out += fill(block, vals, dir);
+    }
+    body = body.slice(after);
+  }
+  return out + plain(body, vals, dir);
+}
+
+/** Imports and holes in a stretch with no blocks left in it. */
+function plain(text, vals, dir) {
+  text = text.replace(/<dc-import ([^>]*)><\/dc-import>/g, (_, attrs) => {
+    const a = Object.fromEntries([...attrs.matchAll(/([\w-]+)="([^"]*)"/g)].map(([, k, v]) => [camel(k), v.replace(/\{\{\s*([\s\S]*?)\s*\}\}/g, (_, e) => String(evaluate(e, vals)))]));
+    const { name: inner, hintSize: _hint, ...rest } = a;
+    for (const k of Object.keys(rest)) if (rest[k] === "true" || rest[k] === "false") rest[k] = rest[k] === "true";
+    return render(inner, rest, dir);
+  });
+  return text.replace(/\{\{\s*([\s\S]*?)\s*\}\}/g, (_, e) => String(evaluate(e, vals)));
+}
+
 /** One board as HTML, for these props. */
 function render(name, given = {}, dir = boards) {
   const text = fs.readFileSync(path.join(dir, `${name}.dc.html`), "utf8");
@@ -57,18 +109,7 @@ function render(name, given = {}, dir = boards) {
   const vals = valuesOf(text, props);
   let body = text.slice(text.indexOf("<x-dc>") + 6, text.indexOf("</x-dc>"));
   body = body.replace(/<helmet>[\s\S]*?<\/helmet>/, "");
-  // Conditional blocks, innermost first, before imports, so a board imported inside a
-  // false block is never rendered.
-  const sc = /<sc-if value="\{\{\s*([^"]*?)\s*\}\}"[^>]*>((?:(?!<sc-if)[\s\S])*?)<\/sc-if>/;
-  while (sc.test(body)) body = body.replace(sc, (_, e, inner) => (evaluate(e, vals) ? inner : ""));
-  // Then imports: each renders its board with its attributes as props.
-  body = body.replace(/<dc-import ([^>]*)><\/dc-import>/g, (_, attrs) => {
-    const a = Object.fromEntries([...attrs.matchAll(/([\w-]+)="([^"]*)"/g)].map(([, k, v]) => [camel(k), v.replace(/\{\{\s*([\s\S]*?)\s*\}\}/g, (_, e) => String(evaluate(e, vals)))]));
-    const { name: inner, hintSize: _hint, ...rest } = a;
-    for (const k of Object.keys(rest)) if (rest[k] === "true" || rest[k] === "false") rest[k] = rest[k] === "true";
-    return render(inner, rest, dir);
-  });
-  return body.replace(/\{\{\s*([\s\S]*?)\s*\}\}/g, (_, e) => String(evaluate(e, vals)));
+  return fill(body, vals, dir);
 }
 
 function page(name, given, dir) {
@@ -105,6 +146,26 @@ const SHOTS = [
   ["DecChanging", { state: "changing" }, 1120, 560, "Decision", round6],
   ["DecChanged", { state: "changed" }, 1120, 560, "Decision", round6],
   ["DecPhone", { state: "phone" }, 390, 844, "Decision", round6],
+  // Batch 4: the strip panel and the Flight pages.
+  ["StripOpen", {}, 1440, 900, "StripOpen", round6],
+  ["StripFreq", { freqOpen: true }, 1440, 900, "StripOpen", round6],
+  ["SimBrief", {}, 1440, 900],
+  ["Start", {}, 1440, 900],
+  ["R6Weather", {}, 1440, 900, "Weather", round6],
+  ["R6Winds", { tab: "winds" }, 1440, 900, "Weather", round6],
+  ["R6Approach", { view: "descent" }, 1440, 900, "Views", round6],
+  ["FSOverview", { section: "overview" }, 1440, 900, "FlightSection", round6],
+  ["FSRoute", { section: "route" }, 1440, 900, "FlightSection", round6],
+  ["FSFuel", { section: "fuel" }, 1440, 900, "FlightSection", round6],
+  ["FSCruise", { section: "cruise" }, 1440, 900, "FlightSection", round6],
+  ["FSClearance", { section: "clearance" }, 1440, 900, "FlightSection", round6],
+  ["FSTakeoff", { section: "takeoff" }, 1440, 900, "FlightSection", round6],
+  ["FSApproach", { section: "approach" }, 1440, 900, "FlightSection", round6],
+  // Batch 4 additions: tablet landscape and a value out of range.
+  ["WxTabL", { layout: "tabletL" }, 1180, 820, "Weather", round6],
+  ["WindsTabL", { tab: "winds", layout: "tabletL" }, 1180, 820, "Weather", round6],
+  ["FSTakeoffTabL", { section: "takeoff", layout: "tabletL" }, 1180, 820, "FlightSection", round6],
+  ["FSInvalid", { section: "cruiseInvalid" }, 1440, 900, "FlightSection", round6],
 ];
 
 async function main() {

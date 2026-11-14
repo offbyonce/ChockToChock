@@ -57,7 +57,15 @@ export const COLOR = {
     "toggle-knob": "#ffffff",
     "toast-text": "#0f1218",
     "toast-link": "#1d4fd8",
-    "toast-shadow": "0 12px 32px rgba(0, 0, 0, 0.5)"
+    "toast-shadow": "0 12px 32px rgba(0, 0, 0, 0.5)",
+    "paper": "#1b212b",
+    "paper-block": "#3a4351",
+    "paper-highlight": "rgba(76, 141, 255, 0.35)",
+    "paper-text": "#d5dae2",
+    "strip-panel": "#121720",
+    "drop-zone": "#121720",
+    "drop-zone-border": "#6b7482",
+    "field-border": "#66727f"
   },
   "light": {
     "bg": "#f5f7fa",
@@ -111,7 +119,15 @@ export const COLOR = {
     "toggle-knob": "#ffffff",
     "toast-text": "#ffffff",
     "toast-link": "#7fb0ff",
-    "toast-shadow": "0 12px 32px rgba(16, 24, 40, 0.28)"
+    "toast-shadow": "0 12px 32px rgba(16, 24, 40, 0.28)",
+    "paper": "#ffffff",
+    "paper-block": "#c3cad4",
+    "paper-highlight": "rgba(37, 99, 235, 0.3)",
+    "paper-text": "#2b313b",
+    "strip-panel": "#ffffff",
+    "drop-zone": "#f5f7fa",
+    "drop-zone-border": "#7a8391",
+    "field-border": "#828b99"
   }
 } as const;
 

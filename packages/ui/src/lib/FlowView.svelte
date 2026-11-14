@@ -8,6 +8,7 @@ value on the right. The pilot confirms each step; the app never knows a switch p
 (decision 0006). At the end of the phase come the completion calls.
 -->
 <script lang="ts">
+  import { blankLinks } from "../flight/sections";
   import BlankFields from "./BlankFields.svelte";
   import { fillParts } from "./value-parts";
   import type { Detail, PhaseView, Step } from "@chocktochock/bindings";
@@ -90,7 +91,7 @@ value on the right. The pilot confirms each step; the app never knows a switch p
       </h1>
       {#if fill}
         <div class="value fill">
-          <BlankFields name={step.text} blanks={fill.blanks} rest={fill.rest} values={entry.row.values} onBlank={(n, v) => onBlank(step.id, n, v)} />
+          <BlankFields name={step.text} blanks={fill.blanks} rest={fill.rest} values={entry.row.values} links={blankLinks(step.fill ?? [])} onBlank={(n, v) => onBlank(step.id, n, v)} />
         </div>
       {:else}
         <p class="value">{step.expect}</p>

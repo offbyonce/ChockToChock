@@ -15,6 +15,7 @@ suggestion ringed with Confirm, the answer once done, and Change, which reopens 
 row in place. A step that depends on the answer links back to it.
 -->
 <script lang="ts">
+  import { blankLinks } from "../flight/sections";
   import type { Detail, Step, StepRow } from "@chocktochock/bindings";
   import type { PackIndex } from "../pack-index";
   import BlankFields from "./BlankFields.svelte";
@@ -164,7 +165,7 @@ row in place. A step that depends on the answer links back to it.
         <button class="dlink" type="button" onclick={() => decisions?.change(dependent.decisionStep)}>{dependent.option.title} {lowerFirst(shortLabel(labelOf(dependent.option, dependent.answer)))}</button>
       {/if}
     {:else if step.expect && fill}
-      <BlankFields name={step.text} blanks={fill.blanks} rest={fill.rest} values={row.values} {onBlank} />
+      <BlankFields name={step.text} blanks={fill.blanks} rest={fill.rest} values={row.values} links={blankLinks(step.fill ?? [])} {onBlank} />
     {:else if step.expect}
       <span class="val">{step.expect}</span>
     {/if}

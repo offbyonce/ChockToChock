@@ -243,6 +243,62 @@ fn performance(plan: &Plan, v: &mut BTreeMap<FillField, String>) {
     }
 }
 
+/// The alternate, the arrival and each airport's altimeter setting (batch 4, owner 2026-11-13).
+/// The destination's setting takes the departure's unit, converted when its METAR uses the other.
+fn arrival(plan: &Plan, v: &mut BTreeMap<FillField, String>) {
+    if let Some(a) = icao(plan.alternates.first().and_then(|a| a.icao.as_ref())) {
+        put(v, FillField::Alternate, a);
+    }
+    if let Some(r) = plan
+        .destination
+        .as_ref()
+        .and_then(|d| d.runway.as_deref())
+        .and_then(runway)
+    {
+        put(v, FillField::ArrivalRunway, r);
+    }
+    if let Some(star) = plan
+        .general
+        .star
+        .as_deref()
+        .map(str::to_uppercase)
+        .filter(|s| (2..=8).contains(&s.len()) && s.chars().all(|c| c.is_ascii_alphanumeric()))
+    {
+        put(v, FillField::Star, star);
+    }
+    let metar = |a: Option<&simbrief::Airport>| {
+        a.and_then(|a| a.metar.as_deref())
+            .and_then(crate::weather::altimeter)
+    };
+    let dep = metar(plan.origin.as_ref());
+    let dest = metar(plan.destination.as_ref());
+    let unit = dep.as_ref().or(dest.as_ref()).map(|a| a.unit.clone());
+    if let Some(u) = &unit {
+        put(v, FillField::QnhUnit, u.clone());
+    }
+    if let Some(a) = dep {
+        put(v, FillField::Qnh, a.value);
+    }
+    if let (Some(a), Some(u)) = (dest, unit) {
+        put(v, FillField::DestinationQnh, in_unit(&a, &u));
+    }
+}
+
+/// An altimeter setting in the flight's unit: 1 inHg is 33.8639 hPa.
+fn in_unit(a: &crate::weather::Altimeter, unit: &str) -> String {
+    match (a.unit.as_str(), unit) {
+        ("inHg", "hPa") => a
+            .value
+            .parse::<f64>()
+            .map_or_else(|_| a.value.clone(), |v| format!("{:.0}", v * 33.8639)),
+        ("hPa", "inHg") => a
+            .value
+            .parse::<f64>()
+            .map_or_else(|_| a.value.clone(), |v| format!("{:.2}", v / 33.8639)),
+        _ => a.value.clone(),
+    }
+}
+
 /// The flight values a plan fills in, read as 3.0 read them. A plan without both airports is
 /// refused, as 3.0 refused it.
 pub fn plan_values(plan: &Plan) -> Result<PlanValues, AppError> {
@@ -297,6 +353,7 @@ pub fn plan_values(plan: &Plan) -> Result<PlanValues, AppError> {
         put(v, FillField::Transition, t);
     }
     performance(plan, v);
+    arrival(plan, v);
     // The pilot's fields: not the position, the database or the weight unit, as 3.0 counted.
     let filled = v
         .keys()
@@ -354,6 +411,36 @@ mod tests {
             !pv.values.contains_key(&FillField::Transition),
             "the plan's SID has no transition"
         );
+    }
+
+    #[test]
+    fn a_plan_fills_the_alternate_arrival_and_both_altimeter_settings() {
+        let mut plan = parse_plan(&fixture("ofp-sample.json")).unwrap();
+        let pv = plan_values(&plan).unwrap();
+        assert_eq!(
+            pv.values.get(&FillField::Alternate).map(String::as_str),
+            Some("LFPO")
+        );
+        assert_eq!(
+            pv.values
+                .get(&FillField::LandingAltitude)
+                .map(String::as_str),
+            Some("392")
+        );
+        let o = plan.origin.as_mut().unwrap();
+        o.metar = Some("EGLL 010850Z 24008KT 9999 FEW030 15/08 Q1015".into());
+        let d = plan.destination.as_mut().unwrap();
+        d.metar = Some("KSFO 010856Z 28010KT 10SM FEW017 15/11 A2992".into());
+        d.runway = Some("RW28R".into());
+        plan.general.star = Some("bdega4".into());
+        let pv = plan_values(&plan).unwrap();
+        let get = |f: FillField| pv.values.get(&f).map(String::as_str);
+        assert_eq!(get(FillField::QnhUnit), Some("hPa"));
+        assert_eq!(get(FillField::Qnh), Some("1015"));
+        // The destination's 29.92 inHg in the departure's unit.
+        assert_eq!(get(FillField::DestinationQnh), Some("1013"));
+        assert_eq!(get(FillField::ArrivalRunway), Some("28R"));
+        assert_eq!(get(FillField::Star), Some("BDEGA4"));
     }
 
     #[test]

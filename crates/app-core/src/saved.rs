@@ -36,9 +36,29 @@ pub enum Loaded<T> {
 pub(crate) type Migration = fn(Value) -> Result<Value, String>;
 
 /// Migrations for [`Flight`]: entry `i` turns format `i + 1` into format `i + 2`.
-const FLIGHT_MIGRATIONS: &[Migration] = &[];
+const FLIGHT_MIGRATIONS: &[Migration] = &[flight_1_to_2];
+
+/// Format 2 adds the steps a panel state ticked or skipped (none yet in an older flight) and new
+/// fill fields (destination QNH, arrival runway, STAR, alternate, tower frequency, thrust
+/// rating), which are only new keys. Nothing older changes.
+fn flight_1_to_2(value: Value) -> Result<Value, String> {
+    value.as_object().ok_or("the flight is not an object")?;
+    Ok(value)
+}
 /// Migrations for [`Settings`], indexed the same way.
-const SETTINGS_MIGRATIONS: &[Migration] = &[settings_1_to_2, settings_2_to_3, settings_3_to_4];
+const SETTINGS_MIGRATIONS: &[Migration] = &[
+    settings_1_to_2,
+    settings_2_to_3,
+    settings_3_to_4,
+    settings_4_to_5,
+];
+
+/// Format 5 adds the Flight pages' Descriptions On/Off, On to start with.
+fn settings_4_to_5(mut value: Value) -> Result<Value, String> {
+    let object = value.as_object_mut().ok_or("settings are not an object")?;
+    object.insert("descriptions".into(), Value::from(true));
+    Ok(value)
+}
 
 /// Format 4 replaces Map in steps with Panel preview in steps (round 6): Off stays Off, every
 /// other choice becomes On.
@@ -132,6 +152,11 @@ pub fn load_flight(json: &str) -> Loaded<Flight> {
     load_with(json, FLIGHT_FORMAT, FLIGHT_MIGRATIONS)
 }
 
+/// Read the saved SimBrief plan (decision 0019).
+pub fn load_plan(json: &str) -> Loaded<crate::SavedPlan> {
+    load_with(json, crate::PLAN_FORMAT, &[])
+}
+
 /// Read saved settings.
 pub fn load_settings(json: &str) -> Loaded<Settings> {
     load_with(json, SETTINGS_FORMAT, SETTINGS_MIGRATIONS)
@@ -143,6 +168,31 @@ mod tests {
     use serde_json::json;
 
     use super::*;
+
+    #[test]
+    fn a_format_1_flight_loads_as_format_2_unchanged() {
+        let pack = crate::test_support::ifly_pack();
+        let mut flight = crate::new_flight(&pack);
+        flight
+            .values
+            .insert(checklist_core::FillField::Qnh, "29.92".into());
+        let mut old = serde_json::to_value(&flight).unwrap();
+        old["format"] = json!(1);
+        let Loaded::Ready {
+            value,
+            migrated_from,
+        } = load_flight(&old.to_string())
+        else {
+            panic!("did not load");
+        };
+        assert_eq!(migrated_from, Some(1));
+        assert_eq!(value.format, 2);
+        assert_eq!(
+            value.values, flight.values,
+            "the departure QNH stays; the destination's is new"
+        );
+        assert!(value.state_ticks.is_empty());
+    }
 
     #[test]
     fn current_settings_read_back() {
@@ -221,6 +271,22 @@ mod tests {
             assert_eq!(migrated_from, Some(3));
             assert_eq!(value.panel_preview, preview, "{mode}");
         }
+    }
+
+    #[test]
+    fn settings_from_format_4_get_descriptions_on() {
+        let mut old = serde_json::to_value(Settings::default()).unwrap();
+        old["format"] = json!(4);
+        old.as_object_mut().unwrap().remove("descriptions");
+        let Loaded::Ready {
+            value,
+            migrated_from,
+        } = load_settings(&old.to_string())
+        else {
+            panic!("not ready");
+        };
+        assert_eq!(migrated_from, Some(4));
+        assert!(value.descriptions);
     }
 
     #[test]

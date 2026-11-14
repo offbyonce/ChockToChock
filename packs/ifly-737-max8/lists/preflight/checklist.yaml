@@ -93,7 +93,7 @@ steps:
       - at: "mn/fd/INBOARD DU: ND/1"
       - at: "mn/fd/OUTBOARD DU: PFD/1"
     fill:
-      - heading
+      - manual
       - qnh
     why: Confirms the instruments before flight
     check: Heading and altimeter agree
