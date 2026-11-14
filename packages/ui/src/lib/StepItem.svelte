@@ -240,7 +240,7 @@ row in place. A step that depends on the answer links back to it.
     grid-template-columns: calc(var(--size-touch-min) - var(--space-1)) minmax(0, 1fr) 34% var(--size-touch-min);
     column-gap: var(--space-3);
     align-items: center;
-    padding: calc(var(--space-1) + var(--border-thick) / 2) var(--space-1) calc(var(--space-1) + var(--border-thick) / 2) var(--space-4);
+    padding: calc(var(--space-1) + var(--border-thick)) var(--space-1) calc(var(--space-1) + var(--border-thick)) var(--space-4);
     border-bottom: var(--border-thin) solid var(--color-line);
   }
   .it:last-child {
@@ -268,12 +268,13 @@ row in place. A step that depends on the answer links back to it.
     border: 0;
     background: none;
   }
+  /* The boards draw the status circles 20 px across (r 10 in a 22 px box). */
   .status {
     display: grid;
     place-items: center;
     box-sizing: border-box;
-    width: var(--size-status-icon);
-    height: var(--size-status-icon);
+    width: calc(var(--size-status-icon) - var(--border-thick));
+    height: calc(var(--size-status-icon) - var(--border-thick));
     border: var(--border-thick) solid var(--color-todo-ring);
     border-radius: 50%;
   }
@@ -281,8 +282,8 @@ row in place. A step that depends on the answer links back to it.
     border-color: var(--color-accent);
   }
   .pip {
-    width: calc(var(--size-status-icon) / 2);
-    height: calc(var(--size-status-icon) / 2);
+    width: calc((var(--size-status-icon) - var(--border-thick)) / 2);
+    height: calc((var(--size-status-icon) - var(--border-thick)) / 2);
     border-radius: 50%;
     background: var(--color-accent);
   }
@@ -362,6 +363,7 @@ row in place. A step that depends on the answer links back to it.
     color: var(--color-text-secondary);
   }
   .current .nm {
+    line-height: var(--leading-tight);
     color: var(--color-text-strong);
     font-size: var(--font-size-panel-title);
     font-weight: var(--weight-bold);
@@ -393,6 +395,9 @@ row in place. A step that depends on the answer links back to it.
   .look {
     color: var(--color-text-secondary);
     font-size: var(--font-size-secondary);
+  }
+  .current .where-line {
+    line-height: var(--leading-snug);
   }
   .look b {
     color: var(--color-text);
@@ -458,7 +463,7 @@ row in place. A step that depends on the answer links back to it.
     flex-direction: column;
     /* The board's 248 px is the content width; padding and border add to it. */
     width: calc(10 * var(--space-6) + var(--space-2));
-    padding: calc(var(--space-1) + var(--border-thick) / 2);
+    padding: calc(var(--space-1) + var(--border-thick));
     border: var(--border-thin) solid var(--color-border);
     border-radius: var(--radius-control);
     background: var(--color-surface);
@@ -584,6 +589,7 @@ row in place. A step that depends on the answer links back to it.
   .suggest {
     color: var(--color-accent-text);
     font-size: var(--font-size-secondary);
+    line-height: var(--leading-tight);
   }
   .src {
     color: var(--color-text-muted);
@@ -596,7 +602,6 @@ row in place. A step that depends on the answer links back to it.
   .value.asking .val {
     color: var(--color-text-strong);
     font-weight: var(--weight-medium);
-    line-height: var(--leading-tight);
   }
   .prompt {
     line-height: var(--leading-tight);
@@ -677,13 +682,13 @@ row in place. A step that depends on the answer links back to it.
     z-index: 1;
     align-self: flex-start;
     min-height: 0;
-    line-height: var(--leading-tight);
     padding: 0;
     border: 0;
     background: none;
     color: var(--color-link);
     font: inherit;
     font-size: var(--font-size-secondary);
+    line-height: var(--leading-tight);
     text-align: left;
   }
   .dlink::before {
@@ -701,10 +706,10 @@ row in place. A step that depends on the answer links back to it.
     padding: var(--space-3) var(--space-1) calc(var(--space-3) + var(--border-thick)) var(--space-4);
     background: var(--color-surface-2);
   }
+  /* The check sits level with the title (DecChanging: 10 px from the row's top padding). */
   .it.changing .tick {
     align-self: start;
-    height: auto;
-    margin-top: calc(var(--space-2) + var(--border-thick));
+    margin-top: calc(-1 * var(--border-thin));
   }
   .it.changing .row {
     padding-top: var(--space-2);

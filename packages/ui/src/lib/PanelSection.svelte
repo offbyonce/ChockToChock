@@ -321,6 +321,10 @@ What the step asks for, never the simulator's state (decision 0006).
   .textless :global(rect) {
     shape-rendering: crispEdges;
   }
+  /* A round outline cannot snap to pixels; half a pixel more keeps its diagonals at 3:1. */
+  .textless :global(circle.body) {
+    stroke-width: 1.5;
+  }
   .frame {
     fill: var(--panel-bg);
     stroke: var(--panel-stroke);

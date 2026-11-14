@@ -169,7 +169,8 @@ folded to one line with its count until the phase's procedure is done.
     display: flex;
     align-items: center;
     gap: var(--space-3);
-    min-height: calc(var(--size-touch-min) + var(--space-2));
+    /* The board's 52 px is the content height; its rule adds 1. */
+    min-height: calc(var(--size-touch-min) + var(--space-2) + var(--border-thin));
     padding: 0 var(--space-4) 0 calc(var(--space-4) + var(--space-1));
     border-bottom: var(--border-thin) solid var(--color-line);
   }
