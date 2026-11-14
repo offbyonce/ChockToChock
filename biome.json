@@ -13,6 +13,7 @@
       "!apps/web/src/wasm",
       "!schemas",
       "!docs/design/boards",
+      "!docs/design/round6/boards",
       "!docs/design/tokens.json",
       "!target"
     ]

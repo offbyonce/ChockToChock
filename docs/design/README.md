@@ -29,6 +29,15 @@ wins.
   the inline drawing in an expanded step, Flow's side pane drawing and Settings › Map in steps.
   The rest of those boards stands.
 
+**Round 6 update (approved 2026-11-13).** `Tablet`, `Locator`, `Checklist`, `R6Pane` and
+`R6PaneLight` now show the label-free preview card in every side pane (desktop, wide, tablet
+landscape and the panes behind the slide-out) and in the tablet portrait expanded step; the Show
+panel button is gone from every board. `Decision.dc.html` adds the decision step (decision 0022):
+`DecUnanswered`, `DecSuggested`, `DecAnswered`, `DecChanging`, `DecChanged` and `DecPhone`, dark
+and light. Its location line ("Main panel (P2) · fuel quantity on the upper display") and "about
+0 lb" are stand-ins until the center tank step is sourced (Phase 2 step 7, batch 7). The toast on
+`DecChanged` is the one every Undo uses (color.toast-text, color.toast-link, color.toast-shadow).
+
 ## Read in this order
 
 1. `rules.md`: what the tokens mean and the rules every screen follows.

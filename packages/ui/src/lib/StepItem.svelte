@@ -9,6 +9,10 @@ target. The current step is larger, with where it is, Done, Skip for now and the
 skipped step has a Skipped pill and Do it now. States read without color too: the icon's shape
 and the words. Every step looks the same (decision 0013). Blanks stay inline fields in the value
 column until batch 4 (owner). On narrow screens a chevron opens the step's details, until batch 5.
+A decision step (decision 0022, Decision.dc.html) asks its option in the value column: a diamond
+icon while unanswered, the choices as secondary buttons (choosing one ticks the step), a plan
+suggestion ringed with Confirm, the answer once done, and Change, which reopens the choices on the
+row in place. A step that depends on the answer links back to it.
 -->
 <script lang="ts">
   import type { Detail, Step, StepRow } from "@chocktochock/bindings";
@@ -19,6 +23,7 @@ column until batch 4 (owner). On narrow screens a chevron opens the step's detai
   import { stepTitle } from "./sentence";
   import StepDetail from "./StepDetail.svelte";
   import { fillParts } from "./value-parts";
+  import { SOURCE_WORDS, choices, labelOf, lowerFirst, shortLabel, type Decisions } from "./decision";
 
   let {
     index,
@@ -36,6 +41,7 @@ column until batch 4 (owner). On narrow screens a chevron opens the step's detai
     onBlank,
     onSelect,
     onEssentials,
+    decisions,
   }: {
     index: PackIndex;
     step: Step;
@@ -55,7 +61,19 @@ column until batch 4 (owner). On narrow screens a chevron opens the step's detai
     onSelect: () => void;
     /** Adds the step to Essentials (true) or removes it (false). */
     onEssentials?: ((add: boolean) => void) | undefined;
+    /** Decision steps and the steps that depend on them (decision 0022). */
+    decisions?: Decisions | undefined;
   } = $props();
+
+  let decision = $derived(decisions?.state(step) ?? null);
+  let dependent = $derived(decisions?.dependent(step) ?? null);
+  /** The choices show: the current, unanswered decision step, or Change open on an answered one. */
+  let asking = $derived(!!decision && ((row.state === "current" && decision.answer === null) || decision.changing));
+  let options = $derived(decision ? choices(decision.option) : []);
+  /** The choice that is ringed: the plan's suggestion while asking, the answer while changing. */
+  let ringed = $derived(decision ? (decision.changing ? decision.answer : decision.answer === null ? (decision.suggestion?.value ?? null) : null) : null);
+  let suggested = $derived(!!decision && decision.answer === null && !decision.changing && !!decision.suggestion);
+  let numbers = $derived(options.length > 1 ? `${options.slice(0, -1).map((_, n) => n + 1).join(", ")} or ${options.length}` : "1");
 
   let open = $state(false);
   let mapOpen = $state(false);
@@ -69,7 +87,14 @@ column until batch 4 (owner). On narrow screens a chevron opens the step's detai
     doneAt === undefined ? "" : new Date(doneAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
   );
   const STATE_WORDS = { to_do: "to do", current: "current", done: "done", skipped: "skipped, still open" };
-  let tickLabel = $derived(row.state === "done" ? `Clear the tick on ${title}` : `Confirm ${title}: ${step.expect}`);
+  let tickLabel = $derived(
+    row.state === "done" ? `Clear the tick on ${title}` : decision && decision.answer === null ? `${title}: decision step, to answer` : `Confirm ${title}: ${step.expect}`,
+  );
+  /** An unanswered decision step ticks only by answering. */
+  function tickOrAsk(): void {
+    if (decision && decision.answer === null && row.state !== "done") return;
+    onTick();
+  }
 
   function act(fn: () => void): void {
     menu = false;
@@ -85,11 +110,16 @@ column until batch 4 (owner). On narrow screens a chevron opens the step's detai
 
 <svelte:document onpointerdown={outside} onkeydown={key} />
 
-<li class="it {row.state}" class:sel={selected} class:marked class:large class:current>
-  <button class="tick" type="button" aria-label={tickLabel} aria-pressed={row.state === "done"} onclick={onTick}>
-    <span class="status {row.state}" aria-hidden="true">
-      {#if row.state === "done"}<Icon name="check" />{:else if row.state === "skipped"}<i class="dash"></i>{:else if current}<i class="pip"></i>{/if}
-    </span>
+<li class="it {row.state}" class:sel={selected} class:marked class:large class:current class:changing={decision?.changing}>
+  <button class="tick" type="button" aria-label={tickLabel} aria-pressed={row.state === "done"} aria-disabled={decision && decision.answer === null && row.state !== "done" ? "true" : undefined} onclick={tickOrAsk}>
+    {#if current && asking && !decision?.changing}
+      <!-- A decision step to answer: a diamond, not the circle (Decision.dc.html). -->
+      <span class="diamond" aria-hidden="true"><Icon name="decision" /></span>
+    {:else}
+      <span class="status {row.state}" aria-hidden="true">
+        {#if row.state === "done"}<Icon name="check" />{:else if row.state === "skipped"}<i class="dash"></i>{:else if current}<i class="pip"></i>{/if}
+      </span>
+    {/if}
   </button>
   <!-- The whole row selects the step (a stretched target over the row); the controls in it sit
        above that target. -->
@@ -100,16 +130,40 @@ column until batch 4 (owner). On narrow screens a chevron opens the step's detai
         {#if full && row.essential && !large}<span class="ebadge" title="Essentials step" aria-hidden="true">E</span><span class="sr-only">, in Essentials</span>{/if}
         <span class="sr-only">, {STATE_WORDS[row.state]}</span>
         {#if row.state === "skipped"}<span class="pill" aria-hidden="true">Skipped</span>{/if}
-        {#if row.state === "done" && time}<span class="stamp" aria-hidden="true">Done {time}</span>{/if}
+        {#if row.state === "done" && time && !decision}<span class="stamp" aria-hidden="true">Done {time}</span>{/if}
         {#if !row.counts}<span class="ns">Not modeled in the simulator</span>{/if}
       </span>
-      {#if current && place}<span class="where-line">{place.zone.area} · {place.zone.title}</span>{:else if place && detail === "expanded"}<span class="where-line narrow">{place.zone.area} · {place.zone.title}</span>{/if}
+      {#if current && place && !decision?.changing}<span class="where-line">{place.zone.area} · {place.zone.title}</span>{:else if place && detail === "expanded" && !decision}<span class="where-line narrow">{place.zone.area} · {place.zone.title}</span>{/if}
+      {#if decision?.changing}<span class="src">Change your answer</span>
+      {:else if suggested && current}<span class="suggest">Suggested from your SimBrief plan: {decision?.suggestion?.amount}</span>
+      {:else if decision?.answer !== null && decision?.source && row.state === "done"}<span class="src">{SOURCE_WORDS[decision.source]}</span>{/if}
       {#if detail === "expanded" && step.look_for}<span class="look"><b>Look for:</b> {step.look_for}</span>{/if}
     </button>
     {#if row.state === "skipped"}<button class="do-now" type="button" onclick={onSelect}>Do it now</button>{/if}
   </div>
-  <div class="value">
-    {#if step.expect && fill}
+  <div class="value" class:asking class:answered={!!decision && decision.answer !== null && !asking} class:dep={!!dependent}>
+    {#if decision && asking}
+      <span class="val">{step.expect}</span>
+      {#if !decision.changing && decision.option.description}<span class="prompt">{decision.option.description}</span>{/if}
+      {#each options as c, n (c.value)}
+        <button class="choice" type="button" aria-pressed={ringed === c.value} aria-keyshortcuts={String(n + 1)} onclick={() => decisions?.answer(row.id, c.value)}>
+          {#if decision.changing && ringed === c.value}<Icon name="check" />{/if}
+          <span class="cl">{c.label}</span>
+          {#if suggested && ringed === c.value}<span class="tag">Suggested</span>{/if}
+        </button>
+      {/each}
+      {#if decision.changing}<button class="keep" type="button" onclick={() => decisions?.keep(row.id)}>Keep this answer</button>{/if}
+    {:else if decision && decision.answer !== null}
+      <span class="val">{step.expect}</span>
+      <span class="ans">{labelOf(decision.option, decision.answer)}</span>
+    {:else if dependent}
+      <span class="val">{dependent.value ?? step.expect}</span>
+      {#if dependent.answer === null}
+        <button class="dlink muted" type="button" onclick={() => decisions?.change(dependent.decisionStep)}>Depends on the {lowerFirst(dependent.option.title)} answer</button>
+      {:else}
+        <button class="dlink" type="button" onclick={() => decisions?.change(dependent.decisionStep)}>{dependent.option.title} {lowerFirst(shortLabel(labelOf(dependent.option, dependent.answer)))}</button>
+      {/if}
+    {:else if step.expect && fill}
       <BlankFields name={step.text} blanks={fill.blanks} rest={fill.rest} values={row.values} {onBlank} />
     {:else if step.expect}
       <span class="val">{step.expect}</span>
@@ -126,7 +180,8 @@ column until batch 4 (owner). On narrow screens a chevron opens the step's detai
     {#if menu}
       <div class="menu" role="menu" aria-label="Actions for {title}">
         <button role="menuitem" type="button" onclick={() => act(onSelect)}>Make this the current step</button>
-        {#if row.state !== "done"}<button role="menuitem" type="button" onclick={() => act(onTick)}>Mark done</button>{/if}
+        {#if decision && decision.answer !== null}<button role="menuitem" type="button" onclick={() => act(() => decisions?.change(row.id))}>Change answer</button>{/if}
+        {#if row.state !== "done" && !(decision && decision.answer === null)}<button role="menuitem" type="button" onclick={() => act(onTick)}>Mark done</button>{/if}
         {#if row.state === "skipped"}
           <button role="menuitem" type="button" onclick={() => act(onUnskip)}>Unskip</button>
         {:else if row.state !== "done"}
@@ -141,10 +196,21 @@ column until batch 4 (owner). On narrow screens a chevron opens the step's detai
   </div>
   {#if current}
     <div class="actions">
-      <button class="done" type="button" onclick={onTick}>Done</button>
-      <button class="skipb" type="button" onclick={onSkip}>Skip for now</button>
-      <span class="fill"></span>
-      <span class="keys">Space done · ← back · S skip</span>
+      {#if decision && asking && !decision.changing}
+        <!-- Choosing ticks the step, so only a plan suggestion has a button of its own. -->
+        {#if suggested && decision.suggestion}
+          {@const value = decision.suggestion.value}
+          <button class="donebtn confirm" type="button" onclick={() => decisions?.answer(row.id, value)}>Confirm: {shortLabel(labelOf(decision.option, value))}</button>
+        {/if}
+        <button class="skipb" type="button" onclick={onSkip}>Skip for now</button>
+        <span class="fill"></span>
+        <span class="keys">{suggested ? "Space confirm · " : ""}{numbers} answer · S skip</span>
+      {:else}
+        <button class="donebtn" type="button" onclick={onTick}>Done</button>
+        <button class="skipb" type="button" onclick={onSkip}>Skip for now</button>
+        <span class="fill"></span>
+        <span class="keys">Space done · ← back · S skip</span>
+      {/if}
     </div>
   {/if}
   {#if detail === "expanded"}
@@ -433,10 +499,14 @@ column until batch 4 (owner). On narrow screens a chevron opens the step's detai
   .actions {
     grid-column: 2 / 5;
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: var(--space-3);
   }
-  .done {
+  .actions button {
+    white-space: nowrap;
+  }
+  .donebtn {
     height: var(--size-touch-min);
     padding: 0 var(--space-6);
     border: 0;
@@ -457,6 +527,9 @@ column until batch 4 (owner). On narrow screens a chevron opens the step's detai
     font: inherit;
     font-size: var(--font-size-body);
     font-weight: var(--weight-medium);
+  }
+  .donebtn.confirm {
+    padding: 0 calc(var(--space-4) + var(--space-1));
   }
   .fill {
     flex: 1;
@@ -497,6 +570,152 @@ column until batch 4 (owner). On narrow screens a chevron opens the step's detai
     min-height: var(--size-touch-min);
   }
   /* Narrow screens: the chevron sits beside the row menu. */
+  /* Decision steps (Decision.dc.html). */
+  .diamond {
+    display: grid;
+    width: var(--size-status-icon);
+    height: var(--size-status-icon);
+    color: var(--color-accent);
+  }
+  .diamond :global(.icon) {
+    width: 100%;
+    height: 100%;
+  }
+  .suggest {
+    color: var(--color-accent-text);
+    font-size: var(--font-size-secondary);
+  }
+  .src {
+    color: var(--color-text-muted);
+    font-size: var(--font-size-secondary);
+    line-height: var(--leading-tight);
+  }
+  .value.asking {
+    gap: var(--space-2);
+  }
+  .value.asking .val {
+    color: var(--color-text-strong);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-tight);
+  }
+  .prompt {
+    line-height: var(--leading-tight);
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-secondary);
+  }
+  .choice {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: var(--size-touch-min);
+    padding: 0 calc(var(--space-3) + var(--space-1) / 2);
+    border: var(--border-thin) solid var(--color-border);
+    border-radius: var(--radius-control);
+    background: var(--color-button-bg);
+    box-shadow: var(--color-button-shadow);
+    color: var(--color-text);
+    font: inherit;
+    font-size: var(--font-size-value-mono);
+    font-weight: var(--weight-medium);
+    text-align: left;
+  }
+  .choice[aria-pressed="true"] {
+    border: calc(var(--border-thick) * 3 / 4) solid var(--color-accent);
+    background: var(--color-accent-soft);
+    box-shadow: 0 0 0 calc(var(--border-thick) * 3 / 4) var(--color-accent);
+  }
+  .choice :global(.icon) {
+    width: var(--size-icon-small);
+    height: var(--size-icon-small);
+    color: var(--color-accent);
+  }
+  .cl {
+    flex: 1;
+  }
+  .tag {
+    color: var(--color-accent-text);
+    font-size: var(--font-size-caption);
+    font-weight: var(--weight-semibold);
+  }
+  .keep {
+    position: relative;
+    z-index: 1;
+    align-self: flex-start;
+    min-height: var(--size-touch-min);
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--color-link);
+    font: inherit;
+    font-size: var(--font-size-secondary);
+  }
+  .value.answered .ans {
+    color: var(--color-text);
+    font-size: var(--font-size-secondary);
+    line-height: var(--leading-tight);
+  }
+  .value.answered .val {
+    line-height: var(--leading-tight);
+  }
+  .done .value.answered .val {
+    color: var(--color-text-secondary);
+  }
+  .value.dep .val {
+    white-space: pre-line;
+  }
+  .it:not(.current) .value.dep {
+    padding: calc(var(--space-1) + var(--border-thick) / 2) 0;
+  }
+  .current .value.dep {
+    gap: var(--space-1);
+  }
+  /* A text link as the board draws it, its 44 px target reaching above and below the line. */
+  .dlink {
+    position: relative;
+    z-index: 1;
+    align-self: flex-start;
+    min-height: 0;
+    line-height: var(--leading-tight);
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--color-link);
+    font: inherit;
+    font-size: var(--font-size-secondary);
+    text-align: left;
+  }
+  .dlink::before {
+    position: absolute;
+    inset: calc((var(--font-size-secondary) * var(--leading-tight) - var(--size-touch-min)) / 2) 0;
+    content: "";
+  }
+  .dlink.muted {
+    color: var(--color-text-muted);
+  }
+  /* Change open: the row on the second surface, the choices in place (DecChanging). */
+  .it.changing {
+    row-gap: calc(var(--space-2) + var(--border-thick));
+    align-items: start;
+    padding: var(--space-3) var(--space-1) calc(var(--space-3) + var(--border-thick)) var(--space-4);
+    background: var(--color-surface-2);
+  }
+  .it.changing .tick {
+    align-self: start;
+    height: auto;
+    margin-top: calc(var(--space-2) + var(--border-thick));
+  }
+  .it.changing .row {
+    padding-top: var(--space-2);
+  }
+  .it.changing .value {
+    padding-top: var(--space-2);
+  }
+  .it.changing .nm {
+    color: var(--color-text);
+    font-weight: var(--weight-semibold);
+  }
   @media (max-width: 899px) {
     .it {
       grid-template-columns: calc(var(--size-touch-min) - var(--space-1)) minmax(0, 1fr) 34% auto;
@@ -526,6 +745,14 @@ column until batch 4 (owner). On narrow screens a chevron opens the step's detai
     }
     .keys {
       display: none;
+    }
+    /* On phone the choices take the row's width (DecPhone), until batch 5's layout. */
+    .value.asking {
+      grid-column: 1 / -1;
+    }
+    .it:has(.value.asking) .end {
+      grid-row: 1;
+      grid-column: 3;
     }
   }
 </style>

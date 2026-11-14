@@ -16,6 +16,7 @@ step at a time (lib/FlowView.svelte).
   import OptionChoices from "../lib/OptionChoices.svelte";
   import type { PackIndex } from "../pack-index";
   import { phaseHref } from "../route.svelte";
+  import { decisionKey, type Decisions } from "../lib/decision";
 
   let {
     index,
@@ -37,6 +38,7 @@ step at a time (lib/FlowView.svelte).
     open = [],
     onGo,
     onEssentials,
+    decisions,
   }: {
     index: PackIndex;
     view: PhaseView;
@@ -61,6 +63,8 @@ step at a time (lib/FlowView.svelte).
     /** Goes to a step (the open-steps list). */
     onGo?: ((id: string) => void) | undefined;
     onEssentials?: ((id: string, add: boolean) => void) | undefined;
+    /** Decision steps and the steps that depend on them (decision 0022). */
+    decisions?: Decisions | undefined;
   } = $props();
   /** The phase's procedure is not done yet: its checklist stays folded (Checklist board). */
   let procedureOpen = $derived(view.lists.some((l) => l.kind === "flow" && !l.complete));
@@ -77,6 +81,12 @@ step at a time (lib/FlowView.svelte).
     const t = e.target;
     if (t instanceof Element && t.closest("input, textarea, select, button, a, summary, [contenteditable]")) return;
     const at = rows.findIndex((r) => r.id === (selected ?? view.lists.find((l) => l.current)?.current));
+    // A decision step that asks takes 1, 2 … and Space (Decision.dc.html).
+    const asking = at >= 0 ? index.step(rows[at]?.id ?? "") : undefined;
+    if (asking && decisions && decisionKey(e.key, asking, decisions)) {
+      e.preventDefault();
+      return;
+    }
     if (e.key === "ArrowDown" || e.key === "ArrowUp" || e.key === "ArrowLeft") {
       // ← back, as the current step's hint says: the step before.
       const next = rows[Math.min(rows.length - 1, Math.max(0, at + (e.key === "ArrowDown" ? 1 : -1)))];
@@ -143,6 +153,7 @@ step at a time (lib/FlowView.svelte).
     {onClear}
     {onEssentials}
     folded={list.kind === "checklist" && procedureOpen}
+    {decisions}
   />
 {/each}
 

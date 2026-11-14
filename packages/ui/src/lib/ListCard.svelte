@@ -14,6 +14,7 @@ folded to one line with its count until the phase's procedure is done.
   import Icon from "./Icon.svelte";
   import { stepTitle } from "./sentence";
   import StepItem from "./StepItem.svelte";
+  import type { Decisions } from "./decision";
 
   let {
     index,
@@ -33,6 +34,7 @@ folded to one line with its count until the phase's procedure is done.
     onClear,
     onEssentials,
     folded = false,
+    decisions,
   }: {
     index: PackIndex;
     list: PhaseList;
@@ -55,6 +57,8 @@ folded to one line with its count until the phase's procedure is done.
     onEssentials?: ((id: string, add: boolean) => void) | undefined;
     /** A checklist whose procedure is not done yet: folded to one line until opened. */
     folded?: boolean;
+    /** Decision steps and the steps that depend on them (decision 0022). */
+    decisions?: Decisions | undefined;
   } = $props();
 
   let touched = $derived(list.progress.done + list.progress.skipped > 0);
@@ -62,10 +66,13 @@ folded to one line with its count until the phase's procedure is done.
   let more = $state(false);
   let rows = $derived(more && fullList ? fullList.steps : list.steps);
 
-  /** The done steps at the top fold into one line, with Show (Checklist board). */
+  /**
+   * The done steps at the top fold into one line, with Show (Checklist board). A decision step
+   * stays out of the fold, so its answer shows (Decision.dc.html).
+   */
   let lead = $derived.by(() => {
     let n = 0;
-    while (rows[n]?.state === "done") n++;
+    while (rows[n]?.state === "done" && !index.step(rows[n]?.id ?? "")?.decide) n++;
     return n;
   });
   let showDone = $state(false);
@@ -130,6 +137,7 @@ folded to one line with its count until the phase's procedure is done.
           onBlank={(n, v) => onBlank(row.id, n, v)}
           onSelect={() => onSelect(row.id)}
           onEssentials={onEssentials ? (add) => onEssentials(row.id, add) : undefined}
+          {decisions}
         />
       {/if}
     {/each}

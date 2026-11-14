@@ -14,7 +14,7 @@ export const COLOR = {
     "border": "#2a323e",
     "border-strong": "#2f3846",
     "line": "#222934",
-    "chip": "#222934",
+    "chip": "#2a323e",
     "text": "#e6e9ee",
     "text-secondary": "#b7bec9",
     "text-muted": "#8b94a3",
@@ -54,7 +54,10 @@ export const COLOR = {
     "overlay-shadow": "0 24px 60px rgba(0, 0, 0, 0.55)",
     "slideout-scrim": "rgba(6, 8, 12, 0.45)",
     "popover-surface": "#1b212b",
-    "toggle-knob": "#ffffff"
+    "toggle-knob": "#ffffff",
+    "toast-text": "#0f1218",
+    "toast-link": "#1d4fd8",
+    "toast-shadow": "0 12px 32px rgba(0, 0, 0, 0.5)"
   },
   "light": {
     "bg": "#f5f7fa",
@@ -65,7 +68,7 @@ export const COLOR = {
     "border": "#d3d9e1",
     "border-strong": "#c9d0d9",
     "line": "#e2e6ec",
-    "chip": "#f0f2f5",
+    "chip": "#e2e6ec",
     "text": "#1a1f27",
     "text-secondary": "#3d4552",
     "text-muted": "#5b6472",
@@ -105,7 +108,10 @@ export const COLOR = {
     "overlay-shadow": "0 24px 60px rgba(16, 24, 40, 0.18)",
     "slideout-scrim": "rgba(20, 26, 36, 0.28)",
     "popover-surface": "#ffffff",
-    "toggle-knob": "#ffffff"
+    "toggle-knob": "#ffffff",
+    "toast-text": "#ffffff",
+    "toast-link": "#7fb0ff",
+    "toast-shadow": "0 12px 32px rgba(16, 24, 40, 0.28)"
   }
 } as const;
 

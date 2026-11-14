@@ -15,6 +15,7 @@ surface, opening with the step's controls in view; nothing inside scrolls up and
 -->
 <script lang="ts">
   import type { ItemTarget, Step } from "@chocktochock/bindings";
+  import { labelOf, lowerFirst, type Decisions } from "./decision";
   import type { PackIndex } from "../pack-index";
   import Icon from "./Icon.svelte";
   import type { Opening } from "./opening";
@@ -36,6 +37,7 @@ surface, opening with the step's controls in view; nothing inside scrolls up and
     panel: chosen = $bindable(),
     onClose,
     onGo,
+    decisions,
   }: {
     index: PackIndex;
     step: Step;
@@ -49,7 +51,10 @@ surface, opening with the step's controls in view; nothing inside scrolls up and
     onClose: () => void;
     /** Goes to a step (the control card's Used in links). */
     onGo: (stepId: string) => void;
+    /** For a control a decision set: where its position came from, and Change (decision 0022). */
+    decisions?: Decisions | undefined;
   } = $props();
+  let dependent = $derived(decisions?.dependent(step) ?? null);
 
   // svelte-ignore state_referenced_locally
   let whereOpen = $state(opening.entry === "where");
@@ -103,6 +108,11 @@ surface, opening with the step's controls in view; nothing inside scrolls up and
       does: it.description || control?.function || null,
       lit: it.kind === "light" ? index.lightMeaning(shown.panel.id, section, item) : undefined,
       usedIn: index.usedIn(shown.panel.id, section, item),
+      // "OFF ◆ · from your center tank answer, 1,000 lb (450 kg) or less  Change" (R6Control).
+      from:
+        target?.resolved && dependent?.answer != null
+          ? `from your ${lowerFirst(dependent.option.title)} answer, ${labelOf(dependent.option, dependent.answer)}`
+          : null,
     };
   });
   /** The decision a resolved control's position came from, for the legend's ◆ entry. */
@@ -274,7 +284,15 @@ surface, opening with the step's controls in view; nothing inside scrolls up and
         </div>
         <dl>
           {#if card.positions}<dt>Positions</dt><dd class="mono">{card.positions}</dd>{/if}
-          {#if card.inStep}<dt>In this step</dt><dd class="mono">{card.inStep}</dd>{/if}
+          {#if card.inStep}
+            <dt>In this step</dt>
+            {#if card.from && dependent}
+              {@const ask = dependent.decisionStep}
+              <dd><span class="mono">{card.inStep}</span> · {card.from} <button class="lk inline" type="button" onclick={() => decisions?.change(ask)}>Change</button></dd>
+            {:else}
+              <dd class="mono">{card.inStep}</dd>
+            {/if}
+          {/if}
           {#if card.lit}<dt>When lit</dt><dd>{card.lit}</dd>{/if}
           {#if card.does}<dt>What it does</dt><dd>{card.does}</dd>{/if}
           {#if card.usedIn.length}
@@ -556,6 +574,12 @@ surface, opening with the step's controls in view; nothing inside scrolls up and
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-1) var(--space-2);
+  }
+  .lk.inline {
+    display: inline;
+    min-height: 0;
+    padding: 0;
+    font: inherit;
   }
   .lk {
     display: inline-flex;

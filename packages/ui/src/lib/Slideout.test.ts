@@ -78,4 +78,35 @@ describe("Slideout", () => {
     expect(at.every((p) => p >= 0)).toBe(true);
     expect([...at].sort((a, b) => a - b)).toEqual(at);
   });
+
+  it("a control a decision set: In this step names the answer, and Change opens it on the decision row", async () => {
+    let changed = "";
+    const option = {
+      id: "center_tank",
+      title: "Center tank",
+      values: ["more", "low"],
+      default: "low",
+      choices: [
+        { value: "low", label: "1,000 lb (450 kg) or less" },
+        { value: "more", label: "More than 1,000 lb (450 kg)" },
+      ],
+    };
+    const resolved = [{ section: "fuel", item: ctrL, position: 0, lit: false, open: false, resolved: true }];
+    render(Slideout, {
+      ...props("control"),
+      targets: resolved,
+      decisions: {
+        state: () => null,
+        dependent: () => ({ option, decisionStep: "ask", answer: "low", value: null }),
+        answer: () => {},
+        change: (id: string) => (changed = id),
+        keep: () => {},
+      },
+    });
+    expect(document.querySelector(".card dl")?.textContent).toContain(
+      "from your center tank answer, 1,000 lb (450 kg) or less",
+    );
+    await fireEvent.click(screen.getByRole("button", { name: "Change" }));
+    expect(changed).toBe("ask");
+  });
 });

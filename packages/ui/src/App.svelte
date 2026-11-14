@@ -24,6 +24,9 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
   import { getHost, type SavedItem } from "./host";
   import type { Opening } from "./lib/opening";
   import Slideout from "./lib/Slideout.svelte";
+  import Toast from "./lib/Toast.svelte";
+  import { changedText, dependsOn, type DecisionSource, type Decisions } from "./lib/decision";
+  import { stepTitle } from "./lib/sentence";
   import StepPane from "./lib/StepPane.svelte";
   import Drawer from "./lib/Drawer.svelte";
   import FlightStrip from "./lib/FlightStrip.svelte";
@@ -328,18 +331,15 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
   }
 
   /** A change the pilot can take back for a short while: the flight before it, and what it did. */
-  let undo = $state<{ text: string; before: Flight } | null>(null);
-  let undoTimer: ReturnType<typeof setTimeout> | undefined;
-  function offerUndo(text: string, before: Flight): void {
-    undo = { text, before };
-    clearTimeout(undoTimer);
-    undoTimer = setTimeout(() => (undo = null), 10000);
+  let undo = $state<{ text: string; before: Flight; restore?: (() => void) | undefined } | null>(null);
+  function offerUndo(text: string, before: Flight, restore?: () => void): void {
+    undo = { text, before, restore };
   }
   async function takeBack(): Promise<void> {
     if (!undo) return;
     flight = undo.before;
+    undo.restore?.();
     undo = null;
-    clearTimeout(undoTimer);
     try {
       await refresh();
       await persist("flight");
@@ -365,6 +365,61 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
     } else if (added.has(id)) added.delete(id);
     else removed.add(id);
     void changeSettings({ ...settings, essentialsChanges: { ...settings.essentialsChanges, [packId]: { added: [...added], removed: [...removed] } } });
+  }
+  /**
+   * Decision steps (decision 0022): the answer sets the option for the flight and ticks the step;
+   * Change reopens the choices on the row, in place, and a changed answer offers Undo. How each
+   * answer was given is kept for this session; a plan suggestion comes with batch 7's rule.
+   */
+  let changing = $state<string | null>(null);
+  let sources = $state<Record<string, DecisionSource>>({});
+  let decisions = $derived.by((): Decisions | undefined => {
+    const ix = index;
+    const f = flight;
+    if (!ix || !f) return undefined;
+    return {
+      state(step) {
+        const option = step.decide ? ix.options.find((o) => o.id === step.decide) : undefined;
+        if (!option) return null;
+        const answer = f.options[option.id] ?? null;
+        return { option, answer, source: answer === null ? null : (sources[step.id] ?? "you"), suggestion: null, changing: answer !== null && changing === step.id };
+      },
+      dependent(step) {
+        const id = dependsOn(step);
+        const option = id ? ix.options.find((o) => o.id === id) : undefined;
+        const asker = id ? ix.decider(id) : undefined;
+        if (!id || !option || !asker) return null;
+        return { option, decisionStep: asker.id, answer: f.options[id] ?? null, value: null };
+      },
+      answer: (id, value) => void answerDecision(id, value),
+      change(id) {
+        const step = ix.step(id);
+        if (step?.decide && f.options[step.decide] !== undefined) {
+          slide = null;
+          changing = id;
+        } else goToStep(id);
+      },
+      keep: () => (changing = null),
+    };
+  });
+  async function answerDecision(id: string, value: string): Promise<void> {
+    const step = index?.step(id);
+    const option = index?.options.find((o) => o.id === step?.decide);
+    if (!index || !flight || !step?.decide || !option) return;
+    const ix = index;
+    const before = flight;
+    const kept = sources;
+    const wasChanging = changing === id;
+    changing = null;
+    await act({ type: "setOption", option: option.id, value });
+    if (flight && flight.session.done[id] === undefined) await act({ type: "tick", step: id, at: Date.now() });
+    if (!wasChanging) {
+      sources = { ...sources, [id]: "you" };
+    } else if (before.options[option.id] !== value) {
+      sources = { ...sources, [id]: "changed" };
+      const updated = [...new Set(ix.dependents(option.id).map((s) => stepTitle(ix, s)))];
+      offerUndo(changedText(option, value, updated), before, () => (sources = kept));
+    }
   }
   /** Clear ticks on one list (its card header), with Undo instead of asking first (owner). */
   async function clearTicks(list: string): Promise<void> {
@@ -505,16 +560,16 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
                 {fullView}
                 onOption={(option, value) => act({ type: "setOption", option, value })}
                 onValue={(field, value) => act({ type: "setValue", field, value })}
+                {decisions}
               />
             {/if}
           {:else}
             <p class="msg">That phase is not in this flight.</p>
           {/if}
           {#if undo}
-            <div class="toast" role="status">
-              <span>{undo.text}</span>
-              <button type="button" onclick={() => void takeBack()}>Undo</button>
-            </div>
+            {#key undo}
+              <Toast text={undo.text} onUndo={() => void takeBack()} onExpire={() => (undo = null)} />
+            {/key}
           {/if}
           <p class="legal">
             Simulator training only. Not for real-world use. A study aid for flight simulation, not
@@ -544,7 +599,7 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
           <button class="slide-scrim" type="button" aria-label="Close the panel" tabindex="-1" onclick={closeSlide}></button>
           <div class="slide-box">
             {#key pane.step.id}
-              <Slideout {index} step={pane.step} number={pane.row.number} targets={pane.row.targets} opening={slide} onClose={closeSlide} onGo={goToStep} />
+              <Slideout {index} step={pane.step} number={pane.row.number} targets={pane.row.targets} opening={slide} onClose={closeSlide} onGo={goToStep} {decisions} />
             {/key}
           </div>
         {/if}
@@ -652,32 +707,6 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
     background: linear-gradient(0deg, var(--color-bg), transparent);
   }
   /* 3.0's toast: dark on light (light on dark), centered at the bottom. */
-  .toast {
-    position: fixed;
-    bottom: var(--space-6);
-    left: 50%;
-    z-index: 70;
-    display: flex;
-    align-items: center;
-    gap: var(--space-3);
-    width: max-content;
-    max-width: calc(100vw - 2 * var(--gutter));
-    box-sizing: border-box;
-    padding: var(--space-2) var(--space-4);
-    border-radius: var(--radius-control);
-    background: var(--color-text);
-    box-shadow: none;
-    color: var(--color-bg);
-    font-size: var(--font-size-secondary);
-    transform: translateX(-50%);
-  }
-  .toast button {
-    flex: none;
-    margin-left: var(--space-3);
-    color: inherit;
-    font-weight: var(--weight-semibold);
-    text-decoration: underline;
-  }
   .msg {
     padding: var(--space-6);
   }

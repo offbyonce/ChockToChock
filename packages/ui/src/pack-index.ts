@@ -44,6 +44,10 @@ export type PackIndex = {
   lightMeaning(panel: string, section: string, item: number): string | undefined;
   /** The phase a step's list is in, by id. */
   phaseOf(stepId: string): string | undefined;
+  /** The step that asks an option (decision 0022), if any. */
+  decider(option: string): Step | undefined;
+  /** The steps whose targets depend on an option's answer, in pack order. */
+  dependents(option: string): Step[];
   /**
    * The steps whose targets name a panel item, each with its phase's title: in flight order (the
    * phases' order, then their lists'), each step once. A step that two lists repeat in the same
@@ -115,6 +119,9 @@ export function indexPack(pack: FlatPack): PackIndex {
   return {
     name: pack.manifest.name,
     phaseOf: (stepId) => phaseIdOfList.get(listOfStep.get(stepId) ?? ""),
+    decider: (option) => [...steps.values()].find((s) => s.decide === option),
+    dependents: (option) =>
+      [...steps.values()].filter((s) => (s.targets ?? []).some((t) => t.when?.option === option)),
     usedIn(panel, section, item) {
       const at = locator(panel, section, item);
       if (!at) return [];

@@ -15,10 +15,10 @@ body{margin:0}
 </style>
 </helmet>
 <div style="position: relative; width: {{g.W}}px; height: {{g.H}}px; overflow: hidden; background: {{o.bg}}; color: {{o.text}}; font-family: Geist, system-ui, sans-serif">
-<sc-if value="{{isDesk}}" hint-placeholder-val="{{ true }}"><dc-import name="Checklist" theme="{{theme}}" r6="true" hint-size="1440px,900px"></dc-import></sc-if>
+<sc-if value="{{isDesk}}" hint-placeholder-val="{{ true }}"><dc-import name="Checklist" theme="{{theme}}" r6="true" preview="true" hint-size="1440px,900px"></dc-import></sc-if>
 <sc-if value="{{isTabL}}" hint-placeholder-val="{{ false }}"><dc-import name="Tablet" theme="{{theme}}" orient="landscape" r6="true" hint-size="1180px,820px"></dc-import></sc-if>
 <sc-if value="{{isTabP}}" hint-placeholder-val="{{ false }}"><dc-import name="Tablet" theme="{{theme}}" orient="portrait" r6="true" hint-size="820px,1180px"></dc-import></sc-if>
-<sc-if value="{{isPhone}}" hint-placeholder-val="{{ false }}"><dc-import name="Mobile" theme="{{theme}}" screen="checklist" r6="true" hint-size="390px,844px"></dc-import></sc-if>
+<sc-if value="{{isPhone}}" hint-placeholder-val="{{ false }}"><dc-import name="Mobile" theme="{{theme}}" screen="checklist" r6="true" preview="true" hint-size="390px,844px"></dc-import></sc-if>
 
 <a href="{{g.back}}" aria-label="Close where and panel" style="position: absolute; left: 0; top: {{g.st}}; width: {{g.sw}}; bottom: 0; background: {{o.scrim}}"></a>
 

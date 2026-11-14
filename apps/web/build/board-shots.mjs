@@ -98,6 +98,13 @@ const SHOTS = [
   // Round 6's Checklist at 1600 by 900, for the 2560 by 1440 side-by-side (scaled 1.6, as Wide).
   ["R6Wide", { r6: true, preview: true, w: 1600, h: 900 }, 1600, 900, "Checklist", round6],
   ["OpenSteps", {}, 1440, 900],
+  // The decision step (round 6 update): each state of Decision.dc.html.
+  ["DecUnanswered", { state: "unanswered" }, 1120, 560, "Decision", round6],
+  ["DecSuggested", { state: "suggested" }, 1120, 560, "Decision", round6],
+  ["DecAnswered", { state: "answered" }, 1120, 560, "Decision", round6],
+  ["DecChanging", { state: "changing" }, 1120, 560, "Decision", round6],
+  ["DecChanged", { state: "changed" }, 1120, 560, "Decision", round6],
+  ["DecPhone", { state: "phone" }, 390, 844, "Decision", round6],
 ];
 
 async function main() {

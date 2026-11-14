@@ -29,6 +29,7 @@ Every 3.0 feature and where it lives at each size. Use this as a release check: 
 | SimBrief import | Strip panel; SimBrief section | Same | Same | Strip sheet; Flight page |
 | Offline OFP file | SimBrief section drop zone and Choose file | Same | Same | Same (Choose file) |
 | CDU walkthrough | From the CDU step | Same | Same | Same |
+| Decision steps (round 6 update; new, no 3.0 feature) | The step row asks: unanswered, suggested from the plan, answered, Change in place, Undo toast (Decision boards) | Same | Same | Stacked choices; Confirm and Skip in the bottom bar (DecPhone; inline until batch 5) |
 | Step timers | Timer chip and running-timers bar | Same | Same | Same |
 | Emergency reference | Red header button | Same | Same | Same |
 | Briefings in the flow | Briefing step | Same | Same | Same |
