@@ -347,4 +347,46 @@ it. Every field of the old Flight setup lives in one section.
     color: var(--color-text-secondary);
     font-size: var(--font-size-secondary);
   }
+  /* Tablet portrait and phone keep every section reachable until batch 5's layouts: the
+     section list becomes a row, and the OFP panel follows the section. */
+  @media (max-width: 899px) {
+    .cols {
+      flex-direction: column;
+      overflow-y: auto;
+    }
+    nav {
+      flex-direction: row;
+      width: 100%;
+      padding: var(--space-2) var(--space-3);
+      border-right: 0;
+      border-bottom: var(--border-thin) solid var(--color-line);
+      overflow-x: auto;
+      overflow-y: visible;
+    }
+    nav a {
+      gap: var(--space-2);
+      white-space: nowrap;
+    }
+    .rule {
+      width: var(--border-thin);
+      height: auto;
+      margin: var(--space-1) var(--space-2);
+    }
+    .fmain {
+      flex: none;
+      overflow: visible;
+      padding: var(--space-4) var(--gutter);
+    }
+    .cols > :global(.ofp) {
+      width: 100%;
+      border-left: 0;
+      border-top: var(--border-thin) solid var(--color-line);
+      overflow: visible;
+    }
+    .fhead {
+      flex-wrap: wrap;
+      height: auto;
+      padding-block: var(--space-2);
+    }
+  }
 </style>

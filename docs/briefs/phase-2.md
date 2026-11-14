@@ -232,7 +232,14 @@ every change to `.github/workflows/`. For those, prepare what the step needs and
       - Propose, and ask before adding: the pack-format rule (an option suggests from block fuel
         less the wing capacity), the pack field for the fuel step's value for each answer, and
         the decision 0022 amendment.
-      - Replace the boards' stand-ins: the decision step's location line and "about 0 lb".
+      - Replace the boards' stand-ins: the decision step's location line and "0 lb".
+      Also on the validation list from batch 4: the Flight pages' field labels, descriptions,
+      destination chips and "Find it in your OFP" close-ups (all stand-ins from the boards); the
+      ZFW CG help text ("% MAC, from the iFly EFB"); the Preflight instruments' heading blank,
+      now the pilot's own; and the weather code table: each entry's source section checked
+      against the WMO and FAA documents, and the plain-language descriptions of the decoded rows.
+      Show the center tank row on Fuel and weights then, with the exact figure (block fuel less
+      the wing capacity, never below 0, never "about").
 
 **After step 7: outside flight data, starting with SayIntentions (a separate phase; recorded
 2026-11-13, not started).** Decision [0024](../decisions/0024-outside-flight-data.md). While

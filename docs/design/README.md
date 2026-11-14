@@ -34,9 +34,19 @@ wins.
 landscape and the panes behind the slide-out) and in the tablet portrait expanded step; the Show
 panel button is gone from every board. `Decision.dc.html` adds the decision step (decision 0022):
 `DecUnanswered`, `DecSuggested`, `DecAnswered`, `DecChanging`, `DecChanged` and `DecPhone`, dark
-and light. Its location line ("Main panel (P2) · fuel quantity on the upper display") and "about
-0 lb" are stand-ins until the center tank step is sourced (Phase 2 step 7, batch 7). The toast on
+and light. Its location line ("Main panel (P2) · fuel quantity on the upper display") and "0 lb" are stand-ins until the center tank step is sourced (Phase 2 step 7, batch 7). The toast on
 `DecChanged` is the one every Undo uses (color.toast-text, color.toast-link, color.toast-shadow).
+
+**Flight sections and the strip (approved 2026-11-13, batch 4).** `FlightSection.dc.html` (with
+`FSOverview`, `FSRoute`, `FSFuel`, `FSCruise`, `FSClearance`, `FSTakeoff` and `FSApproach`, dark and
+light) draws the Flight pages' sections with the Approach board's field row and "Find it in your
+OFP" beside each; `FSApproach` replaces the round 5 `Descent` board. `Weather.dc.html` (round 6,
+with `Winds` for the en route winds tab), `StripOpen` and `StripFreq` (the strip panel with
+Frequencies open) supersede their round 5 copies; `SimBrief` and `Start` (round 5) stand. Editable
+values are always boxed fields (color.field), values still needed are amber, and read-only and
+cross-section rows are plain text. Values, descriptions, destination chips and OFP close-ups are
+stand-ins for batch 7's validation list. The center tank row stays hidden until batch 7, when it
+shows the exact figure.
 
 ## Read in this order
 

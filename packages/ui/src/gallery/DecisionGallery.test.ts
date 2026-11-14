@@ -65,7 +65,7 @@ describe("the decision step (Decision.dc.html, invented fixture)", () => {
   it("suggested: ringed and tagged, Confirm carries it, Space confirms; nothing ticks before", async () => {
     render(DecisionGallery, { state: "suggested" });
     const d = decision();
-    expect(within(d).getByText("Suggested from your SimBrief plan: about 0 lb")).toBeTruthy();
+    expect(within(d).getByText("Suggested from your SimBrief plan: 0 lb")).toBeTruthy();
     const ringed = within(d).getByRole("button", { pressed: true });
     expect(ringed.textContent).toContain("1,000 lb (450 kg) or less");
     expect(within(ringed).getByText("Suggested")).toBeTruthy();

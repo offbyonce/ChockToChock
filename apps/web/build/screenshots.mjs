@@ -65,6 +65,23 @@ const CLEARANCE = [
   ["initial_altitude", "alt", "5000"],
   ["squawk", "sq", "4521"],
 ];
+/** Where each field lives in the Flight pages (batch 4), for typing the same data as 3.0. */
+const SECTION_OF = {
+  runway: "clearance",
+  sid: "clearance",
+  transition: "clearance",
+  initial_altitude: "clearance",
+  squawk: "clearance",
+  takeoff_flaps: "takeoff",
+  v2: "takeoff",
+  takeoff_trim: "takeoff",
+  landing_altitude: "approach",
+  vref: "approach",
+  autobrake: "approach",
+  minimums: "approach",
+};
+/** Our side: the values typed in their Flight sections. */
+const inFlight = (list) => typed(list.map(([ours, , v]) => [SECTION_OF[ours], ours, v]));
 const pressText = (text) =>
   `[...document.querySelectorAll("button")].find((b) => b.textContent.trim() === ${JSON.stringify(text)}).click(); true`;
 const go = (hash) => `location.hash = ${JSON.stringify(hash)}; true`;
@@ -201,13 +218,14 @@ const SHOTS = [
   },
   { name: "settings", app: { hash: "#/settings" }, base: { hash: "#settings" } },
   // Flight setup, empty on both sides.
-  { name: "setup", app: { hash: "#/setup" }, base: { hash: "#setup" } },
+  // Flight setup's place: the Flight pages' Overview on our side.
+  { name: "setup", app: { hash: "#/flight/overview" }, base: { hash: "#setup" } },
   {
     // Before takeoff with takeoff data from Flight setup: the blanks filled in on both sides.
     name: "values",
     app: {
-      hash: "#/setup",
-      before: [...TAKEOFF.map(([ours, , v]) => typeInto(`#s-${ours}`, v)), go("#/phase/before-takeoff")],
+      hash: "#/flight/overview",
+      before: [inFlight(TAKEOFF), go("#/phase/before-takeoff")],
     },
     base: {
       hash: "#setup",
@@ -215,18 +233,19 @@ const SHOTS = [
     },
   },
   {
-    // Descent with the same arrival data typed into the Arrival data box on both sides.
+    // Descent with the same arrival data: in Flight › Approach on our side (the Arrival data box
+    // is a link there since batch 4), in 3.0's box on the other.
     name: "arrival",
     only: "desktop",
-    app: { hash: "#/phase/descent", before: ARRIVAL.map(([ours, , v]) => typeInto(`#a-${ours}`, v)) },
+    app: { hash: "#/flight/approach", before: [inFlight(ARRIVAL), go("#/phase/descent")] },
     base: { hash: "#descent", before: ARRIVAL.map(([, theirs, v]) => typeInto(`#s-${theirs}`, v)) },
   },
   {
-    // The flight strip with a clearance from Flight setup, its pop-out open on both sides.
+    // The flight strip with a clearance, its panel (3.0's pop-out) open on both sides.
     name: "strip",
     app: {
-      hash: "#/setup",
-      before: [...CLEARANCE.map(([ours, , v]) => typeInto(`#s-${ours}`, v)), go("#/phase/cold-dark"), click(".fsline")],
+      hash: "#/flight/clearance",
+      before: [inFlight(CLEARANCE), go("#/phase/cold-dark"), click(".fsline")],
     },
     base: {
       hash: "#setup",
@@ -326,9 +345,9 @@ const SHOTS = [
     full: true,
     only: ["desktop"],
     app: {
-      hash: "#/setup",
+      hash: "#/flight/clearance",
       before: [
-        ...CLEARANCE.map(([ours, , v]) => typeInto(`#s-${ours}`, v)),
+        inFlight(CLEARANCE),
         go("#/phase/before-start"),
         click(".fsline"),
         typeInto("#sp-notes", "Expect runway 16L"),
