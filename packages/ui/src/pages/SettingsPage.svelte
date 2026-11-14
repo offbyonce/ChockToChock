@@ -12,7 +12,7 @@ saves them on the device, and batch 7 adds the rest.
   let { settings, onChange }: { settings: Settings; onChange: (s: Settings) => void } = $props();
 
   type Row = {
-    key: "listView" | "essentials" | "detail" | "theme" | "textSize" | "mapInSteps" | "dimming";
+    key: "listView" | "essentials" | "detail" | "theme" | "textSize" | "dimming";
     title: string;
     text: string;
     choices: [string | number | boolean, string][];
@@ -66,17 +66,6 @@ saves them on the device, and batch 7 adds the rest.
       ],
     },
     {
-      key: "mapInSteps",
-      title: "Map in steps",
-      text: "When the location map shows in full. The drawing and Check, If not and Why always show.",
-      choices: [
-        ["always", "Always"],
-        ["new_panel", "New panel"],
-        ["on_request", "On request"],
-        ["off", "Off"],
-      ],
-    },
-    {
       key: "dimming",
       title: "Dimming",
       text: "Dims the whole screen for a dark room. Text stays readable at every step.",
@@ -93,6 +82,25 @@ saves them on the device, and batch 7 adds the rest.
 
 <h1>Settings</h1>
 <p class="lead">Choose how the checklist looks. Your choices stay in place when you clear a flight.</p>
+{#snippet preview()}
+  <!-- Settings › Panel preview in steps (round 6, R6Settings): On or Off. -->
+  <div class="set">
+    <div>
+      <b id="set-preview">Panel preview in steps</b>
+      <p>The small outline of the panel beside each step. Show panel and Where is this? always work.</p>
+    </div>
+    <button
+      class="switch"
+      type="button"
+      role="switch"
+      aria-checked={settings.panelPreview}
+      aria-labelledby="set-preview"
+      onclick={() => onChange({ ...settings, panelPreview: !settings.panelPreview })}
+    >
+      {settings.panelPreview ? "On" : "Off"}<span class="track"><span class="knob"></span></span>
+    </button>
+  </div>
+{/snippet}
 <div class="card">
   {#each ROWS as row (row.key)}
     <div class="set">
@@ -110,13 +118,12 @@ saves them on the device, and batch 7 adds the rest.
               onChange({
                 ...settings,
                 [row.key]: value,
-                // A map choice made here is also what Show map restores after Hide map.
-                ...(row.key === "mapInSteps" && value !== "on_request" ? { mapBeforeHide: value as Settings["mapBeforeHide"] } : {}),
               })}>{label}</button
           >
         {/each}
       </div>
     </div>
+    {#if row.key === "textSize"}{@render preview()}{/if}
   {/each}
 </div>
 <div class="done"><a class="btn primary" href="#/">Done</a></div>
@@ -172,6 +179,43 @@ saves them on the device, and batch 7 adds the rest.
     background: var(--color-surface);
     box-shadow: inset 0 0 0 var(--size-focus-ring) var(--color-accent);
     color: var(--color-text);
+  }
+  /* The toggle switch (rules.md components; R6Settings). */
+  .switch {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    min-height: var(--size-touch-min);
+    padding: 0 var(--border-thick);
+    color: var(--color-text-strong);
+    font-weight: var(--weight-semibold);
+  }
+  .track {
+    position: relative;
+    width: var(--size-toggle-width);
+    height: var(--size-toggle-height);
+    border-radius: var(--radius-pill);
+    background: var(--color-toggle-off);
+  }
+  .switch[aria-checked="true"] .track {
+    background: var(--color-accent);
+  }
+  .knob {
+    position: absolute;
+    top: calc((var(--size-toggle-height) - var(--size-toggle-knob)) / 2);
+    left: calc((var(--size-toggle-height) - var(--size-toggle-knob)) / 2);
+    width: var(--size-toggle-knob);
+    height: var(--size-toggle-knob);
+    box-sizing: border-box;
+    border-radius: 50%;
+    background: var(--color-toggle-knob);
+  }
+  /* Off, a white knob on the light track is under 3:1, so it takes a muted ring (3.3:1). */
+  .switch[aria-checked="false"] .knob {
+    border: var(--border-thin) solid var(--color-text-muted);
+  }
+  .switch[aria-checked="true"] .knob {
+    left: calc(var(--size-toggle-width) - var(--size-toggle-knob) - (var(--size-toggle-height) - var(--size-toggle-knob)) / 2);
   }
   .done {
     display: flex;

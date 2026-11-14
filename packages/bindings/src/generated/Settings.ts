@@ -2,7 +2,6 @@
 import type { Detail } from "./Detail";
 import type { EssentialsChanges } from "./EssentialsChanges";
 import type { ListView } from "./ListView";
-import type { MapInSteps } from "./MapInSteps";
 import type { TextSize } from "./TextSize";
 import type { Theme } from "./Theme";
 
@@ -18,8 +17,9 @@ essentials: boolean,
 /**
  * Pack id to the pilot's changes to Essentials.
  */
-essentialsChanges: { [key in string]: EssentialsChanges }, mapInSteps: MapInSteps, 
+essentialsChanges: { [key in string]: EssentialsChanges }, 
 /**
- * The choice before Hide map, which Show map restores.
+ * Settings › Panel preview in steps (round 6): the label-free panel beside each step. Show
+ * panel and Where is this? always work.
  */
-mapBeforeHide: MapInSteps, chime: boolean, simbriefUser: string | null, loadPlanOnOpen: boolean, };
+panelPreview: boolean, chime: boolean, simbriefUser: string | null, loadPlanOnOpen: boolean, };

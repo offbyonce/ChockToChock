@@ -3,7 +3,8 @@ SPDX-FileCopyrightText: 2026 offbyonce
 SPDX-License-Identifier: MIT
 
 One general interface icon. Only the Tabler icons used are copied in, as SVG files under
-icons/tabler (MIT; decision 0010 adds no JavaScript dependency). Icons are decorative: the
+icons/tabler (MIT; decision 0010 adds no JavaScript dependency); icons/board holds the few drawn
+on the approved boards. Icons are decorative: the
 control around them carries the words.
 -->
 <script lang="ts" module>
@@ -20,6 +21,9 @@ control around them carries the words.
   import search from "../icons/tabler/search.svg?raw";
   import settings from "../icons/tabler/settings.svg?raw";
   import x from "../icons/tabler/x.svg?raw";
+  import decision from "../icons/board/decision.svg?raw";
+  import panel from "../icons/board/panel.svg?raw";
+  import pin from "../icons/board/pin.svg?raw";
 
   const ICONS = {
     "alert-triangle": alertTriangle,
@@ -28,7 +32,10 @@ control around them carries the words.
     check,
     "chevron-down": chevronDown,
     "chevron-right": chevronRight,
+    decision,
     "map-pin": mapPin,
+    panel,
+    pin,
     menu,
     plane,
     skip,

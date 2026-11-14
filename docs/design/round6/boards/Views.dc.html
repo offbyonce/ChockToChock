@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Other views</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="width: 1440px; height: 900px; box-sizing: border-box; background: {{t.bg}}; color: {{t.text}}; font-family: Geist, system-ui, sans-serif; display: flex; flex-direction: column; overflow: hidden">
+
+  <sc-if value="{{appHeader}}" hint-placeholder-val="{{ true }}">
+    <header style="height: 60px; flex: none; display: flex; align-items: center; gap: 16px; padding: 0 16px; border-bottom: 1px solid {{t.line}}">
+      <a href="Menu.dc.html" aria-label="Menu" style="width: 44px; height: 44px; color: {{t.sub}}; display: flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"></path></svg></a>
+      <div style="display: flex; flex-direction: column; line-height: 1.2"><span style="font-weight: 600; font-size: 16px">Chock to Chock</span><span style="font-size: 12px; color: {{t.muted}}">iFly 737 MAX 8</span></div>
+      <span style="font-size: 16px; font-weight: 600; padding: 0 8px">{{stageName}}</span>
+      <span style="font-size: 14px; color: {{t.muted}}">{{phaseName}}</span>
+      <div style="flex: 1"></div>
+      <button aria-label="Find a step or term" style="height: 44px; padding: 0 12px; border: 1px solid {{t.border}}; background: {{t.btnBg}}; box-shadow: {{t.btnShadow}}; border-radius: 10px; color: {{t.sub}}; font: inherit; font-size: 14px">Find</button>
+      <div role="group" aria-label="View" style="display: flex; background: {{t.segTrack}}; border: 1px solid {{t.segBorder}}; border-radius: 12px; padding: 2px">
+        <a href="Checklist.dc.html" style="height: 44px; display: flex; align-items: center; padding: 0 16px; border-radius: 10px; background: {{segChecklistBg}}; box-shadow: {{segChecklistRing}}; color: {{segChecklistColor}}; text-decoration: none; font-size: 14px; font-weight: 600">Checklist</a>
+        <a href="Flow.dc.html" style="height: 44px; display: flex; align-items: center; padding: 0 16px; border-radius: 10px; background: {{segFlowBg}}; box-shadow: {{segFlowRing}}; color: {{segFlowColor}}; text-decoration: none; font-size: 14px; font-weight: 600">Flow</a>
+      </div>
+      <a href="Emergency.dc.html" style="height: 44px; display: flex; align-items: center; padding: 0 16px; border: 1.5px solid {{t.red}}; background: {{t.redBg}}; color: {{t.redText}}; border-radius: 10px; text-decoration: none; font-size: 14px; font-weight: 600">Emergency</a>
+    </header>
+    <div style="height: 48px; flex: none; display: flex; align-items: center; gap: 24px; padding: 0 28px; border-bottom: 1px solid {{t.line}}; background: {{t.surface2}}; white-space: nowrap">
+      <span style="font-family: 'Geist Mono', monospace; font-size: 15px; font-weight: 600">KSEA → KSFO</span>
+      <span style="display: flex; align-items: baseline; gap: 6px"><span style="font-size: 12px; color: {{t.muted}}">Runway</span><span style="font-family: 'Geist Mono', monospace; font-size: 15px">16L</span></span>
+      <span style="display: flex; align-items: baseline; gap: 6px"><span style="font-size: 12px; color: {{t.muted}}">SID</span><span style="font-family: 'Geist Mono', monospace; font-size: 15px">SUMMA2.SEA</span></span>
+      <span style="display: flex; align-items: baseline; gap: 6px"><span style="font-size: 12px; color: {{t.muted}}">Squawk</span><span style="font-family: 'Geist Mono', monospace; font-size: 15px">4521</span></span>
+      <span style="font-size: 12px; color: {{t.sub}}; background: {{t.chip}}; padding: 3px 10px; border-radius: 999px">Notes 1</span>
+      <span style="flex: 1"></span>
+      <a href="StripOpen.dc.html" aria-label="Open the flight strip" style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; color: {{t.muted}}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg></a>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{pageHeader}}" hint-placeholder-val="{{ false }}">
+    <header style="height: 60px; flex: none; display: flex; align-items: center; gap: 16px; padding: 0 16px; border-bottom: 1px solid {{headerLine}}; background: {{headerBg}}">
+      <a href="Checklist.dc.html" style="height: 44px; display: flex; align-items: center; gap: 8px; padding: 0 12px; border: 1px solid {{t.border}}; border-radius: 10px; background: {{t.btnBg}}; box-shadow: {{t.btnShadow}}; color: {{t.text}}; text-decoration: none; font-size: 16px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"></path></svg>Checklist</a>
+      <div style="display: flex; flex-direction: column; line-height: 1.2"><h1 style="margin: 0; font-size: 20px; font-weight: 700; color: {{titleColor}}">{{pageTitle}}</h1><span style="font-size: 12px; color: {{t.muted}}">{{pageSub}}</span></div>
+      <div style="flex: 1"></div>
+    </header>
+  </sc-if>
+
+  <sc-if value="{{isFlow}}" hint-placeholder-val="{{ false }}">
+    <div style="flex: 1; min-height: 0; display: flex">
+      <main style="flex: 1; min-width: 0; padding: 32px 48px 24px; display: flex; flex-direction: column; gap: 20px">
+        <div style="display: flex; align-items: center; gap: 12px"><span style="font-size: 14px; color: {{t.sub}}">Before start · Step 7 of 10</span><span style="flex: 1; max-width: 320px; height: 4px; border-radius: 2px; background: {{t.track}}; display: flex"><span style="width: 60%; background: {{t.accent}}; border-radius: 2px"></span></span><a href="OpenSteps.dc.html" style="min-height: 44px; display: inline-flex; align-items: center; font-size: 14px; font-weight: 600; color: {{t.amber}}; text-decoration: none">2 open steps</a></div>
+        <h2 style="margin: 0; font-size: 48px; font-weight: 700; line-height: 1.1">Fuel pump switches</h2>
+        <div style="display: flex; flex-direction: column; gap: 6px"><span style="font-family: 'Geist Mono', monospace; font-size: 32px; font-weight: 500; line-height: 1.25">MAIN PUMPS ON<br>CENTER PUMPS OFF</span><a href="#" style="min-height: 44px; display: inline-flex; align-items: center; align-self: flex-start; font-size: 16px; color: {{t.link}}; text-decoration: none">Center tank 1,000 lb or less (step 6)</a></div>
+        <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; max-width: 860px">
+          <div style="border: 1px solid {{t.border}}; background: {{t.surface}}; border-radius: 10px; padding: 8px 4px 8px 16px; display: flex; align-items: center; gap: 8px"><div style="flex: 1; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; font-weight: 600; color: {{t.muted}}">Check</span><span style="font-size: 16px; font-weight: 600">Main pump LOW PRESSURE lights out</span></div><button aria-label="Why this check" style="width: 44px; height: 44px; border: 0; background: transparent; color: {{t.sub}}; font: inherit; font-weight: 600">?</button></div>
+          <div style="border: 1px solid {{t.amberBorder}}; background: {{t.amberBg}}; border-radius: 10px; padding: 8px 4px 8px 16px; display: flex; align-items: center; gap: 8px"><div style="flex: 1; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; font-weight: 600; color: {{t.amber}}">If not</span><span style="font-size: 16px; font-weight: 600">A main light stays on: check that pump's switch is ON</span></div><button aria-label="More about this case" style="width: 44px; height: 44px; border: 0; background: transparent; color: {{t.amber}}; font: inherit; font-weight: 600">?</button></div>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; align-items: center; column-gap: 16px; font-size: 16px; color: {{t.sub}}"><span><strong style="color: {{t.strong}}">Why</strong> Feeds fuel to the engines under pressure</span><a href="#" style="min-height: 44px; display: inline-flex; align-items: center; color: {{t.link}}; text-decoration: none">How to do it ⌄</a><a href="#" style="min-height: 44px; display: inline-flex; align-items: center; color: {{t.link}}; text-decoration: none">Terms ⌄</a></div>
+        <div style="flex: 1"></div>
+        <div style="display: flex; align-items: center; gap: 12px">
+          <button style="height: 56px; width: 360px; border: 0; border-radius: 12px; background: {{t.accent}}; color: {{t.onAccent}}; font: inherit; font-size: 20px; font-weight: 700">Done, next step</button>
+          <button style="height: 56px; padding: 0 24px; border: 1px solid {{t.border}}; border-radius: 12px; background: {{t.btnBg}}; box-shadow: {{t.btnShadow}}; color: {{t.text}}; font: inherit; font-size: 16px">Back</button>
+          <button style="height: 56px; padding: 0 24px; border: 1px solid {{t.amberBorder}}; border-radius: 12px; background: {{t.skipBg}}; color: {{t.amber}}; font: inherit; font-size: 16px">Skip for now</button>
+          <span style="flex: 1"></span><span style="font-size: 12px; color: {{t.muted}}">Space · ← · S · W where</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 16px; padding: 14px 16px; background: {{t.surface}}; border: 1px solid {{t.border}}; border-radius: 10px"><span style="font-size: 12px; font-weight: 600; color: {{t.muted}}">Next</span><span style="font-size: 16px; font-weight: 600">Electric hydraulic pump switches</span><span style="flex: 1; border-bottom: 2px dotted {{t.border}}"></span><span style="font-family: 'Geist Mono', monospace; font-size: 15px">ON</span><span style="font-size: 12px; color: {{t.muted}}">same area</span></div>
+      </main>
+      <aside style="width: 520px; flex: none; box-sizing: border-box; border-left: 1px solid {{t.line}}; background: {{t.surface2}}; padding: 24px; display: flex; flex-direction: column; gap: 12px">
+        <div style="display: flex; align-items: center; gap: 8px; padding: 0 4px 0 14px; background: {{t.surface}}; border: 1px solid {{t.border}}; border-radius: 10px"><span style="flex: 1; font-size: 14px; color: {{t.sub}}">{{np}}Forward overhead (P5) · Fuel panel</span><a href="{{whereHref}}" style="min-height: 44px; display: inline-flex; align-items: center; padding: 0 8px; font-size: 14px; color: {{t.link}}; text-decoration: none">Where is this?</a></div>
+        <sc-if value="{{r5}}" hint-placeholder-val="{{ true }}">        <figure style="margin: 0; flex: 1; background: {{p.bg}}; border: 1px solid {{p.frame}}; border-radius: 10px; padding: 12px; display: flex; flex-direction: column; gap: 6px; justify-content: center">
+          <span style="font-size: 12px; font-weight: 600; color: {{p.label}}">The controls · Fuel panel</span>
+          <svg viewBox="0 0 440 190" width="100%" role="img" aria-label="Fuel panel. Main pump switches set to ON, down. Center pump switches stay OFF, up.">
+            <defs><g id="lpv"><rect x="0.75" y="0.75" width="54.5" height="26.5" rx="2" fill="none" stroke="{{p.stroke}}" stroke-width="1.5"></rect><text x="28" y="12" text-anchor="middle" font-family="Geist, sans-serif" font-size="10" font-weight="700" fill="{{p.label}}">LOW</text><text x="28" y="23" text-anchor="middle" font-family="Geist, sans-serif" font-size="10" font-weight="700" fill="{{p.label}}">PRESSURE</text></g></defs>
+            <use href="#lpv" x="134" y="2"></use><use href="#lpv" x="250" y="2"></use><use href="#lpv" x="16" y="96"></use><use href="#lpv" x="118" y="96"></use><use href="#lpv" x="266" y="96"></use><use href="#lpv" x="368" y="96"></use>
+            <g fill="none" stroke="{{p.rest}}" stroke-width="2"><rect x="155" y="38" width="14" height="30" rx="7"></rect><rect x="271" y="38" width="14" height="30" rx="7"></rect><circle cx="162" cy="46" r="5"></circle><circle cx="278" cy="46" r="5"></circle></g>
+            <g fill="{{p.hiFill}}" stroke="{{p.accent}}" stroke-width="2"><rect x="37" y="132" width="14" height="30" rx="7"></rect><rect x="139" y="132" width="14" height="30" rx="7"></rect><rect x="287" y="132" width="14" height="30" rx="7"></rect><rect x="389" y="132" width="14" height="30" rx="7"></rect></g>
+            <g fill="{{p.accent}}"><circle cx="44" cy="154" r="5"></circle><circle cx="146" cy="154" r="5"></circle><circle cx="294" cy="154" r="5"></circle><circle cx="396" cy="154" r="5"></circle></g>
+            <g font-family="Geist, sans-serif" font-size="11" fill="{{p.label}}"><text x="174" y="47">OFF</text><text x="174" y="68">ON</text><text x="290" y="47">OFF</text><text x="290" y="68">ON</text><text x="56" y="141">OFF</text><text x="56" y="162">ON</text><text x="158" y="141">OFF</text><text x="158" y="162">ON</text><text x="306" y="141">OFF</text><text x="306" y="162">ON</text><text x="408" y="141">OFF</text><text x="408" y="162">ON</text></g>
+            <g font-family="Geist, sans-serif" font-size="12" font-weight="600" fill="{{p.text}}" text-anchor="middle"><text x="162" y="86">CTR L</text><text x="278" y="86">CTR R</text><text x="44" y="182">AFT 1</text><text x="146" y="182">FWD 1</text><text x="294" y="182">FWD 2</text><text x="396" y="182">AFT 2</text></g>
+          </svg>
+          <figcaption style="font-size: 12px; color: {{p.label}}">Blue: set by this step · lights drawn unlit</figcaption>
+        </figure></sc-if>
+        <sc-if value="{{r6}}" hint-placeholder-val="{{ false }}"><a href="R6Panel.dc.html" aria-label="Show the whole fuel panel" style="flex: none; display: flex; flex-direction: column; gap: 6px; padding: 12px 14px 8px; background: {{p.bg}}; border: 1px solid {{p.frame}}; border-radius: 10px; text-decoration: none"><svg viewBox="0 0 760 330" width="100%" role="img" aria-label="The whole fuel panel in outline, with the four main pump switches lit blue, set by this step"><rect x="120.75" y="10.75" width="84.5" height="36.5" rx="3" fill="none" stroke="{{p.stroke}}" stroke-width="2"></rect><rect x="214.75" y="10.75" width="84.5" height="36.5" rx="3" fill="none" stroke="{{p.stroke}}" stroke-width="2"></rect><rect x="324.75" y="10.75" width="84.5" height="36.5" rx="3" fill="none" stroke="{{p.stroke}}" stroke-width="2"></rect><rect x="418.75" y="10.75" width="84.5" height="36.5" rx="3" fill="none" stroke="{{p.stroke}}" stroke-width="2"></rect><rect x="528.75" y="10.75" width="84.5" height="36.5" rx="3" fill="none" stroke="{{p.stroke}}" stroke-width="2"></rect><rect x="622.75" y="10.75" width="84.5" height="36.5" rx="3" fill="none" stroke="{{p.stroke}}" stroke-width="2"></rect><rect x="170.75" y="110.75" width="84.5" height="36.5" rx="3" fill="none" stroke="{{p.stroke}}" stroke-width="2"></rect><rect x="337.75" y="110.75" width="84.5" height="36.5" rx="3" fill="none" stroke="{{p.stroke}}" stroke-width="2"></rect><rect x="504.75" y="110.75" width="84.5" height="36.5" rx="3" fill="none" stroke="{{p.stroke}}" stroke-width="2"></rect><rect x="30.75" y="238.75" width="84.5" height="36.5" rx="3" fill="none" stroke="{{p.stroke}}" stroke-width="2"></rect><rect x="170.75" y="238.75" width="84.5" height="36.5" rx="3" fill="none" stroke="{{p.stroke}}" stroke-width="2"></rect><rect x="504.75" y="238.75" width="84.5" height="36.5" rx="3" fill="none" stroke="{{p.stroke}}" stroke-width="2"></rect><rect x="644.75" y="238.75" width="84.5" height="36.5" rx="3" fill="none" stroke="{{p.stroke}}" stroke-width="2"></rect><circle cx="56" cy="46" r="30" fill="none" stroke="{{p.stroke}}" stroke-width="2"></circle><circle cx="380" cy="180" r="20" fill="none" stroke="{{p.rest}}" stroke-width="2.5"></circle><path d="M362 180 L398 180" stroke="{{p.rest}}" stroke-width="5" stroke-linecap="round"></path><rect x="204" y="156" width="18" height="38" rx="9" fill="none" stroke="{{p.rest}}" stroke-width="2.5"></rect><circle cx="213" cy="166" r="6" fill="none" stroke="{{p.rest}}" stroke-width="2.5"></circle><rect x="538" y="156" width="18" height="38" rx="9" fill="none" stroke="{{p.rest}}" stroke-width="2.5"></rect><circle cx="547" cy="166" r="6" fill="none" stroke="{{p.rest}}" stroke-width="2.5"></circle><rect x="64" y="282" width="18" height="38" rx="9" fill="{{p.hiFill}}" stroke="{{p.accent}}" stroke-width="3"></rect><circle cx="73" cy="310" r="6" fill="{{p.accent}}"></circle><rect x="204" y="282" width="18" height="38" rx="9" fill="{{p.hiFill}}" stroke="{{p.accent}}" stroke-width="3"></rect><circle cx="213" cy="310" r="6" fill="{{p.accent}}"></circle><rect x="538" y="282" width="18" height="38" rx="9" fill="{{p.hiFill}}" stroke="{{p.accent}}" stroke-width="3"></rect><circle cx="547" cy="310" r="6" fill="{{p.accent}}"></circle><rect x="678" y="282" width="18" height="38" rx="9" fill="{{p.hiFill}}" stroke="{{p.accent}}" stroke-width="3"></rect><circle cx="687" cy="310" r="6" fill="{{p.accent}}"></circle></svg><span style="min-height: 28px; display: flex; align-items: center; gap: 8px"><span style="flex: 1; font-size: 12px; color: {{p.label}}">Fuel panel · blue: set by this step</span><span style="font-size: 14px; font-weight: 600; color: {{t.link}}">Show panel</span><span aria-hidden="true" style="font-size: 12px; color: {{t.muted}}; border: 1px solid {{t.border}}; border-radius: 4px; padding: 1px 6px">P</span></span></a></sc-if>
+      </aside>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{isEmergency}}" hint-placeholder-val="{{ false }}">
+    <div style="flex: 1; min-height: 0; display: flex">
+      <nav aria-label="Emergency sections" style="width: 360px; flex: none; box-sizing: border-box; border-right: 1px solid {{t.line}}; padding: 16px 12px; display: flex; flex-direction: column; gap: 12px">
+        <div role="tablist" style="display: flex; background: {{t.segTrack}}; border: 1px solid {{t.segBorder}}; border-radius: 12px; padding: 2px">
+          <button role="tab" aria-selected="true" style="flex: 1; height: 44px; border: 0; border-radius: 10px; background: {{t.segOn}}; box-shadow: inset 0 0 0 1.5px {{t.red}}, {{t.segShadow}}; color: {{t.strong}}; font: inherit; font-size: 14px; font-weight: 600">Memory items</button>
+          <button role="tab" aria-selected="false" style="flex: 1; height: 44px; border: 0; border-radius: 10px; background: transparent; color: {{t.muted}}; font: inherit; font-size: 14px">Quick reference</button>
+          <button role="tab" aria-selected="false" style="flex: 1; height: 44px; border: 0; border-radius: 10px; background: transparent; color: {{t.muted}}; font: inherit; font-size: 14px">Non-normal</button>
+        </div>
+        <div style="display: flex; flex-direction: column">
+          <a href="#" aria-current="true" style="min-height: 48px; display: flex; align-items: center; padding: 0 12px; border-radius: 8px; background: {{t.redSoft}}; box-shadow: inset 0 0 0 1.5px {{t.red}}; color: {{t.strong}}; text-decoration: none; font-size: 16px; font-weight: 600">[Memory item title from the pack]</a>
+          <a href="#" style="min-height: 48px; display: flex; align-items: center; padding: 0 12px; color: {{t.sub}}; text-decoration: none; font-size: 16px">[Memory item title]</a>
+          <a href="#" style="min-height: 48px; display: flex; align-items: center; padding: 0 12px; color: {{t.sub}}; text-decoration: none; font-size: 16px">[Memory item title]</a>
+          <a href="#" style="min-height: 48px; display: flex; align-items: center; padding: 0 12px; color: {{t.sub}}; text-decoration: none; font-size: 16px">[Memory item title]</a>
+        </div>
+        <div style="flex: 1"></div>
+        <a href="#" style="min-height: 44px; display: flex; align-items: center; padding: 0 12px; font-size: 14px; color: {{t.link}}; text-decoration: none">Practice these from memory</a>
+      </nav>
+      <main style="flex: 1; min-width: 0; padding: 32px 48px; display: flex; flex-direction: column; gap: 16px">
+        <span style="font-size: 14px; font-weight: 600; color: {{t.redText}}">Memory item · do these without the checklist</span>
+        <h2 style="margin: 0; font-size: 32px; font-weight: 700">[Memory item title from the pack]</h2>
+        <section style="max-width: 860px; background: {{t.surface}}; border: 1px solid {{t.border}}; border-radius: 12px">
+          <div style="display: grid; grid-template-columns: 40px minmax(0, 1fr) 260px; gap: 12px; align-items: center; padding: 14px 20px; border-bottom: 1px solid {{t.line}}"><span style="font-family: 'Geist Mono', monospace; font-size: 15px; color: {{t.muted}}">1</span><span style="font-size: 18px; font-weight: 600">[Control]</span><span style="font-family: 'Geist Mono', monospace; font-size: 16px">[SETTING]</span></div>
+          <div style="display: grid; grid-template-columns: 40px minmax(0, 1fr) 260px; gap: 12px; align-items: center; padding: 14px 20px; border-bottom: 1px solid {{t.line}}"><span style="font-family: 'Geist Mono', monospace; font-size: 15px; color: {{t.muted}}">2</span><span style="font-size: 18px; font-weight: 600">[Control]</span><span style="font-family: 'Geist Mono', monospace; font-size: 16px">[SETTING]</span></div>
+          <div style="display: grid; grid-template-columns: 40px minmax(0, 1fr) 260px; gap: 12px; align-items: center; padding: 14px 20px"><span style="font-family: 'Geist Mono', monospace; font-size: 15px; color: {{t.muted}}">3</span><span style="font-size: 18px; font-weight: 600">[Control]</span><span style="font-family: 'Geist Mono', monospace; font-size: 16px">[SETTING]</span></div>
+        </section>
+        <div style="max-width: 860px; display: flex; flex-direction: column; gap: 8px; padding: 16px 20px; background: {{t.surface}}; border: 1px solid {{t.border}}; border-radius: 12px"><span style="font-size: 14px; font-weight: 600; color: {{t.sub}}">Then</span><span style="font-size: 16px; line-height: 1.5">Open the matching quick reference checklist for the remaining steps.</span><a href="#" style="min-height: 44px; display: inline-flex; align-items: center; align-self: flex-start; font-size: 14px; color: {{t.link}}; text-decoration: none">Open quick reference checklist</a></div>
+        <span style="font-size: 12px; color: {{t.muted}}">Item titles and steps come from the pack's emergency section, unchanged.</span>
+      </main>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{isTimer}}" hint-placeholder-val="{{ false }}">
+    <div style="flex: 1; min-height: 0; display: flex">
+      <main style="flex: 1; min-width: 0; padding: 20px 32px; display: flex; flex-direction: column; gap: 16px">
+        <div style="display: flex; flex-direction: column; gap: 4px"><span style="font-size: 14px; color: {{t.muted}}">Preflight · Preliminary preflight procedure</span><h2 style="margin: 0; font-size: 32px; font-weight: 700">Preliminary preflight</h2></div>
+        <section style="max-width: 1040px; background: {{t.surface}}; border: 1px solid {{t.border}}; border-radius: 12px">
+          <div style="display: grid; grid-template-columns: 40px minmax(0, 1fr) 34% 180px; column-gap: 12px; align-items: center; padding: 16px 12px; background: {{t.current}}; box-shadow: inset 4px 0 0 {{t.accent}}">
+            <svg width="22" height="22" viewBox="0 0 24 24" role="img" aria-label="Current step" style="margin: 0 auto"><circle cx="12" cy="12" r="10" fill="none" stroke="{{t.accent}}" stroke-width="2.4"></circle><circle cx="12" cy="12" r="5" fill="{{t.accent}}"></circle></svg>
+            <span style="display: flex; flex-direction: column; gap: 4px"><span style="font-size: 20px; font-weight: 700">IRS</span><span style="font-size: 14px; color: {{t.sub}}">Aft overhead (P5) · IRS mode selectors</span></span>
+            <span style="font-family: 'Geist Mono', monospace; font-size: 15px; font-weight: 500">BOTH NAV</span>
+            <span role="timer" aria-label="IRS alignment, 7 minutes 12 seconds left" style="display: flex; align-items: center; gap: 10px; justify-self: end; padding: 6px 12px; border-radius: 999px; background: {{t.accentSoft}}; box-shadow: inset 0 0 0 1.5px {{t.accent}}"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="{{t.track}}" stroke-width="3"></circle><circle cx="12" cy="12" r="9" fill="none" stroke="{{t.accent}}" stroke-width="3" stroke-dasharray="40 57" transform="rotate(-90 12 12)"></circle></svg><span style="font-family: 'Geist Mono', monospace; font-size: 16px; font-weight: 600">7:12</span></span>
+          </div>
+          <div style="padding: 14px 20px 16px 64px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px; border-bottom: 1px solid {{t.line}}; background: {{t.current}}">
+            <span style="font-size: 14px; color: {{t.sub}}">IRS alignment timer started by itself when you set NAV. You can carry on with other steps; a chime plays at zero.</span>
+            <button style="height: 44px; padding: 0 14px; border: 1px solid {{t.border}}; border-radius: 10px; background: {{t.btnBg}}; box-shadow: {{t.btnShadow}}; color: {{t.text}}; font: inherit; font-size: 14px">Pause</button>
+            <button style="height: 44px; padding: 0 14px; border: 1px solid {{t.border}}; border-radius: 10px; background: {{t.btnBg}}; box-shadow: {{t.btnShadow}}; color: {{t.text}}; font: inherit; font-size: 14px">Restart</button>
+            <button style="height: 44px; padding: 0 20px; border: 0; border-radius: 10px; background: {{t.accent}}; color: {{t.onAccent}}; font: inherit; font-size: 16px; font-weight: 700">Done</button>
+          </div>
+          <div style="display: grid; grid-template-columns: 40px minmax(0, 1fr) 34% 180px; column-gap: 12px; align-items: center; padding: 10px 12px; border-bottom: 1px solid {{t.line}}"><svg width="22" height="22" viewBox="0 0 24 24" role="img" aria-label="To do" style="margin: 0 auto"><circle cx="12" cy="12" r="10" fill="none" stroke="{{t.todo}}" stroke-width="2"></circle></svg><span style="font-size: 16px">ELT</span><span style="font-family: 'Geist Mono', monospace; font-size: 15px">GUARDED AND LIGHTS OFF</span><span></span></div>
+          <div style="display: grid; grid-template-columns: 40px minmax(0, 1fr) 34% 180px; column-gap: 12px; align-items: center; padding: 10px 12px"><svg width="22" height="22" viewBox="0 0 24 24" role="img" aria-label="To do" style="margin: 0 auto"><circle cx="12" cy="12" r="10" fill="none" stroke="{{t.todo}}" stroke-width="2"></circle></svg><span style="font-size: 16px">Crew oxygen</span><span style="font-family: 'Geist Mono', monospace; font-size: 15px">VERIFY SUFFICIENT FOR FLIGHT</span><span></span></div>
+        </section>
+        <div style="max-width: 1040px; display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: {{t.surface}}; border: 1px solid {{t.border}}; border-radius: 10px"><span style="font-size: 14px; font-weight: 600">Running timers</span><span style="font-size: 14px; color: {{t.sub}}">IRS alignment 7:12</span><span style="flex: 1"></span><span style="font-size: 12px; color: {{t.muted}}">Timers keep running when you change page and show in this bar until they finish.</span></div>
+      </main>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{isCdu}}" hint-placeholder-val="{{ false }}">
+    <div style="flex: 1; min-height: 0; display: flex; gap: 32px; padding: 24px 32px">
+      <figure style="margin: 0; width: 520px; flex: none; background: {{p.bg}}; border: 1px solid {{p.frame}}; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 12px" role="img" aria-label="Schematic CDU on the PERF INIT page with your values filled in. The 3L key is highlighted.">
+        <div style="background: #0b0e12; border-radius: 6px; padding: 14px 16px; font-family: 'Geist Mono', monospace; font-size: 15px; line-height: 1.75; color: #e6e9ee">
+          <div style="text-align: center; color: #e6e9ee">PERF INIT</div>
+          <div style="display: flex; justify-content: space-between; font-size: 11px; color: #8b94a3"><span>GW/CRZ CG</span><span>TRIP/CRZ ALT</span></div>
+          <div style="display: flex; justify-content: space-between"><span>---.-/--.-</span><span>---/FL370</span></div>
+          <div style="display: flex; justify-content: space-between; font-size: 11px; color: #8b94a3"><span>PLAN/FUEL</span><span>CRZ WIND</span></div>
+          <div style="display: flex; justify-content: space-between"><span>14.2</span><span>---°/---</span></div>
+          <div style="display: flex; justify-content: space-between; font-size: 11px; color: #8b94a3"><span>ZFW</span><span>ISA DEV</span></div>
+          <div style="display: flex; justify-content: space-between"><span style="background: #163056; box-shadow: 0 0 0 1.5px #4c8dff; padding: 0 4px; border-radius: 2px">121.4</span><span>---°C</span></div>
+          <div style="display: flex; justify-content: space-between; font-size: 11px; color: #8b94a3"><span>RESERVES</span><span>T/C OAT</span></div>
+          <div style="display: flex; justify-content: space-between"><span>□□.□</span><span>---°C</span></div>
+          <div style="display: flex; justify-content: space-between; font-size: 11px; color: #8b94a3"><span>COST INDEX</span><span>TRANS ALT</span></div>
+          <div style="display: flex; justify-content: space-between"><span>□□□</span><span>18000</span></div>
+          <div style="border-top: 1px solid #2a323e; margin-top: 4px; padding-top: 4px; color: #a9caff">121.4</div>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+          <span style="height: 36px; border: 1px solid {{p.stroke}}; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-family: 'Geist Mono', monospace; font-size: 12px; color: {{p.label}}">1L</span><span style="height: 36px; border: 1px solid {{p.stroke}}; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-family: 'Geist Mono', monospace; font-size: 12px; color: {{p.label}}">1R</span>
+          <span style="height: 36px; border: 1px solid {{p.stroke}}; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-family: 'Geist Mono', monospace; font-size: 12px; color: {{p.label}}">2L</span><span style="height: 36px; border: 1px solid {{p.stroke}}; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-family: 'Geist Mono', monospace; font-size: 12px; color: {{p.label}}">2R</span>
+          <span style="height: 36px; border: 2px solid {{p.accent}}; background: {{p.hiFill}}; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-family: 'Geist Mono', monospace; font-size: 12px; font-weight: 700; color: {{p.hiText}}">3L · press</span><span style="height: 36px; border: 1px solid {{p.stroke}}; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-family: 'Geist Mono', monospace; font-size: 12px; color: {{p.label}}">3R</span>
+        </div>
+        <span style="font-size: 12px; color: {{p.label}}">Schematic CDU. Line keys shown for the side you need.</span>
+      </figure>
+      <main style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+        <div style="display: flex; gap: 6px; flex-wrap: wrap">
+          <span style="font-family: 'Geist Mono', monospace; font-size: 12px; padding: 6px 10px; border-radius: 999px; color: {{t.green}}; border: 1px solid {{t.border}}">IDENT ✓</span>
+          <span style="font-family: 'Geist Mono', monospace; font-size: 12px; padding: 6px 10px; border-radius: 999px; color: {{t.green}}; border: 1px solid {{t.border}}">POS INIT ✓</span>
+          <span style="font-family: 'Geist Mono', monospace; font-size: 12px; padding: 6px 10px; border-radius: 999px; color: {{t.green}}; border: 1px solid {{t.border}}">RTE ✓</span>
+          <span style="font-family: 'Geist Mono', monospace; font-size: 12px; padding: 6px 10px; border-radius: 999px; color: {{t.green}}; border: 1px solid {{t.border}}">DEPARTURES ✓</span>
+          <span style="font-family: 'Geist Mono', monospace; font-size: 12px; padding: 6px 10px; border-radius: 999px; background: {{t.accentSoft}}; box-shadow: inset 0 0 0 1.5px {{t.accent}}; color: {{t.strong}}">PERF INIT</span>
+          <span style="font-family: 'Geist Mono', monospace; font-size: 12px; padding: 6px 10px; border-radius: 999px; color: {{t.muted}}; border: 1px solid {{t.border}}">N1 LIMIT</span>
+          <span style="font-family: 'Geist Mono', monospace; font-size: 12px; padding: 6px 10px; border-radius: 999px; color: {{t.muted}}; border: 1px solid {{t.border}}">TAKEOFF REF</span>
+          <span style="font-family: 'Geist Mono', monospace; font-size: 12px; padding: 6px 10px; border-radius: 999px; color: {{t.muted}}; border: 1px solid {{t.border}}">PRE-FLT COMPLETE</span>
+        </div>
+        <h2 style="margin: 0; font-size: 32px; font-weight: 700">PERF INIT, entry 2 of 5</h2>
+        <div style="max-width: 720px; background: {{t.current}}; border: 1px solid {{t.border}}; box-shadow: inset 4px 0 0 {{t.accent}}; border-radius: 12px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px">
+          <span style="font-size: 20px; font-weight: 600">Zero fuel weight</span>
+          <span style="font-size: 16px; line-height: 1.5">Type <span style="font-family: 'Geist Mono', monospace; font-weight: 600">121.4</span> on the keypad, then press <span style="font-family: 'Geist Mono', monospace; font-weight: 600">3L</span>.</span>
+          <span style="font-size: 14px; color: {{t.sub}}">Your value, from the SimBrief plan (thousands of pounds). <a href="SimBrief.dc.html" style="color: {{t.link}}; text-decoration: none">Change it</a></span>
+        </div>
+        <div style="display: flex; gap: 12px">
+          <button style="height: 48px; padding: 0 24px; border: 0; border-radius: 10px; background: {{t.accent}}; color: {{t.onAccent}}; font: inherit; font-size: 16px; font-weight: 700">Entered, next</button>
+          <button style="height: 48px; padding: 0 20px; border: 1px solid {{t.border}}; border-radius: 10px; background: {{t.btnBg}}; box-shadow: {{t.btnShadow}}; color: {{t.text}}; font: inherit; font-size: 16px">Back</button>
+        </div>
+        <span style="font-size: 14px; color: {{t.muted}}">Opened from the CDU step in Preliminary preflight. Closing returns you there.</span>
+      </main>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{isBriefing}}" hint-placeholder-val="{{ false }}">
+    <div style="flex: 1; min-height: 0; padding: 20px 32px; display: flex; flex-direction: column; gap: 16px">
+      <div style="display: flex; flex-direction: column; gap: 4px"><span style="font-size: 14px; color: {{t.muted}}">Departure · Before taxi</span><h2 style="margin: 0; font-size: 32px; font-weight: 700">Before taxi</h2></div>
+      <section style="max-width: 1040px; background: {{t.current}}; border: 1px solid {{t.border}}; box-shadow: inset 4px 0 0 {{t.accent}}; border-radius: 12px; padding: 20px 24px; display: flex; flex-direction: column; gap: 14px">
+        <div style="display: flex; align-items: center; gap: 12px"><span style="font-size: 12px; font-weight: 600; color: {{t.accentText}}; border: 1px solid {{t.accent}}; padding: 2px 8px; border-radius: 999px">Briefing</span><span style="font-size: 20px; font-weight: 700">Takeoff briefing</span></div>
+        <span style="font-size: 14px; color: {{t.sub}}">Say each item out loud. Your flight's values are filled in.</span>
+        <div style="display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 10px 20px; font-size: 16px">
+          <span style="color: {{t.sub}}">Runway and SID</span><span style="font-family: 'Geist Mono', monospace">16L · SUMMA2.SEA</span>
+          <span style="color: {{t.sub}}">Initial altitude</span><span style="font-family: 'Geist Mono', monospace">5000</span>
+          <span style="color: {{t.sub}}">Flaps and speeds</span><a href="SimBrief.dc.html" style="font-family: 'Geist Mono', monospace; color: {{t.link}}; text-decoration: none">— enter from the FMC</a>
+          <span style="color: {{t.sub}}">[Briefing item]</span><span>[Wording from the pack]</span>
+          <span style="color: {{t.sub}}">[Briefing item]</span><span>[Wording from the pack]</span>
+        </div>
+        <div style="display: flex; gap: 12px"><button style="height: 44px; padding: 0 20px; border: 0; border-radius: 10px; background: {{t.accent}}; color: {{t.onAccent}}; font: inherit; font-size: 16px; font-weight: 700">Briefed</button><button style="height: 44px; padding: 0 16px; border: 1px solid {{t.amberBorder}}; border-radius: 10px; background: {{t.skipBg}}; color: {{t.amber}}; font: inherit; font-size: 16px">Skip for now</button></div>
+      </section>
+      <span style="font-size: 12px; color: {{t.muted}}">Briefings appear as a step at the point in the flow where you need them. The approach briefing works the same way at Descent.</span>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{isExterior}}" hint-placeholder-val="{{ false }}">
+    <div style="flex: 1; min-height: 0; display: flex; gap: 32px; padding: 20px 32px">
+      <figure style="margin: 0; width: 560px; flex: none; background: {{p.bg}}; border: 1px solid {{p.frame}}; border-radius: 12px; padding: 12px; display: flex; flex-direction: column; gap: 6px">
+        <svg viewBox="-20 -10 360 440" width="100%" height="680" role="img" aria-label="Top view of the airplane with 18 numbered inspection stops. Stop 2, the nose, is current.">
+          <g fill="{{p.panel}}" stroke="{{p.stroke}}" stroke-width="1.5">
+            <path d="M160 6 C176 6 182 30 182 60 L182 380 L160 410 L138 380 L138 60 C138 30 144 6 160 6 Z"></path>
+            <path d="M138 140 L0 222 L0 236 L138 200 Z"></path><path d="M182 140 L320 222 L320 236 L182 200 Z"></path>
+            <path d="M144 370 L100 400 L100 410 L144 396 Z"></path><path d="M176 370 L220 400 L220 410 L176 396 Z"></path>
+            <ellipse cx="86" cy="164" rx="12" ry="22"></ellipse><ellipse cx="234" cy="164" rx="12" ry="22"></ellipse>
+          </g>
+          <g font-family="Geist, sans-serif" font-size="13" font-weight="700" text-anchor="middle">
+            <circle cx="128" cy="70" r="12" fill="{{p.doneFill}}" stroke="{{p.done}}" stroke-width="2"></circle><text x="128" y="74.5" fill="{{p.done}}">1</text>
+            <circle cx="160" cy="16" r="13" fill="{{p.accent}}"></circle><text x="160" y="20.5" fill="#ffffff">2</text>
+            <circle cx="192" cy="70" r="12" fill="{{p.bg}}" stroke="{{p.stroke}}" stroke-width="2"></circle><text x="192" y="74.5" fill="{{p.label}}">3</text>
+            <circle cx="188" cy="136" r="12" fill="{{p.bg}}" stroke="{{p.stroke}}" stroke-width="2"></circle><text x="188" y="140.5" fill="{{p.label}}">4</text>
+            <circle cx="234" cy="150" r="12" fill="{{p.bg}}" stroke="{{p.stroke}}" stroke-width="2"></circle><text x="234" y="154.5" fill="{{p.label}}">5</text>
+            <circle cx="270" cy="180" r="12" fill="{{p.bg}}" stroke="{{p.stroke}}" stroke-width="2"></circle><text x="270" y="184.5" fill="{{p.label}}">6</text>
+            <circle cx="310" cy="226" r="12" fill="{{p.bg}}" stroke="{{p.stroke}}" stroke-width="2"></circle><text x="310" y="230.5" fill="{{p.label}}">7</text>
+            <circle cx="250" cy="236" r="12" fill="{{p.bg}}" stroke="{{p.stroke}}" stroke-width="2"></circle><text x="250" y="240.5" fill="{{p.label}}">8</text>
+            <circle cx="190" cy="212" r="12" fill="{{p.bg}}" stroke="{{p.stroke}}" stroke-width="2"></circle><text x="190" y="216.5" fill="{{p.label}}">9</text>
+            <circle cx="192" cy="300" r="12" fill="{{p.bg}}" stroke="{{p.stroke}}" stroke-width="2"></circle><text x="192" y="304.5" fill="{{p.label}}">10</text>
+            <circle cx="160" cy="404" r="12" fill="{{p.bg}}" stroke="{{p.stroke}}" stroke-width="2"></circle><text x="160" y="408.5" fill="{{p.label}}">11</text>
+            <circle cx="128" cy="300" r="12" fill="{{p.bg}}" stroke="{{p.stroke}}" stroke-width="2"></circle><text x="128" y="304.5" fill="{{p.label}}">12</text>
+            <circle cx="130" cy="212" r="12" fill="{{p.bg}}" stroke="{{p.stroke}}" stroke-width="2"></circle><text x="130" y="216.5" fill="{{p.label}}">13</text>
+            <circle cx="70" cy="236" r="12" fill="{{p.bg}}" stroke="{{p.stroke}}" stroke-width="2"></circle><text x="70" y="240.5" fill="{{p.label}}">14</text>
+            <circle cx="10" cy="226" r="12" fill="{{p.bg}}" stroke="{{p.stroke}}" stroke-width="2"></circle><text x="10" y="230.5" fill="{{p.label}}">15</text>
+            <circle cx="50" cy="180" r="12" fill="{{p.bg}}" stroke="{{p.stroke}}" stroke-width="2"></circle><text x="50" y="184.5" fill="{{p.label}}">16</text>
+            <circle cx="86" cy="150" r="12" fill="{{p.bg}}" stroke="{{p.stroke}}" stroke-width="2"></circle><text x="86" y="154.5" fill="{{p.label}}">17</text>
+            <circle cx="132" cy="136" r="12" fill="{{p.bg}}" stroke="{{p.stroke}}" stroke-width="2"></circle><text x="132" y="140.5" fill="{{p.label}}">18</text>
+          </g>
+        </svg>
+      </figure>
+      <main style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 16px; max-width: 640px">
+        <span style="font-size: 14px; color: {{t.sub}}">Exterior inspection · Stop 2 of 18</span>
+        <h2 style="margin: 0; font-size: 32px; font-weight: 700">Nose</h2>
+        <p style="margin: 0; font-size: 16px; line-height: 1.5; color: {{t.sub}}">Front of the airplane, around the nose gear.</p>
+        <div style="border: 1px solid {{t.border}}; background: {{t.surface}}; border-radius: 10px; padding: 14px 16px; display: flex; flex-direction: column; gap: 6px"><span style="font-size: 12px; font-weight: 600; color: {{t.muted}}">Check</span><span style="font-size: 16px; font-weight: 600">Gear pin removed</span><span style="font-size: 16px; font-weight: 600">Nose wheel free of cracks or damage</span><span style="font-size: 16px; font-weight: 600">Gear strut, gear door and steering undamaged</span><span style="font-size: 16px; font-weight: 600">Lights intact</span></div>
+        <p style="margin: 0; font-size: 14px; color: {{t.sub}}"><strong style="color: {{t.strong}}">Every stop</strong> · Check for damage, missing parts and fluid leaks.</p>
+        <div style="display: flex; gap: 12px"><button style="height: 48px; padding: 0 24px; border: 0; border-radius: 10px; background: {{t.accent}}; color: {{t.onAccent}}; font: inherit; font-size: 16px; font-weight: 700">Done, next stop</button><button style="height: 48px; padding: 0 16px; border: 1px solid {{t.amberBorder}}; border-radius: 10px; background: {{t.skipBg}}; color: {{t.amber}}; font: inherit; font-size: 16px">Skip for now</button></div>
+        <span style="font-size: 14px; color: {{t.muted}}"><strong style="color: {{t.sub}}">Next</strong> Right forward fuselage</span>
+      </main>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{isDescent}}" hint-placeholder-val="{{ false }}">
+    <div style="flex: 1; min-height: 0; padding: 24px 32px; display: flex; flex-direction: column; gap: 16px">
+      <div style="display: flex; flex-direction: column; gap: 4px"><h2 style="margin: 0; font-size: 24px; font-weight: 700">Approach</h2><span style="font-size: 14px; color: {{t.sub}}">Used by the Descent and Approach steps and the approach briefing.</span></div>
+      <div style="display: flex; align-items: center; gap: 12px"><span style="font-size: 14px; color: {{t.sub}}">Approach type</span>
+        <div role="group" style="display: flex; background: {{t.segTrack}}; border: 1px solid {{t.segBorder}}; border-radius: 12px; padding: 2px">
+          <button aria-pressed="true" style="height: 44px; padding: 0 16px; border: 0; border-radius: 10px; background: {{t.segOn}}; box-shadow: inset 0 0 0 1.5px {{t.accent}}, {{t.segShadow}}; color: {{t.strong}}; font: inherit; font-size: 14px; font-weight: 600">ILS</button>
+          <button aria-pressed="false" style="height: 44px; padding: 0 16px; border: 0; border-radius: 10px; background: transparent; color: {{t.muted}}; font: inherit; font-size: 14px">RNAV</button>
+          <button aria-pressed="false" style="height: 44px; padding: 0 16px; border: 0; border-radius: 10px; background: transparent; color: {{t.muted}}; font: inherit; font-size: 14px">Visual</button>
+        </div>
+        <span style="font-size: 12px; color: {{t.muted}}">The Approach steps change with the type.</span>
+      </div>
+      <section style="max-width: 1040px; background: {{t.surface}}; border: 1px solid {{t.border}}; border-radius: 12px">
+        <div style="display: grid; grid-template-columns: 200px 160px minmax(0, 1fr) 176px; column-gap: 16px; align-items: start; padding: 14px 20px; border-bottom: 1px solid {{t.line}}"><span style="font-size: 16px; font-weight: 600">Arrival runway</span><span style="font-family: 'Geist Mono', monospace; font-size: 15px">28R</span><span style="font-size: 14px; line-height: 1.5; color: {{t.sub}}">The runway you expect to land on. Check it against the ATIS before you brief.</span><span style="justify-self: start; font-family: 'Geist Mono', monospace; font-size: 12px; font-weight: 600; color: {{t.sub}}; background: {{t.chip}}; border: 1px solid {{t.border}}; padding: 4px 8px; border-radius: 6px">CDU · DEP/ARR</span></div>
+        <div style="display: grid; grid-template-columns: 200px 160px minmax(0, 1fr) 176px; column-gap: 16px; align-items: start; padding: 14px 20px; border-bottom: 1px solid {{t.line}}"><span style="font-size: 16px; font-weight: 600">Arrival (STAR)</span><a href="#" style="font-family: 'Geist Mono', monospace; font-size: 15px; color: {{t.link}}; text-decoration: none">— enter</a><span style="font-size: 14px; line-height: 1.5; color: {{t.sub}}">The published route from the airway to the approach.</span><span style="justify-self: start; font-family: 'Geist Mono', monospace; font-size: 12px; font-weight: 600; color: {{t.sub}}; background: {{t.chip}}; border: 1px solid {{t.border}}; padding: 4px 8px; border-radius: 6px">CDU · DEP/ARR</span></div>
+        <div style="display: grid; grid-template-columns: 200px 160px minmax(0, 1fr) 176px; column-gap: 16px; align-items: start; padding: 14px 20px; border-bottom: 1px solid {{t.line}}"><span style="font-size: 16px; font-weight: 600">Minimums</span><a href="#" style="font-family: 'Geist Mono', monospace; font-size: 15px; color: {{t.link}}; text-decoration: none">— enter</a><span style="font-size: 14px; line-height: 1.5; color: {{t.sub}}">The height where you must see the runway to continue, from the approach chart.</span><span style="justify-self: start; font-family: 'Geist Mono', monospace; font-size: 12px; font-weight: 600; color: {{t.sub}}; background: {{t.chip}}; border: 1px solid {{t.border}}; padding: 4px 8px; border-radius: 6px">EFIS · MINS</span></div>
+        <div style="display: grid; grid-template-columns: 200px 160px minmax(0, 1fr) 176px; column-gap: 16px; align-items: start; padding: 14px 20px; border-bottom: 1px solid {{t.line}}"><span style="font-size: 16px; font-weight: 600">Transition level</span><span style="font-family: 'Geist Mono', monospace; font-size: 15px">FL180</span><span style="font-size: 14px; line-height: 1.5; color: {{t.sub}}">Where you switch the altimeters to the local setting on the way down.</span><span style="justify-self: start; font-family: 'Geist Mono', monospace; font-size: 12px; font-weight: 600; color: {{t.sub}}; background: {{t.chip}}; border: 1px solid {{t.border}}; padding: 4px 8px; border-radius: 6px">CDU · DESCENT</span></div>
+        <div style="display: grid; grid-template-columns: 200px 160px minmax(0, 1fr) 176px; column-gap: 16px; align-items: start; padding: 14px 20px"><span style="font-size: 16px; font-weight: 600">Landing speed</span><a href="#" style="font-family: 'Geist Mono', monospace; font-size: 15px; color: {{t.link}}; text-decoration: none">— enter from the FMC</a><span style="font-size: 14px; line-height: 1.5; color: {{t.sub}}">VREF for your landing flaps, plus any wind additive.</span><span style="justify-self: start; font-family: 'Geist Mono', monospace; font-size: 12px; font-weight: 600; color: {{t.sub}}; background: {{t.chip}}; border: 1px solid {{t.border}}; padding: 4px 8px; border-radius: 6px">CDU · APPROACH REF</span></div>
+      </section>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{isLog}}" hint-placeholder-val="{{ false }}">
+    <div style="flex: 1; min-height: 0; padding: 24px 32px; display: flex; gap: 24px">
+      <main style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+        <section style="background: {{t.surface}}; border: 1px solid {{t.border}}; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 12px">
+          <div style="display: flex; align-items: center; justify-content: space-between"><h2 style="margin: 0; font-size: 20px; font-weight: 600">This flight · KSEA → KSFO</h2><span style="font-size: 14px; color: {{t.muted}}">41 of 366 steps · started 09:48</span></div>
+          <div style="display: grid; grid-template-columns: 80px minmax(0, 1fr) 160px; gap: 8px 16px; font-size: 14px">
+            <span style="font-family: 'Geist Mono', monospace; color: {{t.muted}}">10:14</span><span>Center tank fuel</span><span style="font-family: 'Geist Mono', monospace">CHECK QUANTITY</span>
+            <span style="font-family: 'Geist Mono', monospace; color: {{t.muted}}">10:11</span><span>Door lights</span><span style="font-family: 'Geist Mono', monospace">ALL OUT</span>
+            <span style="font-family: 'Geist Mono', monospace; color: {{t.muted}}">10:10</span><span>MCP</span><span style="font-family: 'Geist Mono', monospace">SET</span>
+            <span style="font-family: 'Geist Mono', monospace; color: {{t.amber}}">open</span><span>Crew oxygen</span><span style="font-family: 'Geist Mono', monospace">VERIFY</span>
+            <span style="font-family: 'Geist Mono', monospace; color: {{t.amber}}">open</span><span>TERR (EFIS control panel)</span><span style="font-family: 'Geist Mono', monospace">ON</span>
+          </div>
+          <a href="#" style="min-height: 44px; display: inline-flex; align-items: center; align-self: flex-start; font-size: 14px; color: {{t.link}}; text-decoration: none">Show every tick ⌄</a>
+        </section>
+        <section style="background: {{t.surface}}; border: 1px solid {{t.border}}; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 8px">
+          <h2 style="margin: 0; font-size: 16px; font-weight: 600">Earlier flights</h2>
+          <span style="font-size: 14px; color: {{t.muted}}">Flights you log appear here, newest first.</span>
+        </section>
+      </main>
+      <aside style="width: 360px; flex: none; display: flex; flex-direction: column; gap: 8px">
+        <button style="height: 48px; border: 0; border-radius: 10px; background: {{t.accent}}; color: {{t.onAccent}}; font: inherit; font-size: 16px; font-weight: 700">Log flight and start new</button>
+        <button style="height: 44px; border: 1px solid {{t.border}}; border-radius: 10px; background: {{t.btnBg}}; box-shadow: {{t.btnShadow}}; color: {{t.text}}; font: inherit; font-size: 14px; text-align: left; padding: 0 14px">Save copy (HTML file)</button>
+        <button style="height: 44px; border: 1px solid {{t.border}}; border-radius: 10px; background: {{t.btnBg}}; box-shadow: {{t.btnShadow}}; color: {{t.text}}; font: inherit; font-size: 14px; text-align: left; padding: 0 14px">Export CSV</button>
+        <button style="height: 44px; border: 1px solid {{t.border}}; border-radius: 10px; background: {{t.btnBg}}; box-shadow: {{t.btnShadow}}; color: {{t.text}}; font: inherit; font-size: 14px; text-align: left; padding: 0 14px">Export JSON</button>
+        <button style="height: 44px; border: 1px solid {{t.border}}; border-radius: 10px; background: {{t.btnBg}}; box-shadow: {{t.btnShadow}}; color: {{t.text}}; font: inherit; font-size: 14px; text-align: left; padding: 0 14px">Load log file</button>
+        <button style="height: 44px; border: 1px solid {{t.border}}; border-radius: 10px; background: {{t.btnBg}}; box-shadow: {{t.btnShadow}}; color: {{t.text}}; font: inherit; font-size: 14px; text-align: left; padding: 0 14px">Print or save as PDF</button>
+        <span style="font-size: 12px; line-height: 1.5; color: {{t.muted}}">Logs stay on this device unless you export them.</span>
+      </aside>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{isSettings}}" hint-placeholder-val="{{ false }}">
+    <div style="flex: 1; min-height: 0; padding: 24px 32px; display: flex; flex-direction: column; gap: 12px; max-width: 1040px">
+      <section style="background: {{t.surface}}; border: 1px solid {{t.border}}; border-radius: 12px; padding: 16px 20px; display: flex; align-items: center; gap: 20px"><div style="flex: 1; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 16px; font-weight: 600">Appearance</span><span style="font-size: 14px; color: {{t.sub}}">Follows your system unless you choose.</span></div>
+        <div role="group" style="display: flex; background: {{t.segTrack}}; border: 1px solid {{t.segBorder}}; border-radius: 12px; padding: 2px"><button aria-pressed="true" style="height: 44px; padding: 0 14px; border: 0; border-radius: 10px; background: {{t.segOn}}; box-shadow: inset 0 0 0 1.5px {{t.accent}}, {{t.segShadow}}; color: {{t.strong}}; font: inherit; font-size: 14px; font-weight: 600">System</button><button aria-pressed="false" style="height: 44px; padding: 0 14px; border: 0; border-radius: 10px; background: transparent; color: {{t.muted}}; font: inherit; font-size: 14px">Light</button><button aria-pressed="false" style="height: 44px; padding: 0 14px; border: 0; border-radius: 10px; background: transparent; color: {{t.muted}}; font: inherit; font-size: 14px">Dark</button></div></section>
+      <section style="background: {{t.surface}}; border: 1px solid {{t.border}}; border-radius: 12px; padding: 16px 20px; display: flex; align-items: center; gap: 20px"><div style="flex: 1; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 16px; font-weight: 600">Text and controls size</span><span style="font-size: 14px; color: {{t.sub}}">Scales everything, on top of the automatic wide-screen scaling.</span></div>
+        <div role="group" style="display: flex; background: {{t.segTrack}}; border: 1px solid {{t.segBorder}}; border-radius: 12px; padding: 2px"><button aria-pressed="true" style="height: 44px; padding: 0 14px; border: 0; border-radius: 10px; background: {{t.segOn}}; box-shadow: inset 0 0 0 1.5px {{t.accent}}, {{t.segShadow}}; color: {{t.strong}}; font: inherit; font-size: 14px; font-weight: 600">100%</button><button aria-pressed="false" style="height: 44px; padding: 0 14px; border: 0; border-radius: 10px; background: transparent; color: {{t.muted}}; font: inherit; font-size: 14px">115%</button><button aria-pressed="false" style="height: 44px; padding: 0 14px; border: 0; border-radius: 10px; background: transparent; color: {{t.muted}}; font: inherit; font-size: 14px">130%</button></div></section>
+      <sc-if value="{{r5}}" hint-placeholder-val="{{ true }}"><section style="background: {{t.surface}}; border: 1px solid {{t.border}}; border-radius: 12px; padding: 16px 20px; display: flex; align-items: center; gap: 20px"><div style="flex: 1; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 16px; font-weight: 600">Map in steps</span><span style="font-size: 14px; color: {{t.sub}}">When the location map shows in full. The drawing and Check, If not and Why always show.</span></div>
+        <div role="group" style="display: flex; background: {{t.segTrack}}; border: 1px solid {{t.segBorder}}; border-radius: 12px; padding: 2px"><button aria-pressed="false" style="height: 44px; padding: 0 12px; border: 0; border-radius: 10px; background: transparent; color: {{t.muted}}; font: inherit; font-size: 14px">Always</button><button aria-pressed="true" style="height: 44px; padding: 0 12px; border: 0; border-radius: 10px; background: {{t.segOn}}; box-shadow: inset 0 0 0 1.5px {{t.accent}}, {{t.segShadow}}; color: {{t.strong}}; font: inherit; font-size: 14px; font-weight: 600">New panel</button><button aria-pressed="false" style="height: 44px; padding: 0 12px; border: 0; border-radius: 10px; background: transparent; color: {{t.muted}}; font: inherit; font-size: 14px">On request</button><button aria-pressed="false" style="height: 44px; padding: 0 12px; border: 0; border-radius: 10px; background: transparent; color: {{t.muted}}; font: inherit; font-size: 14px">Off</button></div></section></sc-if>
+      <sc-if value="{{r6}}" hint-placeholder-val="{{ false }}"><section style="background: {{t.surface}}; border: 1px solid {{t.border}}; border-radius: 12px; padding: 16px 20px; display: flex; align-items: center; gap: 20px"><div style="flex: 1; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 16px; font-weight: 600">Panel preview in steps</span><span style="font-size: 14px; color: {{t.sub}}">The small outline of the panel beside each step. Show panel and Where is this? always work.</span></div><button role="switch" aria-checked="true" aria-label="Panel preview in steps" style="height: 44px; display: flex; align-items: center; gap: 10px; padding: 0 2px; border: 0; background: transparent; color: {{t.strong}}; font: inherit; font-size: 14px; font-weight: 600">On<span style="position: relative; width: 52px; height: 30px; border-radius: 999px; background: {{t.accent}}"><span style="position: absolute; top: 3px; left: 25px; width: 24px; height: 24px; border-radius: 50%; background: #ffffff"></span></span></button></section></sc-if>
+      <section style="background: {{t.surface}}; border: 1px solid {{t.border}}; border-radius: 12px; padding: 16px 20px; display: flex; align-items: center; gap: 20px"><div style="flex: 1; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 16px; font-weight: 600">Timer chime</span><span style="font-size: 14px; color: {{t.sub}}">Plays when a step timer reaches zero.</span></div>
+        <button role="switch" aria-checked="true" aria-label="Timer chime" style="height: 44px; display: flex; align-items: center; gap: 10px; padding: 0 2px; border: 0; background: transparent; color: {{t.strong}}; font: inherit; font-size: 14px; font-weight: 600">On<span style="position: relative; width: 52px; height: 30px; border-radius: 999px; background: {{t.accent}}"><span style="position: absolute; top: 3px; left: 25px; width: 24px; height: 24px; border-radius: 50%; background: #ffffff"></span></span></button></section>
+      <section style="background: {{t.surface}}; border: 1px solid {{t.border}}; border-radius: 12px; padding: 16px 20px; display: flex; align-items: center; gap: 12px"><div style="flex: 1; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 16px; font-weight: 600">Back up settings and progress</span><span style="font-size: 14px; color: {{t.sub}}">Save a file to move them to another browser or device.</span></div>
+        <button style="height: 44px; padding: 0 14px; border: 1px solid {{t.border}}; border-radius: 10px; background: {{t.btnBg}}; box-shadow: {{t.btnShadow}}; color: {{t.text}}; font: inherit; font-size: 14px">Save backup</button><button style="height: 44px; padding: 0 14px; border: 1px solid {{t.border}}; border-radius: 10px; background: {{t.btnBg}}; box-shadow: {{t.btnShadow}}; color: {{t.text}}; font: inherit; font-size: 14px">Restore</button></section>
+      <section style="background: {{t.surface}}; border: 1px solid {{t.border}}; border-radius: 12px; padding: 16px 20px; display: flex; align-items: center; gap: 12px"><div style="flex: 1; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 16px; font-weight: 600">Clear all progress</span><span style="font-size: 14px; color: {{t.sub}}">Clears every tick, the flight plan and notes. Undo right after.</span></div>
+        <button style="height: 44px; padding: 0 14px; border: 1.5px solid {{t.red}}; border-radius: 10px; background: {{t.redBg}}; color: {{t.redText}}; font: inherit; font-size: 14px; font-weight: 600">Clear all progress</button></section>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["dark","light"],"default":"dark"},"view":{"editor":"enum","options":["flow","emergency","timer","cdu","briefing","exterior","descent","log","settings"],"default":"flow"},"r6":{"editor":"boolean","default":false},"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const T = {
+      dark: { bg: '#0f1218', surface: '#161b23', surface2: '#121720', border: '#2a323e', line: '#222934', chip: '#2a323e', text: '#e6e9ee', sub: '#b7bec9', muted: '#8b94a3', strong: '#ffffff', accent: '#4c8dff', onAccent: '#08101f', accentSoft: '#14243c', accentText: '#a9caff', current: '#132036', link: '#7fb0ff', green: '#3fb67a', track: '#2a323e', todo: '#6b7482', amber: '#f2bd5c', amberBg: '#241d10', amberBorder: '#6b5020', red: '#e2564a', redText: '#ff8a7a', redBg: 'transparent', redSoft: '#2a1614', segTrack: '#121720', segBorder: '#2a323e', segOn: '#2a323e', segShadow: '0 0 0 0 transparent', btnBg: 'transparent', btnShadow: 'none', skipBg: 'transparent', emHeader: '#1c1214' },
+      light: { bg: '#f5f7fa', surface: '#ffffff', surface2: '#eef1f5', border: '#d3d9e1', line: '#e2e6ec', chip: '#e2e6ec', text: '#1a1f27', sub: '#3d4552', muted: '#5b6472', strong: '#0b0f14', accent: '#2563eb', onAccent: '#ffffff', accentSoft: '#e4ecfd', accentText: '#1d4fd8', current: '#eaf1fe', link: '#1d4fd8', green: '#1f8a55', track: '#d3d9e1', todo: '#7a8391', amber: '#8a5a00', amberBg: '#fdf4e1', amberBorder: '#e0b766', red: '#c62f22', redText: '#b3261e', redBg: '#fdecea', redSoft: '#fdecea', segTrack: '#e6eaf0', segBorder: '#dde2e8', segOn: '#ffffff', segShadow: '0 1px 2px rgba(16, 24, 40, 0.14)', btnBg: '#ffffff', btnShadow: '0 1px 2px rgba(16, 24, 40, 0.10)', skipBg: '#fdf4e1', emHeader: '#fdf1f0' }
+    };
+    const P = {
+      dark: { bg: '#161b23', frame: '#2a323e', panel: '#1b212b', stroke: '#6b7482', label: '#a3abb8', text: '#d5dae2', hiFill: '#163056', accent: '#4c8dff', hiText: '#ffffff', rest: '#6b7482', done: '#3fb67a', doneFill: '#12261b' },
+      light: { bg: '#ffffff', frame: '#d3d9e1', panel: '#e3e7ec', stroke: '#8a93a0', label: '#4a5462', text: '#1a1f27', hiFill: '#d6e4fd', accent: '#2563eb', hiText: '#0b1f4d', rest: '#7a8391', done: '#1f8a55', doneFill: '#e3f3ea' }
+    };
+    const k = this.props.theme === 'light' ? 'light' : 'dark';
+    const t = T[k];
+    const v = this.props.view ?? 'flow';
+    const app = ['flow', 'timer', 'briefing', 'exterior'].indexOf(v) >= 0;
+    const titles = { emergency: ['Emergency reference', 'Memory items, quick reference and non-normal procedures'], cdu: ['CDU walkthrough', 'From IDENT to PRE-FLT COMPLETE, with your values'], descent: ['Flight', 'KSEA → KSFO · Approach'], log: ['Flight log', 'Ticks are timestamped. Save, export, reload or print.'], settings: ['Settings', 'Saved on this device'] };
+    const stages = { flow: ['Departure', 'Before start'], timer: ['Preflight', 'Preliminary preflight'], briefing: ['Departure', 'Before taxi'], exterior: ['Preflight', 'Exterior inspection'] };
+    const on = { bg: t.segOn, ring: 'inset 0 0 0 1.5px ' + t.accent, color: t.strong };
+    const off = { bg: 'transparent', ring: 'none', color: t.muted };
+    const flowOn = v === 'flow';
+    const tt = titles[v] || ['', ''];
+    const st = stages[v] || ['', ''];
+    const r6 = this.props.r6 === true || this.props.r6 === 'true';
+    return {
+      r6, r5: !r6, np: r6 ? '' : 'New panel · ', whereHref: r6 ? 'R6Where.dc.html' : 'WherePop.dc.html',
+      t: t, p: P[k],
+      appHeader: app, pageHeader: !app,
+      isFlow: v === 'flow', isEmergency: v === 'emergency', isTimer: v === 'timer', isCdu: v === 'cdu', isBriefing: v === 'briefing', isExterior: v === 'exterior', isDescent: v === 'descent', isLog: v === 'log', isSettings: v === 'settings',
+      pageTitle: tt[0], pageSub: tt[1], stageName: st[0], phaseName: st[1],
+      titleColor: v === 'emergency' ? t.redText : t.text,
+      headerBg: v === 'emergency' ? t.emHeader : t.bg, headerLine: v === 'emergency' ? t.red : t.line,
+      segFlowBg: flowOn ? on.bg : off.bg, segFlowRing: flowOn ? on.ring : off.ring, segFlowColor: flowOn ? on.color : off.color,
+      segChecklistBg: flowOn ? off.bg : on.bg, segChecklistRing: flowOn ? off.ring : on.ring, segChecklistColor: flowOn ? off.color : on.color
+    };
+  }
+}
+</script>
+</body>
+</html>

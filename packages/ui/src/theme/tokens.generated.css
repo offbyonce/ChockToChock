@@ -59,12 +59,17 @@
   --size-progress-bar: 0.1875rem; /* 3 */
   --size-flow-button: 3.5rem; /* 56 */
   --size-map-figure: 17.5rem; /* 280 */
+  --size-slideout: 52.5rem; /* 840 */
+  --size-slideout-tablet: 43.75rem; /* 700 */
+  --size-preview-max: 15rem; /* 240 */
+  --size-navigator-max: 7.5rem; /* 120 */
   --size-toggle-width: 3.25rem; /* 52 */
   --size-toggle-height: 1.875rem; /* 30 */
   --size-toggle-knob: 1.5rem; /* 24 */
   --size-focus-ring: 1.5px;
   --gutter: 1rem; /* 16, phone */
   --side-pane: 27.5rem; /* tablet landscape; desktop below */
+  --slideout: 43.75rem; /* tablet landscape; desktop below */
 }
 
 /* Colors before theme/tokens.ts applies the chosen theme and dimming: the device's theme. */
@@ -77,7 +82,7 @@
   --color-border: #2a323e;
   --color-border-strong: #2f3846;
   --color-line: #222934;
-  --color-chip: #222934;
+  --color-chip: #2a323e;
   --color-text: #e6e9ee;
   --color-text-secondary: #b7bec9;
   --color-text-muted: #8b94a3;
@@ -115,6 +120,12 @@
   --color-on-lit-amber: #3a2a00;
   --color-popover-border: #34404f;
   --color-overlay-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+  --color-slideout-scrim: rgba(6, 8, 12, 0.45);
+  --color-popover-surface: #1b212b;
+  --color-toggle-knob: #ffffff;
+  --color-toast-text: #0f1218;
+  --color-toast-link: #1d4fd8;
+  --color-toast-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
   --panel-bg: #161b23;
   --panel-frame: #2a323e;
   --panel-fill: #1b212b;
@@ -139,7 +150,7 @@
     --color-border: #d3d9e1;
     --color-border-strong: #c9d0d9;
     --color-line: #e2e6ec;
-    --color-chip: #f0f2f5;
+    --color-chip: #e2e6ec;
     --color-text: #1a1f27;
     --color-text-secondary: #3d4552;
     --color-text-muted: #5b6472;
@@ -177,6 +188,12 @@
     --color-on-lit-amber: #3a2a00;
     --color-popover-border: #d3d9e1;
     --color-overlay-shadow: 0 24px 60px rgba(16, 24, 40, 0.18);
+    --color-slideout-scrim: rgba(20, 26, 36, 0.28);
+    --color-popover-surface: #ffffff;
+    --color-toggle-knob: #ffffff;
+    --color-toast-text: #ffffff;
+    --color-toast-link: #7fb0ff;
+    --color-toast-shadow: 0 12px 32px rgba(16, 24, 40, 0.28);
     --panel-bg: #ffffff;
     --panel-frame: #d3d9e1;
     --panel-fill: #e3e7ec;
@@ -201,5 +218,6 @@
   :root {
     --gutter: 2rem; /* 32 */
     --side-pane: 32.5rem; /* 520 */
+    --slideout: 52.5rem; /* 840 */
   }
 }

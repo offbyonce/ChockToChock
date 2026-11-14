@@ -52,6 +52,7 @@ for (const [k, v] of entries(tokens.size)) {
 const { breakpoints: bp, gutter } = tokens.layout;
 add("gutter", rem(gutter.phone), `${gutter.phone}, phone`);
 add("side-pane", rem(tokens.size["side-pane-tablet"]), "tablet landscape; desktop below");
+add("slideout", rem(tokens.size["slideout-tablet"]), "tablet landscape; desktop below");
 
 const colorBlock = (selector, theme) => [
   `${selector} {`,
@@ -78,6 +79,7 @@ const css = [
   ...media(bp["tablet-landscape-max"] + 1, [
     `  --gutter: ${rem(gutter.desktop)}; /* ${gutter.desktop} */`,
     `  --side-pane: ${rem(tokens.size["side-pane"])}; /* ${tokens.size["side-pane"]} */`,
+    `  --slideout: ${rem(tokens.size.slideout)}; /* ${tokens.size.slideout} */`,
   ]),
   "",
 ].join("\n");

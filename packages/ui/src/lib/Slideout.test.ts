@@ -1,0 +1,112 @@
+// SPDX-FileCopyrightText: 2026 offbyonce
+// SPDX-License-Identifier: MIT
+
+import type { FlatPack } from "@chocktochock/bindings";
+import { cleanup, fireEvent, render, screen } from "@testing-library/svelte";
+import { afterEach, describe, expect, it } from "vitest";
+import { indexPack } from "../pack-index";
+import Slideout from "./Slideout.svelte";
+
+const packs = import.meta.glob<FlatPack>("../../../../apps/web/public/packs/ifly-737-max8.json", {
+  eager: true,
+  import: "default",
+});
+const pack = Object.values(packs)[0] as FlatPack;
+const index = indexPack(pack);
+const step = index.step("ifly-737-max8.before-start.fuel-pump-switches");
+const fuel = pack.content.panels.find((p) => p.id === "oh")?.sections.find((s) => s.id === "fuel");
+const ctrL = fuel?.items.findIndex((i) => i.label === "CTR L") ?? -1;
+const aft1 = fuel?.items.findIndex((i) => i.label === "AFT 1") ?? -1;
+const targets = [
+  { section: "fuel", item: aft1, position: 1, lit: false, open: false, resolved: false },
+  { section: "fuel", item: ctrL, position: null, lit: false, open: true, resolved: false },
+];
+
+afterEach(cleanup);
+
+describe("Slideout", () => {
+  const props = (entry: "panel" | "where" | "control") => ({
+    index,
+    step: step!,
+    number: 6,
+    targets,
+    opening: entry === "control" ? { entry, control: { section: "fuel", item: ctrL } } : { entry },
+    onClose: () => {},
+    onGo: () => {},
+  });
+
+  it("opens on the panel with Where it is folded to one line, and closes on Esc", async () => {
+    let closed = false;
+    render(Slideout, { ...props("panel"), onClose: () => (closed = true) });
+    expect(screen.getByRole("heading", { level: 2, name: "Fuel panel" })).toBeTruthy();
+    expect(screen.getByText("Step 6 · Fuel pump switches")).toBeTruthy();
+    expect(screen.getByRole("button", { name: /^Where it is/ }).getAttribute("aria-expanded")).toBe("false");
+    // The center pumps are drawn dashed, so the legend says what dashed means.
+    expect(document.querySelector(".figure figcaption")?.textContent).toMatch(
+      /dashed: only if the step's condition applies/,
+    );
+    await fireEvent.keyDown(screen.getByRole("dialog"), { key: "Escape" });
+    expect(closed).toBe(true);
+  });
+
+  it("opens from Where is this? with Where it is expanded: the views and the area map", () => {
+    render(Slideout, props("where"));
+    expect(screen.getByRole("button", { name: "Where it is" }).getAttribute("aria-expanded")).toBe("true");
+    expect(screen.getByText("From the side: how high, how far")).toBeTruthy();
+    expect(screen.getByText("From the captain seat: which side")).toBeTruthy();
+  });
+
+  it("opens on a control's card, its control ringed, Where it is folded", () => {
+    render(Slideout, props("control"));
+    expect(screen.getByRole("heading", { level: 3, name: /^CTR L · / })).toBeTruthy();
+    expect(screen.getByText("Positions")).toBeTruthy();
+    expect(screen.getByText("OFF (up) · ON (down)")).toBeTruthy();
+    expect(screen.getByText("In this step")).toBeTruthy();
+    expect(document.querySelectorAll(".selection")).toHaveLength(1);
+    expect(screen.getByRole("button", { name: /^Where it is/ }).getAttribute("aria-expanded")).toBe("false");
+  });
+
+  it("lists Used in once per step, in flight order, as 'Step · Phase'", () => {
+    render(Slideout, props("control"));
+    const links = [...document.querySelectorAll(".links .lk")].map((b) => b.textContent ?? "");
+    expect(links.length).toBeGreaterThan(0);
+    expect(new Set(links).size).toBe(links.length);
+    for (const l of links) expect(l).toMatch(/^.+ · .+$/);
+    // Phases appear in the pack's flight order, never going back to an earlier one.
+    const order = (pack.content.phases?.phases ?? []).map((p) => p.title);
+    const at = links.map((l) => order.indexOf(l.split(" · ").at(-1) ?? ""));
+    expect(at.every((p) => p >= 0)).toBe(true);
+    expect([...at].sort((a, b) => a - b)).toEqual(at);
+  });
+
+  it("a control a decision set: In this step names the answer, and Change opens it on the decision row", async () => {
+    let changed = "";
+    const option = {
+      id: "center_tank",
+      title: "Center tank",
+      values: ["more", "low"],
+      default: "low",
+      choices: [
+        { value: "low", label: "1,000 lb (450 kg) or less" },
+        { value: "more", label: "More than 1,000 lb (450 kg)" },
+      ],
+    };
+    const resolved = [{ section: "fuel", item: ctrL, position: 0, lit: false, open: false, resolved: true }];
+    render(Slideout, {
+      ...props("control"),
+      targets: resolved,
+      decisions: {
+        state: () => null,
+        dependent: () => ({ option, decisionStep: "ask", answer: "low", value: null }),
+        answer: () => {},
+        change: (id: string) => (changed = id),
+        keep: () => {},
+      },
+    });
+    expect(document.querySelector(".card dl")?.textContent).toContain(
+      "from your center tank answer, 1,000 lb (450 kg) or less",
+    );
+    await fireEvent.click(screen.getByRole("button", { name: "Change" }));
+    expect(changed).toBe("ask");
+  });
+});

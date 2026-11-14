@@ -2,8 +2,10 @@
 SPDX-FileCopyrightText: 2026 offbyonce
 SPDX-License-Identifier: MIT
 
-The top bar, as in 3.0: menu, name, the stage tabs, Find, the Flow and Checklist switch, and the
-red Emergency button. Stage tabs hide in narrow windows; the menu has them there.
+The header (Checklist board, 60 px): menu, the app's name and aircraft, the stage tabs (the
+current one bold and underlined, an amber dot on any stage holding an open step), the Checklist /
+Flow switch and Emergency. Find is hidden until it is built (batch 6, owner). Stage tabs hide in
+narrow windows; the menu has them there.
 -->
 <script lang="ts">
   import type { ListView, Rail } from "@chocktochock/bindings";
@@ -16,6 +18,7 @@ red Emergency button. Stage tabs hide in narrow windows; the menu has them there
     stage,
     view,
     menuOpen,
+    open = [],
     onMenu,
     onView,
   }: {
@@ -26,6 +29,8 @@ red Emergency button. Stage tabs hide in narrow windows; the menu has them there
     /** The list view, when a phase is on screen. */
     view: ListView | null;
     menuOpen: boolean;
+    /** Phases holding an open step (skipped or missed), for the amber dots. */
+    open?: string[];
     onMenu: () => void;
     onView: (view: ListView) => void;
   } = $props();
@@ -43,20 +48,23 @@ red Emergency button. Stage tabs hide in narrow windows; the menu has them there
     <nav class="stages" aria-label="Stages">
       {#each rail.stages as s (s.title)}
         {@const id = target(s.phases)}
+        <!-- The dot marks other stages holding an open step; the current stage's own show on its
+             phase tabs (Checklist board). -->
+        {@const openHere = s.title === stage ? 0 : s.phases.filter((p) => open.includes(p.id)).length}
         {#if id}
-          <a href={phaseHref(id)} aria-current={s.title === stage ? "true" : undefined}>{s.title}</a>
+          <a href={phaseHref(id)} aria-current={s.title === stage ? "page" : undefined}
+            >{s.title}{#if openHere}<span class="dot" aria-label="{openHere} open step{openHere === 1 ? '' : 's'}"></span>{/if}</a
+          >
         {/if}
       {/each}
     </nav>
   {/if}
   <div class="end">
-    <button class="tool find" type="button" disabled title="Search arrives in a later batch">
-      <span>Find</span> <kbd>Ctrl K</kbd>
-    </button>
     {#if view}
-      <button class="tool" type="button" onclick={() => onView(view === "flow" ? "checklist" : "flow")}>
-        {view === "flow" ? "Checklist view" : "Flow view"}
-      </button>
+      <div class="seg" role="group" aria-label="View">
+        <button type="button" aria-pressed={view === "checklist"} onclick={() => onView("checklist")}>Checklist</button>
+        <button type="button" aria-pressed={view === "flow"} onclick={() => onView("flow")}>Flow</button>
+      </div>
     {/if}
     <a class="emg" href="#/reference">Emergency</a>
   </div>
@@ -72,91 +80,90 @@ red Emergency button. Stage tabs hide in narrow windows; the menu has them there
     gap: var(--space-4);
     height: var(--size-header);
     padding: 0 var(--space-4);
-    border-bottom: var(--border-thin) solid var(--color-border);
-    background: var(--color-surface);
+    border-bottom: var(--border-thin) solid var(--color-line);
+    background: var(--color-bg);
   }
   .menu {
     display: grid;
     place-items: center;
-    width:  var(--size-touch-min);
-    height:  var(--size-touch-min);
-    margin-left: calc(-1 * var(--space-2));
-    border-radius: var(--radius-control);
+    width: var(--size-touch-min);
+    height: var(--size-touch-min);
+    color: var(--color-text-secondary);
   }
   .brand {
+    display: flex;
+    flex-direction: column;
+    font-size: var(--font-size-body);
     font-weight: var(--weight-semibold);
-    line-height: 1.2;
+    line-height: var(--leading-tight);
     white-space: nowrap;
   }
   .brand small {
-    display: block;
     color: var(--color-text-muted);
     font-size: var(--font-size-caption);
     font-weight: var(--weight-regular);
   }
   .stages {
     display: flex;
-    gap: var(--space-1);
-    margin-left: var(--space-2);
+    align-items: stretch;
+    height: var(--size-header);
   }
   .stages a {
-    position: relative;
     display: flex;
     align-items: center;
-    height: var(--size-touch-min);
+    gap: calc(var(--space-1) + var(--border-thick) / 2);
     padding: 0 var(--space-3);
-    border-radius: var(--radius-control);
     color: var(--color-text-muted);
-    font-weight: var(--weight-medium);
+    font-size: var(--font-size-body);
     text-decoration: none;
   }
   .stages a:hover {
     color: var(--color-text);
   }
-  .stages a[aria-current="true"] {
-    background: var(--color-accent-soft);
-    color: var(--color-accent);
+  .stages a[aria-current="page"] {
+    color: var(--color-text-strong);
+    font-weight: var(--weight-semibold);
+    box-shadow: inset 0 calc(-1 * (var(--border-thick) + var(--border-thin))) 0 var(--color-accent);
+  }
+  .dot {
+    width: var(--size-dot);
+    height: var(--size-dot);
+    border-radius: 50%;
+    background: var(--color-open-dot);
   }
   .end {
     display: flex;
     align-items: center;
-    gap: var(--space-3);
+    gap: var(--space-4);
     margin-left: auto;
   }
-  .tool {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-1);
-    padding: var(--space-1) var(--space-3);
-    border: var(--border-thin) solid var(--color-border);
+  /* The segmented control (rules.md components). */
+  .seg {
+    display: flex;
+    padding: var(--border-thick);
+    border: var(--border-thin) solid var(--color-segment-border);
+    border-radius: var(--radius-segment);
+    background: var(--color-segment-track);
+  }
+  .seg button {
+    height: var(--size-touch-min);
+    padding: 0 var(--space-4);
+    border: 0;
     border-radius: var(--radius-control);
+    background: transparent;
+    color: var(--color-text-muted);
+    font: inherit;
     font-size: var(--font-size-secondary);
-    font-weight: var(--weight-medium);
-    white-space: nowrap;
   }
-  /* 3.0's sizes on screen, with the touch area grown to 44px (step 7). */
-  .tool::after,
-  .stages a::after,
-  .emg::after {
-    position: absolute;
-    inset: 50% 0 auto;
-    height:  var(--size-touch-min);
-    content: "";
-    transform: translateY(-50%);
-  }
-  .tool:hover:not(:disabled) {
-    border-color: var(--color-text-muted);
-  }
-  .find:disabled {
-    color: var(--color-text-muted);
-  }
-  kbd {
-    color: var(--color-text-muted);
-    font: var(--weight-regular) var(--font-size-caption) var(--font-mono);
+  .seg button[aria-pressed="true"] {
+    background: var(--color-segment-on);
+    outline: var(--size-focus-ring) solid var(--color-accent);
+    outline-offset: calc(-1 * var(--size-focus-ring));
+    box-shadow: var(--color-segment-shadow);
+    color: var(--color-text-strong);
+    font-weight: var(--weight-semibold);
   }
   .emg {
-    position: relative;
     display: inline-flex;
     align-items: center;
     height: var(--size-touch-min);
@@ -165,14 +172,10 @@ red Emergency button. Stage tabs hide in narrow windows; the menu has them there
     border-radius: var(--radius-control);
     background: var(--color-danger-bg);
     color: var(--color-danger-text);
+    font-size: var(--font-size-secondary);
     font-weight: var(--weight-semibold);
     text-decoration: none;
     white-space: nowrap;
-  }
-  @media (max-width: 1439px) {
-    kbd {
-      display: none;
-    }
   }
   @media (max-width: 899px) {
     .stages {

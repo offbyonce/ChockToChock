@@ -24,9 +24,12 @@ const SOURCES: Record<string, string> = Object.fromEntries(
 const DRAWINGS = new Set([
   "lib/PanelSection.svelte",
   "lib/PanelSchematic.svelte",
+  "lib/PanelPreview.svelte",
+  "lib/PanelNavigator.svelte",
   "lib/Locator.svelte",
   "lib/OverviewMap.svelte",
   "lib/ViewDrawing.svelte",
+  "lib/WholeDeck.svelte",
 ]);
 
 /** The generated token file. Font sizes in map units inside a drawing ("11.5px" in Locator) are

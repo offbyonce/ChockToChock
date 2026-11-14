@@ -31,9 +31,12 @@ What the step asks for, never the simulator's state (decision 0006).
     frame,
     titled = true,
     framed = true,
+    textless = false,
+    halo = false,
     k,
     hit = 0,
     onPick,
+    selected,
   }: {
     section: PanelSection;
     targets: ItemTarget[];
@@ -47,12 +50,20 @@ What the step asks for, never the simulator's state (decision 0006).
     /** Its outline is drawn; the side pane's card is the outline of a drawing of one section, as
      * on the boards, so a cut frame never shows as stray lines across it. */
     framed?: boolean;
+    /** The label-free panel preview (round 6): the same geometry, glyphs and states, no text, and
+     * every light outline only. */
+    textless?: boolean;
+    /** A thick solid blue halo around the step's controls, the same width on screen at any scale
+     * (the preview, so they read at small sizes). */
+    halo?: boolean;
     /** Screen pixels per drawing unit, for the fixed text sizes. */
     k: number;
     /** The smallest hit area, in drawing units (44 px on screen); 0 draws none. */
     hit?: number;
     /** Tapping a control opens its detail card. */
     onPick?: ((section: string, item: number) => void) | undefined;
+    /** The tapped control, ringed while its card is open (solid, never dashed). */
+    selected?: number | null | undefined;
   } = $props();
 
   /** Room above a cut-down section for its title, so it never overlaps the top row. */
@@ -110,7 +121,7 @@ What the step asks for, never the simulator's state (decision 0006).
   let right = $derived(frame?.x1 ?? band.x1);
 </script>
 
-<g transform="translate({section.x} {section.y})">
+<g class:textless transform="translate({section.x} {section.y})">
   <rect class="frame" class:bare={!framed} x={left} y={top} width={right - left} height={frameBottom - top} rx="3" />
   {#if titled}<text class="title" x={left + 8} y={top + 13} style:font-size={fs(PX.title * layout.scale)}>{section.title.toUpperCase()}</text>{/if}
   {#each shown as { item, i } (i)}
@@ -123,6 +134,11 @@ What the step asks for, never the simulator's state (decision 0006).
     {@const open = on && (byItem.get(i)?.open ?? false)}
     {@const r = (!on || (t == null && !open)) && item.rest ? positions.indexOf(item.rest) : -1}
     <g class="item {item.kind}" class:on class:resolved={on && (byItem.get(i)?.resolved ?? false)} class:conditional={open} transform="translate({item.x} {item.y})">
+      {#if halo && on}
+        {@const hw = item.kind === "light" ? LAMP.w / 2 : halfWidth(item)}
+        {@const hh = item.kind === "light" ? LAMP.h / 2 : half(item)}
+        <rect class="halo" x={-hw - 6} y={-hh - 6} width={2 * hw + 12} height={2 * hh + 12} rx="6" />
+      {/if}
 
       {#if item.kind === "toggle_switch"}
         {#if item.guarded && !guardShut(on)}
@@ -183,7 +199,7 @@ What the step asks for, never the simulator's state (decision 0006).
              expects on is filled in its color and says so; it is never the simulator's state. -->
         {@const words = lampText(item, k, PX.lamp * layout.scale)}
         {@const lit = byItem.get(i)?.lit ?? false}
-        <rect class="lamp {item.color ?? ''}" class:lit class:focus={on && !lit} x={-LAMP.w / 2} y={-LAMP.h / 2} width={LAMP.w} height={LAMP.h} rx="2.6" />
+        <rect class="lamp {item.color ?? ''}" class:lit={lit && !textless} class:focus={on && (!lit || textless)} x={-LAMP.w / 2} y={-LAMP.h / 2} width={LAMP.w} height={LAMP.h} rx="2.6" />
         {#each words.lines as line, n (n)}
           <text
             class="lamp-text {item.color ?? ''}"
@@ -236,6 +252,23 @@ What the step asks for, never the simulator's state (decision 0006).
           {/each}
         {/if}
       {/if}
+      {#if selected === i}
+        {@const hw = item.kind === "light" ? LAMP.w / 2 : halfWidth(item)}
+        {@const hh = item.kind === "light" ? LAMP.h / 2 : half(item)}
+        {@const name = layout.items.get(i)?.name}
+        {@const low = name ? name.y + name.lines.length * ((name.px * 1.15) / k) : hh}
+        <!-- Around the control, its position labels and its name, as the board rings CTR L. -->
+        {@const labels = layout.items.get(i)?.positions ?? []}
+        {@const px = (PX.pos * layout.scale) / k}
+        {@const reach = (l: { x: number; anchor: string; n: number }) => {
+          const w = em(positionsOf(item)[l.n] ?? "") * px;
+          return l.anchor === "start" ? [l.x, l.x + w] : l.anchor === "end" ? [l.x - w, l.x] : [l.x - w / 2, l.x + w / 2];
+        }}
+        {@const nameW = name ? Math.max(...name.lines.map((line) => em(line))) * (name.px / k) : 0}
+        {@const x0 = Math.min(-hw, -nameW / 2, ...labels.map((l) => reach(l)[0] ?? 0)) - 4}
+        {@const x1 = Math.max(hw, nameW / 2, ...labels.map((l) => reach(l)[1] ?? 0)) + 4}
+        <rect class="selection" x={x0} y={-hh - 4} width={x1 - x0} height={low + hh + 5} rx="4" />
+      {/if}
       {#if hit > 0 && onPick}
         {@const hw = Math.max(halfWidth(item), hit / 2)}
         {@const hh = Math.max(half(item), hit / 2)}
@@ -263,6 +296,35 @@ What the step asks for, never the simulator's state (decision 0006).
      against the panel, labels at 4.5:1, in both themes. */
   /* Sections sit on the panel background, as on the boards, so the blue of a changed control
      stands out against it (design review F2). */
+  /* The tapped control's selection ring (round 6, R6Control): solid. */
+  .selection {
+    fill: none;
+    stroke: var(--panel-changed);
+    stroke-width: 2;
+  }
+  .halo {
+    fill: none;
+    stroke: var(--panel-changed);
+    stroke-width: calc(1.5 * var(--border-thick));
+    vector-effect: non-scaling-stroke;
+  }
+  /* The preview draws no text at all, and its outlines keep their width on screen at any scale,
+     so they read as the full panel's do (3:1 or better). */
+  .textless text {
+    display: none;
+  }
+  .textless :global(*) {
+    vector-effect: non-scaling-stroke;
+  }
+  /* A 1 px outline between two screen pixels would be drawn half as dark (under 3:1), so the
+     preview's rectangles snap to whole pixels. */
+  .textless :global(rect) {
+    shape-rendering: crispEdges;
+  }
+  /* A round outline cannot snap to pixels; half a pixel more keeps its diagonals at 3:1. */
+  .textless :global(circle.body) {
+    stroke-width: 1.5;
+  }
   .frame {
     fill: var(--panel-bg);
     stroke: var(--panel-stroke);

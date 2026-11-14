@@ -2,13 +2,16 @@
 SPDX-FileCopyrightText: 2026 offbyonce
 SPDX-License-Identifier: MIT
 
-The second bar, as in 3.0: the phases of the current stage as chips, then the detail setting and
-overall progress. Each chip's mark reads without color: an empty ring for to do, a half ring when
-started, a filled circle with a check when complete, and a dashed ring when a step is skipped.
+The phase track (Checklist board, 60 px): the stage's phases as tabs, each with its progress bar
+(a complete phase green with a check, the current one boxed with its count and blue progress), an
+amber dot on a phase holding an open step, then the Full · Detailed pill, the overall count and
+the saved time. The bars' empty track uses the to-do ring color, 3:1 against the page (owner,
+batch 3).
 -->
 <script lang="ts">
   import type { Detail, Progress, RailPhase } from "@chocktochock/bindings";
   import { phaseHref } from "../route.svelte";
+  import Icon from "./Icon.svelte";
 
   let {
     phases,
@@ -17,6 +20,7 @@ started, a filled circle with a check when complete, and a dashed ring when a st
     essentials,
     total,
     savedAt,
+    open = [],
   }: {
     phases: RailPhase[];
     current: string | null;
@@ -25,33 +29,42 @@ started, a filled circle with a check when complete, and a dashed ring when a st
     total: Progress;
     /** When progress was last saved on this device. */
     savedAt: number | null;
+    /** Phases holding an open step, for the amber dots. */
+    open?: string[];
   } = $props();
 
   let saved = $derived(
-    savedAt === null ? null : new Date(savedAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+    savedAt === null ? null : new Date(savedAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hourCycle: "h23" }),
   );
-
-  const mark = (p: RailPhase) =>
-    p.complete ? "complete" : p.skipped > 0 ? "skipped" : p.progress.done > 0 ? "started" : "todo";
-  const WORDS = { complete: "complete", skipped: "has skipped steps", started: "started", todo: "not started" };
+  const share = (p: RailPhase) => (p.progress.total ? (100 * p.progress.done) / p.progress.total : 0);
 </script>
 
 <div class="rail" class:none={!phases.length}>
-  <nav class="chips" aria-label="Phases">
+  <nav class="phases" aria-label="Phases">
     {#each phases as p (p.id)}
-      {@const m = mark(p)}
-      <a href={phaseHref(p.id)} aria-current={p.id === current ? "true" : undefined}>
-        <i class="dot {m}" aria-hidden="true"></i>
-        <span>{p.title}<span class="sr-only">, {WORDS[m]}</span></span>
+      {@const here = p.id === current}
+      {@const openHere = open.filter((o) => o === p.id).length}
+      <a href={phaseHref(p.id)} class:here class:complete={p.complete} aria-current={here ? "step" : undefined}>
+        <span class="label">
+          <span class="name"
+            >{#if p.complete}<span class="tick"><Icon name="check" /></span>{/if}{p.title}{#if !here}<span class="sr-only"
+                >, {p.complete ? "complete" : `${p.progress.done} of ${p.progress.total} done`}</span
+              >{/if}{#if openHere}<span
+                class="dot"
+                aria-label="{openHere} open step{openHere === 1 ? '' : 's'}"
+              ></span>{/if}</span
+          >
+          {#if here}<span class="count">{p.progress.done}/{p.progress.total}</span>{/if}
+        </span>
+        <span class="bar" aria-hidden="true"><i style:width="{p.complete ? 100 : share(p)}%"></i></span>
       </a>
     {/each}
   </nav>
   <div class="meta">
-    <a class="chip" href="#/settings">{essentials ? "Essentials" : "Full"} · {detail === "expanded" ? "Detailed" : "Simple"}</a>
-    <div class="bar" aria-hidden="true">
-      <i style:width={total.done ? `max(0.375rem, ${(100 * total.done) / total.total}%)` : "0"}></i>
-    </div>
-    <span class="count mono" aria-label="{total.done} of {total.total} steps done">{#if essentials}Essentials{" "}{/if}{total.done}/{total.total}</span>
+    <a class="pill" href="#/settings" aria-label="Step mode: {essentials ? 'Essentials' : 'Full'} and {detail === 'expanded' ? 'Detailed' : 'Simple'}, change"
+      >{essentials ? "Essentials" : "Full"} · {detail === "expanded" ? "Detailed" : "Simple"}</a
+    >
+    <span class="count-all" aria-label="{total.done} of {total.total} steps done">{total.done}/{total.total}</span>
     {#if saved}<span class="saved" role="status">Saved {saved}</span>{/if}
   </div>
 </div>
@@ -63,137 +76,122 @@ started, a filled circle with a check when complete, and a dashed ring when a st
     z-index: 19;
     display: flex;
     align-items: center;
-    gap: var(--space-4);
+    gap: var(--space-2);
     height: var(--size-phase-row);
-    padding: 0 var(--space-4);
-    border-bottom: var(--border-thin) solid var(--color-border);
-    background: var(--color-surface);
+    padding: 0 var(--space-6);
+    border-bottom: var(--border-thin) solid var(--color-line);
+    background: var(--color-bg);
   }
-  .chips {
+  .rail.none .phases {
+    visibility: hidden;
+  }
+  .phases {
     display: flex;
     flex: 1;
-    gap: var(--space-1);
+    gap: var(--space-2);
     min-width: 0;
     overflow-x: auto;
     scrollbar-width: none;
   }
-  .chips a {
-    position: relative;
-    display: flex;
+  .phases a {
     flex: none;
-    align-items: center;
-    gap: var(--space-2);
-    height: var(--size-touch-min);
-    padding: 0 var(--space-2);
-    border-radius: var(--radius-control);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: calc(var(--space-1) + var(--border-thick) / 2);
+    min-width: calc(3 * var(--space-6));
+    height: calc(var(--size-touch-min) + var(--space-1));
+    padding: 0 calc(var(--space-2) + var(--border-thick) / 2);
+    border-radius: var(--radius-small);
     color: var(--color-text-muted);
     font-size: var(--font-size-secondary);
     text-decoration: none;
-    white-space: nowrap;
   }
-  .chips a:hover {
-    color: var(--color-text);
+  .phases a.complete {
+    color: var(--color-text-secondary);
   }
-  .chips a[aria-current="true"] {
+  .phases a.here {
+    min-width: calc(6 * var(--space-6) + var(--space-2));
     background: var(--color-accent-soft);
-    color: var(--color-accent);
+    box-shadow: inset 0 0 0 var(--size-focus-ring) var(--color-accent);
+    color: var(--color-text-strong);
     font-weight: var(--weight-semibold);
   }
-  /* The touch area grows to 44px without changing 3.0's look (step 7). */
-  .chips a::after,
-  .chip::after {
-    position: absolute;
-    inset: 50% 0 auto;
-    height:  var(--size-touch-min);
-    content: "";
-    transform: translateY(-50%);
+  .label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+    white-space: nowrap;
   }
-  .chips {
-    padding: var(--space-1) 0;
+  .name {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--space-1) + var(--border-thick) / 2);
   }
-  /* 3.0's small filled dots. State reads without color too: half filled when started, a check
-     ring when complete, dashed when a step is skipped. */
+  .tick {
+    display: inline-flex;
+    color: var(--color-done);
+  }
+  .tick :global(svg) {
+    width: var(--size-icon-small);
+    height: var(--size-icon-small);
+  }
   .dot {
-    position: relative;
     width: var(--size-dot);
     height: var(--size-dot);
     border-radius: 50%;
-    background: var(--color-border);
+    background: var(--color-open-dot);
   }
-  [aria-current="true"] .dot {
+  .count {
+    color: var(--color-accent-text);
+    font-family: var(--font-mono);
+    font-weight: var(--weight-medium);
+  }
+  .bar {
+    display: flex;
+    height: var(--size-progress-bar);
+    border-radius: var(--border-thick);
+    background: var(--color-todo-ring);
+  }
+  .bar i {
+    border-radius: var(--border-thick);
     background: var(--color-accent);
   }
-  .dot.started {
-    background: linear-gradient(90deg, var(--color-accent) 50%, var(--color-border) 50%);
-  }
-  .dot.complete {
+  .complete .bar i {
     background: var(--color-done);
-    box-shadow: 0 0 0 var(--border-thick) var(--color-surface), 0 0 0 calc(var(--border-thick) + var(--border-thin)) var(--color-done);
-  }
-  .dot.skipped {
-    background: none;
-    border: var(--size-focus-ring) dashed var(--color-open-text);
-  }
-  /* A row of chips wider than the screen fades at its edge, so more is clearly there. */
-  @media (max-width: 1439px) {
-    .chips {
-      mask-image: linear-gradient(90deg, black calc(100% - var(--space-8)), transparent);
-    }
   }
   .meta {
     display: flex;
-    flex: none;
     align-items: center;
     gap: var(--space-2);
-  }
-  .chip {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    min-height: var(--size-touch-min);
-    padding: var(--space-1) var(--space-3);
-    border: var(--border-thin) solid var(--color-border);
-    border-radius: var(--radius-pill);
-    background: var(--color-bg);
-    font-size: var(--font-size-secondary);
-    font-weight: var(--weight-medium);
-    text-decoration: none;
     white-space: nowrap;
   }
-  .bar {
-    width: calc(4 * var(--space-8));
-    height: var(--size-progress-bar);
-    overflow: hidden;
-    border-radius: var(--radius-control);
-    background: var(--color-track);
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    height: var(--size-touch-min);
+    padding: 0 calc(var(--space-3) + var(--border-thick));
+    border: var(--border-thin) solid var(--color-border);
+    border-radius: var(--radius-pill);
+    background: var(--color-button-bg);
+    box-shadow: var(--color-button-shadow);
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-secondary);
+    font-weight: var(--weight-semibold);
+    text-decoration: none;
   }
-  .bar i {
-    display: block;
-    height: 100%;
-    background: var(--color-done);
+  .count-all {
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-caption);
   }
   .saved {
     color: var(--color-text-muted);
     font-size: var(--font-size-caption);
-    white-space: nowrap;
   }
-  .count {
-    color: var(--color-text-muted);
-    font-size: var(--font-size-secondary);
-  }
-  @media (max-width: 1439px) {
-    .bar {
-      display: none;
-    }
-  }
-  @media (max-width: 599px) {
-    .saved {
-      display: none;
-    }
-  }
-  /* As in 3.0, narrow screens drop the bar when there are no phases to show. */
   @media (max-width: 899px) {
-    .rail.none {
+    .saved {
       display: none;
     }
   }

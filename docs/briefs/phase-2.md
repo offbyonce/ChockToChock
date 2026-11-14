@@ -190,6 +190,12 @@ every change to `.github/workflows/`. For those, prepare what the step needs and
       Carried from batch 1's review: the phone stage and phase picker (today one cut-off chip,
       a bare dot in Essentials), the progress bar on tablet and phone, and the inline controls
       drawing in an expanded step on tablet portrait and phone.
+      Carried from batch 3: tablet landscape's round 6 layout (header, phase tabs, rows); the
+      phone bottom bar (DecPhone: Confirm and Skip, today inline); rows whose two-line location
+      makes them taller than 3.0's on phone; the mode pill covering the end of a phase tab on
+      phone. Propose whether phone shows an optional short value from the pack ("MAIN ON ·
+      CENTER ON or OFF") or wraps the full value, and ask before adding a pack field (owner,
+      2026-11-13).
    6. The other views: Flow, Emergency reference, step timers, CDU walkthrough, briefings,
       exterior inspection on our own airplane outline, Flight deck reference, menu, Flight log,
       Settings.
@@ -197,6 +203,8 @@ every change to `.github/workflows/`. For those, prepare what the step needs and
       Keep screen awake; the step timer chip (IRS); "Used in" links to the steps that use a
       control; every menu item in coverage.md (Flight deck, Practice, Glossary, Flight log,
       Tour, References, How procedures work). The coverage.md rows added for review apply.
+      Find (Ctrl K) in the header, built from a results board the owner will provide; hidden
+      in the header until then (owner, 2026-11-13).
    7. Content. First on the sourcing list (owner, 2026-11-12): the resting position of FLT
       CONTROL A and B, which the pack rests at STBY RUD where they are normally guarded ON; and
       the placards of the 11 positions not in capitals (`pack check` warns on each): "OFF to
@@ -205,10 +213,26 @@ every change to `.github/workflows/`. For those, prepare what the step needs and
       under decision 0007: the 17 glossary entries written in batch 2 (P1, P2, P3, P5, P7, P9,
       center tank, main tank, crossfeed, autobrake, start lever, probe heat, window heat, outflow
       valve, standby power, yaw damper, trim air, anti-ice). Then
-      the center tank decision step (the pilot answers until the pack has a sourced
-      wing-tank capacity; then the app may suggest an answer for the pilot to confirm) and every
-      mockup wording in content-to-validate.md, sourced and validated under decision 0007 before
-      it ships.
+      the center tank decision step, built to the Decision boards (batch 3 built the row's
+      states from an invented fixture), and every mockup wording in content-to-validate.md,
+      sourced and validated under decision 0007 before it ships. Sourced and approved by the
+      owner (2026-11-13) for the center tank step:
+      - Tank capacities: main tanks 3,869 kg each (7,738 kg both wings), center tank 12,989 kg,
+        total 20,727 kg, observed in the simulator model's EFB (Performance › Fuel, which lists
+        each tank's capacity), and cross-checked against Boeing's airport planning
+        characteristics for the 737-8 (total usable fuel 20,730 kg, 45,694 lb; vendor-docs, the
+        reference kept outside the repository under decision 0007). Record the simulator model
+        version the figures were observed in.
+      - Fill order, confirmed in the simulator model: the main tanks fill first and the center
+        tank takes only the remainder (8,001 kg loaded gave 3,869 / 3,869 / 263).
+      - The rule: center fuel = the plan's block fuel − 7,738 kg (pounds converted at
+        2.20462). Suggest "more than 1,000 lb (450 kg)" when that exceeds 450 kg, otherwise
+        "1,000 lb (450 kg) or less"; within 225 kg (500 lb) of the line, add "Close to the line:
+        check the gauge". The pilot always confirms.
+      - Propose, and ask before adding: the pack-format rule (an option suggests from block fuel
+        less the wing capacity), the pack field for the fuel step's value for each answer, and
+        the decision 0022 amendment.
+      - Replace the boards' stand-ins: the decision step's location line and "about 0 lb".
 8. **Saved progress, export and import.** Keep progress in browser storage behind the host
    adapter, and ask the browser for persistent storage. Export writes a file in a versioned format
    defined in Rust. Import validates the file, applies aliases for old ids, and never silently

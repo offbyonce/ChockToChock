@@ -42,6 +42,18 @@ export type PackIndex = {
   glossary(term: string): string | undefined;
   /** A light's meaning (its note), by panel, section and item index. */
   lightMeaning(panel: string, section: string, item: number): string | undefined;
+  /** The phase a step's list is in, by id. */
+  phaseOf(stepId: string): string | undefined;
+  /** The step that asks an option (decision 0022), if any. */
+  decider(option: string): Step | undefined;
+  /** The steps whose targets depend on an option's answer, in pack order. */
+  dependents(option: string): Step[];
+  /**
+   * The steps whose targets name a panel item, each with its phase's title: in flight order (the
+   * phases' order, then their lists'), each step once. A step that two lists repeat in the same
+   * phase (a flow and its checklist) is listed once, at its first place.
+   */
+  usedIn(panel: string, section: string, item: number): { step: Step; phase: string }[];
 };
 
 export type MapRegion = { region: OverviewRegion | null; areas: OverviewArea[] };
@@ -79,17 +91,60 @@ export function indexPack(pack: FlatPack): PackIndex {
   const glossary = new Map((pack.content.glossary?.terms ?? []).map((t) => [t.term, t.meaning]));
   const lightNotes = new Map((pack.content.lights?.lights ?? []).map((n) => [n.locator, n.meaning]));
 
+  /** The locator a step target uses for an item: "oh/fuel/AFT 1/1", the n-th of its label. */
+  const locator = (panel: string, section: string, item: number) => {
+    const items = sections.get(section)?.items ?? [];
+    const it = items[item];
+    if (!it) return null;
+    const n = items.slice(0, item + 1).filter((o) => o.label === it.label).length;
+    return `${panel}/${section}/${it.label}/${n}`;
+  };
+  const phaseOfList = new Map<string, string>();
+  const phaseIdOfList = new Map<string, string>();
+  for (const phase of pack.content.phases?.phases ?? []) {
+    for (const list of phase.lists) {
+      phaseOfList.set(list, phase.title);
+      phaseIdOfList.set(list, phase.id);
+    }
+  }
+  // Lists in flight order: each phase's lists in turn, then any list no phase holds.
+  const listsById = new Map(pack.lists.map((l) => [l.id, l]));
+  const flightOrder = [
+    ...(pack.content.phases?.phases ?? []).flatMap((p) => p.lists.flatMap((id) => listsById.get(id) ?? [])),
+    ...pack.lists.filter((l) => !phaseOfList.has(l.id)),
+  ].filter((l, i, all) => all.indexOf(l) === i);
+  const listOfStep = new Map<string, string>();
+  for (const list of pack.lists) for (const step of list.steps) listOfStep.set(step.id, list.id);
+
   return {
     name: pack.manifest.name,
+    phaseOf: (stepId) => phaseIdOfList.get(listOfStep.get(stepId) ?? ""),
+    decider: (option) => [...steps.values()].find((s) => s.decide === option),
+    dependents: (option) =>
+      [...steps.values()].filter((s) => (s.targets ?? []).some((t) => t.when?.option === option)),
+    usedIn(panel, section, item) {
+      const at = locator(panel, section, item);
+      if (!at) return [];
+      const seen = new Set<string>();
+      const used: { step: Step; phase: string }[] = [];
+      for (const list of flightOrder) {
+        const phase = phaseOfList.get(list.id) ?? list.title;
+        for (const step of list.steps) {
+          if (!(step.targets ?? []).some((t) => t.at === at)) continue;
+          const key = `${step.text}\u0000${phase}`;
+          if (seen.has(key)) continue;
+          seen.add(key);
+          used.push({ step, phase });
+        }
+      }
+      return used;
+    },
     control: (id) => controls.get(id),
     glossary: (term) => glossary.get(term),
     lightMeaning(panel, section, item) {
-      const items = sections.get(section)?.items ?? [];
-      const it = items[item];
-      if (!it) return undefined;
       // The n-th item with that label in the section, counted from 1, as light notes name them.
-      const n = items.slice(0, item + 1).filter((o) => o.label === it.label).length;
-      return lightNotes.get(`${panel}/${section}/${it.label}/${n}`);
+      const at = locator(panel, section, item);
+      return at ? lightNotes.get(at) : undefined;
     },
     step: (id) => steps.get(id),
     place(step) {

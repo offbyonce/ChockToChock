@@ -32,8 +32,7 @@ pub use plans::{PLAN_FORMAT, PlanValues, SavedPlan, parse_plan, plan_url, plan_v
 pub use rail::{Rail, RailPhase, RailStage, rail};
 pub use saved::{Loaded, load_flight, load_settings};
 pub use settings::{
-    Detail, EssentialsChanges, ListView, MAX_DIMMING, MapInSteps, SETTINGS_FORMAT, Settings,
-    TextSize, Theme,
+    Detail, EssentialsChanges, ListView, MAX_DIMMING, SETTINGS_FORMAT, Settings, TextSize, Theme,
 };
 pub use targets::{ItemTarget, step_targets};
 pub use visibility::{Shown, in_essentials, passes, shown_steps, step_shows, visible_steps};

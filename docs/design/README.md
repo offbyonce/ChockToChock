@@ -10,6 +10,34 @@ This folder is the agreed interface design for Chock to Chock. The owner reviewe
 4. **Progressive disclosure is valued.** Reveal detail on demand (tap to open, ?, pop-overs, expandable rows) rather than crowding the screen, but never hide anything a pilot needs to complete the current step.
 5. **Dark and light mode are both required** on every screen, including the panel drawings.
 
+## Round 6 (approved 2026-11-13)
+
+[round6/](round6/) changes how a step shows its panel and where it is; read
+[round6/ROUND6.md](round6/ROUND6.md) first. Its boards are in `round6/boards/`; its
+`Checklist`, `Tablet`, `Mobile` and `Views` sources add an `r6` option (and `preview` on Checklist
+and Mobile) and render exactly as round 5 with it off. Where round 6 and round 5 differ, round 6
+wins.
+
+**Superseded round 5 boards**, kept below for history only:
+
+- `MapHidden` (Hide map and Show map are removed).
+- `WherePop` (replaced by the slide-out's Where it is section, round 6 `Locator`, `R6Where`).
+- `TabWhere` and `PhoneWhere` (replaced by the tablet slide-out and the tablet portrait and phone
+  sheets, round 6 `R6TabL`, `R6TabP`, `R6Phone*`).
+- In `Checklist`, `Wide`, `Tablet`, `Mobile` and `Views` (Flow, Settings): the map figure in the
+  side pane, the side pane's controls drawing, the "New panel" tag, "See the whole panel larger",
+  the inline drawing in an expanded step, Flow's side pane drawing and Settings › Map in steps.
+  The rest of those boards stands.
+
+**Round 6 update (approved 2026-11-13).** `Tablet`, `Locator`, `Checklist`, `R6Pane` and
+`R6PaneLight` now show the label-free preview card in every side pane (desktop, wide, tablet
+landscape and the panes behind the slide-out) and in the tablet portrait expanded step; the Show
+panel button is gone from every board. `Decision.dc.html` adds the decision step (decision 0022):
+`DecUnanswered`, `DecSuggested`, `DecAnswered`, `DecChanging`, `DecChanged` and `DecPhone`, dark
+and light. Its location line ("Main panel (P2) · fuel quantity on the upper display") and "about
+0 lb" are stand-ins until the center tank step is sourced (Phase 2 step 7, batch 7). The toast on
+`DecChanged` is the one every Undo uses (color.toast-text, color.toast-link, color.toast-shadow).
+
 ## Read in this order
 
 1. `rules.md`: what the tokens mean and the rules every screen follows.
@@ -17,7 +45,7 @@ This folder is the agreed interface design for Chock to Chock. The owner reviewe
 3. `screens.md`: every screen, what is on it, its states, and which board shows it.
 4. `coverage.md`: where every 3.0 feature lives at every size. Use it as a release check.
 5. `content-to-validate.md`: wording and data in the mockups that must be sourced and validated before it ships, plus the panel icon work.
-6. `boards/`: the mockup source, one file per board. It is plain HTML with inline styles and `{{t.x}}` / `{{p.x}}` holes that map to `tokens.json`. Use it for layout, hierarchy and behavior. Take values from `tokens.json`, not from the HTML.
+6. `boards/`: the round 5 mockup source, one file per board (see Round 6 above for what it supersedes). It is plain HTML with inline styles and `{{t.x}}` / `{{p.x}}` holes that map to `tokens.json`. Use it for layout, hierarchy and behavior. Take values from `tokens.json`, not from the HTML.
 7. `review/design-review-r4.md`: the independent review that drove round 5. Every finding (F1 to F22) is addressed in these boards.
 
 ## How the boards are built
@@ -66,4 +94,4 @@ widths, line heights and eight sizes (icons, the tablet side pane, the drawer, t
 status icons, the progress bar and the Flow button). Each names its source board in a `$sources`
 entry. Approved the same day for batch 2: `radius.popover`, `color.popover-border` and
 `color.overlay-shadow` (WherePop's values, for every pop-over, sheet and drawer) and
-`size.map-figure` (280, the side pane's map figure on the Checklist and WherePop boards). New tokens are proposed to the owner with their source first, never added on their own.
+`size.map-figure` (280, the side pane's map figure on the Checklist and WherePop boards). Round 6 (2026-11-13), from `round6/boards/Locator.dc.html`: `size.slideout` (840), `size.slideout-tablet` (700) and `color.slideout-scrim`. New tokens are proposed to the owner with their source first, never added on their own.

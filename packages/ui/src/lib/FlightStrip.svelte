@@ -2,25 +2,23 @@
 SPDX-FileCopyrightText: 2026 offbyonce
 SPDX-License-Identifier: MIT
 
-The flight strip at the top of a phase, as in 3.0: one line summing up the clearance (built in
-Rust, decision 0019) and the last line of the notes. Tapping it opens the Flight pop-out with the
-route, clearance and takeoff values, the notes, a way to Flight setup and Clear flight, which asks
-first. Tapping one part of the summary opens the pop-out on that part's field.
+The flight strip (Checklist board, 48 px, closed): the route, Runway, SID, Initial altitude,
+Squawk and Departure frequency (a dash when empty), the notes count and a chevron. With nothing
+entered yet it reads "Add your flight: import from SimBrief or enter the clearance" (owner,
+batch 3). The whole strip opens the Flight pop-out with the clearance, takeoff values, notes, a
+way to Flight setup and Reset flight plan (with Undo), until batch 4's strip panel.
 -->
 <script lang="ts">
-  import type { FillField, StripPart } from "@chocktochock/bindings";
+  import type { FillField } from "@chocktochock/bindings";
+  import Icon from "./Icon.svelte";
 
   let {
-    parts,
-    note,
     values,
     notes,
     onSet,
     onNotes,
     onClear,
   }: {
-    parts: StripPart[];
-    note: string;
     values: Partial<Record<FillField, string>>;
     notes: string;
     onSet: (field: FillField, value: string) => void;
@@ -62,6 +60,23 @@ first. Tapping one part of the summary opens the pop-out on that part's field.
       ],
     ],
   ];
+
+  /** The closed strip's fields, as the board lists them. */
+  const FIELDS: { field: FillField; label: string }[] = [
+    { field: "runway", label: "Runway" },
+    { field: "sid", label: "SID" },
+    { field: "initial_altitude", label: "Initial altitude" },
+    { field: "squawk", label: "Squawk" },
+    { field: "departure_frequency", label: "Departure frequency" },
+  ];
+  /** A field as the strip shows it: the SID with its transition, "SUMMA2.SEA" (Checklist board). */
+  function shownValue(field: FillField): string {
+    const value = values[field] ?? "";
+    return field === "sid" && value && values.transition ? `${value}.${values.transition}` : value;
+  }
+  let filled = $derived(["origin", "destination", ...FIELDS.map((f) => f.field)].some((f) => values[f as FillField]));
+  let route = $derived(`${values.origin || "—"} → ${values.destination || "—"}`);
+  let noteCount = $derived(notes.split("\n").filter((l) => l.trim()).length);
 
   let open = $state(false);
   let asking = $state(false);
@@ -108,18 +123,28 @@ first. Tapping one part of the summary opens the pop-out on that part's field.
 
 <svelte:document onpointerdown={outside} onkeydown={key} />
 
-<section class="fstrip card" class:open bind:this={strip}>
-  <button type="button" class="fsline" aria-expanded={open} aria-controls="spop" bind:this={line} onclick={toggle}>
-    <b>Flight</b>
-    <span class="fsum">
-      {#if parts.length}
-        {#each parts as p, i (p.field)}{#if i}<i>·</i>{/if}<span data-field={p.field}>{p.text}</span>{/each}
-      {:else}
-        <span class="e">Add your clearance: runway, departure, squawk and frequencies</span>
-      {/if}
-      {#if note}<span class="fsnote">Notes: {note}</span>{/if}
-    </span>
-    <span class="fsed">Edit</span>
+<section class="fstrip" class:open bind:this={strip}>
+  <button
+    type="button"
+    class="fsline"
+    aria-expanded={open}
+    aria-controls="spop"
+    aria-label={filled ? `Flight strip: ${route}. Open clearance, notes and flight data` : "Add your flight: import from SimBrief or enter the clearance"}
+    bind:this={line}
+    onclick={toggle}
+  >
+    {#if filled}
+      <span class="route">{route}</span>
+      {#each FIELDS as f (f.field)}
+        {@const shown = shownValue(f.field)}
+        <span class="part" data-field={f.field}><span class="lab">{f.label}</span><span class="val" class:none={!shown}>{shown || "—"}</span></span>
+      {/each}
+      {#if noteCount}<span class="notes">Notes {noteCount}</span>{/if}
+    {:else}
+      <span class="prompt">Add your flight: import from SimBrief or enter the clearance</span>
+    {/if}
+    <span class="fill"></span>
+    <Icon name="chevron-down" />
   </button>
   {#if open}
     <div id="spop" role="dialog" aria-label="Flight details">
@@ -156,7 +181,7 @@ first. Tapping one part of the summary opens the pop-out on that part's field.
       ></textarea>
       {#if asking}
         <div class="spft ask">
-          <span class="spcq" id="spcq"><b>Clear the whole flight?</b> Removes the ticks, flight details, clearance, notes and timers. Settings stay.</span>
+          <span class="spcq" id="spcq"><b>Reset the flight plan?</b> Removes the ticks, flight details, clearance, notes and timers. Settings stay. You can undo it right after.</span>
           <span class="spfr">
             <button class="btn" type="button" onclick={() => (asking = false)}>Cancel</button>
             <button
@@ -167,7 +192,7 @@ first. Tapping one part of the summary opens the pop-out on that part's field.
                 open = false;
                 asking = false;
                 onClear();
-              }}>Clear flight</button
+              }}>Reset flight plan</button
             >
           </span>
         </div>
@@ -175,7 +200,7 @@ first. Tapping one part of the summary opens the pop-out on that part's field.
         <div class="spft">
           <a class="link to-setup" href="#/setup" onclick={() => (open = false)}>All flight details in Flight setup</a>
           <span class="spfr">
-            <button class="link spclr" type="button" onclick={() => (asking = true)}>Clear flight</button>
+            <button class="link spclr" type="button" onclick={() => (asking = true)}>Reset flight plan</button>
             <button class="btn primary" type="button" onclick={hide}>Done</button>
           </span>
         </div>
@@ -185,69 +210,76 @@ first. Tapping one part of the summary opens the pop-out on that part's field.
 </section>
 
 <style>
+  /* The closed strip: the page's width, under the phase track. */
   .fstrip {
-    position: relative;
-    z-index: 5;
-    min-width: 0;
-    margin-bottom: var(--space-3);
-    overflow: visible;
-  }
-  .fstrip.open {
-    z-index: 30;
-  }
-  .fsline {
+    position: sticky;
+    top: calc(var(--size-header) + var(--size-phase-row));
+    z-index: 18;
     display: flex;
     align-items: center;
-    gap: var(--space-3);
-    width: 100%;
+    height: var(--size-flight-strip);
+    padding: 0 var(--space-4);
+    border-bottom: var(--border-thin) solid var(--color-line);
+    background: var(--color-surface-2);
+  }
+  .fsline {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: var(--space-6);
     min-width: 0;
-    min-height:  var(--size-touch-min);
-    padding: var(--space-2) var(--space-4);
+    height: var(--size-touch-min);
+    padding: 0 var(--space-3);
+    overflow: hidden;
     border: 0;
-    border-radius: inherit;
+    border-radius: var(--radius-small);
     background: none;
     color: var(--color-text);
     font: inherit;
     text-align: left;
+    white-space: nowrap;
     cursor: pointer;
   }
-  .fsline > b {
-    flex: none;
+  .route {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-value-mono);
     font-weight: var(--weight-semibold);
   }
-  .fsum {
-    flex: 1;
+  .part {
+    display: flex;
+    align-items: baseline;
+    gap: calc(var(--space-1) + var(--border-thick) / 2);
+  }
+  .lab {
+    color: var(--color-text-muted);
+    font-size: var(--font-size-caption);
+  }
+  .val {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-value-mono);
+  }
+  .val.none {
+    color: var(--color-text-muted);
+  }
+  .notes {
+    padding: calc(var(--border-thick) + var(--border-thin)) calc(var(--space-2) + var(--border-thick));
+    border-radius: var(--radius-pill);
+    background: var(--color-chip);
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-caption);
+  }
+  .prompt {
     min-width: 0;
-    color: var(--color-text);
-    font: var(--weight-medium) var(--font-size-value-mono) / var(--leading-normal) var(--font-mono);
-    overflow-wrap: anywhere;
-  }
-  .fsum i {
-    margin: 0 var(--space-2);
-    color: var(--color-text-muted);
-    font-style: normal;
-  }
-  .fsum .e {
-    color: var(--color-text-muted);
-    font: var(--weight-regular) var(--font-size-secondary) var(--font-sans);
-  }
-  .fsnote {
-    display: block;
-    margin-top: var(--space-1);
     overflow: hidden;
-    color: var(--color-text-muted);
-    font: var(--weight-regular) var(--font-size-secondary) / var(--leading-snug) var(--font-sans);
     text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-  .fsed {
-    flex: none;
-    color: var(--color-accent);
+    color: var(--color-text-secondary);
     font-size: var(--font-size-secondary);
-    font-weight: var(--weight-medium);
   }
-  .fsline:hover .fsed {
-    text-decoration: underline;
+  .fill {
+    flex: 1;
+  }
+  .fsline :global(.icon) {
+    color: var(--color-text-muted);
   }
   #spop {
     position: absolute;
@@ -356,7 +388,7 @@ first. Tapping one part of the summary opens the pop-out on that part's field.
   .link:hover {
     color: var(--color-text);
   }
-  /* As in 3.0, the way to Flight setup sits on the right with Clear flight and Done. */
+  /* As in 3.0, the way to Flight setup sits on the right with Reset flight plan and Done. */
   .to-setup {
     margin-left: auto;
   }
@@ -369,11 +401,6 @@ first. Tapping one part of the summary opens the pop-out on that part's field.
     color: var(--color-danger-text);
   }
   @media (max-width: 599px) {
-    .fsum {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
     .fsg {
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: var(--space-2);

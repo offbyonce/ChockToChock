@@ -123,6 +123,14 @@ a {
   color: var(--color-on-accent);
 }
 
+/* The boards' secondary button (Views.dc.html: Save backup, Restore). */
+.btn.secondary {
+  padding: 0 calc(var(--space-3) + var(--space-1) / 2);
+  border-color: var(--color-border);
+  color: var(--color-text);
+  font-weight: var(--weight-regular);
+}
+
 /* Skip leaves a step open, so it takes the open (amber) color. */
 .btn.skip {
   border-color: var(--color-open-border);
