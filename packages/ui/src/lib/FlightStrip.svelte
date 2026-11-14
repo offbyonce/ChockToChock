@@ -58,7 +58,7 @@ flight plan (Undo after, in the shared toast) and All flight data, the Flight pa
     { field: "squawk", label: "Squawk" },
     { field: "departure_frequency", label: "Departure frequency" },
   ];
-  /** A field as the strip shows it: the SID with its transition, "SUMMA2.SEA" (Checklist board). */
+  /** A field as the strip shows it: the SID with its transition, "SUMMA2.SUMMA" (Checklist board). */
   function shownValue(field: FillField): string {
     const value = values[field] ?? "";
     return field === "sid" && value && values.transition ? `${value}.${values.transition}` : value;
@@ -278,7 +278,7 @@ flight plan (Undo after, in the shared toast) and All flight data, the Flight pa
   .part {
     display: flex;
     align-items: baseline;
-    gap: calc(var(--space-1) + var(--border-thick) / 2);
+    gap: calc(var(--space-1) + var(--border-thick));
   }
   .lab {
     color: var(--color-text-muted);
@@ -353,7 +353,7 @@ flight plan (Undo after, in the shared toast) and All flight data, the Flight pa
   .spf label {
     display: flex;
     flex-direction: column;
-    gap: calc(var(--space-1) + var(--border-thick) / 2);
+    gap: calc(var(--space-1) + var(--border-thick));
     min-width: 0;
     color: var(--color-text-muted);
     font-size: var(--font-size-caption);
@@ -454,7 +454,7 @@ flight plan (Undo after, in the shared toast) and All flight data, the Flight pa
   .all {
     display: flex;
     align-items: center;
-    gap: calc(var(--space-1) + var(--border-thick) / 2);
+    gap: calc(var(--space-1) + var(--border-thick));
     height: var(--size-touch-min);
     padding: 0 var(--space-1);
     color: var(--color-link);

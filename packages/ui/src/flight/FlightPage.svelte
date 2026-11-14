@@ -167,7 +167,7 @@ it. Every field of the old Flight setup lives in one section.
     {#if section === "overview"}
       <OfpPanel ofp={null} {ctx} layout />
     {:else if section === "weather"}
-      <OfpPanel ofp={wxPanel} {ctx} />
+      <OfpPanel ofp={wxPanel} {ctx} weather />
     {:else if def && row}
       <OfpPanel ofp={row.ofp} {ctx} />
     {/if}

@@ -161,7 +161,7 @@ only the compact plan is kept, decision 0019), the last import, and Reset flight
     max-width: calc(9 * var(--space-10));
     display: flex;
     flex-direction: column;
-    gap: calc(var(--space-1) + var(--border-thick) / 2);
+    gap: calc(var(--space-1) + var(--border-thick));
     color: var(--color-text-muted);
     font-size: var(--font-size-caption);
   }
@@ -208,7 +208,7 @@ only the compact plan is kept, decision 0019), the last import, and Reset flight
   .pair {
     display: flex;
     flex-direction: column;
-    gap: calc(var(--space-1) + var(--border-thick) / 2);
+    gap: calc(var(--space-1) + var(--border-thick));
   }
   .k {
     color: var(--color-text-muted);

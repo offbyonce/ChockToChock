@@ -16,15 +16,20 @@ OFP on SimBrief is a plain link: it opens SimBrief and sends nothing from this a
     ofp,
     ctx,
     layout = false,
+    weather = false,
   }: {
     ofp: Ofp | null;
     ctx: Ctx;
     /** Overview: every section with what it holds and where the app uses it. */
     layout?: boolean;
+    /** Weather and Winds: the Weather board's own schematic (taller weather block, 2 px ring). */
+    weather?: boolean;
   } = $props();
 
   /** The schematic page's blocks, one per OFP section, as the boards draw them. */
   const BLOCKS = ["b16", "b28", "b14", "b64", "b14", "b22", "b18"];
+  /** Weather.dc.html draws its page with these heights. */
+  const WEATHER_BLOCKS = ["b16", "b28", "b14", "b64", "b16", "b32", "b20"];
   const LAYOUT = [
     { name: "Header and times", what: "Flight number, airports, route, cruise level, cost index, times", where: "Route · Cruise and levels" },
     { name: "Fuel plan", what: "Trip, reserves, taxi and block fuel", where: "Fuel and weights" },
@@ -69,8 +74,8 @@ OFP on SimBrief is a plain link: it opens SimBrief and sends nothing from this a
     {/if}
     {#if ofp.section !== null}
       <div class="outline">
-        <figure class="page" role="img" aria-label="Schematic of an OFP page with this section highlighted">
-          {#each BLOCKS as b, n (n)}<span class="block {b}" class:hi={n === ofp.section}></span>{/each}
+        <figure class="page" class:wx={weather} role="img" aria-label="Schematic of an OFP page with this section highlighted">
+          {#each weather ? WEATHER_BLOCKS : BLOCKS as b, n (n)}<span class="block {b}" class:hi={n === ofp.section}></span>{/each}
         </figure>
         <ol class="items">
           {#each OFP_SECTIONS as name, n (name)}<li class:hi={n === ofp.section}>{name}</li>{/each}
@@ -149,7 +154,7 @@ OFP on SimBrief is a plain link: it opens SimBrief and sends nothing from this a
   .page {
     display: flex;
     flex-direction: column;
-    gap: calc(var(--space-1) + var(--border-thick) / 2);
+    gap: calc(var(--space-1) + var(--border-thick));
     margin: 0;
     padding: calc(var(--space-2) + var(--border-thick));
     border: var(--border-thin) solid var(--color-border);
@@ -178,6 +183,15 @@ OFP on SimBrief is a plain link: it opens SimBrief and sends nothing from this a
   }
   .b28 {
     height: calc(var(--space-6) + var(--space-1));
+  }
+  .b20 {
+    height: calc(var(--space-4) + var(--space-1));
+  }
+  .b32 {
+    height: var(--space-8);
+  }
+  .wx .block.hi {
+    box-shadow: 0 0 0 var(--border-thick) var(--color-accent);
   }
   .b64 {
     height: calc(2 * var(--space-8));

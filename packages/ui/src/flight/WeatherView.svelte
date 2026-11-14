@@ -347,33 +347,28 @@ not cover shows as printed, "Not decoded". Descriptions are the boards' stand-in
           {#if r.element === "altimeter" && field}
             {@render altimeterRow(r, i)}
           {:else}
-            <button class="xrow" type="button" aria-pressed={selected === i} onclick={() => (picked = i)}>
-              <span class="label">{LABELS[r.element] ?? r.element}</span>
+            <!-- The whole row selects (as the board's row button); the label is the button that
+                 does it from the keyboard, so the ? can be a real button beside it. -->
+            <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
+            <div class="xrow" class:sel={selected === i} onclick={() => (picked = i)}>
+              <button class="label pickrow" type="button" aria-pressed={selected === i}>{LABELS[r.element] ?? r.element}</button>
               <span class="val">
                 {#if r.lines.length}<span class="mono">{#each r.lines as l, n (n)}{l}{#if n < r.lines.length - 1}<br />{/if}{/each}</span>{:else}<span class="mono">Not decoded</span>{/if}
                 <span class="raw">{r.raw.join(" ")}</span>
               </span>
               <span class="desc">{descriptions || more === i ? (DESC[r.element] ?? "") : ""}{#if more === i && r.source}<span class="src"> {definedIn(r.source)}</span>{/if}</span>
               <span class="loc">{LOC[r.element] ?? ""}</span>
-              <span
+              <button
                 class="q"
-                role="button"
-                tabindex="0"
+                type="button"
                 aria-label="More about {(LABELS[r.element] ?? r.element).toLowerCase()}"
                 aria-expanded={more === i}
                 onclick={(e) => {
                   e.stopPropagation();
                   more = more === i ? null : i;
-                }}
-                onkeydown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    more = more === i ? null : i;
-                  }
-                }}>?</span
+                }}>?</button
               >
-            </button>
+            </div>
           {/if}
         {/each}
         {#if field && !altRow}
@@ -528,7 +523,6 @@ not cover shows as printed, "Not decoded". Descriptions are the boards' stand-in
   .xrow:last-child {
     border-bottom: 0;
   }
-  .xrow[aria-pressed="true"],
   .xrow.sel {
     background: var(--color-current-row);
     box-shadow: inset var(--border-bar) 0 0 var(--color-accent);
@@ -536,6 +530,15 @@ not cover shows as printed, "Not decoded". Descriptions are the boards' stand-in
   .label {
     font-size: var(--font-size-body);
     font-weight: var(--weight-semibold);
+  }
+  .pickrow {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    font-family: inherit;
+    line-height: inherit;
+    text-align: left;
   }
   .alt .label {
     padding-top: calc(var(--space-2) + var(--border-thick));

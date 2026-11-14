@@ -131,14 +131,25 @@ const header = (
   c: Ctx,
   hi: "level" | "ci" | "wind" | "isa" | "ta" | "tl" | "fn" | "airports" | "alt" | "dist" | "time",
 ): Part[] => {
-  const fl = `FL${dash(v(c, "cruise_level"))}`;
+  // The close-up shows what the OFP prints: the plan's figures, or the flight's without a plan.
+  const g = c.plan?.plan.general;
+  const three = (n: number) => String(Math.round(n)).padStart(3, "0");
+  const level =
+    g?.cruiseAltitudeFt != null ? String(Math.round(g.cruiseAltitudeFt / 100)) : v(c, "cruise_level");
+  const ci = g?.costIndex != null ? String(g.costIndex) : v(c, "cost_index");
+  const wind =
+    g?.avgWindDir != null && g.avgWindSpeed != null
+      ? `${three(g.avgWindDir)}/${three(g.avgWindSpeed)}`
+      : v(c, "cruise_wind");
+  const isa = g?.avgIsaDeviation != null ? String(g.avgIsaDeviation) : v(c, "isa_deviation");
   const parts: [string, string][] = [
-    ["level", `${fl}  `],
-    ["ci", `CI ${dash(v(c, "cost_index"))}`],
-    ["wind", `  AVG WIND ${dash(v(c, "cruise_wind"))}`],
-    ["isa", `  ISA ${dash(signed(v(c, "isa_deviation")))}`],
+    ["level", `FL${dash(level)}`],
+    ["ci", `CI ${dash(ci)}`],
+    ["wind", `AVG WIND ${dash(wind)}`],
+    ["isa", `ISA ${dash(signed(isa))}`],
   ];
-  if (["level", "ci", "wind", "isa"].includes(hi)) return parts.map(([k, text]) => ({ text, hi: k === hi }));
+  if (["level", "ci", "wind", "isa"].includes(hi))
+    return parts.flatMap(([k, text], n): Part[] => [...(n ? [{ text: "  " }] : []), { text, hi: k === hi }]);
   if (hi === "ta" || hi === "tl")
     return [
       { text: `TRANS ALT ${dash(v(c, "transition_altitude"))}`, hi: hi === "ta" },
@@ -567,11 +578,15 @@ export const SECTIONS: Section[] = [
             mode: "numeric",
             desc: "The level you plan to cruise at.",
             loc: "Enter on the CDU › PERF INIT",
-            ofp: fromHeader(
-              "The cruise level is in the header",
-              (c) => header(c, "level"),
-              "The navigation log repeats the level at each fix.",
-            ),
+            // FSCruise and FSInvalid: the same heading, body and note as Cost index.
+            ofp: {
+              ...fromHeader(
+                "Cost index and cruise level are in the header",
+                (c) => header(c, "level"),
+                "The navigation log repeats the level and wind at each fix.",
+              ),
+              body: "The header gives the cruise level, the cost index, and the average wind and temperature for the flight.",
+            },
           },
           {
             id: "cost_index",
@@ -1044,7 +1059,7 @@ const QNH = (v: string, c: Ctx) =>
     : within(28, 31, "Enter 28.00 to 31.00 inHg")(v);
 
 /**
- * The ranges 3.0's Flight setup gave its number fields, as checks (FSInvalid board): a value
+ * The ranges 3.0's Flight setup gave its number fields (21 of them), as checks (FSInvalid board): a value
  * outside one shows "Enter X to Y" under its box while it stays out of range. Fields 3.0 gave no
  * range have no check.
  */
@@ -1061,6 +1076,11 @@ export const RANGES: Partial<Record<FillField, (value: string, c: Ctx) => string
   cg: within(0, 50, "Enter 0 to 50% MAC"),
   takeoff_trim: within(0, 15, "Enter 0.00 to 15.00 units"),
   passengers: within(0, 500, "Enter 0 to 500"),
+  // Weights are stored in thousands, as 3.0's ranges were; the box shows them in full.
+  zfw: (v, c) => within(0, 400, `Enter 0 to 400,000 ${c.unit}`)(v),
+  takeoff_weight: (v, c) => within(0, 400, `Enter 0 to 400,000 ${c.unit}`)(v),
+  reserves: (v, c) => within(0, 100, `Enter 0 to 100,000 ${c.unit}`)(v),
+  cargo: (v, c) => within(0, 100, `Enter 0 to 100,000 ${c.unit}`)(v),
   cost_index: within(0, 9999, "Enter 0 to 9999"),
   isa_deviation: within(-60, 60, "Enter −60 to +60"),
   transition_altitude: within(1000, 20000, "Enter 1,000 to 20,000 ft"),

@@ -85,6 +85,23 @@
         "time_total": "540"
       },
       {
+        "ident": "TOC",
+        "type": "ltlg",
+        "via_airway": "Q1",
+        "is_sid_star": "0",
+        "stage": "CLB",
+        "pos_lat": "47.0",
+        "pos_long": "-122.0",
+        "altitude_feet": "35000",
+        "distance": "180",
+        "wind_dir": "262",
+        "wind_spd": "46",
+        "oat": "-50",
+        "fuel_plan_onboard": "10200",
+        "time_total": "1800",
+        "name": "TOP OF CLIMB"
+      },
+      {
         "ident": "ETCHY",
         "type": "wpt",
         "via_airway": "Q1",

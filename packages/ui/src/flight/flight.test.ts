@@ -229,6 +229,11 @@ describe("FlightPage", () => {
     expect(box?.getAttribute("aria-describedby")).toBe(alert.id);
   });
 
+  it("checks the weights against 3.0's ranges, in the flight's unit", () => {
+    page({ section: "fuel", flight: flight({ zfw: "450" }) });
+    expect(screen.getByRole("alert").textContent?.trim()).toBe("Enter 0 to 400,000 lb");
+  });
+
   it("checks only the fields 3.0 gave a range", () => {
     page({ section: "clearance", flight: flight({ squawk: "7800", ground_frequency: "99.1" }) });
     expect(screen.queryByRole("alert")).toBeNull();
@@ -290,6 +295,18 @@ describe("FlightPage", () => {
     );
     // The OFP panel follows the selected row.
     expect(screen.getByText("Wind is in the weather section")).toBeTruthy();
+  });
+
+  it("keeps Weather's ? a button of its own, never inside the row's button", async () => {
+    page({ section: "weather", plan, flight: flight({ origin: "KSEA", qnh: "30.12", qnh_unit: "inHg" }) });
+    await screen.findByText("Observed 17:53 UTC");
+    expect(
+      document.querySelectorAll("button button, button [role='button'], button a, button input"),
+    ).toHaveLength(0);
+    const wind = screen.getByRole("button", { name: "Wind" });
+    await fireEvent.click(wind);
+    expect(wind.getAttribute("aria-pressed")).toBe("true");
+    expect(screen.getByRole("button", { name: "More about wind" }).tagName).toBe("BUTTON");
   });
 
   it("Weather's ? says where the code is defined, in plain words", async () => {

@@ -146,7 +146,7 @@ panel state, and Turnaround. The descriptions are the board's, on batch 7's vali
   .pick {
     display: flex;
     flex-direction: column;
-    gap: calc(var(--space-1) + var(--border-thick) / 2);
+    gap: calc(var(--space-1) + var(--border-thick));
     color: var(--color-text-muted);
     font-size: var(--font-size-caption);
   }

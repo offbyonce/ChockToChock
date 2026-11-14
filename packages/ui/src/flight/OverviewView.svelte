@@ -158,7 +158,7 @@ its field; "This flight" holds the key values, each linking to its section.
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: calc(var(--space-1) + var(--border-thick) / 2);
+    gap: calc(var(--space-1) + var(--border-thick));
     padding-top: calc(var(--space-3) - var(--border-thin));
   }
   .desc {
