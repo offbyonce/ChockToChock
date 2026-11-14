@@ -48,6 +48,7 @@ export type { RailStage } from "./generated/RailStage";
 export type { Reply } from "./generated/Reply";
 export type { SavedPlan } from "./generated/SavedPlan";
 export type { Settings } from "./generated/Settings";
+export type { StartState } from "./generated/StartState";
 export type { Step } from "./generated/Step";
 export type { StepId } from "./generated/StepId";
 export type { StepRow } from "./generated/StepRow";

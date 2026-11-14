@@ -12,10 +12,9 @@ step at a time (lib/FlowView.svelte).
   import OpenStepsPop from "../lib/OpenStepsPop.svelte";
   import Icon from "../lib/Icon.svelte";
   import ListCard from "../lib/ListCard.svelte";
-  import ArrivalData from "../lib/ArrivalData.svelte";
   import OptionChoices from "../lib/OptionChoices.svelte";
   import type { PackIndex } from "../pack-index";
-  import { phaseHref } from "../route.svelte";
+  import { flightHref, phaseHref } from "../route.svelte";
   import { decisionKey, type Decisions } from "../lib/decision";
 
   let {
@@ -131,7 +130,8 @@ step at a time (lib/FlowView.svelte).
 {/each}
 
 {#if view.arrival}
-  <ArrivalData values={flight.values} onSet={onValue} />
+  <!-- Arrival values live only in Flight › Approach (owner, batch 4; decision 0019 amended). -->
+  <a class="arrival" href={flightHref("approach")}>Arrival data is in Flight › Approach <Icon name="chevron-right" /></a>
 {/if}
 
 {#each view.lists as list (list.id)}
@@ -162,7 +162,7 @@ step at a time (lib/FlowView.svelte).
     <a class="btn secondary" href={phaseHref(view.previous.id)}><Icon name="arrow-left" /> {view.previous.title}</a>
   {:else}
     <!-- The first phase leads back to Flight setup, as in 3.0. -->
-    <a class="btn secondary" href="#/setup"><Icon name="arrow-left" /> Flight setup</a>
+    <a class="btn secondary" href="#/flight/overview"><Icon name="arrow-left" /> Flight</a>
   {/if}
   {#if view.next}
     <a class="btn secondary" href={phaseHref(view.next.id)}>{view.next.title} <Icon name="arrow-right" /></a>
@@ -187,6 +187,16 @@ step at a time (lib/FlowView.svelte).
     font-size: var(--font-size-page-title);
     font-weight: var(--weight-bold);
     line-height: var(--leading-tight);
+  }
+  .arrival {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    min-height: var(--size-touch-min);
+    margin-bottom: var(--space-2);
+    color: var(--color-link);
+    font-size: var(--font-size-secondary);
+    text-decoration: none;
   }
   .nav {
     display: flex;

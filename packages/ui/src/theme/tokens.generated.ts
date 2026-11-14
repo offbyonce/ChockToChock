@@ -61,7 +61,10 @@ export const COLOR = {
     "paper": "#1b212b",
     "paper-block": "#3a4351",
     "paper-highlight": "rgba(76, 141, 255, 0.35)",
-    "paper-text": "#d5dae2"
+    "paper-text": "#d5dae2",
+    "strip-panel": "#121720",
+    "drop-zone": "#121720",
+    "drop-zone-border": "#6b7482"
   },
   "light": {
     "bg": "#f5f7fa",
@@ -119,7 +122,10 @@ export const COLOR = {
     "paper": "#ffffff",
     "paper-block": "#c3cad4",
     "paper-highlight": "rgba(37, 99, 235, 0.3)",
-    "paper-text": "#2b313b"
+    "paper-text": "#2b313b",
+    "strip-panel": "#ffffff",
+    "drop-zone": "#f5f7fa",
+    "drop-zone-border": "#7a8391"
   }
 } as const;
 

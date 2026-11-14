@@ -7,6 +7,7 @@ view, the detail level, the theme and dimming; they are kept for this visit only
 saves them on the device, and batch 7 adds the rest.
 -->
 <script lang="ts">
+  import Toggle from "../lib/Toggle.svelte";
   import type { Settings } from "@chocktochock/bindings";
 
   let { settings, onChange }: { settings: Settings; onChange: (s: Settings) => void } = $props();
@@ -89,16 +90,7 @@ saves them on the device, and batch 7 adds the rest.
       <b id="set-preview">Panel preview in steps</b>
       <p>The small outline of the panel beside each step. Show panel and Where is this? always work.</p>
     </div>
-    <button
-      class="switch"
-      type="button"
-      role="switch"
-      aria-checked={settings.panelPreview}
-      aria-labelledby="set-preview"
-      onclick={() => onChange({ ...settings, panelPreview: !settings.panelPreview })}
-    >
-      {settings.panelPreview ? "On" : "Off"}<span class="track"><span class="knob"></span></span>
-    </button>
+    <Toggle on={settings.panelPreview} labelledby="set-preview" onToggle={() => onChange({ ...settings, panelPreview: !settings.panelPreview })} />
   </div>
 {/snippet}
 <div class="card">
@@ -181,42 +173,6 @@ saves them on the device, and batch 7 adds the rest.
     color: var(--color-text);
   }
   /* The toggle switch (rules.md components; R6Settings). */
-  .switch {
-    display: flex;
-    align-items: center;
-    gap: var(--space-3);
-    min-height: var(--size-touch-min);
-    padding: 0 var(--border-thick);
-    color: var(--color-text-strong);
-    font-weight: var(--weight-semibold);
-  }
-  .track {
-    position: relative;
-    width: var(--size-toggle-width);
-    height: var(--size-toggle-height);
-    border-radius: var(--radius-pill);
-    background: var(--color-toggle-off);
-  }
-  .switch[aria-checked="true"] .track {
-    background: var(--color-accent);
-  }
-  .knob {
-    position: absolute;
-    top: calc((var(--size-toggle-height) - var(--size-toggle-knob)) / 2);
-    left: calc((var(--size-toggle-height) - var(--size-toggle-knob)) / 2);
-    width: var(--size-toggle-knob);
-    height: var(--size-toggle-knob);
-    box-sizing: border-box;
-    border-radius: 50%;
-    background: var(--color-toggle-knob);
-  }
-  /* Off, a white knob on the light track is under 3:1, so it takes a muted ring (3.3:1). */
-  .switch[aria-checked="false"] .knob {
-    border: var(--border-thin) solid var(--color-text-muted);
-  }
-  .switch[aria-checked="true"] .knob {
-    left: calc(var(--size-toggle-width) - var(--size-toggle-knob) - (var(--size-toggle-height) - var(--size-toggle-knob)) / 2);
-  }
   .done {
     display: flex;
     justify-content: flex-end;

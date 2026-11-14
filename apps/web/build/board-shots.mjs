@@ -147,7 +147,8 @@ const SHOTS = [
   ["DecChanged", { state: "changed" }, 1120, 560, "Decision", round6],
   ["DecPhone", { state: "phone" }, 390, 844, "Decision", round6],
   // Batch 4: the strip panel and the Flight pages.
-  ["StripOpen", {}, 1440, 900],
+  ["StripOpen", {}, 1440, 900, "StripOpen", round6],
+  ["StripFreq", { freqOpen: true }, 1440, 900, "StripOpen", round6],
   ["SimBrief", {}, 1440, 900],
   ["Start", {}, 1440, 900],
   ["R6Weather", {}, 1440, 900, "Weather", round6],

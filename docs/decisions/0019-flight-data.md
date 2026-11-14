@@ -41,3 +41,14 @@ import does to values the pilot typed.
 - The flight's saved format does not change: the new fields are new keys in `values`.
 - The saved plan lives apart from the flight, so a flight never depends on it, and holds no
   personal fields and none of SimBrief's own text.
+
+## Amendment (2026-11-13, Phase 2 step 7 batch 4; owner)
+- **Arrival values live in one place.** The Arrival data box on the descent page is replaced by a
+  link to Flight › Approach, where landing altitude, landing flaps, VREF (landing speed), autobrake
+  and minimums are entered with the arrival runway and STAR.
+- **New fill fields,** only new keys in `values`: `destination_qnh` (the destination's altimeter
+  setting; Preflight's altimeter blank links to the departure's, Approach's to the destination's),
+  `arrival_runway`, `star`, `alternate`, `tower_frequency` and `thrust_rating`. A plan fills the
+  alternate, the arrival runway and STAR, and each airport's altimeter setting from its METAR.
+- **Flight setup becomes the Flight pages** (batch 4): every field it held has a row in one of their
+  sections.

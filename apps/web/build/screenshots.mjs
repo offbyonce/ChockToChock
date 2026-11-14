@@ -76,6 +76,37 @@ const go = (hash) => `location.hash = ${JSON.stringify(hash)}; true`;
 /** Skips the list step `title`: opens it if it is closed, then presses Skip for now. */
 const skipStep = (title) =>
   `(() => { const it = [...document.querySelectorAll(".it")].find((i) => i.textContent.toUpperCase().includes(${JSON.stringify(title)})); const skip = () => [...it.querySelectorAll("button")].find((b) => b.textContent.includes("Skip for now")); if (!skip()) it.querySelector(".chev").click(); return new Promise((go) => setTimeout(() => { skip().click(); go(true); }, 300)); })()`;
+/**
+ * The Flight pages in the boards' state (batch 4): the invented KSEA to KSFO OFP dropped on SimBrief
+ * and OFP file, as a pilot would, then the values the boards show typed in. The import's Undo toast
+ * is left to time out (10 s) so it is not in the shot.
+ */
+const OFP = fs.readFileSync(path.join(import.meta.dirname, "fixtures/board-ofp.json"), "utf8");
+const dropOfp = `(() => { const dt = new DataTransfer(); dt.items.add(new File([${JSON.stringify(OFP)}], "ofp.json", { type: "application/json" })); document.querySelector(".drop").dispatchEvent(new DragEvent("drop", { dataTransfer: dt, bubbles: true, cancelable: true })); return new Promise((go) => setTimeout(() => go(true), 1200)); })()`;
+const typed = (pairs) =>
+  `(async () => { const wait = (ms) => new Promise((go) => setTimeout(go, ms)); for (const [section, field, value] of ${JSON.stringify(pairs)}) { if (!location.hash.startsWith("#/flight/" + section)) { location.hash = "#/flight/" + section; await wait(400); } const el = document.querySelector('[data-field="' + field + '"]'); if (!el) continue; if (el.tagName === "BUTTON") { el.click(); await wait(100); [...document.querySelectorAll('[role="option"] button')].find((b) => b.textContent.trim() === value)?.click(); } else { el.value = value; el.dispatchEvent(new Event("change", { bubbles: true })); } await wait(120); } return true; })()`;
+const BOARD_FLIGHT = [
+  go("#/flight/simbrief"),
+  dropOfp,
+  typed([
+    ["clearance", "initial_altitude", "5000"],
+    ["clearance", "squawk", "4521"],
+    ["clearance", "ground_frequency", "121.700"],
+    ["clearance", "tower_frequency", "119.900"],
+    ["takeoff", "heading", "163"],
+    ["takeoff", "takeoff_flaps", "5"],
+    ["takeoff", "thrust_rating", "26K"],
+    ["takeoff", "assumed_temperature", "45"],
+    ["takeoff", "v1", "142"],
+    ["takeoff", "vr", "144"],
+    ["approach", "landing_flaps", "30"],
+    ["approach", "autobrake", "2"],
+    ["fuel", "cg", "24.0"],
+  ]),
+  `(() => { location.hash = "#/flight/clearance"; return new Promise((go) => setTimeout(() => { const el = document.querySelector('[data-row="notes"] input'); el.value = "Expect FL370 ten minutes after departure"; el.dispatchEvent(new Event("change", { bubbles: true })); go(true); }, 400)); })()`,
+  "new Promise((go) => setTimeout(() => go(true), 10500))",
+];
+
 /** Ticks every step of phase `id`, its checklist too once it unfolds, then goes to phase `then`. */
 const finishPhase = (id, then) =>
   `(async () => { const wait = (ms) => new Promise((go) => setTimeout(go, ms)); location.hash = "#/phase/${id}"; await wait(500); for (let i = 0; i < 200; i++) { const b = [...document.querySelectorAll(".it .tick")].find((t) => t.getAttribute("aria-pressed") !== "true"); if (!b) break; b.click(); await wait(80); } location.hash = "#/phase/${then}"; await wait(500); return true; })()`;
@@ -305,6 +336,32 @@ const SHOTS = [
         "document.activeElement?.blur(); true",
       ],
     },
+  },
+  // Batch 4: the Flight pages, each section in the boards' state.
+  ...["overview", "route", "fuel", "cruise", "weather", "clearance", "takeoff", "approach", "start", "simbrief"].map((section) => ({
+    name: `board-flight-${section}`,
+    full: true,
+    only: ["desktop", "wide", "tablet-landscape"],
+    app: { hash: "#/phase/before-start", before: [...BOARD_FLIGHT, go(`#/flight/${section}`)] },
+  })),
+  {
+    name: "board-flight-winds",
+    full: true,
+    only: ["desktop"],
+    app: { hash: "#/phase/before-start", before: [...BOARD_FLIGHT, go("#/flight/weather"), click('[role="tab"]', 3)] },
+  },
+  // The strip panel, open, with the plan imported (StripOpen) and with Frequencies open (StripFreq).
+  {
+    name: "board-strip-open",
+    full: true,
+    only: ["desktop", "wide", "tablet-landscape"],
+    app: { hash: "#/phase/before-start", before: [...BOARD_FLIGHT, go("#/phase/before-start"), ...BOARD_STATE, click(".fsline")] },
+  },
+  {
+    name: "board-strip-freq",
+    full: true,
+    only: ["desktop"],
+    app: { hash: "#/phase/before-start", before: [...BOARD_FLIGHT, go("#/phase/before-start"), ...BOARD_STATE, click(".fsline"), click("button.freq")] },
   },
   // The tablet landscape board draws no menu.
   { name: "board-checklist", full: true, only: ["tablet-landscape"], app: { hash: "#/phase/before-start", before: BOARD_STATE } },

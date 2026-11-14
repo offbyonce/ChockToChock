@@ -12,6 +12,7 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
     type Action,
     type AppInfo,
     type Checklist,
+    type FillField,
     type Flight,
     isAppError,
     type ListView,
@@ -19,6 +20,7 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
     type Progress,
     type Rail,
     type OpenStep,
+    type SavedPlan,
     type Settings,
   } from "@chocktochock/bindings";
   import { getHost, type SavedItem } from "./host";
@@ -39,8 +41,8 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
   import PhasePage from "./pages/PhasePage.svelte";
   import ReferencePage from "./pages/ReferencePage.svelte";
   import SettingsPage from "./pages/SettingsPage.svelte";
-  import SetupPage from "./pages/SetupPage.svelte";
-  import { currentRoute, phaseHref } from "./route.svelte";
+  import FlightPage from "./flight/FlightPage.svelte";
+  import { currentRoute, flightHref, phaseHref } from "./route.svelte";
   import { applyPalette, applyScale } from "./theme/tokens";
 
   const host = getHost();
@@ -103,6 +105,9 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
   /** When progress or settings were last saved on this device. */
   let savedAt = $state<number | null>(null);
   /** Saved data the app could not use, kept until the pilot decides (decision 0012). */
+  /** The SimBrief plan kept on this device (decision 0019), and the values it fills. */
+  let plan = $state<SavedPlan | null>(null);
+  let planFills = $state<Partial<Record<FillField, string>>>({});
   let kept = $state<{ what: "flight" | "settings"; state: "newer" | "unreadable"; text: string }[]>([]);
   let view = $state<PhaseView | null>(null);
   /** In Essentials, the same phase in Full, for "Show N more steps from Full". */
@@ -139,6 +144,7 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
       settings = usable("settings", saved.settings) ?? (await host.defaultSettings());
       const savedFlight = usable("flight", saved.flight);
       flight = savedFlight && savedFlight.pack === aircraft.id ? savedFlight : await host.newFlight(aircraft.id);
+      plan = await host.loadPlan(aircraft.id);
       await refresh();
     } catch (e) {
       fail(e);
@@ -226,18 +232,16 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
         total: 0,
       }),
   );
-  // Flight setup sits before the first stage, as in 3.0: that stage's tab and chips show, with no
-  // chip current.
-  let stage = $derived(screen === "setup" ? (rail?.stages[0]?.title ?? null) : (view?.stage ?? null));
+  let stage = $derived(view?.stage ?? null);
   let stagePhases = $derived(
-    screen === "phase" || screen === "start" || screen === "setup"
+    screen === "phase" || screen === "start"
       ? (rail?.stages.find((s) => s.title === stage)?.phases ?? [])
       : [],
   );
   let current = $derived(view?.lists.find((l) => l.current)?.current ?? null);
   /** The step the context panel shows, its row, and the steps after it. */
   let pane = $derived.by(() => {
-    if (!index || !view || screen === "settings" || screen === "setup" || screen === "open") return null;
+    if (!index || !view || screen === "settings" || screen === "flight" || screen === "open") return null;
     const id = flow ? (cursor ?? current) : (selected ?? (screen === "reference" ? null : current));
     const rows = view.lists.flatMap((l) => l.steps);
     const at = rows.findIndex((r) => r.id === id);
@@ -421,6 +425,92 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
       offerUndo(changedText(option, value, updated), before, () => (sources = kept));
     }
   }
+  /**
+   * A SimBrief plan into the flight (decision 0019): the values it covers are replaced, the plan
+   * is kept on this device, and the notice offers Undo. Resolves with a problem to show, or null.
+   */
+  async function usePlan(next: SavedPlan): Promise<string | null> {
+    if (!flight) return null;
+    const before = flight;
+    const keptPlan = plan;
+    const filled = await host.planValues(next);
+    await act({ type: "setValues", values: filled.values });
+    plan = next;
+    await host.savePlan(packId, next);
+    const check = filled.checkClearance ? " Check the runway and departure against your clearance." : "";
+    offerUndo(`Imported ${filled.origin} → ${filled.destination}: ${filled.filled} values.${check}`, before, () => {
+      plan = keptPlan;
+      void host.savePlan(packId, keptPlan);
+    });
+    return null;
+  }
+  function problemOf(e: unknown): string {
+    if (isAppError(e)) return e.message;
+    return "Couldn't reach SimBrief. Check your connection, or use a saved OFP file.";
+  }
+  async function importFor(user: string): Promise<string | null> {
+    try {
+      if (settings && settings.simbriefUser !== user) await changeSettings({ ...settings, simbriefUser: user });
+      return await usePlan(await host.fetchPlan(user));
+    } catch (e) {
+      return problemOf(e);
+    }
+  }
+  async function importFile(text: string): Promise<string | null> {
+    try {
+      return await usePlan(await host.readPlanFile(text));
+    } catch (e) {
+      return problemOf(e);
+    }
+  }
+  /** The strip's Import latest from SimBrief: with no username yet, SimBrief and OFP file asks for one. */
+  async function importLatest(): Promise<void> {
+    const user = settings?.simbriefUser;
+    if (!user || (await importFor(user))) window.location.hash = flightHref("simbrief");
+  }
+  /** A panel state (decision record pending): its marks, with Undo. */
+  async function chooseStartState(state: string | null): Promise<void> {
+    if (!flight) return;
+    const before = flight;
+    await act({ type: "setStartState", state, at: Date.now() });
+    const title = state ? (index?.startStates.find((s) => s.id === state)?.title ?? state) : null;
+    const marked = (flight.stateTicks?.length ?? 0) + (flight.stateSkips?.length ?? 0);
+    offerUndo(title ? `Panel state: ${title}. ${marked} steps marked.` : "Panel state cleared.", before);
+  }
+  $effect(() => {
+    const p = plan;
+    if (!p) {
+      planFills = {};
+      return;
+    }
+    void host.planValues(p).then((v) => (planFills = v.values));
+  });
+  /** Where the strip's clearance came from: "Runway and SID from SimBrief, 10:02 · the rest typed". */
+  let provenance = $derived.by(() => {
+    if (!flight) return "";
+    const labels: [FillField, string][] = [
+      ["runway", "Runway"],
+      ["sid", "SID"],
+      ["transition", "Transition"],
+      ["initial_altitude", "Initial altitude"],
+      ["squawk", "Squawk"],
+    ];
+    const values = (flight.values ?? {}) as Partial<Record<FillField, string>>;
+    const set = labels.filter(([f]) => values[f]);
+    const fromPlan = set.filter(([f]) => plan && planFills[f] === values[f]).map(([, l]) => l);
+    const typed = set.length - fromPlan.length;
+    if (!fromPlan.length) return typed ? "Typed by you" : "";
+    const list = fromPlan.length > 1 ? `${fromPlan.slice(0, -1).join(", ")} and ${fromPlan.at(-1)}` : (fromPlan[0] ?? "");
+    const at = plan ? new Date(plan.loadedAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hourCycle: "h23" }) : "";
+    return `${list} from SimBrief, ${at}${typed ? " · the rest typed" : ""}`;
+  });
+  /** The phase the Flight pages' Checklist button goes back to. */
+  let lastPhase = $state<string | null>(null);
+  $effect(() => {
+    const r = route.value;
+    if (r.screen === "phase") lastPhase = r.id;
+  });
+
   /** Clear ticks on one list (its card header), with Undo instead of asking first (owner). */
   async function clearTicks(list: string): Promise<void> {
     if (!flight) return;
@@ -460,7 +550,36 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
 </script>
 
 <svelte:window onkeydown={slideKeys} />
-<div class="shell" data-app-ready={rail && (view || screen === "settings" || screen === "setup" || screen === "open") ? "" : undefined}>
+{#if route.value.screen === "flight" && settings && flight && index && rail}
+  {@const r = route.value}
+  {@const s = settings}
+  <div class="flightwrap" data-app-ready="">
+    <FlightPage
+      section={r.section}
+      focus={r.focus}
+      {flight}
+      settings={s}
+      {plan}
+      options={index.options}
+      states={index.startStates}
+      backHref={lastPhase ? phaseHref(lastPhase) : "#/"}
+      onSet={(field, value) => act({ type: "setValue", field, value })}
+      onNotes={(notes) => act({ type: "setNotes", notes })}
+      onOption={(option, value) => act({ type: "setOption", option, value })}
+      onStartState={(state) => void chooseStartState(state)}
+      onImport={importFor}
+      onFile={importFile}
+      onClear={clearFlight}
+      onDescriptions={(on) => void changeSettings({ ...s, descriptions: on })}
+    />
+    {#if undo}
+      {#key undo}
+        <Toast text={undo.text} onUndo={() => void takeBack()} onExpire={() => (undo = null)} />
+      {/key}
+    {/if}
+  </div>
+{:else}
+<div class="shell" data-app-ready={rail && (view || screen === "settings" || screen === "flight" || screen === "open") ? "" : undefined}>
   <TopBar
     aircraft={index?.name ?? ""}
     {rail}
@@ -488,16 +607,18 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
       version={info?.version ?? null}
       onClose={() => (menuOpen = false)}
     />
-    {#if view && screen !== "settings" && screen !== "setup" && screen !== "open" && screen !== "reference"}
+    {#if view && screen !== "settings" && screen !== "open" && screen !== "reference"}
       <FlightStrip
         values={flight.values ?? {}}
         notes={flight.notes ?? ""}
+        {provenance}
         onSet={(field, value) => act({ type: "setValue", field, value })}
         onNotes={(notes) => act({ type: "setNotes", notes })}
         onClear={clearFlight}
+        onImport={() => void importLatest()}
       />
     {/if}
-    <div class="app" class:strip={!!view && screen !== "settings" && screen !== "setup" && screen !== "open" && screen !== "reference"} class:nopane={!pane} class:flow={flow && screen !== "settings" && screen !== "setup"}>
+    <div class="app" class:strip={!!view && screen !== "settings" && screen !== "open" && screen !== "reference"} class:nopane={!pane} class:flow={flow && screen !== "settings"}>
       <main>
         <div class="inner">
           {#each kept as k (k.what)}
@@ -505,13 +626,6 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
           {/each}
           {#if screen === "settings"}
             <SettingsPage {settings} onChange={(s) => void changeSettings(s)} />
-          {:else if screen === "setup"}
-            <SetupPage
-              {flight}
-              first={rail.stages[0]?.phases[0] ?? null}
-              onSet={(field, value) => act({ type: "setValue", field, value })}
-              onOption={(option, value) => act({ type: "setOption", option, value })}
-            />
           {:else if screen === "open"}
             <OpenStepsPage
               {index}
@@ -607,6 +721,7 @@ in Rust. Progress lives in memory until batch 1 saves it on the device.
     </div>
   {/if}
 </div>
+{/if}
 
 <style>
   /* The bars at the top that stay in place: header, phase track and, on a phase, the strip. */

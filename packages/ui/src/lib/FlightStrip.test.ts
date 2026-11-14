@@ -14,6 +14,7 @@ describe("FlightStrip", () => {
     onSet: () => {},
     onNotes: () => {},
     onClear: () => {},
+    onImport: () => {},
   });
 
   it("shows the SID with its transition, as the Checklist board ('SUMMA2.SEA')", () => {

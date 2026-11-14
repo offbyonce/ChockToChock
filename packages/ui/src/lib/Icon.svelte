@@ -13,6 +13,7 @@ control around them carries the words.
   import arrowRight from "../icons/tabler/arrow-right.svg?raw";
   import check from "../icons/tabler/check.svg?raw";
   import chevronDown from "../icons/tabler/chevron-down.svg?raw";
+  import chevronLeft from "../icons/tabler/chevron-left.svg?raw";
   import chevronRight from "../icons/tabler/chevron-right.svg?raw";
   import mapPin from "../icons/tabler/map-pin.svg?raw";
   import menu from "../icons/tabler/menu-2.svg?raw";
@@ -22,6 +23,8 @@ control around them carries the words.
   import settings from "../icons/tabler/settings.svg?raw";
   import x from "../icons/tabler/x.svg?raw";
   import decision from "../icons/board/decision.svg?raw";
+  import fileUpload from "../icons/board/file-upload.svg?raw";
+  import notice from "../icons/board/notice.svg?raw";
   import panel from "../icons/board/panel.svg?raw";
   import pin from "../icons/board/pin.svg?raw";
 
@@ -31,9 +34,12 @@ control around them carries the words.
     "arrow-right": arrowRight,
     check,
     "chevron-down": chevronDown,
+    "chevron-left": chevronLeft,
     "chevron-right": chevronRight,
     decision,
+    "file-upload": fileUpload,
     "map-pin": mapPin,
+    notice,
     panel,
     pin,
     menu,

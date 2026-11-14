@@ -1,0 +1,312 @@
+<!--
+SPDX-FileCopyrightText: 2026 offbyonce
+SPDX-License-Identifier: MIT
+
+One Flight field row (FlightSection boards): the label, the value, then the description with the
+destination chip under it. An editable value is always a visible 44 px box; a value still needed
+is an empty box with an amber border and a placeholder; a choice is a field-styled button that
+opens a menu in place; read-only values and rows that belong to another section are plain mono
+text, with a "Section ›" link where the chip would be. Selecting the row (a click or focus) points
+the "Find it in your OFP" panel at it. Descriptions Off keeps the label, the value and the chip.
+-->
+<script lang="ts">
+  import type { FillField } from "@chocktochock/bindings";
+  import { flightHref, phaseHref } from "../route.svelte";
+  import Icon from "../lib/Icon.svelte";
+  import { type Ctx, type Row } from "./sections";
+
+  let {
+    row,
+    ctx,
+    selected,
+    descriptions,
+    sectionTitle,
+    onSelect,
+    onSet,
+    onNotes,
+  }: {
+    row: Row;
+    ctx: Ctx;
+    selected: boolean;
+    descriptions: boolean;
+    /** The title of the section a cross-section row links to. */
+    sectionTitle: (id: NonNullable<Row["link"]>) => string;
+    onSelect: () => void;
+    onSet: (field: FillField, value: string) => void;
+    onNotes?: (notes: string) => void;
+  } = $props();
+
+  let menu = $state(false);
+  const grouped = (n: number) => Math.round(n).toLocaleString("en-US");
+
+  /** A value as the box shows it: weights in full with the unit, headings with °, levels with FL. */
+  function shown(field: FillField, weight?: "full" | "thousands"): string {
+    const raw = ctx.values[field] ?? "";
+    if (!raw) return "";
+    if (weight) {
+      const n = Number(raw) * (weight === "thousands" ? 1000 : 1);
+      return Number.isFinite(n) ? `${grouped(n)} ${ctx.unit}` : raw;
+    }
+    return row.show && field === row.field ? row.show(raw) : raw;
+  }
+  /** What the pilot typed, back into the flight's form. */
+  function stored(text: string, weight?: "full" | "thousands", numeric = false): string {
+    const t = text.trim();
+    if (!t) return "";
+    if (weight) {
+      const n = Number(t.replace(/[^0-9.]/g, ""));
+      if (!Number.isFinite(n) || t.replace(/[^0-9.]/g, "") === "") return "";
+      return weight === "thousands" ? String(Number((n / 1000).toFixed(1))) : String(Math.round(n));
+    }
+    if (numeric || row.show) return t.replace(/^FL/i, "").replace(/[°\s]/g, "");
+    return t.toUpperCase();
+  }
+  let readOnly = $derived(!!row.read || !!row.link);
+  let readValue = $derived.by(() => {
+    if (row.read) return row.read(ctx);
+    if (row.field) return shown(row.field) || "—";
+    return "—";
+  });
+  let empty = $derived(!!row.field && !readOnly && !ctx.values[row.field]);
+  let chipLink = $derived(row.link ? flightHref(row.link) : row.phase ? phaseHref(row.phase) : null);
+  let chipText = $derived(row.link ? `${sectionTitle(row.link)} ›` : (row.chip ?? ""));
+
+  function pick(value: string): void {
+    menu = false;
+    if (row.field) onSet(row.field, value);
+  }
+  function outside(e: PointerEvent): void {
+    if (menu && !(e.target instanceof Element && e.target.closest(`[data-pick="${row.id}"]`))) menu = false;
+  }
+</script>
+
+<svelte:document onpointerdown={outside} />
+
+<!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
+<div class="frow" class:sel={selected} data-row={row.id} onclick={onSelect} onfocusin={onSelect}>
+  <span class="label" id="lab-{row.id}">{row.label}</span>
+  <span class="value">
+    {#if row.notes}
+      <input class="box" aria-labelledby="lab-{row.id}" value={ctx.notes} placeholder="Enter" autocomplete="off" onchange={(e) => onNotes?.(e.currentTarget.value)} />
+    {:else if readOnly}
+      <span class="ro">{readValue}</span>
+    {:else if row.choices && row.field}
+      {@const field = row.field}
+      <span class="pickwrap" data-pick={row.id}>
+        <button class="box pick" class:need={empty} type="button" aria-haspopup="listbox" aria-expanded={menu} aria-labelledby="lab-{row.id}" data-field={field} onclick={() => (menu = !menu)}>
+          <span>{ctx.values[field] || row.placeholder || "Choose"}</span>
+          <Icon name="chevron-down" />
+        </button>
+        {#if menu}
+          <ul class="menu" role="listbox" aria-labelledby="lab-{row.id}">
+            {#each row.choices as c (c)}
+              <li role="option" aria-selected={ctx.values[field] === c}>
+                <button type="button" onclick={() => pick(c)}>{c}</button>
+              </li>
+            {/each}
+          </ul>
+        {/if}
+      </span>
+    {:else if row.field}
+      {@const field = row.field}
+      <span class="boxes" class:two={!!row.second}>
+        <input
+          class="box"
+          class:need={empty}
+          aria-labelledby="lab-{row.id}"
+          data-field={field}
+          value={shown(field, row.weight)}
+          placeholder={row.placeholder ?? (empty ? "Enter" : "")}
+          maxlength={row.weight ? undefined : row.max}
+          inputmode={row.mode === "text" ? "text" : row.mode}
+          autocomplete="off"
+          onchange={(e) => onSet(field, stored(e.currentTarget.value, row.weight, row.mode === "numeric" || row.mode === "decimal"))}
+        />
+        {#if row.second}
+          {@const two = row.second}
+          <input
+            class="box"
+            aria-label="{row.label}: {two.placeholder}"
+            data-field={two.field}
+            value={shown(two.field, two.weight)}
+            placeholder={two.placeholder}
+            inputmode={two.mode}
+            autocomplete="off"
+            onchange={(e) => onSet(two.field, stored(e.currentTarget.value, two.weight, true))}
+          />
+        {/if}
+      </span>
+    {/if}
+  </span>
+  <span class="about">
+    {#if descriptions}<span class="desc">{row.desc}</span>{/if}
+    {#if chipLink}
+      <a class="go" href={chipLink}>{chipText}</a>
+    {:else if row.chip}
+      <span class="chip">{row.chip}</span>
+    {/if}
+    {#if row.seg}
+      {@const seg = row.seg}
+      <span class="seg" role="group" aria-label={seg.label}>
+        {#each seg.values as s (s)}
+          {@const on = (ctx.values[seg.field] || seg.values[0]) === s}
+          <button type="button" aria-pressed={on} onclick={() => onSet(seg.field, s)}>{s}</button>
+        {/each}
+      </span>
+    {/if}
+  </span>
+</div>
+
+<style>
+  .frow {
+    display: grid;
+    /* The board's 172 and 150 px columns. */
+    grid-template-columns:
+      calc(4 * var(--space-10) + var(--space-3))
+      calc(3 * var(--space-10) + var(--space-6) + var(--space-1) + var(--border-thick))
+      minmax(0, 1fr);
+    column-gap: var(--space-4);
+    align-items: start;
+    padding: var(--space-3) calc(var(--space-4) + var(--space-1));
+    border-top: var(--border-thin) solid var(--color-line);
+  }
+  .frow.sel {
+    background: var(--color-accent-soft);
+    box-shadow: inset calc(var(--border-thick) + var(--border-thin)) 0 0 var(--color-accent);
+  }
+  .label {
+    padding-top: calc(var(--space-3) - var(--border-thin));
+    font-size: var(--font-size-body);
+    font-weight: var(--weight-semibold);
+  }
+  .ro {
+    display: block;
+    padding-top: calc(var(--space-3) - var(--border-thin));
+    font-family: var(--font-mono);
+    font-size: var(--font-size-value-mono);
+    overflow-wrap: anywhere;
+  }
+  .boxes {
+    display: grid;
+    gap: var(--space-2);
+  }
+  .boxes.two {
+    grid-template-columns: 1fr 1fr;
+  }
+  .box {
+    width: 100%;
+    min-width: 0;
+    height: var(--size-touch-min);
+    box-sizing: border-box;
+    padding: 0 calc(var(--space-2) + var(--border-thick));
+    border: var(--border-thin) solid var(--color-border);
+    border-radius: calc(var(--radius-small) + var(--border-thick));
+    background: var(--color-field);
+    color: var(--color-text);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-value-mono);
+  }
+  .box.need {
+    border-color: var(--color-open-text);
+  }
+  .box::placeholder {
+    color: var(--color-text-muted);
+  }
+  .pickwrap {
+    position: relative;
+    display: block;
+  }
+  .pick {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-align: left;
+  }
+  .pick :global(.icon) {
+    width: var(--size-icon-small);
+    height: var(--size-icon-small);
+  }
+  .menu {
+    position: absolute;
+    top: calc(100% + var(--space-1));
+    left: 0;
+    z-index: 5;
+    min-width: 100%;
+    margin: 0;
+    padding: calc(var(--space-1) + var(--border-thick));
+    list-style: none;
+    border: var(--border-thin) solid var(--color-popover-border);
+    border-radius: var(--radius-control);
+    background: var(--color-popover-surface);
+    box-shadow: var(--color-overlay-shadow);
+  }
+  .menu button {
+    width: 100%;
+    height: var(--size-touch-min);
+    padding: 0 var(--space-3);
+    border: 0;
+    border-radius: var(--radius-small);
+    background: transparent;
+    color: var(--color-text);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-value-mono);
+    text-align: left;
+  }
+  .menu [aria-selected="true"] button,
+  .menu button:hover {
+    background: var(--color-surface-2);
+  }
+  .about {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: calc(var(--space-1) + var(--border-thick) / 2);
+    padding-top: calc(var(--space-3) - var(--border-thin));
+  }
+  .desc {
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-secondary);
+    line-height: var(--leading-normal);
+  }
+  .chip {
+    padding: var(--space-1) var(--space-2);
+    border: var(--border-thin) solid var(--color-border);
+    border-radius: var(--radius-small);
+    background: var(--color-chip);
+    color: var(--color-text-secondary);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-caption);
+    font-weight: var(--weight-semibold);
+  }
+  .go {
+    color: var(--color-link);
+    font-size: var(--font-size-secondary);
+    text-decoration: none;
+  }
+  .seg {
+    display: inline-flex;
+    padding: var(--border-thick);
+    border: var(--border-thin) solid var(--color-segment-border);
+    border-radius: var(--radius-control);
+    background: var(--color-segment-track);
+  }
+  .seg button {
+    height: calc(var(--size-touch-min) - var(--space-1));
+    min-width: var(--size-touch-min);
+    padding: 0 calc(var(--space-2) + var(--border-thick));
+    border: 0;
+    border-radius: calc(var(--radius-small) + var(--border-thick));
+    background: transparent;
+    color: var(--color-text-muted);
+    font: inherit;
+    font-size: var(--font-size-secondary);
+  }
+  .seg button[aria-pressed="true"] {
+    background: var(--color-segment-on);
+    box-shadow:
+      inset 0 0 0 calc(var(--border-thick) * 3 / 4) var(--color-accent),
+      var(--color-segment-shadow);
+    color: var(--color-text-strong);
+    font-weight: var(--weight-semibold);
+  }
+</style>

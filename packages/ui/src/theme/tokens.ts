@@ -23,6 +23,10 @@ const SURFACES = new Set<string>([
   "surface-2",
   "sheet",
   "field",
+  "strip-panel",
+  "drop-zone",
+  "paper",
+  "paper-block",
   "border",
   "border-strong",
   "line",
@@ -70,6 +74,8 @@ export const GRAPHIC_PAIRS: [ColorName, ColorName][] = [
   ),
   // The tick drawn on a done step's green circle.
   ["on-done", "done"],
+  // The OFP file drop zone's dashed outline (SimBrief and OFP file).
+  ["drop-zone-border", "drop-zone"],
 ];
 
 /** Inside drawings: labels at 4.5:1, outlines, switch bodies and lens rims at 3:1. */
