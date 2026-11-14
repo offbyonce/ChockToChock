@@ -69,6 +69,11 @@ way to Flight setup and Reset flight plan (with Undo), until batch 4's strip pan
     { field: "squawk", label: "Squawk" },
     { field: "departure_frequency", label: "Departure frequency" },
   ];
+  /** A field as the strip shows it: the SID with its transition, "SUMMA2.SEA" (Checklist board). */
+  function shownValue(field: FillField): string {
+    const value = values[field] ?? "";
+    return field === "sid" && value && values.transition ? `${value}.${values.transition}` : value;
+  }
   let filled = $derived(["origin", "destination", ...FIELDS.map((f) => f.field)].some((f) => values[f as FillField]));
   let route = $derived(`${values.origin || "—"} → ${values.destination || "—"}`);
   let noteCount = $derived(notes.split("\n").filter((l) => l.trim()).length);
@@ -131,7 +136,8 @@ way to Flight setup and Reset flight plan (with Undo), until batch 4's strip pan
     {#if filled}
       <span class="route">{route}</span>
       {#each FIELDS as f (f.field)}
-        <span class="part" data-field={f.field}><span class="lab">{f.label}</span><span class="val" class:none={!values[f.field]}>{values[f.field] || "—"}</span></span>
+        {@const shown = shownValue(f.field)}
+        <span class="part" data-field={f.field}><span class="lab">{f.label}</span><span class="val" class:none={!shown}>{shown || "—"}</span></span>
       {/each}
       {#if noteCount}<span class="notes">Notes {noteCount}</span>{/if}
     {:else}

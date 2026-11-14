@@ -289,6 +289,23 @@ const SHOTS = [
     only: ["desktop", "wide"],
     app: { hash: "#/phase/before-start", before: [...BOARD_STATE, rowMenu("Anti-collision light")] },
   },
+  // The flight strip with values and a note: its Notes chip against the Checklist board's (color.chip).
+  {
+    name: "board-strip",
+    full: true,
+    only: ["desktop"],
+    app: {
+      hash: "#/setup",
+      before: [
+        ...CLEARANCE.map(([ours, , v]) => typeInto(`#s-${ours}`, v)),
+        go("#/phase/before-start"),
+        click(".fsline"),
+        typeInto("#sp-notes", "Expect runway 16L"),
+        click(".fsline"),
+        "document.activeElement?.blur(); true",
+      ],
+    },
+  },
   // The tablet landscape board draws no menu.
   { name: "board-checklist", full: true, only: ["tablet-landscape"], app: { hash: "#/phase/before-start", before: BOARD_STATE } },
   // Round 6's slide-out: Show panel (P), Where is this? (W), and a control's card (tap CTR L).
